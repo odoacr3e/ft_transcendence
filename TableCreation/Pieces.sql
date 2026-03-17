@@ -6,3 +6,6 @@ CREATE TABLE Pieces (
 	`image` LONGBLOB,
 	`idAbility` int UNSIGNED NOT NULL
 );
+
+
+
