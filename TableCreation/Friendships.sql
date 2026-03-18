@@ -1,0 +1,17 @@
+CREATE TABLE Friends (
+	idFriendship int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    idUser1 INT NOT NULL,
+    idUser2 INT NOT NULL,
+	friendStatus enum('done', 'pending'),
+	CONSTRAINT unique_user_pair UNIQUE (idUser1, idUser2)
+) CHARSET=utf8;
+
+ALTER TABLE Friends
+ADD CONSTRAINT fk_idfriend1
+FOREIGN KEY (idUser1) REFERENCES Users(idUser)
+ON UPDATE CASCADE
+ON DELETE CASCADE,
+ADD CONSTRAINT fk_idfriend2
+FOREIGN KEY (idUser2) REFERENCES Users(idUser)
+ON UPDATE CASCADE
+ON DELETE CASCADE;
