@@ -16,30 +16,38 @@
   http://www.imparareaprogrammare.it
 */
 
-let guess = Math.floor(Math.random() * 100) + 1;
+let checkValue = function (guess, num)
+{
+  if (guess > num)
+    return "<h2 style=\"color:white;text-align:center;\">Number too high</h2>";
+  else if (guess < num)
+    return "<h2 style=\"color:white;text-align:center;\">Number too low</h2>";
+  else
+    return "<h2 style=\"color:white;text-align:center;\">Right guess</h2>";
+}
 
-/*
-  prompt
-  funzione controllo
-  aggiorna html
-*/
+let num = Math.floor(Math.random() * 100) + 1;
+console.log(num);
 
-let win1 = window.open("", "Gioco1");
-let win2 = window.open("", "Gioco2");
-win1.document.body.innerHTML = "<h1>Pazzo 1</h1>";
-win2.document.body.innerHTML = "<h1>Pazzo 2</h1>";
-win2.document.body.innerHTML += "<h1>Pazzo 5</h1>";
-const canaleGioco = new BroadcastChannel('partita_uno');
+let win1 = window.open("", "Player1");
+let win2 = window.open("", "Player2");
+while (1)
+{
+  let guess2 = win2.window.prompt("Choose a number between 1 and 100");
+  let guess1 = win1.window.prompt("Choose a number between 1 and 100");
 
-// Per inviare un dato (es. il punteggio o la mossa)
-canaleGioco.postMessage({ giocatore: "Mario", azione: "indovinato", valore: 42 });
-
-// Per ricevere i dati dall'altra finestra
-canaleGioco.onmessage = (event) => {
-    console.log("L'altro giocatore ha fatto:", event.data);
-    // Qui aggiorni la tua interfaccia con i dati dell'altro
-};
-
-// document.getElementById("demo").innerHTML() += "<h1>";
-// document.getElementById("demo").innerHTML() += "VAR";
-// document.getElementById("demo").innerHTML() += "</h1>";
+  if (guess1 == guess2 && guess1 == num)
+  {
+    win1.document.body.innerHTML += "<h2>Tie!</h2>";
+    win2.document.body.innerHTML += "<h2>Tie!</h2>";
+    break;
+  }
+  let alert2 = checkValue(guess2, num);
+  win2.document.body.innerHTML += alert2;
+  let alert1 = checkValue(guess1, num);
+  win1.document.body.innerHTML += alert1alert2;
+  if (alert1 == "Right guess" || alert2 == "Right guess")
+    break;
+}
+win1.close;
+win2.close;
