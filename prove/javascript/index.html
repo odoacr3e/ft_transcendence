@@ -1,16 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Async Hell</title>
-</head>
+<html>
 <body>
-  <h1>User Loader</h1>
 
-  <button id="load">Load User Data</button>
+<button id="go">RUN</button>
+<pre id="out"></pre>
 
-  <pre id="output"></pre>
+<script>
 
-  <script src="script.js"></script>
+function log(msg){
+ document.getElementById("out").innerHTML += msg + "\n";
+}
+
+function wait(ms){
+ return new Promise(resolve => {
+   setTimeout(() => {
+     log("timer finished " + ms);
+     resolve(ms);
+   }, ms);
+ });
+}
+
+async function test(){
+
+await wait(1000);
+wait(500);
+await wait(0);
+
+}
+
+document.getElementById("go").addEventListener("click", test);
+
+</script>
 </body>
 </html>
