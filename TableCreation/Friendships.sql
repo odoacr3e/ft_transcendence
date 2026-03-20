@@ -1,10 +1,10 @@
 CREATE TABLE Friends (
 	idFriendship int NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    idUser1 INT NOT NULL,
-    idUser2 INT NOT NULL,
+    idUser1 INT UNSIGNED NOT NULL,
+    idUser2 INT UNSIGNED NOT NULL,
 	friendStatus enum('done', 'pending'),
 	CONSTRAINT unique_user_pair UNIQUE (idUser1, idUser2)
-) CHARSET=utf8;
+);
 
 ALTER TABLE Friends
 ADD CONSTRAINT fk_idfriend1

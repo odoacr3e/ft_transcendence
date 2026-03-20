@@ -6,10 +6,10 @@ CREATE TABLE `Notifications` (
 	`dataCreazione` date,
 	`oraCreazione` time,
 	`idUser` int UNSIGNED NOT NULL
-) CHARSET=utf8;
+);
 
 ALTER TABLE `Notifications`
 ADD CONSTRAINT fk_idNotifications
-ADD FOREIGN KEY (idUser) REFERENCES Users(idUser)
+FOREIGN KEY (idUser) REFERENCES Users(idUser)
 ON UPDATE CASCADE
 ON DELETE CASCADE;

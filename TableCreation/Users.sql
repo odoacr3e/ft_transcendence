@@ -7,4 +7,4 @@ CREATE TABLE Users (
 	`email` varchar(100) NOT NULL,
 	`nationality` varchar(50) NOT NULL,
 	`image` LONGBLOB 
-) CHARSET=utf8;
+);
