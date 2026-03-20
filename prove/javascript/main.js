@@ -1,15 +1,8 @@
-async function test2(){
+const promise1 = new Promise(resolve => setTimeout(() => resolve('First result'), 1000));
+const promise2 = new Promise(resolve => setTimeout(() => resolve('Second result'), 500));
+const promise3 = new Promise(resolve => setTimeout(() => resolve('Third result'), 200));
 
- setTimeout(()=> console.log("1"),10);
-
- setTimeout(()=> console.log("2"),0);
-
- await Promise.resolve();
-
- console.log("3");
-
-}
-
-test2();
-
-console.log("4");
+Promise.race([promise1, promise2, promise3])
+  .then(result => {
+    console.log('Fastest result:', result);
+  });
