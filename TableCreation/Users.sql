@@ -1,4 +1,4 @@
-CREATE TABLE Users (
+CREATE TABLE IF NOT EXISTS Users (
 	`idUser` int UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	`name` varchar(250) NOT NULL,
 	`surname` varchar(250) NOT NULL,
