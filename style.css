@@ -10,23 +10,43 @@ div#HeadDiv{
     background-color:#4B2E2B;
     padding: 4px;
     display: flex;
+    align-items: center; /* da controllare */
 }
 
 div h1{
     color: #fcfbfa;
-    width: 25%;
+    width: auto;
+    margin: 0;
+    flex-shrink: 0; /* da controllare */
 }
 
 div#HeadDiv p {
-    display: inline-block;
+    /* display: inline-block;
     align-content: space-between;
-    width: 25%;
 	padding-left: center;
     padding-top: 15px;
-    padding-bottom: 15px;
-    margin:auto;
+    padding-bottom: 15px; */
+    padding: 0 80px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    width: auto;
+    margin: 0;
     font-size: large;
     color: #fcfbfa;
+}
+
+div#UserNav {
+    display:flex ;
+    align-items: center; /* da controllare tutti questi in basso*/
+    gap: 8px;
+    margin-left: auto;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+div#UserNav h4 {
+    margin-left: 40px;
+    margin-right: 5px;
 }
 
 /* BUTTON */
