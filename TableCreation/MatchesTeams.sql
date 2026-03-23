@@ -1,3 +1,13 @@
 CREATE TABLE IF NOT EXISTS MatchesTeams (
-
+	idMatchTeams int UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	team1 JSON NOT NULL,
+	team2 JSON NOT NULL,
+	team3 JSON,
+	team4 JSON,
+	idUsersMatch int UNSIGNED NOT NULL
 );
+
+ALTER TABLE MatchesTeams
+ADD CONSTRAINT fk_idUsersMatch
+FOREIGN KEY (idUsersMatch) REFERENCES UsersMatches(idUsersMatch)
+ON UPDATE CASCADE;
