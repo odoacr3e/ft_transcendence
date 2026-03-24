@@ -10,14 +10,14 @@ div#HeadDiv{
     background-color:#4B2E2B;
     padding: 4px;
     display: flex;
-    align-items: center; /* da controllare */
+    align-items: center;
 }
 
 div h1{
     color: #fcfbfa;
     width: auto;
     margin: 0;
-    flex-shrink: 0; /* da controllare */
+    /* flex-shrink: 0; */
 }
 
 div#HeadDiv p {
@@ -37,11 +37,10 @@ div#HeadDiv p {
 
 div#UserNav {
     display:flex ;
-    align-items: center; /* da controllare tutti questi in basso*/
+    align-items: center;
     gap: 8px;
     margin-left: auto;
-    flex-shrink: 0;
-    white-space: nowrap;
+    /* white-space: nowrap; */
 }
 
 div#UserNav h4 {

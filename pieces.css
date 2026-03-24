@@ -10,14 +10,14 @@ div#HeadDiv{
     background-color:#4B2E2B;
     padding: 4px;
     display: flex;
-    align-items: center; /* da controllare */
+    align-items: center;
 }
 
 div h1{
     color: #fcfbfa;
     width: auto;
     margin: 0;
-    flex-shrink: 0; /* da controllare */
+    /* flex-shrink: 0; */
 }
 
 div#HeadDiv p {
@@ -37,11 +37,10 @@ div#HeadDiv p {
 
 div#UserNav {
     display:flex ;
-    align-items: center; /* da controllare tutti questi in basso*/
+    align-items: center;
     gap: 8px;
     margin-left: auto;
-    flex-shrink: 0;
-    white-space: nowrap;
+    /* white-space: nowrap; */
 }
 
 div#UserNav h4 {
@@ -95,17 +94,17 @@ div.UserInfo#Bottom {
 /* BOARD */
 
 div.Board {
-    position: relative; /* da controllare */
+    position: relative;
     aspect-ratio: 1 / 1;
 }
 
 div.Squares,
 div.Pieces {
-    position: absolute; /* da controllare */
+    position: absolute;
     inset: 0;
     display: grid;
-    grid-template-columns: repeat(8, 1fr); /* da controllare */
-    grid-template-rows: repeat(8, 1fr); /* da controllare */
+    grid-template-columns: repeat(8, 1fr); /* 1fr -> 1 fraction unit stessa altezza */
+    grid-template-rows: repeat(8, 1fr);    /* stessa largezza */
 }
 
 div.Squares p {
@@ -135,7 +134,7 @@ img.piece {
     width: 75%;
     height: 75%;
     place-self: center;
-    grid-column: var(--col); /* da controllare */
-    grid-row: var(--row); /* da controllare */
-    pointer-events: none;
+    grid-column: var(--col); /* variabili, --col e --row sono custom propriety che possono essere    element.style.setProperty('--col', '3'); */
+    grid-row: var(--row); /* specificati nell'HTML con style o anche modificati tramite JavaScript   element.style.setProperty('--row', '5'); */
+    /* pointer-events: none; */
 }
