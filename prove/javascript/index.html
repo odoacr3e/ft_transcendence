@@ -1,35 +1,12 @@
 <!DOCTYPE html>
 <html>
 <body>
+  <h1>Utenti</h1>
+  <button id="pippo">Lick me</button>
+  <ul id="lista"></ul>
+  <ul id="gay"></ul>
 
-<button id="go">RUN</button>
-<pre id="out"></pre>
-
-<script>
-
-function log(msg){
- document.getElementById("out").innerHTML += msg + "\n";
-}
-
-function wait(ms){
- return new Promise(resolve => {
-   setTimeout(() => {
-     log("timer finished " + ms);
-     resolve(ms);
-   }, ms);
- });
-}
-
-async function test(){
-
-await wait(1000);
-wait(500);
-await wait(0);
-
-}
-
-document.getElementById("go").addEventListener("click", test);
-
-</script>
+  <script type="module" src="fetch.js">
+  </script>
 </body>
 </html>

@@ -1,4 +1,8 @@
 {
+  "scripts": {
+    "start": "clear;node main.js",
+    "test": "echo cappero"
+  },
   "dependencies": {
     "express": "^5.2.1",
     "http": "^0.0.1-security"
