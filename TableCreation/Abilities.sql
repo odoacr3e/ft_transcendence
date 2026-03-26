@@ -1,5 +1,6 @@
 CREATE TABLE IF NOT EXISTS Abilities (
 	`idAbility` int UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	`name` varchar(250) NOT NULL,
 	`description` text NOT NULL,
 	`image` LONGBLOB
 );
