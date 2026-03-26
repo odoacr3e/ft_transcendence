@@ -17,15 +17,10 @@ div h1{
     color: #fcfbfa;
     width: auto;
     margin: 0;
-    /* flex-shrink: 0; */
+    flex-shrink: 0;
 }
 
 div#HeadDiv p {
-    /* display: inline-block;
-    align-content: space-between;
-	padding-left: center;
-    padding-top: 15px;
-    padding-bottom: 15px; */
     padding: 0 80px;
     padding-top: 20px;
     padding-bottom: 20px;
@@ -40,7 +35,6 @@ div#UserNav {
     align-items: center;
     gap: 8px;
     margin-left: auto;
-    /* white-space: nowrap; */
 }
 
 div#UserNav h4 {
@@ -92,36 +86,93 @@ div.UserInfo#Bottom {
 /* BOARD */
 
 div.Chess {
-    /* padding-top: 200px; */
-	/* width: 600px; */
-	/* margin: auto; */
-    /* padding-left: 0; */
     display: grid;
     grid-template-columns: repeat(8, 1fr);
-	/* gap: 0; */
+    grid-template-rows: repeat(8, 1fr);
 }
 
 div.Chess p {
 	aspect-ratio: 1 / 1;
-    /* border: solid 1px rgb(43, 34, 34); */
-    /* padding: 0%; */
 	margin: 0;
 }
 
 p#Black {
-    background-color: rgb(43, 34, 34);
-    color: azure;
+    background-color: #8C5A3C;
+    color: rgb(237, 237, 237);
 }
 
 p#White {
-    background-color: azure;
+    background-color: rgb(237, 237, 237);
     color: rgb(43, 34, 34);
 }
 
 div p#Black:hover {
     opacity: 0.7;
+    cursor: pointer;
 }
 
 div p#White:hover {
-    opacity: 0.45;
+    opacity: 0.3;
+    cursor: pointer;
+}
+
+/*///////////////FATTO DA GINO////////////////*/
+
+#menu-toggle {
+    display: none;
+}
+
+.menu-btn {
+    color: #fcfbfa;
+    font-size: 28px;
+    cursor: pointer;
+    margin: 0 14px 0 6px;
+    user-select: none;
+}
+
+.side-menu {
+    position: fixed;
+    top: 0; /* Almeno passa sopra h1 */
+    left: -280px;
+    width: 260px;
+    height: 100vh; /* vh -> viewport height, prende tutta pagina */
+    background: #2f1b1a;
+    color: #fcfbfa;
+    padding: 24px 18px;
+    box-sizing: border-box;
+    transition: left 0.25s ease;
+    z-index: 101; /* Sono 101 e 100 per assicurarsi che altri elementi della pagina siano sotto */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.side-menu h3 {
+    margin: 0 0 10px 0;
+}
+
+.side-menu a {
+    color: #fcfbfa;
+    text-decoration: none;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(252, 251, 250, 0.2);
+}
+
+.menu-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    z-index: 100;
+}
+
+#menu-toggle:checked ~ .side-menu {
+    left: 0;
+}
+
+#menu-toggle:checked ~ .menu-overlay {
+    opacity: 1;
+    pointer-events: auto;
 }

@@ -17,7 +17,7 @@ div h1{
     color: #fcfbfa;
     width: auto;
     margin: 0;
-    /* flex-shrink: 0; */
+    flex-shrink: 0;
 }
 
 div#HeadDiv p {
@@ -113,12 +113,12 @@ div.Squares p {
 }
 
 p#Black {
-    background-color: rgb(43, 34, 34);
-    color: azure;
+    background-color:#8C5A3C;
+    color: rgb(237, 237, 237);
 }
 
 p#White {
-    background-color: azure;
+    background-color: rgb(237, 237, 237);
     color: rgb(43, 34, 34);
 }
 
@@ -129,7 +129,7 @@ div.Squares p#Black:hover {
 div.Squares p#White:hover {
     opacity: 0.45;
 }
-
+ 
 img.piece {
     width: 75%;
     height: 75%;

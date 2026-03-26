@@ -6,7 +6,9 @@
 
 <html>
 	<body>
+        <input type="checkbox" id="menu-toggle">
 	    <div id="HeadDiv">
+            <label for="menu-toggle" class="menu-btn" aria-label="Apri menu"> &#9776; </label>
 	        <h1>Chess-Z</h1>
             <p>Opzione 1</p>
             <p>Opzione 2</p>
@@ -17,7 +19,9 @@
                 <img src="img/default.jpg" alt="default user" width=55px style="border-radius: 100%;display: inline-block;">
             </div>
 	    </div>
-        <button onclick="alert('Sei un gay!!')">Clicca qui!</button>
+        <label for="menu-toggle" class="menu-overlay"></label>
+        <aside class="side-menu"> <h3>Menu</h3> <a href="#">Profilo</a> <a href="#">Partite</a> <a href="#">Impostazioni</a> </aside>
+        <!-- <button onclick="alert('Sei un gay!!')">Clicca qui!</button> -->
         <div id="ContentWrap">
             <div class="UserInfo">
                 <img src="img/default.jpg" alt="default user" width=75px style="border-radius: 8px;">
@@ -28,38 +32,29 @@
             </div>
             <hr>
             <div class="Chess">
-                <div>
-                    <p id="White">8</p><p id="Black">7</p><p id="White">6</p><p id="Black">5</p>
-                    <p id="White">4</p><p id="Black">3</p><p id="White">2</p><p id="Black">1a</p>
-                </div>
-                <div>
-                    <p id="Black"></p><p id="White"></p><p id="Black"></p><p id="White"></p>
-                    <p id="Black"></p><p id="White"></p><p id="Black"></p><p id="White">b</p>
-                </div>
-                <div>
-                    <p id="White"></p><p id="Black"></p><p id="White"></p><p id="Black"></p>
-                    <p id="White"></p><p id="Black"></p><p id="White"></p><p id="Black">c</p>
-                </div>
-                <div>
-                    <p id="Black"></p><p id="White"></p><p id="Black"></p><p id="White"></p>
-                    <p id="Black"></p><p id="White"></p><p id="Black"></p><p id="White">d</p>
-                </div>
-                <div>
-                    <p id="White"></p><p id="Black"></p><p id="White"></p><p id="Black"></p>
-                    <p id="White"></p><p id="Black"></p><p id="White"></p><p id="Black">e</p>
-                </div>
-                <div>
-                    <p id="Black"></p><p id="White"></p><p id="Black"></p><p id="White"></p>
-                    <p id="Black"></p><p id="White"></p><p id="Black"></p><p id="White">f</p>
-                </div>
-                <div>
-                    <p id="White"></p><p id="Black"></p><p id="White"></p><p id="Black"></p>
-                    <p id="White"></p><p id="Black"></p><p id="White"></p><p id="Black">g</p>
-                </div>
-                <div>
-                    <p id="Black"></p><p id="White"></p><p id="Black"></p><p id="White"></p>
-                    <p id="Black"></p><p id="White"></p><p id="Black"></p><p id="White">h</p>
-                </div>
+                <p id="White">8</p><p id="Black"></p><p id="White"></p><p id="Black"></p>
+                <p id="White"></p><p id="Black"></p><p id="White"></p><p id="Black"></p>
+
+                <p id="Black">7</p><p id="White"></p><p id="Black"></p><p id="White"></p>
+                <p id="Black"></p><p id="White"></p><p id="Black"></p><p id="White"></p>
+
+                <p id="White">6</p><p id="Black"></p><p id="White"></p><p id="Black"></p>
+                <p id="White"></p><p id="Black"></p><p id="White"></p><p id="Black"></p>
+
+                <p id="Black">5</p><p id="White"></p><p id="Black"></p><p id="White"></p>
+                <p id="Black"></p><p id="White"></p><p id="Black"></p><p id="White"></p>
+
+                <p id="White">4</p><p id="Black"></p><p id="White"></p><p id="Black"></p>
+                <p id="White"></p><p id="Black"></p><p id="White"></p><p id="Black"></p>
+
+                <p id="Black">3</p><p id="White"></p><p id="Black"></p><p id="White"></p>
+                <p id="Black"></p><p id="White"></p><p id="Black"></p><p id="White"></p>
+
+                <p id="White">2</p><p id="Black"></p><p id="White"></p><p id="Black"></p>
+                <p id="White"></p><p id="Black"></p><p id="White"></p><p id="Black"></p>
+
+                <p id="Black">1a</p><p id="White">b</p><p id="Black">c</p><p id="White">d</p>
+                <p id="Black">e</p><p id="White">f</p><p id="Black">g</p><p id="White">h</p>
             </div>
             <hr>
             <div class="UserInfo" id="Bottom">
