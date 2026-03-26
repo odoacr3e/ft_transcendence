@@ -1,9 +1,5 @@
 CREATE TABLE IF NOT EXISTS UsersMatches (
 	idUsersMatch int UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	startDate datetime NOT NULL,
-	endDate datetime NOT NULL,
-	round enum('none', 'F', 'SF', 'QF'),
-	outcome enum('Win', 'Lose', 'Draw'),
 	idUser int UNSIGNED NOT NULL,
 	idMatch int UNSIGNED NOT NULL
 );
