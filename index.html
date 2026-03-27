@@ -10,9 +10,27 @@
 	    <div id="HeadDiv">
             <label for="menu-toggle" class="menu-btn" aria-label="Apri menu"> &#9776; </label>
 	        <h1>Chess-Z</h1>
-            <p>Opzione 1</p>
-            <p>Opzione 2</p>
-            <p>Opzione 3</p>
+            <div class="menu-item">
+                <p>Gioca online</p>
+                <div class="dropdown" style="transition: max-height 0.3s ease-in-out;">
+                    <a href="#">Partita rapida</a>
+                    <a href="#">Partita normale</a>
+                    <a href="#">Partita veloce</a>
+                </div>
+            </div>
+            <div class="menu-item" style="transition: max-height 0.5s ease-in-out;">
+                <p>Allenati</p>
+                <div class="dropdown">
+                    <a href="#">Gioca con un BOT</a>
+                    <a href="#">Aperture</a>
+                </div>
+            </div>
+            <div class="menu-item">
+                <p>Gioca in 4</p>
+                <div class="dropdown" style="transition: max-height 0.4s ease-in-out;">
+                    <a href="#">Ma sei scemo?</a>
+                </div>
+            </div>
             <div id="UserNav">
                 <img src="img/bell-icon-white.svg.med.png" alt="bell" lenght="50px" width="50px" style="display: inline-block;">
                 <h4 style="color: #fcfbfa;display: inline-block;">User1</h4>
@@ -21,7 +39,6 @@
 	    </div>
         <label for="menu-toggle" class="menu-overlay"></label>
         <aside class="side-menu"> <h3>Menu</h3> <a href="#">Profilo</a> <a href="#">Partite</a> <a href="#">Impostazioni</a> </aside>
-        <!-- <button onclick="alert('Sei un gay!!')">Clicca qui!</button> -->
         <div id="ContentWrap">
             <div class="UserInfo">
                 <img src="img/default.jpg" alt="default user" width=75px style="border-radius: 8px;">

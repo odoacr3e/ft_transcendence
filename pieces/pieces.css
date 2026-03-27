@@ -33,6 +33,7 @@ div#HeadDiv p {
     margin: 0;
     font-size: large;
     color: #fcfbfa;
+    flex-shrink: 0;
 }
 
 div#UserNav {
