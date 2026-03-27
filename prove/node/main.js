@@ -1,10 +1,5 @@
 let lib = require('./lib.js');
 
-/*
-  crei server
-
-*/
-
 let tutorial = "loc:\n\
   /       -->   help\n\
   /jesus/ -->   autoIndex di tutte le immagini\n\
@@ -47,7 +42,7 @@ function urlArg(url)
   return noJ;
 }
 
-async function fetchJesus(res)
+async function fetchJesus(path, res, lib)
 {
   try
   {
@@ -62,12 +57,13 @@ async function fetchJesus(res)
       throw (await response.status);
     let data = await response.json();
     data = data.urls.small;
-    // let img = await fetch(data);
-    // if (!img.ok)
-    //   throw (await img.status);
     let html = "<html><body><img src='" + data + "'></body></html>";
-
-    res.end(html + "\nSay my name...\nJ...Jesus?!\nYou are fucking right!!\n*gun shoots*");
+    let img = await fetch(data);
+    let arrayBuffer = await img.arrayBuffer();
+    let buffer = Buffer.from(arrayBuffer);
+    res.write(html + "\nSay my name...\nJ...Jesus?!\nYou are fucking right!!\n*gun shoots*");
+    await lib.fs.writeFile("." + path + ".jpg", buffer);
+    res.end();
   }
   catch (error)
   {
@@ -75,17 +71,17 @@ async function fetchJesus(res)
   }
 }
 
-async function getImage(path, res)
+async function getImage(path, res, lib)
 {
   try
   {
-    let file = await lib.fs.open("." + path);
-    file.close();
-    file.close();
+    let data = await lib.fs.readFile("." + path + ".jpg");
+    res.setHeader("Content-Type", "image/jpg");
+    res.end(data);
   }
   catch (err)
   {
-    fetchJesus(res);
+    fetchJesus(path, res, lib);
   }
 }
 
@@ -101,7 +97,7 @@ else if (url.pathname == "/jesus/")
 else if (urlDir(url.pathname) == "/jesus/")
 {
   if (req.method == "GET")
-    getImage(url.pathname, res);
+    getImage(url.pathname, res, lib);
   else
   {
     res.statusCode = 405;
