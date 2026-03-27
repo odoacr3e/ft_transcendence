@@ -1,7 +1,8 @@
 {
   "scripts": {
-    "start": "clear;node main.js",
-    "test": "echo cappero"
+    "start": "clear ; node main.js",
+    "test": "echo cappero",
+    "fetch": "clear;node fetch.js"
   },
   "dependencies": {
     "express": "^5.2.1",
