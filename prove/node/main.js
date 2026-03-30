@@ -1,4 +1,4 @@
-let lib = require('./lib.js');
+let lib = require('./lib/lib.js');
 
 let tutorial = "loc:\n\
   /       -->   help\n\
@@ -29,18 +29,6 @@ async function autoIndex(res)
     res.end("Jesse...Where are u goig Jesse?!\n");
   }
 }
-
-function urlDir(url)
-{
-  let noJ = url.substring(0, url.lastIndexOf("/") + 1);
-  return noJ;
-}
-
-// function urlArg(url)
-// {
-//   let noJ = url.substring(url.lastIndexOf("/") + 1, url.length);
-//   return noJ;
-// }
 
 async function fetchJesus(path, res, lib)
 {
@@ -85,21 +73,9 @@ async function getImage(path, res, lib)
   }
 }
 
-async function sslOptions(lib)
-{
-  return {
-    key: await lib.fs.readFile('./key.pem'),
-    cert: await lib.fs.readFile('./cert.pem'),
-    minVersion: 'TLSv1.2',
-    secureOptions: require('constants').SSL_OP_NO_SSLv3 |
-                require('constants').SSL_OP_NO_TLSv1 |
-                require('constants').SSL_OP_NO_TLSv1_1
-  };
-}
-
 async function startServer()
 {
-  const ssl = await sslOptions(lib);
+  const ssl = await lib.utils.sslOptions(lib);
   const srv = lib.https.createServer(ssl, (req, res) => {
   let url = lib.url.parse(req.url);
 
@@ -109,7 +85,7 @@ async function startServer()
   {
     autoIndex(res);
   }
-  else if (urlDir(url.pathname) == "/jesus/")
+  else if (lib.utils.urlDir(url.pathname) == "/jesus/")
   {
     if (req.method == "GET")
       getImage(url.pathname, res, lib);
@@ -125,7 +101,6 @@ async function startServer()
     res.end("Wrong location bitch!\n");
   }
   });
-
   srv.listen(443, "localhost");
 }
 
