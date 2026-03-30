@@ -36,11 +36,11 @@ function urlDir(url)
   return noJ;
 }
 
-function urlArg(url)
-{
-  let noJ = url.substring(url.lastIndexOf("/") + 1, url.length);
-  return noJ;
-}
+// function urlArg(url)
+// {
+//   let noJ = url.substring(url.lastIndexOf("/") + 1, url.length);
+//   return noJ;
+// }
 
 async function fetchJesus(path, res, lib)
 {
@@ -85,30 +85,48 @@ async function getImage(path, res, lib)
   }
 }
 
-const srv = lib.http.createServer((req, res) => {
-let url = lib.url.parse(req.url);
-
-if (url.pathname == "/")
-  res.end(tutorial);
-else if (url.pathname == "/jesus/")
+async function sslOptions(lib)
 {
-  autoIndex(res);
+  return {
+    key: await lib.fs.readFile('./key.pem'),
+    cert: await lib.fs.readFile('./cert.pem'),
+    minVersion: 'TLSv1.2',
+    secureOptions: require('constants').SSL_OP_NO_SSLv3 |
+                require('constants').SSL_OP_NO_TLSv1 |
+                require('constants').SSL_OP_NO_TLSv1_1
+  };
 }
-else if (urlDir(url.pathname) == "/jesus/")
+
+async function startServer()
 {
-  if (req.method == "GET")
-    getImage(url.pathname, res, lib);
+  const ssl = await sslOptions(lib);
+  const srv = lib.https.createServer(ssl, (req, res) => {
+  let url = lib.url.parse(req.url);
+
+  if (url.pathname == "/")
+    res.end(tutorial);
+  else if (url.pathname == "/jesus/")
+  {
+    autoIndex(res);
+  }
+  else if (urlDir(url.pathname) == "/jesus/")
+  {
+    if (req.method == "GET")
+      getImage(url.pathname, res, lib);
+    else
+    {
+      res.statusCode = 405;
+      res.end("You are done...Fired!\n");
+    }
+  }
   else
   {
-    res.statusCode = 405;
-    res.end("You are done...Fired!\n");
+    res.statusCode = 404;
+    res.end("Wrong location bitch!\n");
   }
-}
-else
-{
-  res.statusCode = 404;
-  res.end("Wrong location bitch!\n");
-}
-});
+  });
 
-srv.listen(8080, "localhost");
+  srv.listen(443, "localhost");
+}
+
+startServer();
