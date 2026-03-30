@@ -1,10 +1,13 @@
 {
   "scripts": {
-    "start": "clear ; node main.js",
+    "dipendency": "node install dotenv @google/genai",
+    "start": "clear ; node --env-file=.env main.js",
     "test": "echo cappero",
     "fetch": "clear;node fetch.js"
   },
   "dependencies": {
+    "@google/genai": "^1.47.0",
+    "dotenv": "^17.3.1",
     "express": "^5.2.1",
     "http": "^0.0.1-security"
   }

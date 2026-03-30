@@ -1,5 +1,7 @@
 let lib = require('./lib/lib.js');
 
+startServer();
+
 let tutorial = "loc:\n\
   /       -->   help\n\
   /jesus/ -->   autoIndex di tutte le immagini\n\
@@ -38,7 +40,7 @@ async function fetchJesus(path, res, lib)
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Client-ID zloeZznzclhomXsSB1JpIzkwAE5o2wZPyU_LxJKSUfM'
+        'Authorization': 'Client-ID ' + process.env.KEY_IMAGE
       }
     });
     if (!response.ok)
@@ -73,6 +75,20 @@ async function getImage(path, res, lib)
   }
 }
 
+let tizio = require("@google/genai");
+
+const ai = new tizio.GoogleGenAI({
+  apiKey: process.env.KEY_GEM // Assicurati che KEY_GEM sia caricata
+});
+
+async function crazyFight(fighter, res) {
+  const response = await ai.models.generateContent({
+    model: "gemini-3-flash-preview",
+    contents: "Descrivi uno scontro fisico tra Gesù Cristo e " + fighter + ". Presenta come se fossi Jesse Pinkman di Breaking Bad.",
+  });
+  res.end(response.text);
+}
+
 async function startServer()
 {
   const ssl = await lib.utils.sslOptions(lib);
@@ -95,6 +111,10 @@ async function startServer()
       res.end("You are done...Fired!\n");
     }
   }
+  else if (url.pathname == "/fight/")
+    res.end("{Inserire personaggio di breaking bad}");
+  else if (lib.utils.urlDir(url.pathname) == "/fight/")
+    crazyFight(lib.utils.urlArg(url.pathname), res);
   else
   {
     res.statusCode = 404;
@@ -103,5 +123,3 @@ async function startServer()
   });
   srv.listen(443, "localhost");
 }
-
-startServer();
