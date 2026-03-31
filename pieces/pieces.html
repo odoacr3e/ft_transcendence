@@ -6,18 +6,39 @@
 
 <html>
 	<body>
+        <input type="checkbox" id="menu-toggle">
 	    <div id="HeadDiv">
+	        <label for="menu-toggle" class="menu-btn" aria-label="Apri menu"> &#9776; </label>
 	        <h1>Chess-Z</h1>
-            <p>Opzione 1</p>
-            <p>Opzione 2</p>
-            <p>Opzione 3</p>
+            <div class="menu-item">
+                <p>Gioca online</p>
+                <div class="dropdown" style="transition: max-height 0.3s ease-in-out;">
+                    <a href="#">Partita rapida</a>
+                    <a href="#">Partita normale</a>
+                    <a href="#">Partita veloce</a>
+                </div>
+            </div>
+            <div class="menu-item" style="transition: max-height 0.5s ease-in-out;">
+                <p>Allenati</p>
+                <div class="dropdown">
+                    <a href="#">Gioca con un BOT</a>
+                    <a href="#">Aperture</a>
+                </div>
+            </div>
+            <div class="menu-item">
+                <p>Gioca in 4</p>
+                <div class="dropdown" style="transition: max-height 0.4s ease-in-out;">
+                    <a href="#">Ma sei scemo?</a>
+                </div>
+            </div>
             <div id="UserNav">
                 <img src="../img/bell-icon-white.svg.med.png" alt="bell" lenght="50px" width="50px" style="display: inline-block;">
                 <h4 style="color: #fcfbfa;display: inline-block;">User1</h4>
                 <img src="../img/default.jpg" alt="default user" width=55px style="border-radius: 100%;display: inline-block;">
             </div>
 	    </div>
-        <button onclick="alert('Sei un gay!!')">Clicca qui!</button>
+        <label for="menu-toggle" class="menu-overlay"></label>
+        <aside class="side-menu"> <h3>Menu</h3> <a href="#">Profilo</a> <a href="#">Partite</a> <a href="#">Impostazioni</a> </aside>
         <div id="ContentWrap">
             <div class="UserInfo">
                 <img src="../img/default.jpg" alt="default user" width=75px style="border-radius: 8px;">
@@ -29,29 +50,39 @@
             <hr>
             <div class="Board">
                 <div class="Squares">
-                    <p id="White">8</p><p id="Black"></p><p id="White"></p><p id="Black"></p>
-                    <p id="White"></p><p id="Black"></p><p id="White"></p><p id="Black"></p>
+                    <div id="White"><p id="Number">8</p></div>
+                    <div id="Black"></div><div id="White"></div><div id="Black"></div>
+                    <div id="White"></div><div id="Black"></div><div id="White"></div><div id="Black"></div>
 
-                    <p id="Black">7</p><p id="White"></p><p id="Black"></p><p id="White"></p>
-                    <p id="Black"></p><p id="White"></p><p id="Black"></p><p id="White"></p>
+                    <div id="Black"><p id="Number">7</p></div>
+                    <div id="White"></div><div id="Black"></div><div id="White"></div>
+                    <div id="Black"></div><div id="White"></div><div id="Black"></div><div id="White"></div>
 
-                    <p id="White">6</p><p id="Black"></p><p id="White"></p><p id="Black"></p>
-                    <p id="White"></p><p id="Black"></p><p id="White"></p><p id="Black"></p>
+                    <div id="White"><p id="Number">6</p></div>
+                    <div id="Black"></div><div id="White"></div><div id="Black"></div>
+                    <div id="White"></div><div id="Black"></div><div id="White"></div><div id="Black"></div>
 
-                    <p id="Black">5</p><p id="White"></p><p id="Black"></p><p id="White"></p>
-                    <p id="Black"></p><p id="White"></p><p id="Black"></p><p id="White"></p>
+                    <div id="Black"><p id="Number">5</p></div>
+                    <div id="White"></div><div id="Black"></div><div id="White"></div>
+                    <div id="Black"></div><div id="White"></div><div id="Black"></div><div id="White"></div>
 
-                    <p id="White">4</p><p id="Black"></p><p id="White"></p><p id="Black"></p>
-                    <p id="White"></p><p id="Black"></p><p id="White"></p><p id="Black"></p>
+                    <div id="White"><p id="Number">4</p></div>
+                    <div id="Black"></div><div id="White"></div><div id="Black"></div>
+                    <div id="White"></div><div id="Black"></div><div id="White"></div><div id="Black"></div>
 
-                    <p id="Black">3</p><p id="White"></p><p id="Black"></p><p id="White"></p>
-                    <p id="Black"></p><p id="White"></p><p id="Black"></p><p id="White"></p>
+                    <div id="Black"><p id="Number">3</p></div>
+                    <div id="White"></div><div id="Black"></div><div id="White"></div>
+                    <div id="Black"></div><div id="White"></div><div id="Black"></div><div id="White"></div>
 
-                    <p id="White">2</p><p id="Black"></p><p id="White"></p><p id="Black"></p>
-                    <p id="White"></p><p id="Black"></p><p id="White"></p><p id="Black"></p>
+                    <div id="White"><p id="Number">2</p></div>
+                    <div id="Black"></div><div id="White"></div><div id="Black"></div>
+                    <div id="White"></div><div id="Black"></div><div id="White"></div><div id="Black"></div>
 
-                    <p id="Black">1a</p><p id="White">b</p><p id="Black">c</p><p id="White">d</p>
-                    <p id="Black">e</p><p id="White">f</p><p id="Black">g</p><p id="White">h</p>
+                    <div id="Black"><p id="Number">1</p><p id="Letter">a</p></div>
+                    <div id="White"><p id="Letter">b</p></div><div id="Black"><p id="Letter">c</p></div>
+                    <div id="White"><p id="Letter">d</p></div><div id="Black"><p id="Letter">e</p></div>
+                    <div id="White"><p id="Letter">f</p></div><div id="Black"><p id="Letter">g</p></div>
+                    <div id="White"><p id="Letter">h</p></div>
                 </div>
                 <div class="Pieces">
                     <img class="piece" src="../img/white/w_rook.png" alt="White rook" style="--col:1; --row:1;">

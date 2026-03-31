@@ -200,3 +200,22 @@ div p#White:hover {
     opacity: 1;
     pointer-events: auto;
 }
+
+
+
+
+
+/* <html>
+  <body>
+    <h1 class="font-mono text-5xl bg-blue-100 p-3 max-w-max rounded-br-3xl">Welcome!</h1>
+    <div class="grid justify-center sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+      <div class="bg-amber-100 w-xs md:w-3xs h-30 m-3 p-7 justify-full rounded-2xl">a</div>
+      <div class="bg-amber-200 w-xs md:w-3xs h-30 m-3 p-7 justify-full rounded-2xl">b</div>
+      <div class="bg-amber-300 w-xs md:w-3xs h-30 m-3 p-7 justify-full rounded-2xl">c</div>
+      <div class="bg-amber-400 w-xs md:w-3xs h-30 m-3 p-7 justify-full rounded-2xl">d</div>
+      <div class="bg-amber-500 w-xs md:w-3xs h-30 m-3 p-7 justify-full rounded-2xl">e</div>
+      <div class="bg-amber-600 w-xs md:w-3xs h-30 m-3 p-7 justify-full rounded-2xl">f</div>
+    </div>
+  </body>
+
+</html> */
