@@ -4,6 +4,7 @@ const url = require('url');
 const fs = require('fs').promises;
 const path = require('path');
 const utils = require('./net.js');
+const express = require('express');
 
 // const ssl = {
 // 	key: fs.readFileSync(path.join(__dirname, 'key.pem')),
@@ -14,4 +15,4 @@ const utils = require('./net.js');
 //     require('constants').SSL_OP_NO_TLSv1_1
 // };
 
-module.exports = { http, url, fs, utils, path, https};
+module.exports = { http, url, fs, utils, path, https, express};

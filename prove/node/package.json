@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "dependency": "npm install dotenv @google/genai",
+    "dependencies": "npm install dotenv @google/genai express --save",
     "start": "clear ; node --env-file=.env main.js",
     "test": "echo cappero",
     "fetch": "clear;node fetch.js"
