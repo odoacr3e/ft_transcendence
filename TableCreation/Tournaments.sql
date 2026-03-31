@@ -5,9 +5,10 @@ CREATE TABLE IF NOT EXISTS tournaments (
 	name varchar(200) NOT NULL,
 	status tournaments_status DEFAULT 'open',
 	created_by integer NOT NULL,
-	created_at TIMESTAMP DEFAULT now(),
-
-	CONSTRAINT fk_tournament_created_by
-	FOREIGN KEY created_by REFERENCES users(id_users)
-	ON UPDATE CASCADE
+	created_at TIMESTAMP DEFAULT now()
 );
+
+ALTER TABLE tournaments
+ADD CONSTRAINT fk_tournament_created_by
+FOREIGN KEY created_by REFERENCES users(id_users)
+ON UPDATE CASCADE
