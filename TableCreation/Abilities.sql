@@ -4,10 +4,3 @@ CREATE TABLE IF NOT EXISTS abilities (
 	description text NOT NULL,
 	image bytea
 );
-
-
-ALTER TABLE pieces
-ADD CONSTRAINT fk_id_ability
-FOREIGN KEY (id_ability) REFERENCES abilities(id_ability)
-ON UPDATE CASCADE; -- serve a fare update su tutti i Pieces all'UPDATE di Abilities
-

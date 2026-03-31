@@ -4,5 +4,9 @@ CREATE TABLE IF NOT EXISTS pieces (
 	cost integer NOT NULL DEFAULT 4,
 	upgrade text,
 	"image" bytea,
-	id_ability integer NOT NULL
+	id_ability integer NOT NULL,
+
+	CONSTRAINT fk_id_ability
+	FOREIGN KEY (id_ability) REFERENCES abilities(id_ability)
+	ON UPDATE CASCADE
 );

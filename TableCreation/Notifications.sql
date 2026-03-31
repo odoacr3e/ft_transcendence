@@ -1,15 +1,16 @@
-CREATE TABLE IF NOT EXISTS `Notifications` (
-	`idNotification` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	`title` varchar(255) NOT NULL,
-	`description` text NOT NULL,
-	`status` enum('read', 'not read', 'pending') NOT NULL,
-	`dataCreazione` date,
-	`oraCreazione` time,
-	`idUser` int UNSIGNED NOT NULL
-);
+CREATE TYPE notification_status AS ENUM('read', 'not read', 'pending');
 
-ALTER TABLE `Notifications`
-ADD CONSTRAINT fk_idNotifications
-FOREIGN KEY (idUser) REFERENCES Users(idUser)
-ON UPDATE CASCADE
-ON DELETE CASCADE;
+CREATE TABLE IF NOT EXISTS notifications (
+	id_notification integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+	title varchar(255) NOT NULL,
+	"description" text NOT NULL,
+	"status" notification_status NOT NULL,
+	data_creazione date,
+	ora_creazione time,
+	id_user int NOT NULL,
+
+	CONSTRAINT fk_id_notifications
+	FOREIGN KEY (id_user) REFERENCES users(id_user)
+	ON UPDATE CASCADE
+	ON DELETE CASCADE
+);
