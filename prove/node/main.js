@@ -78,10 +78,10 @@ async function getImage(path, res, lib)
 let tizio = require("@google/genai");
 
 const ai = new tizio.GoogleGenAI({
-  apiKey: process.env.KEY_GEM // Assicurati che KEY_GEM sia caricata
+  apiKey: process.env.KEY_GEM
 });
-
-async function crazyFight(fighter, res) {
+async function crazyFight(fighter, res)
+{
   const response = await ai.models.generateContent({
     model: "gemini-3-flash-preview",
     contents: "Descrivi uno scontro fisico tra Gesù Cristo e " + fighter + ". Presenta come se fossi Jesse Pinkman di Breaking Bad.",
