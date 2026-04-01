@@ -1,0 +1,24 @@
+body
+{
+	background-color: #302e2b;
+}
+
+#root
+{
+	display: flex;
+	flex-direction: column;
+}
+
+.squareRow
+{
+	width: 800px;
+	height: 200px;
+}
+
+.white{
+
+}
+
+.black{
+	
+}
