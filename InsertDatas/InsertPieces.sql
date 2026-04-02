@@ -1,10 +1,8 @@
-INSERT INTO Pieces (`name`, `upgrade`, `idAbility`) 
+INSERT INTO Pieces (name, cost, movement, id_ability) 
 VALUES 
-("Sovrano", "Diventa più grosso di All Might", 1),
-("Campione", "Esce il pisello e stordisce gli avversari", 2),
-("Valchiria", "Si denuda e loda il sole", 3),
-("Minotauro", "Vede il non morto prescelto e si infuria", 4),
-("Mago", "Rompe una fialetta di pozione che puzza di merda e si cagano addosso", 5),
-("Viverna", "Vola, ruba pecore ai pastori e fa rutti di fuoco", 6),
-("Giullare", "Fa ridere talmente tanto la regina avversaria che cambia fazione perchè lo pagano di più", 7),
-("Bastardo", "Si fa i cazzi suoi e arriva con Gael alla fine del mondo", 8);
+('Sovrano', 0, 'Si muove come il Re negli scacchi', 1),
+('Campione', 10, 'Si muove come la Regina negli scacchi', 2),
+('Valchiria', 3, 'Si muove come l''Alfiere negli scacchi', 3),
+('Minotauro', 5, 'Si muove come la Torre negli scacchi', 4),
+('Giullare', 5, 'Si muove come il Cavallo negli scacchi', 5),
+('Bastardo', 1, 'Si muove come il Pedone negli scacchi', 6);
