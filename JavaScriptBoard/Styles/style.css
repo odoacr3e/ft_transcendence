@@ -1,24 +1,41 @@
-body
-{
+body{
 	background-color: #302e2b;
 }
 
-#root
+#board
 {
-	display: flex;
-	flex-direction: column;
+	display: grid;
+	grid-template-rows: repeat(8, 75px);
+	width: fit-content;
+	margin: auto;
+	margin-top: 10%;
+}
+
+.piece
+{
+	width: 100%;
+	display: inline-block;
 }
 
 .squareRow
 {
-	width: 800px;
-	height: 200px;
+	display: grid;
+	grid-template-columns: repeat(8, 75px);
+}
+
+.square
+{
+	width: 75px;
+	height: 75px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .white{
-
+	background-color: white;
 }
 
 .black{
-	
+	background-color: black;
 }

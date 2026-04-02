@@ -49,7 +49,6 @@ function initBoard()
     return board;
 }
 
-// Export modulare
 export { initBoard };
 
 
