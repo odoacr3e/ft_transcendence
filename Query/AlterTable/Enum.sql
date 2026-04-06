@@ -22,3 +22,8 @@ DROP TYPE friendships_status;
 
 -- 4. Rinomini quello nuovo
 ALTER TYPE friendships_status_new RENAME TO friendships_status;
+
+-- 5. Se il valore che rimuovi e presente nei dati prima va rinominato
+UPDATE matches
+SET round = 'quarter'
+WHERE round = 'semi';
