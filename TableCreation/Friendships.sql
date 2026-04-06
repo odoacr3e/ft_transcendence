@@ -1,4 +1,4 @@
-CREATE TYPE friendships_status AS ENUM('done', 'pending');
+CREATE TYPE friendships_status AS ENUM('accepted', 'pending');
 
 CREATE TABLE IF NOT EXISTS friendships (
 	id_friendship integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
