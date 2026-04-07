@@ -1,3 +1,5 @@
+
+-- ritorna i giocatori appartenenti ad un torneo (ID 1) che non hanno giocato nessuna partita
 SELECT u.username, t."name"
 FROM users u
 JOIN tournament_players tp ON tp.id_user = u.id_user
