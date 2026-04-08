@@ -14,7 +14,7 @@ body{
 .piece
 {
 	width: 100%;
-	display: inline-block;
+	cursor: pointer;
 }
 
 .squareRow
@@ -30,6 +30,7 @@ body{
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	
 }
 
 .white{
@@ -38,4 +39,14 @@ body{
 
 .black{
 	background-color: black;
+}
+
+.highlight
+{
+	width: 15px;
+	height: 15px;
+	display: block;
+	margin: auto;
+	border-radius: 50%;
+	background-color: yellow/* rgba(0, 0, 0, 0.1) */;
 }

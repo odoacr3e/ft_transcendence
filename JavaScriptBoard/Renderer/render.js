@@ -1,6 +1,7 @@
 import * as pieces from "../Data/pieces.js";
 import { ROOT_DIV } from "../Helper/constants.js";
-
+import { INITIAL_PIECES } from "../Helper/constants.js"
+import { Board } from "../main.js";
 /**
  * Takes an array of objects, a chessboard in this case and displays every single square according to its metadata
  * This function is called only when the game starts
@@ -26,57 +27,20 @@ function initGamerenderer(data)
 	pieceRenderer(data);
 }
 
-// // All of this forced pieces insertions are to be removed, they are here just for debug purposes
-// if (square.id[1] === '7')
-// 	square.piece = pieces.blackPawn(square.id);
-
-// if (square.id[1] === '2')
-// 	square.piece = pieces.whitePawn(square.id);
 function piece_filler(square)
 {
 	const id = square.id;
 
-	switch (true)
-	{
-		case id === "e1":
-			square.piece = pieces.whiteKing(id);
-			break;
-		case id === "d1":
-			square.piece = pieces.whiteQueen(id);
-			break;
-		case id === "b1" || id === "g1":
-			square.piece = pieces.whiteKnight(id);
-			break;
-		case id === "c1" || id === "f1":
-			square.piece = pieces.whiteBishop(id);
-			break;
-		case id === "a1" || id === "h1":
-			square.piece = pieces.whiteRook(id);
-			break;
-		case id[1] === "2":
-			square.piece = pieces.whitePawn(id);
-			break;
-		case id === "e8":
-			square.piece = pieces.blackKing(id);
-			break;
-		case id === "d8":
-			square.piece = pieces.blackQueen(id);
-			break;
-		case id === "b8" || id === "g8":
-			square.piece = pieces.blackKnight(id);
-			break;
-		case id === "c8" || id === "f8":
-			square.piece = pieces.blackBishop(id);
-			break;
-		case id === "a8" || id === "h8":
-			square.piece = pieces.blackRook(id);
-			break;
-		case id[1] === "7":
-			square.piece = pieces.blackPawn(id);
-			break;
-		default:
-			square.piece = null;
-	}
+/* 	if (id === "b4")
+		square.piece = pieces.whitePawn(id);
+	else  */if (INITIAL_PIECES[id])
+		square.piece = INITIAL_PIECES[id](id);
+	else if (id[1] === "2")
+		square.piece = pieces.whitePawn(id);
+	else if (id[1] === "7")
+		square.piece = pieces.blackPawn(id);
+	else
+		square.piece = null;
 }
 
 function pieceRenderer(data)
@@ -97,4 +61,22 @@ function pieceRenderer(data)
 	});
 }
 
-export { initGamerenderer }
+function highlightRender(squareId)
+{
+	const highlightSpan = document.createElement("span");
+	highlightSpan.classList.add("highlight");
+	document.getElementById(squareId).appendChild(highlightSpan);
+}
+
+function clearHighlight(data)
+{
+	Board.forEach(row => {
+		row.forEach(square => {
+			if (square.highlight == true) {
+				square.highlight == false;
+			}
+		})
+	})
+}
+
+export { initGamerenderer, highlightRender, clearHighlight }
