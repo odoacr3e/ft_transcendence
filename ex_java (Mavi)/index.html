@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang ="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width", initial-scale="1.0" />
+		<title>Welcome to Gotham Prison</title>
+	</head>
+	<h1>Welcome to Gotham Prison</h1>
+	<div style="display: flex; justify-items: stretch;">
+		<div style="margin-right: 100px;">
+			<h2>Aggiungi un fascicolo</h2>
+			<form id="folderForm" style="display:grid; margin-right: 20px;">
+				<p style="margin: 0;">Nome completo</p>
+				<input id="full_name" placeholder="Nome e cognome">
+				<p style="margin: 0;">ID</p>
+				<input id="id" placeholder="ID">
+				<p style="margin: 0;">Data di incarceramento</p>
+				<input id="date_in" placeholder="giorno-mese-anno">
+				<p style="margin: 0;">Data prevista di uscita</p>
+				<input id="date_out" placeholder="giorno-mese-anno">
+				<p style="margin: 0;">Crimine</p>
+				<input id="crime" placeholder="Crimine">
+				<button type="submit" style="width: 60%; margin-top: 5px;">Aggiungi fascicolo</button>
+			</form>
+			<div id="demof"></div>
+		</div>
+		<div style="margin-right: 100px;">
+			<h2>Aggiungi un carcerato</h2>
+			<form id="prisonerForm" style="display:grid; margin-right: 20px;">
+				<p style="margin: 0;">Nome completo</p>
+				<input id="full_name" placeholder="Nome e cognome">
+				<p style="margin: 0;">Data di nascita</p>
+				<input id="birthday" placeholder="giorno-mese-anno">
+				<p style="margin: 0;">Citta' natale</p>
+				<input id="born_in" placeholder="Citta'-Stato">
+				<button type="submit" style="width: 65%; margin-top: 5px;">Aggiungi prigioniero</button>
+			</form>
+			<div id="demop"></div>
+		</div>
+		<div>
+			<h2>Aggiungi una guardia</h2>
+			<form id="guardForm" style="display:grid; margin-right: 20px;">
+				<p style="margin: 0;">Nome completo</p>
+				<input id="full_name" placeholder="Nome e cognome">
+				<p style="margin: 0;">Data di nascita</p>
+				<input id="birthday" placeholder="giorno-mese-anno">
+				<p style="margin: 0;">Citta' natale</p>
+				<input id="born_in" placeholder="Citta'-Stato">
+				<button type="submit" style="width: 60%; margin-top: 5px;">Aggiungi guardia</button>
+			</form>
+			<div id="demog"></div>
+		</div>
+	</div>
+	<button style="margin-top: 20px;" onclick="Show()">Mostra le liste</button>
+	<br>
+	<div style="display: flex; justify-items: stretch;">
+		<div id="p" style="width: 500px;"></div>
+		<div id="g" style="width: 500px;"></div>
+		<div id="f" style="width: 500px;"></div>	
+	</div>
+	<script src="ex.js"></script>
+</html>
