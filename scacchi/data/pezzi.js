@@ -20,7 +20,7 @@ class Position
  */
 const eTeam = 
 {
-	Black: 'Black',
+	Black: `Black`,
 	White: 'White'
 };
 
@@ -40,5 +40,10 @@ class Pezzo
 		/** @type {Function} */ this.moveFunction = () => {};
 	}
 }
+
+/*
+	pezzo
+
+*/
 
 //ANCHOR - Methods

@@ -1,17 +1,7 @@
 
+//SECTION macro
+
 //SECTION - Position class 
-//ANCHOR - Definition 
-
-class Position
-{
-	constructor()
-	{
-		/** @type {number} */	this.row = 0;
-		/** @type {string} */	this.col = 0;
-	}
-}
-
-//ANCHOR - Methods
 
 //SECTION - enum
 
@@ -41,6 +31,7 @@ const values = new Map([
 
 class Pezzo
 {
+	constructor ()
 	{
 		/** @type {string} */   this.tipo;
 		/** @type {number} */   this.price;
