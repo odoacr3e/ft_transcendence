@@ -1,0 +1,17 @@
+div#Blocks {
+    margin-right: 100px;
+}
+
+form {
+    display: grid;
+    margin-right: 20px;
+}
+
+p {
+    margin: 0;
+}
+
+div#Container {
+    display: flex;
+    justify-items: stretch;
+}

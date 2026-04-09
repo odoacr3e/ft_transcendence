@@ -1,14 +1,17 @@
 let Guards = [], Prisoners = [], Folders = [];
 
+const p_form = document.getElementById("prisonerForm");
+const g_form = document.getElementById("guardForm");
+const f_form = document.getElementById("folderForm");
+const d_form = document.getElementById("deadForm");
+const e_form = document.getElementById("escapedForm");
+
 ////////////////////// CLASSI //////////////////////
 
 class Person
 {
-    constructor ()
+    constructor (full_name, birthday, born_in)
     {
-        let full_name = prompt("Nome e cognome:\n");
-        let birthday = prompt("Nato il (dd/mm/yyyy):\n");
-        let born_in = prompt("Nato in (Citta'-Stato):\n");
         if (typeof(full_name) != "string" ||
             typeof(birthday)  != "string" ||
             typeof(born_in)   != "string") { throw "Valore inserito incorrettamente, riprovare." }
@@ -20,30 +23,19 @@ class Person
 
 class Info
 {
-    constructor (full_name, id)
+    constructor (full_name, id, date_in, date_out, crime)
     {
-        if (full_name === undefined && id === undefined)
-        {
-            full_name = prompt("Nome e cognome:\n");
-            if (typeof(full_name) != "string") { throw "Valore inserito incorrettamente, riprovare." }
-    
-            let temp = Prisoners.find(x => x.Full_name === full_name);
-            if (temp == undefined) { throw "Prigioniero non ancora registrato." }
-            this.Id = temp.Id;
-            this.Full_name = temp.Full_name;
-        }
-        else
-        {
-            this.Id = id;
-            this.Full_name = full_name;
-        }
+        if (typeof(full_name) != "string"  ||
+            typeof(id)        != "string"  ||
+            typeof(date_in)   != "string"  ||
+            typeof(date_out)  != "string"  ||
+            typeof(crime)     != "string") { throw "Valore inserito incorrettamente, riprovare." }
 
-        let date_in = prompt("Data di incarceramento (dd/mm/yyyy):\n");
-        let date_out = prompt("Data di uscita (dd/mm/yyyy):\n");
-        let crime = prompt("Crimine:\n");
-        if (typeof(date_in)  != "string"  ||
-            typeof(date_out) != "string"  ||
-            typeof(crime)    != "string") { throw "Valore inserito incorrettamente, riprovare." }
+        let temp = Prisoners.find(x => x.Full_name === full_name);
+        if (temp == undefined) { throw "Prigioniero non ancora registrato." }
+
+        this.Id = id;
+        this.Full_name = full_name;
         this.Date_in = date_in;
         this.Date_out = date_out;
         this.Crime = crime;   
@@ -54,60 +46,112 @@ class Info
 
 class Prisoner extends Person
 {
-    constructor()
+    constructor(full_name, birthday, born_in)
     {
-        super();
+        super(full_name, birthday, born_in);
         let n = Math.random();
         while (Prisoners.length > 0 && !Prisoners.every(Pri => Pri.Id !== n)) { n = Math.random(); }
         this.Id = n;
-
-        // let s = prompt("Vuoi aggiungere un fasciolo su questo Prigioniero? (si/no)");
-        // if (s === "si")
-        // {
-        //     let i;
-        //     try { i = new Info(this.Full_name, this.Id); }
-        //     catch (error) { throw error; }
-        //     Folders.push(i);
-        // }
     }
 }
 
-////////////////////// ADDER //////////////////////
-
-
+//////////////////////FORMS//////////////////////
 
 /**
  * @param {Prisoner} p
  */
-function AddNewPrisoner()
+p_form.addEventListener("submit", function (event)
 {
+    event.preventDefault();
+    const fullName = document.getElementById("full_namep").value;
+    const birthday = document.getElementById("birthdayp").value;
+    const bornIn = document.getElementById("born_inp").value;
+
     let p;
-    try { p = new Prisoner(); }
+    try { p = new Prisoner(fullName, birthday, bornIn); }
     catch (error) { alert(error); return; }
+
     Prisoners.push(p);
-}
+
+    document.getElementById("demop").innerHTML = "Prigioniero aggiunto: " + p.Full_name;
+    refreshList();
+});
 
 /**
  * @param {Person} g
  */
-function AddNewGuard()
+g_form.addEventListener("submit", function (event)
 {
+    event.preventDefault();
+    const fullName = document.getElementById("full_nameg").value;
+    const birthday = document.getElementById("birthdayg").value;
+    const bornIn = document.getElementById("born_ing").value;
+
     let g;
-    try { g = new Person(); }
+    try { g = new Person(fullName, birthday, bornIn); }
     catch (error) { alert(error); return; }
+
     Guards.push(g);
-}
+
+    document.getElementById("demog").innerHTML = "Guardia aggiunto: " + g.Full_name;
+    refreshList();
+});
 
 /**
- * @param {Info} i
+ * @param {Info} f
  */
-function AddNewInfo()
+f_form.addEventListener("submit", function (event)
 {
-    let i;
-    try { i = new Info(); }
+    event.preventDefault();
+    const fullName = document.getElementById("full_namef").value;
+    const id = document.getElementById("id").value;
+    const dateIn = document.getElementById("date_in").value;
+    const dateOut = document.getElementById("date_out").value;
+    const crime = document.getElementById("crime").value;
+
+    let f;
+    try { f = new Info(fullName, id, dateIn, dateOut, crime); }
     catch (error) { alert(error); return; }
-    Folders.push(i);
-}
+
+    Folders.push(f);
+
+    document.getElementById("demof").innerHTML = "Fascicolo aggiunto: " + f.Full_name;
+    refreshList();
+});
+
+/**
+ * @param {Info} p
+ */
+d_form.addEventListener("submit", function (event)
+{
+    event.preventDefault();
+    const fullName = document.getElementById("full_named").value;
+
+    let p;
+    try { p = SearchFor(fullName); }
+    catch (error) { document.getElementById("demod").innerHTML = "Prigioniero " + fullName + " inesistente."; return; }
+    p.Alive = false;
+
+    document.getElementById("demod").innerHTML = "Dato aggiornato.";
+    refreshList();
+});
+
+/**
+ * @param {Info} p
+ */
+e_form.addEventListener("submit", function (event)
+{
+    event.preventDefault();
+    const fullName = document.getElementById("full_namee").value;
+
+    let p;
+    try { p = SearchFor(fullName); }
+    catch (error) { document.getElementById("demod").innerHTML = "Prigioniero " + fullName + " inesistente."; return; }
+    p.Escaped = true;
+
+    document.getElementById("demoe").innerHTML = "Dato aggiornato.";
+    refreshList();
+});
 
 ////////////////////// MODIFIER //////////////////////
 
@@ -119,38 +163,14 @@ function SearchFor(name)
     return found;
 }
 
-/**
- * @param {Info} p
- */
-function PrisonerEscaped(name)
-{
-    if (typeof(name) != "string") { alert("Valore inserito incorrettamente, riprovare."); return ; }
-    let p;
-    try { p = SearchFor(name); }
-    catch (error) { alert(error); return; }
-    p.Escaped = true;
-}
-
-/**
- * @param {Info} p
- */
-function PrisonerDead(name)
-{
-    if (typeof(name) != "string") { alert("Valore inserito incorrettamente, riprovare."); return ; }
-    let p;
-    try { p = SearchFor(name); }
-    catch (error) { alert(error); return; }
-    p.Alive = false;
-}
-
 ////////////////////// SHOW //////////////////////
 
-function renderPrisoners(array)
+function renderPrisoners()
 {
     return `
         <h3>Prigionieri</h3>
         <dl>
-            ${array.map(item => `
+            ${Prisoners.map(item => `
                 <dt>${item.Full_name ?? "Senza nome"}</dt>
                 <dd>
                     ID: ${item.Id ?? "N/D"} | Birthday: ${item.Birthday ?? "N/D"} | Born in: ${item.Born_in ?? "N/D"}
@@ -161,12 +181,12 @@ function renderPrisoners(array)
     `;
 }
 
-function renderGuards(array)
+function renderGuards()
 {
     return `
         <h3>Guardie</h3>
         <dl>
-            ${array.map(item => `
+            ${Guards.map(item => `
                 <dt>${item.Full_name ?? "Senza nome"}</dt>
                 <dd>
                     Birthday: ${item.Birthday ?? "N/D"} | Born in: ${item.Born_in ?? "N/D"}
@@ -177,12 +197,12 @@ function renderGuards(array)
     `;
 }
 
-function renderFolders(array)
+function renderFolders()
 {
     return `
         <h3>Fascicoli</h3>
         <dl>
-            ${array.map(item => `
+            ${Folders.map(item => `
                 <dt>${item.Full_name ?? "Senza nome"}</dt>
                 <dd>
                     ID: ${item.Id ?? "N/D"} | Date in: ${item.Date_in ?? "N/D"} | Date out: ${item.Date_out ?? "N/D"} \
@@ -194,12 +214,9 @@ function renderFolders(array)
     `;
 }
 
-function Show() {
-    const s = prompt("Selezionare l'array desiderato (G => Guardie/P => Prigionieri/F => Fascicoli):\n");
-    if (typeof s !== "string") { alert("Valore inserito incorrettamente, riprovare."); return ; }
-
-    if (s == "g") { document.getElementById("g").innerHTML = renderGuards(Guards); }
-    else if (s == "p") { document.getElementById("p").innerHTML = renderPrisoners(Prisoners); }
-    else if (s == "f") { document.getElementById("f").innerHTML =  renderFolders(Folders); }
-    else output.innerHTML = "Scelta non valida.";
+function refreshList()
+{
+    if (Guards.length > 0) { document.getElementById("g").innerHTML = renderGuards(); }
+    if (Prisoners.length > 0) { document.getElementById("p").innerHTML = renderPrisoners(); }
+    if (Folders.length > 0) { document.getElementById("f").innerHTML =  renderFolders(); }
 }

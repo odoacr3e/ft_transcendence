@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+
+<head>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<html>
+	<body>
+        <input type="checkbox" id="menu-toggle" class="hidden">
+	    <div id="HeadDiv" class="bg-[#4B2E2B] p-1 flex items-center w-full box-border">
+            <label for="menu-toggle" class="menu-btn" aria-label="Apri menu"> &#9776; </label>
+	        <h1 class="text-[#fcfbfa] w-auto shrink-0 text-[180%]">Chess-Z</h1>
+            <nav class="top-nav flex items-center ml-3 transition max-lg:opacity-0 ease-in-out max-lg:w-6">
+                <div class="menu-item">
+                    <p class="pr-20 px-4 py-3 text-[#fcfbfa] cursor-default whitespace-nowrap">Gioca online</p>
+                    <div class="dropdown">
+                        <a href="#">Partita rapida</a>
+                        <a href="#">Partita normale</a>
+                        <a href="#">Partita veloce</a>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <p class="pr-20 px-4 py-3 text-[#fcfbfa] cursor-default whitespace-nowrap">Allenati</p>
+                    <div class="dropdown">
+                        <a href="#">HTML coi pezzi</a>
+                        <a href="#">Aperture</a>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <p class="pr-20 px-4 py-3 text-[#fcfbfa] cursor-default whitespace-nowrap">Gioca in 4</p>
+                    <div class="dropdown">
+                        <a href="#">Ma sei scemo?</a>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="user-box ml-auto flex items-center gap-2 min-w-0 transition max-md:opacity-0 ease-in-out">
+                <img src="img/bell-icon-white.svg.med.png" alt="bell" class="w-8.5 inline-block">
+                <h4 class="text-[#fcfbfa] inline-block">User1</h4>
+                <img src="img/default.jpg" alt="default user" class="w-12 rounded-full inline-block">
+            </div>
+	    </div>
+        <label for="menu-toggle" class="menu-overlay"></label>
+        <aside class="side-menu"> <h3 class="mb-2.5">Menu</h3> <a href="#">Profilo</a> <a href="#">Partite</a> <a href="#">Impostazioni</a> </aside>
+        
+        
+        <div class="page-content mx-auto pt-25 pb-10">
+            <div class="mb-1 flex gap-2">
+                <img src="img/default.jpg" alt="default user" class="max-h-16 rounded-lg">
+                <div>
+                    <h4 class="m-2">User1</h4>
+                    <p class="ml-2" >Questo user e' gay</p>
+                </div>
+            </div>
+            <hr>
+            <div class="relative aspect-square">
+                <div class="Squares absolute inset-0 grid grid-cols-8 grid-rows-8">
+                <div id="White"><p>8</p></div>
+                <div id="Black"></div><div id="White"></div><div id="Black"></div>
+                <div id="White"></div><div id="Black"></div><div id="White"></div><div id="Black"></div>
+
+                <div id="Black"><p>7</p></div>
+                <div id="White"></div><div id="Black"></div><div id="White"></div>
+                <div id="Black"></div><div id="White"></div><div id="Black"></div><div id="White"></div>
+
+                <div id="White"><p>6</p></div>
+                <div id="Black"></div><div id="White"></div><div id="Black"></div>
+                <div id="White"></div><div id="Black"></div><div id="White"></div><div id="Black"></div>
+
+                <div id="Black"><p>5</p></div>
+                <div id="White"></div><div id="Black"></div><div id="White"></div>
+                <div id="Black"></div><div id="White"></div><div id="Black"></div><div id="White"></div>
+
+                <div id="White"><p>4</p></div>
+                <div id="Black"></div><div id="White"></div><div id="Black"></div>
+                <div id="White"></div><div id="Black"></div><div id="White"></div><div id="Black"></div>
+
+                <div id="Black"><p>3</p></div>
+                <div id="White"></div><div id="Black"></div><div id="White"></div>
+                <div id="Black"></div><div id="White"></div><div id="Black"></div><div id="White"></div>
+
+                <div id="White"><p>2</p></div>
+                <div id="Black"></div><div id="White"></div><div id="Black"></div>
+                <div id="White"></div><div id="Black"></div><div id="White"></div><div id="Black"></div>
+
+                <div id="Black"><p>1</p><p class="mt-[66%] ml-auto">a</p></div>
+                <div id="White"><p class="mt-[66%] ml-auto">b</p></div><div id="Black"><p class="mt-[66%] ml-auto">c</p></div>
+                <div id="White"><p class="mt-[66%] ml-auto">d</p></div><div id="Black"><p class="mt-[66%] ml-auto">e</p></div>
+                <div id="White"><p class="mt-[66%] ml-auto">f</p></div><div id="Black"><p class="mt-[66%] ml-auto">g</p></div>
+                <div id="White"><p class="mt-[66%] ml-auto">h</p></div>
+                </div>
+                <div class="Pieces absolute inset-0 grid grid-cols-8 grid-rows-8">
+                    <img class="piece" src="img/white/w_rook.png" alt="White rook" style="--col:1; --row:1;">
+                    <img class="piece" src="img/white/w_horse.png" alt="White horse" style="--col:2; --row:1;">
+                    <img class="piece" src="img/white/w_bishop.png" alt="White bishop" style="--col:3; --row:1;">
+                    <img class="piece" src="img/white/w_queen.png" alt="White queen" style="--col:4; --row:1;">
+                    <img class="piece" src="img/white/w_king.png" alt="White king" style="--col:5; --row:1;">
+                    <img class="piece" src="img/white/w_bishop.png" alt="White bishop" style="--col:6; --row:1;">
+                    <img class="piece" src="img/white/w_horse.png" alt="White horse" style="--col:7; --row:1;">
+                    <img class="piece" src="img/white/w_rook.png" alt="White rook" style="--col:8; --row:1;">
+                    <img class="piece" src="img/white/w_pawn.png" alt="White pawn" style="--col:1; --row:2;">
+                    <img class="piece" src="img/white/w_pawn.png" alt="White pawn" style="--col:2; --row:2;">
+                    <img class="piece" src="img/white/w_pawn.png" alt="White pawn" style="--col:3; --row:2;">
+                    <img class="piece" src="img/white/w_pawn.png" alt="White pawn" style="--col:4; --row:2;">
+                    <img class="piece" src="img/white/w_pawn.png" alt="White pawn" style="--col:5; --row:2;">
+                    <img class="piece" src="img/white/w_pawn.png" alt="White pawn" style="--col:6; --row:2;">
+                    <img class="piece" src="img/white/w_pawn.png" alt="White pawn" style="--col:7; --row:2;">
+                    <img class="piece" src="img/white/w_pawn.png" alt="White pawn" style="--col:8; --row:2;">
+
+                    <img class="piece" src="img/black/b_pawn.png" alt="Black pawn" style="--col:1; --row:7;">
+                    <img class="piece" src="img/black/b_pawn.png" alt="Black pawn" style="--col:2; --row:7;">
+                    <img class="piece" src="img/black/b_pawn.png" alt="Black pawn" style="--col:3; --row:7;">
+                    <img class="piece" src="img/black/b_pawn.png" alt="Black pawn" style="--col:4; --row:7;">
+                    <img class="piece" src="img/black/b_pawn.png" alt="Black pawn" style="--col:5; --row:7;">
+                    <img class="piece" src="img/black/b_pawn.png" alt="Black pawn" style="--col:6; --row:7;">
+                    <img class="piece" src="img/black/b_pawn.png" alt="Black pawn" style="--col:7; --row:7;">
+                    <img class="piece" src="img/black/b_pawn.png" alt="Black pawn" style="--col:8; --row:7;">
+                    <img class="piece" src="img/black/b_rook.png" alt="Black rook" style="--col:1; --row:8;">
+                    <img class="piece" src="img/black/b_horse.png" alt="Black horse" style="--col:2; --row:8;">
+                    <img class="piece" src="img/black/b_bishop.png" alt="Black bishop" style="--col:3; --row:8;">
+                    <img class="piece" src="img/black/b_queen.png" alt="Black queen" style="--col:4; --row:8;">
+                    <img class="piece" src="img/black/b_king.png" alt="Black king" style="--col:5; --row:8;">
+                    <img class="piece" src="img/black/b_bishop.png" alt="Black bishop" style="--col:6; --row:8;">
+                    <img class="piece" src="img/black/b_horse.png" alt="Black horse" style="--col:7; --row:8;">
+                    <img class="piece" src="img/black/b_rook.png" alt="Black rook" style="--col:8; --row:8;">
+                </div>
+            </div>
+            <hr>
+            <div class="mt-1 justify-end flex gap-2">
+                <div>
+                    <h4 class="text-right m-2">User2</h4>
+                    <p class="mr-2">Questo user e' un coglione</p>
+                </div>
+                <img src="img/default.jpg" alt="default user" class="max-h-16 rounded-lg">
+            </div>
+        </div>
+	</body>
+</html>

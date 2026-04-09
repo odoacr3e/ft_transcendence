@@ -1,62 +1,84 @@
 <!DOCTYPE html>
+
 <html lang ="en">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width", initial-scale="1.0" />
+		<link rel="stylesheet" href="style.css">
 		<title>Welcome to Gotham Prison</title>
 	</head>
+
 	<h1>Welcome to Gotham Prison</h1>
-	<div style="display: flex; justify-items: stretch;">
-		<div style="margin-right: 100px;">
+	<div id="Container">
+		<div id="Blocks">
 			<h2>Aggiungi un fascicolo</h2>
-			<form id="folderForm" style="display:grid; margin-right: 20px;">
-				<p style="margin: 0;">Nome completo</p>
-				<input id="full_name" placeholder="Nome e cognome">
-				<p style="margin: 0;">ID</p>
+			<form id="folderForm">
+				<p>Nome completo</p>
+				<input id="full_namef" placeholder="Nome e cognome">
+				<p>ID</p>
 				<input id="id" placeholder="ID">
-				<p style="margin: 0;">Data di incarceramento</p>
+				<p>Data di incarceramento</p>
 				<input id="date_in" placeholder="giorno-mese-anno">
-				<p style="margin: 0;">Data prevista di uscita</p>
+				<p>Data prevista di uscita</p>
 				<input id="date_out" placeholder="giorno-mese-anno">
-				<p style="margin: 0;">Crimine</p>
+				<p>Crimine</p>
 				<input id="crime" placeholder="Crimine">
 				<button type="submit" style="width: 60%; margin-top: 5px;">Aggiungi fascicolo</button>
 			</form>
 			<div id="demof"></div>
 		</div>
-		<div style="margin-right: 100px;">
+		<div id="Blocks">
 			<h2>Aggiungi un carcerato</h2>
-			<form id="prisonerForm" style="display:grid; margin-right: 20px;">
-				<p style="margin: 0;">Nome completo</p>
-				<input id="full_name" placeholder="Nome e cognome">
-				<p style="margin: 0;">Data di nascita</p>
-				<input id="birthday" placeholder="giorno-mese-anno">
-				<p style="margin: 0;">Citta' natale</p>
-				<input id="born_in" placeholder="Citta'-Stato">
+			<form id="prisonerForm">
+				<p>Nome completo</p>
+				<input id="full_namep" placeholder="Nome e cognome">
+				<p>Data di nascita</p>
+				<input id="birthdayp" placeholder="giorno-mese-anno">
+				<p>Citta' natale</p>
+				<input id="born_inp" placeholder="Citta'-Stato">
 				<button type="submit" style="width: 65%; margin-top: 5px;">Aggiungi prigioniero</button>
 			</form>
 			<div id="demop"></div>
 		</div>
-		<div>
+		<div id="Blocks">
 			<h2>Aggiungi una guardia</h2>
-			<form id="guardForm" style="display:grid; margin-right: 20px;">
-				<p style="margin: 0;">Nome completo</p>
-				<input id="full_name" placeholder="Nome e cognome">
-				<p style="margin: 0;">Data di nascita</p>
-				<input id="birthday" placeholder="giorno-mese-anno">
-				<p style="margin: 0;">Citta' natale</p>
-				<input id="born_in" placeholder="Citta'-Stato">
+			<form id="guardForm">
+				<p>Nome completo</p>
+				<input id="full_nameg" placeholder="Nome e cognome">
+				<p>Data di nascita</p>
+				<input id="birthdayg" placeholder="giorno-mese-anno">
+				<p>Citta' natale</p>
+				<input id="born_ing" placeholder="Citta'-Stato">
 				<button type="submit" style="width: 60%; margin-top: 5px;">Aggiungi guardia</button>
 			</form>
 			<div id="demog"></div>
 		</div>
+		<div>
+			<div>
+				<h2>Segna un prigioniero decedeuto: </h2>
+				<form id="deadForm">
+					<p>Nome completo</p>
+					<input id="full_named" placeholder="Nome e cognome">
+					<button type="submit" style="width: 60%; margin-top: 5px;">Send</button>
+				</form>
+				<div id="demod"></div>
+			</div>
+			<div>
+				<h2>Segna un prigioniero evaso: </h2>
+				<form id="escapedForm">
+					<p>Nome completo</p>
+					<input id="full_namee" placeholder="Nome e cognome">
+					<button type="submit" style="width: 60%; margin-top: 5px;">Send</button>
+				</form>
+				<div id="demoe"></div>
+			</div>
+		</div>
 	</div>
-	<button style="margin-top: 20px;" onclick="Show()">Mostra le liste</button>
 	<br>
 	<div style="display: flex; justify-items: stretch;">
-		<div id="p" style="width: 500px;"></div>
-		<div id="g" style="width: 500px;"></div>
-		<div id="f" style="width: 500px;"></div>	
+		<div id="p" style="width: 500px;"><h3>Prigionieri</h3></div>
+		<div id="g" style="width: 500px;"><h3>Guardie</h3></div>
+		<div id="f" style="width: 500px;"><h3>Fascicoli</h3></div>	
 	</div>
 	<script src="ex.js"></script>
 </html>
