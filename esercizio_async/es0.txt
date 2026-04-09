@@ -1,0 +1,3 @@
+Scrivi un codice javascript che importi le funzioni di api.js, e possa chiamarle
+
+console.log(getComments(42));  // -> non deve lanciare eccezioni
