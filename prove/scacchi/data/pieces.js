@@ -5,14 +5,24 @@
 
 //SECTION - enum
 
-/**
- * @enum {string}
- */
-const eTeam = 
+//SECTION - Pezzo class
+//ANCHOR - Definition 
+
+class Piece
 {
-	Black: 'Black',
-	White: 'White'
-};
+	constructor ()
+	{
+		/** @type {string} */   this.type;
+		/** @type {number} */   this.price;
+		/** @type {string} */   this.team;
+		/** @type {boolean} */  this.isMovedBool = false;
+		/** @type {boolean} */  this.isBoostedBool = false;
+		/** @type {string} */ 	this.pos;
+		/** @type {Function} */ this.moveFunction;
+	}
+}
+
+// utilizzare la mappa per metterci i costruttori, Pazzo e' un template adesso
 
 /**
  * @enum {string}
@@ -26,23 +36,7 @@ const values = new Map([
 	['bastards', 1]
 ]);
 
-//SECTION - Pezzo class
-//ANCHOR - Definition 
-
-class Pezzo
-{
-	constructor ()
-	{
-		/** @type {string} */   this.tipo;
-		/** @type {number} */   this.price;
-		/** @type {eTeam} */    this.team;
-		/** @type {boolean} */  this.isMovedBool = false;
-		/** @type {boolean} */  this.isBoostedBool = false;
-		/** @type {Position} */ this.pos;
-		/** @type {Function} */ this.moveFunction;
-	}
-}
-
-// utilizzare la mappa per metterci i costruttori, Pazzo e' un template adesso
-
 //ANCHOR - Methods
+
+
+module.exports = {Piece};

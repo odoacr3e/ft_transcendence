@@ -10,8 +10,10 @@ arr["ciao"] = 2;
 console.log(arr); // [ 12, 2, ciao: 2 ]
 // //*dimostrazione che metodi e variabili sono interscambiabili*
 console.log(arr.push);
-arr[2] = arr["push"];
-arr["push"] = 2;
-console.log(arr.push); // 2
+console.log = (() => {console.log("ciao");})
+arr[2] = arr["push"] = arr[2] = console.log;
+arr[2]("ksdfnvvi");
+// arr["push"] = 2;
+// console.log(arr.push); // 2
 // arr[2](42);
 // console.log(arr); // [ 12, 2, [Function: push], 42, ciao: 2, push: 2 ]
