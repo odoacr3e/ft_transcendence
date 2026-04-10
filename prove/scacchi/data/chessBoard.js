@@ -1,4 +1,8 @@
 // @ts-check
+const {include} = require("./lib.js");
+const {Chess} = require("./lib.js");
+const {Macro} = require("./lib.js");
+//const {Enum} = require("./lib.js");
 
 /** @typedef {pieces.Piece} Piece */
 
@@ -37,9 +41,10 @@ const eTeam =
 //SECTION - chessBoard Map 
 //ANCHOR - Definition 
 
-/** @type {Map<string, Square>} */ const board = new Map();
+/** @type {Map<string, Square>} */ const Board = new Map();
 board.constructor = () => 
 {
 
 }  
 
+module.exports = {Board, eTeam, Square};

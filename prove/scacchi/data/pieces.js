@@ -1,5 +1,8 @@
-
-//SECTION macro
+// @ts-check
+const {include} = require("./lib.js");
+const {Chess} = require("./lib.js");
+const {Macro} = require("./lib.js");
+//const {Enum} = require("./lib.js");
 
 //SECTION - Position class 
 
@@ -27,7 +30,7 @@ class Piece
 /**
  * @enum {string}
  */
-const values = new Map([
+const enumValues = new Map([
 	['king' , 0],
 	['champion', 10],
 	['minotaurus', 5],
@@ -39,4 +42,4 @@ const values = new Map([
 //ANCHOR - Methods
 
 
-module.exports = {Piece};
+module.exports = {Piece, enumValues};

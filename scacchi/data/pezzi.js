@@ -46,4 +46,15 @@ class Pezzo
 
 */
 
+//SECTION - Cursor class
+//ANCHOR - Definition 
+
+class cursor
+{
+	constructor(position)
+	{
+		
+	}
+}
+
 //ANCHOR - Methods
