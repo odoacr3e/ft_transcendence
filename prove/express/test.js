@@ -20,6 +20,11 @@ app.get('/', (req, res) => {
   res.send('GET to homepage');
 });
 
+// Respond to GET request on the root route
+app.get('/', (req, res) => {
+  res.send('GET GET GET');
+});
+
 // Respond to POST request on the root route
 app.post('/', (req, res) => {
   res.send('POST request to the homepage');
@@ -46,7 +51,6 @@ app.get('/*splat', (req, res) => {
   res.status(404).send('404 - Page not found');
 });
 
-// Start the server
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });

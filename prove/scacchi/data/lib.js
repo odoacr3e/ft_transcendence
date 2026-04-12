@@ -13,15 +13,16 @@ const include = {http, https, url, fs, path, express, app};
 //SECTION - chess classes/objects
 
 const {Piece} = require("./pieces.js");
-const {Board} = require("./chessBoard.js");
-const {Square} = require("./chessBoard.js");
-const Chess = {Piece, Board, Square};
+const {cursor} = require("./cursor.js");
+const {board, Square} = require("./chessBoard.js");
+const Chess = {Piece, board, cursor, Square};
 
 //SECTION - macro
-const {Macro} = require("./macro.js");
+const Macro = require("./macro.js");
 
 //SECTION - Enums
-const Enums = {eTeam} = require("./chessBoard.js");
-
+const {eTeam} = require("./chessBoard.js");
+const {enumValues, enumNames} = require("./pieces.js");
+const Enums = {eTeam, enumValues, enumNames};
 
 module.exports = {include, Chess, Macro, Enums};
