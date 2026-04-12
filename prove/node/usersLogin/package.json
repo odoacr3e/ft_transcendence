@@ -1,0 +1,18 @@
+{
+  "name": "userslogin",
+  "version": "1.0.0",
+  "type":"module",
+  "main": "login.js",
+  "scripts": {
+    "start": "npm install pg && npm install dotenv && node login.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "pg": "^8.20.0"
+  },
+  "devDependencies": {},
+  "description": ""
+}
