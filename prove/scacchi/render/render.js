@@ -27,7 +27,7 @@ function render()
 		i++;
 		if (i == lib.Macro.CHESSBOARD_H)
 		{
-			buffer += "\n";
+			buffer += `\n`;
 			i = 0;
 		}
 	}
@@ -57,7 +57,7 @@ function getAscii(data)
 		case (enumNames.VALKIRYA) :
 			return ("V");
 		default :
-			return ("");
+			return (" ");
 	}
 }
 

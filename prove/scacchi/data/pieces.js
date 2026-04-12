@@ -22,10 +22,12 @@ class Piece
 		/** @type {boolean} */  this.isBoostedBool = false;
 		/** @type {string} */ 	this.pos;
 		/** @type {Function} */ this.moveFunction;
+		/** @type {Array<{dx: number, dy:number}>} */	this.moveArrayDEBUG;
+		/** @type {boolean} */	this.moveLongRangeDEBUG = false;
 	}
 }
 
-// utilizzare la mappa per metterci i costruttori, Pazzo e' un template adesso
+// utilizzare la mappa per metterci i costruttori, Piece e' un template adesso
 
 /**
  * @enum {number}
