@@ -1,4 +1,3 @@
-
 import conn from "./dbConnection.js";
 
 const args = process.argv.slice(2);

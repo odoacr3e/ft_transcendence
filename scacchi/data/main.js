@@ -1,15 +1,33 @@
 // @ts-check
 const { abort } = require("node:process");
-const lib = require("./data/lib.js");
-const {render} = require("./render/render.js");
+const lib = require("./lib.js");
+const {cursor} = require("./cursor.js");
+const {render} = require("./render.js");
 const readline = require('node:readline');
-const { Piece } = require("./data/pieces.js");
 
 //SECTION - main: inizializza e fa primo render, mette terminale in ascolto
 
 initTerminal();
 initRandomBoard();
 render();
+
+/**
+ * 
+ * @param {number} dx 
+ * @param {number} dy 
+ */
+function movePiece(dx, dy)
+{
+	let newRow = cursor.getRow() + dy;
+	let newCol = cursor.getCol() + dx;
+	if (newRow < 0 || newRow >= lib.Macro.CHESSBOARD_H)
+		return false;
+	else if (newCol <= 0 || newCol > lib.Macro.CHESSBOARD_W)
+		return false;
+
+	cursor.setCursor(newRow, newCol);
+	return true;
+}
 
 //SECTION - eventLoop: binda i tasti per fare cose
 
@@ -37,10 +55,10 @@ process.stdin.on('keypress', (str, key) =>
 		case ("right") : case ("d") :
 			dx += 1;
 			break ;
-		case ("space") :
-			lib.Chess.cursor.DangerUpdate();
+		// case ("space") :
 	}
-	if (key.name != "space" && !lib.Chess.cursor.Move(dx, dy, true, true))
+	// if (key.name != "space" && !lib.Chess.cursor.Move(dx, dy, true, true))
+	if (!movePiece(dx, dy))
 		console.log("lol no");
 	render();
 	console.log("key", key.name);
@@ -74,7 +92,7 @@ function initRandomBoard()
 		rand = Math.floor(rand);
 		if (rand <= 10)
 			continue ;
-		data.piece = new Piece();
+		data.piece = new lib.Chess.Piece();
 		if (rand == 11)
 		{
 			data.piece.type = lib.Enums.enumNames.BASTARDS;
@@ -124,20 +142,5 @@ function initRandomBoard()
 				{dx:-1, dy:1}, {dx:1, dy:-1},
 			];
 		}
-
 	}
 }
-
-//FIXME - fare funzione che muove cursore (in fase di testing)
-
-// /**
-//  * 
-//  * @param {*} letter 
-//  * @param {*} dX 
-//  * @param {*} dY 
-//  * @param {*} fly
-//  */
-// function next (letter, dX = 0, dY = 0, fly = false)
-// {
-
-// }

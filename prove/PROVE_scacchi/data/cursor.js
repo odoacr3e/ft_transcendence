@@ -19,8 +19,7 @@ class Cursor
 		/** @type {function} */	this.DangerUpdate = DangerUpdate.bind(this);
 		/** @type {function} */	this.DangerReset = DangerReset.bind(this);
 
-		/** @type {string} */	this.position = Set(start);
-		
+		/** @type {string}s */	this.position = Set(start);
 	}
 }
 
