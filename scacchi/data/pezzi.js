@@ -2,6 +2,8 @@
 //SECTION - Position class 
 //ANCHOR - Definition 
 
+const default_cost = 5;
+
 class Position
 {
 	/** 
@@ -30,7 +32,7 @@ const eTeam =
 /**
  * @enum {string}
  */
-const eTipo =
+const eType =
 {
 	Re: `Re`,
 	Campione: `Campione`,
@@ -42,22 +44,68 @@ const eTipo =
 	Ghoul: `Goul`
 }
 
+
+const preset = {
+	Re: {
+		type: eType.Re,
+		price: 0,
+		movement: "" /// da aggiungere funzione di movimento
+	},
+	Campione: {
+		type: eType.Campione,
+		price: 10,
+		movement: ""
+	},
+	Giullare: {
+		type: eType.Giullare,
+		price: 5,
+		movement: ""
+	},
+	Valchiria: {
+		type: eType.Valchiria,
+		price: 3,
+		movement: ""
+	},
+	Minotauro: {
+		type: eType.Minotauro,
+		price: 5,
+		movement: ""
+	},
+	Bastardo: {
+		type: eType.Bastardo,
+		price: 1,
+		movement: ""
+	},
+	Mago: {
+		type: eType.Mago,
+		price: default_cost,
+		movement: ""
+	},
+	Ghoul: {
+		type: eType.Ghoul,
+		price: default_cost,
+		movement: ""
+	},
+}
+
 //SECTION - Pezzo class
 //ANCHOR - Definition 
 
-class Pezzo
+export class Pezzo
 {
-	constructor()
+	constructor({type, price, movement})
 	{
-		/** @type {string} */ this.tipo;
-		/** @type {number} */ this.price;
+		/** @type {string} */ this.type = type;
+		/** @type {number} */ this.price = price;
 		/** @type {eTeam} */	this.team = eTeam.Black;
 		/** @type {boolean} */ this.isMovedBool;
 		/** @type {boolean} */ this.isBoostedBool;
 		/** @type {Position} */ this.pos = new Position(0, 0);
-		/** @type {Function} */ this.moveFunction = () => {};
+		/** @type {Function} */ this.moveFunction = movement;
 	}
 }
+// creazione oggetto con preset
+// const re = new Pezzo(preset.Re);
 
 /*
 	pezzo
