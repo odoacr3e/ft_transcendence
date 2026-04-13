@@ -1,6 +1,6 @@
 // @ts-check
 
-const ptr = {data = }
+// const ptr = {data = }
 
 /**
  * 
