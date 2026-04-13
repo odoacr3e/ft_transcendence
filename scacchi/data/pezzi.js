@@ -4,10 +4,13 @@
 
 class Position
 {
-	constructor()
+	/** 
+	 * @brief aggiunti row e col come parametri al costruttore
+	*/
+	constructor(row, col)
 	{
-		/** @type {number} */	this.row = 0;
-		/** @type {number} */	this.col = 0;
+		/** @type {number} */	this.row = row;
+		/** @type {number} */	this.col = col;
 	}
 }
 
@@ -24,6 +27,21 @@ const eTeam =
 	White: 'White'
 };
 
+/**
+ * @enum {string}
+ */
+const eTipo =
+{
+	Re: `Re`,
+	Campione: `Campione`,
+	Giullare: `Giullare`,
+	Valchiria: `Valchiria`,
+	Minotauro: `Minotauro`,
+	Bastardo: `Bastardo`,
+	Mago: `Mago`,
+	Ghoul: `Goul`
+}
+
 //SECTION - Pezzo class
 //ANCHOR - Definition 
 
@@ -36,7 +54,7 @@ class Pezzo
 		/** @type {eTeam} */	this.team = eTeam.Black;
 		/** @type {boolean} */ this.isMovedBool;
 		/** @type {boolean} */ this.isBoostedBool;
-		/** @type {Position} */ this.pos = new Position();
+		/** @type {Position} */ this.pos = new Position(0, 0);
 		/** @type {Function} */ this.moveFunction = () => {};
 	}
 }
