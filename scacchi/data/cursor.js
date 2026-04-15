@@ -35,8 +35,8 @@ let setCol = (newCol) => {
 let setCursor = (newRow, newCol) => {
 	let newSquare;
 
-	newSquare = String.fromCharCode(newRow) + "a".charCodeAt(0);
-	newSquare += String.fromCharCode(newCol) + "0".charCodeAt(0);
+	newSquare = String.fromCharCode(newRow + "a".charCodeAt(0));
+	newSquare += String.fromCharCode(newCol + "0".charCodeAt(0));
 	cursor.square = newSquare;
 }
 

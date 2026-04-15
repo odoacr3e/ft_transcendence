@@ -20,6 +20,7 @@ function movePiece(dx, dy)
 {
 	let newRow = cursor.getRow() + dy;
 	let newCol = cursor.getCol() + dx;
+
 	if (newRow < 0 || newRow >= lib.Macro.CHESSBOARD_H)
 		return false;
 	else if (newCol <= 0 || newCol > lib.Macro.CHESSBOARD_W)
@@ -56,6 +57,7 @@ process.stdin.on('keypress', (str, key) =>
 			dx += 1;
 			break ;
 		// case ("space") :
+		// 	DangerUpdate()
 	}
 	// if (key.name != "space" && !lib.Chess.cursor.Move(dx, dy, true, true))
 	if (!movePiece(dx, dy))
@@ -92,55 +94,15 @@ function initRandomBoard()
 		rand = Math.floor(rand);
 		if (rand <= 10)
 			continue ;
-		data.piece = new lib.Chess.Piece();
 		if (rand == 11)
-		{
-			data.piece.type = lib.Enums.enumNames.BASTARDS;
-			data.piece.moveArrayDEBUG = 
-			[{dx:0, dy:1}, {dx:0, dy:-1}];
-		}
+			data.piece = new lib.Chess.Piece(lib.preset.Bastards, "", key, false);
 		else if (rand == 12)
-		{
-			data.piece.type = lib.Enums.enumNames.CHAMPION;
-			data.piece.moveLongRangeDEBUG = true;
-			data.piece.moveArrayDEBUG = 
-			[
-				{dx:1, dy:1}, {dx:-1, dy:-1},//obliquo
-				{dx:-1, dy:1}, {dx:1, dy:-1},
-			 	{dx:0, dy:1}, {dx:0, dy:-1},//verticale
-			 	{dx:1, dy:0}, {dx:-1, dy:0},//orizzontale
-			];
-		}
+			data.piece = new lib.Chess.Piece(lib.preset.Champion, "", key, true);
 		else if (rand == 13)
-		{
-			data.piece.type = lib.Enums.enumNames.JESTER;
-			data.piece.moveArrayDEBUG = 
-			[
-				{dx:2, dy:1}, {dx:2, dy:-1}, // +2 orizzontale
-				{dx:-2, dy:1}, {dx:-2, dy:-1},
-				{dx:1, dy:2}, {dx:1, dy:-2}, // +2 verticale
-				{dx:-1, dy:2}, {dx:-1, dy:-2},
-			];
-		}
+			data.piece = new lib.Chess.Piece(lib.preset.Jester, "", key, false);
 		else if (rand == 14)
-		{
-			data.piece.type = lib.Enums.enumNames.MINOTAURUS;
-			data.piece.moveLongRangeDEBUG = true;
-			data.piece.moveArrayDEBUG = 
-			[
-			 	{dx:0, dy:1}, {dx:0, dy:-1},//verticale
-			 	{dx:1, dy:0}, {dx:-1, dy:0},//orizzontale
-			];
-		}
+			data.piece = new lib.Chess.Piece(lib.preset.Minotaurus, "", key, true);
 		else
-		{
-			data.piece.type = lib.Enums.enumNames.VALKIRYA;
-			data.piece.moveLongRangeDEBUG = true;
-			data.piece.moveArrayDEBUG = 
-			[
-				{dx:1, dy:1}, {dx:-1, dy:-1},//obliquo
-				{dx:-1, dy:1}, {dx:1, dy:-1},
-			];
-		}
+			data.piece = new lib.Chess.Piece(lib.preset.Valkirya, "", key, true);
 	}
 }

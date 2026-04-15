@@ -17,10 +17,10 @@ class Square
 {
 	constructor()
 	{
-        /** @type {string} */  			this.color = eTeam.Black;
-        /** @type {Piece | null} */   	this.piece = null;
-		/** @type {Array<string>} */	this.targetZones = [];
-		/** @type {Array<string>} */	this.dangerZones = [];
+        /** @type {string | undefined} */	this.color = undefined;
+        /** @type {Piece | null} */   		this.piece = null;
+		/** @type {Set<string>} */			this.targetZones;
+		/** @type {Set<string>} */			this.dangerZones;
 	}
     //tutti i dati
 }
