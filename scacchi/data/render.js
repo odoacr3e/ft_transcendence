@@ -20,8 +20,8 @@ function render()
 		asciiArt = getAscii(data);
 		if (lib.Chess.cursor.square == pos)
 			buffer += `\x1b[32m[${asciiArt}]\x1b[0m`;
-		// else if (data.dangerZones.length != 0)
-		// 	buffer += `\x1b[31m[${asciiArt}]\x1b[0m`;
+		else if (data.dangerZones.size != 0)
+			buffer += `\x1b[31m[${asciiArt}]\x1b[0m`;
 		else
 			buffer += `[${asciiArt}]`;
 		i++;

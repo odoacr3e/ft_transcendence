@@ -14,9 +14,10 @@ render();
 /**
  * 
  * @param {number} dx 
- * @param {number} dy 
+ * @param {number} dy
+ * @param {boolean} clear
  */
-function movePiece(dx, dy)
+function movePiece(dx, dy, clear)
 {
 	let newRow = cursor.getRow() + dy;
 	let newCol = cursor.getCol() + dx;
@@ -26,6 +27,20 @@ function movePiece(dx, dy)
 	else if (newCol <= 0 || newCol > lib.Macro.CHESSBOARD_W)
 		return false;
 
+	if (clear == true)
+	{
+		let currentSquare = lib.Chess.board.get(cursor.square);
+		let zones = currentSquare?.targetZones;
+
+		if (zones != null)
+		{
+			for (let zone of zones)
+			{
+				lib.Chess.board.get(zone)?.dangerZones.delete(cursor.square);
+			}
+			zones.clear();
+		}
+	}
 	cursor.setCursor(newRow, newCol);
 	return true;
 }
@@ -56,15 +71,37 @@ process.stdin.on('keypress', (str, key) =>
 		case ("right") : case ("d") :
 			dx += 1;
 			break ;
-		// case ("space") :
-		// 	DangerUpdate()
+		case ("space") :
+			DangerUpdate()
 	}
-	// if (key.name != "space" && !lib.Chess.cursor.Move(dx, dy, true, true))
-	if (!movePiece(dx, dy))
+	if (key.name != "space" && !movePiece(dx, dy, true))
 		console.log("lol no");
 	render();
 	console.log("key", key.name);
 });
+
+function DangerUpdate()
+{
+	let	startPos;
+	let	piece;
+
+	startPos = cursor.square;
+	piece = lib.Chess.board.get(cursor.square)?.piece;
+	if (piece == null)
+		return (0);
+	for (let {dx, dy} of piece.moveArrayDEBUG)
+	{
+		while (movePiece(dx, dy, false))
+		{
+			lib.Chess.board.get(cursor.square)?.dangerZones.add(startPos);
+			lib.Chess.board.get(startPos)?.targetZones.add(cursor.square);
+			if (piece.moveLongRangeDEBUG == false || lib.Chess.board.get(cursor.square)?.piece != null)
+				break ;
+		}
+		cursor.square = startPos;
+	}
+	return (1);
+}
 
 function initTerminal()
 {
