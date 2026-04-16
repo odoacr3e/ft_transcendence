@@ -1,14 +1,16 @@
 {
   "dependencies": {
+    "dotenv": "^17.4.2",
     "express": "^5.2.1",
-    "node": "^25.9.0"
+    "node": "^25.9.0",
+    "pg": "^8.20.0"
   },
   "name": "scacchiz",
   "version": "1.0.0",
   "description": "",
   "main": "main.js",
   "scripts": {
-    "modules": "npm install node && npm install express",
+    "modules": "npm install node && npm install express && npm install pg && npm install dotenv",
     "server": "node server.js"
   },
   "keywords": [],
