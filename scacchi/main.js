@@ -1,9 +1,9 @@
 // @ts-check
-const { abort } = require("node:process");
-const lib = require("./lib.js");
-const {cursor} = require("./cursor.js");
-const {render} = require("./render.js");
-const readline = require('node:readline');
+const lib =			require("./lib.js");
+const {abort} = 	require("node:process");
+const {cursor} = 	require("./cursor.js");
+const {render} = 	require("./render.js");
+const readline = 	require('node:readline');
 
 //SECTION - main: inizializza e fa primo render, mette terminale in ascolto
 
@@ -72,12 +72,16 @@ process.stdin.on('keypress', (str, key) =>
 			dx += 1;
 			break ;
 		case ("space") :
-			DangerUpdate()
+			if (!lib.Chess.board.get(cursor.square)?.piece?.isBoostedBool)
+				DangerUpdate();
+			else
+				lib.Chess.board.get(cursor.square)?.piece?.moveFunction();
 	}
 	if (key.name != "space" && !movePiece(dx, dy, true))
 		console.log("lol no");
 	render();
 	console.log("key", key.name);
+	// console.log(JSON.stringify(Object.fromEntries(lib.Chess.board)));
 });
 
 function DangerUpdate()

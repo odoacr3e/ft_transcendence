@@ -1,6 +1,6 @@
 // @ts-check
 const { Square } = require("./chessBoard.js");
-const lib = require("../data/lib.js");
+const lib = require("./lib.js");
 const enumNames = lib.Enums.enumNames;
 
 /**

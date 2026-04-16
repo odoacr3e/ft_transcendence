@@ -1,10 +1,7 @@
 // @ts-check
-// const {include} = require("./lib.js");
-// const {Chess} = require("./lib.js");
-// const {Macro} = require("./lib.js");
-//const {Enum} = require("./lib.js");
-
-const { eTeam } = require("./chessBoard");
+const lib =		 require("./lib.js");
+const {eTeam} =  require("./chessBoard");
+const {cursor} = require("./cursor.js");
 
 //SECTION - Pezzo class
 //ANCHOR - Definition 
@@ -30,22 +27,6 @@ class Piece
 		/** @type {boolean} */							this.moveLongRangeDEBUG = long;
 	}
 }
-
-// class Piece
-// {
-// 	constructor ()
-// 	{
-// 		/** @type {string} */   this.type;
-// 		/** @type {number} */   this.price;
-// 		/** @type {string} */   this.team;
-// 		/** @type {boolean} */  this.isMovedBool = false;
-// 		/** @type {boolean} */  this.isBoostedBool = false;
-// 		/** @type {string} */ 	this.pos;
-// 		/** @type {Function} */ this.moveFunction;
-// 		/** @type {Array<{dx: number, dy:number}>} */	this.moveArrayDEBUG;
-// 		/** @type {boolean} */	this.moveLongRangeDEBUG = false;
-// 	}
-// }
 
 //SECTION - enum
 
@@ -75,8 +56,6 @@ const enumNames = {
 	GHOUL: 'ghoul'
 };
 
-// creazione oggetto con preset
-// const re = new Pezzo(preset.Re);
 const preset = {
 	King: {
 		type: enumNames.KING,
@@ -87,7 +66,8 @@ const preset = {
 			{dx:-1, dy:1}, {dx:1, dy:-1},
 		 	{dx:0, dy:1}, {dx:0, dy:-1},//verticale
 		 	{dx:1, dy:0}, {dx:-1, dy:0},//orizzontale
-		]
+		],
+		booster: null
 	},
 	Champion: {
 		type: enumNames.CHAMPION,
@@ -98,7 +78,8 @@ const preset = {
 			{dx:-1, dy:1}, {dx:1, dy:-1},
 		 	{dx:0, dy:1}, {dx:0, dy:-1},//verticale
 		 	{dx:1, dy:0}, {dx:-1, dy:0},//orizzontale
-		]
+		],
+		booster: movementWithSecondTurn
 	},
 	Jester: {
 		type: enumNames.JESTER,
@@ -109,7 +90,8 @@ const preset = {
 			{dx:-2, dy:1}, {dx:-2, dy:-1},
 			{dx:1, dy:2}, {dx:1, dy:-2}, // +2 verticale
 			{dx:-1, dy:2}, {dx:-1, dy:-2},
-		]
+		],
+		booster: null
 	},
 	Valkirya: {
 		type: enumNames.VALKIRYA,
@@ -118,7 +100,8 @@ const preset = {
 		[
 			{dx:1, dy:1}, {dx:-1, dy:-1},//obliquo
 			{dx:-1, dy:1}, {dx:1, dy:-1},
-		]
+		],
+		booster: null
 	},
 	Minotaurus: {
 		type: enumNames.MINOTAURUS,
@@ -127,7 +110,8 @@ const preset = {
 		[
 		 	{dx:0, dy:1}, {dx:0, dy:-1},//verticale
 		 	{dx:1, dy:0}, {dx:-1, dy:0},//orizzontale
-		]
+		],
+		booster: movementWithSecondTurn
 	},
 	Bastards: {
 		type: enumNames.BASTARDS,
@@ -137,21 +121,88 @@ const preset = {
 			{dx:0, dy:1}, {dx:0, dy:-1},//verticale
 			{dx:1, dy:1}, {dx:-1, dy:-1},//obliquo
 			{dx:-1, dy:1}, {dx:1, dy:-1}
-		]		
+		],
+		booster: movementWithSecondTurn		
 	},
 	Mage: {
 		type: enumNames.MAGE,
 		price: 3, // da capire
-		movement: [] // da capire
+		movement: [], // da capire
+		booster: null
 	},
 	Ghoul: {
 		type: enumNames.GHOUL,
 		price: 3, // da capire
-		movement: [] // da capire
+		movement: [], // da capire
+		booster: null
 	},
 }
 
 //ANCHOR - Methods
 
+/**
+ * 
+ * @param {number} dx 
+ * @param {number} dy
+ * @param {boolean} clear
+ */
+function movePiece(dx, dy, clear)
+{
+	let newRow = cursor.getRow() + dy;
+	let newCol = cursor.getCol() + dx;
+
+	if (newRow < 0 || newRow >= lib.Macro.CHESSBOARD_H)
+		return false;
+	else if (newCol <= 0 || newCol > lib.Macro.CHESSBOARD_W)
+		return false;
+
+	if (clear == true)
+	{
+		let currentSquare = lib.Chess.board.get(cursor.square);
+		let zones = currentSquare?.targetZones;
+
+		if (zones != null)
+		{
+			for (let zone of zones)
+			{
+				lib.Chess.board.get(zone)?.dangerZones.delete(cursor.square);
+			}
+			zones.clear();
+		}
+	}
+	cursor.setCursor(newRow, newCol);
+	return true;
+}
+
+function movementWithSecondTurn(/* res */)
+{
+	let	startPos;
+	let	piece;
+
+	startPos = cursor.square;
+	piece = lib.Chess.board.get(cursor.square)?.piece;
+	if (piece == null)
+		return (0);
+	for (let {dx, dy} of piece.moveArrayDEBUG)
+	{
+		while (movePiece(dx, dy, false))
+		{
+			lib.Chess.board.get(cursor.square)?.dangerZones.add(startPos);
+			lib.Chess.board.get(startPos)?.targetZones.add(cursor.square);
+			if (piece.moveLongRangeDEBUG == false || lib.Chess.board.get(cursor.square)?.piece != null)
+				break ;
+		}
+		cursor.square = startPos;
+	}
+	/* 
+		da aggiungere la parte in cui mettiamo SecondMove nell'header
+	*/
+	return (1);
+}
+
+function movementJester()
+{
+
+}
 
 module.exports = {Piece, enumNames, enumValues, preset};
