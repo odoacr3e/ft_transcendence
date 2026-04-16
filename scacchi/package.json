@@ -3,12 +3,13 @@
     "express": "^5.2.1",
     "node": "^25.9.0"
   },
-  "name": "scacchi",
+  "name": "scacchiz",
   "version": "1.0.0",
   "description": "",
   "main": "main.js",
   "scripts": {
-    "test": "npm install express; node main.js"
+    "modules": "npm install node && npm install express",
+    "server": "node server.js"
   },
   "keywords": [],
   "author": "",
