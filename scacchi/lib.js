@@ -6,7 +6,7 @@ const path = require('path');
 //const utils = require('./net.js');
 const express = require('express');
 const app = express();
-const {preset} = require("./pieces.js");
+const {preset, movementJester, movementWithSecondTurn} = require("./pieces.js");
 
 //SECTION - external inclusions
 const include = {http, https, url, fs, path, express, app};
@@ -26,4 +26,4 @@ const {eTeam} = require("./chessBoard.js");
 const {enumValues, enumNames} = require("./pieces.js");
 const Enums = {eTeam, enumValues, enumNames};
 
-module.exports = {include, Chess, Macro, Enums, preset};
+module.exports = {include, Chess, Macro, Enums, preset, movementJester, movementWithSecondTurn};

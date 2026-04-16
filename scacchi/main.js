@@ -79,6 +79,7 @@ process.stdin.on('keypress', (str, key) =>
 	}
 	if (key.name != "space" && !movePiece(dx, dy, true))
 		console.log("lol no");
+	console.log("row", cursor.getRow(), ", col", cursor.getCol(), ", cursor", cursor.square);
 	render();
 	console.log("key", key.name);
 	// console.log(JSON.stringify(Object.fromEntries(lib.Chess.board)));
@@ -144,6 +145,9 @@ function initRandomBoard()
 		else if (rand == 14)
 			data.piece = new lib.Chess.Piece(lib.preset.Minotaurus, "", key, true);
 		else
+		{
 			data.piece = new lib.Chess.Piece(lib.preset.Valkirya, "", key, true);
+			data.piece.isBoostedBool = true;
+		}
 	}
 }

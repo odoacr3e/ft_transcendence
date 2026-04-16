@@ -2,5 +2,15 @@
   "dependencies": {
     "express": "^5.2.1",
     "node": "^25.9.0"
-  }
+  },
+  "name": "scacchi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "npm install express; node main.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

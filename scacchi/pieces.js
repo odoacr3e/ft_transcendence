@@ -1,20 +1,109 @@
 // @ts-check
-const lib =		 require("./lib.js");
-const {eTeam} =  require("./chessBoard");
+const {board} =  require("./chessBoard.js");
+const {eTeam} =  require("./chessBoard.js");
 const {cursor} = require("./cursor.js");
+const Macro = require("./macro.js");
 
 //SECTION - Pezzo class
 //ANCHOR - Definition 
 
+let movementWithSecondTurn = function ( /* res */)
+{
+	let	startPos;
+	let	piece;
+
+	startPos = cursor.square;
+	piece = board.get(cursor.square)?.piece;
+	if (piece == null)
+		return (0);
+	for (let {dx, dy} of piece.moveArrayDEBUG)
+	{
+		while (movePiece(dx, dy, false))
+		{
+			board.get(cursor.square)?.dangerZones.add(startPos);
+			board.get(startPos)?.targetZones.add(cursor.square);
+			if (piece.moveLongRangeDEBUG == false || board.get(cursor.square)?.piece != null)
+				break ;
+		}
+		cursor.square = startPos;
+	}
+	/* 
+		da aggiungere la parte in cui mettiamo SecondMove nell'header
+		se e' il campione ed e' sotto scacco non puo' muoversi
+	*/
+	return (1);
+}
+
+let movementJester = function ()
+{
+	let	startPos;
+	let	piece;
+
+	startPos = cursor.square;
+	piece = board.get(cursor.square)?.piece;
+	if (piece == null)
+		return (0);
+	for (let {dx, dy} of piece.moveArrayDEBUG)
+	{
+		let row = cursor.getRow();
+		let col = cursor.getCol();
+		row = row + dx;
+		col = col + dy;
+		row = row % 8;
+		col = col % 8;
+		if (row < 0) row += 8;
+		if (col < 0) col += 8;
+		if (col == 0) col = 8;
+		cursor.setCursor(row, col);
+		board.get(cursor.square)?.dangerZones.add(startPos);
+		board.get(startPos)?.targetZones.add(cursor.square);
+		cursor.square = startPos;
+	}
+	return (1);
+}
+
+let movementValkirya = function ()
+{
+	let	startPos;
+	let	piece;
+
+	startPos = cursor.square;
+	piece = board.get(cursor.square)?.piece;
+	if (piece == null)
+		return (0);
+	for (let {dx, dy} of piece.moveArrayDEBUG)
+	{
+		let maxTarget = 2; 
+		while (movePiece(dx, dy, false))
+		{
+			if (maxTarget != 1)
+			{
+				board.get(cursor.square)?.dangerZones.add(startPos);
+				board.get(startPos)?.targetZones.add(cursor.square);
+			}
+			if (board.get(cursor.square)?.piece != null)
+				maxTarget--;
+			if (maxTarget == 0)
+			{
+				board.get(cursor.square)?.dangerZones.add(startPos);
+				board.get(startPos)?.targetZones.add(cursor.square);
+				break ;
+			}
+		}
+		cursor.square = startPos;
+	}
+	return (1);
+}
+
 class Piece
 {
 	/**
-	 * @param {{type: string, price: number, movement: Array<{dx: number, dy:number}>}} obj
+	 * @param {{type: string, price: number, movement: Array<{dx: number, dy:number}>, booster: Function}} obj
 	 * @param {string} team
 	 * @param {string} pos
 	 * @param {boolean} long
 	 */
-	constructor ({type, price, movement}, team, pos, long)
+	constructor ({type, price, movement, booster}, team, pos, long)
 	{
 		/** @type {string} */   						this.type = type;
 		/** @type {number} */   						this.price = price;
@@ -22,7 +111,7 @@ class Piece
 		/** @type {boolean} */  						this.isMovedBool = false;
 		/** @type {boolean} */  						this.isBoostedBool = false;
 		/** @type {string} */ 							this.pos = pos;
-		/** @type {Function} */ 						this.moveFunction;
+		/** @type {Function} */ 						this.moveFunction = booster;
 		/** @type {Array<{dx: number, dy:number}>} */	this.moveArrayDEBUG = movement;
 		/** @type {boolean} */							this.moveLongRangeDEBUG = long;
 	}
@@ -55,6 +144,7 @@ const enumNames = {
 	MAGE: 'mage',
 	GHOUL: 'ghoul'
 };
+
 
 const preset = {
 	King: {
@@ -91,7 +181,7 @@ const preset = {
 			{dx:1, dy:2}, {dx:1, dy:-2}, // +2 verticale
 			{dx:-1, dy:2}, {dx:-1, dy:-2},
 		],
-		booster: null
+		booster: movementJester
 	},
 	Valkirya: {
 		type: enumNames.VALKIRYA,
@@ -101,7 +191,7 @@ const preset = {
 			{dx:1, dy:1}, {dx:-1, dy:-1},//obliquo
 			{dx:-1, dy:1}, {dx:1, dy:-1},
 		],
-		booster: null
+		booster: movementValkirya
 	},
 	Minotaurus: {
 		type: enumNames.MINOTAURUS,
@@ -122,7 +212,7 @@ const preset = {
 			{dx:1, dy:1}, {dx:-1, dy:-1},//obliquo
 			{dx:-1, dy:1}, {dx:1, dy:-1}
 		],
-		booster: movementWithSecondTurn		
+		booster: movementWithSecondTurn	
 	},
 	Mage: {
 		type: enumNames.MAGE,
@@ -151,21 +241,21 @@ function movePiece(dx, dy, clear)
 	let newRow = cursor.getRow() + dy;
 	let newCol = cursor.getCol() + dx;
 
-	if (newRow < 0 || newRow >= lib.Macro.CHESSBOARD_H)
+	if (newRow < 0 || newRow >= Macro.CHESSBOARD_H)
 		return false;
-	else if (newCol <= 0 || newCol > lib.Macro.CHESSBOARD_W)
+	else if (newCol <= 0 || newCol > Macro.CHESSBOARD_W)
 		return false;
 
 	if (clear == true)
 	{
-		let currentSquare = lib.Chess.board.get(cursor.square);
+		let currentSquare = board.get(cursor.square);
 		let zones = currentSquare?.targetZones;
 
 		if (zones != null)
 		{
 			for (let zone of zones)
 			{
-				lib.Chess.board.get(zone)?.dangerZones.delete(cursor.square);
+				board.get(zone)?.dangerZones.delete(cursor.square);
 			}
 			zones.clear();
 		}
@@ -174,35 +264,5 @@ function movePiece(dx, dy, clear)
 	return true;
 }
 
-function movementWithSecondTurn(/* res */)
-{
-	let	startPos;
-	let	piece;
 
-	startPos = cursor.square;
-	piece = lib.Chess.board.get(cursor.square)?.piece;
-	if (piece == null)
-		return (0);
-	for (let {dx, dy} of piece.moveArrayDEBUG)
-	{
-		while (movePiece(dx, dy, false))
-		{
-			lib.Chess.board.get(cursor.square)?.dangerZones.add(startPos);
-			lib.Chess.board.get(startPos)?.targetZones.add(cursor.square);
-			if (piece.moveLongRangeDEBUG == false || lib.Chess.board.get(cursor.square)?.piece != null)
-				break ;
-		}
-		cursor.square = startPos;
-	}
-	/* 
-		da aggiungere la parte in cui mettiamo SecondMove nell'header
-	*/
-	return (1);
-}
-
-function movementJester()
-{
-
-}
-
-module.exports = {Piece, enumNames, enumValues, preset};
+module.exports = {Piece, enumNames, enumValues, preset, movementJester, movementWithSecondTurn};
