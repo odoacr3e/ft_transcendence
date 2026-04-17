@@ -151,3 +151,110 @@ function initRandomBoard()
 		}
 	}
 }
+
+/**
+ * 
+ * @param {string} kingSquare 
+ * @param {string} enemySquare 
+ */
+function getDirection(kingSquare, enemySquare)
+{
+	let rowK, rowE, diffRow;
+	let colK, colE, diffCol;
+
+	cursor.square = kingSquare;
+	rowK = cursor.getRow();
+	colK = cursor.getCol();
+	cursor.square = enemySquare;
+	rowE = cursor.getRow();
+	colE = cursor.getCol();
+	diffRow = rowK - rowE;
+	diffCol = colK - colE;
+	if (diffRow != 0)
+		diffRow /= Math.abs(diffRow);
+	if (diffCol != 0)
+		diffCol /= Math.abs(diffCol);
+	return ({diffRow, diffCol});
+}
+
+// /**
+//  * 
+//  * @param {string} kingSquare 
+//  * @param {string} enemySquare 
+//  * @returns 
+//  */
+// function isStoppable(kingSquare, enemySquare)
+// {
+// 	if (lib.Chess.board.get(enemySquare)?.piece?.type == lib.Enums.enumNames.JESTER || 
+// 	lib.Chess.board.get(enemySquare)?.piece?.type == lib.Enums.enumNames.BASTARDS || 
+// 	(lib.Chess.board.get(enemySquare)?.piece?.type == lib.Enums.enumNames.VALKIRYA && 
+// 	lib.Chess.board.get(enemySquare)?.piece?.isBoostedBool == true) ||
+// 	lib.Chess.board.get(kingSquare)?.dangerZones.has(enemySquare))
+// 		return true;
+// 	let dir = getDirection(kingSquare, enemySquare);
+// 	cursor.setCursor(cursor.getRow() + dir.diffRow, cursor.getCol() + dir.diffCol);
+// 	while (lib.Chess.board.get(cursor.square)?.piece?.type != lib.Enums.enumNames.KING)
+// 	{
+// 		for (let x of lib.Chess.board.get(cursor.square)?.dangerZones)
+// 		{
+// 			if (lib.Chess.board.get(x)?.piece?.team == lib.Chess.board.get(kingSquare)?.piece?.team)
+// 				return true;
+// 		}
+// 		cursor.setCursor(cursor.getRow() + dir.diffRow, cursor.getCol() + dir.diffCol);
+// 	}
+// 	return false;
+// }
+
+/**
+ * potremmo metterla nelle utils volendo
+ * @param {Set<string>} setZones
+ * @param {string} team
+ */
+function isDangerous(setZones, team)
+{
+	for (let x of setZones)
+	{
+		if (lib.Chess.board.get(x)?.piece?.team != team)
+			return true;
+	}
+	return false;
+}
+
+// function CheckMateCheck()
+// {
+// 	let threatLevel = 0;
+// 	let kingSquare;
+// 	let enemySquare;
+// 	let team;
+
+// 	for (let x of lib.Chess.board)
+// 	{
+// 		if (x[1].piece?.type == lib.Enums.enumNames.KING)
+// 		{
+// 			kingSquare = x[0];
+// 			team = x[1].piece.team;
+// 		}
+// 	}
+// 	if (!isDangerous(lib.Chess.board.get(kingSquare)?.dangerZones, team))
+// 		return false;
+// 	for (let x of lib.Chess.board.get(kingSquare)?.targetZones)
+// 	{
+// 		if (!isDangerous(lib.Chess.board.get(x)?.dangerZones, team) && lib.Chess.board.get(x)?.piece == null)
+// 			return false;
+// 	}
+// 	for (let x of lib.Chess.board.get(kingSquare)?.dangerZones)
+// 	{
+// 		if (lib.Chess.board.get(x)?.piece?.team != team)
+// 		{
+// 			enemySquare = x;
+// 			++threatLevel;
+// 		}
+// 	}
+// 	if (threatLevel >= 2)
+// 		return true;
+// 	if (isDangerous(lib.Chess.board.get(kingSquare)?.dangerZones, lib.Chess.board.get(kingSquare)?.piece?.team))
+// 		return false;
+// 	if (isStoppable(kingSquare, enemySquare))
+// 		return false;
+// 	return true;
+// }
