@@ -3,22 +3,27 @@
 </script>
     
 <template>
-    <div id="wrap">
-        <b><h1 class="text-5xl mt-3 ml-2 mb-5">ChessZ</h1></b>
-        <div>
-            <b><h2 class="text-3xl my-3 ml-2">Gioca</h2></b>
+    <div id="wrap"> 
+        <button>Accedi</button>
+        <div class="menu mt-40 relative flex place-items-center">
+            <img class="absolute" src="../assets/sword2.png">
+            <b><h2 class="relative text-4xl my-3 ml-2 pl-25 z-0">Gioca</h2></b>
         </div>
-		<div>
-            <b><h2 class="text-3xl my-3 ml-2">Tornei</h2></b>
+        <div class="menu mt-5 relative flex place-items-center">
+            <img class="absolute" src="../assets/sword2.png">
+            <b><h2 class="relative text-4xl my-3 ml-2 pl-25 z-0">Tornei</h2></b>
         </div>
-		<div>
-            <b><h2 class="text-3xl my-3 ml-2">Guarda</h2></b>
+        <div class="menu mt-5 relative flex place-items-center">
+            <img class="absolute" src="../assets/sword2.png">
+            <b><h2 class="relative text-4xl my-3 ml-2 pl-25 z-0">Guarda</h2></b>
         </div>
-		<div>
-            <b><h2 class="text-3xl my-3 ml-2">Statistiche</h2></b>
+        <div class="menu mt-5 relative flex place-items-center">
+            <img class="absolute" src="../assets/sword2.png">
+            <b><h2 class="relative text-4xl my-3 ml-2 pl-25 z-0">Statistiche</h2></b>
         </div>
-        <div>
-            <b><h2 class="text-3xl my-3 ml-2">Codex</h2></b>
+        <div class="menu mt-5 relative flex place-items-center">
+            <img class="absolute" src="../assets/sword2.png">
+            <b><h2 class="relative text-4xl my-3 ml-2 pl-25 z-0">Codex</h2></b>
         </div>
         <Footer/>
     </div>
@@ -27,13 +32,64 @@
 
 <style scoped>
     #wrap {
+        position: fixed;
         display: flex;
         flex-direction: column;
-        color: white;
+        justify-self: right;
+        align-items: start;
+        color: rgb(0, 0, 0);
         font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         min-height: 100vh;
-        width: 220px;
-        background-image: linear-gradient(-50deg, red 10%, black 65%);
-    }	
+        width: 350px;
+        padding-right: 50px;
+    }
+
+    button {
+        padding: 10px;
+        padding-left: 20px;
+        padding-right: 20px;
+        margin: 20px;
+        margin-right: -20px;
+        background-color: brown;
+        border-radius: 20px;
+        font-size: large;
+        cursor: pointer;
+        align-self: end;
+        transition: color 0.15s ease-in-out;
+        border-width: 2px;
+        border-color: rgb(0, 0, 0);
+    }
+
+    .menu {
+        width: 960px;
+        animation-duration: 0.5s;
+        animation-name: AnimationStop;
+    }
+
+    .menu:has(h2:hover)
+    {
+        animation-name: AnimationInit;
+        color: rgb(0, 0, 0, 0.5);
+        right: 100px;
+        width: 1100px;
+    }
+
+    .menu:has(img:hover)
+    {
+        animation-name: AnimationInit;
+        right: 100px;
+        width: 1100px;
+    }
+
+    @keyframes AnimationInit {
+        0%   { right:0px; width: 960px }
+        100% { right:100px; width: 1100px }
+    }
+
+    @keyframes AnimationStop {
+        0%   { right:100px; width: 1100px }
+        100% { right:0px; width: 960px }
+    }
+
 
 </style>
