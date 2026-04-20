@@ -4,12 +4,12 @@ const usersQuery = require("../services/usersQuery");
 
 const getAllUsers = async (request, response) => {
 	const users = await usersQuery.getAllUsers();
-	response.json(users);
+	response.json(users.rows);
 }
 
 const getUserById = async (request, response) => {
 	const user = await usersQuery.getUserById(request.params.id);
-	response.json(user);
+	response.json(user.rows);
 }
 
 module.exports = { getAllUsers, getUserById };
