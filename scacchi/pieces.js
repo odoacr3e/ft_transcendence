@@ -2,6 +2,7 @@
 const {board} =  require("./chessBoard.js");
 const {eTeam} =  require("./chessBoard.js");
 const {cursor} = require("./cursor.js");
+const {isDangerous} = require("./utils.js");
 const Macro = require("./macro.js");
 
 //SECTION - Pezzo class
@@ -30,6 +31,93 @@ let movementWithSecondTurn = function ( /* res */)
 	/* 
 		da aggiungere la parte in cui mettiamo SecondMove nell'header
 		se e' il campione ed e' sotto scacco non puo' muoversi
+	*/
+	return (1);
+}
+
+/**
+ * @param {string} pos
+ */
+function berserkMode(pos)
+{
+	let startPos;
+	let piece;
+
+	startPos = cursor.square;
+	piece = board.get(pos)?.piece;
+	for (let {dx, dy} of piece?.moveArrayDEBUG)
+	{
+		while (movePiece(dx, dy, false))
+		{
+			if (board.get(pos)?.piece?.type == enumNames.CHAMPION)
+				board.get(cursor.square)?.dangerZones.add(pos);
+				board.get(pos)?.targetZones.add(pos);
+			if (board.get(cursor.square)?.piece != null)
+			{
+				board.get(cursor.square)?.dangerZones.add(pos);
+				board.get(pos)?.targetZones.add(pos);
+				break ;
+			}
+		}
+		cursor.square = startPos;
+	}
+}
+
+let movementChampion = function ( /* res */)
+{
+	let	startPos;
+	let	piece;
+
+	startPos = cursor.square;
+	piece = board.get(cursor.square)?.piece;
+	if (piece == null)
+		return (0);
+	for (let {dx, dy} of piece.moveArrayDEBUG)
+	{
+		while (movePiece(dx, dy, false))
+		{
+			board.get(cursor.square)?.dangerZones.add(startPos);
+			board.get(startPos)?.targetZones.add(cursor.square);
+			if (!isDangerous(board.get(cursor.square)?.dangerZones, piece.team) && 
+			(board.get(cursor.square)?.piece == null || 
+			board.get(cursor.square)?.piece?.team != piece.team))
+				berserkMode(startPos);
+			if (board.get(cursor.square)?.piece != null)
+				break ;
+		}
+		cursor.square = startPos;
+	}
+	/* 
+		da aggiungere la parte in cui mettiamo SecondMove nell'header
+	*/
+	return (1);
+}
+
+let movementMinotaurus = function ( /* res */)
+{
+	let	startPos;
+	let	piece;
+
+	startPos = cursor.square;
+	piece = board.get(cursor.square)?.piece;
+	if (piece == null)
+		return (0);
+	for (let {dx, dy} of piece.moveArrayDEBUG)
+	{
+		while (movePiece(dx, dy, false))
+		{
+			board.get(cursor.square)?.dangerZones.add(startPos);
+			board.get(startPos)?.targetZones.add(cursor.square);
+			if (board.get(cursor.square)?.piece != null)
+			{
+				berserkMode(startPos);
+				break ;
+			}
+		}
+		cursor.square = startPos;
+	}
+	/* 
+		da aggiungere la parte in cui mettiamo SecondMove nell'header
 	*/
 	return (1);
 }
@@ -169,7 +257,7 @@ const preset = {
 		 	{dx:0, dy:1}, {dx:0, dy:-1},//verticale
 		 	{dx:1, dy:0}, {dx:-1, dy:0},//orizzontale
 		],
-		booster: movementWithSecondTurn
+		booster: movementChampion
 	},
 	Jester: {
 		type: enumNames.JESTER,
@@ -201,7 +289,7 @@ const preset = {
 		 	{dx:0, dy:1}, {dx:0, dy:-1},//verticale
 		 	{dx:1, dy:0}, {dx:-1, dy:0},//orizzontale
 		],
-		booster: movementWithSecondTurn
+		booster: movementMinotaurus
 	},
 	Bastards: {
 		type: enumNames.BASTARDS,
@@ -265,4 +353,4 @@ function movePiece(dx, dy, clear)
 }
 
 
-module.exports = {Piece, enumNames, enumValues, preset, movementJester, movementWithSecondTurn};
+module.exports = {Piece, enumNames, enumValues, preset};

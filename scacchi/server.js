@@ -1,38 +1,16 @@
 
 const lib = require("./lib.js");
 
-const express = lib.include.express;
-const app = express();
-const { db } = require("./database.js");
+const app = lib.include.express();
+const { db } = require("./services/dbConnection.js");
 const { rejects } = require("node:assert");
 
+// setup
 const port = 8080;
 let requests = 0;
+app.set('json spaces', 2);
 
-async function getAllUsers() {
-	return (new Promise((resolve, reject) => {
-		db.query("SELECT * FROM userss")
-		.then((res) => {
-			resolve(res.rows);
-		})
-		.catch((err) => {
-			reject(err);
-		})
-	}));
-}
-
-app.get('/', async (request, response) => {
-	console.log("Arrivata request " + ++requests); // scrive sul server
-	try {
-		const users = await getAllUsers();
-		console.log("Trovati utenti");
-		response.send(users); // manda response al client
-	}
-	catch (err){
-		console.log(err.message);
-		response.status(500).json({error: err.message});
-	}
-})
+app.use("/api", require("./routes"));
 
 app.listen(port, () => {
 	console.log("Server is listening on port " + port);

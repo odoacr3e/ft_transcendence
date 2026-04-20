@@ -2,7 +2,7 @@
 const { Pool } = require('pg');
 require('dotenv').config();
 
-
+// db pool connetion with max connections
 const db = new Pool({
 	host: process.env.DB_HOST,
 	database: process.env.DB_NAME,

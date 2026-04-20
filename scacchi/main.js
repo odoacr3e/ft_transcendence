@@ -139,11 +139,20 @@ function initRandomBoard()
 		if (rand == 11)
 			data.piece = new lib.Chess.Piece(lib.preset.Bastards, "", key, false);
 		else if (rand == 12)
+		{
 			data.piece = new lib.Chess.Piece(lib.preset.Champion, "", key, true);
+			data.piece.isBoostedBool = true;
+		}
 		else if (rand == 13)
+		{
 			data.piece = new lib.Chess.Piece(lib.preset.Jester, "", key, false);
+			data.piece.isBoostedBool = true;
+		}
 		else if (rand == 14)
+		{
 			data.piece = new lib.Chess.Piece(lib.preset.Minotaurus, "", key, true);
+			data.piece.isBoostedBool = true;
+		}
 		else
 		{
 			data.piece = new lib.Chess.Piece(lib.preset.Valkirya, "", key, true);
@@ -204,21 +213,6 @@ function getDirection(kingSquare, enemySquare)
 // 	}
 // 	return false;
 // }
-
-/**
- * potremmo metterla nelle utils volendo
- * @param {Set<string>} setZones
- * @param {string} team
- */
-function isDangerous(setZones, team)
-{
-	for (let x of setZones)
-	{
-		if (lib.Chess.board.get(x)?.piece?.team != team)
-			return true;
-	}
-	return false;
-}
 
 // function CheckMateCheck()
 // {
