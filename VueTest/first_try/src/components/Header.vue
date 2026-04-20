@@ -61,6 +61,22 @@
     }
 
     .menu {
+        cursor: pointer;
+        position: relative;
+        width: 960px;
+        right: 0;
+        transition: right 0.75s ease, width 0.75s ease, color 0.15s ease-in-out;
+    }
+    
+    .menu:hover {
+        right: 100px;
+        width: 1100px;
+        color: rgba(0, 0, 0, 0.5);
+    }
+
+</style>
+
+<!-- .menu {
         width: 960px;
         animation-duration: 0.5s;
         animation-name: AnimationStop;
@@ -89,7 +105,4 @@
     @keyframes AnimationStop {
         0%   { right:100px; width: 1100px }
         100% { right:0px; width: 960px }
-    }
-
-
-</style>
+    } -->
