@@ -48,5 +48,5 @@ body{
 	display: block;
 	margin: auto;
 	border-radius: 50%;
-	background-color: yellow/* rgba(0, 0, 0, 0.1) */;
+	background-color: brown; /* rgba(0, 0, 0, 0.1) */;
 }

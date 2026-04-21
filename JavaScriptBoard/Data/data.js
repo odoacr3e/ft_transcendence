@@ -13,10 +13,11 @@ function getSquareColor(rowId, colIndex) {
  * @param {string} color
  * @param {string} id
  * @param {} piece 
+ * @param {boolean} highlight
  * @returns Object Square containing color, id, and piece on the square
  */
-function Square(color, id, piece) {
-    return { color, id, piece };
+function Square(color, id, piece, highlight) {
+    return { color, id, piece, highlight };
 }
 
 /**
@@ -31,7 +32,7 @@ function SquareRow(rowId)
     return letters.map((letter, index) => {
         const color = getSquareColor(rowId, index);
         const id = letter + rowId;
-        return Square(color, id, null);
+        return Square(color, id, null, false);
     });
 }
 

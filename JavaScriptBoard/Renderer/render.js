@@ -31,9 +31,7 @@ function piece_filler(square)
 {
 	const id = square.id;
 
-/* 	if (id === "b4")
-		square.piece = pieces.whitePawn(id);
-	else  */if (INITIAL_PIECES[id])
+	if (INITIAL_PIECES[id])
 		square.piece = INITIAL_PIECES[id](id);
 	else if (id[1] === "2")
 		square.piece = pieces.whitePawn(id);
@@ -61,19 +59,32 @@ function pieceRenderer(data)
 	});
 }
 
-function highlightRender(squareId)
+function highlightRender(squareId, square)
 {
-	const highlightSpan = document.createElement("span");
-	highlightSpan.classList.add("highlight");
-	document.getElementById(squareId).appendChild(highlightSpan);
+	const DOMsquare = document.getElementById(squareId);
+	if (square.highlight === false)
+	{
+		square.highlight = true;
+		const highlightSpan = document.createElement("span");
+		highlightSpan.classList.add("highlight");
+		DOMsquare.appendChild(highlightSpan);
+	}
+	else
+	{
+		square.highlight = false;
+		DOMsquare.removeChild(DOMsquare.querySelector(".highlight"));
+	}
 }
 
-function clearHighlight(data)
+function clearHighlight()
 {
 	Board.forEach(row => {
 		row.forEach(square => {
-			if (square.highlight == true) {
-				square.highlight == false;
+			const DOMsquare = document.getElementById(square.id);
+			if (square.highlight === true)
+			{
+				square.highlight = false;
+				DOMsquare.removeChild(DOMsquare.querySelector(".highlight"));
 			}
 		})
 	})
