@@ -15,6 +15,19 @@ function initGamerenderer(data)
 			const squareDiv = document.createElement("div");
 			squareDiv.id = square.id; 
 			squareDiv.classList.add(square.color, "square");
+			squareDiv.ondrop = (ev) => {
+				ev.preventDefault();
+				if (ev.currentTarget.querySelector("img"))
+        			return;
+				const data = ev.dataTransfer.getData("text");
+				const draggedPiece = document.getElementById(data);
+				
+				if (draggedPiece)
+					ev.currentTarget.appendChild(draggedPiece);
+			};
+			squareDiv.ondragover = (ev) => {
+				ev.preventDefault();
+			};
 
 			// Questa funzione va tolta, temporanea
 			piece_filler(square);
@@ -51,6 +64,11 @@ function pieceRenderer(data)
 				const piece = document.createElement("img");
 
 				piece.src = square.piece.img;
+				piece.id = `piece-${square.id}`;
+				piece.draggable = true;
+				piece.ondragstart = (ev) => {
+					ev.dataTransfer.setData("text", ev.target.id);
+				};
 
 				piece.classList.add("piece");
 				squareEl.appendChild(piece);

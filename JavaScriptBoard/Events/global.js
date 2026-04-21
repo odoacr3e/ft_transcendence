@@ -20,6 +20,19 @@ function globalEvents()
 			lastClickedId = clickedId;
 		}
 	});
+
+	// ROOT_DIV.addEventListener("drag", function (event) {
+	// 	if (event.target.localName === "img")
+	// 	{
+	// 		const clickedId = event.target.parentNode.id;
+			
+	// 		const flatBoard = Board.flat();
+	// 		const clickedPiece = flatBoard.find((el) => el.id == clickedId).piece; 
+	// 		console.log(clickedPiece.piece_name, ` in position: ${clickedId}`);
+	// 		clickedPiece.moved = true;
+	// 		movePiece(clickedPiece);
+	// 	}
+	// });
 }
 
 function movePiece(piece)
@@ -38,13 +51,13 @@ function movePiece(piece)
 function whitePawn(piece)
 {
 	const curr_pos = piece.current_position;
-
-	if (piece.moved === false) 
-	{
-		const AllowedMoves = [
+	const AllowedMoves = [
 			`${curr_pos[0]}${Number(curr_pos[1]) + 1}`,
 			`${curr_pos[0]}${Number(curr_pos[1]) + 2}`,
 			];
+
+	if (piece.moved === false) 
+	{
 		// console.log("possible moves ", AllowedMoves);
 
 		AllowedMoves.forEach((highlight) => {
@@ -52,7 +65,7 @@ function whitePawn(piece)
 				row.forEach(square => {
 					if (square.id == highlight)
 					{
-						// console.log(square);
+						console.log(square);
 						highlightRender(highlight, square);
 					}
 				})
