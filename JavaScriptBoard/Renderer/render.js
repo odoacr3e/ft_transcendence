@@ -19,9 +19,13 @@ function initGamerenderer(data)
 				ev.preventDefault();
 				if (ev.currentTarget.querySelector("img"))
         			return;
-				const data = ev.dataTransfer.getData("text");
-				const draggedPiece = document.getElementById(data);
+				const pieceId = ev.dataTransfer.getData("pieceId");
+				const formSquareId = ev.dataTransfer.getData("fromSquareId");
+				const toSquareId = ev.currentTarget.id;
 				
+				if (!movePiece(formSquareId, toSquareId)) { return }
+				
+				const draggedPiece = document.getElementById(pieceId);
 				if (draggedPiece)
 					ev.currentTarget.appendChild(draggedPiece);
 			};
@@ -39,6 +43,22 @@ function initGamerenderer(data)
 	});
 	pieceRenderer(data);
 }
+
+function movePiece(fromSquareId, toSquareId)
+{
+	const Bflat = Board.flat();
+	const fromS = Bflat.find(s => s.id == fromSquareId);
+	const toS = Bflat.find(s => s.id == toSquareId);
+
+	if (!fromS || !fromS.piece || !toS) { return false; }
+
+	toS.piece = fromS.piece;
+	fromS.piece = null;
+	toS.piece.current_position = toS.id;
+
+	return true;
+}
+
 
 function piece_filler(square)
 {
@@ -67,7 +87,8 @@ function pieceRenderer(data)
 				piece.id = `piece-${square.id}`;
 				piece.draggable = true;
 				piece.ondragstart = (ev) => {
-					ev.dataTransfer.setData("text", ev.target.id);
+					ev.dataTransfer.setData("pieceId", ev.target.id);
+					ev.dataTransfer.setData("fromSquareId", ev.target.parentNode.id);
 				};
 
 				piece.classList.add("piece");
