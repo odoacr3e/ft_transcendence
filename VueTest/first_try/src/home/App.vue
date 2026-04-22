@@ -2,7 +2,6 @@
   import Header from './components/Header.vue'
   import Logo from './components/Logo.vue';
   import Background from './components/Background.vue';
-  // import Main from './compontents/Main.vue'
 </script>
 
 <template>
