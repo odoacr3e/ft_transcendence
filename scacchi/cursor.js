@@ -51,7 +51,7 @@ let setCursor = (newRow, newCol) => {
 }
 
 let cursor = {
-	square: "a1",
+	/** @type {string} */ square: "a1",
 	getRow: getRow,
 	getCol: getCol,
 	setRow: setRow,

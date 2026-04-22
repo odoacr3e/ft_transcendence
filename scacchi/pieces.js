@@ -2,11 +2,10 @@
 const {board} =  require("./chessBoard.js");
 const {eTeam} =  require("./chessBoard.js");
 const {cursor} = require("./cursor.js");
-const {isDangerous} = require("./utils.js");
+const {isDangerous, movePiece} = require("./utils.js");
 const Macro = require("./macro.js");
 
-//SECTION - Pezzo class
-//ANCHOR - Definition 
+//ANCHOR - Methods
 
 let movementWithSecondTurn = function ( /* res */)
 {
@@ -30,7 +29,6 @@ let movementWithSecondTurn = function ( /* res */)
 	}
 	/* 
 		da aggiungere la parte in cui mettiamo SecondMove nell'header
-		se e' il campione ed e' sotto scacco non puo' muoversi
 	*/
 	return (1);
 }
@@ -50,8 +48,10 @@ function berserkMode(pos)
 		while (movePiece(dx, dy, false))
 		{
 			if (board.get(pos)?.piece?.type == enumNames.CHAMPION)
+			{
 				board.get(cursor.square)?.dangerZones.add(pos);
 				board.get(pos)?.targetZones.add(pos);
+			}
 			if (board.get(cursor.square)?.piece != null)
 			{
 				board.get(cursor.square)?.dangerZones.add(pos);
@@ -182,6 +182,9 @@ let movementValkirya = function ()
 	}
 	return (1);
 }
+
+//SECTION - Pezzo class
+//ANCHOR - Definition 
 
 class Piece
 {
@@ -315,42 +318,5 @@ const preset = {
 		booster: null
 	},
 }
-
-//ANCHOR - Methods
-
-/**
- * 
- * @param {number} dx 
- * @param {number} dy
- * @param {boolean} clear
- */
-function movePiece(dx, dy, clear)
-{
-	let newRow = cursor.getRow() + dy;
-	let newCol = cursor.getCol() + dx;
-
-	if (newRow < 0 || newRow >= Macro.CHESSBOARD_H)
-		return false;
-	else if (newCol <= 0 || newCol > Macro.CHESSBOARD_W)
-		return false;
-
-	if (clear == true)
-	{
-		let currentSquare = board.get(cursor.square);
-		let zones = currentSquare?.targetZones;
-
-		if (zones != null)
-		{
-			for (let zone of zones)
-			{
-				board.get(zone)?.dangerZones.delete(cursor.square);
-			}
-			zones.clear();
-		}
-	}
-	cursor.setCursor(newRow, newCol);
-	return true;
-}
-
 
 module.exports = {Piece, enumNames, enumValues, preset};
