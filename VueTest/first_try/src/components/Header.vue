@@ -7,7 +7,7 @@
         <button>Accedi</button>
         <div class="menu mt-40 relative flex place-items-center">
             <img class="absolute" src="../assets/sword2.png">
-            <a href="/board.html">
+            <a href="/game">
                 <b><h2 class="relative text-4xl my-3 ml-2 pl-25 z-0">Gioca</h2></b>
             </a>
         </div>
@@ -44,6 +44,7 @@
         min-height: 100vh;
         width: 350px;
         padding-right: 50px;
+        z-index: 100;
     }
 
     button {

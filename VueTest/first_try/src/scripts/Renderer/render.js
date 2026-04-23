@@ -23,6 +23,8 @@ function initGamerenderer(data)
 				const pieceId = ev.dataTransfer.getData("pieceId");
 				const formSquareId = ev.dataTransfer.getData("fromSquareId");
 				const toSquareId = ev.currentTarget.id;
+
+				console.log(formSquareId + ' => ' + toSquareId);
 				
 				if (!movePiece(formSquareId, toSquareId)) { return }
 				

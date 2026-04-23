@@ -1,7 +1,4 @@
-export function Greet()
-{
-	alert("Sei un gay!");
-}
+import { reactive } from 'vue';
 
 // Obtain square color by rowId and column index
 function getSquareColor(rowId, colIndex) {
@@ -46,13 +43,23 @@ function initBoard()
 
     for (let i = 8; i >= 1; i--)
         board.push(SquareRow(i));
+    // fetch('/moves', { method: 'GET' })
+	// 	.then(() => {
+	// 		console.log('Session created! Redirecting...');
+	// 		// window.location.href = '/';
+	// 	})
+	// 	.catch(err => {
+	// 		console.log('Error creating session');
+	// 	});
 
     return board;
 }
 
-const Board = initBoard();
+const Board = reactive(initBoard());
 
-export { initBoard, Board };
+export { Board };
+
+// export { initBoard, Board };
 
 
 

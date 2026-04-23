@@ -17,24 +17,11 @@ function globalEvents()
 			
 			const flatBoard = Board.flat();
 			const clickedPiece = flatBoard.find((el) => el.id == clickedId).piece; 
-			console.log(clickedPiece.piece_name, ` in position: ${clickedId}`);
+			// console.log(clickedPiece.piece_name, ` in position: ${clickedId}`);
 			movePiece(clickedPiece);
 			lastClickedId = clickedId;
 		}
 	});
-
-	// ROOT_DIV.addEventListener("drag", function (event) {
-	// 	if (event.target.localName === "img")
-	// 	{
-	// 		const clickedId = event.target.parentNode.id;
-			
-	// 		const flatBoard = Board.flat();
-	// 		const clickedPiece = flatBoard.find((el) => el.id == clickedId).piece; 
-	// 		console.log(clickedPiece.piece_name, ` in position: ${clickedId}`);
-	// 		clickedPiece.moved = true;
-	// 		movePiece(clickedPiece);
-	// 	}
-	// });
 }
 
 function movePiece(piece)

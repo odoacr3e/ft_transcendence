@@ -1,8 +1,8 @@
 <script setup>
     import { onMounted }        from 'vue';
-    import { Board } 		    from "../composable/Data/data.js";
-    import { initGamerenderer } from "../composable/Renderer/render.js";
-    import { globalEvents } 	from "../composable/Events/global.js";
+    import { Board } 		    from "../scripts/Data/data.js";
+    import { initGamerenderer } from "../scripts/Renderer/render.js";
+    import { globalEvents } 	from "../scripts/Events/global.js";
 
     onMounted(() => {
         initGamerenderer(Board)

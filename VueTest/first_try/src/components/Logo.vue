@@ -27,6 +27,7 @@
 		top: 0%;
 		width: 30vw;
 		height: 20vh;
+		z-index: 101;
 	}
 	h1
 	{
