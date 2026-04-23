@@ -22,23 +22,6 @@ export function isValidSquareId(id)
 	return (FILES.includes(file) && rank >= 1 && rank <= 8);
 }
 
-export function offsetSquare(id, dx, dy)
-{
-	const file = id[0];
-	const rank = Number(id[1]);
-
-	const x = FILES.indexOf(file);
-	const y = rank - 1;
-
-	const ox = x + dx;
-	const oy = y + dy;
-
-	if (ox < 0 || ox > 7 || oy < 0 || oy > 7)
-		return null;
-
-	return (`${FILES[ox]}${oy + 1}`);
-}
-
 export class Square 
 {
 	constructor(id, color, piece = null) 
@@ -50,8 +33,6 @@ export class Square
 		this.id = id;
 		this.color = color;
 		this.piece = null;
-
-		// Metadati di dominio (non UI)
 		this.targetZones = new Set();
 		this.dangerZones = new Set();
 
