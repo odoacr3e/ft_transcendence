@@ -1,13 +1,13 @@
 <script setup>
-  import Header from '../components/Header.vue'
-  import Logo from '../components/Logo.vue';
-  import Background from '../components/Background.vue';
+  import MenuHeader from '../components/MenuHeader.vue'
+  import MainLogo from '../components/MainLogo.vue';
+  import BackGround from '../components/BackGround.vue';
 </script>
 
 <template>
-  <Background/>
-  <Logo/>
-  <Header/>
+  <BackGround/>
+  <MainLogo/>
+  <MenuHeader/>
 </template>
 
 <style scoped>

@@ -1,13 +1,13 @@
 <script setup>
-  import Logo from '../components/Logo.vue';
-  import Background from '../components/Background.vue';
-  import Board from '../components/Board.vue';
+  import MainLogo from '../components/MainLogo.vue';
+  import BackGround from '../components/BackGround.vue';
+  import BoardCopyWIP from '../components/BoardCopyWIP.vue';
 </script>
 
 <template>
-  <Background/>
-  <Logo/>
-  <Board/>
+  <BackGround/>
+  <MainLogo/>
+  <BoardCopyWIP/>
 </template>
 
 <style scoped>

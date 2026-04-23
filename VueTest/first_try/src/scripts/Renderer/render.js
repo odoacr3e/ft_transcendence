@@ -37,7 +37,7 @@ function initGamerenderer(data)
 			};
 
 			// Questa funzione va tolta, temporanea
-			piece_filler(square);
+			// piece_filler(square);
 
 			rowEl.appendChild(squareDiv);
 		});
@@ -60,21 +60,6 @@ function movePiece(fromSquareId, toSquareId)
 	toS.piece.current_position = toS.id;
 
 	return true;
-}
-
-
-function piece_filler(square)
-{
-	const id = square.id;
-
-	if (INITIAL_PIECES[id])
-		square.piece = INITIAL_PIECES[id](id);
-	else if (id[1] === "2")
-		square.piece = pieces.whitePawn(id);
-	else if (id[1] === "7")
-		square.piece = pieces.blackPawn(id);
-	else
-		square.piece = null;
 }
 
 function pieceRenderer(data)
@@ -132,4 +117,4 @@ function clearHighlight()
 	})
 }
 
-export { initGamerenderer, highlightRender, clearHighlight }
+export { initGamerenderer, highlightRender, clearHighlight, movePiece }

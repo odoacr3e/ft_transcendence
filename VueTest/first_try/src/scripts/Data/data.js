@@ -1,3 +1,5 @@
+import { INITIAL_PIECES } from "../Helper/constants.js";
+import * as pieces from "../Data/pieces.js";
 import { reactive } from 'vue';
 
 // Obtain square color by rowId and column index
@@ -22,7 +24,7 @@ function Square(color, id, piece, highlight) {
  * @param {integer} rowId 
  * @returns A single chessboard Row
  */
-function SquareRow(rowId) 
+function SquareRow(rowId)
 {
     const letters = ['a','b','c','d','e','f','g','h'];
 
@@ -33,17 +35,28 @@ function SquareRow(rowId)
     });
 }
 
+function piece_filler(sq)
+{
+	const id = sq.id;
+
+	if (INITIAL_PIECES[id])
+		sq.piece = INITIAL_PIECES[id](id);
+	else if (id[1] === "2")
+		sq.piece = pieces.whitePawn(id);
+	else if (id[1] === "7")
+		sq.piece = pieces.blackPawn(id);
+	else
+		sq.piece = null;
+}
+
 /**
- * 
  * @returns Board filled with SquareRows
  */
-function initBoard() 
+function initBoard()
 {
     const board = [];
 
-    for (let i = 8; i >= 1; i--)
-        board.push(SquareRow(i));
-    // fetch('/moves', { method: 'GET' })
+    // fetch('/init.json', { method: 'GET' })
 	// 	.then(() => {
 	// 		console.log('Session created! Redirecting...');
 	// 		// window.location.href = '/';
@@ -51,15 +64,23 @@ function initBoard()
 	// 	.catch(err => {
 	// 		console.log('Error creating session');
 	// 	});
+    for (let i = 8; i >= 1; i--)
+    {
+        const row = SquareRow(i);
 
+        row.forEach(squ => {
+            piece_filler(squ);
+            if (squ.piece)
+                console.log(squ.id + " => " + squ.piece.piece_name);
+        });
+        board.push(row);
+    }
     return board;
 }
 
 const Board = reactive(initBoard());
 
-export { Board };
-
-// export { initBoard, Board };
+export { initBoard, Board };
 
 
 

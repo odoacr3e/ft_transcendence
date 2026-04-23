@@ -1,5 +1,5 @@
 <script setup>
-    import Footer from './Footer.vue'
+    import LinkFooter from './LinkFooter.vue'
 </script>
     
 <template>
@@ -27,7 +27,7 @@
             <img class="absolute" src="../assets/sword2.png">
             <b><h2 class="relative text-4xl my-3 ml-2 pl-25 z-0">Codex</h2></b>
         </div>
-        <Footer/>
+        <LinkFooter/>
     </div>
 
 </template>
