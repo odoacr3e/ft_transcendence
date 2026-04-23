@@ -78,6 +78,39 @@ function initBoard()
     return board;
 }
 
+// class Square
+// {
+// 	constructor()
+// 	{
+//         /** @type {string | undefined} */	this.color = undefined;
+//         /** @type {Piece | null} */   		this.piece = null;
+// 		/** @type {Set<string>} */			this.targetZones = new Set();
+// 		/** @type {Set<string>} */			this.dangerZones = new Set();
+// 	}
+// }
+
+// class Piece
+// {
+// 	/**
+// 	 * @param {{type: string, price: number, movement: Array<{dx: number, dy:number}>}} obj
+// 	 * @param {string} team
+// 	 * @param {string} pos
+// 	 * @param {boolean} long
+// 	 */
+// 	constructor ({type, price, movement}, team, pos, long)
+// 	{
+// 		/** @type {string} */   						this.type = type;
+// 		/** @type {number} */   						this.price = price;
+// 		/** @type {string} */   						this.team = eTeam.Black;
+// 		/** @type {boolean} */  						this.isMovedBool = false;
+// 		/** @type {boolean} */  						this.isBoostedBool = false;
+// 		/** @type {string} */ 							this.pos = pos;
+// 		/** @type {Function} */ 						this.moveFunction;
+// 		/** @type {Array<{dx: number, dy:number}>} */	this.moveArrayDEBUG = movement;
+// 		/** @type {boolean} */							this.moveLongRangeDEBUG = long;
+// 	}
+// }
+
 const Board = reactive(initBoard());
 
 export { initBoard, Board };
