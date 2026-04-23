@@ -1,20 +1,23 @@
 <script setup>
     import { onMounted }	from 'vue';
-    import { Board }		from "../scripts/Data/data.js";
-    import { movePiece }	from "../scripts/Renderer/render.js";
-    import { globalEvents }	from "../scripts/Events/global.js";
+    import { Board }		from "../scripts/first_try/Data/data.js";
+    import { movePiece }	from "../scripts/first_try/Renderer/render.js";
+    import { globalEvents }	from "../scripts/first_try/Events/global.js";
 
-	function onDragStart(event, square) {
+	function onDragStart(event, square)
+	{
 	  event.dataTransfer.setData('pieceId', `piece-${square.id}`)
 	  event.dataTransfer.setData('fromSquareId', square.id)
 	}
 
-	function onDrop(event, toSquare) {
-	  event.preventDefault()
-	  if (toSquare.piece) return  // casa occupata
+	function onDrop(event, toSquare)
+	{
+		event.preventDefault()
+		if (toSquare.piece)
+			return
 
-	  const fromSquareId = event.dataTransfer.getData('fromSquareId')
-	  movePiece(fromSquareId, toSquare.id, Board)
+		const fromSquareId = event.dataTransfer.getData('fromSquareId')
+		movePiece(fromSquareId, toSquare.id, Board)
 	}
 
     onMounted(() => {
