@@ -2,7 +2,7 @@ class Square
 {
 	constructor()
 	{
-        /** @type {string | undefined} */			this.color = undefined;
+        /** @type {string | "white" | "black"} */	this.color = black; //dato che il primo elemento a sinistra è sempre nero
         /** @type {string | "white" | "black"} */   this.piece = null;
 		/** @type {Set<string>} */					this.targetZones = new Set();
 		/** @type {Set<string>} */					this.dangerZones = new Set();
@@ -21,7 +21,7 @@ class Piece
 	{
 		/** @type {string} */   						this.type = type;
 		/** @type {number} */   						this.price = price;
-		/** @type {string} */   						this.team = TEAM.BLACK;
+		/** @type {string} */   						this.team = black;
 		/** @type {boolean} */  						this.isMovedBool = false;
 		/** @type {boolean} */  						this.isBoostedBool = false;
 		/** @type {string} */ 							this.pos = pos;

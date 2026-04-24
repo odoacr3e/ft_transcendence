@@ -1,49 +1,20 @@
 <script setup>
     import { onMounted }	from 'vue';
-    import { Board }		from "../scripts/first_try/Data/data.js";
-    import { movePiece }	from "../scripts/first_try/Renderer/render.js";
-    import { globalEvents }	from "../scripts/first_try/Events/global.js";
-
-	function onDragStart(event, square)
-	{
-	  event.dataTransfer.setData('pieceId', `piece-${square.id}`)
-	  event.dataTransfer.setData('fromSquareId', square.id)
-	}
-
-	function onDrop(event, toSquare)
-	{
-		event.preventDefault()
-		if (toSquare.piece)
-			return
-
-		const fromSquareId = event.dataTransfer.getData('fromSquareId')
-		movePiece(fromSquareId, toSquare.id, Board)
-	}
-
-    onMounted(() => {
-        globalEvents()
-    })
+    import { Board }		from "../scripts/second_try/Data/Board.js";
+    // import { movePiece }	from "../scripts/second_try/Renderer/render.js";
+    // import { globalEvents }	from "../scripts/second_try/Events/global.js";
 </script>
 
 <template>
     <div id="root">
 		<div id="board">
-			<div v-for="row in Board" class="squareRow">
+			<!-- <div v-for="row in Board">
 				<div
 					v-for="square in row"
         			:id="square.id"
         			:class="[square.color, 'square']"
-        			@drop="onDrop($event, square)"
-        			@dragover.prevent>
-					<img
-						v-if="square.piece"
-						class="piece"
-						:src="square.piece.img"
-						:draggable="true"
-						@dragstart="onDragStart($event, square)"/>
-					<span v-if="square.highlight" class="highlight"></span>
 				</div>
-			</div>
+			</div> -->
 		</div>
 	</div>
 </template>

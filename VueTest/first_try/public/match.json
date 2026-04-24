@@ -7,7 +7,7 @@
   },
   "p2": {
     "name": "player2",
-    "team": "Black",
+    "team": "black",
     "pieces": 16,
     "points": 0
   },
@@ -28,9 +28,9 @@
     },
     "a3": {
       "piece": {
-        "type": "minotaurus",
+        "type": "Minotaurus",
         "price": 5,
-        "team": "Black",
+        " ": "black",
         "isMovedBool": false,
         "isBoostedBool": true,
         "pos": "a3",
@@ -100,9 +100,9 @@
     },
     "a8": {
       "piece": {
-        "type": "minotaurus",
+        "type": "Minotaurus",
         "price": 5,
-        "team": "Black",
+        "team": "black",
         "isMovedBool": false,
         "isBoostedBool": true,
         "pos": "a8",
@@ -150,9 +150,9 @@
     },
     "b4": {
       "piece": {
-        "type": "valkirya",
+        "type": "Valkirya",
         "price": 3,
-        "team": "Black",
+        "team": "black",
         "isMovedBool": false,
         "isBoostedBool": true,
         "pos": "b4",
@@ -206,9 +206,9 @@
     },
     "c2": {
       "piece": {
-        "type": "bastards",
+        "type": "Bastards",
         "price": 1,
-        "team": "Black",
+        "team": "black",
         "isMovedBool": false,
         "isBoostedBool": false,
         "pos": "c2",
@@ -247,9 +247,9 @@
     },
     "c3": {
       "piece": {
-        "type": "minotaurus",
+        "type": "Minotaurus",
         "price": 5,
-        "team": "Black",
+        "team": "black",
         "isMovedBool": false,
         "isBoostedBool": true,
         "pos": "c3",
@@ -280,9 +280,9 @@
     },
     "c4": {
       "piece": {
-        "type": "champion",
+        "type": "Champion",
         "price": 10,
-        "team": "Black",
+        "team": "black",
         "isMovedBool": false,
         "isBoostedBool": true,
         "pos": "c4",
@@ -354,9 +354,9 @@
     },
     "d2": {
       "piece": {
-        "type": "champion",
+        "type": "Champion",
         "price": 10,
-        "team": "Black",
+        "team": "black",
         "isMovedBool": false,
         "isBoostedBool": true,
         "pos": "d2",
@@ -411,9 +411,9 @@
     },
     "d5": {
       "piece": {
-        "type": "valkirya",
+        "type": "Valkirya",
         "price": 3,
-        "team": "Black",
+        "team": "black",
         "isMovedBool": false,
         "isBoostedBool": true,
         "pos": "d5",
@@ -457,9 +457,9 @@
     },
     "e1": {
       "piece": {
-        "type": "jester",
+        "type": "Jester",
         "price": 5,
-        "team": "Black",
+        "team": "black",
         "isMovedBool": false,
         "isBoostedBool": true,
         "pos": "e1",
@@ -509,9 +509,9 @@
     },
     "e3": {
       "piece": {
-        "type": "bastards",
+        "type": "Bastards",
         "price": 1,
-        "team": "Black",
+        "team": "black",
         "isMovedBool": false,
         "isBoostedBool": false,
         "pos": "e3",
@@ -550,9 +550,9 @@
     },
     "e4": {
       "piece": {
-        "type": "minotaurus",
+        "type": "Minotaurus",
         "price": 5,
-        "team": "Black",
+        "team": "black",
         "isMovedBool": false,
         "isBoostedBool": true,
         "pos": "e4",
@@ -581,9 +581,9 @@
     },
     "e5": {
       "piece": {
-        "type": "bastards",
+        "type": "Bastards",
         "price": 1,
-        "team": "Black",
+        "team": "black",
         "isMovedBool": false,
         "isBoostedBool": false,
         "pos": "e5",
@@ -620,9 +620,9 @@
     },
     "e6": {
       "piece": {
-        "type": "minotaurus",
+        "type": "Minotaurus",
         "price": 5,
-        "team": "Black",
+        "team": "black",
         "isMovedBool": false,
         "isBoostedBool": true,
         "pos": "e6",
@@ -666,9 +666,9 @@
     },
     "f2": {
       "piece": {
-        "type": "bastards",
+        "type": "Bastards",
         "price": 1,
-        "team": "Black",
+        "team": "black",
         "isMovedBool": false,
         "isBoostedBool": false,
         "pos": "f2",
@@ -710,9 +710,9 @@
     },
     "f4": {
       "piece": {
-        "type": "jester",
+        "type": "Jester",
         "price": 5,
-        "team": "Black",
+        "team": "black",
         "isMovedBool": false,
         "isBoostedBool": true,
         "pos": "f4",
@@ -757,9 +757,9 @@
     },
     "f5": {
       "piece": {
-        "type": "minotaurus",
+        "type": "Minotaurus",
         "price": 5,
-        "team": "Black",
+        "team": "black",
         "isMovedBool": false,
         "isBoostedBool": true,
         "pos": "f5",
@@ -813,9 +813,9 @@
     },
     "g3": {
       "piece": {
-        "type": "champion",
+        "type": "Champion",
         "price": 10,
-        "team": "Black",
+        "team": "black",
         "isMovedBool": false,
         "isBoostedBool": true,
         "pos": "g3",
@@ -880,9 +880,9 @@
     },
     "g8": {
       "piece": {
-        "type": "minotaurus",
+        "type": "Minotaurus",
         "price": 5,
-        "team": "Black",
+        "team": "black",
         "isMovedBool": false,
         "isBoostedBool": true,
         "pos": "g8",
@@ -928,9 +928,9 @@
     },
     "h4": {
       "piece": {
-        "type": "bastards",
+        "type": "Bastards",
         "price": 1,
-        "team": "Black",
+        "team": "black",
         "isMovedBool": false,
         "isBoostedBool": false,
         "pos": "h4",
@@ -982,9 +982,9 @@
     },
     "h8": {
       "piece": {
-        "type": "bastards",
+        "type": "Bastards",
         "price": 1,
-        "team": "Black",
+        "team": "black",
         "isMovedBool": false,
         "isBoostedBool": false,
         "pos": "h8",
