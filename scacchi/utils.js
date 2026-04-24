@@ -1,4 +1,6 @@
 const {board, Square} = require("./chessBoard.js");
+const Macro = require("./macro.js");
+const {cursor} = require("./cursor.js");
 
 /**
  * potremmo metterla nelle utils volendo
