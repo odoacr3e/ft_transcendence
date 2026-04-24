@@ -1,7 +1,9 @@
 {
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
     "node": "^25.9.0",
     "pg": "^8.20.0"
   },
@@ -10,7 +12,7 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "modules": "npm install node && npm install express && npm install pg && npm install dotenv",
+    "modules": "npm install node; npm install express; npm install pg; npm install dotenv; npm install jsonwebtoken; npm install bcryptjs",
     "server": "node server.js"
   },
   "keywords": [],

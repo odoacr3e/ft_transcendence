@@ -12,4 +12,9 @@ const getUserById = async (request, response) => {
 	response.json(user.rows);
 }
 
-module.exports = { getAllUsers, getUserById };
+const getUserByUsername = async (request, response) => {
+	const user = await usersQuery.getUserByUsername(request.params.username);
+	response.json(user.rows);
+}
+
+module.exports = { getAllUsers, getUserById, getUserByUsername };
