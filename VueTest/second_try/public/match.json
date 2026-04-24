@@ -1,0 +1,1023 @@
+{
+  "p1": {
+    "name": "player1",
+    "team": "White",
+    "pieces": 16,
+    "points": 0
+  },
+  "p2": {
+    "name": "player2",
+    "team": "black",
+    "pieces": 16,
+    "points": 0
+  },
+  "board": {
+    "a1": {
+      "piece": null,
+      "targetZones": [],
+      "dangerZones": [
+        "a3"
+      ]
+    },
+    "a2": {
+      "piece": null,
+      "targetZones": [],
+      "dangerZones": [
+        "a3"
+      ]
+    },
+    "a3": {
+      "piece": {
+        "type": "Minotaurus",
+        "price": 5,
+        " ": "black",
+        "isMovedBool": false,
+        "isBoostedBool": true,
+        "pos": "a3",
+        "moveArray": [
+          {
+            "dx": 0,
+            "dy": 1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 1,
+            "dy": 0
+          },
+          {
+            "dx": -1,
+            "dy": 0
+          }
+        ],
+        "moveLongRange": true
+      },
+      "targetZones": [
+        "b3",
+        "c3",
+        "a3",
+        "a4",
+        "a5",
+        "a6",
+        "a7",
+        "a8",
+        "a2",
+        "a1"
+      ],
+      "dangerZones": [
+        "a3"
+      ]
+    },
+    "a4": {
+      "piece": null,
+      "targetZones": [],
+      "dangerZones": [
+        "a3"
+      ]
+    },
+    "a5": {
+      "piece": null,
+      "targetZones": [],
+      "dangerZones": [
+        "a3"
+      ]
+    },
+    "a6": {
+      "piece": null,
+      "targetZones": [],
+      "dangerZones": [
+        "a3"
+      ]
+    },
+    "a7": {
+      "piece": null,
+      "targetZones": [],
+      "dangerZones": [
+        "a3"
+      ]
+    },
+    "a8": {
+      "piece": {
+        "type": "Minotaurus",
+        "price": 5,
+        "team": "black",
+        "isMovedBool": false,
+        "isBoostedBool": true,
+        "pos": "a8",
+        "moveArray": [
+          {
+            "dx": 0,
+            "dy": 1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 1,
+            "dy": 0
+          },
+          {
+            "dx": -1,
+            "dy": 0
+          }
+        ],
+        "moveLongRange": true
+      },
+      "targetZones": [],
+      "dangerZones": [
+        "a3"
+      ]
+    },
+    "b1": {
+      "piece": null,
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "b2": {
+      "piece": null,
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "b3": {
+      "piece": null,
+      "targetZones": [],
+      "dangerZones": [
+        "a3"
+      ]
+    },
+    "b4": {
+      "piece": {
+        "type": "Valkirya",
+        "price": 3,
+        "team": "black",
+        "isMovedBool": false,
+        "isBoostedBool": true,
+        "pos": "b4",
+        "moveArray": [
+          {
+            "dx": 1,
+            "dy": 1
+          },
+          {
+            "dx": -1,
+            "dy": -1
+          },
+          {
+            "dx": -1,
+            "dy": 1
+          },
+          {
+            "dx": 1,
+            "dy": -1
+          }
+        ],
+        "moveLongRange": true
+      },
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "b5": {
+      "piece": null,
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "b6": {
+      "piece": null,
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "b7": {
+      "piece": null,
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "b8": {
+      "piece": null,
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "c1": {
+      "piece": null,
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "c2": {
+      "piece": {
+        "type": "Bastards",
+        "price": 1,
+        "team": "black",
+        "isMovedBool": false,
+        "isBoostedBool": false,
+        "pos": "c2",
+        "moveArray": [
+          {
+            "dx": 0,
+            "dy": 1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 1,
+            "dy": 1
+          },
+          {
+            "dx": -1,
+            "dy": -1
+          },
+          {
+            "dx": -1,
+            "dy": 1
+          },
+          {
+            "dx": 1,
+            "dy": -1
+          }
+        ],
+        "moveLongRange": false
+      },
+      "targetZones": [],
+      "dangerZones": [
+        "a3"
+      ]
+    },
+    "c3": {
+      "piece": {
+        "type": "Minotaurus",
+        "price": 5,
+        "team": "black",
+        "isMovedBool": false,
+        "isBoostedBool": true,
+        "pos": "c3",
+        "moveArray": [
+          {
+            "dx": 0,
+            "dy": 1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 1,
+            "dy": 0
+          },
+          {
+            "dx": -1,
+            "dy": 0
+          }
+        ],
+        "moveLongRange": true
+      },
+      "targetZones": [],
+      "dangerZones": [
+        "a3"
+      ]
+    },
+    "c4": {
+      "piece": {
+        "type": "Champion",
+        "price": 10,
+        "team": "black",
+        "isMovedBool": false,
+        "isBoostedBool": true,
+        "pos": "c4",
+        "moveArray": [
+          {
+            "dx": 1,
+            "dy": 1
+          },
+          {
+            "dx": -1,
+            "dy": -1
+          },
+          {
+            "dx": -1,
+            "dy": 1
+          },
+          {
+            "dx": 1,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": 1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 1,
+            "dy": 0
+          },
+          {
+            "dx": -1,
+            "dy": 0
+          }
+        ],
+        "moveLongRange": true
+      },
+      "targetZones": [],
+      "dangerZones": [
+        "a3"
+      ]
+    },
+    "c5": {
+      "piece": null,
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "c6": {
+      "piece": null,
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "c7": {
+      "piece": null,
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "c8": {
+      "piece": null,
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "d1": {
+      "piece": null,
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "d2": {
+      "piece": {
+        "type": "Champion",
+        "price": 10,
+        "team": "black",
+        "isMovedBool": false,
+        "isBoostedBool": true,
+        "pos": "d2",
+        "moveArray": [
+          {
+            "dx": 1,
+            "dy": 1
+          },
+          {
+            "dx": -1,
+            "dy": -1
+          },
+          {
+            "dx": -1,
+            "dy": 1
+          },
+          {
+            "dx": 1,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": 1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 1,
+            "dy": 0
+          },
+          {
+            "dx": -1,
+            "dy": 0
+          }
+        ],
+        "moveLongRange": true
+      },
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "d3": {
+      "piece": null,
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "d4": {
+      "piece": null,
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "d5": {
+      "piece": {
+        "type": "Valkirya",
+        "price": 3,
+        "team": "black",
+        "isMovedBool": false,
+        "isBoostedBool": true,
+        "pos": "d5",
+        "moveArray": [
+          {
+            "dx": 1,
+            "dy": 1
+          },
+          {
+            "dx": -1,
+            "dy": -1
+          },
+          {
+            "dx": -1,
+            "dy": 1
+          },
+          {
+            "dx": 1,
+            "dy": -1
+          }
+        ],
+        "moveLongRange": true
+      },
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "d6": {
+      "piece": null,
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "d7": {
+      "piece": null,
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "d8": {
+      "piece": null,
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "e1": {
+      "piece": {
+        "type": "Jester",
+        "price": 5,
+        "team": "black",
+        "isMovedBool": false,
+        "isBoostedBool": true,
+        "pos": "e1",
+        "moveArray": [
+          {
+            "dx": 2,
+            "dy": 1
+          },
+          {
+            "dx": 2,
+            "dy": -1
+          },
+          {
+            "dx": -2,
+            "dy": 1
+          },
+          {
+            "dx": -2,
+            "dy": -1
+          },
+          {
+            "dx": 1,
+            "dy": 2
+          },
+          {
+            "dx": 1,
+            "dy": -2
+          },
+          {
+            "dx": -1,
+            "dy": 2
+          },
+          {
+            "dx": -1,
+            "dy": -2
+          }
+        ],
+        "moveLongRange": false
+      },
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "e2": {
+      "piece": null,
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "e3": {
+      "piece": {
+        "type": "Bastards",
+        "price": 1,
+        "team": "black",
+        "isMovedBool": false,
+        "isBoostedBool": false,
+        "pos": "e3",
+        "moveArray": [
+          {
+            "dx": 0,
+            "dy": 1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 1,
+            "dy": 1
+          },
+          {
+            "dx": -1,
+            "dy": -1
+          },
+          {
+            "dx": -1,
+            "dy": 1
+          },
+          {
+            "dx": 1,
+            "dy": -1
+          }
+        ],
+        "moveLongRange": false
+      },
+      "targetZones": [],
+      "dangerZones": [
+        "a3"
+      ]
+    },
+    "e4": {
+      "piece": {
+        "type": "Minotaurus",
+        "price": 5,
+        "team": "black",
+        "isMovedBool": false,
+        "isBoostedBool": true,
+        "pos": "e4",
+        "moveArray": [
+          {
+            "dx": 0,
+            "dy": 1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 1,
+            "dy": 0
+          },
+          {
+            "dx": -1,
+            "dy": 0
+          }
+        ],
+        "moveLongRange": true
+      },
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "e5": {
+      "piece": {
+        "type": "Bastards",
+        "price": 1,
+        "team": "black",
+        "isMovedBool": false,
+        "isBoostedBool": false,
+        "pos": "e5",
+        "moveArray": [
+          {
+            "dx": 0,
+            "dy": 1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 1,
+            "dy": 1
+          },
+          {
+            "dx": -1,
+            "dy": -1
+          },
+          {
+            "dx": -1,
+            "dy": 1
+          },
+          {
+            "dx": 1,
+            "dy": -1
+          }
+        ],
+        "moveLongRange": false
+      },
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "e6": {
+      "piece": {
+        "type": "Minotaurus",
+        "price": 5,
+        "team": "black",
+        "isMovedBool": false,
+        "isBoostedBool": true,
+        "pos": "e6",
+        "moveArray": [
+          {
+            "dx": 0,
+            "dy": 1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 1,
+            "dy": 0
+          },
+          {
+            "dx": -1,
+            "dy": 0
+          }
+        ],
+        "moveLongRange": true
+      },
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "e7": {
+      "piece": null,
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "e8": {
+      "piece": null,
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "f1": {
+      "piece": null,
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "f2": {
+      "piece": {
+        "type": "Bastards",
+        "price": 1,
+        "team": "black",
+        "isMovedBool": false,
+        "isBoostedBool": false,
+        "pos": "f2",
+        "moveArray": [
+          {
+            "dx": 0,
+            "dy": 1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 1,
+            "dy": 1
+          },
+          {
+            "dx": -1,
+            "dy": -1
+          },
+          {
+            "dx": -1,
+            "dy": 1
+          },
+          {
+            "dx": 1,
+            "dy": -1
+          }
+        ],
+        "moveLongRange": false
+      },
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "f3": {
+      "piece": null,
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "f4": {
+      "piece": {
+        "type": "Jester",
+        "price": 5,
+        "team": "black",
+        "isMovedBool": false,
+        "isBoostedBool": true,
+        "pos": "f4",
+        "moveArray": [
+          {
+            "dx": 2,
+            "dy": 1
+          },
+          {
+            "dx": 2,
+            "dy": -1
+          },
+          {
+            "dx": -2,
+            "dy": 1
+          },
+          {
+            "dx": -2,
+            "dy": -1
+          },
+          {
+            "dx": 1,
+            "dy": 2
+          },
+          {
+            "dx": 1,
+            "dy": -2
+          },
+          {
+            "dx": -1,
+            "dy": 2
+          },
+          {
+            "dx": -1,
+            "dy": -2
+          }
+        ],
+        "moveLongRange": false
+      },
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "f5": {
+      "piece": {
+        "type": "Minotaurus",
+        "price": 5,
+        "team": "black",
+        "isMovedBool": false,
+        "isBoostedBool": true,
+        "pos": "f5",
+        "moveArray": [
+          {
+            "dx": 0,
+            "dy": 1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 1,
+            "dy": 0
+          },
+          {
+            "dx": -1,
+            "dy": 0
+          }
+        ],
+        "moveLongRange": true
+      },
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "f6": {
+      "piece": null,
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "f7": {
+      "piece": null,
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "f8": {
+      "piece": null,
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "g1": {
+      "piece": null,
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "g2": {
+      "piece": null,
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "g3": {
+      "piece": {
+        "type": "Champion",
+        "price": 10,
+        "team": "black",
+        "isMovedBool": false,
+        "isBoostedBool": true,
+        "pos": "g3",
+        "moveArray": [
+          {
+            "dx": 1,
+            "dy": 1
+          },
+          {
+            "dx": -1,
+            "dy": -1
+          },
+          {
+            "dx": -1,
+            "dy": 1
+          },
+          {
+            "dx": 1,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": 1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 1,
+            "dy": 0
+          },
+          {
+            "dx": -1,
+            "dy": 0
+          }
+        ],
+        "moveLongRange": true
+      },
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "g4": {
+      "piece": null,
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "g5": {
+      "piece": null,
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "g6": {
+      "piece": null,
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "g7": {
+      "piece": null,
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "g8": {
+      "piece": {
+        "type": "Minotaurus",
+        "price": 5,
+        "team": "black",
+        "isMovedBool": false,
+        "isBoostedBool": true,
+        "pos": "g8",
+        "moveArray": [
+          {
+            "dx": 0,
+            "dy": 1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 1,
+            "dy": 0
+          },
+          {
+            "dx": -1,
+            "dy": 0
+          }
+        ],
+        "moveLongRange": true
+      },
+      "targetZones": [],
+      "dangerZones": [
+        "a3"
+      ]
+    },
+    "h1": {
+      "piece": null,
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "h2": {
+      "piece": null,
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "h3": {
+      "piece": null,
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "h4": {
+      "piece": {
+        "type": "Bastards",
+        "price": 1,
+        "team": "black",
+        "isMovedBool": false,
+        "isBoostedBool": false,
+        "pos": "h4",
+        "moveArray": [
+          {
+            "dx": 0,
+            "dy": 1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 1,
+            "dy": 1
+          },
+          {
+            "dx": -1,
+            "dy": -1
+          },
+          {
+            "dx": -1,
+            "dy": 1
+          },
+          {
+            "dx": 1,
+            "dy": -1
+          }
+        ],
+        "moveLongRange": false
+      },
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "h5": {
+      "piece": null,
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "h6": {
+      "piece": null,
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "h7": {
+      "piece": null,
+      "targetZones": [],
+      "dangerZones": []
+    },
+    "h8": {
+      "piece": {
+        "type": "Bastards",
+        "price": 1,
+        "team": "black",
+        "isMovedBool": false,
+        "isBoostedBool": false,
+        "pos": "h8",
+        "moveArray": [
+          {
+            "dx": 0,
+            "dy": 1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 1,
+            "dy": 1
+          },
+          {
+            "dx": -1,
+            "dy": -1
+          },
+          {
+            "dx": -1,
+            "dy": 1
+          },
+          {
+            "dx": 1,
+            "dy": -1
+          }
+        ],
+        "moveLongRange": false
+      },
+      "targetZones": [],
+      "dangerZones": []
+    }
+  }
+}
