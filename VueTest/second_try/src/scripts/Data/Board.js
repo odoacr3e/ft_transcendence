@@ -58,10 +58,20 @@ export function replaceMatchState(nextRaw)
 	return matchState;
 }
 
-initMatchStateLocal();
-getBoardState();
+async function prova()
+{
+	try
+	{
+		await initMatchStateLocal();
+		getBoardState();
+		console.log(Board["a1"]);
+	}
+	catch (err){
+		console.error("Errore di inizializzazione di Board");
+	}
+}
 
-console.log(Board["a1"])
+prova();
 
 // export function boardConverter(boardMap = getBoardState())
 // {

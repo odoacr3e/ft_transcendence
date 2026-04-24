@@ -1,8 +1,6 @@
 <script setup>
     import { onMounted }	from 'vue';
-    import { Board }		from "../scripts/second_try/Data/Board.js";
-    // import { movePiece }	from "../scripts/second_try/Renderer/render.js";
-    // import { globalEvents }	from "../scripts/second_try/Events/global.js";
+    import { Board }		from "../scripts/Data/Board.js";
 </script>
 
 <template>
