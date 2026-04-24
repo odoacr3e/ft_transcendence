@@ -2,10 +2,10 @@ class Square
 {
 	constructor()
 	{
-        /** @type {string | undefined} */	this.color = undefined;
-        /** @type {Piece | null} */   		this.piece = null;
-		/** @type {Set<string>} */			this.targetZones = new Set();
-		/** @type {Set<string>} */			this.dangerZones = new Set();
+        /** @type {string | undefined} */			this.color = undefined;
+        /** @type {string | "white" | "black"} */   this.piece = null;
+		/** @type {Set<string>} */					this.targetZones = new Set();
+		/** @type {Set<string>} */					this.dangerZones = new Set();
 	}
 }
 
@@ -21,12 +21,12 @@ class Piece
 	{
 		/** @type {string} */   						this.type = type;
 		/** @type {number} */   						this.price = price;
-		/** @type {string} */   						this.team = eTeam.Black;
+		/** @type {string} */   						this.team = TEAM.BLACK;
 		/** @type {boolean} */  						this.isMovedBool = false;
 		/** @type {boolean} */  						this.isBoostedBool = false;
 		/** @type {string} */ 							this.pos = pos;
 		/** @type {Function} */ 						this.moveFunction;
-		/** @type {Array<{dx: number, dy:number}>} */	this.moveArrayDEBUG = movement;
-		/** @type {boolean} */							this.moveLongRangeDEBUG = long;
+		/** @type {Array<{dx: number, dy:number}>} */	this.moveArray = movement;
+		/** @type {boolean} */							this.moveLongRange = long;
 	}
 }
