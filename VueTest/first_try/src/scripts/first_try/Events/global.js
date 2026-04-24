@@ -1,6 +1,6 @@
 import { getRootDiv } from "../Helper/constants.js";
 import { Board } from "../Data/data.js";
-import { clearHighlight, highlightRender } from "../Renderer/render.js";
+import { clearHighlight } from "../Renderer/render.js";
 
 let lastClickedId = null;
 
@@ -55,7 +55,10 @@ function whitePawn(piece)
 					if (square.id == highlight)
 					{
 						console.log(square);
-						highlightRender(highlight, square);
+						if (square.highlight === false)
+							square.highlight = true;
+						else
+							square.highlight = false;
 					}
 				})
 			})

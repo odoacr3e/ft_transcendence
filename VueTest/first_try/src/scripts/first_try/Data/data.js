@@ -56,14 +56,6 @@ function initBoard()
 {
     const board = [];
 
-    // fetch('/init.json', { method: 'GET' })
-	// 	.then(() => {
-	// 		console.log('Session created! Redirecting...');
-	// 		// window.location.href = '/';
-	// 	})
-	// 	.catch(err => {
-	// 		console.log('Error creating session');
-	// 	});
     for (let i = 8; i >= 1; i--)
     {
         const row = SquareRow(i);
