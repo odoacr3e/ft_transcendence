@@ -6,6 +6,7 @@ class Square
         /** @type {string | "white" | "black"} */   this.piece = null;
 		/** @type {Set<string>} */					this.targetZones = new Set();
 		/** @type {Set<string>} */					this.dangerZones = new Set();
+		/** @type {Set<string>} */					this.boostedTargetZones = new Set();
 	}
 }
 

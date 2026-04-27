@@ -1,18 +1,19 @@
 <script setup>
     import { onMounted }	from 'vue';
     import { Board }		from "../scripts/Data/Board.js";
+	import 
 </script>
 
 <template>
     <div id="root">
 		<div id="board">
-			<!-- <div v-for="row in Board">
-				<div
-					v-for="square in row"
-        			:id="square.id"
-        			:class="[square.color, 'square']"
-				</div>
-			</div> -->
+			<div
+				v-for="(square, key) of Board"
+				:key="key"
+				class="square"
+			>
+			{{ square.piece?.type }}
+			</div>
 		</div>
 	</div>
 </template>

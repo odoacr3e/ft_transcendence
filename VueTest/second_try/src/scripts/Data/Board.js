@@ -1,6 +1,11 @@
 import { FILES } from "../Helper/constants";
 
-export async function loadMatchLocal() 
+let localMatchState = null;
+let localBoard = null;
+let localPlayer1 = null;
+let localPlayer2 = null;
+
+export async function loadReceivedMatch() 
 {
 	const response = await fetch("/match.json");
 	if (!response.ok)
@@ -32,39 +37,94 @@ export function validateReceivedMatch(rawJson)
 	};
 }
 
-let matchState = null;
-let Board = null;
-
-export async function initMatchStateLocal() 
+export async function initLocalMatchState() 
 {
-	const raw = await loadMatchLocal();
+	const raw = await loadReceivedMatch();
 	const validated = validateReceivedMatch(raw);
-	matchState = validated;
-	return matchState;
+	localMatchState = validated;
+
+	initLocalBoard();
+	initLocalPlayer1();
+	initLocalPlayer2();
 }
 
-export function getBoardState()
+export function initLocalBoard()
 {
-	if (!matchState)
-		throw new Error("Match non inizializzato: chiama prima initMatchStateLocal().");
-	Board = matchState.board;
-	return matchState.board;
+	if (!localMatchState)
+		throw new Error("[initLocalBoard]: Match non inizializzato: chiama prima initLocalMatchState().");
+	localBoard = new Map(Object.entries(localMatchState.board));
+}
+
+export function initLocalPlayer1(){
+	if (!localMatchState)
+		throw new Error("[initLocalPlayer1]: Match non inizializzato: chiama prima initLocalMatchState().");
+	localPlayer1 = localMatchState.p1;
+}
+
+export function initLocalPlayer2(){
+	if (!localMatchState)
+		throw new Error("[initLocalPlayer2]: Match non inizializzato: chiama prima initLocalMatchState().");
+	localPlayer2 = localMatchState.p2;
 }
 
 export function replaceMatchState(nextRaw) 
 {
 	const validated = validateReceivedMatch(nextRaw);
-	matchState = validated;
-	return matchState;
+	localMatchState = validated;
+	localMatchState.board = new Map(Object.entries(validated.board));
+	return localMatchState;
+}
+
+export async function updateLocalMatchState()
+{
+	const nextMatchState = await loadReceivedMatch();
+
+	updateLocalBoardFromRawceived(nextMatchState);
+	updateLocalPlayer1FromRawceived(nextMatchState);
+	updateLocalPlayer2FromRawceived(nextMatchState);
+}
+
+export function updateLocalBoardFromRawceived(changes)
+{
+	const noObj = !changes.board && !changes.p1 && !changes.p2;
+	const boardNotValid = typeof changes.board !== "object" || Array.isArray(changes.board);
+
+	if (noObj)
+		throw new Error("[updateLocalBoardFromRawceived]: Board expected but no object received!");
+	if (boardNotValid)
+		throw new Error("[updateLocalBoardFromRawceived]: Board format not valid!");
+
+	Object.entries(changes).forEach(([square, newState]) => {
+		localBoard.set(square, newState);
+	});
+}
+
+export function updateLocalPlayer1FromRawceived(changes)
+{
+	const hasP1 = Object.prototype.hasOwnProperty.call(changes, "p1");
+	
+	if (hasP1 == true)
+		localPlayer1 = changes.p1;
+}
+
+export function updateLocalPlayer2FromRawceived(changes)
+{
+	const hasP2 = Object.prototype.hasOwnProperty.call(changes, "p2");
+	
+	if (hasP2 == true)
+		localPlayer2 = changes.p2;
 }
 
 async function prova()
 {
 	try
-	{
+	{		
+		initLocalMatchState();
+		assignLocalBoard();
+		// console.log(localBoard.get("a1")
 		await initMatchStateLocal();
-		getBoardState();
-		console.log(Board["a1"]);
+		assignLocalBoard();
+		// console.log(Board["a1"]);
 	}
 	catch (err){
 		console.error("Errore di inizializzazione di Board");
@@ -73,7 +133,7 @@ async function prova()
 
 prova();
 
-// export function boardConverter(boardMap = getBoardState())
+// export function boardConverter(boardMap = assignLocalBoard())
 // {
 // 	const rows = [];
 
@@ -87,4 +147,4 @@ prova();
 // 	return rows;
 // }
 
-export { Board }
+export { localBoard, localPlayer1, localPlayer2, localMatchState }
