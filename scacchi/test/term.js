@@ -1,13 +1,13 @@
 // @ts-check
-const {Piece, board, Square} =					require("./lib.js").Chess;
-const {eTeam, enumValues, enumNames} =			require("./lib.js").Enums;
-const {isDangerous, movePiece, DangerUpdate} =	require("./utils.js");
+const {Piece, board, Square} =					require("../lib.js").Chess;
+const {eTeam, enumValues, enumNames} =			require("../lib.js").Enums;
+const {isDangerous, movePiece, DangerUpdate} =	require("../utils.js");
 
-const lib =			require("./lib.js");
+const lib =			require("../lib.js");
 const {abort} = 	require("node:process");
 const fs = 	require("node:fs");
-const {cursor} = 	require("./cursor.js");
-const {render} = 	require("./render.js");
+const {cursor} = 	require("../cursor.js");
+const {render} = 	require("../render.js");
 const readline = 	require('node:readline');
 
 //SECTION - main: inizializza e fa primo render, mette terminale in ascolto
