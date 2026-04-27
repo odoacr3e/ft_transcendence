@@ -1,7 +1,7 @@
 // @ts-check
 const {Piece, board, Square} =					require("../lib.js").Chess;
 const {eTeam, enumValues, enumNames} =			require("../lib.js").Enums;
-const {isDangerous, movePiece, DangerUpdate} =	require("../utils.js");
+const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("../utils.js");
 
 const lib =			require("../lib.js");
 const {abort} = 	require("node:process");
@@ -14,9 +14,12 @@ const readline = 	require('node:readline');
 
 initTerminal();
 initRandomBoard();
+dangerUpdateAll();
 render();
 
 //SECTION - eventLoop: binda i tasti per fare cose
+
+let	TargetDangerSwitch = "None";
 
 process.stdin.on('keypress', (str, key) => 
 {
@@ -43,10 +46,12 @@ process.stdin.on('keypress', (str, key) =>
 			dx += 1;
 			break ;
 		case ("space") :
-			if (!board.get(cursor.square)?.piece?.isBoostedBool)
-				DangerUpdate();
-			else
-				board.get(cursor.square)?.piece?.moveFunction();
+			if (TargetDangerSwitch == "None")
+				TargetDangerSwitch = "Target";
+			else if (TargetDangerSwitch == "Target")
+				TargetDangerSwitch = "Danger";
+			else if (TargetDangerSwitch == "Danger")
+				TargetDangerSwitch = "None";
 	}
 	if (key.name != "space" && !movePiece(dx, dy, false))
 	{
@@ -75,7 +80,8 @@ process.stdin.on('keypress', (str, key) =>
 		console.log("lol no");
 	}
 	console.log("row", cursor.getRow(), ", col", cursor.getCol(), ", cursor", cursor.square);
-	render();
+	console.log("Visualizing", TargetDangerSwitch, "press space to change");
+	render(TargetDangerSwitch);
 	console.log("key", key.name);
 });
 

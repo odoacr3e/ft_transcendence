@@ -50,12 +50,23 @@ let setCursor = (newRow, newCol) => {
 	throw new Error("setCursor accetta una square string o due numeri");
 }
 
-let cursor = {
+/**
+ * @param {String} pos
+ */
+let set = (pos) =>
+{
+	cursor.square = pos.at(0);
+	cursor.square += pos.slice(1, pos.length);
+}
+
+let cursor = 
+{
 	/** @type {string} */ square: "a1",
 	getRow: getRow,
 	getCol: getCol,
 	setRow: setRow,
 	setCol: setCol,
+	set: set,
 	setCursor: setCursor
 }
 

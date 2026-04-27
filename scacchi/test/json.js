@@ -18,8 +18,9 @@ const   seedrandom = require("seedrandom");
 const   rngBase = seedrandom(seed);
 const   rng = (mod = (1 << 30)) =>
 {
-    let x = rngBase() * mod;
-
+    let x;
+    
+    x = rngBase() * mod;
     return (Math.floor(x));
 }
 

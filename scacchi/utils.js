@@ -78,4 +78,13 @@ let DangerUpdate = () =>
 	return (1);
 }
 
-module.exports = {isDangerous, movePiece, DangerUpdate};
+function dangerUpdateAll()
+{
+	for (let [pos, square] of board)
+	{
+		cursor.set(pos);
+		DangerUpdate();
+	}
+}
+
+module.exports = {isDangerous, movePiece, DangerUpdate, dangerUpdateAll};

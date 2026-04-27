@@ -1,6 +1,6 @@
 // @ts-check
 const {cursor} = 	require("./cursor.js");
-const {Piece, board, Square} =					require("./lib.js").Chess;
+const {Piece, board, Square, preset} =					require("./lib.js").Chess;
 const {eTeam, enumValues, enumNames} =			require("./lib.js").Enums;
 const {isDangerous, movePiece, DangerUpdate} =	require("./utils.js");
 
@@ -66,20 +66,90 @@ function isStoppable(kingSquare, enemySquareString)
 	return false;
 }
 
-// /**
-//  * 
-//  * @param {Set<string>} threat 
-//  */
-// function doubleSave(threat)
-// {
-// 	let arr = Array.from(threat);
+/**
+ * 
+ * @param {string} startPos 
+ * @param {Array<string>} arr 
+ * @returns 
+ */
+function canEat(startPos, arr)
+{
+	cursor.set(startPos);
+	cursor.setCol(cursor.getCol() - 1);
+	if (cursor.square != arr[0])
+	{
+		cursor.setCol(cursor.getCol() + 2);
+		if (cursor.square != arr[0])
+		{
+			cursor.set(startPos);
+			return true;
+		}
+	}
+	cursor.set(startPos);
+	return false;
+}
 
-// 	for (let x of board.get(arr[0])?.dangerZones)
-// 	{
-// 		if (board.get(arr[1])?.dangerZones.has(x) && (board.get(x)?.piece?.isBoostedBool && (board.get(x)?.piece?.type == enumNames.MINOTAURUS || board.get(x)?.piece?.type == enumNames.CHAMPION)))
-			
-// 	}
-// }
+/**
+ * 
+ * @param {Set<string>} threat 
+ */
+function doubleSave(threat)
+{
+	let arr = Array.from(threat);
+	let	square1;
+	let	square2;
+
+	square1 = board.get(arr[0]);
+	if (!square1)
+		return false;
+	square2 = board.get(arr[1]);
+	if (!square2)
+		return false;
+	for (let x of square1.dangerZones)
+	{
+		if (square2.dangerZones.has(x) && board.get(x)?.piece?.team != square1.piece?.team && board.get(x)?.piece?.isBoostedBool && 
+		(board.get(x)?.piece?.type == enumNames.MINOTAURUS || board.get(x)?.piece?.type == enumNames.CHAMPION))
+		{
+			let threat = board.get(x);
+			if (threat == undefined)
+				return false;
+			for (let [key, value] of threat.boostedTargetZones)
+			{
+				if ((key == arr[0] && value.has(arr[1])) || (key == arr[1] && value.has(arr[0])))
+					return true;
+			}
+		}
+		else if (board.get(x)?.piece?.team != square1.piece?.team && 
+		board.get(x)?.piece?.isBoostedBool && board.get(x)?.piece?.type == enumNames.BASTARDS)
+		{
+			let startPos = x;
+			if (canEat(x, arr))
+			{
+				cursor.set(x);
+				for (let [dx, dy] of preset.Champion.movement)
+				{
+					cursor.setCursor(cursor.getRow() + dx, cursor.getCol() + dy)
+					if (board.get(cursor.square)?.piece?.team != square1.piece?.team && board.get(cursor.square)?.targetZones.has(arr[1]))
+						return true;
+					cursor.set(startPos);
+				}
+			}
+		}
+		else if (board.get(x)?.piece?.team != square1.piece?.team)
+		{
+			// let startPos = x;
+			// cursor.set(x);
+			// for (let [dx, dy] of preset.Champion.movement)
+			// {
+			// 	cursor.setCursor(cursor.getRow() + dx, cursor.getCol() + dy)
+			// 	if (board.get(cursor.square)?.piece?.team != square1.piece?.team && board.get(cursor.square)?.targetZones.has(arr[1]))
+			// 		return true;
+			// 	cursor.set(startPos);
+			// }
+		}
+	}
+	return false;
+}
 
 //TODO - Ale: passare come parametro il team per cui va fatto il check
 //			o ancora meglio la posizione per cui fare il check
@@ -118,8 +188,8 @@ let CheckMateCheck= () =>
 			threat.add(enemySquare);
 		}
 	}
-	// if (threat.size == 2 && doubleSave(threat))
-		// return true;
+	if (threat.size == 2 && doubleSave(threat))
+		return true;
 	if (threat.size >= 2)
 		return true;
 	if (isDangerous(kingSquare.dangerZones, kingSquare.piece?.team))
