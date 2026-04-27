@@ -52,12 +52,12 @@ function berserkMode(pos)
 			if (board.get(pos)?.piece?.type == enumNames.CHAMPION)
 			{
 				board.get(cursor.square)?.dangerZones.add(pos);
-				board.get(pos)?.targetZones.add(pos);
+				board.get(pos)?.boostedTargetZones.get(startPos)?.add(pos);
 			}
 			if (board.get(cursor.square)?.piece != null)
 			{
 				board.get(cursor.square)?.dangerZones.add(pos);
-				board.get(pos)?.targetZones.add(pos);
+				board.get(pos)?.boostedTargetZones.get(startPos)?.add(pos);
 				break ;
 			}
 		}

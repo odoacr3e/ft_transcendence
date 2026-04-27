@@ -75,7 +75,7 @@ function DangerUpdate()
 	piece = board.get(this.position).piece;
 	if (piece == null)
 		return (0);
-	for (let {dx, dy} of piece.moveArrayDEBUG)
+	for (let {dx, dy} of piece.moveArray)
 	{
 		while (this.Move(dx, dy, false))
 		{

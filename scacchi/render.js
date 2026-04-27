@@ -1,5 +1,6 @@
 // @ts-check
-const { Square } = require("./chessBoard.js");
+const { Square, board } = require("./chessBoard.js");
+const { cursor } = require("./cursor.js");
 const lib = require("./lib.js");
 const enumNames = lib.Enums.enumNames;
 
@@ -20,7 +21,7 @@ function render()
 		asciiArt = getAscii(data);
 		if (lib.Chess.cursor.square == pos)
 			buffer += `\x1b[32m[${asciiArt}]\x1b[0m`;
-		else if (data.dangerZones.size != 0)
+		else if (board.get(cursor.square)?.targetZones.has(pos))
 			buffer += `\x1b[31m[${asciiArt}]\x1b[0m`;
 		else
 			buffer += `[${asciiArt}]`;

@@ -78,14 +78,14 @@ function initRandomBoard()
 		if (rand == 11)
 		{
 			data.piece.type = lib.Enums.enumNames.BASTARDS;
-			data.piece.moveArrayDEBUG = 
+			data.piece.moveArray = 
 			[{dx:0, dy:1}, {dx:0, dy:-1}];
 		}
 		else if (rand == 12)
 		{
 			data.piece.type = lib.Enums.enumNames.CHAMPION;
 			data.piece.moveLongRangeDEBUG = true;
-			data.piece.moveArrayDEBUG = 
+			data.piece.moveArray = 
 			[
 				{dx:1, dy:1}, {dx:-1, dy:-1},//obliquo
 				{dx:-1, dy:1}, {dx:1, dy:-1},
@@ -96,7 +96,7 @@ function initRandomBoard()
 		else if (rand == 13)
 		{
 			data.piece.type = lib.Enums.enumNames.JESTER;
-			data.piece.moveArrayDEBUG = 
+			data.piece.moveArray = 
 			[
 				{dx:2, dy:1}, {dx:2, dy:-1}, // +2 orizzontale
 				{dx:-2, dy:1}, {dx:-2, dy:-1},
@@ -108,7 +108,7 @@ function initRandomBoard()
 		{
 			data.piece.type = lib.Enums.enumNames.MINOTAURUS;
 			data.piece.moveLongRangeDEBUG = true;
-			data.piece.moveArrayDEBUG = 
+			data.piece.moveArray = 
 			[
 			 	{dx:0, dy:1}, {dx:0, dy:-1},//verticale
 			 	{dx:1, dy:0}, {dx:-1, dy:0},//orizzontale
@@ -118,7 +118,7 @@ function initRandomBoard()
 		{
 			data.piece.type = lib.Enums.enumNames.VALKIRYA;
 			data.piece.moveLongRangeDEBUG = true;
-			data.piece.moveArrayDEBUG = 
+			data.piece.moveArray = 
 			[
 				{dx:1, dy:1}, {dx:-1, dy:-1},//obliquo
 				{dx:-1, dy:1}, {dx:1, dy:-1},

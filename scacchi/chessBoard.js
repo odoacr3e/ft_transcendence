@@ -17,11 +17,11 @@ class Square
 {
 	constructor()
 	{
-        /** @type {string | undefined} */	this.color = undefined;
-        /** @type {Piece | null} */   		this.piece = null;
-		/** @type {Set<string>} */			this.targetZones = new Set();
-		/** @type {Set<string>} */			this.boostedTargetZones = new Set();
-		/** @type {Set<string>} */			this.dangerZones = new Set();
+        /** @type {string | undefined} */		this.color = undefined;
+        /** @type {Piece | null} */   			this.piece = null;
+		/** @type {Set<string>} */				this.targetZones = new Set();
+		/** @type {Map<string, Set<string>>} */	this.boostedTargetZones = new Map();
+		/** @type {Set<string>} */				this.dangerZones = new Set();
 	}
     //tutti i dati
 }

@@ -1,14 +1,21 @@
 
 const lib = require("../lib.js");
-// const { match } = require("../main.js")// quando ci sara la board aggiornata in game sul main
-// const 
+const {Piece, board, Square} = require("../lib.js").Chess;
 
+// const { match } = require("../main.js")// quando ci sara la board aggiornata in game sul main
 
 // body post -> {start: "a1", end: "a2"}
 
-const checkPosition = async () => {
-	// ritorniamo il JSON dell'oggetto Partita con Player e ChessBoard
-	// prendo input chessBoard con situazioone di gioco
-	// lancio funzione board.checkMove(??)
-	// restituzione JSON con board aggiornata
+// ritorniamo il JSON dell'oggetto Partita con Player e ChessBoard
+// prendo input chessBoard con situazioone di gioco
+// lancio funzione board.checkMove(??)
+// restituzione JSON con board aggiornata
+const checkPosition = (req, res) => {
+	const { start, end } = req.body;
+	console.log(`${start}, ${end}`);
+	const square = board.get(start);
+	console.log(square);
+	res.json({message: "arrivato"});
 }
+
+module.exports = { checkPosition };

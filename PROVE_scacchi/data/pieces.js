@@ -22,7 +22,7 @@ class Piece
 		/** @type {boolean} */  this.isBoostedBool = false;
 		/** @type {string} */ 	this.pos;
 		/** @type {Function} */ this.moveFunction;
-		/** @type {Array<{dx: number, dy:number}>} */	this.moveArrayDEBUG;
+		/** @type {Array<{dx: number, dy:number}>} */	this.moveArray;
 		/** @type {boolean} */	this.moveLongRangeDEBUG = false;
 	}
 }
