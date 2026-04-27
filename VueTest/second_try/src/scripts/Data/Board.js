@@ -2,8 +2,7 @@ import { FILES } from "../Helper/constants";
 
 let localMatchState = null;
 let localBoard = null;
-let localPlayer1 = null;
-let localPlayer2 = null;
+let localPlayers = new Map();
 
 export async function loadReceivedMatch() 
 {
@@ -20,19 +19,23 @@ export function validateReceivedMatch(rawJson)
 	if (!rawJson || typeof rawJson !== "object" || Array.isArray(rawJson))
 		throw new Error("Payload non valido: root deve essere un oggetto.");
 
-	const hasP1 = Object.prototype.hasOwnProperty.call(rawJson, "p1");
-	const hasP2 = Object.prototype.hasOwnProperty.call(rawJson, "p2");
-	const hasBoard = Object.prototype.hasOwnProperty.call(rawJson, "board");
+	const has_p1 = Object.prototype.hasOwnProperty.call(rawJson, "p1");
+	const has_p2 = Object.prototype.hasOwnProperty.call(rawJson, "p2");
+	const has_p3 = Object.prototype.hasOwnProperty.call(rawJson, "p3");
+	const has_p4 = Object.prototype.hasOwnProperty.call(rawJson, "p4");
+	const has_board = Object.prototype.hasOwnProperty.call(rawJson, "board");
 
-	if (!hasP1 || !hasP2 || !hasBoard)
-		throw new Error("Payload non valido: servono p1, p2, board.");
+	if (!has_p1 || !has_p2 || !has_p3 || !has_p4 || !has_board)
+		throw new Error("[validateReceivedMatch]: Payload non valido: servono players e board.");
 
 	if (!rawJson.board || typeof rawJson.board !== "object" || Array.isArray(rawJson.board))
-		throw new Error("Payload non valido: board deve essere un oggetto mappa.");
+		throw new Error("[validateReceivedMatch]: Payload non valido: board deve essere un oggetto mappa.");
 
 	return {
 		p1: rawJson.p1,
 		p2: rawJson.p2,
+		p3: rawJson.p3,
+		p4: rawJson.p4,
 		board: rawJson.board,
 	};
 }
@@ -44,8 +47,7 @@ export async function initLocalMatchState()
 	localMatchState = validated;
 
 	initLocalBoard();
-	initLocalPlayer1();
-	initLocalPlayer2();
+	initLocalPlayers();
 }
 
 export function initLocalBoard()
@@ -55,79 +57,90 @@ export function initLocalBoard()
 	localBoard = new Map(Object.entries(localMatchState.board));
 }
 
-export function initLocalPlayer1(){
-	if (!localMatchState)
-		throw new Error("[initLocalPlayer1]: Match non inizializzato: chiama prima initLocalMatchState().");
-	localPlayer1 = localMatchState.p1;
-}
+function initLocalPlayers()
+{
+	const players_list = ["p1", "p2", "p3", "p4"];
 
-export function initLocalPlayer2(){
-	if (!localMatchState)
-		throw new Error("[initLocalPlayer2]: Match non inizializzato: chiama prima initLocalMatchState().");
-	localPlayer2 = localMatchState.p2;
+	players_list.forEach((player) => {
+		const has = Object.prototype.hasOwnProperty.call(localMatchState, player);
+	    const wrong_type = typeof localMatchState[player] !== "object";
+
+		if (localMatchState[player] === null)
+			return;
+	    if (!has)
+			throw new Error(`[initLocalPlayers]: Player ${player} object absent!`);
+	    if (wrong_type) 
+			throw new Error(`[initLocalPlayers]: Player ${player} a wrong type!`);
+
+		localPlayers.set(player, localMatchState[player]);
+	})	
 }
 
 export function replaceMatchState(nextRaw) 
 {
 	const validated = validateReceivedMatch(nextRaw);
 	localMatchState = validated;
-	localMatchState.board = new Map(Object.entries(validated.board));
-	return localMatchState;
+
+	initLocalBoard();
+	initLocalPlayers();
+
 }
 
 export async function updateLocalMatchState()
 {
 	const nextMatchState = await loadReceivedMatch();
 
-	updateLocalBoardFromRawceived(nextMatchState);
-	updateLocalPlayer1FromRawceived(nextMatchState);
-	updateLocalPlayer2FromRawceived(nextMatchState);
+	try 
+	{
+		updateLocalBoard(nextMatchState);
+		updateLocalPlayers(nextMatchState);
+	}
+	catch(err){
+		console.error("[updateLocalMatchState]: Errore di update del Match!");
+	}
+		
 }
 
-export function updateLocalBoardFromRawceived(changes)
+export function updateLocalBoard(changes)
 {
-	const noObj = !changes.board && !changes.p1 && !changes.p2;
-	const boardNotValid = typeof changes.board !== "object" || Array.isArray(changes.board);
+	const has_not_board = !changes.board;
+	const board_not_valid = typeof changes.board !== "object" || Array.isArray(changes.board);
 
-	if (noObj)
-		throw new Error("[updateLocalBoardFromRawceived]: Board expected but no object received!");
-	if (boardNotValid)
-		throw new Error("[updateLocalBoardFromRawceived]: Board format not valid!");
+	if (has_not_board)
+		throw new Error("[updateLocalBoard]: Board expected but no object received!");
+	if (board_not_valid)
+		throw new Error("[updateLocalBoard]: Board format not valid!");
 
-	Object.entries(changes).forEach(([square, newState]) => {
+	Object.entries(changes.board).forEach(([square, newState]) => {
 		localBoard.set(square, newState);
 	});
 }
 
-export function updateLocalPlayer1FromRawceived(changes)
+function updateLocalPlayers(changes) 
 {
-	const hasP1 = Object.prototype.hasOwnProperty.call(changes, "p1");
-	
-	if (hasP1 == true)
-		localPlayer1 = changes.p1;
-}
+	const players_list = ["p1", "p2", "p3", "p4"];
 
-export function updateLocalPlayer2FromRawceived(changes)
-{
-	const hasP2 = Object.prototype.hasOwnProperty.call(changes, "p2");
-	
-	if (hasP2 == true)
-		localPlayer2 = changes.p2;
+	players_list.forEach((player) => {
+		const has = Object.prototype.hasOwnProperty.call(changes, player);
+	    const wrong_type = typeof changes[player] !== "object";
+
+		if (!has || changes[player] === null)
+			return;
+	    if (wrong_type) 
+			throw new Error(`[updateLocalPlayers]: Player ${player} wrong type!`);
+
+		localPlayers.set(player, changes[player]);
+	})	
 }
 
 async function prova()
 {
 	try
 	{		
-		initLocalMatchState();
-		assignLocalBoard();
-		// console.log(localBoard.get("a1")
-		await initMatchStateLocal();
-		assignLocalBoard();
-		// console.log(Board["a1"]);
+		await initLocalMatchState();
 	}
 	catch (err){
-		console.error("Errore di inizializzazione di Board");
+		console.error("[Prova]: Errore");   
 	}
 }
 
@@ -147,4 +160,4 @@ prova();
 // 	return rows;
 // }
 
-export { localBoard, localPlayer1, localPlayer2, localMatchState }
+export { localBoard, localPlayers, localMatchState }

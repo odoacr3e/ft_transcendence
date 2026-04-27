@@ -11,6 +11,8 @@
     "pieces": 16,
     "points": 0
   },
+  "p3": null,
+  "p4": null,
   "board": {
     "a1": {
       "piece": null,
@@ -30,7 +32,7 @@
       "piece": {
         "type": "Minotaurus",
         "price": 5,
-        " ": "black",
+        "team": "black",
         "isMovedBool": false,
         "isBoostedBool": true,
         "pos": "a3",
