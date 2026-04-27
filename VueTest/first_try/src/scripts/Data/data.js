@@ -1,78 +1,72 @@
-import { INITIAL_PIECES } from "../Helper/constants.js";
-import * as pieces from "../Data/pieces.js";
 import { reactive } from 'vue';
+import { init } from "../Events/fetch.js";
 
-// Obtain square color by rowId and column index
+class Square
+{
+	constructor(color, highlight, id, piece)
+	{
+        /** @type {string | "white" | "black"} */	this.color = color;
+        /** @type {true | false} */                 this.highlight = highlight;
+        /** @type {String} */                       this.id = id;
+        /** @type {Object | null} */                this.piece = piece;
+		/** @type {Set<string>} */					this.targetZones = new Set();
+		/** @type {Set<string>} */					this.dangerZones = new Set();
+	}
+}
+
 function getSquareColor(rowId, colIndex) {
     return (rowId + colIndex) % 2 === 0 ? "white" : "black";
 }
 
-/**
- * Square factory function 
- * @param {string} color
- * @param {string} id
- * @param {} piece 
- * @param {boolean} highlight
- * @returns Object Square containing color, id, and piece on the square
- */
-function Square(color, id, piece, highlight) {
-    return { color, id, piece, highlight };
-}
-
-/**
- * Creates a chessboard row using rowId index
- * @param {integer} rowId 
- * @returns A single chessboard Row
- */
-function SquareRow(rowId)
+function squareRow(rowId, board)
 {
     const letters = ['a','b','c','d','e','f','g','h'];
 
     return letters.map((letter, index) => {
-        const color = getSquareColor(rowId, index);
-        const id = letter + rowId;
-        return Square(color, id, null, false);
+        board.set(letter + rowId, new Square(getSquareColor(rowId, index), false, letter + rowId, null));
     });
 }
 
-function piece_filler(sq)
+/**
+ * @param {Set<String>} target 
+ */
+function fillSet(target, jsonTarget)
 {
-	const id = sq.id;
-
-	if (INITIAL_PIECES[id])
-		sq.piece = INITIAL_PIECES[id](id);
-	else if (id[1] === "2")
-		sq.piece = pieces.whitePawn(id);
-	else if (id[1] === "7")
-		sq.piece = pieces.blackPawn(id);
-	else
-		sq.piece = null;
+    jsonTarget.forEach(cell => {
+        target.add(cell);
+    });
 }
 
 /**
- * @returns Board filled with SquareRows
+ * @param {Map<String, object>} board 
+ * @param {Map<String, object>} jsonBoard 
  */
-function initBoard()
+function fillBoard(board, jsonBoard)
 {
-    const board = [];
-
-    for (let i = 8; i >= 1; i--)
-    {
-        const row = SquareRow(i);
-
-        row.forEach(squ => {
-            piece_filler(squ);
-            if (squ.piece)
-                console.log(squ.id + " => " + squ.piece.piece_name);
-        });
-        board.push(row);
-    }
+    board.forEach(square => {
+        let cell = jsonBoard.get(square.id);
+        if (cell == undefined)
+            throw "id non trovato in Json";
+        square.piece = cell.piece;
+        fillSet(square.targetZones, cell.targetZones);
+        fillSet(square.dangerZones, cell.dangerZones);
+    });
     return board;
 }
 
-const Board = reactive(initBoard());
+function initMatch()
+{
+    const board = new Map();
+    for (let i = 8; i >= 1; i--) { squareRow(i, board); }
 
-export { initBoard, Board };
+    return fillBoard(board, matchState.board);
+}
+
+
+const matchState = reactive(await init())
+const Board = reactive(initMatch());
+
+export { Board };
 
 
 
