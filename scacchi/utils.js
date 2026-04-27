@@ -4,15 +4,19 @@ const {cursor} = require("./cursor.js");
 
 /**
  * potremmo metterla nelle utils volendo
- * @param {Set<string>} setZones
- * @param {string} team
+ * @param {Set<string> | undefined} setZones
+ * @param {string | undefined} team
  */
 let isDangerous = (setZones, team) =>
 {
+	if (setZones == undefined)
+		return false;
 	for (let x of setZones)
 	{
+		if (team == undefined)
+			return (true);
 		if (board.get(x)?.piece?.team != team)
-			return true;
+			return (true);
 	}
 	return false;
 }

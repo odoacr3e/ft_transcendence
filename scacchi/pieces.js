@@ -43,6 +43,8 @@ function berserkMode(pos)
 
 	startPos = cursor.square;
 	piece = board.get(pos)?.piece;
+	if (piece?.moveArrayDEBUG == null)
+		throw ("entering in function berserkMode with a null piece :-(") ;//FIXME - errore grave, dare 500
 	for (let {dx, dy} of piece?.moveArrayDEBUG)
 	{
 		while (movePiece(dx, dy, false))
@@ -70,7 +72,7 @@ let movementChampion = function ( /* res */)
 
 	startPos = cursor.square;
 	piece = board.get(cursor.square)?.piece;
-	if (piece == null)
+	if (piece == undefined)
 		return (0);
 	for (let {dx, dy} of piece.moveArrayDEBUG)
 	{
@@ -318,5 +320,7 @@ const preset = {
 		booster: null
 	},
 }
+
+
 
 module.exports = {Piece, enumNames, enumValues, preset};

@@ -30,24 +30,33 @@ function getDirection(kingSquare, enemySquare)
 }
 
 /**
- * 
+ * Checks if a piece that is menacing the king can be eaten
  * @param {string} kingSquare 
- * @param {string} enemySquare 
- * @returns 
+ * @param {string} enemySquareString 
+ * @returns {boolean} 
  */
-function isStoppable(kingSquare, enemySquare)
+function isStoppable(kingSquare, enemySquareString)
 {
-	if (board.get(enemySquare)?.piece?.type == enumNames.JESTER || 
-	board.get(enemySquare)?.piece?.type == enumNames.BASTARDS || 
-	(board.get(enemySquare)?.piece?.type == enumNames.VALKIRYA && 
-	board.get(enemySquare)?.piece?.isBoostedBool == true) ||
-	board.get(kingSquare)?.dangerZones.has(enemySquare))
+	let	square;
+	let	enemySquare;
+
+	enemySquare = board.get(enemySquareString);
+	if (!enemySquare)
+		throw ("given to isStoppable an invalid position");//FIXME - errore grave, dare 500
+	if (enemySquare.piece?.type == enumNames.JESTER || 
+	enemySquare.piece?.type == enumNames.BASTARDS || 
+	(enemySquare.piece?.type == enumNames.VALKIRYA && 
+	enemySquare.piece?.isBoostedBool == true) ||
+	board.get(kingSquare)?.dangerZones.has(enemySquareString))
 		return false;
-	let dir = getDirection(kingSquare, enemySquare);
+	let dir = getDirection(kingSquare, enemySquareString);
 	cursor.setCursor(cursor.getRow() + dir.diffRow, cursor.getCol() + dir.diffCol);
 	while (board.get(cursor.square)?.piece?.type != enumNames.KING)
 	{
-		for (let x of board.get(cursor.square)?.dangerZones)
+		square = board.get(cursor.square);
+		if (!square || !square.dangerZones)
+			continue ;
+		for (let x of square.dangerZones)
 		{
 			if (board.get(x)?.piece?.team == board.get(kingSquare)?.piece?.team)
 				return true;
@@ -57,14 +66,17 @@ function isStoppable(kingSquare, enemySquare)
 	return false;
 }
 
+//TODO - passare come parametro il team per cui va fatto il check
+//			o ancora meglio la posizione per cui fare il check
 let CheckMateCheck= () =>
 {
 	let threatLevel = 0;
 	let kingSquare;
+	let	kingSquareString;
 	let enemySquare;
 	let team;
 
-	for (let x of board)
+	for (let x of board)//REVIEW - Ale: io terrei la posizione di ogni re salvata
 	{
 		if (x[1].piece?.type == enumNames.KING)
 		{
@@ -72,14 +84,18 @@ let CheckMateCheck= () =>
 			team = x[1].piece.team;
 		}
 	}
-	if (!isDangerous(board.get(kingSquare)?.dangerZones, team))
+	if (!kingSquare)
+		throw (`missing king for team `);//FIXME - errore grave, dare 500
+	kingSquareString = kingSquare;
+	kingSquare = board.get(kingSquare);
+	if (!kingSquare || !isDangerous(kingSquare.dangerZones, team))
 		return false;
-	for (let x of board.get(kingSquare)?.targetZones)
+	for (let x of kingSquare.targetZones)
 	{
 		if (!isDangerous(board.get(x)?.dangerZones, team) && board.get(x)?.piece == null)
 			return false;
 	}
-	for (let x of board.get(kingSquare)?.dangerZones)
+	for (let x of kingSquare.dangerZones)
 	{
 		if (board.get(x)?.piece?.team != team)
 		{
@@ -90,9 +106,9 @@ let CheckMateCheck= () =>
 	if (threatLevel >= 2)
 		return true;
 	// da sistemare per i pezzi che si muovono due volte
-	if (isDangerous(board.get(kingSquare)?.dangerZones, board.get(kingSquare)?.piece?.team))
+	if (isDangerous(kingSquare.dangerZones, kingSquare.piece?.team))
 		return false;
-	if (isStoppable(kingSquare, enemySquare))
+	if (!enemySquare || isStoppable(kingSquareString, enemySquare))
 		return false;
 	return true;
 }
