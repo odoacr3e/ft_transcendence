@@ -16,7 +16,7 @@ let movementWithSecondTurn = function ( /* res */)
 	piece = board.get(cursor.square)?.piece;
 	if (piece == null)
 		return (0);
-	for (let {dx, dy} of piece.moveArrayDEBUG)
+	for (let {dx, dy} of piece.moveArray)
 	{
 		while (movePiece(dx, dy, false))
 		{
@@ -43,9 +43,9 @@ function berserkMode(pos)
 
 	startPos = cursor.square;
 	piece = board.get(pos)?.piece;
-	if (piece?.moveArrayDEBUG == null)
+	if (piece?.moveArray == null)
 		throw ("entering in function berserkMode with a null piece :-(") ;//FIXME - errore grave, dare 500
-	for (let {dx, dy} of piece?.moveArrayDEBUG)
+	for (let {dx, dy} of piece?.moveArray)
 	{
 		while (movePiece(dx, dy, false))
 		{
@@ -74,7 +74,7 @@ let movementChampion = function ( /* res */)
 	piece = board.get(cursor.square)?.piece;
 	if (piece == undefined)
 		return (0);
-	for (let {dx, dy} of piece.moveArrayDEBUG)
+	for (let {dx, dy} of piece.moveArray)
 	{
 		while (movePiece(dx, dy, false))
 		{
@@ -104,7 +104,7 @@ let movementMinotaurus = function ( /* res */)
 	piece = board.get(cursor.square)?.piece;
 	if (piece == null)
 		return (0);
-	for (let {dx, dy} of piece.moveArrayDEBUG)
+	for (let {dx, dy} of piece.moveArray)
 	{
 		while (movePiece(dx, dy, false))
 		{
@@ -133,7 +133,7 @@ let movementJester = function ()
 	piece = board.get(cursor.square)?.piece;
 	if (piece == null)
 		return (0);
-	for (let {dx, dy} of piece.moveArrayDEBUG)
+	for (let {dx, dy} of piece.moveArray)
 	{
 		let row = cursor.getRow();
 		let col = cursor.getCol();
@@ -161,7 +161,7 @@ let movementValkirya = function ()
 	piece = board.get(cursor.square)?.piece;
 	if (piece == null)
 		return (0);
-	for (let {dx, dy} of piece.moveArrayDEBUG)
+	for (let {dx, dy} of piece.moveArray)
 	{
 		let maxTarget = 2; 
 		while (movePiece(dx, dy, false))
@@ -205,7 +205,7 @@ class Piece
 		/** @type {boolean} */  						this.isBoostedBool = false;
 		/** @type {string} */ 							this.pos = pos;
 		/** @type {Function} */ 						this.moveFunction = booster;
-		/** @type {Array<{dx: number, dy:number}>} */	this.moveArrayDEBUG = movement;
+		/** @type {Array<{dx: number, dy:number}>} */	this.moveArray = movement;
 		/** @type {boolean} */							this.moveLongRangeDEBUG = long;
 	}
 }
@@ -228,14 +228,14 @@ const enumValues = {
  * @enum {string}
  */
 const enumNames = {
-	KING: 'king',
-	CHAMPION: 'champion',
-	MINOTAURUS: 'minotaurus',
-	JESTER: 'jester',
-	VALKIRYA: 'valkirya',
-	BASTARDS: 'bastards',
-	MAGE: 'mage',
-	GHOUL: 'ghoul'
+	KING: 'King',
+	CHAMPION: 'Champion',
+	MINOTAURUS: 'Minotaurus',
+	JESTER: 'Jester',
+	VALKIRYA: 'Valkirya',
+	BASTARDS: 'Bastards',
+	MAGE: 'Mage',
+	GHOUL: 'Ghoul'
 };
 
 

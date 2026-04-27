@@ -20,6 +20,7 @@ class Square
         /** @type {string | undefined} */	this.color = undefined;
         /** @type {Piece | null} */   		this.piece = null;
 		/** @type {Set<string>} */			this.targetZones = new Set();
+		/** @type {Set<string>} */			this.boostedTargetZones = new Set();
 		/** @type {Set<string>} */			this.dangerZones = new Set();
 	}
     //tutti i dati
@@ -30,8 +31,8 @@ class Square
  */
 const eTeam = 
 {
-	Black: 'Black',
-	White: 'White'
+	Black: 'black',
+	White: 'white'
 };
 
 //ANCHOR - Methods

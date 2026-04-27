@@ -5,4 +5,5 @@ const authHandler = require("../handlers/auth.js")
 
 router.post("/", authHandler.checkCredentials, authHandler.checkUser, authHandler.checkJwt);
 
+
 module.exports = router;

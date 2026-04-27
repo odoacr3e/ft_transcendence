@@ -5,7 +5,8 @@
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
     "node": "^25.9.0",
-    "pg": "^8.20.0"
+    "pg": "^8.20.0",
+    "seedrandom": "^3.0.5"
   },
   "name": "scacchiz",
   "version": "1.0.0",

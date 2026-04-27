@@ -42,7 +42,7 @@ function isStoppable(kingSquare, enemySquareString)
 
 	enemySquare = board.get(enemySquareString);
 	if (!enemySquare)
-		throw ("given to isStoppable an invalid position");//FIXME - errore grave, dare 500
+		throw ("given to isStoppable an invalid position");//FIXME - Ale: errore grave, dare 500
 	if (enemySquare.piece?.type == enumNames.JESTER || 
 	enemySquare.piece?.type == enumNames.BASTARDS || 
 	(enemySquare.piece?.type == enumNames.VALKIRYA && 
@@ -66,11 +66,26 @@ function isStoppable(kingSquare, enemySquareString)
 	return false;
 }
 
-//TODO - passare come parametro il team per cui va fatto il check
+// /**
+//  * 
+//  * @param {Set<string>} threat 
+//  */
+// function doubleSave(threat)
+// {
+// 	let arr = Array.from(threat);
+
+// 	for (let x of board.get(arr[0])?.dangerZones)
+// 	{
+// 		if (board.get(arr[1])?.dangerZones.has(x) && (board.get(x)?.piece?.isBoostedBool && (board.get(x)?.piece?.type == enumNames.MINOTAURUS || board.get(x)?.piece?.type == enumNames.CHAMPION)))
+			
+// 	}
+// }
+
+//TODO - Ale: passare come parametro il team per cui va fatto il check
 //			o ancora meglio la posizione per cui fare il check
 let CheckMateCheck= () =>
 {
-	let threatLevel = 0;
+	let threat = new Set;
 	let kingSquare;
 	let	kingSquareString;
 	let enemySquare;
@@ -85,7 +100,7 @@ let CheckMateCheck= () =>
 		}
 	}
 	if (!kingSquare)
-		throw (`missing king for team `);//FIXME - errore grave, dare 500
+		throw (`missing king for team `);//FIXME - Ale: errore grave, dare 500
 	kingSquareString = kingSquare;
 	kingSquare = board.get(kingSquare);
 	if (!kingSquare || !isDangerous(kingSquare.dangerZones, team))
@@ -100,12 +115,13 @@ let CheckMateCheck= () =>
 		if (board.get(x)?.piece?.team != team)
 		{
 			enemySquare = x;
-			++threatLevel;
+			threat.add(enemySquare);
 		}
 	}
-	if (threatLevel >= 2)
+	// if (threat.size == 2 && doubleSave(threat))
+		// return true;
+	if (threat.size >= 2)
 		return true;
-	// da sistemare per i pezzi che si muovono due volte
 	if (isDangerous(kingSquare.dangerZones, kingSquare.piece?.team))
 		return false;
 	if (!enemySquare || isStoppable(kingSquareString, enemySquare))

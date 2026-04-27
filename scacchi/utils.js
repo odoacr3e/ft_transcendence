@@ -64,7 +64,7 @@ let DangerUpdate = () =>
 	piece = board.get(cursor.square)?.piece;
 	if (piece == null)
 		return (0);
-	for (let {dx, dy} of piece.moveArrayDEBUG)
+	for (let {dx, dy} of piece.moveArray)
 	{
 		while (movePiece(dx, dy, false))
 		{
