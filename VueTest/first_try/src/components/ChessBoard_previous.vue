@@ -1,8 +1,8 @@
 <script setup>
     import { onMounted }	from 'vue';
-    import { Board }		from "../scripts/first_try/Data/data.js";
-    import { movePiece }	from "../scripts/first_try/Renderer/render.js";
-    import { globalEvents }	from "../scripts/first_try/Events/global.js";
+    import { Board }		from "../scripts/Data/data.js";
+    import { movePiece }	from "../scripts/Renderer/render.js";
+    import { globalEvents }	from "../scripts/Events/global.js";
 
 	function onDragStart(event, square)
 	{

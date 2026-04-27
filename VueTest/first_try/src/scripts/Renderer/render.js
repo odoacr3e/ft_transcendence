@@ -18,8 +18,6 @@ function movePiece(fromSquareId, toSquareId)
 	return true;
 }
 
-
-
 function clearHighlight()
 {
 	Board.forEach(row => {
