@@ -1,8 +1,4 @@
-import { FILES } from "../Helper/constants";
-
-let localMatchState = null;
-let localBoard = null;
-let localPlayers = new Map();
+import {localMatchState, localBoard, localPlayers, setLocalMatchState, setLocalBoard} from "../Global/Variables.js";
 
 export async function loadReceivedMatch() 
 {
@@ -44,7 +40,7 @@ export async function initLocalMatchState()
 {
 	const raw = await loadReceivedMatch();
 	const validated = validateReceivedMatch(raw);
-	localMatchState = validated;
+	setLocalMatchState(validated);
 
 	initLocalBoard();
 	initLocalPlayers();
@@ -54,7 +50,7 @@ export function initLocalBoard()
 {
 	if (!localMatchState)
 		throw new Error("[initLocalBoard]: Match non inizializzato: chiama prima initLocalMatchState().");
-	localBoard = new Map(Object.entries(localMatchState.board));
+    setLocalBoard(localMatchState.board);
 }
 
 function initLocalPlayers()
@@ -79,11 +75,10 @@ function initLocalPlayers()
 export function replaceMatchState(nextRaw) 
 {
 	const validated = validateReceivedMatch(nextRaw);
-	localMatchState = validated;
+	setLocalMatchState(validated);
 
 	initLocalBoard();
 	initLocalPlayers();
-
 }
 
 export async function updateLocalMatchState()
@@ -101,7 +96,7 @@ export async function updateLocalMatchState()
 		
 }
 
-export function updateLocalBoard(changes)
+function updateLocalBoard(changes)
 {
 	const has_not_board = !changes.board;
 	const board_not_valid = typeof changes.board !== "object" || Array.isArray(changes.board);
@@ -130,34 +125,5 @@ function updateLocalPlayers(changes)
 			throw new Error(`[updateLocalPlayers]: Player ${player} wrong type!`);
 
 		localPlayers.set(player, changes[player]);
-	})	
+	})
 }
-
-async function prova()
-{
-	try
-	{		
-		await initLocalMatchState();
-	}
-	catch (err){
-		console.error("[Prova]: Errore");   
-	}
-}
-
-prova();
-
-// export function boardConverter(boardMap = assignLocalBoard())
-// {
-// 	const rows = [];
-
-// 	for (let rank = 8; rank >= 1; rank -= 1)
-// 	{
-// 		const row = [];
-// 		for (const file of FILES)
-// 			row.push(boardMap.get(`${file}${rank}`));
-// 		rows.push(row);
-// 	}
-// 	return rows;
-// }
-
-export { localBoard, localPlayers, localMatchState }

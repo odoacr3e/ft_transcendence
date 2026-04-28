@@ -1,7 +1,7 @@
 {
   "p1": {
     "name": "player1",
-    "team": "White",
+    "team": "white",
     "pieces": 16,
     "points": 0
   },
@@ -11,8 +11,8 @@
     "pieces": 16,
     "points": 0
   },
-  "p3": null,
-  "p4": null,
+  "p3": null, 
+  "p4": null, 
   "board": {
     "a1": {
       "piece": null,
@@ -36,7 +36,7 @@
         "isMovedBool": false,
         "isBoostedBool": true,
         "pos": "a3",
-        "moveArray": [
+        "moveArrayDEBUG": [
           {
             "dx": 0,
             "dy": 1
@@ -54,7 +54,7 @@
             "dy": 0
           }
         ],
-        "moveLongRange": true
+        "moveLongRangeDEBUG": true
       },
       "targetZones": [
         "b3",
@@ -108,7 +108,7 @@
         "isMovedBool": false,
         "isBoostedBool": true,
         "pos": "a8",
-        "moveArray": [
+        "moveArrayDEBUG": [
           {
             "dx": 0,
             "dy": 1
@@ -126,7 +126,7 @@
             "dy": 0
           }
         ],
-        "moveLongRange": true
+        "moveLongRangeDEBUG": true
       },
       "targetZones": [],
       "dangerZones": [
@@ -158,7 +158,7 @@
         "isMovedBool": false,
         "isBoostedBool": true,
         "pos": "b4",
-        "moveArray": [
+        "moveArrayDEBUG": [
           {
             "dx": 1,
             "dy": 1
@@ -176,7 +176,7 @@
             "dy": -1
           }
         ],
-        "moveLongRange": true
+        "moveLongRangeDEBUG": true
       },
       "targetZones": [],
       "dangerZones": []
@@ -214,7 +214,7 @@
         "isMovedBool": false,
         "isBoostedBool": false,
         "pos": "c2",
-        "moveArray": [
+        "moveArrayDEBUG": [
           {
             "dx": 0,
             "dy": 1
@@ -240,7 +240,7 @@
             "dy": -1
           }
         ],
-        "moveLongRange": false
+        "moveLongRangeDEBUG": false
       },
       "targetZones": [],
       "dangerZones": [
@@ -255,7 +255,7 @@
         "isMovedBool": false,
         "isBoostedBool": true,
         "pos": "c3",
-        "moveArray": [
+        "moveArrayDEBUG": [
           {
             "dx": 0,
             "dy": 1
@@ -273,7 +273,7 @@
             "dy": 0
           }
         ],
-        "moveLongRange": true
+        "moveLongRangeDEBUG": true
       },
       "targetZones": [],
       "dangerZones": [
@@ -288,7 +288,7 @@
         "isMovedBool": false,
         "isBoostedBool": true,
         "pos": "c4",
-        "moveArray": [
+        "moveArrayDEBUG": [
           {
             "dx": 1,
             "dy": 1
@@ -322,7 +322,7 @@
             "dy": 0
           }
         ],
-        "moveLongRange": true
+        "moveLongRangeDEBUG": true
       },
       "targetZones": [],
       "dangerZones": [
@@ -362,7 +362,7 @@
         "isMovedBool": false,
         "isBoostedBool": true,
         "pos": "d2",
-        "moveArray": [
+        "moveArrayDEBUG": [
           {
             "dx": 1,
             "dy": 1
@@ -396,7 +396,7 @@
             "dy": 0
           }
         ],
-        "moveLongRange": true
+        "moveLongRangeDEBUG": true
       },
       "targetZones": [],
       "dangerZones": []
@@ -419,7 +419,7 @@
         "isMovedBool": false,
         "isBoostedBool": true,
         "pos": "d5",
-        "moveArray": [
+        "moveArrayDEBUG": [
           {
             "dx": 1,
             "dy": 1
@@ -437,7 +437,7 @@
             "dy": -1
           }
         ],
-        "moveLongRange": true
+        "moveLongRangeDEBUG": true
       },
       "targetZones": [],
       "dangerZones": []
@@ -465,7 +465,7 @@
         "isMovedBool": false,
         "isBoostedBool": true,
         "pos": "e1",
-        "moveArray": [
+        "moveArrayDEBUG": [
           {
             "dx": 2,
             "dy": 1
@@ -499,7 +499,7 @@
             "dy": -2
           }
         ],
-        "moveLongRange": false
+        "moveLongRangeDEBUG": false
       },
       "targetZones": [],
       "dangerZones": []
@@ -517,7 +517,7 @@
         "isMovedBool": false,
         "isBoostedBool": false,
         "pos": "e3",
-        "moveArray": [
+        "moveArrayDEBUG": [
           {
             "dx": 0,
             "dy": 1
@@ -543,7 +543,7 @@
             "dy": -1
           }
         ],
-        "moveLongRange": false
+        "moveLongRangeDEBUG": false
       },
       "targetZones": [],
       "dangerZones": [
@@ -558,7 +558,7 @@
         "isMovedBool": false,
         "isBoostedBool": true,
         "pos": "e4",
-        "moveArray": [
+        "moveArrayDEBUG": [
           {
             "dx": 0,
             "dy": 1
@@ -576,7 +576,7 @@
             "dy": 0
           }
         ],
-        "moveLongRange": true
+        "moveLongRangeDEBUG": true
       },
       "targetZones": [],
       "dangerZones": []
@@ -589,7 +589,7 @@
         "isMovedBool": false,
         "isBoostedBool": false,
         "pos": "e5",
-        "moveArray": [
+        "moveArrayDEBUG": [
           {
             "dx": 0,
             "dy": 1
@@ -615,7 +615,7 @@
             "dy": -1
           }
         ],
-        "moveLongRange": false
+        "moveLongRangeDEBUG": false
       },
       "targetZones": [],
       "dangerZones": []
@@ -628,7 +628,7 @@
         "isMovedBool": false,
         "isBoostedBool": true,
         "pos": "e6",
-        "moveArray": [
+        "moveArrayDEBUG": [
           {
             "dx": 0,
             "dy": 1
@@ -646,7 +646,7 @@
             "dy": 0
           }
         ],
-        "moveLongRange": true
+        "moveLongRangeDEBUG": true
       },
       "targetZones": [],
       "dangerZones": []
@@ -674,7 +674,7 @@
         "isMovedBool": false,
         "isBoostedBool": false,
         "pos": "f2",
-        "moveArray": [
+        "moveArrayDEBUG": [
           {
             "dx": 0,
             "dy": 1
@@ -700,7 +700,7 @@
             "dy": -1
           }
         ],
-        "moveLongRange": false
+        "moveLongRangeDEBUG": false
       },
       "targetZones": [],
       "dangerZones": []
@@ -718,7 +718,7 @@
         "isMovedBool": false,
         "isBoostedBool": true,
         "pos": "f4",
-        "moveArray": [
+        "moveArrayDEBUG": [
           {
             "dx": 2,
             "dy": 1
@@ -752,7 +752,7 @@
             "dy": -2
           }
         ],
-        "moveLongRange": false
+        "moveLongRangeDEBUG": false
       },
       "targetZones": [],
       "dangerZones": []
@@ -765,7 +765,7 @@
         "isMovedBool": false,
         "isBoostedBool": true,
         "pos": "f5",
-        "moveArray": [
+        "moveArrayDEBUG": [
           {
             "dx": 0,
             "dy": 1
@@ -783,7 +783,7 @@
             "dy": 0
           }
         ],
-        "moveLongRange": true
+        "moveLongRangeDEBUG": true
       },
       "targetZones": [],
       "dangerZones": []
@@ -821,7 +821,7 @@
         "isMovedBool": false,
         "isBoostedBool": true,
         "pos": "g3",
-        "moveArray": [
+        "moveArrayDEBUG": [
           {
             "dx": 1,
             "dy": 1
@@ -855,7 +855,7 @@
             "dy": 0
           }
         ],
-        "moveLongRange": true
+        "moveLongRangeDEBUG": true
       },
       "targetZones": [],
       "dangerZones": []
@@ -888,7 +888,7 @@
         "isMovedBool": false,
         "isBoostedBool": true,
         "pos": "g8",
-        "moveArray": [
+        "moveArrayDEBUG": [
           {
             "dx": 0,
             "dy": 1
@@ -906,7 +906,7 @@
             "dy": 0
           }
         ],
-        "moveLongRange": true
+        "moveLongRangeDEBUG": true
       },
       "targetZones": [],
       "dangerZones": [
@@ -936,7 +936,7 @@
         "isMovedBool": false,
         "isBoostedBool": false,
         "pos": "h4",
-        "moveArray": [
+        "moveArrayDEBUG": [
           {
             "dx": 0,
             "dy": 1
@@ -962,7 +962,7 @@
             "dy": -1
           }
         ],
-        "moveLongRange": false
+        "moveLongRangeDEBUG": false
       },
       "targetZones": [],
       "dangerZones": []
@@ -990,7 +990,7 @@
         "isMovedBool": false,
         "isBoostedBool": false,
         "pos": "h8",
-        "moveArray": [
+        "moveArrayDEBUG": [
           {
             "dx": 0,
             "dy": 1
@@ -1016,7 +1016,7 @@
             "dy": -1
           }
         ],
-        "moveLongRange": false
+        "moveLongRangeDEBUG": false
       },
       "targetZones": [],
       "dangerZones": []

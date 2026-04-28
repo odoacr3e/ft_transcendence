@@ -1,21 +1,41 @@
 <script setup>
-    import { onMounted }	from 'vue';
-    import { Board }		from "../scripts/Data/Board.js";
-	import 
+	import { onMounted, computed }			from 'vue';
+	import { DOMBoard }				from '@/scripts/Global/Variables';
+	import { onDragStart, onDrop }	from '@/scripts/Events/Movements';
+	import { globalEvents } 		from '@/scripts/Events/Global';
+	import { IMG_PATHS }			from '@/scripts/Helper/Constants';
+
+	const domBoardComputed = computed(() => DOMBoard());
+
+    onMounted(() => {
+        globalEvents()
+    })
 </script>
 
 <template>
     <div id="root">
-		<div id="board">
-			<div
-				v-for="(square, key) of Board"
-				:key="key"
-				class="square"
-			>
-			{{ square.piece?.type }}
-			</div>
-		</div>
-	</div>
+        <div id="board">
+            <div v-for="row in domBoardComputed" :key="row[0]?.id" class="squareRow">
+                <div
+                    v-for="square in row"
+                    :key="square.id"
+                    :id="square.id"
+                    :class="[square.color, 'square']"
+                    @drop="onDrop($event, square)"
+                    @dragover.prevent
+                >
+                    <img
+                        v-if="square.piece"
+                        class="piece"
+                        :src="IMG_PATHS[square.piece.team + square.piece.type]"
+                        :draggable="true"
+                        @dragstart="onDragStart($event, square)"
+                    />
+                    <span v-if="square.highlight" class="highlight"></span>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <style scoped>

@@ -18,7 +18,7 @@
 <style scoped>
 	@font-face {
 		font-family: 'DeutschGothic';
-		src: url('../../public/fonts/deutsch_gothic/Deutsch.ttf') format('truetype');
+		src: url('../../fonts/deutsch_gothic/Deutsch.ttf') format('truetype');
 	}
 	#Logo
 	{
