@@ -32,4 +32,5 @@ export function onDrop(event, toSquare)
 
 	const fromSquareId = event.dataTransfer.getData('fromSquareId');
 	movePiece(fromSquareId, toSquare.id);
+	// console.log(`from ${fromSquareId} to ${toSquare.id}`);
 }

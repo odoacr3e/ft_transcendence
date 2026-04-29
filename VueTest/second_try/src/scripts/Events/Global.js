@@ -1,6 +1,6 @@
-import { getRootDiv } from "../Helper/Constants.js";
-import { clearHighlight } from "../Helper/render_utils.js";
-import { localBoard } from "../Global/Variables.js";
+import { clearHighlight }	from "../Helper/render_utils.js";
+import { getRootDiv }		from "../Helper/Constants.js";
+import { localBoard }		from "../Global/Variables.js";
 
 let lastClickedId = null;
 

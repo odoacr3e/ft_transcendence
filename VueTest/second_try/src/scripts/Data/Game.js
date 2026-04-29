@@ -1,4 +1,4 @@
-import {localMatchState, localBoard, localPlayers, setLocalMatchState, setLocalBoard} from "../Global/Variables.js";
+import {localMatchState, localBoard, localPlayers, startLocalMatchState, startLocalBoard} from "../Global/Variables.js";
 
 export async function loadReceivedMatch() 
 {
@@ -40,7 +40,7 @@ export async function initLocalMatchState()
 {
 	const raw = await loadReceivedMatch();
 	const validated = validateReceivedMatch(raw);
-	setLocalMatchState(validated);
+	startLocalMatchState(validated);
 
 	initLocalBoard();
 	initLocalPlayers();
@@ -50,7 +50,7 @@ export function initLocalBoard()
 {
 	if (!localMatchState)
 		throw new Error("[initLocalBoard]: Match non inizializzato: chiama prima initLocalMatchState().");
-    setLocalBoard(localMatchState.board);
+    startLocalBoard(localMatchState.board);
 }
 
 function initLocalPlayers()
@@ -75,25 +75,24 @@ function initLocalPlayers()
 export function replaceMatchState(nextRaw) 
 {
 	const validated = validateReceivedMatch(nextRaw);
-	setLocalMatchState(validated);
+	startLocalMatchState(validated);
 
 	initLocalBoard();
 	initLocalPlayers();
 }
 
-export async function updateLocalMatchState()
-{
-	const nextMatchState = await loadReceivedMatch();
-
+export async function updateLocalMatchState(nextMatchState) {
+	if (!nextMatchState)
+		console.error("[UpdateLocalMatchState]: nextMatchState passed is null!");
+  
 	try 
 	{
 		updateLocalBoard(nextMatchState);
 		updateLocalPlayers(nextMatchState);
-	}
+	} 
 	catch(err){
-		console.error("[updateLocalMatchState]: Errore di update del Match!");
-	}
-		
+    console.error("[updateLocalMatchState]: Errore di update del Match!");
+  	}
 }
 
 function updateLocalBoard(changes)

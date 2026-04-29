@@ -1,3 +1,3 @@
 moveArrayDEBUG 				---> moveArray
-moveLongRange 				----> moveLongRange
+moveLongRange 				---> moveLongRange
 colors from "Black | White"	---> "black | white"

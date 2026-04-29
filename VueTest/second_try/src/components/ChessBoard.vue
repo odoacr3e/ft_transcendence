@@ -1,9 +1,9 @@
 <script setup>
-	import { onMounted, computed }			from 'vue';
-	import { DOMBoard }				from '@/scripts/Global/Variables';
-	import { onDragStart, onDrop }	from '@/scripts/Events/Movements';
-	import { globalEvents } 		from '@/scripts/Events/Global';
-	import { IMG_PATHS }			from '@/scripts/Helper/Constants';
+	import { DOMBoard, getSquareColor }	from '@/scripts/Global/Variables';
+	import { onMounted, computed }		from 'vue';
+	import { onDragStart, onDrop }		from '@/scripts/Events/Movements';
+	import { globalEvents } 			from '@/scripts/Events/Global';
+	import { IMG_PATHS }				from '@/scripts/Helper/Constants';
 
 	const domBoardComputed = computed(() => DOMBoard());
 
@@ -15,12 +15,12 @@
 <template>
     <div id="root">
         <div id="board">
-            <div v-for="row in domBoardComputed" :key="row[0]?.id" class="squareRow">
+            <div v-for="row in domBoardComputed" :key="row[0].id" class="squareRow">
                 <div
                     v-for="square in row"
                     :key="square.id"
                     :id="square.id"
-                    :class="[square.color, 'square']"
+                    :class="[getSquareColor(square.id), 'square']"
                     @drop="onDrop($event, square)"
                     @dragover.prevent
                 >
@@ -67,7 +67,6 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-
 	}
 
 	.white{
@@ -85,6 +84,6 @@
 		display: block;
 		margin: auto;
 		border-radius: 50%;
-		background-color: brown; /* rgba(0, 0, 0, 0.1) */;
+		background-color: brown;
 	}
 </style>

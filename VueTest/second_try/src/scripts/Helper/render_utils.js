@@ -1,5 +1,5 @@
-import { localBoard } from "../Global/Variables";
-import { FILES } from "./Constants";
+import { localBoard }   from "../Global/Variables";
+import { FILES }        from "./Constants";
 
 export function boardConverter()
 {
