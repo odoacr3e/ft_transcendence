@@ -1,49 +1,20 @@
 <script setup>
     import { onMounted }	from 'vue';
     import { Board }		from "../scripts/Data/data.js";
-    import { movePiece, FILES, IMG_PATHS }	from "../scripts/Helper/constants.js";
+    import { IMG_PATHS, boardConverter }	from "../scripts/Helper/constants.js";
     import { globalEvents }	from "../scripts/Events/global.js";
-
-	function boardConverter(Board)
-	{
-		const DBoard = [];
-
-		for (let rank = 8; rank >= 1; rank -= 1)
-		{
-			const row = [];
-			for (const file of FILES)
-				row.push(Board.get(`${file}${rank}`));
-			DBoard.push(row);
-		}
-		return DBoard;
-	}
+	import { onDragStart, onDrop } from "../scripts/Events/drag.js";
 
 	const DOMBoard = boardConverter(Board);
-
-	function onDragStart(event, square)
-	{
-	  event.dataTransfer.setData('pieceId', `piece-${square.id}`)
-	  event.dataTransfer.setData('fromSquareId', square.id)
-	}
-
-	function onDrop(event, toSquare)
-	{
-		event.preventDefault()
-		if (toSquare.piece)
-			return
-
-		const fromSquareId = event.dataTransfer.getData('fromSquareId')
-		movePiece(fromSquareId, toSquare.id, Board)
-	}
 
     onMounted(() => {
         globalEvents()
     })
 </script>
-``
+
 <template>
     <div id="root">
-		<div id="board">
+		<div id="board" oncontextmenu="return false;">
 			<div v-for="row in DOMBoard" class="squareRow">
 				<div
 					v-for="square in row"

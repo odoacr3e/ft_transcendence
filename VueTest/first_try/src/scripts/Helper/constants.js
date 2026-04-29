@@ -1,12 +1,8 @@
 import { Board } from "../Data/data.js";
 
-function getRootDiv() {
-	return document.getElementById("board");
-}
-
 const FILES = ["a", "b", "c", "d", "e", "f", "g", "h"]
 
-const IMG_PATHS = Object.freeze ({
+export const IMG_PATHS = Object.freeze ({
 	"whiteKing" : new URL("../../assets/pieces/white/king.png", import.meta.url).href,
 	"whiteChampion" : new URL("../../assets/pieces/white/queen.png", import.meta.url).href,
 	"whiteJester" : new URL("../../assets/pieces/white/knight.png", import.meta.url).href,
@@ -21,7 +17,26 @@ const IMG_PATHS = Object.freeze ({
 	"blackBastards" : new URL("../../assets/pieces/black/pawn.png", import.meta.url).href
 });
 
-function movePiece(fromSquareId, toSquareId)
+export function getRootDiv()
+{
+	return document.getElementById("board");
+}
+
+export function clearHighlight(flag)
+{
+	Board.forEach(square => {
+		if (square.highlight === true && (flag === "point" || flag === undefined))
+			square.highlight = false;
+		const style = document.getElementById(square.id).style;
+		if (style.backgroundColor == "brown" && (flag === "square" || flag === undefined))
+		{
+			if (square.color == "white") { style.backgroundColor = "white"; style.borderWidth = "0"; style.borderColor = "trasparent"; }
+			else { style.backgroundColor = "rgb(27, 0, 0)"; style.borderWidth = "0"; style.borderColor = "trasparent"; }
+		}
+	})
+}
+
+export function movePiece(fromSquareId, toSquareId)
 {
 	const fromS = Board.get(fromSquareId);
 	const toS = Board.get(toSquareId);
@@ -37,12 +52,16 @@ function movePiece(fromSquareId, toSquareId)
 	return true;
 }
 
-function clearHighlight()
+export function boardConverter(Board)
 {
-	Board.forEach(square => {
-		if (square.highlight === true)
-			square.highlight = false;
-	})
-}
+	const DBoard = [];
 
-export { getRootDiv, clearHighlight, movePiece, FILES, IMG_PATHS };
+	for (let rank = 8; rank >= 1; rank -= 1)
+	{
+		const row = [];
+		for (const file of FILES)
+			row.push(Board.get(`${file}${rank}`));
+		DBoard.push(row);
+	}
+	return DBoard;
+}
