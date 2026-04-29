@@ -13,4 +13,8 @@ const getUserByUsername = async (username) => {
 	return await db.query("SELECT username, name, surname FROM users WHERE username = $1", [username]);
 }
 
-module.exports = { getAllUsers, getUserById, getUserByUsername };
+const getUserByEmail = async (email) => {
+	return await db.query("SELECT username, name, surname FROM users WHERE email = $1", [email]);
+}
+
+module.exports = { getAllUsers, getUserById, getUserByUsername, getUserByEmail };

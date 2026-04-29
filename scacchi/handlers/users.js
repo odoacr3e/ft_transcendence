@@ -17,4 +17,15 @@ const getUserByUsername = async (req, res) => {
 	res.json(user.rows);
 }
 
-module.exports = { getAllUsers, getUserById, getUserByUsername };
+// cercare se esiste email | username
+// creare utente sul DB e ritornare /api/users/:id
+
+const validateUser = async (req, res, next) => {
+	 
+}
+
+const createUser = async (req, res) => {
+	
+}
+
+module.exports = { getAllUsers, getUserById, getUserByUsername, createUser };

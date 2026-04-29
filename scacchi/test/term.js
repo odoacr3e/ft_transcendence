@@ -10,9 +10,9 @@ const {cursor} = 	require("../cursor.js");
 const {render} = 	require("../render.js");
 const readline = 	require('node:readline');
 const {app} = require("../server.js");
+const {match} = require("../match.js");
 
 //SECTION - main: inizializza e fa primo render, mette terminale in ascolto
-
 const	rng = initRng(40);
 initTerminal();
 initRandomBoard();
@@ -193,9 +193,14 @@ function initRandomBoard()
 	for (let [key, data] of board)
 	{
 		rand = rng(16);
-		if (rand <= 10)
+		if (key == "a1")
+		{
+			data.piece = new Piece(lib.preset.King, "", key, false);
+			match.black.King = key;
+		}
+		else if (rand <= 10)
 			continue ;
-		if (rand == 11)
+		else if (rand == 11)
 			data.piece = new Piece(lib.preset.Bastards, "", key, false);
 		else if (rand == 12)
 		{

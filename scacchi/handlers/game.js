@@ -1,7 +1,9 @@
+// @ts-check
 const lib = require("../lib.js");
 const {Piece, board, Square, cursor} = require("../lib.js").Chess;
 const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("../utils.js");
 const {render} = require("../render.js");
+const {match} = require("../match.js");
 
 // const { match } = require("../main.js")// quando ci sara la board aggiornata in game sul main
 
@@ -11,18 +13,98 @@ const {render} = require("../render.js");
 // prendo input chessBoard con situazioone di gioco
 // lancio funzione board.checkMove(??)
 // restituzione JSON con board aggiornata
-const checkPosition = (req, res) => 
+// TODO - da aggiornare poi come middleware (fatti a step)
+// 1. Utente loggato
+// 2. Utente appartenente alla partita
+// 3. Mossa valida -> OK ritorno json con info per il frontend
+
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
+const gameHandler = (req, res) => 
 {
 	const { type, from, to } = req.body;
 	console.clear();
 	console.log(`EXTERNAL REQUEST: ${type}, ${from}, ${to}`);
-	// let square = board.get(from);
-	// console.log(square);
-	// square = board.get(to);
-	// console.log(square);
+	if (!checkMove([from, to]))
+		return (res.json({message: "you cannot move LMAO"}));
 	if (!moveFunctionDEBUG([from, to]))
-		console.log("you cannot move LMAO");
-	res.json({message: "arrivato"});
+		return(res.json({message: "illegal move LMAO"}));
+	res.json({message: "OK"});
+}
+
+/**
+ * 
+ * @param {Map<String, Square>} tmp 
+ */
+function copyBoard(tmp)
+{
+	console.log("before:", board);
+	board.clear();
+	for (let [key, val] of tmp)
+		board.set(key, val);
+	tmp.clear();
+	console.log("after:", board);
+}
+
+/**
+ * 
+ * @param {Array<String>} arr
+ * @param {Square} king
+ */
+function simulation(arr, king)
+{
+	let tmp = new Map(board);
+
+	board.get(arr[1]).piece = board.get(arr[0])?.piece;
+	board.get(arr[0]).piece = null;
+	dangerUpdateAll();
+	if (isDangerous(king.dangerZones, king.piece.team))
+	{
+		copyBoard(tmp);
+	}
+	copyBoard(tmp);
+	return true;
+}
+
+/**
+ * 1)	valid move
+ * 2)	
+ * @param {Array<String>} arr 
+ */
+function checkMove (arr=[])
+{
+	let	from;
+	let	to;
+	let	king;
+
+	from = board.get(arr[0]);
+	to = board.get(arr[1]);
+	// king = board.get(match.currentPlayer.King);
+	king = board.get(match.black.King);//FIXME - usare currentPlayer.King
+	if (from == null || to == null || king == null)
+		return (false);//FIXME - 500 server error
+	if (!from.targetZones.has(arr[1]))
+		return (false);
+	if (isDangerous(king.dangerZones, king.piece.team))
+		return (false);
+	if (to.piece)
+	{
+		if (to.piece.team == from.piece.team)
+			return false;
+	}
+	if (!simulation(arr, king))
+		return false;
+	if (to.piece)
+		match.currentPlayer.nPoints += to.piece.price;
+	console.log(to.piece);
+	console.log(from.piece);
+	to.piece = from.piece;
+	from.piece = null;
+	return (true);
 }
 
 /**
@@ -49,8 +131,6 @@ function moveFunctionDEBUG (selected=[])
 		fromType = "Square";
 	else
 		fromType = `\x1b[33m${fromType}\x1b[0m`;
-	if (!from.targetZones.has(selected[1]))
-		return (false);
 	if (toType == null)
 		toType = "Square";
 	else
@@ -58,13 +138,11 @@ function moveFunctionDEBUG (selected=[])
 	temp = from.piece;
 	from.piece = to.piece;
 	to.piece = temp;
-	temp = cursor.square;
 	dangerUpdateAll();
-	cursor.set(temp);
 	console.log(`SWAP ${fromType} with ${toType}`);
 	console.log(`from ${selected[0]} to ${selected[1]}`);
 	render();
 	return (true);
 }
 
-module.exports = { checkPosition };
+module.exports = { gameHandler };

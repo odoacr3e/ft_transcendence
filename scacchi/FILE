@@ -1,0 +1,1406 @@
+◇ injected env (7) from .env // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+seed: 40
+[32m[K][0m[V][ ][ ][V][ ][34m[J][0m[ ]
+[M][V][ ][B][ ][ ][ ][ ]
+[ ][V][ ][ ][ ][ ][ ][ ]
+[ ][ ][34m[J][0m[ ][ ][ ][M][ ]
+[ ][ ][ ][ ][ ][ ][ ][ ]
+[M][B][ ][C][C][ ][ ][ ]
+[ ][ ][ ][ ][34m[J][0m[ ][ ][ ]
+[M][ ][ ][ ][ ][ ][M][ ]
+
+Server is listening on port 8080
+Db collegato
+EXTERNAL REQUEST: move, d3, e5
+before: Map(64) {
+  'a1' => Square {
+    color: undefined,
+    piece: Piece {
+      type: 'King',
+      price: 0,
+      team: 'black',
+      isMovedBool: false,
+      isBoostedBool: false,
+      pos: 'a1',
+      moveFunction: [Function: DangerUpdate],
+      moveArray: [Array],
+      moveLongRangeDEBUG: false
+    },
+    targetZones: Set(3) { 'b2', 'b1', 'a2' },
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(2) { 'b1', 'b2' }
+  },
+  'a2' => Square {
+    color: undefined,
+    piece: Piece {
+      type: 'Valkirya',
+      price: 3,
+      team: 'black',
+      isMovedBool: false,
+      isBoostedBool: false,
+      pos: 'a2',
+      moveFunction: [Function: movementValkirya],
+      moveArray: [Array],
+      moveLongRangeDEBUG: true
+    },
+    targetZones: Set(7) { 'b3', 'c4', 'd5', 'e6', 'f7', 'g8', 'b1' },
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(1) { 'a1' }
+  },
+  'a3' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(2) { 'b2', 'b4' }
+  },
+  'a4' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(3) { 'b4', 'c2', 'g5' }
+  },
+  'a5' => Square {
+    color: undefined,
+    piece: Piece {
+      type: 'Valkirya',
+      price: 3,
+      team: 'black',
+      isMovedBool: false,
+      isBoostedBool: false,
+      pos: 'a5',
+      moveFunction: [Function: movementValkirya],
+      moveArray: [Array],
+      moveLongRangeDEBUG: true
+    },
+    targetZones: Set(4) { 'b6', 'c7', 'd8', 'b4' },
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(1) { 'b4' }
+  },
+  'a6' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(1) { 'g5' }
+  },
+  'a7' => Square {
+    color: undefined,
+    piece: Piece {
+      type: 'Jester',
+      price: 5,
+      team: 'black',
+      isMovedBool: false,
+      isBoostedBool: true,
+      pos: 'a7',
+      moveFunction: [Function: movementJester],
+      moveArray: [Array],
+      moveLongRangeDEBUG: false
+    },
+    targetZones: Set(8) { 'c8', 'c6', 'g8', 'g6', 'b1', 'b5', 'h1', 'h5' },
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(1) { 'd7' }
+  },
+  'a8' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(0) {}
+  },
+  'b1' => Square {
+    color: undefined,
+    piece: Piece {
+      type: 'Minotaurus',
+      price: 5,
+      team: 'black',
+      isMovedBool: false,
+      isBoostedBool: false,
+      pos: 'b1',
+      moveFunction: [Function: movementMinotaurus],
+      moveArray: [Array],
+      moveLongRangeDEBUG: true
+    },
+    targetZones: Set(6) { 'c1', 'd1', 'e1', 'f1', 'a1', 'b2' },
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(5) { 'a1', 'a2', 'a7', 'c2', 'f1' }
+  },
+  'b2' => Square {
+    color: undefined,
+    piece: Piece {
+      type: 'Valkirya',
+      price: 3,
+      team: 'black',
+      isMovedBool: false,
+      isBoostedBool: false,
+      pos: 'b2',
+      moveFunction: [Function: movementValkirya],
+      moveArray: [Array],
+      moveLongRangeDEBUG: true
+    },
+    targetZones: Set(6) { 'c3', 'd4', 'e5', 'a1', 'c1', 'a3' },
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(2) { 'a1', 'b1' }
+  },
+  'b3' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(2) { 'a2', 'c2' }
+  },
+  'b4' => Square {
+    color: undefined,
+    piece: Piece {
+      type: 'Bastards',
+      price: 1,
+      team: 'black',
+      isMovedBool: false,
+      isBoostedBool: false,
+      pos: 'b4',
+      moveFunction: [Function: movementWithSecondTurn],
+      moveArray: [Array],
+      moveLongRangeDEBUG: false
+    },
+    targetZones: Set(6) { 'c4', 'a4', 'c5', 'a3', 'c3', 'a5' },
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(2) { 'a5', 'f4' }
+  },
+  'b5' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(1) { 'a7' }
+  },
+  'b6' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(1) { 'a5' }
+  },
+  'b7' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(1) { 'd7' }
+  },
+  'b8' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(0) {}
+  },
+  'c1' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(4) { 'b1', 'b2', 'f1', 'f4' }
+  },
+  'c2' => Square {
+    color: undefined,
+    piece: Piece {
+      type: 'Valkirya',
+      price: 3,
+      team: 'black',
+      isMovedBool: false,
+      isBoostedBool: false,
+      pos: 'c2',
+      moveFunction: [Function: movementValkirya],
+      moveArray: [Array],
+      moveLongRangeDEBUG: true
+    },
+    targetZones: Set(7) { 'd3', 'e4', 'f5', 'b1', 'd1', 'b3', 'a4' },
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(1) { 'f5' }
+  },
+  'c3' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(2) { 'b2', 'b4' }
+  },
+  'c4' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(4) { 'a2', 'b4', 'e5', 'f4' }
+  },
+  'c5' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(1) { 'b4' }
+  },
+  'c6' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(2) { 'a7', 'e5' }
+  },
+  'c7' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(2) { 'a5', 'd7' }
+  },
+  'c8' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(1) { 'a7' }
+  },
+  'd1' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(4) { 'b1', 'c2', 'd7', 'f1' }
+  },
+  'd2' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(2) { 'd7', 'f4' }
+  },
+  'd3' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(4) { 'c2', 'd7', 'e5', 'f5' }
+  },
+  'd4' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(3) { 'b2', 'd7', 'f4' }
+  },
+  'd5' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(2) { 'a2', 'd7' }
+  },
+  'd6' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(1) { 'd7' }
+  },
+  'd7' => Square {
+    color: undefined,
+    piece: Piece {
+      type: 'Minotaurus',
+      price: 5,
+      team: 'black',
+      isMovedBool: false,
+      isBoostedBool: false,
+      pos: 'd7',
+      moveFunction: [Function: movementMinotaurus],
+      moveArray: [Array],
+      moveLongRangeDEBUG: true
+    },
+    targetZones: Set(14) {
+      'e7',
+      'f7',
+      'g7',
+      'h7',
+      'c7',
+      'b7',
+      'a7',
+      'd8',
+      'd6',
+      'd5',
+      'd4',
+      'd3',
+      'd2',
+      'd1'
+    },
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(3) { 'e5', 'f5', 'h7' }
+  },
+  'd8' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(2) { 'a5', 'd7' }
+  },
+  'e1' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(3) { 'b1', 'f1', 'f2' }
+  },
+  'e2' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(1) { 'f2' }
+  },
+  'e3' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(2) { 'f2', 'f4' }
+  },
+  'e4' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(4) { 'c2', 'f4', 'f5', 'g5' }
+  },
+  'e5' => Square {
+    color: undefined,
+    piece: Piece {
+      type: 'Jester',
+      price: 5,
+      team: 'black',
+      isMovedBool: false,
+      isBoostedBool: true,
+      pos: 'd3',
+      moveFunction: [Function: movementJester],
+      moveArray: [Array],
+      moveLongRangeDEBUG: false
+    },
+    targetZones: Set(8) { 'g6', 'g4', 'c6', 'c4', 'f7', 'f3', 'd7', 'd3' },
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(3) { 'b2', 'f4', 'f5' }
+  },
+  'e6' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(3) { 'a2', 'f5', 'g5' }
+  },
+  'e7' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(2) { 'd7', 'h7' }
+  },
+  'e8' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(0) {}
+  },
+  'f1' => Square {
+    color: undefined,
+    piece: Piece {
+      type: 'Minotaurus',
+      price: 5,
+      team: 'black',
+      isMovedBool: false,
+      isBoostedBool: false,
+      pos: 'f1',
+      moveFunction: [Function: movementMinotaurus],
+      moveArray: [Array],
+      moveLongRangeDEBUG: true
+    },
+    targetZones: Set(7) { 'g1', 'h1', 'e1', 'd1', 'c1', 'b1', 'f2' },
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(2) { 'b1', 'h1' }
+  },
+  'f2' => Square {
+    color: undefined,
+    piece: Piece {
+      type: 'Bastards',
+      price: 1,
+      team: 'black',
+      isMovedBool: false,
+      isBoostedBool: false,
+      pos: 'f2',
+      moveFunction: [Function: movementWithSecondTurn],
+      moveArray: [Array],
+      moveLongRangeDEBUG: false
+    },
+    targetZones: Set(6) { 'g2', 'e2', 'g3', 'e1', 'g1', 'e3' },
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(2) { 'f1', 'f4' }
+  },
+  'f3' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(3) { 'e5', 'f4', 'g5' }
+  },
+  'f4' => Square {
+    color: undefined,
+    piece: Piece {
+      type: 'Champion',
+      price: 10,
+      team: 'black',
+      isMovedBool: false,
+      isBoostedBool: false,
+      pos: 'f4',
+      moveFunction: [Function: movementChampion],
+      moveArray: [Array],
+      moveLongRangeDEBUG: true
+    },
+    targetZones: Set(16) {
+      'g5',
+      'e3',
+      'd2',
+      'c1',
+      'g3',
+      'h2',
+      'e5',
+      'g4',
+      'h4',
+      'e4',
+      'd4',
+      'c4',
+      'b4',
+      'f5',
+      'f3',
+      'f2'
+    },
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(1) { 'f5' }
+  },
+  'f5' => Square {
+    color: undefined,
+    piece: Piece {
+      type: 'Champion',
+      price: 10,
+      team: 'black',
+      isMovedBool: false,
+      isBoostedBool: false,
+      pos: 'f5',
+      moveFunction: [Function: movementChampion],
+      moveArray: [Array],
+      moveLongRangeDEBUG: true
+    },
+    targetZones: Set(15) {
+      'g6',
+      'h7',
+      'e4',
+      'd3',
+      'c2',
+      'g4',
+      'h3',
+      'e6',
+      'd7',
+      'g5',
+      'e5',
+      'f6',
+      'f7',
+      'f8',
+      'f4'
+    },
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(2) { 'c2', 'f4' }
+  },
+  'f6' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(1) { 'f5' }
+  },
+  'f7' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(6) { 'a2', 'd7', 'e5', 'f5', 'g5', 'h7' }
+  },
+  'f8' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(1) { 'f5' }
+  },
+  'g1' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(3) { 'f1', 'f2', 'h1' }
+  },
+  'g2' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(1) { 'f2' }
+  },
+  'g3' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(2) { 'f2', 'f4' }
+  },
+  'g4' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(3) { 'e5', 'f4', 'f5' }
+  },
+  'g5' => Square {
+    color: undefined,
+    piece: Piece {
+      type: 'Jester',
+      price: 5,
+      team: 'black',
+      isMovedBool: false,
+      isBoostedBool: true,
+      pos: 'g5',
+      moveFunction: [Function: movementJester],
+      moveArray: [Array],
+      moveLongRangeDEBUG: false
+    },
+    targetZones: Set(8) { 'a6', 'a4', 'e6', 'e4', 'h7', 'h3', 'f7', 'f3' },
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(2) { 'f4', 'f5' }
+  },
+  'g6' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(3) { 'a7', 'e5', 'f5' }
+  },
+  'g7' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(2) { 'd7', 'h7' }
+  },
+  'g8' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(2) { 'a2', 'a7' }
+  },
+  'h1' => Square {
+    color: undefined,
+    piece: Piece {
+      type: 'Minotaurus',
+      price: 5,
+      team: 'black',
+      isMovedBool: false,
+      isBoostedBool: false,
+      pos: 'h1',
+      moveFunction: [Function: movementMinotaurus],
+      moveArray: [Array],
+      moveLongRangeDEBUG: true
+    },
+    targetZones: Set(8) { 'g1', 'f1', 'h2', 'h3', 'h4', 'h5', 'h6', 'h7' },
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(3) { 'a7', 'f1', 'h7' }
+  },
+  'h2' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(3) { 'f4', 'h1', 'h7' }
+  },
+  'h3' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(4) { 'f5', 'g5', 'h1', 'h7' }
+  },
+  'h4' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(3) { 'f4', 'h1', 'h7' }
+  },
+  'h5' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(3) { 'a7', 'h1', 'h7' }
+  },
+  'h6' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(2) { 'h1', 'h7' }
+  },
+  'h7' => Square {
+    color: undefined,
+    piece: Piece {
+      type: 'Minotaurus',
+      price: 5,
+      team: 'black',
+      isMovedBool: false,
+      isBoostedBool: false,
+      pos: 'h7',
+      moveFunction: [Function: movementMinotaurus],
+      moveArray: [Array],
+      moveLongRangeDEBUG: true
+    },
+    targetZones: Set(11) {
+      'g7',
+      'f7',
+      'e7',
+      'd7',
+      'h8',
+      'h6',
+      'h5',
+      'h4',
+      'h3',
+      'h2',
+      'h1'
+    },
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(4) { 'd7', 'f5', 'g5', 'h1' }
+  },
+  'h8' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(1) { 'h7' }
+  }
+}
+after: Map(64) {
+  'a1' => Square {
+    color: undefined,
+    piece: Piece {
+      type: 'King',
+      price: 0,
+      team: 'black',
+      isMovedBool: false,
+      isBoostedBool: false,
+      pos: 'a1',
+      moveFunction: [Function: DangerUpdate],
+      moveArray: [Array],
+      moveLongRangeDEBUG: false
+    },
+    targetZones: Set(3) { 'b2', 'b1', 'a2' },
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(2) { 'b1', 'b2' }
+  },
+  'a2' => Square {
+    color: undefined,
+    piece: Piece {
+      type: 'Valkirya',
+      price: 3,
+      team: 'black',
+      isMovedBool: false,
+      isBoostedBool: false,
+      pos: 'a2',
+      moveFunction: [Function: movementValkirya],
+      moveArray: [Array],
+      moveLongRangeDEBUG: true
+    },
+    targetZones: Set(7) { 'b3', 'c4', 'd5', 'e6', 'f7', 'g8', 'b1' },
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(1) { 'a1' }
+  },
+  'a3' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(2) { 'b2', 'b4' }
+  },
+  'a4' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(3) { 'b4', 'c2', 'g5' }
+  },
+  'a5' => Square {
+    color: undefined,
+    piece: Piece {
+      type: 'Valkirya',
+      price: 3,
+      team: 'black',
+      isMovedBool: false,
+      isBoostedBool: false,
+      pos: 'a5',
+      moveFunction: [Function: movementValkirya],
+      moveArray: [Array],
+      moveLongRangeDEBUG: true
+    },
+    targetZones: Set(4) { 'b6', 'c7', 'd8', 'b4' },
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(1) { 'b4' }
+  },
+  'a6' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(1) { 'g5' }
+  },
+  'a7' => Square {
+    color: undefined,
+    piece: Piece {
+      type: 'Jester',
+      price: 5,
+      team: 'black',
+      isMovedBool: false,
+      isBoostedBool: true,
+      pos: 'a7',
+      moveFunction: [Function: movementJester],
+      moveArray: [Array],
+      moveLongRangeDEBUG: false
+    },
+    targetZones: Set(8) { 'c8', 'c6', 'g8', 'g6', 'b1', 'b5', 'h1', 'h5' },
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(1) { 'd7' }
+  },
+  'a8' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(0) {}
+  },
+  'b1' => Square {
+    color: undefined,
+    piece: Piece {
+      type: 'Minotaurus',
+      price: 5,
+      team: 'black',
+      isMovedBool: false,
+      isBoostedBool: false,
+      pos: 'b1',
+      moveFunction: [Function: movementMinotaurus],
+      moveArray: [Array],
+      moveLongRangeDEBUG: true
+    },
+    targetZones: Set(6) { 'c1', 'd1', 'e1', 'f1', 'a1', 'b2' },
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(5) { 'a1', 'a2', 'a7', 'c2', 'f1' }
+  },
+  'b2' => Square {
+    color: undefined,
+    piece: Piece {
+      type: 'Valkirya',
+      price: 3,
+      team: 'black',
+      isMovedBool: false,
+      isBoostedBool: false,
+      pos: 'b2',
+      moveFunction: [Function: movementValkirya],
+      moveArray: [Array],
+      moveLongRangeDEBUG: true
+    },
+    targetZones: Set(6) { 'c3', 'd4', 'e5', 'a1', 'c1', 'a3' },
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(2) { 'a1', 'b1' }
+  },
+  'b3' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(2) { 'a2', 'c2' }
+  },
+  'b4' => Square {
+    color: undefined,
+    piece: Piece {
+      type: 'Bastards',
+      price: 1,
+      team: 'black',
+      isMovedBool: false,
+      isBoostedBool: false,
+      pos: 'b4',
+      moveFunction: [Function: movementWithSecondTurn],
+      moveArray: [Array],
+      moveLongRangeDEBUG: false
+    },
+    targetZones: Set(6) { 'c4', 'a4', 'c5', 'a3', 'c3', 'a5' },
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(2) { 'a5', 'f4' }
+  },
+  'b5' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(1) { 'a7' }
+  },
+  'b6' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(1) { 'a5' }
+  },
+  'b7' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(1) { 'd7' }
+  },
+  'b8' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(0) {}
+  },
+  'c1' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(4) { 'b1', 'b2', 'f1', 'f4' }
+  },
+  'c2' => Square {
+    color: undefined,
+    piece: Piece {
+      type: 'Valkirya',
+      price: 3,
+      team: 'black',
+      isMovedBool: false,
+      isBoostedBool: false,
+      pos: 'c2',
+      moveFunction: [Function: movementValkirya],
+      moveArray: [Array],
+      moveLongRangeDEBUG: true
+    },
+    targetZones: Set(7) { 'd3', 'e4', 'f5', 'b1', 'd1', 'b3', 'a4' },
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(1) { 'f5' }
+  },
+  'c3' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(2) { 'b2', 'b4' }
+  },
+  'c4' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(4) { 'a2', 'b4', 'e5', 'f4' }
+  },
+  'c5' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(1) { 'b4' }
+  },
+  'c6' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(2) { 'a7', 'e5' }
+  },
+  'c7' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(2) { 'a5', 'd7' }
+  },
+  'c8' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(1) { 'a7' }
+  },
+  'd1' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(4) { 'b1', 'c2', 'd7', 'f1' }
+  },
+  'd2' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(2) { 'd7', 'f4' }
+  },
+  'd3' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(4) { 'c2', 'd7', 'e5', 'f5' }
+  },
+  'd4' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(3) { 'b2', 'd7', 'f4' }
+  },
+  'd5' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(2) { 'a2', 'd7' }
+  },
+  'd6' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(1) { 'd7' }
+  },
+  'd7' => Square {
+    color: undefined,
+    piece: Piece {
+      type: 'Minotaurus',
+      price: 5,
+      team: 'black',
+      isMovedBool: false,
+      isBoostedBool: false,
+      pos: 'd7',
+      moveFunction: [Function: movementMinotaurus],
+      moveArray: [Array],
+      moveLongRangeDEBUG: true
+    },
+    targetZones: Set(14) {
+      'e7',
+      'f7',
+      'g7',
+      'h7',
+      'c7',
+      'b7',
+      'a7',
+      'd8',
+      'd6',
+      'd5',
+      'd4',
+      'd3',
+      'd2',
+      'd1'
+    },
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(3) { 'e5', 'f5', 'h7' }
+  },
+  'd8' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(2) { 'a5', 'd7' }
+  },
+  'e1' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(3) { 'b1', 'f1', 'f2' }
+  },
+  'e2' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(1) { 'f2' }
+  },
+  'e3' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(2) { 'f2', 'f4' }
+  },
+  'e4' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(4) { 'c2', 'f4', 'f5', 'g5' }
+  },
+  'e5' => Square {
+    color: undefined,
+    piece: Piece {
+      type: 'Jester',
+      price: 5,
+      team: 'black',
+      isMovedBool: false,
+      isBoostedBool: true,
+      pos: 'd3',
+      moveFunction: [Function: movementJester],
+      moveArray: [Array],
+      moveLongRangeDEBUG: false
+    },
+    targetZones: Set(8) { 'g6', 'g4', 'c6', 'c4', 'f7', 'f3', 'd7', 'd3' },
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(3) { 'b2', 'f4', 'f5' }
+  },
+  'e6' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(3) { 'a2', 'f5', 'g5' }
+  },
+  'e7' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(2) { 'd7', 'h7' }
+  },
+  'e8' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(0) {}
+  },
+  'f1' => Square {
+    color: undefined,
+    piece: Piece {
+      type: 'Minotaurus',
+      price: 5,
+      team: 'black',
+      isMovedBool: false,
+      isBoostedBool: false,
+      pos: 'f1',
+      moveFunction: [Function: movementMinotaurus],
+      moveArray: [Array],
+      moveLongRangeDEBUG: true
+    },
+    targetZones: Set(7) { 'g1', 'h1', 'e1', 'd1', 'c1', 'b1', 'f2' },
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(2) { 'b1', 'h1' }
+  },
+  'f2' => Square {
+    color: undefined,
+    piece: Piece {
+      type: 'Bastards',
+      price: 1,
+      team: 'black',
+      isMovedBool: false,
+      isBoostedBool: false,
+      pos: 'f2',
+      moveFunction: [Function: movementWithSecondTurn],
+      moveArray: [Array],
+      moveLongRangeDEBUG: false
+    },
+    targetZones: Set(6) { 'g2', 'e2', 'g3', 'e1', 'g1', 'e3' },
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(2) { 'f1', 'f4' }
+  },
+  'f3' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(3) { 'e5', 'f4', 'g5' }
+  },
+  'f4' => Square {
+    color: undefined,
+    piece: Piece {
+      type: 'Champion',
+      price: 10,
+      team: 'black',
+      isMovedBool: false,
+      isBoostedBool: false,
+      pos: 'f4',
+      moveFunction: [Function: movementChampion],
+      moveArray: [Array],
+      moveLongRangeDEBUG: true
+    },
+    targetZones: Set(16) {
+      'g5',
+      'e3',
+      'd2',
+      'c1',
+      'g3',
+      'h2',
+      'e5',
+      'g4',
+      'h4',
+      'e4',
+      'd4',
+      'c4',
+      'b4',
+      'f5',
+      'f3',
+      'f2'
+    },
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(1) { 'f5' }
+  },
+  'f5' => Square {
+    color: undefined,
+    piece: Piece {
+      type: 'Champion',
+      price: 10,
+      team: 'black',
+      isMovedBool: false,
+      isBoostedBool: false,
+      pos: 'f5',
+      moveFunction: [Function: movementChampion],
+      moveArray: [Array],
+      moveLongRangeDEBUG: true
+    },
+    targetZones: Set(15) {
+      'g6',
+      'h7',
+      'e4',
+      'd3',
+      'c2',
+      'g4',
+      'h3',
+      'e6',
+      'd7',
+      'g5',
+      'e5',
+      'f6',
+      'f7',
+      'f8',
+      'f4'
+    },
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(2) { 'c2', 'f4' }
+  },
+  'f6' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(1) { 'f5' }
+  },
+  'f7' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(6) { 'a2', 'd7', 'e5', 'f5', 'g5', 'h7' }
+  },
+  'f8' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(1) { 'f5' }
+  },
+  'g1' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(3) { 'f1', 'f2', 'h1' }
+  },
+  'g2' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(1) { 'f2' }
+  },
+  'g3' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(2) { 'f2', 'f4' }
+  },
+  'g4' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(3) { 'e5', 'f4', 'f5' }
+  },
+  'g5' => Square {
+    color: undefined,
+    piece: Piece {
+      type: 'Jester',
+      price: 5,
+      team: 'black',
+      isMovedBool: false,
+      isBoostedBool: true,
+      pos: 'g5',
+      moveFunction: [Function: movementJester],
+      moveArray: [Array],
+      moveLongRangeDEBUG: false
+    },
+    targetZones: Set(8) { 'a6', 'a4', 'e6', 'e4', 'h7', 'h3', 'f7', 'f3' },
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(2) { 'f4', 'f5' }
+  },
+  'g6' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(3) { 'a7', 'e5', 'f5' }
+  },
+  'g7' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(2) { 'd7', 'h7' }
+  },
+  'g8' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(2) { 'a2', 'a7' }
+  },
+  'h1' => Square {
+    color: undefined,
+    piece: Piece {
+      type: 'Minotaurus',
+      price: 5,
+      team: 'black',
+      isMovedBool: false,
+      isBoostedBool: false,
+      pos: 'h1',
+      moveFunction: [Function: movementMinotaurus],
+      moveArray: [Array],
+      moveLongRangeDEBUG: true
+    },
+    targetZones: Set(8) { 'g1', 'f1', 'h2', 'h3', 'h4', 'h5', 'h6', 'h7' },
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(3) { 'a7', 'f1', 'h7' }
+  },
+  'h2' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(3) { 'f4', 'h1', 'h7' }
+  },
+  'h3' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(4) { 'f5', 'g5', 'h1', 'h7' }
+  },
+  'h4' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(3) { 'f4', 'h1', 'h7' }
+  },
+  'h5' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(3) { 'a7', 'h1', 'h7' }
+  },
+  'h6' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(2) { 'h1', 'h7' }
+  },
+  'h7' => Square {
+    color: undefined,
+    piece: Piece {
+      type: 'Minotaurus',
+      price: 5,
+      team: 'black',
+      isMovedBool: false,
+      isBoostedBool: false,
+      pos: 'h7',
+      moveFunction: [Function: movementMinotaurus],
+      moveArray: [Array],
+      moveLongRangeDEBUG: true
+    },
+    targetZones: Set(11) {
+      'g7',
+      'f7',
+      'e7',
+      'd7',
+      'h8',
+      'h6',
+      'h5',
+      'h4',
+      'h3',
+      'h2',
+      'h1'
+    },
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(4) { 'd7', 'f5', 'g5', 'h1' }
+  },
+  'h8' => Square {
+    color: undefined,
+    piece: null,
+    targetZones: Set(0) {},
+    boostedTargetZones: Map(0) {},
+    dangerZones: Set(1) { 'h7' }
+  }
+}
+Piece {
+  type: 'Jester',
+  price: 5,
+  team: 'black',
+  isMovedBool: false,
+  isBoostedBool: true,
+  pos: 'd3',
+  moveFunction: [Function: movementJester],
+  moveArray: [
+    { dx: 2, dy: 1 },
+    { dx: 2, dy: -1 },
+    { dx: -2, dy: 1 },
+    { dx: -2, dy: -1 },
+    { dx: 1, dy: 2 },
+    { dx: 1, dy: -2 },
+    { dx: -1, dy: 2 },
+    { dx: -1, dy: -2 }
+  ],
+  moveLongRangeDEBUG: false
+}
+null
+SWAP Square with Square
+from d3 to e5
+[32m[K][0m[V][ ][ ][V][ ][34m[J][0m[ ]
+[M][V][ ][B][ ][ ][ ][ ]
+[ ][V][ ][ ][ ][ ][ ][ ]
+[ ][ ][ ][ ][ ][ ][M][ ]
+[ ][ ][ ][ ][ ][ ][ ][ ]
+[M][B][ ][C][C][ ][ ][ ]
+[ ][ ][ ][ ][34m[J][0m[ ][ ][ ]
+[M][ ][ ][ ][ ][ ][M][ ]
+

@@ -2,7 +2,7 @@
 const {board} =  require("./chessBoard.js");
 const {eTeam} =  require("./chessBoard.js");
 const {cursor} = require("./cursor.js");
-const {isDangerous, movePiece} = require("./utils.js");
+const {isDangerous, movePiece, DangerUpdate} = require("./utils.js");
 const Macro = require("./macro.js");
 
 //ANCHOR - Methods
@@ -250,7 +250,7 @@ const preset = {
 		 	{dx:0, dy:1}, {dx:0, dy:-1},//verticale
 		 	{dx:1, dy:0}, {dx:-1, dy:0},//orizzontale
 		],
-		booster: null
+		booster: DangerUpdate
 	},
 	Champion: {
 		type: enumNames.CHAMPION,

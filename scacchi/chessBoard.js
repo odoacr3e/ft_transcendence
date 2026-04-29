@@ -32,7 +32,11 @@ class Square
 const eTeam = 
 {
 	Black: 'black',
-	White: 'white'
+	White: 'white',
+	Red: 'red',
+	Blue: 'blue',
+	Green: 'green',
+	Yellow: 'yellow',
 };
 
 //ANCHOR - Methods
