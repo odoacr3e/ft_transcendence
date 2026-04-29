@@ -9,9 +9,11 @@ const fs = 	require("node:fs");
 const {cursor} = 	require("../cursor.js");
 const {render} = 	require("../render.js");
 const readline = 	require('node:readline');
+const {app} = require("../server.js");
 
 //SECTION - main: inizializza e fa primo render, mette terminale in ascolto
 
+const	rng = initRng(40);
 initTerminal();
 initRandomBoard();
 dangerUpdateAll();
@@ -159,6 +161,28 @@ function initTerminal()
 	}
 }
 
+//SECTION - random
+
+/**
+ * @param {number | null} seed
+ */
+function initRng(seed=null)
+{
+	if (seed == null)
+		seed = Math.floor(Math.random() * (1 << 30));
+	console.log("seed:", seed);
+	const	seedrandom = require("seedrandom");
+	const	rngBase = seedrandom(seed.toString());
+	const	rng = (mod = (1 << 30)) =>
+	{
+		let x;
+		
+		x = rngBase() * mod;
+		return (Math.floor(x));
+	}
+	return (rng);
+}
+
 /**
  * in futuro pescheremo questi dati da strutture fatte bene
  */
@@ -168,8 +192,7 @@ function initRandomBoard()
 
 	for (let [key, data] of board)
 	{
-		rand = Math.random() * 16;
-		rand = Math.floor(rand);
+		rand = rng(16);
 		if (rand <= 10)
 			continue ;
 		if (rand == 11)

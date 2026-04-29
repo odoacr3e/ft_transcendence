@@ -1,8 +1,19 @@
 
-# Usage: ./script [username] [password] [port]
+# Usage: ./move.sh [type] [from] [to]
 
 port=8080
-if [ -n "$3" ]; then
-	port=$3
-fi
-curl -X POST -H "Content-Type: application/json" -d "{\"start\": \"$1\", \"end\": \"$2\"}" http://localhost:"$port"/api/game/
+
+error ()
+{
+	echo "error:" $1
+	exit 1
+}
+
+
+curl -X POST -H "Content-Type: application/json" -d "\
+{\
+	\"type\": \"$1\",\
+	\"from\": \"$2\",\
+	\"to\": \"$3\"\
+}\
+" http://localhost:"$port"/api/game/
