@@ -19,7 +19,8 @@ render();
 
 //SECTION - eventLoop: binda i tasti per fare cose
 
-let	TargetDangerSwitch = "None";
+								let	TargetDangerSwitch = "None";
+/** @type {Array<String>} */	let	selected = [];
 
 process.stdin.on('keypress', (str, key) => 
 {
@@ -45,15 +46,36 @@ process.stdin.on('keypress', (str, key) =>
 		case ("right") : case ("d") :
 			dx += 1;
 			break ;
-		case ("space") :
+		case ("e") :
 			if (TargetDangerSwitch == "None")
 				TargetDangerSwitch = "Target";
 			else if (TargetDangerSwitch == "Target")
 				TargetDangerSwitch = "Danger";
 			else if (TargetDangerSwitch == "Danger")
 				TargetDangerSwitch = "None";
+			break ;
+		case ("q") :
+			let	square = board.get(cursor.square);
+			if (square?.piece == null)
+				console.log("LMAO you can't boost the literal NOTHING LOL");
+			else
+				square.piece.isBoostedBool = !square.piece.isBoostedBool;
+			let	temp = cursor.square;
+			dangerUpdateAll();
+			cursor.set(temp);
+			break ;
+		case ("space") :
+			console.assert((selected.length < 2), "move array too large");
+			selected.push(cursor.square);
+			if (selected.length == 2)
+			{
+				if (moveFunctionDEBUG() == false)
+					console.log("you cannot move LMAO");			
+				selected = [];
+			}
 	}
-	if (key.name != "space" && !movePiece(dx, dy, false))
+	if (key.name != "space" && key.name != "e" && key.name != "q" && 
+		!movePiece(dx, dy, false))
 	{
 		// let player1 = {
 			// name: "player1",
@@ -80,10 +102,47 @@ process.stdin.on('keypress', (str, key) =>
 		console.log("lol no");
 	}
 	console.log("row", cursor.getRow(), ", col", cursor.getCol(), ", cursor", cursor.square);
-	console.log("Visualizing", TargetDangerSwitch, "press space to change");
-	render(TargetDangerSwitch);
-	console.log("key", key.name);
+	console.log("Visualizing", TargetDangerSwitch, "press \"e\" to change");
+	render(selected, TargetDangerSwitch);
+	console.log(`keypressed: ${key.name}\n`, `Press \"space\" to move, \"q\" to boost`);
 });
+
+function moveFunctionDEBUG ()
+{
+	let	temp;
+	let	from;
+	let	to;
+	let	fromType;
+	let	toType;
+
+	from = board.get(selected[0]);
+	to = board.get(selected[1]);
+	if (!from || !to)
+	{
+		return (false);
+	}
+	fromType = from.piece?.type;
+	toType = to.piece?.type;
+	if (fromType == null)
+		fromType = "Square";
+	else
+		fromType = `\x1b[33m${fromType}\x1b[0m`;
+	if (!from.targetZones.has(selected[1]))
+		return false;
+	if (toType == null)
+		toType = "Square";
+	else
+		toType = `\x1b[33m${toType}\x1b[0m`;
+	temp = from.piece;
+	from.piece = to.piece;
+	to.piece = temp;
+	temp = cursor.square;
+	dangerUpdateAll();
+	cursor.set(temp);
+	console.log(`SWAP ${fromType} with ${toType}`);
+	console.log(`from ${selected[0]} to ${selected[1]}`);
+	return (true);
+}
 
 function initTerminal()
 {
@@ -118,7 +177,6 @@ function initRandomBoard()
 		else if (rand == 12)
 		{
 			data.piece = new Piece(lib.preset.Champion, "", key, true);
-			data.piece.isBoostedBool = true;
 		}
 		else if (rand == 13)
 		{
@@ -128,12 +186,10 @@ function initRandomBoard()
 		else if (rand == 14)
 		{
 			data.piece = new Piece(lib.preset.Minotaurus, "", key, true);
-			data.piece.isBoostedBool = true;
 		}
 		else
 		{
 			data.piece = new Piece(lib.preset.Valkirya, "", key, true);
-			data.piece.isBoostedBool = true;
 		}
 	}
 }

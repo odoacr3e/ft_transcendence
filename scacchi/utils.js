@@ -82,7 +82,18 @@ function dangerUpdateAll()
 {
 	for (let [pos, square] of board)
 	{
+		square.boostedTargetZones.clear();
+		square.dangerZones.clear();
+		square.targetZones.clear();
+	}
+	for (let [pos, square] of board)
+	{
 		cursor.set(pos);
+		if (square.piece && square.piece.isBoostedBool)
+		{	
+			square.piece.moveFunction();
+			continue ;
+		}
 		DangerUpdate();
 	}
 }

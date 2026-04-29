@@ -69,17 +69,17 @@ function isStoppable(kingSquare, enemySquareString)
 /**
  * 
  * @param {string} startPos 
- * @param {Array<string>} arr 
+ * @param {string} target 
  * @returns 
  */
-function canEat(startPos, arr)
+function canEat(startPos, target)
 {
 	cursor.set(startPos);
 	cursor.setCol(cursor.getCol() - 1);
-	if (cursor.square != arr[0])
+	if (cursor.square != target)
 	{
 		cursor.setCol(cursor.getCol() + 2);
-		if (cursor.square != arr[0])
+		if (cursor.square != target)
 		{
 			cursor.set(startPos);
 			return true;
@@ -123,7 +123,7 @@ function doubleSave(threat)
 		board.get(x)?.piece?.isBoostedBool && board.get(x)?.piece?.type == enumNames.BASTARDS)
 		{
 			let startPos = x;
-			if (canEat(x, arr))
+			if (canEat(x, arr[1]))
 			{
 				cursor.set(x);
 				for (let [dx, dy] of preset.Champion.movement)
@@ -137,15 +137,16 @@ function doubleSave(threat)
 		}
 		else if (board.get(x)?.piece?.team != square1.piece?.team)
 		{
-			// let startPos = x;
-			// cursor.set(x);
-			// for (let [dx, dy] of preset.Champion.movement)
-			// {
-			// 	cursor.setCursor(cursor.getRow() + dx, cursor.getCol() + dy)
-			// 	if (board.get(cursor.square)?.piece?.team != square1.piece?.team && board.get(cursor.square)?.targetZones.has(arr[1]))
-			// 		return true;
-			// 	cursor.set(startPos);
-			// }
+			let startPos = x;
+			cursor.set(x);
+			for (let [dx, dy] of preset.Champion.movement)
+			{
+				cursor.setCursor(cursor.getRow() + dx, cursor.getCol() + dy)
+				if (board.get(cursor.square)?.piece?.team != square1.piece?.team && board.get(cursor.square)?.targetZones.has(arr[1]) && (
+					board.get(cursor.square)?.piece?.type == enumNames.BASTARDS && board.get(cursor.square)?.piece?.isBoostedBool == true && canEat(cursor.square, arr[0])))
+					return true;
+				cursor.set(startPos);
+			}
 		}
 	}
 	return false;

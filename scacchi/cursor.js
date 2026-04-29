@@ -61,7 +61,7 @@ let set = (pos) =>
 
 let cursor = 
 {
-	/** @type {string} */ square: "a1",
+	/** @type {string} */ square: "a1", // the string position: a1, b2, c3...
 	getRow: getRow,
 	getCol: getCol,
 	setRow: setRow,
