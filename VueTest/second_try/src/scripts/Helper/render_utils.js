@@ -1,5 +1,5 @@
-import { localBoard }   from "../Global/Variables";
-import { FILES }        from "./Constants";
+import { getSquareColor, localBoard }   from "../Global/Variables.js";
+import { FILES }                        from "./Constants.js";
 
 export function boardConverter()
 {
@@ -11,26 +11,27 @@ export function boardConverter()
     }
 
     for (let rank = 8; rank >= 1; rank -= 1)
-    {
-        const row = [];
-        for (const file of FILES)
-        {
-            const square = localBoard.get(`${file}${rank}`);
-            if (square)
-                row.push(square);
-        }
-        DBoard.push(row);
-    }
+	{
+		const row = [];
+		for (const file of FILES)
+			row.push(localBoard.get(`${file}${rank}`));
+		DBoard.push(row);
+	}
     return DBoard;
 }
 
-export function clearHighlight()
+export function clearHighlight(flag)
 {
-	if (!localBoard)
-		return;
+    console.log(`flag is: ${flag}`);
 
 	localBoard.forEach(square => {
-		if (square.highlight === true)
+		if (square.highlight === true && (flag === "point" || flag === undefined))
 			square.highlight = false;
+		const style = document.getElementById(square.id).style;
+		if (style.backgroundColor == "red" && (flag === "square" || flag === undefined))
+		{
+			if (getSquareColor(square.id) == "white") { style.backgroundColor = "white"; style.borderWidth = "0"; style.borderColor = "trasparent"; }
+			else { style.backgroundColor = "rgb(27, 0, 0)"; style.borderWidth = "0"; style.borderColor = "trasparent"; }
+		}
 	})
 }

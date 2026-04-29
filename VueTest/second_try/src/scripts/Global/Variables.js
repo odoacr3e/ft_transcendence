@@ -3,30 +3,22 @@ import { boardConverter }	from "../Helper/render_utils";
 import { reactive }			from "vue";
 
 class Square {
-	constructor(id, piece, targetZones = [], dangerZones = []) {
+	constructor(id, piece, targetZones = []) {
 		this.id = id;
 		this.piece = piece;
 		this.highlight = false;
 		this.targetZones = new Set(targetZones);
-		this.dangerZones = new Set(dangerZones);
 	}
-}
-
-export function getSquareColor(squareId) 
-{
-	const col = squareId.charCodeAt(0) - 97;
-	const row = parseInt(squareId[1]);
-	return (row + col) % 2 === 0 ? "white" : "black";
 }
 
 //Globale che contiene tutti i dati della partita conservati in locale
 let localMatchState = null;
 
 //Globale della scacchiera con tutti i dati delle caselle messa reactive
-let localBoard = reactive(new Map());			
+let localBoard = reactive(new Map());
 
 //Globale array di giocatori che contiene tutti gli oggetti giocatori validi
-let localPlayers = reactive(new Map());	
+let localPlayers = reactive(new Map());
 
 //Funzione reattiva che ricalcola ogni volta che localBoard cambia
 const DOMBoard = () => boardConverter();
@@ -36,16 +28,26 @@ export function startLocalMatchState(newMatchState) {
 	localMatchState = newMatchState;
 }
 
-export function startLocalBoard(boardData) 
+//Funzione helper per determinare il colore dello square durante la cotruzione della scacchiera
+export function getSquareColor(squareId) 
 {
+	const col = squareId.charCodeAt(0) - 97;
+	const row = parseInt(squareId[1]);
+	return (row + col) % 2 === 0 ? "white" : "black";
+}
+
+//inizializzazione della variabile localBoard utilizzando la variabile localMatchState
+export function initLocalBoard(boardData)
+{
+	if (!localMatchState)
+		throw new Error("[initLocalBoard]: Match non inizializzato: chiama prima initLocalMatchState().");
 	localBoard.clear();
 	if (boardData && typeof boardData === 'object') {
 		Object.entries(boardData).forEach(([squareId, squareData]) => {
 				const square = new Square(
 				squareId,
 				squareData.piece || null,
-				squareData.targetZones || [],
-				squareData.dangerZones || []
+				squareData.targetZones || []
 			);
 			localBoard.set(squareId, square);
 		});

@@ -1,6 +1,6 @@
-import { clearHighlight }	from "../Helper/render_utils.js";
-import { getRootDiv }		from "../Helper/Constants.js";
-import { localBoard }		from "../Global/Variables.js";
+import { getSquareColor, localBoard }	from "../Global/Variables.js";
+import { clearHighlight }				from "../Helper/render_utils.js";
+import { getRootDiv }					from "../Helper/Constants.js";
 
 let lastClickedId = null;
 
@@ -9,28 +9,52 @@ function globalEvents()
 	const ROOT_DIV = getRootDiv();
 
 	ROOT_DIV.addEventListener("click", function (event) {
-		if (event.target.localName === "img" && event.button === 0)
+		clearHighlight();
+		if (event.target.localName === "img")
 		{
 			const clickedId = event.target.parentNode.id;
 			if (lastClickedId !== null && lastClickedId !== clickedId)
-				clearHighlight();
+				clearHighlight("point");
 
 			const AllowedMoves = localBoard.get(clickedId).targetZones;
-			AllowedMoves.forEach((highlightId) => {
-				const targetSquare = localBoard.get(highlightId);
-				if (targetSquare)
-					targetSquare.highlight = !targetSquare.highlight
+			AllowedMoves.forEach((highlight) => {
+				localBoard.forEach(square => {
+					if (square.id == highlight)
+					{
+						if (square.highlight === false)
+						{
+							square.highlight = true;
+							if (square.id != clickedId && square.piece)
+							{
+								const DOMstyle = document.getElementById(square.id).style;
+								DOMstyle.backgroundColor = "brown";
+							}
+						}
+						else
+						{
+							if (square.piece && square.highlight === true)
+							{
+								const DOMstyle = document.getElementById(square.id).style;
+								if (getSquareColor(square.id) == "white") { DOMstyle.backgroundColor = "white"; }
+								else { DOMstyle.backgroundColor = "rgb(27, 0, 0)"; }
+							}
+							square.highlight = false;
+						}
+					}
+				})
 			})
 			lastClickedId = clickedId;
 		}
-		else if (event.button === 2)
+	});
+
+	ROOT_DIV.addEventListener("mousedown", function (event) {
+		if (event.button == 2 && event.target.localName != "img")
 		{
 			event.preventDefault();
-
-			const clickedId = event.target.parentNode.id;
-			const elementDOM = document.getElementById(clickedId);
-
-			elementDOM.style.backgroundColor = "red"
+			const DOMstyle = document.getElementById(event.target.id).style;
+			DOMstyle.backgroundColor = "red";
+			DOMstyle.borderWidth = "1px";
+			DOMstyle.borderColor = "red";
 		}
 	});
 

@@ -14,7 +14,7 @@
 
 <template>
     <div id="root">
-        <div id="board">
+        <div id="board" oncontextmenu="return false;">
             <div v-for="row in domBoardComputed" :key="row[0].id" class="squareRow">
                 <div
                     v-for="square in row"
@@ -22,15 +22,13 @@
                     :id="square.id"
                     :class="[getSquareColor(square.id), 'square']"
                     @drop="onDrop($event, square)"
-                    @dragover.prevent
-                >
+                    @dragover.prevent>
                     <img
                         v-if="square.piece"
                         class="piece"
                         :src="IMG_PATHS[square.piece.team + square.piece.type]"
                         :draggable="true"
-                        @dragstart="onDragStart($event, square)"
-                    />
+                        @dragstart="onDragStart($event, square)"/>
                     <span v-if="square.highlight" class="highlight"></span>
                 </div>
             </div>

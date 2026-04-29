@@ -1,4 +1,4 @@
-function getRootDiv() {
+export function getRootDiv() {
 	return document.getElementById("board");
 }
 
@@ -19,4 +19,4 @@ const IMG_PATHS = Object.freeze ({
 	"blackBastards" : new URL("../../assets/pieces/black/pawn.png", import.meta.url).href
 });
 
-export { getRootDiv, IMG_PATHS, FILES };
+export { IMG_PATHS, FILES };

@@ -1,4 +1,5 @@
-import {localMatchState, localBoard, localPlayers, startLocalMatchState, startLocalBoard} from "../Global/Variables.js";
+import {localMatchState, localBoard, localPlayers, startLocalMatchState } from "../Global/Variables.js";
+import { initLocalBoard } from "../Global/Variables.js";
 
 export async function loadReceivedMatch() 
 {
@@ -42,15 +43,8 @@ export async function initLocalMatchState()
 	const validated = validateReceivedMatch(raw);
 	startLocalMatchState(validated);
 
-	initLocalBoard();
+	initLocalBoard(localMatchState.board);
 	initLocalPlayers();
-}
-
-export function initLocalBoard()
-{
-	if (!localMatchState)
-		throw new Error("[initLocalBoard]: Match non inizializzato: chiama prima initLocalMatchState().");
-    startLocalBoard(localMatchState.board);
 }
 
 function initLocalPlayers()
