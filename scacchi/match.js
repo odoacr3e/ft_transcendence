@@ -11,7 +11,7 @@ const preset = {
 		nPieces: 0,
 		team: eTeam.White,
 		next: eTeam.Black,
-		King: ""
+		King: "a1"
 	},
 	black: 
 	{
@@ -20,7 +20,7 @@ const preset = {
 		nPieces: 0,
 		team: eTeam.Black,
 		next: eTeam.White,
-		King: ""
+		King: "a1"
 	},
 	red: 
 	{

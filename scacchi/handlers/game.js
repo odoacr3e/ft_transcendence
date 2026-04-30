@@ -37,28 +37,39 @@ const gameHandler = (req, res) =>
 }
 
 /**
- * 
- * @param {String} msg 
- * @param {*} res 
- * @returns 
+ * 1)	valid move
+ * 2)	
+ * @param {Array<String>} arr 
  */
-function gameError(res, msg)
+function checkMove (arr=[])
 {
-	console.log(msg);
-	render();
-	return(res.json({message: msg}));
-}
+	let	from;
+	let	to;
+	let	king;
 
-/**
- * 
- * @param {Map<string, Square>} tmp 
- */
-function copyBoard(tmp)
-{
-	board.clear();
-	for (let [key, val] of tmp)
-		board.set(key, val);
-	tmp.clear();
+	from = board.get(arr[0]);
+	to = board.get(arr[1]);
+	// king = board.get(match.currentPlayer.King);
+	// console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+	king = board.get(match.black.King);//FIXME - usare currentPlayer.King
+	if (from == null || to == null || king == null)
+		return (false);//FIXME - 500 server error
+	if (!from.targetZones.has(arr[1]))
+		return (false);
+	if (to.piece)
+	{
+		if (to.piece.team == from.piece.team)
+			return false;
+	}
+	if (isDangerous(king.dangerZones, king.piece.team) && !simulation(arr, king))
+		return (false);
+	if (!simulation(arr, king))
+		return false;
+	if (to.piece)
+		match.currentPlayer.nPoints += to.piece.price;
+	to.piece = from.piece;
+	from.piece = null;
+	return (true);
 }
 
 /**
@@ -90,47 +101,11 @@ function simulation(arr, king)
 }
 
 /**
- * 1)	valid move
- * 2)	
- * @param {Array<String>} arr 
- */
-function checkMove (arr=[])
-{
-	let	from;
-	let	to;
-	let	king;
-
-	from = board.get(arr[0]);
-	to = board.get(arr[1]);
-	// king = board.get(match.currentPlayer.King);
-	king = board.get(match.black.King);//FIXME - usare currentPlayer.King
-	if (from == null || to == null || king == null)
-		return (false);//FIXME - 500 server error
-	if (!from.targetZones.has(arr[1]))
-		return (false);
-	if (isDangerous(king.dangerZones, king.piece.team))
-		return (false);
-	if (to.piece)
-	{
-		if (to.piece.team == from.piece.team)
-			return false;
-	}
-	if (!simulation(arr, king))
-		return false;
-	if (to.piece)
-		match.currentPlayer.nPoints += to.piece.price;
-	to.piece = from.piece;
-	from.piece = null;
-	return (true);
-}
-
-/**
  * 
  * @param {Array<String>} selected 
  */
 function moveFunctionDEBUG (selected=[])
 {
-	let	temp;
 	let	from;
 	let	to;
 	let	fromType;
@@ -152,14 +127,40 @@ function moveFunctionDEBUG (selected=[])
 		toType = "Square";
 	else
 		toType = `\x1b[33m${toType}\x1b[0m`;
-	temp = from.piece;
-	from.piece = to.piece;
-	to.piece = temp;
+	to.piece = from.piece;
+	from.piece = null;
 	dangerUpdateAll();
 	console.log(`SWAP ${fromType} with ${toType}`);
 	console.log(`from ${selected[0]} to ${selected[1]}`);
-	render();
+	//render();
 	return (true);
 }
 
-module.exports = { gameHandler };
+//SECTION - gameHandler utils
+
+/**
+ * 
+ * @param {String} msg 
+ * @param {*} res 
+ * @returns 
+ */
+function gameError(res, msg)
+{
+	console.log(msg);
+	render();
+	return(res.json({message: msg}));
+}
+
+/**
+ * 
+ * @param {Map<string, Square>} tmp 
+ */
+function copyBoard(tmp)
+{
+	board.clear();
+	for (let [key, val] of tmp)
+		board.set(key, val);
+	tmp.clear();
+}
+
+module.exports = { gameHandler, checkMove, moveFunctionDEBUG };

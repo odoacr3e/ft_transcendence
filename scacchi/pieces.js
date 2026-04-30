@@ -139,7 +139,7 @@ let movementJester = function ()
 		let col = cursor.getCol();
 		row = row + dx;
 		col = col + dy;
-		if (row >= 8 || row < 0 || col > 8 || col <= 0)
+		if (row > 8 || row <= 0 || col > 8 || col <= 0)
 		{
 			row = row % 8;
 			col = col % 8;

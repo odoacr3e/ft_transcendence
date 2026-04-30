@@ -2,6 +2,7 @@
 const { Square, board, eTeam } = require("./chessBoard.js");
 const { cursor } = require("./cursor.js");
 const lib = require("./lib.js");
+const {match} = require("./match.js");
 const enumNames = lib.Enums.enumNames;
 
 /**
@@ -18,12 +19,14 @@ function render(selected=[], TargetDangerSwitch="")
 	startPos = board.get(cursor.square);
 	if (!startPos)
 		return (console.log("errore cursor"));
+	if (kingThreat(board, match) == true)
+		console.log(`${match.currentPlayer.team} king is threatened💀`);
 	i = 0;
 	for (let [pos, data] of lib.Chess.board)
 	{
 		asciiArt = getAscii(data);
 		if (data.piece && data.piece.team)
-			buffer += `\x1b[1;${getSquareColor(data.piece.team)}m`;
+			buffer += `\x1b[48;5;${getSquareColor(data.piece.team)}m`;
 		if (lib.Chess.cursor.square == pos)
 			buffer += `\x1b[32m[${asciiArt}]`;
 		else if (pos == selected[0])
@@ -45,6 +48,17 @@ function render(selected=[], TargetDangerSwitch="")
 		}
 	}
 	console.log(buffer);
+}
+
+/**
+ * @param {*} board
+ * @param {*} match
+ */
+function kingThreat(board, match)
+{
+	if (lib.utils.isDangerous(board.get(match.currentPlayer.King)?.dangerZones, match.currentPlayer.team))
+		return (true);
+	return (false);
 }
 
 /**
@@ -85,7 +99,7 @@ function getSquareColor(team)
 		case (null) :
 			return ("49");
 		case (eTeam.Black) :
-			return ("40");
+			return ("232");
 		case (eTeam.Blue) :
 			return ("44");
 		case (eTeam.Green) :
@@ -93,7 +107,7 @@ function getSquareColor(team)
 		case (eTeam.Red) :
 			return ("41");
 		case (eTeam.White) :
-			return ("47");
+			return ("247");
 		case (eTeam.Yellow) :
 			return ("43");
 		default :

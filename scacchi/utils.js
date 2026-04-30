@@ -4,8 +4,8 @@ const {cursor} = require("./cursor.js");
 
 /**
  * 
- * @param {Set<string> | undefined} setZones
- * @param {string | undefined} team
+ * @param {Set<string> | undefined} setZones dangerZone to check
+ * @param {string | undefined} team enumTeam to the piece to check
  */
 let isDangerous = (setZones, team) =>
 {

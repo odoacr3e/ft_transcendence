@@ -2,6 +2,7 @@
 const {Piece, board, Square} =					require("../lib.js").Chess;
 const {eTeam, enumValues, enumNames} =			require("../lib.js").Enums;
 const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("../utils.js");
+const {checkMove, moveFunctionDEBUG} = require("../handlers/game.js");
 
 const lib =			require("../lib.js");
 const {abort} = 	require("node:process");
@@ -13,7 +14,7 @@ const {app} = require("../server.js");
 const {match} = require("../match.js");
 
 //SECTION - main: inizializza e fa primo render, mette terminale in ascolto
-const	rng = initRng(40);
+const	rng = initRng(62);
 initTerminal();
 initRandomBoard();
 dangerUpdateAll();
@@ -71,7 +72,8 @@ process.stdin.on('keypress', (str, key) =>
 			selected.push(cursor.square);
 			if (selected.length == 2)
 			{
-				if (moveFunctionDEBUG() == false)
+				console.clear()
+				if (!checkMove(selected) || !moveFunctionDEBUG(selected))
 					console.log("you cannot move LMAO");		
 				selected = [];
 			}
@@ -108,43 +110,6 @@ process.stdin.on('keypress', (str, key) =>
 	render(selected, TargetDangerSwitch);
 	console.log(`keypressed: ${key.name}\n`, `Press \"space\" to move, \"q\" to boost`);
 });
-
-function moveFunctionDEBUG ()
-{
-	let	temp;
-	let	from;
-	let	to;
-	let	fromType;
-	let	toType;
-
-	from = board.get(selected[0]);
-	to = board.get(selected[1]);
-	if (!from || !to)
-	{
-		return (false);
-	}
-	fromType = from.piece?.type;
-	toType = to.piece?.type;
-	if (fromType == null)
-		fromType = "Square";
-	else
-		fromType = `\x1b[33m${fromType}\x1b[0m`;
-	if (!from.targetZones.has(selected[1]))
-		return false;
-	if (toType == null)
-		toType = "Square";
-	else
-		toType = `\x1b[33m${toType}\x1b[0m`;
-	temp = from.piece;
-	from.piece = to.piece;
-	to.piece = temp;
-	temp = cursor.square;
-	dangerUpdateAll();
-	cursor.set(temp);
-	console.log(`SWAP ${fromType} with ${toType}`);
-	console.log(`from ${selected[0]} to ${selected[1]}`);
-	return (true);
-}
 
 function initTerminal()
 {
@@ -223,3 +188,9 @@ function initRandomBoard()
 			data.piece.team = eTeam.White;
 	}
 }
+
+/*
+	seed interessanti
+	62: scacco matto ciao ciao
+	63: scacco matto prevenibile
+*/
