@@ -219,5 +219,7 @@ function initRandomBoard()
 		{
 			data.piece = new Piece(lib.preset.Valkirya, "", key, true);
 		}
+		if (rng(2) == 1)
+			data.piece.team = eTeam.White;
 	}
 }

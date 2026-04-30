@@ -32,7 +32,7 @@ let movePiece = (dx, dy, clear) =>
 	let newRow = cursor.getRow() + dy;
 	let newCol = cursor.getCol() + dx;
 
-	if (newRow < 0 || newRow >= Macro.CHESSBOARD_H)
+	if (newRow < 1 || newRow > Macro.CHESSBOARD_H)
 		return false;
 	else if (newCol <= 0 || newCol > Macro.CHESSBOARD_W)
 		return false;
