@@ -28,14 +28,6 @@ export function startLocalMatchState(newMatchState) {
 	localMatchState = newMatchState;
 }
 
-//Funzione helper per determinare il colore dello square durante la cotruzione della scacchiera
-export function getSquareColor(squareId) 
-{
-	const col = squareId.charCodeAt(0) - 97;
-	const row = parseInt(squareId[1]);
-	return (row + col) % 2 === 0 ? "white" : "black";
-}
-
 //inizializzazione della variabile localBoard utilizzando la variabile localMatchState
 export function initLocalBoard(boardData)
 {

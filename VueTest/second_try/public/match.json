@@ -32,7 +32,7 @@
       "piece": {
         "type": "Minotaurus",
         "price": 5,
-        "team": "black",
+        "team": "white",
         "isMovedBool": false,
         "isBoostedBool": true,
         "pos": "a3",
@@ -284,7 +284,7 @@
       "piece": {
         "type": "Champion",
         "price": 10,
-        "team": "black",
+        "team": "white",
         "isMovedBool": false,
         "isBoostedBool": true,
         "pos": "c4",

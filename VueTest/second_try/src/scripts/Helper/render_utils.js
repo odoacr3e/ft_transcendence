@@ -1,6 +1,7 @@
 import { getSquareColor, localBoard }   from "../Global/Variables.js";
 import { FILES }                        from "./Constants.js";
 
+//Funzione helper per convertire la mappa in un array 8x8
 export function boardConverter()
 {
     const DBoard = [];
@@ -20,14 +21,22 @@ export function boardConverter()
     return DBoard;
 }
 
+//Funzione helper per determinare il colore dello square durante la cotruzione della scacchiera
+export function getSquareColor(squareId) 
+{
+	const col = squareId.charCodeAt(0) - 97;
+	const row = parseInt(squareId[1]);
+	return (row + col) % 2 === 0 ? "white" : "black";
+}
+
 export function clearHighlight(flag)
 {
-    console.log(`flag is: ${flag}`);
-
 	localBoard.forEach(square => {
 		if (square.highlight === true && (flag === "point" || flag === undefined))
 			square.highlight = false;
 		const style = document.getElementById(square.id).style;
+		if (style.backgroundColor == "brown")
+			style.backgroundColor = getSquareColor(square.id);
 		if (style.backgroundColor == "red" && (flag === "square" || flag === undefined))
 		{
 			if (getSquareColor(square.id) == "white") { style.backgroundColor = "white"; style.borderWidth = "0"; style.borderColor = "trasparent"; }

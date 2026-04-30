@@ -12,11 +12,11 @@ export default defineConfig({
     vueDevTools(),
     tailwindcss()
   ],
-  server: {
-    host: '10.11.4.4',
-    port: 5173,
-    strictPort: true,
-  },
+  // server: {
+  //   host: '10.11.4.4',
+  //   port: 5173,
+  //   strictPort: true,
+  // },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
