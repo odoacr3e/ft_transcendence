@@ -1,5 +1,5 @@
-import { getSquareColor, localBoard }   from "../Global/Variables.js";
-import { FILES }                        from "./Constants.js";
+import { localBoard }   from "../Global/Variables.js";
+import { FILES }        from "./Constants.js";
 
 //Funzione helper per convertire la mappa in un array 8x8
 export function boardConverter()
