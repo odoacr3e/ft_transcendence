@@ -7,6 +7,7 @@ class Square {
 		this.id = id;
 		this.piece = piece;
 		this.highlight = false;
+		this.selected = false;
 		this.targetZones = new Set(targetZones);
 	}
 }

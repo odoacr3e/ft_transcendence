@@ -32,15 +32,10 @@ export function getSquareColor(squareId)
 export function clearHighlight(flag)
 {
 	localBoard.forEach(square => {
-		if (square.highlight === true && (flag === "point" || flag === undefined))
+		
+		if (square.selected === true && (flag === "selected" || flag === undefined))
+			square.selected = false;
+		if (square.highlight === true && (flag === "highlight" || flag === undefined))
 			square.highlight = false;
-		const style = document.getElementById(square.id).style;
-		if (style.backgroundColor == "brown")
-			style.backgroundColor = getSquareColor(square.id);
-		if (style.backgroundColor == "red" && (flag === "square" || flag === undefined))
-		{
-			if (getSquareColor(square.id) == "white") { style.backgroundColor = "white"; style.borderWidth = "0"; style.borderColor = "trasparent"; }
-			else { style.backgroundColor = "rgb(27, 0, 0)"; style.borderWidth = "0"; style.borderColor = "trasparent"; }
-		}
 	})
 }

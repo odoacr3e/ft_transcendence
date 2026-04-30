@@ -21,7 +21,11 @@
                     v-for="square in row"
                     :key="square.id"
                     :id="square.id"
-                    :class="[getSquareColor(square.id), 'square']"
+                    :class="[getSquareColor(square.id), 
+							'square',
+							{'pieceHighlight': square.highlight && square.piece },
+							{'selectedW': getSquareColor(square.id) == 'white' && square.selected},
+							{'selectedB': getSquareColor(square.id) == 'black' && square.selected}]"
                     @drop="onDrop($event, square)"
                     @dragover.prevent>
                     <img
@@ -30,7 +34,7 @@
                         :src="IMG_PATHS[square.piece.team + square.piece.type]"
                         :draggable="true"
                         @dragstart="onDragStart($event, square)"/>
-                    <span v-if="square.highlight" class="highlight"></span>
+                    <span v-if="square.highlight && !square.piece" class="highlight"></span>
                 </div>
             </div>
         </div>
@@ -50,7 +54,11 @@
 	.piece
 	{
 		width: 100%;
-		cursor: pointer;
+		cursor: -webkit-grab;
+	}
+
+	.piece.dragging {
+		cursor: -webkit-grabbing;
 	}
 
 	.squareRow
@@ -84,5 +92,20 @@
 		margin: auto;
 		border-radius: 50%;
 		background-color: brown;
+	}
+
+	.pieceHighlight
+	{
+		background-color: brown;
+	}
+
+	.selectedB
+	{
+		background-color: rgb(128, 26, 18);
+	}
+
+	.selectedW
+	{
+		background-color: rgb(187, 66, 50);
 	}
 </style>

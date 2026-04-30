@@ -1,43 +1,40 @@
-import { localBoard }						from "../Global/Variables.js";
-import { clearHighlight, getSquareColor}	from "../Helper/render_utils.js";
-import { getRootDiv }						from "../Helper/Constants.js";
+import { localBoard }		from "../Global/Variables.js";
+import { clearHighlight}	from "../Helper/render_utils.js";
+import { getRootDiv }		from "../Helper/Constants.js";
+import { movePiece } 		from "./Movements.js";
 
 let lastClickedId = null;
 
-function globalEvents()
+export function globalEvents()
 {
 	const ROOT_DIV = getRootDiv();
 
 	ROOT_DIV.addEventListener("click", function (event) {
-		clearHighlight();
+		if (event.target.parentNode.id !== lastClickedId)
+			clearHighlight();
+		else
+			clearHighlight("selected");
+		const clickedId = event.target.parentNode.id;
+		if (clickedId != null && lastClickedId != null && lastClickedId != clickedId)
+		{
+			console.log(`lastClickedId: ${lastClickedId} && clickedId: ${clickedId}`);
+			
+			if (localBoard.get(lastClickedId).piece != null)
+				movePiece(lastClickedId, clickedId);
+		}
 		if (event.target.localName === "img")
 		{
-			const clickedId = event.target.parentNode.id;
-			if (lastClickedId !== null && lastClickedId !== clickedId)
-				clearHighlight("point");
-
 			const AllowedMoves = localBoard.get(clickedId).targetZones;
+
 			AllowedMoves.forEach((highlight) => {
 				localBoard.forEach(square => {
 					if (square.id == highlight)
 					{
-						if (square.highlight === false)
-						{
+						if (square.highlight === false && square.id != clickedId)
 							square.highlight = true;
-							if (square.id != clickedId && square.piece)
-							{
-								const DOMstyle = document.getElementById(square.id).style;
-								DOMstyle.backgroundColor = "brown";
-							}
-						}
-						else
+						else if (clickedId == lastClickedId && square.highlight === true)
 						{
-							if (square.piece && square.highlight === true)
-							{
-								const DOMstyle = document.getElementById(square.id).style;
-								if (getSquareColor(square.id) == "white") { DOMstyle.backgroundColor = "white"; }
-								else { DOMstyle.backgroundColor = "rgb(27, 0, 0)"; }
-							}
+							clearHighlight("selected");
 							square.highlight = false;
 						}
 					}
@@ -47,17 +44,33 @@ function globalEvents()
 		}
 	});
 
+	ROOT_DIV.addEventListener("dragstart", function (event) {
+		if (event.target.localName === "img")
+		{
+			const clickedId = event.target.parentNode.id;
+
+			localBoard.get(clickedId).targetZones.forEach((highlight) => {
+				localBoard.forEach(square => {
+					if (square.id == highlight)
+						if (square.highlight === false && square.id != clickedId)
+							square.highlight = true;
+				})
+			})
+		}
+	});
+
 	ROOT_DIV.addEventListener("mousedown", function (event) {
-		if (event.button == 2 && event.target.localName != "img")
+		if (event.button == 2)
 		{
 			event.preventDefault();
-			const DOMstyle = document.getElementById(event.target.id).style;
-			DOMstyle.backgroundColor = "red";
-			DOMstyle.borderWidth = "1px";
-			DOMstyle.borderColor = "red";
+			clearHighlight("highlight");
+			let targetSquare;
+			if (event.target.localName === "img") { targetSquare = localBoard.get(event.target.parentNode.id); }
+			else { targetSquare = localBoard.get(event.target.id); }
+
+			if (targetSquare && !targetSquare.selected) { targetSquare.selected = true; }
+			else if (targetSquare.selected) { targetSquare.selected = false; }
 		}
 	});
 
 }
-
-export { globalEvents };

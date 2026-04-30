@@ -3,13 +3,13 @@
   import MainLogo                 from '../components/MainLogo.vue';
   import BackGround               from '../components/BackGround.vue';
   import ChessBoard               from '../components/ChessBoard.vue';
-  import { initLocalMatchState }  from '@/scripts/Data/Game';
+  import { initLocalMatchState }  from '../scripts/Data/Game';
 
   onMounted(async () => {
     try{
       await initLocalMatchState();
     } catch (err) {
-      console.error("[Game.vue]: Si è rotto tutto all'inizio!");
+      console.log(`${err}`);
     }
   })
 </script>

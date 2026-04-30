@@ -37,7 +37,18 @@ targetZones forEach --> localBoard forEach
 
 clearHighlight() ripulisce UI
 	modifica il css dinamicamente 
-	(sarebbe forse meglio lacorare sulla variabile highlight invece di lavorare direttamente sul DOM? Si potrebbe rendere l'highligth reattivo(Vue) modificando la booleana invece di modifcare il CSS)
+	//NOTE - Casi di rimozione degli highlight/selection
+	Highl. =
+		✓ click sinistro casella vuota 
+		✓ click sinistro casella piena
+		✓ click sinistro stessa casella del pezzo
+		✓ click destro
+		✓ movimento
+	Selected =
+		✓ click destro stessa casella selezionata 
+		✓ click sinistro casella piena & vuota
+		▫ drag
+		✓ movimento
 
 //SECTION - DRAG & DROP
 
