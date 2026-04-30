@@ -2,7 +2,7 @@
 const {Piece, board, Square} =					require("../lib.js").Chess;
 const {eTeam, enumValues, enumNames} =			require("../lib.js").Enums;
 const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("../utils.js");
-const {checkMove, moveFunctionDEBUG} = require("../handlers/game.js");
+const {checkMove, moveFunctionDEBUG, gameError} = require("../handlers/game/move.js");
 
 const lib =			require("../lib.js");
 const {abort} = 	require("node:process");
@@ -14,7 +14,7 @@ const {app} = require("../server.js");
 const {match} = require("../match.js");
 
 //SECTION - main: inizializza e fa primo render, mette terminale in ascolto
-const	rng = initRng(62);
+const	rng = initRng(1);
 initTerminal();
 initRandomBoard();
 dangerUpdateAll();
@@ -74,7 +74,7 @@ process.stdin.on('keypress', (str, key) =>
 			{
 				console.clear()
 				if (!checkMove(selected) || !moveFunctionDEBUG(selected))
-					console.log("you cannot move LMAO");		
+					gameError(null);		
 				selected = [];
 			}
 	}

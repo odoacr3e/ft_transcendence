@@ -1,9 +1,9 @@
 // @ts-check
-const lib = require("../lib.js");
-const {Piece, board, Square, cursor} = require("../lib.js").Chess;
-const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("../utils.js");
-const {render} = require("../render.js");
-const {match} = require("../match.js");
+const lib = require("../../lib.js");
+const {Piece, board, Square, cursor} = require("../../lib.js").Chess;
+const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("../../utils.js");
+const {render} = require("../../render.js");
+const {match} = require("../../match.js");
 
 // const { match } = require("../main.js")// quando ci sara la board aggiornata in game sul main
 
@@ -18,6 +18,8 @@ const {match} = require("../match.js");
 // 2. Utente appartenente alla partita
 // 3. Mossa valida -> OK ritorno json con info per il frontend
 
+let	errorMsg = "";
+
 /**
  * 
  * @param {*} req 
@@ -30,9 +32,9 @@ const gameHandler = (req, res) =>
 	console.clear();
 	console.log(`EXTERNAL REQUEST: ${type}, ${from}, ${to}`);
 	if (!checkMove([from, to]))
-		return (gameError(res, "you cannot move LMAO"));
+		return (gameError(res));
 	if (!moveFunctionDEBUG([from, to]))
-		return (gameError(res, "illegal move LMAO"));
+		return (gameError(res));
 	res.json({message: "OK"});
 }
 
@@ -53,18 +55,20 @@ function checkMove (arr=[])
 	// console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 	king = board.get(match.black.King);//FIXME - usare currentPlayer.King
 	if (from == null || to == null || king == null)
-		return (false);//FIXME - 500 server error
+		return (setError("invalid positions"));//FIXME - 500 server error
 	if (!from.targetZones.has(arr[1]))
-		return (false);
+		return (setError("destination not in piece targetZone"));
 	if (to.piece)
 	{
 		if (to.piece.team == from.piece.team)
-			return false;
+			return (setError("you can't eat your team mates"));
 	}
+	if (from.piece?.team != match.currentPlayer.team)
+		return (setError(`it's ${match.currentPlayer.team} turn`));
 	if (isDangerous(king.dangerZones, king.piece.team) && !simulation(arr, king))
-		return (false);
+		return (setError("Your king is in danger"));
 	if (!simulation(arr, king))
-		return false;
+		return (setError("this would put your king in danger"));
 	if (to.piece)
 		match.currentPlayer.nPoints += to.piece.price;
 	to.piece = from.piece;
@@ -115,7 +119,7 @@ function moveFunctionDEBUG (selected=[])
 	to = board.get(selected[1]);
 	if (!from || !to)
 	{
-		return (false);
+		return (setError("from | to bug in moveFunction"));
 	}
 	fromType = from.piece?.type;
 	toType = to.piece?.type;
@@ -140,15 +144,25 @@ function moveFunctionDEBUG (selected=[])
 
 /**
  * 
- * @param {String} msg 
  * @param {*} res 
  * @returns 
  */
-function gameError(res, msg)
+function gameError(res)
 {
-	console.log(msg);
-	render();
-	return(res.json({message: msg}));
+	console.log(`\x1b[31mgameError\x1b[0m: ${errorMsg}`);
+	errorMsg = "";
+	if (!res)
+		return (null);
+	return(res.json({message: errorMsg}));
+}
+
+/**
+ * @param {String} msg
+ */
+function setError(msg)
+{
+	errorMsg = msg;
+	return (false);
 }
 
 /**
@@ -163,4 +177,4 @@ function copyBoard(tmp)
 	tmp.clear();
 }
 
-module.exports = { gameHandler, checkMove, moveFunctionDEBUG };
+module.exports = { gameHandler, checkMove, moveFunctionDEBUG, gameError };
