@@ -1,16 +1,17 @@
-const getRow = () => {return(cursor.square.charCodeAt(0) - "a".charCodeAt(0));}
+const getRow = () => {return(cursor.square.charCodeAt(0) - "a".charCodeAt(0) + 1);}
 const getCol = () => {return(cursor.square.charCodeAt(1) - "0".charCodeAt(0));}
 
 /**
  * 
  * @param {number} newRow 
  */
-let setRow = (newRow) => {
+let setRow = (newRow) => 
+{
 	let col;
 	let newSquare;
 
 	col = getCol();
-	newSquare = String.fromCharCode(newRow + "a".charCodeAt(0));
+	newSquare = String.fromCharCode(newRow + "a".charCodeAt(0) - 1);
 	newSquare += col;
 	cursor.square = newSquare;
 }
@@ -19,7 +20,8 @@ let setRow = (newRow) => {
  * 
  * @param {number} newCol 
  */
-let setCol = (newCol) => {
+let setCol = (newCol) => 
+{
 	let newSquare;
 
 	newSquare = String.fromCharCode(getRow() + "a".charCodeAt(0));
@@ -32,7 +34,8 @@ let setCol = (newCol) => {
  * @param {number} newCol 
  * @param {number} newRow 
  */
-let setCursor = (newRow, newCol) => {
+let setCursor = (newRow, newCol) => 
+{
 	let newSquare;
 
 	if (typeof newRow === "string" && newCol === undefined)
@@ -42,7 +45,7 @@ let setCursor = (newRow, newCol) => {
 	}
 	if (typeof newRow === "number" && typeof newCol === "number")
 	{
-		newSquare = String.fromCharCode(newRow + "a".charCodeAt(0));
+		newSquare = String.fromCharCode(newRow + "a".charCodeAt(0) - 1);
 		newSquare += String(newCol);
 		cursor.square = newSquare;
 		return ;
