@@ -139,14 +139,22 @@ let movementJester = function ()
 		let col = cursor.getCol();
 		row = row + dx;
 		col = col + dy;
-		row = row % 8;
-		col = col % 8;
-		if (row < 0) row += 8;
-		if (col < 0) col += 8;
-		if (col == 0) col = 8;
-		cursor.setCursor(row, col);
+		if (row >= 8 || row < 0 || col > 8 || col <= 0)
+		{
+			row = row % 8;
+			col = col % 8;
+			if (row < 0) row += 8;
+			if (col < 0) col += 8;
+			if (col == 0) col = 8;
+			cursor.setCursor(row, col);
+			board.get(startPos)?.boostedTargetZones.get(startPos)?.add(cursor.square);
+		}
+		else
+		{
+			cursor.setCursor(row, col);
+			board.get(startPos)?.targetZones.add(cursor.square);
+		}
 		board.get(cursor.square)?.dangerZones.add(startPos);
-		board.get(startPos)?.targetZones.add(cursor.square);
 		cursor.square = startPos;
 	}
 	return (1);
@@ -176,7 +184,7 @@ let movementValkirya = function ()
 			if (maxTarget == 0)
 			{
 				board.get(cursor.square)?.dangerZones.add(startPos);
-				board.get(startPos)?.targetZones.add(cursor.square);
+				board.get(startPos)?.boostedTargetZones.get(startPos)?.add(cursor.square);
 				break ;
 			}
 		}

@@ -72,7 +72,7 @@ process.stdin.on('keypress', (str, key) =>
 			if (selected.length == 2)
 			{
 				if (moveFunctionDEBUG() == false)
-					console.log("you cannot move LMAO");			
+					console.log("you cannot move LMAO");		
 				selected = [];
 			}
 	}

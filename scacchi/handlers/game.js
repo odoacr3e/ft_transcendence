@@ -30,24 +30,35 @@ const gameHandler = (req, res) =>
 	console.clear();
 	console.log(`EXTERNAL REQUEST: ${type}, ${from}, ${to}`);
 	if (!checkMove([from, to]))
-		return (res.json({message: "you cannot move LMAO"}));
+		return (gameError(res, "you cannot move LMAO"));
 	if (!moveFunctionDEBUG([from, to]))
-		return(res.json({message: "illegal move LMAO"}));
+		return (gameError(res, "illegal move LMAO"));
 	res.json({message: "OK"});
 }
 
 /**
  * 
- * @param {Map<String, Square>} tmp 
+ * @param {String} msg 
+ * @param {*} res 
+ * @returns 
+ */
+function gameError(res, msg)
+{
+	console.log(msg);
+	render();
+	return(res.json({message: msg}));
+}
+
+/**
+ * 
+ * @param {Map<string, Square>} tmp 
  */
 function copyBoard(tmp)
 {
-	console.log("before:", board);
 	board.clear();
 	for (let [key, val] of tmp)
 		board.set(key, val);
 	tmp.clear();
-	console.log("after:", board);
 }
 
 /**
@@ -57,17 +68,25 @@ function copyBoard(tmp)
  */
 function simulation(arr, king)
 {
-	let tmp = new Map(board);
+	let tmp = new Map();
 
+	for (const [key, val] of board)
+	{
+		let	squareCopy;
+
+		squareCopy = new Square(val);
+		tmp.set(key, squareCopy);
+	}
 	board.get(arr[1]).piece = board.get(arr[0])?.piece;
 	board.get(arr[0]).piece = null;
 	dangerUpdateAll();
 	if (isDangerous(king.dangerZones, king.piece.team))
 	{
 		copyBoard(tmp);
+		return (false);
 	}
 	copyBoard(tmp);
-	return true;
+	return (true);
 }
 
 /**
@@ -100,8 +119,6 @@ function checkMove (arr=[])
 		return false;
 	if (to.piece)
 		match.currentPlayer.nPoints += to.piece.price;
-	console.log(to.piece);
-	console.log(from.piece);
 	to.piece = from.piece;
 	from.piece = null;
 	return (true);

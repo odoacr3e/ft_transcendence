@@ -55,15 +55,13 @@ let movePiece = (dx, dy, clear) =>
 	return true;
 }
 
-/**
- * 
- * @param {Board} usedBoard 
- */
-let DangerUpdate = (usedBoard=board) =>
+let DangerUpdate = () =>
 {
+	let	usedBoard;
 	let	startPos;
 	let	piece;
 
+	usedBoard = board;
 	startPos = cursor.square;
 	piece = usedBoard.get(cursor.square)?.piece;
 	if (piece == null)
@@ -82,15 +80,13 @@ let DangerUpdate = (usedBoard=board) =>
 	return (1);
 }
 
-/**
- * 
- * @param {Board} usedBoard 
- */
-function dangerUpdateAll(usedBoard=board)
+function dangerUpdateAll()
 {
 	let	temp;
+	let	usedBoard;
 
 	temp = cursor.square;
+	usedBoard = board;
 	for (let [pos, square] of usedBoard)
 	{
 		square.boostedTargetZones.clear();

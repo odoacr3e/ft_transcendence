@@ -15,13 +15,26 @@ const pieces = require("./pieces.js");
 
 class Square
 {
-	constructor()
+	/**
+	 * 
+	 * @param {Square | null} other 
+	 * @returns 
+	 */
+	constructor(other=null)
 	{
         /** @type {string | undefined} */		this.color = undefined;
         /** @type {Piece | null} */   			this.piece = null;
 		/** @type {Set<string>} */				this.targetZones = new Set();
 		/** @type {Map<string, Set<string>>} */	this.boostedTargetZones = new Map();
 		/** @type {Set<string>} */				this.dangerZones = new Set();
+
+		if (other == null)
+			return ;
+		this.color = other.color;
+		this.piece = other.piece;
+		this.targetZones = other.targetZones;
+		this.boostedTargetZones = other.boostedTargetZones;
+		this.dangerZones = other.dangerZones;
 	}
     //tutti i dati
 }
