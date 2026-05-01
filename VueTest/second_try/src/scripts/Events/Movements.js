@@ -1,5 +1,6 @@
 import { localBoard }		from "../Global/Variables.js";
 import { clearHighlight }	from "../Helper/render_utils.js";
+import { updateLocalBoard } from "../Data/Game.js"
 
 export function movePiece(fromSquareId, toSquareId)
 {
@@ -27,17 +28,18 @@ export function onDragStart(event, square)
 export function onDrop(event, toSquare)
 {
 	event.preventDefault()
-	if (toSquare.piece) { return }
+	// if (toSquare.piece) { return }
 
 	const fromSquareId = event.dataTransfer.getData('fromSquareId')
 
 	requestToBack(fromSquareId, toSquare.id).then(
-		function(value) {if (value) { movePiece(fromSquareId, toSquare.id); }},
+		function(value) {if (value) { clearHighlight(); }},
 		function(value) {if (!value) { console.log("Mossa non valida"); }}
 	);
 }
 
-async function requestToBack(fromSquare, toSquare)
+
+export async function requestToBack(fromSquare, toSquare)
 {
 	try
 	{
@@ -54,13 +56,18 @@ async function requestToBack(fromSquare, toSquare)
 		if (!match || typeof match !== "object" || Array.isArray(match))
 			throw new Error("Payload non valido: root deve essere un oggetto.");
 	
-		if (!Object.prototype.hasOwnProperty.call(match, "Response"))
-			throw new Error("Payload non valido: serve Response.");
+		if (!Object.prototype.hasOwnProperty.call(match, "p1") ||
+			!Object.prototype.hasOwnProperty.call(match, "p2") ||
+			!Object.prototype.hasOwnProperty.call(match, "p3") ||
+			!Object.prototype.hasOwnProperty.call(match, "p4") ||
+			!Object.prototype.hasOwnProperty.call(match, "board"))
+			throw new Error("Payload non valido: serve p1, p2, p3, p4 e board.");
+
+		if (!match.board || typeof match.board !== "object" || Array.isArray(match.board))
+			throw new Error("[validateReceivedMatch]: Payload non valido: board deve essere un oggetto.");
 	
-		if (match.Response === "YAS")
-			return true;
-		else
-			throw new Error("Mossa non valida");
+		updateLocalBoard(match);
+		return true;
 	}
 	catch (err)
 	{

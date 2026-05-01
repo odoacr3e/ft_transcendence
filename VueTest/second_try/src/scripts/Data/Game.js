@@ -89,20 +89,23 @@ export async function updateLocalMatchState(nextMatchState) {
   	}
 }
 
-function updateLocalBoard(changes)
+export function updateLocalBoard(changes)
 {
-	const has_not_board = !changes.board;
-	const board_not_valid = typeof changes.board !== "object" || Array.isArray(changes.board);
+	const board = changes.board;
 
-	if (has_not_board)
-		throw new Error("[updateLocalBoard]: Board expected but no object received!");
-	if (board_not_valid)
+	if (!board) { throw new Error("[updateLocalBoard]: Board expected but no object received!"); }
+	if (typeof board !== "object" || Array.isArray(board))
 		throw new Error("[updateLocalBoard]: Board format not valid!");
 
-	Object.entries(changes.board).forEach(([square, newState]) => {
-		localBoard.set(square, newState);
+	Object.entries(board).forEach(([squareKey, newState]) => {
+	    if (localBoard.has(squareKey))
+	        localBoard.set(squareKey, { ...localBoard.get(squareKey), ...newState });
 	});
+
 }
+//nella funzione sopra viene utilizzato lo spread operator ( { ...localBoard.get(squareKey), ...newState } )
+//l'operatore '...' su un oggetto ne espande le proprieta', in modo che in caso di conflitto le
+//proprieta' del secondo sovrascrivono quelle del primo
 
 function updateLocalPlayers(changes) 
 {

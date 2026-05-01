@@ -1,7 +1,7 @@
-import { localBoard }		from "../Global/Variables.js";
-import { clearHighlight}	from "../Helper/render_utils.js";
-import { getRootDiv }		from "../Helper/Constants.js";
-import { movePiece } 		from "./Movements.js";
+import { movePiece, requestToBack }	from "./Movements.js";
+import { clearHighlight}			from "../Helper/render_utils.js";
+import { localBoard }				from "../Global/Variables.js";
+import { getRootDiv }				from "../Helper/Constants.js";
 
 let lastClickedId = null;
 
@@ -19,9 +19,13 @@ export function globalEvents()
 			clickedId = event.target.id;
 		else { clickedId = event.target.parentNode.id; }
 
-		if (clickedId != null && lastClickedId != null && lastClickedId != clickedId)
-			if (localBoard.get(lastClickedId).targetZones.has(clickedId))
-				movePiece(lastClickedId, clickedId);
+		// requestToBack(lastClickedId, clickedId).then(
+		// 		function(value) {if (value &&
+		// 			clickedId != null && lastClickedId != null && lastClickedId != clickedId &&
+		// 			localBoard.get(lastClickedId).targetZones.has(clickedId))
+		// 				movePiece(lastClickedId, clickedId); },
+		// 		function(value) {if (!value) { console.log("Mossa non valida"); }}
+		// 	);
 
 		if (event.target.localName === "img")
 		{
