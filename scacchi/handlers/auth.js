@@ -25,7 +25,7 @@ const checkCredentials = (req, res, next) => {
 	next();
 }
 
-const checkUser = async (req, res, next) => {
+const checkUser = async (req, res) => {
 	
 	const { username, password } = req.body;
 	const user = await db.query("SELECT username, password FROM users WHERE username =  $1", [username]);
