@@ -52,7 +52,9 @@ export function globalEvents()
 		if (event.target.localName === "img")
 		{
 			const clickedId = event.target.parentNode.id;
-
+			if (clickedId != lastClickedId)
+				clearHighlight();
+			
 			localBoard.get(clickedId).targetZones.forEach((highlight) => {
 				localBoard.forEach(square => {
 					if (square.id == highlight)
