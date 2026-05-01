@@ -83,4 +83,16 @@ boardConverter()
 			-> DOMBoard computed si ricalcola
 			-> boardConverter() esegue
 			-> ChessBoard.vue re-renderizza
-
+// TODO  (▫ ✓)
+	▫ movimento al click [MAVI]
+	▫ highlight e selected corretti al 100% {LEO}
+	▫ drag non fastasma
+	▫ highlitghs per i pezzi boostati
+	▫ movimento per i pezzi boostati
+	▫ bottone per utilizzare l'abilità
+	▫ bottone per fine turno
+	▫ richieste del boosting
+	▫ pagina user per test con back
+	▫ gestione dei turni tra players (niente permessi di modifica per un giocatore)
+	▫ oreintamento della scacchiera in base al colore dei pezzi del giocatore
+	▫ rendering delle informazioni dei player
