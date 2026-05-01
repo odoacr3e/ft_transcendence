@@ -5,45 +5,40 @@ const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("../../u
 const {render} = require("../../render.js");
 const {match} = require("../../match.js");
 
-// const { match } = require("../main.js")// quando ci sara la board aggiornata in game sul main
-
-// body post -> {start: "a1", end: "a2"}
-
-// ritorniamo il JSON dell'oggetto Partita con Player e ChessBoard
-// prendo input chessBoard con situazioone di gioco
-// lancio funzione board.checkMove(??)
-// restituzione JSON con board aggiornata
-// TODO - da aggiornare poi come middleware (fatti a step)
-// 1. Utente loggato
-// 2. Utente appartenente alla partita
-// 3. Mossa valida -> OK ritorno json con info per il frontend
-
-let	errorMsg = "";
+/** @typedef {{msg: String | null, status: Number | null}} Result */
 
 /**
  * 
- * @param {*} req 
- * @param {*} res 
- * @returns 
+ * @param {String} from the piece to move's coords
+ * @param {String} to the new piece location's coords
+ * @returns {Result} Result:
+ * ```js
+ * {
+ * 		msg: String | null,
+ * 		status: Number | null
+ * }
+ * ```
  */
-const gameHandler = (req, res) => 
+const move = (from, to) => 
 {
-	const { type, from, to } = req.body;
+	/**@type {Result}*/let	result;
+
+	result = {msg: null, status: null};
 	console.clear();
-	console.log(`EXTERNAL REQUEST: ${type}, ${from}, ${to}`);
-	if (!checkMove([from, to]))
-		return (gameError(res));
-	if (!moveFunctionDEBUG([from, to]))
-		return (gameError(res));
-	res.json({message: "OK"});
+	if (!checkMove([from, to], result))
+		return (result);
+	if (!moveFunctionDEBUG([from, to], result))
+		return (result);
+	result.status = 200;
+	return (result);
 }
 
 /**
- * 1)	valid move
- * 2)	
- * @param {Array<String>} arr 
+ * 
+ * @param {Array<String>} arr
+ * @param {Result} result
  */
-function checkMove (arr=[])
+function checkMove (arr=[], result)
 {
 	let	from;
 	let	to;
@@ -55,26 +50,65 @@ function checkMove (arr=[])
 	// console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 	king = board.get(match.black.King);//FIXME - usare currentPlayer.King
 	if (from == null || to == null || king == null)
-		return (setError("invalid positions"));//FIXME - 500 server error
+		return (error(result, 500, "invalid positions"));//FIXME - 500 server error
 	if (!from.targetZones.has(arr[1]))
-		return (setError("destination not in piece targetZone"));
+		return (error(result, 403, "destination not in piece targetZone"));
 	if (to.piece)
 	{
 		if (to.piece.team == from.piece.team)
-			return (setError("you can't eat your team mates"));
+			return (error(result, 403, "you can't eat your team mates"));
 	}
 	if (from.piece?.team != match.currentPlayer.team)
-		return (setError(`it's ${match.currentPlayer.team} turn`));
+		return (error(result, 403, `it's ${match.currentPlayer.team} turn`));
 	if (isDangerous(king.dangerZones, king.piece.team) && !simulation(arr, king))
-		return (setError("Your king is in danger"));
+		return (error(result, 403, "Your king is in danger"));
 	if (!simulation(arr, king))
-		return (setError("this would put your king in danger"));
+		return (error(result, 403, "this would put your king in danger"));
 	if (to.piece)
 		match.currentPlayer.nPoints += to.piece.price;
 	to.piece = from.piece;
 	from.piece = null;
 	return (true);
 }
+
+/**
+ * 
+ * @param {Array<String>} selected 
+ * @param {Result} result
+ */
+function moveFunctionDEBUG (selected=[], result)
+{
+	let	from;
+	let	to;
+	let	fromType;
+	let	toType;
+
+	from = board.get(selected[0]);
+	to = board.get(selected[1]);
+	if (!from || !to)
+	{
+		return (error(result, 500, "from | to bug in moveFunction"));
+	}
+	fromType = from.piece?.type;
+	toType = to.piece?.type;
+	if (fromType == null)
+		fromType = "Square";
+	else
+		fromType = `\x1b[33m${fromType}\x1b[0m`;
+	if (toType == null)
+		toType = "Square";
+	else
+		toType = `\x1b[33m${toType}\x1b[0m`;
+	to.piece = from.piece;
+	from.piece = null;
+	dangerUpdateAll();
+	console.log(`SWAP ${fromType} with ${toType}`);
+	console.log(`from ${selected[0]} to ${selected[1]}`);
+	//render();
+	return (true);
+}
+
+//SECTION - move utils
 
 /**
  * 
@@ -106,67 +140,6 @@ function simulation(arr, king)
 
 /**
  * 
- * @param {Array<String>} selected 
- */
-function moveFunctionDEBUG (selected=[])
-{
-	let	from;
-	let	to;
-	let	fromType;
-	let	toType;
-
-	from = board.get(selected[0]);
-	to = board.get(selected[1]);
-	if (!from || !to)
-	{
-		return (setError("from | to bug in moveFunction"));
-	}
-	fromType = from.piece?.type;
-	toType = to.piece?.type;
-	if (fromType == null)
-		fromType = "Square";
-	else
-		fromType = `\x1b[33m${fromType}\x1b[0m`;
-	if (toType == null)
-		toType = "Square";
-	else
-		toType = `\x1b[33m${toType}\x1b[0m`;
-	to.piece = from.piece;
-	from.piece = null;
-	dangerUpdateAll();
-	console.log(`SWAP ${fromType} with ${toType}`);
-	console.log(`from ${selected[0]} to ${selected[1]}`);
-	//render();
-	return (true);
-}
-
-//SECTION - gameHandler utils
-
-/**
- * 
- * @param {*} res 
- * @returns 
- */
-function gameError(res)
-{
-	console.log(`\x1b[31mgameError\x1b[0m: ${errorMsg}`);
-	errorMsg = "";
-	if (!res)
-		return (null);
-	return(res.json({message: errorMsg}));
-}
-
-/**
- * @param {String} msg
- */
-function setError(msg)
-{
-	errorMsg = msg;
-	return (false);
-}
-
-/**
- * 
  * @param {Map<string, Square>} tmp 
  */
 function copyBoard(tmp)
@@ -177,4 +150,18 @@ function copyBoard(tmp)
 	tmp.clear();
 }
 
-module.exports = { gameHandler, checkMove, moveFunctionDEBUG, gameError };
+/**
+ * 
+ * @param {Result} result 
+ * @param {Number} status 
+ * @param {String} msg 
+ * @returns 
+ */
+function error(result, status, msg)
+{
+	result.msg = msg;
+	result.status = status;
+	return (false);
+}
+
+module.exports = { move };

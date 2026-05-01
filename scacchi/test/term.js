@@ -2,7 +2,7 @@
 const {Piece, board, Square} =					require("../lib.js").Chess;
 const {eTeam, enumValues, enumNames} =			require("../lib.js").Enums;
 const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("../utils.js");
-const {checkMove, moveFunctionDEBUG, gameError} = require("../handlers/game/move.js");
+const {error, move} = require("../handlers/game/Game.js");
 
 const lib =			require("../lib.js");
 const {abort} = 	require("node:process");
@@ -72,37 +72,16 @@ process.stdin.on('keypress', (str, key) =>
 			selected.push(cursor.square);
 			if (selected.length == 2)
 			{
-				console.clear()
-				if (!checkMove(selected) || !moveFunctionDEBUG(selected))
-					gameError(null);		
+				console.clear();
+				let	result = move(selected[0], selected[1]);
+				if (result.status != 200)
+					error(null, result);	
 				selected = [];
 			}
 	}
 	if (key.name != "space" && key.name != "e" && key.name != "q" && 
 		!movePiece(dx, dy, false))
 	{
-		// let player1 = {
-			// name: "player1",
-			// team: eTeam.White,
-			// pieces: 16,
-			// points: 0,
-		// 
-		// }
-		// let player2 = {
-			// name: "player2",
-			// team: eTeam.Black,
-			// pieces: 16,
-			// points: 0,
-		// }
-		// let match = { p1: player1, p2: player2, board: Object.fromEntries(board) };
-		// const json = JSON.stringify(
-    	// match,
-    	// (key, value) => {
-    	    // if (value instanceof Map) return Object.fromEntries(value);
-    	    // if (value instanceof Set) return Array.from(value);
-    	    // return value;
-    	// },2);
-		// fs.writeFileSync("./match.json", json);
 		console.log("lol no");
 	}
 	console.log("row", cursor.getRow(), ", col", cursor.getCol(), ", cursor", cursor.square);

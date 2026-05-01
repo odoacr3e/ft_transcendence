@@ -1,0 +1,12 @@
+// const { match } = require("../main.js")// quando ci sara la board aggiornata in game sul main
+
+// body post -> {start: "a1", end: "a2"}
+
+// ritorniamo il JSON dell'oggetto Partita con Player e ChessBoard
+// prendo input chessBoard con situazioone di gioco
+// lancio funzione board.checkMove(??)
+// restituzione JSON con board aggiornata
+// TODO - da aggiornare poi come middleware (fatti a step)
+// 1. Utente loggato
+// 2. Utente appartenente alla partita
+// 3. Mossa valida -> OK ritorno json con info per il frontend
