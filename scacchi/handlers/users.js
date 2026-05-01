@@ -1,6 +1,7 @@
 
 const lib = require("../lib");
-const { colors } = require("../utils/colors")
+const { colors } = require("../utils/colors");
+const bcrypt = require("bcryptjs");
 const usersQuery = require("../services/usersQuery");
 const usersUtils = require("../utils/users")
 
@@ -53,7 +54,14 @@ const validateUser = async (req, res, next) => {
 }
 
 const createUser = async (req, res) => {
-	res.json({ message: `Tutto ok` })
+	console.log(req.body);
+	const { name, surname, username, email, password, nationality } = req.body;
+	const hashedPwd = await bcrypt.hash(password, lib.Macro.HASH_SALT);
+	const user = await usersQuery.createUser(name, surname,username, hashedPwd, email, nationality);
+	res.status(201).location(`/api/users/${user.rows[0].id_user}`).json(user.rows[0]);
 }
 
-module.exports = { getAllUsers, getUserById, getUserByUsername, getUserByEmail, createUser, validateUser, validateInput };
+const getUsersHandler = { getAllUsers, getUserById, getUserByUsername, getUserByEmail };
+const createUserHandler = { createUser, validateUser, validateInput };
+
+module.exports = { getUsersHandler, createUserHandler };

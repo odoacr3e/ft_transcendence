@@ -7,6 +7,8 @@ const { abort } = require("node:process");
 
 //SECTION macro
 
+const HASH_SALT = 10;
+
 const MAX_CHESSBOARD_SIZE = 25;
 const CHESSBOARD_H = 8;
 const CHESSBOARD_W = 8;
@@ -29,4 +31,4 @@ function error(text)
 	abort();
 }
 
-module.exports = {CHESSBOARD_H, CHESSBOARD_W}
+module.exports = { CHESSBOARD_H, CHESSBOARD_W, HASH_SALT }
