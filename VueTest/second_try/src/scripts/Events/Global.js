@@ -12,16 +12,17 @@ export function globalEvents()
 	ROOT_DIV.addEventListener("click", function (event) {
 		if (event.target.parentNode.id !== lastClickedId)
 			clearHighlight();
-		else
-			clearHighlight("selected");
-		const clickedId = event.target.parentNode.id;
+		else { clearHighlight("selected"); }
+		
+		let clickedId;
+		if (event.target.localName === "div")
+			clickedId = event.target.id;
+		else { clickedId = event.target.parentNode.id; }
+
 		if (clickedId != null && lastClickedId != null && lastClickedId != clickedId)
-		{
-			console.log(`lastClickedId: ${lastClickedId} && clickedId: ${clickedId}`);
-			
-			if (localBoard.get(lastClickedId).piece != null)
+			if (localBoard.get(lastClickedId).targetZones.has(clickedId))
 				movePiece(lastClickedId, clickedId);
-		}
+
 		if (event.target.localName === "img")
 		{
 			const AllowedMoves = localBoard.get(clickedId).targetZones;
