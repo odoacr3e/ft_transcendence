@@ -1,7 +1,12 @@
+const { abort } = require("node:process");
+
 // @ts-check
 const	move = require("./move").move; 
 const	endTurn = require("./endTurn").endTurn; 
-const	boost = require("./boost").boost; 
+const	boost = require("./boost").boost;
+const	render = require("../../render").render;
+
+/** @typedef {import("express").Response} Response*/
 
 /**
  * 
@@ -18,7 +23,7 @@ function gameHandler(req, res)
 		return (error(res, null, "bad request format", 400));
 	if (!res || !res.status || !res.end)
 		return (error(res, null, "bad response object format", 500));
-	if (req.body != {type, from, to})
+	if (!req.body.type || !req.body.from || !req.body.to)
 		return (error(res, null, "body must be of form {type, form, to}", 400));
 
 	console.log(`EXTERNAL REQUEST: ${type}, ${from}, ${to}`);
@@ -34,13 +39,14 @@ function gameHandler(req, res)
 		return (error(res, null, "backend function failed for unknown reasons", 500));
 	if (result.status != 200)
 		return (error(res, result));
+	render();
 	res.status(200).json(result);
 }
 
 /**
  * @param {*} result 
- * @param {String} msg 
- * @param {Number} status 
+ * @param {String | null} msg 
+ * @param {Number | null} status 
  * @returns {{}}
  * format frontend response as an object.
  * ? means the field is optional.
@@ -71,6 +77,11 @@ function responseFormatter(result, msg, status)
 		log = {msg: result.msg, status: result.status};
 	else
 		log = {msg: msg, status: status};
+	if (!log.status)
+	{
+		log.msg = "backend function failed for unknown reasons";
+		log.status = 500;
+	}
 	if (!result)
 		result = {};
 	result.log = log;
@@ -78,6 +89,7 @@ function responseFormatter(result, msg, status)
 	result.p2 = p2;
 	result.p3 = p3;
 	result.p4 = p4;
+	console.log(result);
 	return (result);
 }
 
@@ -93,11 +105,12 @@ function error(res=null, result=null, msg=null, status=0)
 {
 	result = responseFormatter(result, msg, status);
 	console.log("\x1b[31mGame error\x1b[0m");
-	console.log(`status: ${result.status}\nmsg: ${result.msg}`);
+	console.log(`status: ${result.log.status}\nmsg: ${result.log.msg}`);
+	render();
 	if (!res)
 		return (false);
-	if (result.status != 0)
-		res.status(result.status);
+	if (result.log.status != 0)
+		res.status(result.log.status);
 	res.json(result);
 }
 

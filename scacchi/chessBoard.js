@@ -23,7 +23,7 @@ class Square
 	constructor(other=null)
 	{
         /** @type {string | undefined} */		this.color = undefined;
-        /** @type {Piece | null} */   			this.piece = null;
+        /** @type {Piece | null | undefined} */ this.piece = null;
 		/** @type {Set<string>} */				this.targetZones = new Set();
 		/** @type {Map<string, Set<string>>} */	this.boostedTargetZones = new Map();
 		/** @type {Set<string>} */				this.dangerZones = new Set();

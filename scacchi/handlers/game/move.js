@@ -6,6 +6,7 @@ const {render} = require("../../render.js");
 const {match} = require("../../match.js");
 
 /** @typedef {{msg: String | null, status: Number | null}} Result */
+/** @typedef {import('../../chessBoard.js').Square} Square */
 
 /**
  * 
@@ -46,11 +47,13 @@ function checkMove (arr=[], result)
 
 	from = board.get(arr[0]);
 	to = board.get(arr[1]);
-	// king = board.get(match.currentPlayer.King);
-	// console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 	king = board.get(match.black.King);//FIXME - usare currentPlayer.King
-	if (from == null || to == null || king == null)
-		return (error(result, 500, "invalid positions"));//FIXME - 500 server error
+	if (king == null || king.piece == null)
+		return (error(result, 500, "backend has lost track of the king, lol"));
+	if (from == null || to == null)
+		return (error(result, 403, "invalid positions"));
+	if (from.piece == null)
+		return (error(result, 403, "Please choose a valid piece"));
 	if (!from.targetZones.has(arr[1]))
 		return (error(result, 403, "destination not in piece targetZone"));
 	if (to.piece)
@@ -60,9 +63,9 @@ function checkMove (arr=[], result)
 	}
 	if (from.piece?.team != match.currentPlayer.team)
 		return (error(result, 403, `it's ${match.currentPlayer.team} turn`));
-	if (isDangerous(king.dangerZones, king.piece.team) && !simulation(arr, king))
+	if (isDangerous(king.dangerZones, king.piece.team) && !simulation(from, to, king))
 		return (error(result, 403, "Your king is in danger"));
-	if (!simulation(arr, king))
+	if (!simulation(from, to, king))
 		return (error(result, 403, "this would put your king in danger"));
 	if (to.piece)
 		match.currentPlayer.nPoints += to.piece.price;
@@ -112,10 +115,12 @@ function moveFunctionDEBUG (selected=[], result)
 
 /**
  * 
- * @param {Array<String>} arr
- * @param {Square} king
+ * @param {Square} from 
+ * @param {Square} to 
+ * @param {Square} king 
+ * @returns 
  */
-function simulation(arr, king)
+function simulation(from, to, king)
 {
 	let tmp = new Map();
 
@@ -126,10 +131,10 @@ function simulation(arr, king)
 		squareCopy = new Square(val);
 		tmp.set(key, squareCopy);
 	}
-	board.get(arr[1]).piece = board.get(arr[0])?.piece;
-	board.get(arr[0]).piece = null;
+	to.piece = from.piece;
+	from.piece = null;
 	dangerUpdateAll();
-	if (isDangerous(king.dangerZones, king.piece.team))
+	if (isDangerous(king.dangerZones, king.piece?.team))
 	{
 		copyBoard(tmp);
 		return (false);
