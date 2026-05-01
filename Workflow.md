@@ -84,10 +84,10 @@ boardConverter()
 			-> boardConverter() esegue
 			-> ChessBoard.vue re-renderizza
 //TODO - (▫ = da fare, ✓ = completato)
-	✓ movimento al click [MAVI]
-	✓ highlight e selected corretti al 100% {LEO}
-	▫ refactoring funzione che gestisce gli events
-	▫ drag non fastasma
+	✓ movimento al click
+	✓ highlight e selected corretti al 100%
+	▫ refactoring funzione che gestisce gli events {LEO}
+	▫ drag non fastasma [MAVI]
 	▫ highlitghs per i pezzi boostati
 	▫ movimento per i pezzi boostati
 	▫ bottone per utilizzare l'abilità
@@ -97,9 +97,3 @@ boardConverter()
 	▫ gestione dei turni tra players (niente permessi di modifica per un giocatore)
 	▫ oreintamento della scacchiera in base al colore dei pezzi del giocatore
 	▫ rendering delle informazioni dei player
-
-
-// TOKNOW -
-	Quando noi avviamo il form della crezione utente riceviamo una risposta con header location
-	dentro quell'header location c'è la location per andare a prendersi i dati di quell'utente lì
-	Ovvero se facciamo una richiesta su quella location lì ci otteniamo tutti i dati (esclusa la password) di quell'utente lì (utile per fare subito login dopo la creazione di un utente)
