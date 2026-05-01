@@ -1,3 +1,8 @@
+//NOTE - Regole per i case
+	-> Nomi dei file = UpperCamelCase (es. RenderUtils.js)
+	-> Nomi delle funzioni = UpperCamelCase (es. RenderUtils.js)
+	-> Nomi dei components = multi-word UpperCamelCase (es. ChessBoard.vue)
+
 //REVIEW - SCHEMA ARCHITETTURA
 
 main.js (src/main.js)
@@ -20,62 +25,62 @@ boardConverter()
 
 //REVIEW - INTERAZIONE GIOCATORE 
 
-//SECTION - HIGHLIGHTS CASELLE
-
-Utente clicca sul pezzo (src/sripts/Events/Global.js)
-	-> ChessBoard.vue onMounted() + globalEvents()
-
-Global.js addEventistener("click") (src/sripts/Events/Global.js)
-	-> rileva click su immagine pezzo
-
-getSquareColor() + localBoard.get(clickedId) 
-	-> recupera le target zones
-
-targetZones forEach --> localBoard forEach
-	-> highlight = true;
-		-> Caselle con valid move e pezzi da catturare visibili dinamicamente
-
-clearHighlight() ripulisce UI
-	modifica il css dinamicamente 
-	//NOTE - Casi di rimozione degli highlight/selection
-	Highl. =
-		✓ click sinistro casella vuota 
-		✓ click sinistro casella piena
-		✓ click sinistro stessa casella del pezzo
-		✓ click destro
-		✓ movimento
-	Selected =
-		✓ click destro stessa casella selezionata 
-		✓ click sinistro casella piena & vuota
-		▫ drag
-		✓ movimento
-
-//SECTION - DRAG & DROP
-
-Utente dragga il pezzo (src/scripts/Events/Movements.js)
-	-> Movements.js onDragStart()
-
-dataTransfer.setData()
-	-> salva fromSquareId, pieceId
-
-Utente droppa sullo square
-	-> ChessBoard.vue @drop="OnDop()"
-
-OnDrop()
-	-> legge dataTransfer.getdata()
-
-requestToBack(fromSquareId, toSquareId)
-	-> POST /move.json con richiesta
-
-BackendValida la mossa
-	-> risponde con Response : YAS || NO
-
-IF Response === "YAS"
-	-> movePiece(from, to)
-			-> localBoard.get(fromSquareId).piece = null
-			-> localBoard.get(toSquareId).piece = pezzo_mosso
-		-> VUE RECTIVITY SI TRIGGERA AAAAAAAAAAAAAAAAAAAA
-		-> DOMBoard computed si ricalcola
-		-> boardConverter() esegue
-		-> ChessBoard.vue re-renderizza
+	//SECTION - HIGHLIGHTS CASELLE
+	
+	Utente clicca sul pezzo (src/sripts/Events/Global.js)
+		-> ChessBoard.vue onMounted() + globalEvents()
+	
+	Global.js addEventistener("click") (src/sripts/Events/Global.js)
+		-> rileva click su immagine pezzo
+	
+	getSquareColor() + localBoard.get(clickedId) 
+		-> recupera le target zones
+	
+	targetZones forEach --> localBoard forEach
+		-> highlight = true;
+			-> Caselle con valid move e pezzi da catturare visibili dinamicamente
+	
+	clearHighlight() ripulisce UI
+		modifica il css dinamicamente 
+		//NOTE - Casi di rimozione degli highlight/selection
+		Highl. =
+			✓ click sinistro casella vuota 
+			✓ click sinistro casella piena
+			✓ click sinistro stessa casella del pezzo
+			✓ click destro
+			✓ movimento
+		Selected =
+			✓ click destro stessa casella selezionata 
+			✓ click sinistro casella piena & vuota
+			▫ drag
+			✓ movimento
+	
+	//SECTION - DRAG & DROP
+	
+	Utente dragga il pezzo (src/scripts/Events/Movements.js)
+		-> Movements.js onDragStart()
+	
+	dataTransfer.setData()
+		-> salva fromSquareId, pieceId
+	
+	Utente droppa sullo square
+		-> ChessBoard.vue @drop="OnDop()"
+	
+	OnDrop()
+		-> legge dataTransfer.getdata()
+	
+	requestToBack(fromSquareId, toSquareId)
+		-> POST /move.json con richiesta
+	
+	BackendValida la mossa
+		-> risponde con Response : YAS || NO
+	
+	IF json === OK
+		-> updateLocalBoard(MatchState)
+				-> localBoard.get(fromSquareId).piece = null
+				-> localBoard.get(toSquareId).piece = pezzo_mosso
+			-> VUE RECTIVITY SI TRIGGERA AAAAAAAAAAAAAAAAAAAA
+			-> DOMBoard computed si ricalcola
+			-> boardConverter() esegue
+			-> ChessBoard.vue re-renderizza
 

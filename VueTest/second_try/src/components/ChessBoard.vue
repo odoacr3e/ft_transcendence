@@ -1,10 +1,10 @@
 <script setup>
-	import { DOMBoard }				from '@/scripts/Global/Variables';
 	import { onMounted, computed }	from 'vue';
 	import { onDragStart, onDrop }	from '@/scripts/Events/Movements';
+	import { getSquareColor } 		from '@/scripts/Helper/RenderUtils';
 	import { globalEvents } 		from '@/scripts/Events/Global';
 	import { IMG_PATHS }			from '@/scripts/Helper/Constants';
-	import { getSquareColor } 		from '@/scripts/Helper/render_utils';
+	import { DOMBoard }				from '@/scripts/Data/Variables';
 
 	const domBoardComputed = computed(() => DOMBoard());
 

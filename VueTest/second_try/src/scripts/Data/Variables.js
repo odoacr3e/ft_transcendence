@@ -1,5 +1,5 @@
 //!SECTION FILE CON TUTTE LE VARIABILI GLOBALI
-import { boardConverter }	from "../Helper/render_utils";
+import { boardConverter }	from "../Helper/RenderUtils";
 import { reactive }			from "vue";
 
 class Square {

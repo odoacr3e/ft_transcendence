@@ -1,5 +1,4 @@
-import {localMatchState, localBoard, localPlayers, startLocalMatchState } from "../Global/Variables.js";
-import { initLocalBoard } from "../Global/Variables.js";
+import { initLocalBoard, localMatchState, localBoard, localPlayers, startLocalMatchState } from "./Variables.js";
 
 export async function loadReceivedMatch() 
 {

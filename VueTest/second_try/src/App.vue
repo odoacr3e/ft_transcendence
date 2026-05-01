@@ -1,13 +1,10 @@
 <script setup>
+  import BackGround from './components/BackGround.vue';
 </script>
 
 <template>
-  <nav>
-    <RouterLink to="/" class="hidden">Home</RouterLink>
-    <RouterLink to="/game" class="hidden">Game</RouterLink>
-  </nav>
-
-  <RouterView/>
+  <BackGround/>
+  <router-view/>
 </template>
 
 <style scoped>

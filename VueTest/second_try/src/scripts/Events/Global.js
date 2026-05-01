@@ -1,6 +1,6 @@
 import { movePiece, requestToBack }	from "./Movements.js";
-import { clearHighlight}			from "../Helper/render_utils.js";
-import { localBoard }				from "../Global/Variables.js";
+import { clearHighlight}			from "../Helper/RenderUtils.js";
+import { localBoard }				from "../Data/Variables.js";
 import { getRootDiv }				from "../Helper/Constants.js";
 
 let lastClickedId = null;

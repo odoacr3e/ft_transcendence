@@ -1,9 +1,8 @@
 <script setup>
+  import { initLocalMatchState }  from '../scripts/Data/Archi';
   import { onMounted }            from 'vue';
-  import MainLogo                 from '../components/MainLogo.vue';
-  import BackGround               from '../components/BackGround.vue';
   import ChessBoard               from '../components/ChessBoard.vue';
-  import { initLocalMatchState }  from '../scripts/Data/Game';
+  import MainLogo                 from '../components/MainLogo.vue';
 
   onMounted(async () => {
     try{
@@ -15,7 +14,6 @@
 </script>
 
 <template>
-  <BackGround/>
   <MainLogo/>
   <ChessBoard/>
 </template>

@@ -1,6 +1,6 @@
-import { localBoard }		from "../Global/Variables.js";
-import { clearHighlight }	from "../Helper/render_utils.js";
-import { updateLocalBoard } from "../Data/Game.js"
+import { updateLocalBoard } from "../Data/Archi.js"
+import { clearHighlight }	from "../Helper/RenderUtils.js";
+import { localBoard }		from "../Data/Variables.js";
 
 export function movePiece(fromSquareId, toSquareId)
 {
