@@ -19,13 +19,12 @@ export function globalEvents()
 			clickedId = event.target.id;
 		else { clickedId = event.target.parentNode.id; }
 
-		// requestToBack(lastClickedId, clickedId).then(
-		// 		function(value) {if (value &&
-		// 			clickedId != null && lastClickedId != null && lastClickedId != clickedId &&
-		// 			localBoard.get(lastClickedId).targetZones.has(clickedId))
-		// 				movePiece(lastClickedId, clickedId); },
-		// 		function(value) {if (!value) { console.log("Mossa non valida"); }}
-		// 	);
+
+		if (lastClickedId !== null && lastClickedId !== clickedId && localBoard.get(lastClickedId).targetZones.has(clickedId))
+			requestToBack(lastClickedId, clickedId).then(
+					function(value) {if (value) { clearHighlight(); } },
+					function(value) {if (!value) { console.log("Mossa non valida"); }}
+				);
 
 		if (event.target.localName === "img")
 		{

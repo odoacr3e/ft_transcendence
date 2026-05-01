@@ -84,9 +84,9 @@ boardConverter()
 			-> boardConverter() esegue
 			-> ChessBoard.vue re-renderizza
 // TODO  (▫ ✓)
-	▫ movimento al click [MAVI]
+	✓ movimento al click
 	▫ highlight e selected corretti al 100% {LEO}
-	▫ drag non fastasma
+	▫ drag non fastasma [MAVI]
 	▫ highlitghs per i pezzi boostati
 	▫ movimento per i pezzi boostati
 	▫ bottone per utilizzare l'abilità
