@@ -74,9 +74,9 @@ process.stdin.on('keypress', (str, key) =>
 			{
 				console.clear();
 				let	result = move(selected[0], selected[1]);
-				if (result.status != 200)
-					error(null, result);	
 				selected = [];
+				if (result.status != 200)
+					return (error(null, result));	
 			}
 	}
 	if (key.name != "space" && key.name != "e" && key.name != "q" && 

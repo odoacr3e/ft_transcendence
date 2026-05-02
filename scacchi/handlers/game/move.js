@@ -24,11 +24,13 @@ const move = (from, to) =>
 {
 	/**@type {Result}*/let	result;
 
-	result = {msg: null, status: null};
+	result = {msg: "OK", status: null};
 	console.clear();
+	if (!paramCheck(result, from, to))
+		return (result);
 	if (!checkMove([from, to], result))
 		return (result);
-	if (!moveFunctionDEBUG([from, to], result))
+	if (!updateChessboard([from, to], result))
 		return (result);
 	result.status = 200;
 	return (result);
@@ -79,7 +81,7 @@ function checkMove (arr=[], result)
  * @param {Array<String>} selected 
  * @param {Result} result
  */
-function moveFunctionDEBUG (selected=[], result)
+function updateChessboard (selected=[], result)
 {
 	let	from;
 	let	to;
@@ -112,6 +114,20 @@ function moveFunctionDEBUG (selected=[], result)
 }
 
 //SECTION - move utils
+
+/**
+ * check the validity of the input received by the move function.
+ * @param {Result} result 
+ * @param {String | undefined} from 
+ * @param {String | undefined} to 
+ * @returns {boolean} true if success, false if failure
+ */
+function paramCheck(result, from, to)
+{
+	if (!from || !to)
+		return (error(result, 400, `invalid param from ${from} or to ${to}`));
+	return (true);
+}
 
 /**
  * 

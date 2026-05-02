@@ -8,6 +8,19 @@ const	render = require("../../render").render;
 
 /** @typedef {import("express").Response} Response*/
 
+function gameChecks(req, res, next)
+{
+	const	{ type, from, to } = req.body;
+
+	if (!req || !req.body)
+		return (error(res, null, 400, "bad request format"));
+	if (!res || !res.status || !res.end)
+		return (error(res, null, 500, "bad response object format"));
+	if (!req.body.type)
+		return (error(res, null, 400, "json must have a string named `type`"));
+	next();
+}
+
 /**
  * 
  * @param {*} req 
@@ -18,15 +31,6 @@ function gameHandler(req, res)
 	const	{ type, from, to } = req.body;
 	let		result;
 
-	//FIXME - Ale: da mettere in un middleware questi controlli
-	if (!req || !req.body)
-		return (error(res, null, "bad request format", 400));
-	if (!res || !res.status || !res.end)
-		return (error(res, null, "bad response object format", 500));
-	if (!req.body.type || !req.body.from || !req.body.to)
-		return (error(res, null, "body must be of form {type, form, to}", 400));
-
-	console.log(`EXTERNAL REQUEST: ${type}, ${from}, ${to}`);
 	if (type == "move")
 		result = move(from, to);
 	else if (type == "boost")
@@ -34,11 +38,12 @@ function gameHandler(req, res)
 	else if (type == "endTurn")
 		result = endTurn();
 	else
-		return (error(res, null, `invalid type ${type}`, 400));
+		return (error(res, null, 400, `invalid type ${type}`));
 	if (!result || !result.status)
-		return (error(res, null, "backend function failed for unknown reasons", 500));
+		return (error(res, null, 500, "backend function failed for unknown reasons"));
 	if (result.status != 200)
 		return (error(res, result));
+	result = responseFormatter(result);
 	render();
 	res.status(200).json(result);
 }
@@ -84,12 +89,13 @@ function responseFormatter(result, msg, status)
 	}
 	if (!result)
 		result = {};
+	delete result.msg;
+	delete result.status;
 	result.log = log;
 	result.p1 = p1;
 	result.p2 = p2;
 	result.p3 = p3;
 	result.p4 = p4;
-	console.log(result);
 	return (result);
 }
 
@@ -97,13 +103,14 @@ function responseFormatter(result, msg, status)
  * prints the error set in 
  * @param {Response | null} res default: null
  * @param {*} result
- * @param {String | null} msg default: null
  * @param {Number} status default: 0
+ * @param {String | null} msg default: null
  * @returns false
  */
-function error(res=null, result=null, msg=null, status=0)
+function error(res=null, result=null, status=0, msg=null)
 {
 	result = responseFormatter(result, msg, status);
+	console.clear();
 	console.log("\x1b[31mGame error\x1b[0m");
 	console.log(`status: ${result.log.status}\nmsg: ${result.log.msg}`);
 	render();
@@ -114,4 +121,4 @@ function error(res=null, result=null, msg=null, status=0)
 	res.json(result);
 }
 
-module.exports = {gameHandler, error, move, endTurn, boost};
+module.exports = {gameChecks, gameHandler, error, move, endTurn, boost};
