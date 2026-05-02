@@ -1,6 +1,5 @@
 
-const lib = require("./lib.js");
-
+const lib = require("./lib/lib.js");
 const app = lib.include.express();
 const { db } = require("./services/dbConnection.js");
 const { rejects } = require("node:assert");
@@ -23,7 +22,7 @@ app.use("/api", require("./routes/api.js"));
 app.use("/login", require("./routes/auth.js"))
 
 app.listen(PORT, () => {
-	console.log("Server is listening on port " + PORT);
+  console.log("Server is listening on port " + PORT);
 });
 
 module.exports = {app};

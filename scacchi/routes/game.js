@@ -1,5 +1,5 @@
 
-const lib = require("../lib.js");
+const lib = require("../lib/lib.js");
 const router = lib.include.express.Router();
 const {gameChecks, gameHandler} = require("../handlers/game/Game.js");
 

@@ -1,8 +1,8 @@
 // @ts-check
-//const {include} = require("./lib.js");
-//const {Chess} = require("./lib.js");
+//const {include} = require("./lib/lib.js");
+//const {Chess} = require("./lib/lib.js");
 const {CHESSBOARD_H, CHESSBOARD_W} = require("./macro.js");
-//const {Enum} = require("./lib.js");
+//const {Enum} = require("./lib/lib.js");
 
 /** @typedef {pieces.Piece} Piece */
 

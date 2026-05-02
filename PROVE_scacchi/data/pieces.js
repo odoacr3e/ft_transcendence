@@ -1,8 +1,8 @@
 // @ts-check
-// const {include} = require("./lib.js");
-// const {Chess} = require("./lib.js");
-// const {Macro} = require("./lib.js");
-//const {Enum} = require("./lib.js");
+// const {include} = require("./lib/lib.js");
+// const {Chess} = require("./lib/lib.js");
+// const {Macro} = require("./lib/lib.js");
+//const {Enum} = require("./lib/lib.js");
 
 //SECTION - Position class 
 

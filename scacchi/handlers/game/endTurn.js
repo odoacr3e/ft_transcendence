@@ -1,5 +1,10 @@
 // @ts-check
 
+<<<<<<< Updated upstream
+=======
+const {Piece, board, Square, cursor} = require("../../lib/lib.js").Chess;
+const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("../../utils.js");
+>>>>>>> Stashed changes
 const {match} = require("../../match.js");
 const {error, paramCheck, Result} = require("./utils.js");
 

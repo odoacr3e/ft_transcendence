@@ -1,7 +1,7 @@
 // @ts-check
 const { Square, board, eTeam } = require("./chessBoard.js");
 const { cursor } = require("./cursor.js");
-const lib = require("./lib.js");
+const lib = require("./lib/lib.js");
 const {match} = require("./match.js");
 const enumNames = lib.Enums.enumNames;
 

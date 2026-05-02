@@ -1,5 +1,5 @@
 
-const lib = require("../lib.js");
+const lib = require("../lib/lib.js");
 const router = lib.include.express.Router();
 
 router.use("/users", require("./users.js"));

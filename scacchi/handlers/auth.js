@@ -1,5 +1,5 @@
 
-const lib = require("../lib.js");
+const lib = require("../lib/lib.js");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const { send } = require("node:process");

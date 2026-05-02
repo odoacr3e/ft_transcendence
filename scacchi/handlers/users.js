@@ -1,5 +1,5 @@
 
-const lib = require("../lib");
+const lib = require("../lib/lib");
 const { colors } = require("../utils/colors");
 const jwt = require("../utils/auth");
 const bcrypt = require("bcryptjs");
