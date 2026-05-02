@@ -9,6 +9,13 @@ const { abort } = require("node:process");
 
 const HASH_SALT = 10;
 
+/*
+	seed interessanti
+	62: scacco matto ciao ciao
+	63: scacco matto prevenibile
+*/
+const SEED = 1;
+
 const MAX_CHESSBOARD_SIZE = 25;
 const CHESSBOARD_H = 8;
 const CHESSBOARD_W = 8;
@@ -31,4 +38,4 @@ function error(text)
 	abort();
 }
 
-module.exports = { CHESSBOARD_H, CHESSBOARD_W, HASH_SALT }
+module.exports = { CHESSBOARD_H, CHESSBOARD_W, HASH_SALT, SEED }

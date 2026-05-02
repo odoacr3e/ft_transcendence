@@ -2,7 +2,7 @@
 const {Piece, board, Square} =					require("../lib.js").Chess;
 const {eTeam, enumValues, enumNames} =			require("../lib.js").Enums;
 const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("../utils.js");
-const {error, move, boost, endTurn} = require("../handlers/game/Game.js");
+const {error, move, boost, endTurn, init} = require("../handlers/game/Game.js");
 const {Result} = require("../handlers/game/utils.js");
 
 const lib =			require("../lib.js");
@@ -15,9 +15,8 @@ const {app} = require("../server.js");
 const {match} = require("../match.js");
 
 //SECTION - main: inizializza e fa primo render, mette terminale in ascolto
-const	rng = initRng(1);
 initTerminal();
-initRandomBoard();
+init();
 dangerUpdateAll();
 render();
 
@@ -106,72 +105,3 @@ function initTerminal()
 		abort();
 	}
 }
-
-//SECTION - random
-
-/**
- * @param {number | null} seed
- */
-function initRng(seed=null)
-{
-	if (seed == null)
-		seed = Math.floor(Math.random() * (1 << 30));
-	console.log("seed:", seed);
-	const	seedrandom = require("seedrandom");
-	const	rngBase = seedrandom(seed.toString());
-	const	rng = (mod = (1 << 30)) =>
-	{
-		let x;
-		
-		x = rngBase() * mod;
-		return (Math.floor(x));
-	}
-	return (rng);
-}
-
-/**
- * in futuro pescheremo questi dati da strutture fatte bene
- */
-function initRandomBoard()
-{
-	let	rand;
-
-	for (let [key, data] of board)
-	{
-		rand = rng(16);
-		if (key == "a1")
-		{
-			data.piece = new Piece(lib.preset.King, "", key, false);
-			match.black.King = key;
-		}
-		else if (rand <= 10)
-			continue ;
-		else if (rand == 11)
-			data.piece = new Piece(lib.preset.Bastards, "", key, false);
-		else if (rand == 12)
-		{
-			data.piece = new Piece(lib.preset.Champion, "", key, true);
-		}
-		else if (rand == 13)
-		{
-			data.piece = new Piece(lib.preset.Jester, "", key, false);
-			data.piece.isBoostedBool = true;
-		}
-		else if (rand == 14)
-		{
-			data.piece = new Piece(lib.preset.Minotaurus, "", key, true);
-		}
-		else
-		{
-			data.piece = new Piece(lib.preset.Valkirya, "", key, true);
-		}
-		if (rng(2) == 1)
-			data.piece.team = eTeam.White;
-	}
-}
-
-/*
-	seed interessanti
-	62: scacco matto ciao ciao
-	63: scacco matto prevenibile
-*/

@@ -2,6 +2,7 @@
 const	move = require("./move").move; 
 const	endTurn = require("./endTurn").endTurn; 
 const	boost = require("./boost").boost;
+const	init = require("./init").init;
 const	render = require("../../render").render;
 
 //FIXME - ale: i controlli di gameChecks danno per scontato che:
@@ -46,6 +47,8 @@ function gameHandler(req, res)
 		result = boost(from);
 	else if (type == "endTurn")
 		result = endTurn();
+	else if (type == "init")
+		result = init(from);
 	else
 		return (error(res, null, 400, `invalid type ${type}`));
 	if (!result || !result.status)
@@ -130,4 +133,4 @@ function error(res=null, result=null, status=0, msg=null)
 	res.json(result);
 }
 
-module.exports = {gameChecks, gameHandler, error, move, endTurn, boost};
+module.exports = {gameChecks, gameHandler, error, move, endTurn, boost, init};
