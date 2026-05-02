@@ -8,6 +8,7 @@ const {error, paramCheck, Result} = require("./utils.js");
 /**
  * 
  * @param {String} from
+ * @returns {Result}
  */
 function boost(from)
 {

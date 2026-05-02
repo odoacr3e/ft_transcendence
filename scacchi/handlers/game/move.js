@@ -12,13 +12,7 @@ const {error, paramCheck, Result} = require("./utils.js");
  * 
  * @param {String} from the piece to move's coords
  * @param {String} to the new piece location's coords
- * @returns {Result} Result:
- * ```js
- * {
- * 		msg: String | null,
- * 		status: Number | null
- * }
- * ```
+ * @returns {Result}
  */
 function move(from, to)
 {

@@ -4,8 +4,10 @@ const {match} = require("../../match.js");
 const {error, paramCheck, Result} = require("./utils.js");
 
 //FIXME - ale: puoi sempre cambiare turno anche se non hai mosso
+
 /**
  * goes to the next turn
+ * @returns {Result}
  */
 function endTurn()
 {

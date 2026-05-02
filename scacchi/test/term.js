@@ -2,7 +2,8 @@
 const {Piece, board, Square} =					require("../lib.js").Chess;
 const {eTeam, enumValues, enumNames} =			require("../lib.js").Enums;
 const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("../utils.js");
-const {error, move} = require("../handlers/game/Game.js");
+const {error, move, boost, endTurn} = require("../handlers/game/Game.js");
+const {Result} = require("../handlers/game/utils.js");
 
 const lib =			require("../lib.js");
 const {abort} = 	require("node:process");
@@ -27,6 +28,7 @@ render();
 
 process.stdin.on('keypress', (str, key) => 
 {
+	/** @type {Result}*/let	result;
 	let	dx;
 	let	dy;
 
@@ -49,7 +51,7 @@ process.stdin.on('keypress', (str, key) =>
 		case ("right") : case ("d") :
 			dx += 1;
 			break ;
-		case ("e") :
+		case ("r") :
 			if (TargetDangerSwitch == "None")
 				TargetDangerSwitch = "Target";
 			else if (TargetDangerSwitch == "Target")
@@ -57,15 +59,15 @@ process.stdin.on('keypress', (str, key) =>
 			else if (TargetDangerSwitch == "Danger")
 				TargetDangerSwitch = "None";
 			break ;
+		case ("e") :
+			result = endTurn();
+			if (result.status != 200)
+				return (error(null, result));
+			break ;
 		case ("q") :
-			let	square = board.get(cursor.square);
-			if (square?.piece == null)
-				console.log("LMAO you can't boost the literal NOTHING LOL");
-			else
-				square.piece.isBoostedBool = !square.piece.isBoostedBool;
-			let	temp = cursor.square;
-			dangerUpdateAll();
-			cursor.set(temp);
+			result = boost(cursor.square);
+			if (result.status != 200)
+				return (error(null, result));
 			break ;
 		case ("space") :
 			console.assert((selected.length < 2), "move array too large");
@@ -79,15 +81,15 @@ process.stdin.on('keypress', (str, key) =>
 					return (error(null, result));	
 			}
 	}
-	if (key.name != "space" && key.name != "e" && key.name != "q" && 
+	if (key.name != "space" && key.name != "e" && key.name != "q" && key.name != "q" &&
 		!movePiece(dx, dy, false))
 	{
 		console.log("lol no");
 	}
 	console.log("row", cursor.getRow(), ", col", cursor.getCol(), ", cursor", cursor.square);
-	console.log("Visualizing", TargetDangerSwitch, "press \"e\" to change");
+	console.log("Visualizing", TargetDangerSwitch, "press \"r\" to change");
 	render(selected, TargetDangerSwitch);
-	console.log(`keypressed: ${key.name}\n`, `Press \"space\" to move, \"q\" to boost`);
+	console.log(`keypressed: ${key.name}\n`, `Press \"space\" to move, \"q\" to boost, \"e\" to change turn`);
 });
 
 function initTerminal()
