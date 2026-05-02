@@ -2,7 +2,6 @@
 const lib = require("./lib/lib.js");
 const app = lib.include.express();
 const { db } = require("./services/dbConnection.js");
-const { rejects } = require("node:assert");
 
 // setup
 const PORT = 8080;

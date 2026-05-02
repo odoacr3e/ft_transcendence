@@ -1,8 +1,12 @@
 
-const { PrismaClient } = require('../generated/prisma')
+const { PrismaClient } = require('../generated/prisma/client.ts');
+const { PrismaPg } = require('@prisma/adapter-pg')
 // require('dotenv').config()
 
-const prisma = global.prisma ?? new PrismaClient()
+/** @type { PrismaClient } */
+const prisma = global.prisma ?? new PrismaClient(
+  {adapter: new PrismaPg( { connectionString: process.env.DATABASE_URL } )}
+);
 
 if (process.env.NODE_ENV !== 'production') {
   global.prisma = prisma

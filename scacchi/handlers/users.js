@@ -5,12 +5,24 @@ const jwt = require("../utils/auth");
 const bcrypt = require("bcryptjs");
 const usersQuery = require("../services/usersQuery");
 const usersUtils = require("../utils/users");
-const { log } = require("node:console");
+const { prisma } = require("../lib/prisma")
 
+		// const users = await prisma.users.findMany();
 const getAllUsers = async (req, res) => {
 	try {
-		const users = await usersQuery.getAllUsers();
-		res.json(users.rows);
+		const users = await prisma.users.findMany({
+			select: {
+			id_user: true,
+			name: true,
+			surname: true,
+			username: true,
+			email: true,
+			nationality: true,
+			points: true,
+			title: true
+		}
+		});
+		res.json(users);
 	} catch (error) {
 		next(error);
 	}

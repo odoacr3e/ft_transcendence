@@ -1,8 +1,8 @@
 // @ts-check
-const lib = require("../../lib.js");
-const {Piece, board, Square, cursor} = require("../../lib.js").Chess;
-const {eTeam} = require("../../lib.js").Enums;
-const {SEED} = require("../../lib.js").Macro;
+const lib = require("../../lib/lib.js");
+const {Piece, board, Square, cursor} = require("../../lib/lib.js").Chess;
+const {eTeam} = require("../../lib/lib.js").Enums;
+const {SEED} = require("../../lib/lib.js").Macro;
 const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("../../utils.js");
 const {render} = require("../../render.js");
 const {match} = require("../../match.js");
