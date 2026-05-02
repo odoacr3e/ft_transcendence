@@ -47,7 +47,7 @@ const validateInput = async (req, res, next) => {
 	/** @type {{ username: string, password: string, email: string }} */
 	const { username, email, password } = req.body;
 	console.log(`username: ${colors.yellow}${username}${colors.reset}, email: ${colors.yellow}${email}${colors.reset}, password: ${colors.yellow}${password}${colors.reset}`);
-	if (!username || username < 4)
+	if (!username || username.length < 4)
 		return res.status(400).json({ error: "Username too short" });
 	if (!usersUtils.checkEmail(email))
 		return res.status(400).json({ error: "Invalid email format" });

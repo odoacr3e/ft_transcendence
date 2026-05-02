@@ -11,6 +11,8 @@ if [ -n "$1" ]; then
 	port=$1
 fi
 
+url="http://localhost:$port/api/users/"
+
 toJson() {
 	local name="$1"
 	local surname="$2"
@@ -39,18 +41,18 @@ test=(
 
 # Array di comandi curl (come stringhe)
 requests=(
-  "curl -X POST -H \"Content-Type: application/json\" -d \"$(toJson test test iHaveNoFriends test@gmail.com Italiana 'Pippo123$$')\" http://localhost:\"$port\"/api/users/"
-  "curl -X POST -H \"Content-Type: application/json\" -d \"$(toJson test test TT test@gmail.com Italiana 'Pippo123$$')\" http://localhost:\"$port\"/api/users/"
-  "curl -X POST -H \"Content-Type: application/json\" -d \"$(toJson test test Gmuuu testgmail.com Italiana 'Pippo123$$')\" http://localhost:\"$port\"/api/users/"
-  "curl -X POST -H \"Content-Type: application/json\" -d \"$(toJson test test Gmuuu 'te st@gmail.com' Italiana 'Pippo123$$')\" http://localhost:\"$port\"/api/users/"
-  "curl -X POST -H \"Content-Type: application/json\" -d \"$(toJson test test Gmuuu 'test@gmail' Italiana 'Pippo123$$')\" http://localhost:\"$port\"/api/users/"
-  "curl -X POST -H \"Content-Type: application/json\" -d \"$(toJson test test Gmuuu 'test@gmail.' Italiana 'Pippo123$$')\" http://localhost:\"$port\"/api/users/"
-  "curl -X POST -H \"Content-Type: application/json\" -d \"$(toJson test test Gmuuu 'te[st@gmail.com' Italiana 'Pippo123$$')\" http://localhost:\"$port\"/api/users/"
-  "curl -X POST -H \"Content-Type: application/json\" -d \"$(toJson test test Gmuuu 'test@gmail.com' Italiana 'pp12')\" http://localhost:\"$port\"/api/users/"
-  "curl -X POST -H \"Content-Type: application/json\" -d \"$(toJson test test Gmuuu 'test@gmail.com' Italiana 'PPPPPP12$')\" http://localhost:\"$port\"/api/users/"
-  "curl -X POST -H \"Content-Type: application/json\" -d \"$(toJson test test Gmuuu 'test@gmail.com' Italiana 'pppppp12$')\" http://localhost:\"$port\"/api/users/"
-  "curl -X POST -H \"Content-Type: application/json\" -d \"$(toJson test test Gmuuu 'test@gmail.com' Italiana 'pppppppp$')\" http://localhost:\"$port\"/api/users/"
-  "curl -X POST -H \"Content-Type: application/json\" -d \"$(toJson test test Gmuuu 'test@gmail.com' Italiana 'ppppppp12')\" http://localhost:\"$port\"/api/users/"
+	"$(toJson 'test' 'test' 'iHaveNoFriends' 'test@gmail.com' 'Italiana' 'Pippo123%%')"
+	"$(toJson test test TT test@gmail.com Italiana 'Pippo123%%')"
+	"$(toJson test test Gmuuu testgmail.com Italiana 'Pippo123%%')"
+	"$(toJson test test Gmuuu 'te st@gmail.com' Italiana 'Pippo123%%')"
+	"$(toJson test test Gmuuu 'test@gmail' Italiana 'Pippo123%%')"
+	"$(toJson test test Gmuuu 'test@gmail.' Italiana 'Pippo123%%')"
+	"$(toJson test test Gmuuu 'te[st@gmail.com' Italiana 'Pippo123%%')"
+	"$(toJson test test Gmuuu 'test@gmail.com' Italiana 'pp12')"
+	"$(toJson test test Gmuuu 'test@gmail.com' Italiana 'PPPPPP12%%')"
+	"$(toJson test test Gmuuu 'test@gmail.com' Italiana 'pppppp12%%')"
+	"$(toJson test test Gmuuu 'test@gmail.com' Italiana 'pppppppp%%')"
+	"$(toJson test test Gmuuu 'test@gmail.com' Italiana 'ppppppp12')"
 )
 
 i=0
@@ -58,9 +60,13 @@ for req in "${requests[@]}"; do
 	echo ""
 	echo -e "${CYAN}─────────────────────────────────────"
 	echo -e "${GREEN} Test $i: ${test[i]}"
-	echo -e "${CYAN}─────────────────────────────────────"
+	echo -e "${CYAN}─────────────────────────────────────${NC}"
 
-	eval "$req"
+	curl -X POST \
+		-H "Content-Type: application/json" \
+		-d "$req" \
+		"$url"
+
 	echo ""
 	((i++))
 done
