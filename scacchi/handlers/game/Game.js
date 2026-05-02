@@ -1,20 +1,24 @@
-const { abort } = require("node:process");
-
 // @ts-check
 const	move = require("./move").move; 
 const	endTurn = require("./endTurn").endTurn; 
 const	boost = require("./boost").boost;
 const	render = require("../../render").render;
 
+/** @typedef {import("express").Request} Request*/
 /** @typedef {import("express").Response} Response*/
 
+/**
+ * checks if the request params are valid
+ * @param {Request} req 
+ * @param {Response} res 
+ * @param {function} next 
+ * @returns next middleware or an error response
+ */
 function gameChecks(req, res, next)
 {
-	const	{ type, from, to } = req.body;
-
 	if (!req || !req.body)
 		return (error(res, null, 400, "bad request format"));
-	if (!res || !res.status || !res.end)
+	if (!res || !res.status || !res.end || !next)
 		return (error(res, null, 500, "bad response object format"));
 	if (!req.body.type)
 		return (error(res, null, 400, "json must have a string named `type`"));
@@ -31,10 +35,11 @@ function gameHandler(req, res)
 	const	{ type, from, to } = req.body;
 	let		result;
 
+	console.clear();
 	if (type == "move")
 		result = move(from, to);
 	else if (type == "boost")
-		result = boost();
+		result = boost(from);
 	else if (type == "endTurn")
 		result = endTurn();
 	else
@@ -43,7 +48,7 @@ function gameHandler(req, res)
 		return (error(res, null, 500, "backend function failed for unknown reasons"));
 	if (result.status != 200)
 		return (error(res, result));
-	result = responseFormatter(result);
+	result = responseFormatter(result, null, null);
 	render();
 	res.status(200).json(result);
 }
@@ -100,7 +105,7 @@ function responseFormatter(result, msg, status)
 }
 
 /**
- * prints the error set in 
+ * prints the error in console and return a valid json
  * @param {Response | null} res default: null
  * @param {*} result
  * @param {Number} status default: 0

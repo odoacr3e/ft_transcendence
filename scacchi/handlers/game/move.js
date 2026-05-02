@@ -71,8 +71,6 @@ function checkMove (arr=[], result)
 		return (error(result, 403, "this would put your king in danger"));
 	if (to.piece)
 		match.currentPlayer.nPoints += to.piece.price;
-	to.piece = from.piece;
-	from.piece = null;
 	return (true);
 }
 
@@ -109,25 +107,10 @@ function updateChessboard (selected=[], result)
 	dangerUpdateAll();
 	console.log(`SWAP ${fromType} with ${toType}`);
 	console.log(`from ${selected[0]} to ${selected[1]}`);
-	//render();
 	return (true);
 }
 
 //SECTION - move utils
-
-/**
- * check the validity of the input received by the move function.
- * @param {Result} result 
- * @param {String | undefined} from 
- * @param {String | undefined} to 
- * @returns {boolean} true if success, false if failure
- */
-function paramCheck(result, from, to)
-{
-	if (!from || !to)
-		return (error(result, 400, `invalid param from ${from} or to ${to}`));
-	return (true);
-}
 
 /**
  * 
@@ -169,6 +152,20 @@ function copyBoard(tmp)
 	for (let [key, val] of tmp)
 		board.set(key, val);
 	tmp.clear();
+}
+
+/**
+ * check the validity of the input received by the move function.
+ * @param {Result} result 
+ * @param {String | undefined} from 
+ * @param {String | undefined} to 
+ * @returns {boolean} true if success, false if failure
+ */
+function paramCheck(result, from, to)
+{
+	if (!from || !to)
+		return (error(result, 400, `invalid param from ${from} or to ${to}`));
+	return (true);
 }
 
 /**

@@ -78,7 +78,6 @@ class Match
 		/** @type {String} */ let	next = this.currentPlayer.next;
 
 		this.currentPlayer = this[next];
-		console.log("player:", this.currentPlayer);
 	}
 	getCurrentPlayer = () =>
 	{
