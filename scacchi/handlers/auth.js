@@ -36,10 +36,6 @@ const checkUser = async (req, res) => {
 	next();
 };
 
-const checkJwt = async (req, res) => {
-	console.log(req.user);
-	console.log("User " + req.user.username + " trovato");
-	res.status(200).json({ log: "Loggato" });
-}
 
-module.exports = { checkCredentials, checkUser, checkJwt };
+
+module.exports = { checkCredentials, checkUser };
