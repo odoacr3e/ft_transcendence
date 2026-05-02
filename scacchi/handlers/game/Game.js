@@ -4,6 +4,10 @@ const	endTurn = require("./endTurn").endTurn;
 const	boost = require("./boost").boost;
 const	render = require("../../render").render;
 
+//FIXME - ale: i controlli di gameChecks danno per scontato che:
+//				1.	l'utente che manda le richieste sia un giocatore
+//				2.	che il giocatore mandi richieste SOLO per il proprio colore
+
 /** @typedef {import("express").Request} Request*/
 /** @typedef {import("express").Response} Response*/
 

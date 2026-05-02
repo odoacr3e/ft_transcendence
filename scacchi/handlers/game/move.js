@@ -4,8 +4,8 @@ const {Piece, board, Square, cursor} = require("../../lib.js").Chess;
 const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("../../utils.js");
 const {render} = require("../../render.js");
 const {match} = require("../../match.js");
+const {error, paramCheck, Result} = require("./utils.js");
 
-/** @typedef {{msg: String | null, status: Number | null}} Result */
 /** @typedef {import('../../chessBoard.js').Square} Square */
 
 /**
@@ -20,12 +20,11 @@ const {match} = require("../../match.js");
  * }
  * ```
  */
-const move = (from, to) => 
+function move(from, to)
 {
-	/**@type {Result}*/let	result;
+	let	result;
 
-	result = {msg: "OK", status: null};
-	console.clear();
+	result = new Result();
 	if (!paramCheck(result, from, to))
 		return (result);
 	if (!checkMove([from, to], result))
@@ -55,7 +54,7 @@ function checkMove (arr=[], result)
 	if (from == null || to == null)
 		return (error(result, 403, "invalid positions"));
 	if (from.piece == null)
-		return (error(result, 403, "Please choose a valid piece"));
+		return (error(result, 403, "Square is empty"));
 	if (!from.targetZones.has(arr[1]))
 		return (error(result, 403, "destination not in piece targetZone"));
 	if (to.piece)
@@ -152,34 +151,6 @@ function copyBoard(tmp)
 	for (let [key, val] of tmp)
 		board.set(key, val);
 	tmp.clear();
-}
-
-/**
- * check the validity of the input received by the move function.
- * @param {Result} result 
- * @param {String | undefined} from 
- * @param {String | undefined} to 
- * @returns {boolean} true if success, false if failure
- */
-function paramCheck(result, from, to)
-{
-	if (!from || !to)
-		return (error(result, 400, `invalid param from ${from} or to ${to}`));
-	return (true);
-}
-
-/**
- * 
- * @param {Result} result 
- * @param {Number} status 
- * @param {String} msg 
- * @returns 
- */
-function error(result, status, msg)
-{
-	result.msg = msg;
-	result.status = status;
-	return (false);
 }
 
 module.exports = { move };

@@ -3,18 +3,17 @@
 const {Piece, board, Square, cursor} = require("../../lib.js").Chess;
 const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("../../utils.js");
 const {match} = require("../../match.js");
-
-/** @typedef {{msg: String | null, status: Number | null}} Result */
+const {error, paramCheck, Result} = require("./utils.js");
 
 /**
  * 
- * @param {String} from 
+ * @param {String} from
  */
 function boost(from)
 {
-	/**@type {Result}*/let	result;
+	let	result;
 
-	result = {msg: "OK", status: null};
+	result = new Result();
 	if (!paramCheck(result, from))
 		return (result);
 	if (!tryBoost(result, from))
@@ -43,35 +42,6 @@ function tryBoost(result, from)
 	square.piece.isBoostedBool = !square.piece.isBoostedBool;
 	dangerUpdateAll();
 	return (true);
-}
-
-//SECTION - boost utils
-
-/**
- * check the validity of the input received by the move function.
- * @param {Result} result 
- * @param {String | undefined} from 
- * @returns {boolean} true if success, false if failure
- */
-function paramCheck(result, from)
-{
-	if (!from)
-		return (error(result, 400, `invalid param from ${from}`));
-	return (true);
-}
-
-/**
- * 
- * @param {Result} result 
- * @param {Number} status 
- * @param {String} msg 
- * @returns 
- */
-function error(result, status, msg)
-{
-	result.msg = msg;
-	result.status = status;
-	return (false);
 }
 
 module.exports = {boost};

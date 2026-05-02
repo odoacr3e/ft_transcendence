@@ -1,19 +1,17 @@
 // @ts-check
 
-const {Piece, board, Square, cursor} = require("../../lib.js").Chess;
-const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("../../utils.js");
 const {match} = require("../../match.js");
+const {error, paramCheck, Result} = require("./utils.js");
 
-/** @typedef {{msg: String | null, status: Number | null}} Result */
-
+//FIXME - ale: puoi sempre cambiare turno anche se non hai mosso
 /**
- * 
+ * goes to the next turn
  */
 function endTurn()
 {
-	/**@type {Result}*/let	result;
+	let	result;
 
-	result = {msg: "OK", status: null};
+	result = new Result();
 	if (!updateTurn(result))
 		return (result);
 	console.log(`Now it's ${match.currentPlayer.team} turn.`);
@@ -30,22 +28,6 @@ function updateTurn(result)
 {
 	match.endTurn();
 	return (true);
-}
-
-//SECTION - endTurn utils
-
-/**
- * 
- * @param {Result} result 
- * @param {Number} status 
- * @param {String} msg 
- * @returns 
- */
-function error(result, status, msg)
-{
-	result.msg = msg;
-	result.status = status;
-	return (false);
 }
 
 module.exports = {endTurn};
