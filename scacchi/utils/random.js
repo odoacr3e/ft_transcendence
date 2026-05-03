@@ -8,8 +8,6 @@ const {SEED} = require("../macro");
 function initRng(seed=null)
 {
 	if (seed == null)
-		seed = SEED;
-	if (seed == null)
 		seed = Math.floor(Math.random() * (1 << 30));
 	console.log("seed:", seed);
 	const	seedrandom = require("seedrandom");

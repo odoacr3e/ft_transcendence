@@ -1,10 +1,10 @@
 // @ts-check
 const lib = require("../../lib/lib.js");
-const {Piece, board, Square, cursor} = require("../../lib/lib.js").Chess;
+const {Piece, board, Square, copyBoard, cursor} = require("../../lib/lib.js").Chess;
 const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("../../utils.js");
 const {render} = require("../../render.js");
 const {match} = require("../../match.js");
-const {error, paramCheck, Result} = require("./utils.js");
+const {error, paramCheck, Result, clientBoard} = require("./utils.js");
 
 /** @typedef {import('../../chessBoard.js').Square} Square */
 
@@ -26,6 +26,8 @@ function move(from, to)
 	if (!updateChessboard([from, to], result))
 		return (result);
 	result.status = 200;
+	// @ts-ignore
+	result.board = clientBoard(board, [from, to]);
 	return (result);
 }
 
@@ -76,8 +78,6 @@ function updateChessboard (selected=[], result)
 {
 	let	from;
 	let	to;
-	let	fromType;
-	let	toType;
 
 	from = board.get(selected[0]);
 	to = board.get(selected[1]);
@@ -85,21 +85,10 @@ function updateChessboard (selected=[], result)
 	{
 		return (error(result, 500, "from | to bug in moveFunction"));
 	}
-	fromType = from.piece?.type;
-	toType = to.piece?.type;
-	if (fromType == null)
-		fromType = "Square";
-	else
-		fromType = `\x1b[33m${fromType}\x1b[0m`;
-	if (toType == null)
-		toType = "Square";
-	else
-		toType = `\x1b[33m${toType}\x1b[0m`;
+	printSwap(selected, from, to);
 	to.piece = from.piece;
 	from.piece = null;
 	dangerUpdateAll();
-	console.log(`SWAP ${fromType} with ${toType}`);
-	console.log(`from ${selected[0]} to ${selected[1]}`);
 	return (true);
 }
 
@@ -114,37 +103,44 @@ function updateChessboard (selected=[], result)
  */
 function simulation(from, to, king)
 {
-	let tmp = new Map();
+	let tmp;
 
-	for (const [key, val] of board)
-	{
-		let	squareCopy;
-
-		squareCopy = new Square(val);
-		tmp.set(key, squareCopy);
-	}
+	tmp = copyBoard(board);
 	to.piece = from.piece;
 	from.piece = null;
 	dangerUpdateAll();
 	if (isDangerous(king.dangerZones, king.piece?.team))
 	{
-		copyBoard(tmp);
+		copyBoard(tmp, board);
 		return (false);
 	}
-	copyBoard(tmp);
+	copyBoard(tmp, board);
 	return (true);
 }
 
 /**
  * 
- * @param {Map<string, Square>} tmp 
+ * @param {Array<string>} selected 
+ * @param {Square} from 
+ * @param {Square} to 
  */
-function copyBoard(tmp)
+function printSwap(selected, from, to)
 {
-	board.clear();
-	for (let [key, val] of tmp)
-		board.set(key, val);
-	tmp.clear();
+	let	fromType;
+	let	toType;
+
+	fromType = from.piece?.type;
+	toType = to.piece?.type;
+	if (fromType == null)
+		fromType = "Square";
+	else
+		fromType = `\x1b[33m${fromType}\x1b[0m`;
+	if (toType == null)
+		toType = "Square";
+	else
+		toType = `\x1b[33m${toType}\x1b[0m`;
+	console.log(`SWAP ${fromType} with ${toType}`);
+	console.log(`from ${selected[0]} to ${selected[1]}`);
 }
 
 module.exports = { move };

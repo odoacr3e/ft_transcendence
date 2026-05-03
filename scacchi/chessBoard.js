@@ -79,7 +79,28 @@ function initBoard()
 	}
 }
 
+/**
+ * 
+ * @param {Map<string, Square>} src 
+ * @param {Map<string, Square> | null} dest optional: if passed, is cleared
+ * @returns {Map<string, Square>} a deep copy of src
+ */
+function copyBoard(src, dest=null)
+{
+	if (!dest)
+		dest = new Map();
+	dest.clear();
+	for (const [key, val] of src)
+	{
+		let	squareCopy;
+
+		squareCopy = new Square(val);
+		dest.set(key, squareCopy);
+	}
+	return (dest);
+}
+
 initBoard();
 // console.log(board);
 
-module.exports = {board, eTeam, Square};
+module.exports = {board, copyBoard, eTeam, Square};

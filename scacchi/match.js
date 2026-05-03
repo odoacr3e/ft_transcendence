@@ -77,11 +77,12 @@ class Match
 	{
 		/** @type {String} */ let	next = this.currentPlayer.next;
 
+		// @ts-ignore
 		this.currentPlayer = this[next];
 	}
-	getCurrentPlayer = () =>
+	forceWhiteTurn = () =>
 	{
-		return (this.currentPlayer);
+		this.currentPlayer = this.white;
 	}
 }
 

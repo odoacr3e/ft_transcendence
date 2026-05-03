@@ -13,8 +13,8 @@ const include = {http, https, url, fs, path, express, app};
 //SECTION - chess classes/objects
 const {Piece} = require("../pieces.js");
 const {cursor} = require("../cursor.js");
-const {board, Square} = require("../chessBoard.js");
-const Chess = {Piece, board, cursor, Square};
+const {board, Square, copyBoard} = require("../chessBoard.js");
+const Chess = {Piece, board, copyBoard, cursor, Square};
 
 //SECTION - macro
 const Macro = require("../macro.js");

@@ -1,19 +1,19 @@
 // @ts-check
 const lib = require("../../lib/lib.js");
-const {Piece, board, Square, cursor} = require("../../lib/lib.js").Chess;
+const {Piece, board, copyBoard, Square, cursor} = require("../../lib/lib.js").Chess;
 const {eTeam} = require("../../lib/lib.js").Enums;
 const {SEED} = require("../../lib/lib.js").Macro;
 const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("../../utils.js");
 const {render} = require("../../render.js");
 const {match} = require("../../match.js");
-const {error, paramCheck, Result} = require("./utils.js");
+const {error, clientBoard, paramCheck, Result} = require("./utils.js");
 const {initRng} = require("../../utils/random");
 
 /**
  * The Map board is added to result to be sent to the client. Steps:
  * 1) the property board is added to the result object
  * 2) JSON does not support Map. So we convert the Map board to an Object
- * @param {Number} seed seed to start
+ * @param {Number | null} seed seed to start
  * @returns 
  */
 function init(seed=SEED)
@@ -23,12 +23,13 @@ function init(seed=SEED)
 
 	console.log(seed);
 	if (!seed)
-		seed = SEED;
+		seed = null;
 	result = new Result();
 	rng = initRng(seed);
 	initRandomBoard(rng);
 	result.status = 200;
-	/** @type {any} */(result).board = Object.fromEntries(board);
+	// @ts-ignore
+	result.board = clientBoard(board);
 	return (result);
 }
 
@@ -46,10 +47,19 @@ function initRandomBoard(rng)
 		data.boostedTargetZones.clear();
 		data.dangerZones.clear();
 		data.targetZones.clear();
-		if (key == "a1")
+		if (key == "a1" && match.black)
 		{
 			data.piece = new Piece(lib.preset.King, "", key, false);
+			data.piece.team = eTeam.Black;
 			match.black.King = key;
+			continue ;
+		}
+		else if (key == "h8" && match.white)
+		{
+			data.piece = new Piece(lib.preset.King, "", key, false);
+			data.piece.team = eTeam.White;
+			match.white.King = key;
+			continue ;
 		}
 		else if (rand <= 10)
 			continue ;
@@ -62,7 +72,6 @@ function initRandomBoard(rng)
 		else if (rand == 13)
 		{
 			data.piece = new Piece(lib.preset.Jester, "", key, false);
-			data.piece.isBoostedBool = true;
 		}
 		else if (rand == 14)
 		{
@@ -72,9 +81,10 @@ function initRandomBoard(rng)
 		{
 			data.piece = new Piece(lib.preset.Valkirya, "", key, true);
 		}
-		if (rng(2) == 1)
-			data.piece.team = eTeam.White;
+		data.piece.team = match.currentPlayer.team;
+		match.endTurn();
 	}
+	match.forceWhiteTurn();
 	dangerUpdateAll();
 }
 

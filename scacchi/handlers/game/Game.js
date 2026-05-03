@@ -1,4 +1,7 @@
 // @ts-check
+
+const	{match} = require("../../match"); 
+const	{ Result } = require("./utils");
 const	move = require("./move").move; 
 const	endTurn = require("./endTurn").endTurn; 
 const	boost = require("./boost").boost;
@@ -74,21 +77,21 @@ function gameHandler(req, res)
  *         msg: string;
  *         status: number;
  *     	};
- *      ?board: null;
- *      p1: null;
- *      p2: null;
- *      p3: null;
- *      p4: null;
+ *      ?board: Board;
+ *      p1: Player;
+ *      p2: Player;
+ *      ?p3: Player;
+ *      ?p4: Player;
  * }
  * ```
  */
 function responseFormatter(result, msg, status)
 {
 	let	log;
-	let	p1 = null;
-	let	p2 = null;
-	let	p3 = null;
-	let	p4 = null;
+	let	p1 = match.white ? match.white : match.green;
+	let	p2 = match.black ? match.black : match.blue;
+	let	p3 = match.red;
+	let	p4 = match.yellow;
 
 	if (result && result.msg && result.status)
 		log = {msg: result.msg, status: result.status};
@@ -99,11 +102,27 @@ function responseFormatter(result, msg, status)
 		log.msg = "backend function failed for unknown reasons";
 		log.status = 500;
 	}
+	if (!p1 || !p2)
+	{
+		log.msg = `cannot find p1 or p2`;
+		log.status = 500;
+		// @ts-ignore
+		p1 = {};
+		// @ts-ignore
+		p2 = {};
+	}
 	if (!result)
 		result = {};
 	delete result.msg;
 	delete result.status;
+	if (!result.board)
+		delete result.board;
+	if (!p3)// @ts-ignore
+		delete p3;
+	if (!p4)// @ts-ignore
+		delete p4;
 	result.log = log;
+	result.log.msg = "Game Error: " + result.log.msg;
 	result.p1 = p1;
 	result.p2 = p2;
 	result.p3 = p3;
