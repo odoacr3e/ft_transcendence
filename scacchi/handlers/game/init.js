@@ -10,8 +10,10 @@ const {error, paramCheck, Result} = require("./utils.js");
 const {initRng} = require("../../utils/random");
 
 /**
- * 
- * @param {Number} seed seed to start 
+ * The Map board is added to result to be sent to the client. Steps:
+ * 1) the property board is added to the result object
+ * 2) JSON does not support Map. So we convert the Map board to an Object
+ * @param {Number} seed seed to start
  * @returns 
  */
 function init(seed=SEED)
@@ -19,14 +21,14 @@ function init(seed=SEED)
 	let	result;
 	let	rng;
 
+	console.log(seed);
 	if (!seed)
 		seed = SEED;
 	result = new Result();
 	rng = initRng(seed);
 	initRandomBoard(rng);
 	result.status = 200;
-	//FIXME - ale: fare result.board = board
-	//				va mandata la board, cosi per non va
+	/** @type {any} */(result).board = Object.fromEntries(board);
 	return (result);
 }
 
@@ -41,6 +43,9 @@ function initRandomBoard(rng)
 	for (let [key, data] of board)
 	{
 		rand = rng(16);
+		data.boostedTargetZones.clear();
+		data.dangerZones.clear();
+		data.targetZones.clear();
 		if (key == "a1")
 		{
 			data.piece = new Piece(lib.preset.King, "", key, false);
@@ -70,6 +75,7 @@ function initRandomBoard(rng)
 		if (rng(2) == 1)
 			data.piece.team = eTeam.White;
 	}
+	dangerUpdateAll();
 }
 
 module.exports = {init};

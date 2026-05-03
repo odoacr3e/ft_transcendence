@@ -14,9 +14,9 @@ const	render = require("../../render").render;
 
 /**
  * checks if the request params are valid
- * @param {Request} req 
- * @param {Response} res 
- * @param {function} next 
+ * @param {Request} req
+ * @param {Response} res
+ * @param {function} next
  * @returns next middleware or an error response
  */
 function gameChecks(req, res, next)
