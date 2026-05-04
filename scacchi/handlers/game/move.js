@@ -1,5 +1,7 @@
 // @ts-check
 const lib = require("../../lib/lib.js");
+const {MOVEMENT_MAX, MOVEMENT_MIN} = require("../../macro");
+const {abort} = require("node:process");
 const {Piece, board, Square, copyBoard, cursor} = require("../../lib/lib.js").Chess;
 const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("../../utils.js");
 const {render} = require("../../render.js");
@@ -36,7 +38,7 @@ function move(from, to)
  * @param {Array<String>} arr
  * @param {Result} result
  */
-function checkMove (arr=[], result)
+function checkMove(arr=[], result)
 {
 	let	from;
 	let	to;
@@ -44,9 +46,14 @@ function checkMove (arr=[], result)
 
 	from = board.get(arr[0]);
 	to = board.get(arr[1]);
-	king = board.get(match.black.King);//FIXME - usare currentPlayer.King
+	king = board.get(match.currentPlayer.King);//FIXME - usare currentPlayer.King
 	if (king == null || king.piece == null)
 		return (error(result, 500, "backend has lost track of the king, lol"));
+	if (match.moves >= MOVEMENT_MIN)
+		return (error(result, 403, "Mr. Greedy cheater"));
+	//FIXME - gestire controlli su piu mosse, per ora diamo OK
+	// if (match.moves == MOVEMENT_MIN && uri != secondMove)
+	// 	return (error(result, 403, "Mr. Greedy cheater"));
 	if (from == null || to == null)
 		return (error(result, 403, "invalid positions"));
 	if (from.piece == null)
@@ -60,9 +67,9 @@ function checkMove (arr=[], result)
 	}
 	if (from.piece?.team != match.currentPlayer.team)
 		return (error(result, 403, `it's ${match.currentPlayer.team} turn`));
-	if (isDangerous(king.dangerZones, king.piece.team) && !simulation(from, to, king))
+	if (isDangerous(king.dangerZones, king.piece.team) && !simulation(arr))
 		return (error(result, 403, "Your king is in danger"));
-	if (!simulation(from, to, king))
+	if (!simulation(arr))
 		return (error(result, 403, "this would put your king in danger"));
 	if (to.piece)
 		match.currentPlayer.nPoints += to.piece.price;
@@ -74,7 +81,7 @@ function checkMove (arr=[], result)
  * @param {Array<String>} selected 
  * @param {Result} result
  */
-function updateChessboard (selected=[], result)
+function updateChessboard(selected=[], result)
 {
 	let	from;
 	let	to;
@@ -85,9 +92,12 @@ function updateChessboard (selected=[], result)
 	{
 		return (error(result, 500, "from | to bug in moveFunction"));
 	}
+	if (selected[0] == match.currentPlayer.King)
+		match.currentPlayer.King = selected[1];
 	printSwap(selected, from, to);
 	to.piece = from.piece;
 	from.piece = null;
+	match.moves++;
 	dangerUpdateAll();
 	return (true);
 }
@@ -96,25 +106,36 @@ function updateChessboard (selected=[], result)
 
 /**
  * 
- * @param {Square} from 
- * @param {Square} to 
- * @param {Square} king 
+ * @param {Array<String>} selected
  * @returns 
  */
-function simulation(from, to, king)
+function simulation(selected)
 {
 	let tmp;
+	let	from;
+	let	to;
+	let	king;
 
 	tmp = copyBoard(board);
+	from = board.get(selected[0]);
+	to = board.get(selected[1]);
+	king = board.get(match.currentPlayer.King);
+	if (!from || !to || !king)
+		return (false); // FIXME error 500 : impossibile
 	to.piece = from.piece;
 	from.piece = null;
+	if (selected[0] == match.currentPlayer.King)
+		king = to;
 	dangerUpdateAll();
 	if (isDangerous(king.dangerZones, king.piece?.team))
 	{
+		console.log()
 		copyBoard(tmp, board);
+		dangerUpdateAll();
 		return (false);
 	}
 	copyBoard(tmp, board);
+	dangerUpdateAll();
 	return (true);
 }
 

@@ -71,6 +71,8 @@ class Match
 		this.green = preset.green,
 		this.yellow = preset.yellow,
 		this.board = board;
+		this.moves = 0;
+		this.boost = 0;
 		this.currentPlayer = this.white;
 	}
 	endTurn = () =>

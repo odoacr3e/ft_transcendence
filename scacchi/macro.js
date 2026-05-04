@@ -19,6 +19,9 @@ const SEED = 1;
 const MAX_CHESSBOARD_SIZE = 25;
 const CHESSBOARD_H = 8;
 const CHESSBOARD_W = 8;
+const MOVEMENT_MAX = 2;
+const MOVEMENT_MIN = 1;
+const BOOSTED_MAX = 1;
 
 //SECTION checks
 
@@ -38,4 +41,4 @@ function error(text)
 	abort();
 }
 
-module.exports = { CHESSBOARD_H, CHESSBOARD_W, HASH_SALT, SEED }
+module.exports = { CHESSBOARD_H, CHESSBOARD_W, MOVEMENT_MIN, MOVEMENT_MAX, BOOSTED_MAX, HASH_SALT, SEED }

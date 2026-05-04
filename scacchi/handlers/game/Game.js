@@ -122,7 +122,8 @@ function responseFormatter(result, msg, status)
 	if (!p4)// @ts-ignore
 		delete p4;
 	result.log = log;
-	result.log.msg = "Game Error: " + result.log.msg;
+	if (log.status != 200)
+		result.log.msg = "Game Error: " + result.log.msg;
 	result.p1 = p1;
 	result.p2 = p2;
 	result.p3 = p3;
