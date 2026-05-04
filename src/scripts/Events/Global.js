@@ -11,9 +11,8 @@ export function globalEvents()
 	const ROOT_DIV = getRootDiv();
 
 	ROOT_DIV.addEventListener("click", function (event) {
-		assignClickedId(event);
-		highlightOnClick(event);
-		sendMoveToBackend();
+		if (assignClickedId(event)) { sendMoveToBackend(); }
+		else 						{ highlightOnClick(event); }
 	});
 
 	ROOT_DIV.addEventListener("dragstart", function (event) {
@@ -28,24 +27,27 @@ export function globalEvents()
 
 export function assignClickedId(event)
 {
-	if (event.target.parentNode.id !== lastClickedId)
-		clearHighlight();
-	else 
-		clearHighlight("selected");
+	if (event.target.localName === "div")	{ clickedId = event.target.id; }
+	else									{ clickedId = event.target.parentNode.id; }
 
-	if (event.target.localName === "div")
-		clickedId = event.target.id;
-	else
-		clickedId = event.target.parentNode.id;
+	if (clickedId === "" || clickedId === "board") { return (false) };
+
+	let bool = localBoard.get(clickedId).highlight;
+
+	if (clickedId !== lastClickedId)	{ clearHighlight(); }
+	else								{ clearHighlight("selected"); }
+
+	return(bool);
 }
 
 export function sendMoveToBackend()
 {
-	const clicksAreValid = lastClickedId !== null && lastClickedId !== null && lastClickedId !== clickedId;
 	console.log(`lastClickedId: ${lastClickedId}\nclickedId: ${clickedId}`);
-	const clickedIsValidMove = localBoard.get(lastClickedId).targetZones.has(clickedId); //--> questo non è più un Set ad un certo punto, probabilmente lo perdiamo durante la riassegnazione
+	// const clickedIsValidMove = localBoard.get(lastClickedId).targetZones.has(clickedId); //--> questo non è più un Set, probabilmente lo perdiamo durante la riassegnazione [RISOLTO]
+	// NOTA - non possiamo usare una variabile in questo modo, e' meglio mettere tutto in un if in modo da controllare prima
+	// che lastClickedId != null in modo che localBoard.get().etc si possa fare
 
-	if (clicksAreValid && clickedIsValidMove)
+	if (lastClickedId && lastClickedId !== clickedId && localBoard.get(lastClickedId).targetZones.has(clickedId))
 		requestToBack(lastClickedId, clickedId).then(
 				function(value) {if (value) { clearHighlight(); } },
 				function(value) {if (!value) { console.log("[sendMoveToBackend]: Mossa non valida"); }}

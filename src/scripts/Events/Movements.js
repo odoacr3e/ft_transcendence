@@ -32,10 +32,11 @@ export function onDrop(event, toSquare)
 
 	const fromSquareId = event.dataTransfer.getData('fromSquareId')
 
-	requestToBack(fromSquareId, toSquare.id).then(
-		function(value) {if (value) { clearHighlight(); }},
-		function(value) {if (!value) { console.log("Mossa non valida"); }}
-	);
+	if (fromSquareId !== toSquare.id)
+		requestToBack(fromSquareId, toSquare.id).then(
+			function(value) {if (value) { clearHighlight(); }},
+			function(value) {if (!value) { console.log("Mossa non valida"); }}
+		);
 }
 
 

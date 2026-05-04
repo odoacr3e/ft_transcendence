@@ -23,9 +23,8 @@
                     :id="square.id"
                     :class="[getSquareColor(square.id), 
 							'square',
-							{'pieceHighlight': square.highlight && square.piece },
-							{'selectedW': getSquareColor(square.id) == 'white' && square.selected},
-							{'selectedB': getSquareColor(square.id) == 'black' && square.selected}]"
+							{'selectedW': getSquareColor(square.id) == 'white' && (square.selected || square.highlight && square.piece)},
+							{'selectedB': getSquareColor(square.id) == 'black' && (square.selected || square.highlight && square.piece)}]"
                     @drop="onDrop($event, square)"
                     @dragover.prevent>
                     <img
@@ -55,6 +54,7 @@
 	{
 		width: 100%;
 		cursor: -webkit-grab;
+    	user-select: none;
 	}
 
 	.piece.dragging {
@@ -74,6 +74,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		user-select: none;
 	}
 
 	.white{
@@ -91,11 +92,6 @@
 		display: block;
 		margin: auto;
 		border-radius: 50%;
-		background-color: brown;
-	}
-
-	.pieceHighlight
-	{
 		background-color: brown;
 	}
 

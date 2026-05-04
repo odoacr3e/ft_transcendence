@@ -98,9 +98,11 @@ export function updateLocalBoard(changes)
 
 	Object.entries(board).forEach(([squareKey, newState]) => {
 	    if (localBoard.has(squareKey))
+		{
+			newState.targetZones = new Set(newState.targetZones);
 	        localBoard.set(squareKey, { ...localBoard.get(squareKey), ...newState });
+		}
 	});
-
 }
 //nella funzione sopra viene utilizzato lo spread operator ( { ...localBoard.get(squareKey), ...newState } )
 //l'operatore '...' su un oggetto ne espande le proprieta', in modo che in caso di conflitto le
