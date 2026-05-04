@@ -29,6 +29,16 @@ let setCol = (newCol) =>
 	cursor.square = newSquare;
 }
 
+function moveRow(dy)
+{
+	cursor.setRow(cursor.getRow() + dy - 1);
+}
+
+function moveCol(dx)
+{
+	cursor.setCol(cursor.getCol() + dx);
+}
+
 /**
  * 
  * @param {number} newCol 
@@ -69,6 +79,8 @@ let cursor =
 	getCol: getCol,
 	setRow: setRow,
 	setCol: setCol,
+	moveRow: moveRow,
+	moveCol: moveCol,
 	set: set,
 	setCursor: setCursor
 }

@@ -1,6 +1,7 @@
 const {board, Square, eTeam} = require("./chessBoard.js");
 const Macro = require("./macro.js");
 const {cursor} = require("./cursor.js");
+const { start } = require("node:repl");
 
 /**
  * 
@@ -68,11 +69,14 @@ let DangerUpdate = () =>
 		return (0);
 	for (let {dx, dy} of piece.moveArray)
 	{
+		if (!bastardChecks(dx, dy, piece, startPos))
+		{
+			usedBoard.get(cursor.square)?.dangerZones.add(startPos);
+			continue ;
+		}
 		while (movePiece(dx, dy, false))
 		{
 			usedBoard.get(cursor.square)?.dangerZones.add(startPos);
-			// if (!bastardChecks(dx, dy, piece))
-			// 	continue ;
 			usedBoard.get(startPos)?.targetZones.add(cursor.square);
 			if (piece.moveLongRangeDEBUG == false || board.get(cursor.square)?.piece != null)
 				break ;
@@ -90,12 +94,12 @@ let DangerUpdate = () =>
 */
 let bastardMove = 
 {
-	white: [[0, 1], [1, 1], [-1, 1]],
-	red: [[0, 1], [1, 1], [-1, 1]],
-	black: [[0, -1], [1, -1], [-1, -1]],
-	yellow: [[0, -1], [1, -1], [-1, -1]],
-	blue: [[1, 0], [1, -1], [1, 1]],
-	green: [[-1, 0], [-1, -1], [-1, 1]]
+	white: new Set(["0|1", "1|1", "-1|1"]),
+	red: new Set(["0|1", "1|1", "-1|1"]),
+	black: new Set(["0|-1", "1|-1", "-1|-1"]),
+	yellow: new Set(["0|-1", "1|-1", "-1|-1"]),
+	blue: new Set(["1|0", "1|-1", "1|1"]),
+	green: new Set(["-1|0", "-1|-1", "-1|1"])
 }
 
 /**
@@ -103,27 +107,29 @@ let bastardMove =
  */
 function bastardChecks(dx, dy, piece)
 {
-	let tmp = cursor.square;
+	let tmp;
 	let	target;
 
 	if (piece.type != "Bastards")
 		return true;
-	console.log(bastardMove[piece.team], dx);
-	console.log(bastardMove[piece.team][0] == dx);
-	console.log("----");
-	console.assert(bastardMove[piece.team], "errore bastardChecks");
 	if (!bastardMove[piece.team]) // FIXME errore grave: impossibile
 		return false;
-	if (!bastardMove[piece.team].includes([dx, dy]))
+	if (!bastardMove[piece.team].has(`${dx}|${dy}`))
 		return false;
-	if (dx != 0 && dy != 0)
+	tmp = cursor.square;
+	cursor.moveRow(dy);
+	cursor.moveCol(dx);
+	target = board.get(cursor.square)?.piece;
+	cursor.set(tmp);
+	if (dx != 0 && dy != 0)//NOTE - bastards moves diagonally
 	{
-		cursor.setCursor(dx, dy);
-		target = board.get(cursor.square).piece; 
-		if (!target || target.team != piece.team)
-			return (cursor.set(tmp), false);
+		if (!target || target.team == piece.team)
+			return (false);
+		return (true);
 	}
-	return true;
+	else if (target)//NOTE - bastards moves front
+		return (false);
+	return (true);
 }
 
 function dangerUpdateAll()
