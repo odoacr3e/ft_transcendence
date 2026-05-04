@@ -7,51 +7,82 @@ const usersQuery = require("../services/usersQuery");
 const usersUtils = require("../utils/users");
 const { prisma } = require("../lib/CLAUDIO")
 
-		// const users = await prisma.users.findMany();
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
 const getAllUsers = async (req, res) => {
 	try {
 		const users = await prisma.users.findMany({
 			select: {
-			id_user: true,
-			name: true,
-			surname: true,
-			username: true,
-			email: true,
-			nationality: true,
-			points: true,
-			title: true
-		}
+				id_user: true,
+				name: true,
+				surname: true,
+				username: true,
+				email: true,
+				nationality: true,
+				points: true,
+				title: true
+			}
 		});
-		res.json(users);
+		if (users)
+			res.json(users);
+		return res.status(404).json({ error: "User not found" });
 	} catch (error) {
-		next(error);
+		return res.status(500).json({ error: "Server error" });
 	}
 }
 
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
 const getUserById = async (req, res) => {
 	try {
-		const user = await usersQuery.getUserById(req.params.id);
-		res.json(user.rows);
+		const user = await prisma.users.findUnique({
+			where: {
+				id_user: Number(req.params.id)
+			}
+		});
+		if (user)
+			res.json(user);
+		return res.status(404).json({ error: "User not found" });
 	} catch (error) {
-		next(error);
+		return res.status(500).json({ error: "Server error" });
 	}
 }
 
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
 const getUserByUsername = async (req, res) => {
 	try {
-		const user = await usersQuery.getUserByUsername(req.params.username);
-		res.json(user.rows);
+		const user = await prisma.users.findUnique({
+			where: {
+				id_user: String(req.params.id)
+			}
+		});
+		if (user)
+			res.json(user);
+		return res.status(404).json({ error: "User not found" });
 	} catch (error) {
-		next(error);
+		return res.status(500).json({ error: "Server error" });
 	}
 }
 
 const getUserByEmail = async (req, res) => {
 	try {
-		const user = await usersQuery.getUserByUsername(req.params.email);
-		res.json(user.rows);
+		const user = await prisma.users.findUnique({
+			where: {
+				id_user: String(req.params.email)
+			}
+		});
+		if (user)
+			res.json(user);
+		return res.status(404).json({ error: "User not found" });
 	} catch (error) {
-		next(error);
+		return res.status(500).json({ error: "Server error" });
 	}
 }
 
