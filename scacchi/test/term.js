@@ -16,7 +16,7 @@ const {match} = require("../match.js");
 
 //SECTION - main: inizializza e fa primo render, mette terminale in ascolto
 initTerminal();
-init();
+init(lib.Macro.SEED);
 dangerUpdateAll();
 render();
 

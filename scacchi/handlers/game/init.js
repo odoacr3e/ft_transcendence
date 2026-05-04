@@ -16,21 +16,82 @@ const {initRng} = require("../../utils/random");
  * @param {Number | null} seed seed to start
  * @returns 
  */
-function init(seed=SEED)
+function init(seed=null)
 {
 	let	result;
 	let	rng;
 
 	console.log(seed);
-	if (!seed)
-		seed = null;
+	if (seed == null)
+		seed = Math.floor(Math.random() * (1 << 30));
 	result = new Result();
 	rng = initRng(seed);
-	initRandomBoard(rng);
+	if (seed != 0)
+		initRandomBoard(rng);
+	else
+		initClassicBoard();
 	result.status = 200;
 	// @ts-ignore
 	result.board = clientBoard(board);
 	return (result);
+}
+function initClassicBoard()
+{
+	let	row;
+	let	col;
+	let	color;
+
+	color = true;
+	for (let [key, data] of board)
+	{
+		data.piece = null;
+		data.boostedTargetZones.clear();
+		data.dangerZones.clear();
+		data.targetZones.clear();
+		color = !color;
+		cursor.set(key);
+		col = cursor.getCol()
+		row = cursor.getRow();
+		if (row == 2 || row == 7)
+			data.piece = new Piece(lib.preset.Bastards, "", key, false);
+		else if (row == 1 || row == 8)
+		{
+			switch (col) 
+			{
+				case 1: case 8:
+					data.piece = new Piece(lib.preset.Minotaurus, "", key, true);
+					break;
+				case 2: case 7:
+					data.piece = new Piece(lib.preset.Jester, "", key, false);
+					break ;
+				case 3: case 6:
+					data.piece = new Piece(lib.preset.Valkirya, "", key, true);
+					break ;
+				case 4:
+					data.piece = new Piece(lib.preset.Champion, "", key, true);
+					break ;
+				case 5:
+					data.piece = new Piece(lib.preset.King, "", key, false);
+					break;
+				default :
+					console.log("bischero");
+			}
+		}
+		if (data.piece)
+		{
+			if (row == 1 || row == 2)
+				data.piece.team = eTeam.White;
+			else if (row == 7 || row == 8)
+				data.piece.team = eTeam.Black;
+		}
+		if (color == true)
+			data.color == eTeam.White;
+		else
+			data.color == eTeam.Black;
+	}
+	match.black.King = "h5";
+	match.white.King = "a5";
+	dangerUpdateAll();
 }
 
 /**

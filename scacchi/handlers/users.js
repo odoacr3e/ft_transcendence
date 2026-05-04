@@ -5,7 +5,7 @@ const jwt = require("../utils/auth");
 const bcrypt = require("bcryptjs");
 const usersQuery = require("../services/usersQuery");
 const usersUtils = require("../utils/users");
-const { prisma } = require("../lib/prisma")
+const { prisma } = require("../lib/CLAUDIO")
 
 		// const users = await prisma.users.findMany();
 const getAllUsers = async (req, res) => {

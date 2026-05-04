@@ -14,7 +14,7 @@ const HASH_SALT = 10;
 	62: scacco matto ciao ciao
 	63: scacco matto prevenibile
 */
-const SEED = 1;
+const SEED = 0;
 
 const MAX_CHESSBOARD_SIZE = 25;
 const CHESSBOARD_H = 8;

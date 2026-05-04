@@ -5,6 +5,31 @@ const {cursor} = require("./cursor.js");
 const {isDangerous, movePiece, DangerUpdate} = require("./utils.js");
 const Macro = require("./macro.js");
 
+//SECTION - Pezzo class
+//ANCHOR - Definition 
+
+class Piece
+{
+	/**
+	 * @param {{type: string, price: number, movement: Array<{dx: number, dy:number}>, booster: Function}} obj
+	 * @param {string} team
+	 * @param {string} pos
+	 * @param {boolean} long
+	 */
+	constructor ({type, price, movement, booster}, team, pos, long)
+	{
+		/** @type {string} */   						this.type = type;
+		/** @type {number} */   						this.price = price;
+		/** @type {string} */   						this.team = eTeam.Black;
+		/** @type {boolean} */  						this.isMovedBool = false;
+		/** @type {boolean} */  						this.isBoostedBool = false;
+		/** @type {string} */ 							this.pos = pos;
+		/** @type {Function} */ 						this.moveFunction = booster;
+		/** @type {Array<{dx: number, dy:number}>} */	this.moveArray = movement;
+		/** @type {boolean} */							this.moveLongRangeDEBUG = long;
+	}
+}
+
 //ANCHOR - Methods
 
 let movementWithSecondTurn = function ( /* res */)
@@ -193,31 +218,6 @@ let movementValkirya = function ()
 	return (1);
 }
 
-//SECTION - Pezzo class
-//ANCHOR - Definition 
-
-class Piece
-{
-	/**
-	 * @param {{type: string, price: number, movement: Array<{dx: number, dy:number}>, booster: Function}} obj
-	 * @param {string} team
-	 * @param {string} pos
-	 * @param {boolean} long
-	 */
-	constructor ({type, price, movement, booster}, team, pos, long)
-	{
-		/** @type {string} */   						this.type = type;
-		/** @type {number} */   						this.price = price;
-		/** @type {string} */   						this.team = eTeam.Black;
-		/** @type {boolean} */  						this.isMovedBool = false;
-		/** @type {boolean} */  						this.isBoostedBool = false;
-		/** @type {string} */ 							this.pos = pos;
-		/** @type {Function} */ 						this.moveFunction = booster;
-		/** @type {Array<{dx: number, dy:number}>} */	this.moveArray = movement;
-		/** @type {boolean} */							this.moveLongRangeDEBUG = long;
-	}
-}
-
 //SECTION - enum
 
 /**
@@ -328,7 +328,5 @@ const preset = {
 		booster: null
 	},
 }
-
-
 
 module.exports = {Piece, enumNames, enumValues, preset};
