@@ -72,8 +72,6 @@ function checkMove(arr=[], result)
 		return (error(result, 403, "Your king is in danger"));
 	if (!simulation(arr))
 		return (error(result, 403, "this would put your king in danger"));
-	if (to.piece)
-		match.currentPlayer.nPoints += to.piece.price;
 	return (true);
 }
 
@@ -89,15 +87,21 @@ function updateChessboard(selected=[], result)
 
 	from = board.get(selected[0]);
 	to = board.get(selected[1]);
-	if (!from || !to)
+	if (!from || !to || !from.piece)
 	{
 		return (error(result, 500, "from | to bug in moveFunction"));
 	}
 	if (selected[0] == match.currentPlayer.King)
 		match.currentPlayer.King = selected[1];
 	printSwap(selected, from, to);
+	if (to.piece)
+	{
+		console.log(`player ${match.currentPlayer.team} + ${to.piece.price}💲`);
+		match.currentPlayer.nPoints += to.piece.price;
+	}
 	to.piece = from.piece;
 	from.piece = null;
+	to.piece.pos = selected[1];
 	if (to.piece && to.piece.isMovedBool == false)
 		to.piece.isMovedBool = true;
 	match.moves++;
