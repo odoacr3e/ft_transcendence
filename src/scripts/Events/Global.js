@@ -27,13 +27,16 @@ export function globalEvents()
 
 export function assignClickedId(event)
 {
+	
 	if (event.target.localName === "div")	{ clickedId = event.target.id; }
 	else									{ clickedId = event.target.parentNode.id; }
-
+	
 	if (clickedId === "" || clickedId === "board") { return (false) };
-
+	// console.log("entrato dio spaesato!");
+	
 	let bool = localBoard.get(clickedId).highlight;
-
+	// console.log(`clickedId: ${clickedId}\nbool: ${bool	}`);
+	
 	if (clickedId !== lastClickedId)	{ clearHighlight(); }
 	else								{ clearHighlight("selected"); }
 
@@ -56,11 +59,13 @@ export function sendMoveToBackend()
 
 export function highlightOnClick(event)
 {
-		if (event.target.localName === "img")
+	
+	if (event.target.localName === "img")
 		{
 			const AllowedMoves = localBoard.get(clickedId).targetZones;
-
+			
 			AllowedMoves.forEach((highlight) => {
+			// console.log(`highlight: ${highlight}`);
 				localBoard.forEach(square => {
 					if (square.id == highlight)
 					{

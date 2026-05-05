@@ -1,0 +1,66 @@
+{
+  "p1": {
+    "name": "player1",
+    "team": "white",
+    "pieces": 16,
+    "points": 0
+  },
+  "p2": {
+    "name": "player2",
+    "team": "black",
+    "pieces": 16,
+    "points": 0
+  },
+  "p3": null, 
+  "p4": null, 
+  "board": {
+    "a3": {
+      "piece": null,
+      "targetZones": [],
+      "dangerZones": [
+        "a3"
+      ]
+    },
+    "c3": {
+      "piece": {
+        "type": "Minotaurus",
+        "price": 5,
+        "team": "white",
+        "isMovedBool": false,
+        "isBoostedBool": true,
+        "pos": "c3",
+        "moveArrayDEBUG": [
+          {
+            "dx": 0,
+            "dy": 1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 1,
+            "dy": 0
+          },
+          {
+            "dx": -1,
+            "dy": 0
+          }
+        ],
+        "moveLongRangeDEBUG": true
+      },
+      
+      "targetZones": [
+        "a3",
+        "b3",
+        "c4",
+        "c2",
+        "d3",
+        "e3"
+      ],
+      "dangerZones": [
+        "a3"
+      ]
+    }
+  }
+}

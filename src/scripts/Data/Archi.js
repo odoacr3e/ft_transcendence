@@ -52,13 +52,13 @@ function initLocalPlayers()
 
 	players_list.forEach((player) => {
 		const has = Object.prototype.hasOwnProperty.call(localMatchState, player);
-	    const wrong_type = typeof localMatchState[player] !== "object";
+		const wrong_type = typeof localMatchState[player] !== "object";
 
 		if (localMatchState[player] === null)
 			return;
-	    if (!has)
+		if (!has)
 			throw new Error(`[initLocalPlayers]: Player ${player} object absent!`);
-	    if (wrong_type) 
+		if (wrong_type) 
 			throw new Error(`[initLocalPlayers]: Player ${player} a wrong type!`);
 
 		localPlayers.set(player, localMatchState[player]);
@@ -84,7 +84,7 @@ export async function updateLocalMatchState(nextMatchState) {
 		updateLocalPlayers(nextMatchState);
 	} 
 	catch(err){
-    console.error("[updateLocalMatchState]: Errore di update del Match!");
+	console.error("[updateLocalMatchState]: Errore di update del Match!");
   	}
 }
 
@@ -97,10 +97,16 @@ export function updateLocalBoard(changes)
 		throw new Error("[updateLocalBoard]: Board format not valid!");
 
 	Object.entries(board).forEach(([squareKey, newState]) => {
-	    if (localBoard.has(squareKey))
+		if (localBoard.has(squareKey))
 		{
-			newState.targetZones = new Set(newState.targetZones);
-	        localBoard.set(squareKey, { ...localBoard.get(squareKey), ...newState });
+			newState.targetZones = new Set(Array.isArray(newState.targetZones) ? newState.targetZones : []);
+			
+			newState.boostedZones = new Map(
+				Object.entries(newState.boostedZones || {}).map(
+					([key, value]) => [key, new Set(Array.isArray(value) ? value : [])]
+				)
+			)
+			localBoard.set(squareKey, { ...localBoard.get(squareKey), ...newState });
 		}
 	});
 }
@@ -114,11 +120,11 @@ function updateLocalPlayers(changes)
 
 	players_list.forEach((player) => {
 		const has = Object.prototype.hasOwnProperty.call(changes, player);
-	    const wrong_type = typeof changes[player] !== "object";
+		const wrong_type = typeof changes[player] !== "object";
 
 		if (!has || changes[player] === null)
 			return;
-	    if (wrong_type) 
+		if (wrong_type) 
 			throw new Error(`[updateLocalPlayers]: Player ${player} wrong type!`);
 
 		localPlayers.set(player, changes[player]);

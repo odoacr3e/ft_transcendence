@@ -16,7 +16,7 @@
 <template>
     <div id="root">
         <div id="board" oncontextmenu="return false;">
-            <div v-for="row in domBoardComputed" :key="row[0].id" class="squareRow">
+            <div v-for="row in domBoardComputed" :key="row[0]?.id" class="squareRow">
                 <div
                     v-for="square in row"
                     :key="square.id"
