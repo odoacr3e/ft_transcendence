@@ -1,9 +1,11 @@
 
 const lib = require("../lib/lib.js");
 const router = lib.include.express.Router();
-const authHandler = require("../handlers/auth.js")
+const authHandler = require("../handlers/auth.js");
+const authUtils = require("../utils/auth.js");
 
-router.post("/", authHandler.checkCredentials, authHandler.checkUser);
+// /login
+router.post("/", authHandler.checkCredentials, authHandler.checkUser, authUtils.createJwt);
 
 
 module.exports = router;

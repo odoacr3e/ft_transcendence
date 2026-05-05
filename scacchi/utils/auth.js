@@ -16,7 +16,7 @@ const jwt = require("jsonwebtoken");
 const checkJwt = async (req, res) => {
 	console.log(req.user);
 	console.log("User " + req.user.username + " trovato");
-	res.status(200).json({ log: "Loggato" });
+	return res.status(200).json({ log: "Loggato" });
 };
 
 /**

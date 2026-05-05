@@ -1,9 +1,7 @@
 
 const lib = require("../lib/lib.js");
-const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const { send } = require("node:process");
-const { db } = require("../services/dbConnection.js");
+const { prisma } = require("../lib/prisma.js")
 const { error } = require("node:console");
 
 /** 
@@ -25,15 +23,19 @@ const checkCredentials = (req, res, next) => {
 	next();
 }
 
-const checkUser = async (req, res) => {
-	
-	const { username, password } = req.body;
-	const user = await db.query("SELECT username, password FROM users WHERE username =  $1", [username]);
-	if (user.rowCount == 0 || user.rows[0].password !== password)
-		return res.status(401).json({ error: "Credenziali non valide" });
-	console.log("User " + user.rows[0].username + " trovato");
-	req.user = user.rows[0]; // aggiungo lo user trovato all'oggetto request per averlo anche nel successivo middleware
-	next();
+// db.query("SELECT username, password FROM users WHERE username =  $1", [username]);
+const checkUser = async (req, res, next) => {
+	try {
+		const { username, password } = req.body;
+		const user = await prisma.users.findUnique({ where: { username: String(username) } })
+		if (!user || user.password !== bcrypt.compare(password)
+			return res.status(401).json({ error: "Credenziali non valide" });
+		console.log("User " + user.rows[0].username + " trovato");
+		req.user = user.rows[0]; // aggiungo lo user trovato all'oggetto request per averlo anche nel successivo middleware
+		next();
+	} catch (error) {
+		next(error);
+	}
 };
 
 

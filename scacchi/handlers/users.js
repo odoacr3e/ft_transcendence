@@ -46,7 +46,7 @@ const getUserById = async (req, res) => {
 			}
 		});
 		if (user)
-			res.json(user);
+			return res.json(user);
 		return res.status(404).json({ error: "User not found" });
 	} catch (error) {
 		return res.status(500).json({ error: "Server error" });
@@ -65,7 +65,7 @@ const getUserByUsername = async (req, res) => {
 			}
 		});
 		if (user)
-			res.json(user);
+			return res.json(user);
 		return res.status(404).json({ error: "User not found" });
 	} catch (error) {
 		return res.status(500).json({ error: "Server error" });
@@ -80,7 +80,7 @@ const getUserByEmail = async (req, res) => {
 			}
 		});
 		if (user)
-			res.json(user);
+			return res.json(user);
 		return res.status(404).json({ error: "User not found" });
 	} catch (error) {
 		return res.status(500).json({ error: "Server error" });
