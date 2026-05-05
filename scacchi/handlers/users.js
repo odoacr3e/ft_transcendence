@@ -5,7 +5,7 @@ const jwt = require("../utils/auth");
 const bcrypt = require("bcryptjs");
 const usersQuery = require("../services/usersQuery");
 const usersUtils = require("../utils/users");
-const { prisma } = require("../lib/CLAUDIO")
+const { prisma } = require("../lib/prisma.js")
 
 /**
  * @param {import('express').Request} req
@@ -26,9 +26,10 @@ const getAllUsers = async (req, res) => {
 			}
 		});
 		if (users)
-			res.json(users);
+			return res.json(users);
 		return res.status(404).json({ error: "User not found" });
 	} catch (error) {
+		console.log("Prisma: ", error);
 		return res.status(500).json({ error: "Server error" });
 	}
 }
