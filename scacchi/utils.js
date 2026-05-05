@@ -129,6 +129,14 @@ function bastardChecks(dx, dy, piece)
 	}
 	else if (target)//NOTE - bastards moves front
 		return (false);
+	cursor.moveCol(dx + dx);
+	cursor.moveRow(dy + dy);
+	if (!piece.isMovedBool && !board.get(cursor.square).piece)
+	{
+		board.get(tmp).targetZones.add(cursor.square);
+		board.get(cursor.square).dangerZones.add(tmp);
+	}
+	cursor.set(tmp);
 	return (true);
 }
 

@@ -97,6 +97,8 @@ function updateChessboard(selected=[], result)
 	printSwap(selected, from, to);
 	to.piece = from.piece;
 	from.piece = null;
+	if (to.piece && to.piece.isMovedBool == false)
+		to.piece.isMovedBool = true;
 	match.moves++;
 	dangerUpdateAll();
 	return (true);
