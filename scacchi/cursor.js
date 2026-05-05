@@ -24,21 +24,25 @@ let setCol = (newCol) =>
 {
 	let newSquare;
 
-	newSquare = String.fromCharCode(getRow() + "a".charCodeAt(0));
+	newSquare = String.fromCharCode(getRow() + "a".charCodeAt(0) - 1);
 	newSquare += String(newCol);
 	cursor.square = newSquare;
 }
 
 function moveRow(dy)
 {
-	if ((cursor.getRow() + dy - 1) < 9 && (cursor.getRow() + dy - 1) > 0)
-		cursor.setRow(cursor.getRow() + dy - 1);
+	let tmp = cursor.getRow();
+
+	if ((tmp + dy) < 9 && (tmp + dy) > 0)
+		cursor.setRow(cursor.getRow() + dy);
 }
 
 function moveCol(dx)
 {
-	if ((cursor.getCol() + dx) < 9 && cursor.getCol() + dx > 0)
-		cursor.setCol(cursor.getCol() + dx);
+	let tmp = cursor.getCol();
+
+	if ((tmp + dx) < 9 && tmp + dx > 0)
+		cursor.setCol(tmp + dx);
 }
 
 /**

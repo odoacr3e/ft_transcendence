@@ -1,5 +1,6 @@
 // @ts-check
 
+const	{abort} = require("node:process");
 const	{match} = require("../../match"); 
 const	{ Result } = require("./utils");
 const	move = require("./move").move; 
@@ -30,7 +31,16 @@ function gameChecks(req, res, next)
 		return (error(res, null, 500, "bad response object format"));
 	if (!req.body.type)
 		return (error(res, null, 400, "json must have a string named `type`"));
-	next();
+	try
+	{
+		next();
+	}
+	catch (err)
+	{
+		error(res, null, 500, "RAP (Backend) HAS DIED");
+		console.log("seed:", req.body.from, "err", err);
+		abort();
+	}
 }
 
 /**
