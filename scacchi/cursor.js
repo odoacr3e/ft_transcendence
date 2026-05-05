@@ -31,12 +31,14 @@ let setCol = (newCol) =>
 
 function moveRow(dy)
 {
-	cursor.setRow(cursor.getRow() + dy - 1);
+	if ((cursor.getRow() + dy - 1) < 9 && (cursor.getRow() + dy - 1) > 0)
+		cursor.setRow(cursor.getRow() + dy - 1);
 }
 
 function moveCol(dx)
 {
-	cursor.setCol(cursor.getCol() + dx);
+	if ((cursor.getCol() + dx) < 9 && cursor.getCol() + dx > 0)
+		cursor.setCol(cursor.getCol() + dx);
 }
 
 /**
