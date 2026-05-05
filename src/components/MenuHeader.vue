@@ -4,7 +4,9 @@
     
 <template>
     <div id="wrap"> 
-        <button>Accedi</button>
+        <RouterLink to="/log" id="button">
+            <button class="cursor-pointer text-[#f1f5f7]"><b>Accedi</b></button>
+        </RouterLink>
         <div class="menu mt-40 relative flex place-items-center">
             <img class="absolute" src="../assets/sword2.png">
             <RouterLink to="/game">
@@ -47,8 +49,8 @@
         z-index: 100;
     }
 
-    button {
-        padding: 10px;
+    #button {
+        padding: 6px;
         padding-left: 20px;
         padding-right: 20px;
         margin: 20px;
