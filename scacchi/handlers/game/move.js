@@ -4,8 +4,9 @@ const {MOVEMENT_MAX, MOVEMENT_MIN} = require("../../macro");
 const {Piece, board, Square, copyBoard, cursor} = require("../../lib/lib.js").Chess;
 const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("../../utils.js");
 const {match} = require("../../match.js");
-const {error, paramCheck, Result, clientBoard} = require("./utils.js");
+const {error, paramCheck, Result, clientBoard, checkMateAlert} = require("./utils.js");
 const {endTurn} = require("./endTurn");
+const {CheckMateCheck} = require("../../checkMate.js");
 
 /** @typedef {import('../../chessBoard.js').Square} Square */
 
@@ -27,6 +28,9 @@ function move(from, to)
 	if (!updateChessboard([from, to], result))
 		return (result);
 	result.status = 200;
+	// @ts-ignore
+	if (CheckMateCheck(match[match.currentPlayer.next].King))
+		return (console.log("haaaaaiiiiii viiiiiiintoooooooooo!!!!!!!"), checkMateAlert(result, match.currentPlayer.team));
 	// @ts-ignore
 	result.board = clientBoard(board, [from, to]);
 	if (match.moves == MOVEMENT_MIN && !match.currentPlayer.nPoints)
@@ -77,7 +81,7 @@ function checkMove(arr=[], result)
 
 /**
  * 
- * @param {Array<String>} selected 
+ * @param {Array<String>} selected
  * @param {Result} result
  */
 function updateChessboard(selected=[], result)

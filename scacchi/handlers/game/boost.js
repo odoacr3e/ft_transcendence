@@ -43,6 +43,9 @@ function tryBoost(result, from)
 		return (error(result, 403, "That piece is already boosted"));
 	else if (square.piece.team != match.currentPlayer.team)
 		return (error(result, 403, `it's ${match.currentPlayer.team} turn`));
+	else if (square.piece.price > match.currentPlayer.nPoints)
+		return (error(result, 403, `You need ${square.piece.price} to boost this`));
+	match.currentPlayer.nPoints -= square.piece.price;
 	square.piece.isBoostedBool = !square.piece.isBoostedBool;
 	match.boost += 1;
 	dangerUpdateAll();

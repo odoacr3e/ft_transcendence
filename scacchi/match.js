@@ -51,7 +51,7 @@ const preset = {
 		bonusPointCounter: 0,
 		nPieces: 0,
 		team: eTeam.Green,
-		next: eTeam.Green,
+		next: eTeam.Yellow,
 		King: ""
 	},
 	yellow: 

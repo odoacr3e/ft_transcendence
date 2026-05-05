@@ -78,6 +78,7 @@ function gameHandler(req, res)
  *         status: number;
  *     	};
  *      ?board: Board;
+ * 		youWin: boolean;
  *      p1: Player;
  *      p2: Player;
  *      ?p3: Player;

@@ -23,6 +23,7 @@ class Result
 		/** @type {Number | null} */this.status = null;
 		/** @type {string | null} */this.msg = "OK";
 		/** @type {Board | null} */	this.board = null;
+		/** @type {boolean} */		this.youWin = false;
 		
 		if (!other)
 			return ;
@@ -143,5 +144,18 @@ function error(result, status, msg)
 	result.status = status;
 	return (false);
 }
+/**
+ * 
+ * @param {Result} result 
+ * @param {string} team
+ * @returns {Result}
+ */
+function checkMateAlert(result, team="")
+{
+	result.status = 200;
+	result.youWin = true;
+	result.msg = `Player ${team} has won!!!`
+	return (result);
+}
 
-module.exports = {Result, clientBoard, paramCheck, error};
+module.exports = {Result, clientBoard, paramCheck, checkMateAlert, error};

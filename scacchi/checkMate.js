@@ -1,6 +1,6 @@
 // @ts-check
-const {cursor} = 	require("./cursor.js");
-const {Piece, board, Square, preset} =					require("./lib/lib.js").Chess;
+const {cursor} = 								require("./cursor.js");
+const {Piece, board, Square, preset} =			require("./lib/lib.js").Chess;
 const {eTeam, enumValues, enumNames} =			require("./lib/lib.js").Enums;
 const {isDangerous, movePiece, DangerUpdate} =	require("./utils.js");
 
@@ -47,7 +47,7 @@ function isStoppable(kingSquare, enemySquareString)
 	enemySquare.piece?.type == enumNames.BASTARDS || 
 	(enemySquare.piece?.type == enumNames.VALKIRYA && 
 	enemySquare.piece?.isBoostedBool == true) ||
-	board.get(kingSquare)?.dangerZones.has(enemySquareString))
+	board.get(kingSquare)?.targetZones.has(enemySquareString))
 		return false;
 	let dir = getDirection(kingSquare, enemySquareString);
 	cursor.setCursor(cursor.getRow() + dir.diffRow, cursor.getCol() + dir.diffCol);
@@ -152,28 +152,21 @@ function doubleSave(threat)
 	return false;
 }
 
-//TODO - Ale: passare come parametro il team per cui va fatto il check
-//			o ancora meglio la posizione per cui fare il check
-let CheckMateCheck= () =>
+/**
+ * 
+ * @param {string} kingSquareString
+ */
+let CheckMateCheck= (kingSquareString) =>
 {
 	let threat = new Set;
 	let kingSquare;
-	let	kingSquareString;
 	let enemySquare;
 	let team;
 
-	for (let x of board)//REVIEW - Ale: io terrei la posizione di ogni re salvata
-	{
-		if (x[1].piece?.type == enumNames.KING)
-		{
-			kingSquare = x[0];
-			team = x[1].piece.team;
-		}
-	}
+	kingSquare = board.get(kingSquareString);
 	if (!kingSquare)
 		throw (`missing king for team `);//FIXME - Ale: errore grave, dare 500
-	kingSquareString = kingSquare;
-	kingSquare = board.get(kingSquare);
+	team = kingSquare.piece?.team;
 	if (!kingSquare || !isDangerous(kingSquare.dangerZones, team))
 		return false;
 	for (let x of kingSquare.targetZones)
@@ -193,9 +186,18 @@ let CheckMateCheck= () =>
 		return true;
 	if (threat.size >= 2)
 		return true;
-	if (isDangerous(kingSquare.dangerZones, kingSquare.piece?.team))
+	if (!enemySquare) // ts-check stuff
+		return false;
+	let enemySet = board.get(enemySquare)?.dangerZones;
+	if (!enemySet) // ts-check stuff
+		return false;
+	if (isDangerous(enemySet, team) && enemySet.has(kingSquareString))
+		enemySet?.delete(kingSquareString);
+	if (isDangerous(enemySet, board.get(enemySquare)?.piece?.team))
 		return false;
 	if (!enemySquare || isStoppable(kingSquareString, enemySquare))
 		return false;
 	return true;
 }
+
+module.exports = {CheckMateCheck};
