@@ -11,10 +11,14 @@ const HASH_SALT = 10;
 
 /*
 	seed interessanti
+	0:	classic mode
+	1:	trono di spade
 	62: scacco matto ciao ciao
 	63: scacco matto prevenibile
 */
 const SEED = 0;
+
+//ANCHOR - chess
 
 const MAX_CHESSBOARD_SIZE = 25;
 const CHESSBOARD_H = 8;
@@ -22,6 +26,7 @@ const CHESSBOARD_W = 8;
 const MOVEMENT_MAX = 2;
 const MOVEMENT_MIN = 1;
 const BOOSTED_MAX = 1;
+const MOVEMENT_BONUS_POINT = 4;
 
 //SECTION checks
 
@@ -41,4 +46,4 @@ function error(text)
 	abort();
 }
 
-module.exports = { CHESSBOARD_H, CHESSBOARD_W, MOVEMENT_MIN, MOVEMENT_MAX, BOOSTED_MAX, HASH_SALT, SEED }
+module.exports = { CHESSBOARD_H, CHESSBOARD_W, MOVEMENT_MIN, MOVEMENT_MAX, MOVEMENT_BONUS_POINT, BOOSTED_MAX, HASH_SALT, SEED }

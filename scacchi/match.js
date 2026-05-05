@@ -8,6 +8,7 @@ const preset = {
 	{
 		name: "",
 		nPoints: 0,
+		bonusPointCounter: 0,
 		nPieces: 0,
 		team: eTeam.White,
 		next: eTeam.Black,
@@ -17,6 +18,7 @@ const preset = {
 	{
 		name: "",
 		nPoints: 0,
+		bonusPointCounter: 0,
 		nPieces: 0,
 		team: eTeam.Black,
 		next: eTeam.White,
@@ -26,6 +28,7 @@ const preset = {
 	{
 		name: "",
 		nPoints: 0,
+		bonusPointCounter: 0,
 		nPieces: 0,
 		team: eTeam.Red,
 		next: eTeam.Blue,
@@ -35,6 +38,7 @@ const preset = {
 	{
 		name: "",
 		nPoints: 0,
+		bonusPointCounter: 0,
 		nPieces: 0,
 		team: eTeam.Blue,
 		next: eTeam.Green,
@@ -44,6 +48,7 @@ const preset = {
 	{
 		name: "",
 		nPoints: 0,
+		bonusPointCounter: 0,
 		nPieces: 0,
 		team: eTeam.Green,
 		next: eTeam.Green,
@@ -53,6 +58,7 @@ const preset = {
 	{
 		name: "",
 		nPoints: 0,
+		bonusPointCounter: 0,
 		nPieces: 0,
 		team: eTeam.Yellow,
 		next: eTeam.Red,

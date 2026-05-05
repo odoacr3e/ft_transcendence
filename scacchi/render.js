@@ -5,22 +5,24 @@ const lib = require("./lib/lib.js");
 const {match} = require("./match.js");
 const enumNames = lib.Enums.enumNames;
 
+const RESET = "\x1b[0m";
+
 /**
  * @param {Array<String>} selected which positions are selected
  * @param {String} TargetDangerSwitch Valid value: "Target", "Danger", "None"  
  */
 function render(selected=[], TargetDangerSwitch="")
 {
-	let buffer = "";
+	let buffer;
 	let	i;
 	let	asciiArt;
 	let	startPos;
 
+	buffer = "";
 	startPos = board.get(cursor.square);
 	if (!startPos)
 		return (console.log("errore cursor"));
-	if (kingThreat(board, match) == true)
-		console.log(`${match.currentPlayer.team} king is threatened💀`);
+	displayPlayerInfo();
 	i = 0;
 	for (let [pos, data] of lib.Chess.board)
 	{
@@ -48,6 +50,20 @@ function render(selected=[], TargetDangerSwitch="")
 		}
 	}
 	console.log(buffer);
+}
+
+
+function displayPlayerInfo()
+{
+	let	player;
+	let	col;
+
+	player = match.currentPlayer;
+	col = `\x1b[${getSquareColor(player.team)}m`;
+	console.log(`It's ${col}${player.team}${RESET} turn.`);
+	console.log(`points: ${player.nPoints}💲, bonus: ${player.bonusPointCounter}⚖️`);
+	if (kingThreat(board, match) == true)
+		console.log(`${player.team} king is threatened💀`);
 }
 
 /**

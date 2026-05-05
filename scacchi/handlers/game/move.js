@@ -1,12 +1,11 @@
 // @ts-check
 const lib = require("../../lib/lib.js");
 const {MOVEMENT_MAX, MOVEMENT_MIN} = require("../../macro");
-const {abort} = require("node:process");
 const {Piece, board, Square, copyBoard, cursor} = require("../../lib/lib.js").Chess;
 const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("../../utils.js");
-const {render} = require("../../render.js");
 const {match} = require("../../match.js");
 const {error, paramCheck, Result, clientBoard} = require("./utils.js");
+const {endTurn} = require("./endTurn");
 
 /** @typedef {import('../../chessBoard.js').Square} Square */
 
@@ -30,6 +29,8 @@ function move(from, to)
 	result.status = 200;
 	// @ts-ignore
 	result.board = clientBoard(board, [from, to]);
+	if (match.moves == MOVEMENT_MIN && !match.currentPlayer.nPoints)
+		endTurn();
 	return (result);
 }
 
