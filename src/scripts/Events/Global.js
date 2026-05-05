@@ -59,28 +59,41 @@ export function sendMoveToBackend()
 
 export function highlightOnClick(event)
 {
-	
 	if (event.target.localName === "img")
 		{
-			const AllowedMoves = localBoard.get(clickedId).targetZones;
-			
-			AllowedMoves.forEach((highlight) => {
-			// console.log(`highlight: ${highlight}`);
-				localBoard.forEach(square => {
-					if (square.id == highlight)
-					{
-						if (square.highlight === false && square.id != clickedId)
-							square.highlight = true;
-						else if (clickedId == lastClickedId && square.highlight === true)
-						{
-							clearHighlight("selected");
-							square.highlight = false;
-						}
-					}
-				})
-			})
+			if (clickedId === lastClickedId) {
+				clearHighlight();
+				lastClickedId = null;
+				return;
+			}
+
+			const square = localBoard.get(clickedId);
+			const useAbility = square.piece.isBoostedBool && square.piece.useAbility;
+			let allowedMoves = square.targetZones;
+
+			setHighlighTrue(allowedMoves, "regular")
+			if (useAbility)
+				allowedMoves = square.boostedTargetZones.get(clickedId);
+			if (square.piece.type === "Jester")
+				setHighlighTrue(allowedMoves, "boosted");
+
 			lastClickedId = clickedId;
 		}
+}
+
+export function setHighlighTrue(allowedMoves, flag)
+{
+	allowedMoves.forEach((highlight) => {
+			localBoard.forEach(square => {
+				if (square.id == highlight)
+				{
+					if (square.highlight === false && square.id != clickedId && flag == "regular")
+						square.highlight = true;
+					if (square.boostedHighlight === false && square.id != clickedId && flag == "boosted")
+						square.boostedHighlight = true;
+				}
+		});
+	});
 }
 
 export function highlightOnDrag(event)
@@ -109,9 +122,15 @@ export function rightClickSelect(event)
 		clearHighlight("highlight");
 		let targetSquare;
 		if (event.target.localName === "img")
+		{
 			targetSquare = localBoard.get(event.target.parentNode.id);
+			// console.log(targetSquare.id);
+		}
 		else
+		{	
 			targetSquare = localBoard.get(event.target.id);
+			// console.log(targetSquare.id);
+		}
 
 		if (targetSquare && !targetSquare.selected)
 			targetSquare.selected = true;

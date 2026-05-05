@@ -3,13 +3,14 @@ import { boardConverter }	from "../Helper/RenderUtils";
 import { reactive }			from "vue";
 
 class Square {
-	constructor(id, piece, targetZones = [], boostedZones = {}) {
+	constructor(id, piece, targetZones = [], boostedTargetZones = {}) {
 		this.id = id;
 		this.piece = piece;
 		this.highlight = false;
+		this.boostedHighlight = false;
 		this.selected = false;
 		this.targetZones = new Set(targetZones);
-		this.boostedZones = new Map(boostedZones);
+		this.boostedTargetZones = new Map(boostedTargetZones);
 	}
 }
 
@@ -43,16 +44,18 @@ export function initLocalBoard(boardData)
 					? squareData.targetZones
 					: [])
 				
-				const boostedZones = new Map(
-					Object.entries(squareData.boostedZones || {}).map(
-						([key, value]) => [key, new Set(Array.isArray(value) ? value : [])]
-					)
-				)
+				const boostedTargetZones = new Map(
+				  Object.entries(squareData.boostedTargetZones || {}).map(([key, value]) => {
+				    // console.log(`key: ${key}, value: ${value}`);
+				    return [key, new Set(Array.isArray(value) ? value : [])];
+				  })
+				);
+
 				const square = new Square(
 				squareId,
 				squareData.piece || null,
 				targetZones,
-				boostedZones
+				boostedTargetZones
 			);
 			localBoard.set(squareId, square);
 		});

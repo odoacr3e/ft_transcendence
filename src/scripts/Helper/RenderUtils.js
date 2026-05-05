@@ -32,10 +32,12 @@ export function getSquareColor(squareId)
 export function clearHighlight(flag)
 {
 	localBoard.forEach(square => {
-		
 		if (square.selected === true && (flag === "selected" || flag === undefined))
 			square.selected = false;
-		if (square.highlight === true && (flag === "highlight" || flag === undefined))
-			square.highlight = false;
+		if ((square.highlight === true || square.boostedHighlight == true)&& (flag === "highlight" || flag === undefined))
+			{
+				square.highlight = false;
+				square.boostedHighlight = false;
+			}
 	})
 }

@@ -23,6 +23,8 @@
                     :id="square.id"
                     :class="[getSquareColor(square.id), 
 							'square',
+							{'selectedBstW': getSquareColor(square.id) == 'white' && (square.boostedHighlight && square.piece)},
+							{'selectedBstB': getSquareColor(square.id) == 'black' && (square.boostedHighlight && square.piece)},
 							{'selectedW': getSquareColor(square.id) == 'white' && (square.selected || square.highlight && square.piece)},
 							{'selectedB': getSquareColor(square.id) == 'black' && (square.selected || square.highlight && square.piece)}]"
                     @drop="onDrop($event, square)"
@@ -34,6 +36,7 @@
                         :draggable="true"
                         @dragstart="onDragStart($event, square)"/>
                     <span v-if="square.highlight && !square.piece" class="highlight"></span>
+                    <span v-if="square.boostedHighlight && !square.piece" class="boostedHighlight"></span>
                 </div>
             </div>
         </div>
@@ -95,6 +98,16 @@
 		background-color: brown;
 	}
 
+	.boostedHighlight
+	{
+		width: 15px;
+		height: 15px;
+		display: block;
+		margin: auto;
+		border-radius: 50%;
+		background-color: rgb(99, 221, 0);
+	}
+
 	.selectedB
 	{
 		background-color: rgb(128, 26, 18);
@@ -103,5 +116,15 @@
 	.selectedW
 	{
 		background-color: rgb(187, 66, 50);
+	}
+
+	.selectedBstB
+	{
+		background-color: rgb(173, 187, 50);
+	}
+
+	.selectedBstW
+	{
+		background-color: rgb(175, 214, 0);
 	}
 </style>

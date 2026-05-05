@@ -98,7 +98,5 @@ boardConverter()
 	▫ oreintamento della scacchiera in base al colore dei pezzi del giocatore
 	▫ rendering delle informazioni dei player
 	▫ drag non fastasma
-	▫ rendering delle informazioni dei player
-
 
 //REVIEW - 
