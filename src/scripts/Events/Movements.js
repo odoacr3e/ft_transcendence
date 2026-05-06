@@ -44,10 +44,10 @@ export async function requestToBack(fromSquare, toSquare)
 {
 	try
 	{
-		const response = await fetch("/move.json", {
+		const response = await fetch("/api/game/", {
 		  method: "POST",
 		  headers: { "Content-Type": "application/json" },
-		  body: JSON.stringify({ Request: { Operation: "Movement", From: fromSquare, To: toSquare } }),
+		  body: JSON.stringify({ type: "move", from: fromSquare, to: toSquare }),
 		});
 	
 		if (!response.ok) throw new Error(`Impossibile caricare /move.json: ${response.status}`);

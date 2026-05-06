@@ -12,11 +12,14 @@ export default defineConfig({
     vueDevTools(),
     tailwindcss()
   ],
-  // server: {
-  //   host: '10.11.4.3',
-  //   port: 5173,
-  //   strictPort: true,
-  // },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://10.11.4.2:8080',
+        changeOrigin: true,
+      },
+    },
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),

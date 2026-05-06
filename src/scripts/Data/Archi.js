@@ -2,7 +2,12 @@ import { initLocalBoard, localMatchState, localBoard, localPlayers, startLocalMa
 
 export async function loadReceivedMatch() 
 {
-	const response = await fetch("/match.json");
+	const response = await fetch("/api/game/",
+	{
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify({ type: "init", from: "0", to: null }),
+	});	
 	if (!response.ok)
 		throw new Error(`Impossibile caricare /match.json: ${response.status}`);
 
@@ -10,7 +15,7 @@ export async function loadReceivedMatch()
 	return match;
 }
 
-export function validateReceivedMatch(rawJson) 
+export function validateReceivedMatch(rawJson)
 {
 	if (!rawJson || typeof rawJson !== "object" || Array.isArray(rawJson))
 		throw new Error("Payload non valido: root deve essere un oggetto.");
@@ -85,23 +90,24 @@ export function updateLocalBoard(changes)
 	if (typeof board !== "object" || Array.isArray(board))
 		throw new Error("[updateLocalBoard]: Board format not valid!");
 
-	Object.entries(board).forEach(([squareKey, newState]) => {
+	Object.entries(board).forEach(([squareKey, newSquare]) => {
 		if (localBoard.has(squareKey))
 		{
-			newState.targetZones = new Set(Array.isArray(newState.targetZones) ? newState.targetZones : []);
+			newSquare.targetZones = new Set(Array.isArray(newSquare.targetZones) ? newSquare.targetZones : []);
 			
-			newState.boostedZones = new Map(
-				Object.entries(newState.boostedZones || {}).map(
+			newSquare.boostedTargetZones = new Map(
+				Object.entries(newSquare.boostedTargetZones || {}).map(
 					([key, value]) => [key, new Set(Array.isArray(value) ? value : [])]
 				)
 			)
-			localBoard.set(squareKey, { ...localBoard.get(squareKey), ...newState });
+			
+			const oldSquare = localBoard.get(squareKey);
+			oldSquare.piece = newSquare.piece;
+			oldSquare.targetZones = newSquare.targetZones;
+			oldSquare.boostedTargetZones = newSquare.boostedTargetZones;
 		}
 	});
 }
-//nella funzione sopra viene utilizzato lo spread operator ( { ...localBoard.get(squareKey), ...newState } )
-//l'operatore '...' su un oggetto ne espande le proprieta', in modo che in caso di conflitto le
-//proprieta' del secondo sovrascrivono quelle del primo
 
 function updateLocalPlayers(changes) 
 {

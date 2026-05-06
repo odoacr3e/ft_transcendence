@@ -11,7 +11,7 @@ export function globalEvents()
 	const ROOT_DIV = getRootDiv();
 
 	ROOT_DIV.addEventListener("click", function (event) {
-		if (assignClickedId(event)) { sendMoveToBackend(); }
+		if (assignClickedId(event)) { sendToBackend(); }
 		else 						{ highlightOnClick(event); }
 	});
 
@@ -43,7 +43,7 @@ export function assignClickedId(event)
 	return(bool);
 }
 
-export function sendMoveToBackend()
+export function sendToBackend()
 {
 	console.log(`lastClickedId: ${lastClickedId}\nclickedId: ${clickedId}`);
 	// const clickedIsValidMove = localBoard.get(lastClickedId).targetZones.has(clickedId); //--> questo non è più un Set, probabilmente lo perdiamo durante la riassegnazione [RISOLTO]
@@ -53,7 +53,7 @@ export function sendMoveToBackend()
 	if (lastClickedId && lastClickedId !== clickedId && localBoard.get(lastClickedId).targetZones.has(clickedId))
 		requestToBack(lastClickedId, clickedId).then(
 				function(value) {if (value) { clearHighlight(); } },
-				function(value) {if (!value) { console.log("[sendMoveToBackend]: Mossa non valida"); }}
+				function(value) {if (!value) { console.log("[sendToBackend]: Mossa non valida"); }}
 			);
 }
 
