@@ -28,7 +28,7 @@ let isDangerous = (setZones, team) =>
  * @param {number} dy
  * @param {boolean} clear
  */
-let movePiece = (dx, dy, clear) =>
+let movePiece = (dx, dy, clear=false) =>
 {
 	let newRow = cursor.getRow() + dy;
 	let newCol = cursor.getCol() + dx;

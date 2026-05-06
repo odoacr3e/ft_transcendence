@@ -200,4 +200,4 @@ let CheckMateCheck= (kingSquareString) =>
 	return true;
 }
 
-module.exports = {CheckMateCheck};
+module.exports = {CheckMateCheck, getDirection};

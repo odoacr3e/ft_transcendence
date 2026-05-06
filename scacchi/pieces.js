@@ -203,6 +203,8 @@ let movementValkirya = function ()
 			{
 				board.get(cursor.square)?.dangerZones.add(startPos);
 				board.get(startPos)?.targetZones.add(cursor.square);
+				if (board.get(cursor.square)?.piece)
+					board.get(startPos)?.boostedTargetZones.get(startPos)?.add(cursor.square);
 			}
 			if (board.get(cursor.square)?.piece != null)
 				maxTarget--;

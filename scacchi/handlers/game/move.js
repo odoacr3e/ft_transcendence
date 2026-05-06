@@ -1,5 +1,6 @@
 // @ts-check
 const lib = require("../../lib/lib.js");
+const {enumNames} = require("../../pieces.js");
 const {MOVEMENT_MAX, MOVEMENT_MIN} = require("../../macro");
 const {Piece, board, Square, copyBoard, cursor} = require("../../lib/lib.js").Chess;
 const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("../../utils.js");
@@ -63,6 +64,8 @@ function checkMove(arr=[], result)
 		return (error(result, 403, "invalid positions"));
 	if (from.piece == null)
 		return (error(result, 403, "Square is empty"));
+	// if (checkCastling(to, from))
+	// 	return (true);
 	if (!from.targetZones.has(arr[1]))
 		return (error(result, 403, "destination not in piece targetZone"));
 	if (to.piece)
