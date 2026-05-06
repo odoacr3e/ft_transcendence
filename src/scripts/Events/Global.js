@@ -1,7 +1,8 @@
-import { movePiece, requestToBack }	from "./Movements.js";
-import { clearHighlight}			from "../Helper/RenderUtils.js";
-import { localBoard }				from "../Data/Variables.js";
-import { getRootDiv }				from "../Helper/Constants.js";
+import { requestToBack }	from "./Movements.js";
+import { clearHighlight}	from "../Helper/RenderUtils.js";
+import { localBoard }		from "../Data/Variables.js";
+import { getRootDiv }		from "../Helper/Constants.js";
+import { PIECES_HIGHLIGHT }	from "../Helper/piecesHighlits.js";
 
 let lastClickedId = null;
 let clickedId = null;
@@ -45,7 +46,7 @@ export function assignClickedId(event)
 
 export function sendToBackend()
 {
-	console.log(`lastClickedId: ${lastClickedId}\nclickedId: ${clickedId}`);
+	// console.log(`lastClickedId: ${lastClickedId}\nclickedId: ${clickedId}`);
 	// const clickedIsValidMove = localBoard.get(lastClickedId).targetZones.has(clickedId); //--> questo non è più un Set, probabilmente lo perdiamo durante la riassegnazione [RISOLTO]
 	// NOTA - non possiamo usare una variabile in questo modo, e' meglio mettere tutto in un if in modo da controllare prima
 	// che lastClickedId != null in modo che localBoard.get().etc si possa fare
@@ -67,18 +68,9 @@ export function highlightOnClick(event)
 			lastClickedId = null;
 			return;
 		}
-
-
 		const square = localBoard.get(clickedId);
-		const useAbility = square.piece.isBoostedBool && square.piece.useAbility;
-		let allowedMoves = square.targetZones;
-
-		setHighlighTrue(allowedMoves, "regular")
-		if (useAbility)
-			allowedMoves = square.boostedTargetZones.get(clickedId);
-		if (square.piece.type === "Jester" && useAbility)
-			setHighlighTrue(allowedMoves, "boosted");
-
+		const piece = square.piece.type;
+		PIECES_HIGHLIGHT[piece](clickedId);
 		lastClickedId = clickedId;
 	}
 	else
@@ -129,12 +121,12 @@ export function rightClickSelect(event)
 		if (event.target.localName === "img")
 		{
 			targetSquare = localBoard.get(event.target.parentNode.id);
-			// console.log(targetSquare.id);
+			console.log(targetSquare.id);
 		}
 		else
 		{	
 			targetSquare = localBoard.get(event.target.id);
-			// console.log(targetSquare.id);
+			console.log(targetSquare.id);
 		}
 
 		if (targetSquare && !targetSquare.selected)

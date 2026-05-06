@@ -64,26 +64,4 @@ export function initLocalBoard(boardData)
 	}
 }
 
-// export function startLocalPlayers(playersData) 
-// {
-//     localPlayers.clear();
-//     if (playersData && typeof playersData === 'object') 
-// 	{
-//         if (playersData instanceof Map) 
-// 		{
-//             playersData.forEach((player, key) => {
-//                 localPlayers.set(key, player);
-//             });
-//         } 
-// 		else 
-// 		{
-//             const players_list = ["p1", "p2", "p3", "p4"];
-//             players_list.forEach((player) => {
-//                 if (Object.prototype.hasOwnProperty.call(playersData, player) && playersData[player] !== null)
-//                     localPlayers.set(player, playersData[player]);
-//             });
-//         }
-//     }
-// }
-
 export { localMatchState, localBoard, localPlayers, DOMBoard, DOMPlayer};

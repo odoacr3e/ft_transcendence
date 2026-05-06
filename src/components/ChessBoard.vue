@@ -15,6 +15,7 @@
 
 <template>
     <div id="root">
+		<!-- <div id="ability_button"></div> -->
         <div id="board" oncontextmenu="return false;">
             <div v-for="row in domBoardComputed" :key="row[0]?.id" class="squareRow">
                 <div
@@ -34,7 +35,8 @@
                         class="piece"
                         :src="IMG_PATHS[square.piece.team + square.piece.type]"
                         :draggable="true"
-                        @dragstart="onDragStart($event, square)"/>
+                        @dragstart="onDragStart($event, square)"
+				/>
                     <span v-if="square.highlight && !square.piece" class="highlight"></span>
                     <span v-if="square.boostedHighlight && !square.piece" class="boostedHighlight"></span>
                 </div>

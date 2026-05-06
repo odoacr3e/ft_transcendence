@@ -2,7 +2,8 @@ import { initLocalBoard, localMatchState, localBoard, localPlayers, startLocalMa
 
 export async function loadReceivedMatch() 
 {
-	const response = await fetch("/api/game/",
+	// const response = await fetch("/api/game/",
+	const response = await fetch("/FILE.json",
 	{
 		method: "POST",
 		headers: { "Content-Type": "application/json" },
@@ -10,8 +11,8 @@ export async function loadReceivedMatch()
 	});	
 	if (!response.ok)
 		throw new Error(`Impossibile caricare /match.json: ${response.status}`);
-
 	const match = await response.json();
+	// console.log(`responde: ${JSON.stringify(match)}`)
 	return match;
 }
 

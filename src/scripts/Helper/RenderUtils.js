@@ -13,9 +13,15 @@ export function boardConverter()
 
     for (let rank = 8; rank >= 1; rank -= 1)
 	{
+		
 		const row = [];
 		for (const file of FILES)
+		{
+			// console.log(`square rendered: rank:${rank} file:${file}, piece: ${localBoard.get(`${file}${rank}`).piece}`);
+			// console.log(`file: ${file}, rank: ${rank}`);
+			// console.log(`square rendered: ${JSON.stringify(localBoard.get(`${file}${rank}`))}`);
 			row.push(localBoard.get(`${file}${rank}`));
+		}
 		DBoard.push(row);
 	}
     return DBoard;
