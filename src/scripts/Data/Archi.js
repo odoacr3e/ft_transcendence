@@ -54,12 +54,9 @@ function initLocalPlayers()
 		const has = Object.prototype.hasOwnProperty.call(localMatchState, player);
 		const wrong_type = typeof localMatchState[player] !== "object";
 
-		if (localMatchState[player] === null)
-			return;
-		if (!has)
-			throw new Error(`[initLocalPlayers]: Player ${player} object absent!`);
-		if (wrong_type) 
-			throw new Error(`[initLocalPlayers]: Player ${player} a wrong type!`);
+		if (localMatchState[player] === null) { return; }
+		if (!has)		{ throw new Error(`[initLocalPlayers]: Player ${player} object absent!`); }
+		if (wrong_type)	{ throw new Error(`[initLocalPlayers]: Player ${player} a wrong type!`); }
 
 		localPlayers.set(player, localMatchState[player]);
 	})	
@@ -69,22 +66,14 @@ export function replaceMatchState(nextRaw)
 {
 	const validated = validateReceivedMatch(nextRaw);
 	startLocalMatchState(validated);
-
-	initLocalBoard();
-	initLocalPlayers();
-}
-
-export async function updateLocalMatchState(nextMatchState) {
-	if (!nextMatchState)
-		console.error("[UpdateLocalMatchState]: nextMatchState passed is null!");
   
 	try 
 	{
-		updateLocalBoard(nextMatchState);
-		updateLocalPlayers(nextMatchState);
+		updateLocalBoard(validated);
+		updateLocalPlayers(validated);
 	} 
 	catch(err){
-	console.error("[updateLocalMatchState]: Errore di update del Match!");
+		console.error("[updateLocalMatchState]: Errore di update del Match!");
   	}
 }
 
@@ -127,6 +116,6 @@ function updateLocalPlayers(changes)
 		if (wrong_type) 
 			throw new Error(`[updateLocalPlayers]: Player ${player} wrong type!`);
 
-		localPlayers.set(player, changes[player]);
+		localPlayers.set(player, {...localPlayers.get(player), ...changes[player]});
 	})
 }

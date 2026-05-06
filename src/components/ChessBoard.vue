@@ -50,7 +50,6 @@
 		grid-template-rows: repeat(8, 75px);
 		width: fit-content;
 		margin: auto;
-		margin-top: 10%;
 	}
 
 	.piece

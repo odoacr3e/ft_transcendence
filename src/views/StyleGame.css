@@ -4,3 +4,7 @@
 		z-index: 10;
 		position: relative;
 	}
+
+@theme {
+  		--drop-shadow-custom: 0 0 10px rgb(231, 228, 231); 
+	}

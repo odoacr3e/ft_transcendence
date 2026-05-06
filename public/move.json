@@ -1,15 +1,17 @@
 {
   "p1": {
-    "name": "player1",
+    "name": "Player1",
     "team": "white",
     "pieces": 16,
-    "points": 0
+    "points": 5,
+    "isPlaying": false
   },
   "p2": {
-    "name": "player2",
+    "name": "Player2",
     "team": "black",
     "pieces": 16,
-    "points": 0
+    "points": 0,
+    "isPlaying": true
   },
   "p3": null, 
   "p4": null, 

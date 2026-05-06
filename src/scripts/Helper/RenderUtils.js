@@ -1,5 +1,5 @@
-import { localBoard }   from "../Data/Variables.js";
-import { FILES }        from "./Constants.js";
+import { localBoard, localPlayers }	from "../Data/Variables.js";
+import { FILES }					from "./Constants.js";
 
 //Funzione helper per convertire la mappa in un array 8x8
 export function boardConverter()
@@ -19,6 +19,18 @@ export function boardConverter()
 		DBoard.push(row);
 	}
     return DBoard;
+}
+
+/**
+ * @param {Number} p 
+ */
+export function getLocalPlayers(p) {
+	if (p === 1)		{ return (localPlayers.get("p1")); }
+	else if (p === 2)	{ return (localPlayers.get("p2")); }
+	else if (p === 3)	{ return (localPlayers.get("p3")); }
+	else if (p === 4)	{ return (localPlayers.get("p4")); }
+
+	return (null);
 }
 
 //Funzione helper per determinare il colore dello square durante la cotruzione della scacchiera

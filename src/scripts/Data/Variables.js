@@ -1,5 +1,5 @@
 //!SECTION FILE CON TUTTE LE VARIABILI GLOBALI
-import { boardConverter }	from "../Helper/RenderUtils";
+import { boardConverter, getLocalPlayers }	from "../Helper/RenderUtils.js";
 import { reactive }			from "vue";
 
 class Square {
@@ -25,6 +25,8 @@ let localPlayers = reactive(new Map());
 
 //Funzione reattiva che ricalcola ogni volta che localBoard cambia
 const DOMBoard = () => boardConverter();
+
+const DOMPlayer = (p) => getLocalPlayers(p);
 
 // Funzioni setter per aggiornare le variabili globali
 export function startLocalMatchState(newMatchState) {
@@ -84,4 +86,4 @@ export function initLocalBoard(boardData)
 //     }
 // }
 
-export { localMatchState, localBoard, localPlayers, DOMBoard};
+export { localMatchState, localBoard, localPlayers, DOMBoard, DOMPlayer};

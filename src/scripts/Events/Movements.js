@@ -1,4 +1,4 @@
-import { updateLocalBoard } from "../Data/Archi.js"
+import { replaceMatchState } from "../Data/Archi.js"
 import { clearHighlight }	from "../Helper/RenderUtils.js";
 import { localBoard }		from "../Data/Variables.js";
 
@@ -54,20 +54,7 @@ export async function requestToBack(fromSquare, toSquare)
 	
 		const match = await response.json();
 	
-		if (!match || typeof match !== "object" || Array.isArray(match))
-			throw new Error("Payload non valido: root deve essere un oggetto.");
-	
-		if (!Object.prototype.hasOwnProperty.call(match, "p1") ||
-			!Object.prototype.hasOwnProperty.call(match, "p2") ||
-			!Object.prototype.hasOwnProperty.call(match, "p3") ||
-			!Object.prototype.hasOwnProperty.call(match, "p4") ||
-			!Object.prototype.hasOwnProperty.call(match, "board"))
-			throw new Error("Payload non valido: serve p1, p2, p3, p4 e board.");
-
-		if (!match.board || typeof match.board !== "object" || Array.isArray(match.board))
-			throw new Error("[validateReceivedMatch]: Payload non valido: board deve essere un oggetto.");
-	
-		updateLocalBoard(match);
+		replaceMatchState(match);
 		return true;
 	}
 	catch (err)
