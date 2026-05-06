@@ -19,4 +19,8 @@ const IMG_PATHS = Object.freeze ({
 	"blackBastards" : new URL("../../assets/pieces/black/pawn.png", import.meta.url).href
 });
 
+// const PIECES_HIGHLIGHT = Object.freeze ({
+// 	"whiteKing" : whiteKingHighlight(),
+// })
+
 export { IMG_PATHS, FILES };

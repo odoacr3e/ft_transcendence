@@ -60,25 +60,30 @@ export function sendMoveToBackend()
 export function highlightOnClick(event)
 {
 	if (event.target.localName === "img")
+	{
+		if (clickedId === lastClickedId) 
 		{
-			if (clickedId === lastClickedId) {
-				clearHighlight();
-				lastClickedId = null;
-				return;
-			}
-
-			const square = localBoard.get(clickedId);
-			const useAbility = square.piece.isBoostedBool && square.piece.useAbility;
-			let allowedMoves = square.targetZones;
-
-			setHighlighTrue(allowedMoves, "regular")
-			if (useAbility)
-				allowedMoves = square.boostedTargetZones.get(clickedId);
-			if (square.piece.type === "Jester")
-				setHighlighTrue(allowedMoves, "boosted");
-
-			lastClickedId = clickedId;
+			clearHighlight();
+			lastClickedId = null;
+			return;
 		}
+
+
+		const square = localBoard.get(clickedId);
+		const useAbility = square.piece.isBoostedBool && square.piece.useAbility;
+		let allowedMoves = square.targetZones;
+
+		setHighlighTrue(allowedMoves, "regular")
+		if (useAbility)
+			allowedMoves = square.boostedTargetZones.get(clickedId);
+		if (square.piece.type === "Jester" && useAbility)
+			setHighlighTrue(allowedMoves, "boosted");
+
+		lastClickedId = clickedId;
+	}
+	else
+		lastClickedId = null;
+			
 }
 
 export function setHighlighTrue(allowedMoves, flag)

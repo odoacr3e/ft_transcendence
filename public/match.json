@@ -404,7 +404,7 @@
       "piece": {
         "type": "Valkirya",
         "price": 3,
-        "team": "black",
+        "team": "white",
         "isMovedBool": false,
         "isBoostedBool": true,
         "pos": "d5",
