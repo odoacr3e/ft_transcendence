@@ -50,7 +50,7 @@ function moveCol(dx)
  * @param {number} newCol 
  * @param {number} newRow 
  */
-let setCursor = (newRow, newCol) => 
+let setCursor = (newCol, newRow) => 
 {
 	let newSquare;
 
@@ -81,12 +81,12 @@ let set = (pos) =>
 let cursor = 
 {
 	/** @type {string} */ square: "a1", // the string position: a1, b2, c3...
-	getRow: getRow,
-	getCol: getCol,
-	setRow: setRow,
-	setCol: setCol,
-	moveRow: moveRow,
-	moveCol: moveCol,
+	getRow: getCol,
+	getCol: getRow,
+	setRow: setCol,
+	setCol: setRow,
+	moveRow: moveCol,
+	moveCol: moveRow,
 	set: set,
 	setCursor: setCursor
 }

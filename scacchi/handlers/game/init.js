@@ -89,8 +89,8 @@ function initClassicBoard()
 		else
 			data.color == eTeam.Black;
 	}
-	match.black.King = "h5";
-	match.white.King = "a5";
+	match.black.King = "e8"; // aggiornato posizioni re
+	match.white.King = "e1"; // aggiornato posizioni re
 	dangerUpdateAll();
 }
 

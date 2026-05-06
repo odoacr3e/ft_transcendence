@@ -16,7 +16,7 @@ const HASH_SALT = 10;
 	62: scacco matto ciao ciao
 	63: scacco matto prevenibile
 */
-const SEED = 62;
+const SEED = 0;
 
 //ANCHOR - chess
 

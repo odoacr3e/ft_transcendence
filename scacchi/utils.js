@@ -28,10 +28,10 @@ let isDangerous = (setZones, team) =>
  * @param {number} dy
  * @param {boolean} clear
  */
-let movePiece = (dx, dy, clear=false) =>
+let movePiece = (dy, dx, clear=false) =>
 {
-	let newRow = cursor.getRow() + dy;
-	let newCol = cursor.getCol() + dx;
+	let newRow = cursor.getRow() + dx;
+	let newCol = cursor.getCol() + dy;
 
 	if (newRow < 1 || newRow > Macro.CHESSBOARD_H)
 		return false;
@@ -69,12 +69,12 @@ let DangerUpdate = () =>
 		return (0);
 	for (let {dx, dy} of piece.moveArray)
 	{
-		if (!bastardChecks(dx, dy, piece, startPos))
+		if (!bastardChecks(dy, dx, piece, startPos)) // scambiato dx e dy
 		{
 			usedBoard.get(cursor.square)?.dangerZones.add(startPos);
 			continue ;
 		}
-		while (movePiece(dx, dy, false))
+		while (movePiece(dy, dx, false)) // scambiato dx e dy
 		{
 			usedBoard.get(cursor.square)?.dangerZones.add(startPos);
 			usedBoard.get(startPos)?.targetZones.add(cursor.square);
@@ -92,20 +92,20 @@ let DangerUpdate = () =>
 	blue: WEST dy negativo				0, 1	-1,1	1,1
 	green: EAST dy positivo				0, -1	-1,-1	1,-1
 */
-let bastardMove = 
+let bastardMove = // aggiornato movimenti
 {
-	white: new Set(["0|1", "1|1", "-1|1"]),
-	red: new Set(["0|1", "1|1", "-1|1"]),
-	black: new Set(["0|-1", "1|-1", "-1|-1"]),
-	yellow: new Set(["0|-1", "1|-1", "-1|-1"]),
-	blue: new Set(["1|0", "1|-1", "1|1"]),
-	green: new Set(["-1|0", "-1|-1", "-1|1"])
+	white: new Set(["1|0", "1|1", "1|-1"]),
+	red: new Set(["1|0", "1|1", "1|-1"]),
+	black: new Set(["-1|0", "-1|-1", "-1|1"]),
+	yellow: new Set(["-1|0", "-1|-1", "-1|1"]),
+	blue: new Set(["0|1", "-1|1", "1|1"]),
+	green: new Set(["0|-1", "-1|-1", "1|-1"])
 }
 
 /**
  * @param {Piece} piece
  */
-function bastardChecks(dx, dy, piece)
+function bastardChecks(dy, dx, piece)
 {
 	let tmp;
 	let	target;

@@ -39,16 +39,16 @@ process.stdin.on('keypress', (str, key) =>
 	switch (key.name)
 	{
 		case ("up") : case ("w") :
-			dy -= 1;
-			break ;
-		case ("down") : case ("s") :
-			dy += 1;
-			break ;
-		case ("left") : case ("a") :
 			dx -= 1;
 			break ;
-		case ("right") : case ("d") :
+		case ("down") : case ("s") :
 			dx += 1;
+			break ;
+		case ("left") : case ("a") :
+			dy -= 1;
+			break ;
+		case ("right") : case ("d") :
+			dy += 1;
 			break ;
 		case ("r") :
 			if (TargetDangerSwitch == "None")

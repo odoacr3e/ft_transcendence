@@ -267,10 +267,10 @@ const preset = {
 		price: 10,
 		movement:
 		[
-			{dx:1, dy:1}, {dx:-1, dy:-1},//obliquo
+			{dx:1, dy:1}, {dx:-1, dy:-1}, //obliquo
 			{dx:-1, dy:1}, {dx:1, dy:-1},
-		 	{dx:0, dy:1}, {dx:0, dy:-1},//verticale
-		 	{dx:1, dy:0}, {dx:-1, dy:0},//orizzontale
+		 	{dx:0, dy:1}, {dx:0, dy:-1}, //orizzontale
+		 	{dx:1, dy:0}, {dx:-1, dy:0}, //verticale
 		],
 		booster: movementChampion
 	},
@@ -279,9 +279,9 @@ const preset = {
 		price: 5,
 		movement:
 		[
-			{dx:2, dy:1}, {dx:2, dy:-1}, // +2 orizzontale
+			{dx:2, dy:1}, {dx:2, dy:-1}, // +2 verticale
 			{dx:-2, dy:1}, {dx:-2, dy:-1},
-			{dx:1, dy:2}, {dx:1, dy:-2}, // +2 verticale
+			{dx:1, dy:2}, {dx:1, dy:-2}, // +2 orizzontale
 			{dx:-1, dy:2}, {dx:-1, dy:-2},
 		],
 		booster: movementJester
@@ -301,8 +301,8 @@ const preset = {
 		price: 5,
 		movement:
 		[
-		 	{dx:0, dy:1}, {dx:0, dy:-1},//verticale
-		 	{dx:1, dy:0}, {dx:-1, dy:0},//orizzontale
+		 	{dx:0, dy:1}, {dx:0, dy:-1},//orizzontale
+		 	{dx:1, dy:0}, {dx:-1, dy:0},//verticale
 		],
 		booster: movementMinotaurus
 	},
@@ -311,7 +311,7 @@ const preset = {
 		price: 1,
 		movement:
 		[
-			{dx:0, dy:1}, {dx:0, dy:-1},//verticale
+			{dx:1, dy:0}, {dx:-1, dy:0},//verticale, quello vero ora
 			{dx:1, dy:1}, {dx:-1, dy:-1},//obliquo
 			{dx:-1, dy:1}, {dx:1, dy:-1}
 		],
