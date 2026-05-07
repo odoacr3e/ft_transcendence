@@ -3,7 +3,7 @@
 const match = require("../match").match;
 
 /**
- * @param {*} result 
+ * @param {*} result the base object from which the response json is made
  * @param {String | null} msg 
  * @param {Number | null} status 
  * @returns {{}}
