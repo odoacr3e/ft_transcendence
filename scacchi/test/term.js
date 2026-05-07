@@ -1,23 +1,20 @@
 // @ts-check
 const {Piece, board, Square} =					require("../lib/lib.js").Chess;
 const {eTeam, enumValues, enumNames} =			require("../lib/lib.js").Enums;
+const {match, Match} = require("../match.js");
 const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("../utils.js");
 const {error, move, boost, endTurn, init} = require("../handlers/game/Game.js");
 const {Result} = require("../handlers/game/utils.js");
 
 const lib =			require("../lib/lib.js");
 const {abort} = 	require("node:process");
-const fs = 	require("node:fs");
-const {cursor} = 	require("../cursor.js");
 const {render} = 	require("../render.js");
 const readline = 	require('node:readline');
-const {app} = require("../server.js");
-const {match} = require("../match.js");
 
 //SECTION - main: inizializza e fa primo render, mette terminale in ascolto
 initTerminal();
-init(lib.Macro.SEED);
-dangerUpdateAll();
+init(lib.Macro.SEED, match);
+dangerUpdateAll(match);
 render();
 
 //SECTION - eventLoop: binda i tasti per fare cose
@@ -74,14 +71,14 @@ process.stdin.on('keypress', (str, key) =>
 			if (selected.length == 2)
 			{
 				console.clear();
-				let	result = move(selected[0], selected[1]);
+				let	result = move(match, selected[0], selected[1]);
 				selected = [];
 				if (result.status != 200)
 					return (error(null, result));	
 			}
 	}
 	if (key.name != "space" && key.name != "e" && key.name != "q" && key.name != "q" &&
-		!movePiece(dx, dy, false))
+		!movePiece(match, dx, dy, false))
 	{
 		console.log("lol no");
 	}

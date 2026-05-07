@@ -1,5 +1,5 @@
 // @ts-check
-const {cursor} =						require("./cursor.js");
+const {Cursor} =						require("./cursor.js");
 const {Piece, board, Square} = 			require("./lib/lib.js").Chess;
 const {eTeam, enumValues, enumNames} =	require("./lib/lib.js").Enums;
 
@@ -76,7 +76,8 @@ class Match
 		this.blue = preset.blue,
 		this.green = preset.green,
 		this.yellow = preset.yellow,
-		this.board = board;
+		this.board = new Map();
+		this.cursor = new Cursor();
 		this.moves = 0;
 		this.boost = 0;
 		this.currentPlayer = this.white;
@@ -96,4 +97,4 @@ class Match
 
 const match = new Match();
 
-module.exports = {match};
+module.exports = {match, Match};

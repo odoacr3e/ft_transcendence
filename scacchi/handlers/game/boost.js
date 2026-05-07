@@ -11,14 +11,14 @@ const { BOOSTED_MAX, MOVEMENT_MIN } = require("../../macro.js");
  * @param {String} from
  * @returns {Result}
  */
-function boost(from)
+function boost(match, from)
 {
 	let	result;
 
 	result = new Result();
 	if (!paramCheck(result, from))
 		return (result);
-	if (!tryBoost(result, from))
+	if (!tryBoost(match, , from))
 		return (result);
 	result.status = 200;
 	return (result);
@@ -30,13 +30,13 @@ function boost(from)
  * @param {String} from 
  * @returns {boolean}
  */
-function tryBoost(result, from)
+function tryBoost(match, result, from)
 {
 	let	square;
 
 	if (match.boost >= BOOSTED_MAX || match.moves < MOVEMENT_MIN)
 		return (error(result, 403, "Mr. Greedy cheata!!!"));
-	square = board.get(from);
+	square = match.board.get(from);
 	if (!square?.piece)
 		return (error(result, 403, "Nothing to be boosted in there man"));
 	else if (square.piece.isBoostedBool == true)

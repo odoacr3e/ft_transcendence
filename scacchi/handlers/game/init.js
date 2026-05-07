@@ -5,7 +5,7 @@ const {eTeam} = require("../../lib/lib.js").Enums;
 const {SEED} = require("../../lib/lib.js").Macro;
 const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("../../utils.js");
 const {render} = require("../../render.js");
-const {match} = require("../../match.js");
+const {Match} = require("../../match.js");
 const {error, clientBoard, paramCheck, Result} = require("./utils.js");
 const {initRng} = require("../../utils/random");
 
@@ -14,9 +14,10 @@ const {initRng} = require("../../utils/random");
  * 1) the property board is added to the result object
  * 2) JSON does not support Map. So we convert the Map board to an Object
  * @param {Number | null} seed seed to start
+ * @param {Match} match
  * @returns 
  */
-function init(seed=null)
+function init(seed=null, match)
 {
 	let	result;
 	let	rng;
@@ -27,31 +28,36 @@ function init(seed=null)
 	result = new Result();
 	rng = initRng(seed);
 	if (seed != 0)
-		initRandomBoard(rng);
+		initRandomBoard(match, rng);
 	else
-		initClassicBoard();
+		initClassicBoard(match);
 	result.status = 200;
 	// @ts-ignore
-	result.board = clientBoard(board);
+	result.board = clientBoard(match.board);
 	return (result);
 }
-function initClassicBoard()
+
+/**
+ * 
+ * @param {Match} match 
+ */
+function initClassicBoard(match)
 {
 	let	row;
 	let	col;
 	let	color;
 
 	color = true;
-	for (let [key, data] of board)
+	for (let [key, data] of match.board)
 	{
 		data.piece = null;
 		data.boostedTargetZones.clear();
 		data.dangerZones.clear();
 		data.targetZones.clear();
 		color = !color;
-		cursor.set(key);
-		col = cursor.getCol()
-		row = cursor.getRow();
+		match.cursor.set(key);
+		col = match.cursor.getCol()
+		row = match.cursor.getRow();
 		if (row == 2 || row == 7)
 			data.piece = new Piece(lib.preset.Bastards, "", key, false);
 		else if (row == 1 || row == 8)
@@ -91,18 +97,19 @@ function initClassicBoard()
 	}
 	match.black.King = "e8"; // aggiornato posizioni re
 	match.white.King = "e1"; // aggiornato posizioni re
-	dangerUpdateAll();
+	dangerUpdateAll(match);
 }
 
 /**
  * 
+ * @param {Match} match
  * @param {function} rng 
  */
-function initRandomBoard(rng)
+function initRandomBoard(match, rng)
 {
 	let	rand;
 
-	for (let [key, data] of board)
+	for (let [key, data] of match.board)
 	{
 		rand = rng(16);
 		data.boostedTargetZones.clear();
@@ -146,7 +153,7 @@ function initRandomBoard(rng)
 		match.endTurn();
 	}
 	match.forceWhiteTurn();
-	dangerUpdateAll();
+	dangerUpdateAll(match);
 }
 
 module.exports = {init};

@@ -2,7 +2,7 @@
 const {enumNames} = require("./pieces.js");
 const {Square, Piece, board, copyBoard, cursor} = require("./lib/lib.js").Chess
 const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("./utils.js");
-const {match} = require("./match.js");
+const {match, Match} = require("./match.js");
 const {error, paramCheck, Result, clientBoard, checkMateAlert} = require("./handlers/game/utils.js");
 const {getDirection} = require("./checkMate.js");
 
@@ -21,18 +21,21 @@ non in diagonale - OK
 
 /**
  * 
+ * @param {Match} match
  * @param {Square} to
  * @param {Square} from 
  * @returns {boolean} 
  */
-function checkCastling(to, from)
+function checkCastling(match, to, from)
 {
 	let	pieces;
 	let tmp;
 	let dir;
+	let	board;
 
+	board = match.board;
 	tmp = cursor.square;
-	pieces = getPieces(from, to);
+	pieces = getPieces(match, from, to);
 	if (!pieces)
 		return false;
 	dir = getDirection(pieces.mino.pos, pieces.king.pos);
@@ -56,16 +59,19 @@ function checkCastling(to, from)
 
 /**
  * 
+ * @param {Match} match
  * @param {Square} from 
  * @param {Square} to 
  * @returns 
  */
-function getPieces(from, to)
+function getPieces(match, from, to)
 {
 	let toType;
 	let fromType;
+	let	board;
 	/** @type {pieces}*/let	pieces;
 
+	board = match.board;
 	// @ts-ignore
 	pieces = {};
 	toType = to.piece?.type;

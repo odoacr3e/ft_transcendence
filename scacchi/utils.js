@@ -1,22 +1,29 @@
-const {board, Square, eTeam} = require("./chessBoard.js");
+// @ts-check
+const {Square, eTeam} = require("./chessBoard.js");
+const {Piece} = require("./pieces.js");
 const Macro = require("./macro.js");
-const {cursor} = require("./cursor.js");
+const {Cursor} = require("./cursor.js");
+const {match, Match} = require("./match.js");
 const { start } = require("node:repl");
 
 /**
  * 
+ * @param {Match} match
  * @param {Set<string> | undefined} setZones dangerZone to check
  * @param {string | undefined} team enumTeam to the piece to check
  */
-let isDangerous = (setZones, team) =>
+let isDangerous = (match, setZones, team) =>
 {
+	let	board;
+
+	board = match.board;
 	if (setZones == undefined)
 		return false;
 	for (let x of setZones)
 	{
 		if (team == undefined)
 			return (true);
-		if (board.get(x)?.piece?.team != team)
+		if (match.board.get(x)?.piece?.team != team)
 			return (true);
 	}
 	return false;
@@ -24,14 +31,15 @@ let isDangerous = (setZones, team) =>
 
 /**
  * 
+ * @param {Match} match
  * @param {number} dx 
  * @param {number} dy
  * @param {boolean} clear
  */
-let movePiece = (dy, dx, clear=false) =>
+let movePiece = (match, dy, dx, clear=false) =>
 {
-	let newRow = cursor.getRow() + dx;
-	let newCol = cursor.getCol() + dy;
+	let newRow = match.cursor.getRow() + dx;
+	let newCol = match.cursor.getCol() + dy;
 
 	if (newRow < 1 || newRow > Macro.CHESSBOARD_H)
 		return false;
@@ -40,48 +48,53 @@ let movePiece = (dy, dx, clear=false) =>
 
 	if (clear == true)
 	{
-		let currentSquare = board.get(cursor.square);
+		let currentSquare = match.board.get(match.cursor.square);
 		let zones = currentSquare?.targetZones;
 
 		if (zones != null)
 		{
 			for (let zone of zones)
 			{
-				board.get(zone)?.dangerZones.delete(cursor.square);
+				match.board.get(zone)?.dangerZones.delete(match.cursor.square);
 			}
 			zones.clear();
 		}
 	}
-	cursor.setCursor(newRow, newCol);
+	match.cursor.setCursor(newRow, newCol);
 	return true;
 }
 
-let DangerUpdate = () =>
+/**
+ * 
+ * @param {Match} match 
+ * @returns 
+ */
+let DangerUpdate = (match) =>
 {
 	let	usedBoard;
 	let	startPos;
 	let	piece;
 
-	usedBoard = board;
-	startPos = cursor.square;
-	piece = usedBoard.get(cursor.square)?.piece;
+	usedBoard = match.board;
+	startPos = match.cursor.square;
+	piece = usedBoard.get(match.cursor.square)?.piece;
 	if (piece == null)
 		return (0);
 	for (let {dx, dy} of piece.moveArray)
 	{
-		if (!bastardChecks(dy, dx, piece, startPos)) // scambiato dx e dy
+		if (!bastardChecks(match, dy, dx, piece)) // scambiato dx e dy
 		{
-			usedBoard.get(cursor.square)?.dangerZones.add(startPos);
+			usedBoard.get(match.cursor.square)?.dangerZones.add(startPos);
 			continue ;
 		}
-		while (movePiece(dy, dx, false)) // scambiato dx e dy
+		while (movePiece(match, dy, dx, false)) // scambiato dx e dy
 		{
-			usedBoard.get(cursor.square)?.dangerZones.add(startPos);
-			usedBoard.get(startPos)?.targetZones.add(cursor.square);
-			if (piece.moveLongRangeDEBUG == false || board.get(cursor.square)?.piece != null)
+			usedBoard.get(match.cursor.square)?.dangerZones.add(startPos);
+			usedBoard.get(startPos)?.targetZones.add(match.cursor.square);
+			if (piece.moveLongRangeDEBUG == false || usedBoard.get(match.cursor.square)?.piece != null)
 				break ;
 		}
-		cursor.square = startPos;
+		match.cursor.square = startPos;
 	}
 	return (1);
 }
@@ -103,24 +116,30 @@ let bastardMove = // aggiornato movimenti
 }
 
 /**
+ * 
+ * @param {Match} match
+ * @param {Number} dy
+ * @param {Number} dx
  * @param {Piece} piece
  */
-function bastardChecks(dy, dx, piece)
+function bastardChecks(match, dy, dx, piece)
 {
 	let tmp;
 	let	target;
 
 	if (piece.type != "Bastards")
 		return true;
+	//@ts-ignore
 	if (!bastardMove[piece.team]) // FIXME errore grave: impossibile
 		return false;
+	// @ts-ignore
 	if (!bastardMove[piece.team].has(`${dx}|${dy}`))
 		return false;
-	tmp = cursor.square;
-	cursor.moveRow(dy);
-	cursor.moveCol(dx);
-	target = board.get(cursor.square)?.piece;
-	cursor.set(tmp);
+	tmp = match.cursor.square;
+	match.cursor.moveRow(dy);
+	match.cursor.moveCol(dx);
+	target = match.board.get(match.cursor.square)?.piece;
+	match.cursor.set(tmp);
 	if (dx != 0 && dy != 0)//NOTE - bastards moves diagonally
 	{
 		if (!target || target.team == piece.team)
@@ -129,24 +148,28 @@ function bastardChecks(dy, dx, piece)
 	}
 	else if (target)//NOTE - bastards moves front
 		return (false);
-	cursor.moveCol(dx + dx);
-	cursor.moveRow(dy + dy);
-	if (!piece.isMovedBool && !board.get(cursor.square).piece)
+	match.cursor.moveCol(dx + dx);
+	match.cursor.moveRow(dy + dy);
+	if (!piece.isMovedBool && !match.board.get(match.cursor.square).piece)
 	{
-		board.get(tmp).targetZones.add(cursor.square);
-		board.get(cursor.square).dangerZones.add(tmp);
+		match.board.get(tmp).targetZones.add(match.cursor.square);
+		match.board.get(match.cursor.square).dangerZones.add(tmp);
 	}
-	cursor.set(tmp);
+	match.cursor.set(tmp);
 	return (true);
 }
 
-function dangerUpdateAll()
+/**
+ * 
+ * @param {Match} match 
+ */
+function dangerUpdateAll(match)
 {
 	let	temp;
-	let	usedBoard;
+	let usedBoard
 
-	temp = cursor.square;
-	usedBoard = board;
+	temp = match.cursor.square;
+	usedBoard = match.board;
 	for (let [pos, square] of usedBoard)
 	{
 		square.boostedTargetZones.clear();
@@ -155,15 +178,15 @@ function dangerUpdateAll()
 	}
 	for (let [pos, square] of usedBoard)
 	{
-		cursor.set(pos);
+		match.cursor.set(pos);
 		if (square.piece && square.piece.isBoostedBool)
 		{
 			square.piece.moveFunction();
 			continue ;
 		}
-		DangerUpdate(usedBoard);
+		DangerUpdate(match);
 	}
-	cursor.set(temp);
+	match.cursor.set(temp);
 }
 
 module.exports = {isDangerous, movePiece, DangerUpdate, dangerUpdateAll};

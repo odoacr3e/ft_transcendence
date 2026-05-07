@@ -1,7 +1,8 @@
 // @ts-check
 const {board} =  require("./chessBoard.js");
 const {eTeam} =  require("./chessBoard.js");
-const {cursor} = require("./cursor.js");
+const {match, Match} = require("./match.js");
+const {Cursor} = require("./cursor.js");
 const {isDangerous, movePiece, DangerUpdate} = require("./utils.js");
 const Macro = require("./macro.js");
 
@@ -32,25 +33,29 @@ class Piece
 
 //ANCHOR - Methods
 
-let movementWithSecondTurn = function ( /* res */)
+/**
+ * 
+ * @param {Match} match
+ */
+let movementWithSecondTurn = function (match /* res */)
 {
 	let	startPos;
 	let	piece;
 
-	startPos = cursor.square;
-	piece = board.get(cursor.square)?.piece;
+	startPos = match.cursor.square;
+	piece = match.board.get(match.cursor.square)?.piece;
 	if (piece == null)
 		return (0);
 	for (let {dx, dy} of piece.moveArray)
 	{
-		while (movePiece(dx, dy, false))
+		while (movePiece(match, dx, dy, false))
 		{
-			board.get(cursor.square)?.dangerZones.add(startPos);
-			board.get(startPos)?.targetZones.add(cursor.square);
-			if (piece.moveLongRangeDEBUG == false || board.get(cursor.square)?.piece != null)
+			match.board.get(match.cursor.square)?.dangerZones.add(startPos);
+			match.board.get(startPos)?.targetZones.add(match.cursor.square);
+			if (piece.moveLongRangeDEBUG == false || match.board.get(match.cursor.square)?.piece != null)
 				break ;
 		}
-		cursor.square = startPos;
+		match.cursor.square = startPos;
 	}
 	/* 
 		da aggiungere la parte in cui mettiamo SecondMove nell'header
@@ -60,59 +65,64 @@ let movementWithSecondTurn = function ( /* res */)
 
 /**
  * @param {string} pos
+ * @param {Match} match
  */
-function berserkMode(pos)
+function berserkMode(pos, match)
 {
 	let startPos;
 	let piece;
 
-	startPos = cursor.square;
-	piece = board.get(pos)?.piece;
+	startPos = match.cursor.square;
+	piece = match.board.get(pos)?.piece;
 	if (piece?.moveArray == null)
 		throw ("entering in function berserkMode with a null piece :-(") ;//FIXME - errore grave, dare 500
 	for (let {dx, dy} of piece?.moveArray)
 	{
-		while (movePiece(dx, dy, false))
+		while (movePiece(match, dx, dy, false))
 		{
-			if (board.get(pos)?.piece?.type == enumNames.CHAMPION)
+			if (match.board.get(pos)?.piece?.type == enumNames.CHAMPION)
 			{
-				board.get(cursor.square)?.dangerZones.add(pos);
-				board.get(pos)?.boostedTargetZones.get(startPos)?.add(pos);
+				match.board.get(match.cursor.square)?.dangerZones.add(pos);
+				match.board.get(pos)?.boostedTargetZones.get(startPos)?.add(pos);
 			}
-			if (board.get(cursor.square)?.piece != null)
+			if (match.board.get(match.cursor.square)?.piece != null)
 			{
-				board.get(cursor.square)?.dangerZones.add(pos);
-				board.get(pos)?.boostedTargetZones.get(startPos)?.add(pos);
+				match.board.get(match.cursor.square)?.dangerZones.add(pos);
+				match.board.get(pos)?.boostedTargetZones.get(startPos)?.add(pos);
 				break ;
 			}
 		}
-		cursor.square = startPos;
+		match.cursor.square = startPos;
 	}
 }
 
-let movementChampion = function ( /* res */)
+/**
+ * 
+ * @param {Match} match
+ */
+let movementChampion = function (match /* res */)
 {
 	let	startPos;
 	let	piece;
 
-	startPos = cursor.square;
-	piece = board.get(cursor.square)?.piece;
+	startPos = match.cursor.square;
+	piece = match.board.get(match.cursor.square)?.piece;
 	if (piece == undefined)
 		return (0);
 	for (let {dx, dy} of piece.moveArray)
 	{
-		while (movePiece(dx, dy, false))
+		while (movePiece(match, dx, dy, false))
 		{
-			board.get(cursor.square)?.dangerZones.add(startPos);
-			board.get(startPos)?.targetZones.add(cursor.square);
-			if (!isDangerous(board.get(cursor.square)?.dangerZones, piece.team) && 
-			(board.get(cursor.square)?.piece == null || 
-			board.get(cursor.square)?.piece?.team != piece.team))
-				berserkMode(startPos);
-			if (board.get(cursor.square)?.piece != null)
+			match.board.get(match.cursor.square)?.dangerZones.add(startPos);
+			match.board.get(startPos)?.targetZones.add(match.cursor.square);
+			if (!isDangerous(match, match.board.get(match.cursor.square)?.dangerZones, piece.team) && 
+			(match.board.get(match.cursor.square)?.piece == null || 
+			match.board.get(match.cursor.square)?.piece?.team != piece.team))
+				berserkMode(startPos, match);
+			if (match.board.get(match.cursor.square)?.piece != null)
 				break ;
 		}
-		cursor.square = startPos;
+		match.cursor.square = startPos;
 	}
 	/* 
 		da aggiungere la parte in cui mettiamo SecondMove nell'header
@@ -120,28 +130,32 @@ let movementChampion = function ( /* res */)
 	return (1);
 }
 
-let movementMinotaurus = function ( /* res */)
+/**
+ * 
+ * @param {Match} match
+ */
+let movementMinotaurus = function (match /* res */)
 {
 	let	startPos;
 	let	piece;
 
-	startPos = cursor.square;
-	piece = board.get(cursor.square)?.piece;
+	startPos = match.cursor.square;
+	piece = match.board.get(match.cursor.square)?.piece;
 	if (piece == null)
 		return (0);
 	for (let {dx, dy} of piece.moveArray)
 	{
-		while (movePiece(dx, dy, false))
+		while (movePiece(match, dx, dy, false))
 		{
-			board.get(cursor.square)?.dangerZones.add(startPos);
-			board.get(startPos)?.targetZones.add(cursor.square);
-			if (board.get(cursor.square)?.piece != null)
+			match.board.get(match.cursor.square)?.dangerZones.add(startPos);
+			match.board.get(startPos)?.targetZones.add(match.cursor.square);
+			if (match.board.get(match.cursor.square)?.piece != null)
 			{
-				berserkMode(startPos);
+				berserkMode(startPos, match);
 				break ;
 			}
 		}
-		cursor.square = startPos;
+		match.cursor.square = startPos;
 	}
 	/* 
 		da aggiungere la parte in cui mettiamo SecondMove nell'header
@@ -149,19 +163,23 @@ let movementMinotaurus = function ( /* res */)
 	return (1);
 }
 
-let movementJester = function ()
+/**
+ * 
+ * @param {Match} match
+ */
+let movementJester = function (match)
 {
 	let	startPos;
 	let	piece;
 
-	startPos = cursor.square;
-	piece = board.get(cursor.square)?.piece;
+	startPos = match.cursor.square;
+	piece = match.board.get(match.cursor.square)?.piece;
 	if (piece == null)
 		return (0);
 	for (let {dx, dy} of piece.moveArray)
 	{
-		let row = cursor.getRow();
-		let col = cursor.getCol();
+		let row = match.cursor.getRow();
+		let col = match.cursor.getCol();
 		row = row + dx;
 		col = col + dy;
 		if (row > 8 || row <= 0 || col > 8 || col <= 0)
@@ -171,51 +189,55 @@ let movementJester = function ()
 			if (row < 0) row += 8;
 			if (col < 0) col += 8;
 			if (col == 0) col = 8;
-			cursor.setCursor(row, col);
-			board.get(startPos)?.boostedTargetZones.get(startPos)?.add(cursor.square);
+			match.cursor.setCursor(row, col);
+			match.board.get(startPos)?.boostedTargetZones.get(startPos)?.add(match.cursor.square);
 		}
 		else
 		{
-			cursor.setCursor(row, col);
-			board.get(startPos)?.targetZones.add(cursor.square);
+			match.cursor.setCursor(row, col);
+			match.board.get(startPos)?.targetZones.add(match.cursor.square);
 		}
-		board.get(cursor.square)?.dangerZones.add(startPos);
-		cursor.square = startPos;
+		match.board.get(match.cursor.square)?.dangerZones.add(startPos);
+		match.cursor.square = startPos;
 	}
 	return (1);
 }
 
-let movementValkirya = function ()
+/**
+ * 
+ * @param {Match} match
+ */
+let movementValkirya = function (match)
 {
 	let	startPos;
 	let	piece;
 
-	startPos = cursor.square;
-	piece = board.get(cursor.square)?.piece;
+	startPos = match.cursor.square;
+	piece = match.board.get(match.cursor.square)?.piece;
 	if (piece == null)
 		return (0);
 	for (let {dx, dy} of piece.moveArray)
 	{
 		let maxTarget = 2; 
-		while (movePiece(dx, dy, false))
+		while (movePiece(match, dx, dy, false))
 		{
 			if (maxTarget != 1)
 			{
-				board.get(cursor.square)?.dangerZones.add(startPos);
-				board.get(startPos)?.targetZones.add(cursor.square);
-				if (board.get(cursor.square)?.piece)
-					board.get(startPos)?.boostedTargetZones.get(startPos)?.add(cursor.square);
+				match.board.get(match.cursor.square)?.dangerZones.add(startPos);
+				match.board.get(startPos)?.targetZones.add(match.cursor.square);
+				if (match.board.get(match.cursor.square)?.piece)
+					match.board.get(startPos)?.boostedTargetZones.get(startPos)?.add(match.cursor.square);
 			}
-			if (board.get(cursor.square)?.piece != null)
+			if (match.board.get(match.cursor.square)?.piece != null)
 				maxTarget--;
 			if (maxTarget == 0)
 			{
-				board.get(cursor.square)?.dangerZones.add(startPos);
-				board.get(startPos)?.boostedTargetZones.get(startPos)?.add(cursor.square);
+				match.board.get(match.cursor.square)?.dangerZones.add(startPos);
+				match.board.get(startPos)?.boostedTargetZones.get(startPos)?.add(match.cursor.square);
 				break ;
 			}
 		}
-		cursor.square = startPos;
+		match.cursor.square = startPos;
 	}
 	return (1);
 }

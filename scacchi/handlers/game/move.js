@@ -4,7 +4,7 @@ const {enumNames} = require("../../pieces.js");
 const {MOVEMENT_MAX, MOVEMENT_MIN} = require("../../macro");
 const {Piece, board, Square, copyBoard, cursor} = require("../../lib/lib.js").Chess;
 const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("../../utils.js");
-const {match} = require("../../match.js");
+const {match, Match} = require("../../match.js");
 const {error, paramCheck, Result, clientBoard, checkMateAlert} = require("./utils.js");
 const {endTurn} = require("./endTurn");
 const {CheckMateCheck} = require("../../checkMate.js");
@@ -13,27 +13,28 @@ const {CheckMateCheck} = require("../../checkMate.js");
 
 /**
  * 
+ * @param {Match} match
  * @param {String} from the piece to move's coords
  * @param {String} to the new piece location's coords
  * @returns {Result}
  */
-function move(from, to)
+function move(match, from, to)
 {
 	let	result;
 
 	result = new Result();
 	if (!paramCheck(result, from, to))
 		return (result);
-	if (!checkMove([from, to], result))
+	if (!checkMove([from, to], result, match))
 		return (result);
-	if (!updateChessboard([from, to], result))
+	if (!updateChessboard([from, to], result, match))
 		return (result);
 	result.status = 200;
 	// @ts-ignore
 	if (CheckMateCheck(match[match.currentPlayer.next].King))
 		return (console.log("haaaaaiiiiii viiiiiiintoooooooooo!!!!!!!"), checkMateAlert(result, match.currentPlayer.team));
 	// @ts-ignore
-	result.board = clientBoard(board, [from, to]);
+	result.board = clientBoard(match.board, [from, to]);
 	if (match.moves == MOVEMENT_MIN && !match.currentPlayer.nPoints)
 		endTurn();
 	return (result);
@@ -43,16 +44,17 @@ function move(from, to)
  * 
  * @param {Array<String>} arr
  * @param {Result} result
+ * @param {Match} match
  */
-function checkMove(arr=[], result)
+function checkMove(arr=[], result, match)
 {
 	let	from;
 	let	to;
 	let	king;
 
-	from = board.get(arr[0]);
-	to = board.get(arr[1]);
-	king = board.get(match.currentPlayer.King);//FIXME - usare currentPlayer.King
+	from = match.board.get(arr[0]);
+	to = match.board.get(arr[1]);
+	king = match.board.get(match.currentPlayer.King);//FIXME - usare currentPlayer.King
 	if (king == null || king.piece == null)
 		return (error(result, 500, "backend has lost track of the king, lol"));
 	if (match.moves >= MOVEMENT_MIN)
@@ -64,7 +66,7 @@ function checkMove(arr=[], result)
 		return (error(result, 403, "invalid positions"));
 	if (from.piece == null)
 		return (error(result, 403, "Square is empty"));
-	// if (checkCastling(to, from))
+	// if (checkCastling(match, to, from))
 	// 	return (true);
 	if (!from.targetZones.has(arr[1]))
 		return (error(result, 403, "destination not in piece targetZone"));
@@ -75,9 +77,9 @@ function checkMove(arr=[], result)
 	}
 	if (from.piece?.team != match.currentPlayer.team)
 		return (error(result, 403, `it's ${match.currentPlayer.team} turn`));
-	if (isDangerous(king.dangerZones, king.piece.team) && !simulation(arr))
+	if (isDangerous(match, king.dangerZones, king.piece.team) && !simulation(arr, match))
 		return (error(result, 403, "Your king is in danger"));
-	if (!simulation(arr))
+	if (!simulation(arr, match))
 		return (error(result, 403, "this would put your king in danger"));
 	return (true);
 }
@@ -86,14 +88,15 @@ function checkMove(arr=[], result)
  * 
  * @param {Array<String>} selected
  * @param {Result} result
+ * @param {Match} match
  */
-function updateChessboard(selected=[], result)
+function updateChessboard(selected=[], result, match)
 {
 	let	from;
 	let	to;
 
-	from = board.get(selected[0]);
-	to = board.get(selected[1]);
+	from = match.board.get(selected[0]);
+	to = match.board.get(selected[1]);
 	if (!from || !to || !from.piece)
 	{
 		return (error(result, 500, "from | to bug in moveFunction"));
@@ -112,7 +115,7 @@ function updateChessboard(selected=[], result)
 	if (to.piece && to.piece.isMovedBool == false)
 		to.piece.isMovedBool = true;
 	match.moves++;
-	dangerUpdateAll();
+	dangerUpdateAll(match);
 	return (true);
 }
 
@@ -121,9 +124,10 @@ function updateChessboard(selected=[], result)
 /**
  * 
  * @param {Array<String>} selected
+ * @param {Match} match
  * @returns 
  */
-function simulation(selected)
+function simulation(selected, match)
 {
 	let tmp;
 	let	from;
@@ -140,16 +144,16 @@ function simulation(selected)
 	from.piece = null;
 	if (selected[0] == match.currentPlayer.King)
 		king = to;
-	dangerUpdateAll();
-	if (isDangerous(king.dangerZones, king.piece?.team))
+	dangerUpdateAll(match);
+	if (isDangerous(match, king.dangerZones, king.piece?.team))
 	{
 		console.log()
-		copyBoard(tmp, board);
-		dangerUpdateAll();
+		copyBoard(tmp, match.board);
+		dangerUpdateAll(match);
 		return (false);
 	}
-	copyBoard(tmp, board);
-	dangerUpdateAll();
+	copyBoard(tmp, match.board);
+	dangerUpdateAll(match);
 	return (true);
 }
 

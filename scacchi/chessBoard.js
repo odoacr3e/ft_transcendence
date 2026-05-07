@@ -1,6 +1,5 @@
 // @ts-check
 //const {include} = require("./lib/lib.js");
-//const {Chess} = require("./lib/lib.js");
 const {CHESSBOARD_H, CHESSBOARD_W} = require("./macro.js");
 //const {Enum} = require("./lib/lib.js");
 
