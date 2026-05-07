@@ -75,8 +75,7 @@ export function highlightOnClick(event)
 			lastClickedId = null;
 			return;
 		}
-		const square = localBoard.get(clickedId);
-		const piece = square.piece.type;
+		const piece = localBoard.get(clickedId).piece.type;
 		PIECES_HIGHLIGHT[piece](clickedId);
 		lastClickedId = clickedId;
 	}
@@ -85,16 +84,29 @@ export function highlightOnClick(event)
 			
 }
 
-export function setHighlighTrue(allowedMoves, flag)
+export function setHighlighTrue(allowedMoves, flag, team)
 {
 	allowedMoves.forEach((highlight) => {
 			localBoard.forEach(square => {
 				if (square.id == highlight)
 				{
-					if (square.highlight === false && square.id != clickedId && flag == "regular")
-						square.highlight = true;
-					if (square.boostedHighlight === false && square.id != clickedId && flag == "boosted")
-						square.boostedHighlight = true;
+					if (square.highlight === false && square.id != clickedId)
+					{
+						if (square.piece?.team != team)
+						{
+							if (flag === "regular")
+								square.highlight = true;
+							else if (flag ==="boosted")
+								square.boostedHighlight = true
+						}
+						else if (team === "both")
+						{
+							if (flag === "regular")
+								square.highlight = true;
+							else if (flag ==="boosted")
+								square.boostedHighlight = true
+						}
+					}
 				}
 		});
 	});
@@ -107,14 +119,8 @@ export function highlightOnDrag(event)
 		const clickedId = event.target.parentNode.id;
 		if (clickedId != lastClickedId)
 			clearHighlight();
-		
-		localBoard.get(clickedId).targetZones.forEach((highlight) => {
-			localBoard.forEach(square => {
-				if (square.id == highlight)
-					if (square.highlight === false && square.id != clickedId)
-						square.highlight = true;
-			})
-		})
+		const piece = localBoard.get(clickedId).piece.type;
+		PIECES_HIGHLIGHT[piece](clickedId)
 	}
 }
 

@@ -18,7 +18,7 @@
 </script>
 
 <template>
-  <MainLogo/>
+  <!-- <MainLogo/> -->
   <div v-if="ready" class="mt-30">
     <PlayerInfo :p="2"/>
     <ChessBoard/>
