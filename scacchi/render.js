@@ -1,5 +1,6 @@
 // @ts-check
-const { Square, board, eTeam } = require("./chessBoard.js");
+const { Square} = require("./chessBoard.js");
+const {eTeam} = require("./enums.js");
 const { Cursor } = require("./cursor.js");
 const lib = require("./lib/lib.js");
 const {match, Match} = require("./match.js");
@@ -20,6 +21,7 @@ function render(selected=[], TargetDangerSwitch="", match=null)
 	let	startPos;
 	let	usedBoard;
 
+	console.log(match?.board);
 	if (match)
 		usedBoard = match.board;
 	else

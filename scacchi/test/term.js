@@ -1,5 +1,5 @@
 // @ts-check
-const {Piece, board, Square} =					require("../lib/lib.js").Chess;
+const {Piece, Board, Square} =					require("../lib/lib.js").Chess;
 const {eTeam, enumValues, enumNames} =			require("../lib/lib.js").Enums;
 const {match, Match} = require("../match.js");
 const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("../utils.js");
@@ -15,7 +15,8 @@ const readline = 	require('node:readline');
 initTerminal();
 init(lib.Macro.SEED, match);
 dangerUpdateAll(match);
-render();
+console.log(match);
+render([], "", match);
 
 //SECTION - eventLoop: binda i tasti per fare cose
 
@@ -61,13 +62,13 @@ process.stdin.on('keypress', (str, key) =>
 				return (error(null, result));
 			break ;
 		case ("q") :
-			result = boost(cursor.square);
+			result = boost(match, match.cursor.square);
 			if (result.status != 200)
 				return (error(null, result));
 			break ;
 		case ("space") :
 			console.assert((selected.length < 2), "move array too large");
-			selected.push(cursor.square);
+			selected.push(match.cursor.square);
 			if (selected.length == 2)
 			{
 				console.clear();
@@ -82,9 +83,9 @@ process.stdin.on('keypress', (str, key) =>
 	{
 		console.log("lol no");
 	}
-	console.log("row", cursor.getRow(), ", col", cursor.getCol(), ", cursor", cursor.square);
+	console.log("row", match.cursor.getRow(), ", col", match.cursor.getCol(), ", cursor", match.cursor.square);
 	console.log("Visualizing", TargetDangerSwitch, "press \"r\" to change");
-	render(selected, TargetDangerSwitch);
+	render(selected, TargetDangerSwitch, match);
 	console.log(`keypressed: ${key.name}\n`, `Press \"space\" to move, \"q\" to boost, \"e\" to change turn`);
 });
 

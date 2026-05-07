@@ -38,19 +38,6 @@ class Square
     //tutti i dati
 }
 
-/**
- * @enum {string}
- */
-const eTeam = 
-{
-	Black: 'black',
-	White: 'white',
-	Red: 'red',
-	Blue: 'blue',
-	Green: 'green',
-	Yellow: 'yellow',
-};
-
 //ANCHOR - Methods
 
 //SECTION - chessBoard Map 
@@ -62,10 +49,13 @@ const eTeam =
 
 function initBoard()
 {
-	/** @type {string} */	let	row;
-	/** @type {number} */	let	col;
-	/** @type {string} */	let	squareId;
+	/** @type {string} */				let	row;
+	/** @type {number} */				let	col;
+	/** @type {string} */				let	squareId;
+	/** @type {Map<string, Square>} */	let	board;
 
+	// @ts-ignore
+	board = new Map();
 	row = "a";
 	for (let i = 0; i < CHESSBOARD_H; i++)
 	{
@@ -76,6 +66,7 @@ function initBoard()
 		}
 		row = String.fromCharCode(row.charCodeAt(0) + 1);
 	}
+	return (board);
 }
 
 /**
@@ -102,4 +93,4 @@ function copyBoard(src, dest=null)
 initBoard();
 // console.log(board);
 
-module.exports = {board, copyBoard, eTeam, Square};
+module.exports = {initBoard, copyBoard, Square};

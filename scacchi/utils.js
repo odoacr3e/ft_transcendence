@@ -1,6 +1,6 @@
 // @ts-check
-const {Square, eTeam} = require("./chessBoard.js");
-const {Piece} = require("./pieces.js");
+const {Square} = require("./chessBoard.js");
+// const {Piece} = require("./pieces.js");
 const Macro = require("./macro.js");
 const {Cursor} = require("./cursor.js");
 const {match, Match} = require("./match.js");

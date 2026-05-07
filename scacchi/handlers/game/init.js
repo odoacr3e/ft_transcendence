@@ -1,6 +1,7 @@
 // @ts-check
 const lib = require("../../lib/lib.js");
 const {Piece, board, copyBoard, Square, cursor} = require("../../lib/lib.js").Chess;
+const {initBoard} = require("../../chessBoard.js");
 const {eTeam} = require("../../lib/lib.js").Enums;
 const {SEED} = require("../../lib/lib.js").Macro;
 const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("../../utils.js");
@@ -22,6 +23,7 @@ function init(seed=null, match)
 	let	result;
 	let	rng;
 
+	// match.board = initBoard();
 	console.log(seed);
 	if (seed == null)
 		seed = Math.floor(Math.random() * (1 << 30));

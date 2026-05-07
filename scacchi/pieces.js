@@ -1,6 +1,5 @@
 // @ts-check
-const {board} =  require("./chessBoard.js");
-const {eTeam} =  require("./chessBoard.js");
+const {eTeam} =  require("./enums.js");
 const {match, Match} = require("./match.js");
 const {Cursor} = require("./cursor.js");
 const {isDangerous, movePiece, DangerUpdate} = require("./utils.js");

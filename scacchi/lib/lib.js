@@ -20,7 +20,7 @@ const Chess = {Piece, board, copyBoard, cursor, Square};
 const Macro = require("../macro.js");
 
 //SECTION - Enums
-const {eTeam} = require("../chessBoard.js");
+const {eTeam} = require("../enums.js");
 const {enumValues, enumNames} = require("../pieces.js");
 const Enums = {eTeam, enumValues, enumNames};
 

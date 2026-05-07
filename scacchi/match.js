@@ -1,8 +1,7 @@
 // @ts-check
-const {Cursor} =						require("./cursor.js");
-const {Piece, board, Square} = 			require("./lib/lib.js").Chess;
-const {eTeam, enumValues, enumNames} =	require("./lib/lib.js").Enums;
-
+const {Cursor} = require("./cursor.js");
+const {eTeam} = require("./enums.js");
+const {initBoard} = require("./chessBoard.js");
 const preset = {
 	white: 
 	{
@@ -76,7 +75,7 @@ class Match
 		this.blue = preset.blue,
 		this.green = preset.green,
 		this.yellow = preset.yellow,
-		this.board = new Map();
+		this.board = initBoard();
 		this.cursor = new Cursor();
 		this.moves = 0;
 		this.boost = 0;

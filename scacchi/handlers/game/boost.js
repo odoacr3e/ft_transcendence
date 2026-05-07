@@ -2,12 +2,13 @@
 
 const {Piece, board, Square, cursor} = require("../../lib/lib.js").Chess;
 const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("../../utils.js");
-const {match} = require("../../match.js");
+const {match, Match} = require("../../match.js");
 const {error, paramCheck, Result} = require("./utils.js");
 const { BOOSTED_MAX, MOVEMENT_MIN } = require("../../macro.js");
 
 /**
  * 
+ * @param {Match} match
  * @param {String} from
  * @returns {Result}
  */
@@ -18,7 +19,7 @@ function boost(match, from)
 	result = new Result();
 	if (!paramCheck(result, from))
 		return (result);
-	if (!tryBoost(match, , from))
+	if (!tryBoost(match, result, from))
 		return (result);
 	result.status = 200;
 	return (result);
@@ -26,6 +27,7 @@ function boost(match, from)
 
 /**
  * 
+ * @param {Match} match
  * @param {Result} result 
  * @param {String} from 
  * @returns {boolean}
@@ -48,7 +50,7 @@ function tryBoost(match, result, from)
 	match.currentPlayer.nPoints -= square.piece.price;
 	square.piece.isBoostedBool = !square.piece.isBoostedBool;
 	match.boost += 1;
-	dangerUpdateAll();
+	dangerUpdateAll(match);
 	return (true);
 }
 
