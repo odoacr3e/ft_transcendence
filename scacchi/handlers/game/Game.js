@@ -3,6 +3,7 @@
 const	{abort} = require("node:process");
 const	{match} = require("../../match"); 
 const	{ Result } = require("./utils");
+const	{responseFormatter} = require("../../utils/response");
 const	move = require("./move").move; 
 const	endTurn = require("./endTurn").endTurn; 
 const	boost = require("./boost").boost;
@@ -71,75 +72,6 @@ function gameHandler(req, res)
 	result = responseFormatter(result, null, null);
 	render();
 	res.status(200).json(result);
-}
-
-/**
- * @param {*} result 
- * @param {String | null} msg 
- * @param {Number | null} status 
- * @returns {{}}
- * format frontend response as an object.
- * ? means the field is optional.
- * ```ts
- * {
- *      log: 
- * 		{
- *         msg: string;
- *         status: number;
- *     	};
- *      ?board: Board;
- * 		youWin: boolean;
- *      p1: Player;
- *      p2: Player;
- *      ?p3: Player;
- *      ?p4: Player;
- * }
- * ```
- */
-function responseFormatter(result, msg, status)
-{
-	let	log;
-	let	p1 = match.white ? match.white : match.green;
-	let	p2 = match.black ? match.black : match.blue;
-	let	p3 = match.red;
-	let	p4 = match.yellow;
-
-	if (result && result.msg && result.status)
-		log = {msg: result.msg, status: result.status};
-	else
-		log = {msg: msg, status: status};
-	if (!log.status)
-	{
-		log.msg = "backend function failed for unknown reasons";
-		log.status = 500;
-	}
-	if (!p1 || !p2)
-	{
-		log.msg = `cannot find p1 or p2`;
-		log.status = 500;
-		// @ts-ignore
-		p1 = {};
-		// @ts-ignore
-		p2 = {};
-	}
-	if (!result)
-		result = {};
-	delete result.msg;
-	delete result.status;
-	if (!result.board)
-		delete result.board;
-	if (!p3)// @ts-ignore
-		delete p3;
-	if (!p4)// @ts-ignore
-		delete p4;
-	result.log = log;
-	if (log.status != 200)
-		result.log.msg = "Game Error: " + result.log.msg;
-	result.p1 = p1;
-	result.p2 = p2;
-	result.p3 = p3;
-	result.p4 = p4;
-	return (result);
 }
 
 /**

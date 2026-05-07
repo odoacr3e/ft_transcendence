@@ -2,6 +2,7 @@
 const lib = require("./lib/lib.js");
 const app = lib.include.express();
 const { db } = require("./services/dbConnection.js");
+const {responseFormatter} = require("./utils/response.js");
 
 // setup
 const PORT = 8080;
@@ -11,9 +12,13 @@ app.set('json spaces', 2);
 app.use(lib.include.express.json());
 
 // global error middleware
-app.use((err, req, res, next) => {
-  console.error(err);
-  res.status(500).json({ message: 'Errore interno del server' });
+app.use((err, req, res, next) => 
+{
+	let	formattedResponse;
+
+	console.error(err);
+	formattedResponse = responseFormatter(null, err, 500);
+	res.status(500).json(formattedResponse);
 });
 
 // routes
