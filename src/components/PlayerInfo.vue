@@ -23,13 +23,20 @@
 			<b><h1>{{ player.name }}</h1></b>
 			<h2>Points: {{ player.nPoints }}</h2>
 		</div>
-		<button class="bg-amber-300 h-full p-3 mt-3.25 rounded-2xl flex gap-1 relative left-5 cursor-pointer"
-			@click="useAbility()" v-if="player.isPlaying">
+		<button class="bg-amber-300 h-full p-3 mt-3.25 rounded-2xl flex gap-1 relative left-5 cursor-pointer
+						transition delay-50 duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-orange-400"
+			@click="useAbility()" v-if="playing">
 			<img src="../assets/boost.png" alt="" class="size-6">
-			<b>Boost!</b>
+			<b>Use Ability!</b>
 		</button>
-		<img :src="IMG_PATHS[player.team + 'King']" alt="TeamKing" class="size-18.75 relative left-57.25 select-none"
-			v-bind:class="{'drop-shadow-custom':playing}">
+		<button class="bg-blue-500 h-full p-3 mt-3.25 rounded-2xl flex gap-1 relative left-9 cursor-pointer
+				 transition delay-50 duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-indigo-500"
+			@click="" v-if="playing">
+			<img src="../assets/clock.png" alt="" class="size-6">
+			<b>End Turn</b>
+		</button>
+		<img :src="IMG_PATHS[player.team + 'King']" alt="TeamKing" class="size-18.75 relative select-none"
+			v-bind:class="{'drop-shadow-custom left-12.75':playing, 'left-85':!playing}">
 	</div>
 </template>
 
