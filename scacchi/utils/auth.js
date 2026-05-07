@@ -20,15 +20,17 @@ const checkJwt = async (req, res) => {
 };
 
 /**
- * @param {{ id_user: number, name: string, surname: string, username: string, email: string, nationality: string }} user
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
  */
-const createJwt = async (user) => {
+const createJwt = async (req, res) => {
 	const token = jwt.sign(
-		{ id_user: user.id_user, username: user.username },
+		{ id_user: req.user.id_user, username: req.user.username },
 		process.env.JWT_SECRET,
 		{ expiresIn: "1d" }
 	);
-	return (token);
+	console.log("User loggato");
+	res.status(200).json({user: req.user, token: token});
 }
 
 module.exports = { createJwt, checkJwt };

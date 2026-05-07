@@ -72,6 +72,10 @@ const getUserByUsername = async (req, res) => {
 	}
 }
 
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
 const getUserByEmail = async (req, res) => {
 	try {
 		const user = await prisma.users.findUnique({
@@ -87,6 +91,10 @@ const getUserByEmail = async (req, res) => {
 	}
 }
 
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
 const validateInput = async (req, res, next) => {
 	/** @type {{ username: string, password: string, email: string }} */
 	const { username, email, password } = req.body;
@@ -101,6 +109,10 @@ const validateInput = async (req, res, next) => {
 	next();
 }
 
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
 const validateUser = async (req, res, next) => {
 	try {
 		const { username, email } = req.body;
@@ -115,6 +127,10 @@ const validateUser = async (req, res, next) => {
 	}
 }
 
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
 const createUser = async (req, res) => {
 	try {
 		console.log(req.body);

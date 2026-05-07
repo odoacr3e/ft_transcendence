@@ -28,10 +28,10 @@ const checkUser = async (req, res, next) => {
 	try {
 		const { username, password } = req.body;
 		const user = await prisma.users.findUnique({ where: { username: String(username) } })
-		if (!user || user.password !== bcrypt.compare(password))
+		if (!user || !bcrypt.compare(password, user.password))
 			return res.status(401).json({ error: "Credenziali non valide" });
-		console.log("User " + user.rows[0].username + " trovato");
-		req.user = user.rows[0]; // aggiungo lo user trovato all'oggetto request per averlo anche nel successivo middleware
+		console.log("User " + user.username + " trovato");
+		req.user = user; // aggiungo lo user trovato all'oggetto request per averlo anche nel successivo middleware
 		next();
 	} catch (error) {
 		next(error);
