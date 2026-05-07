@@ -1566,21 +1566,23 @@
     "status": 200
   },
   "p1": {
-    "name": "",
+    "name": "Player1",
     "nPoints": 0,
     "bonusPointCounter": 0,
     "nPieces": 0,
     "team": "white",
     "next": "black",
+    "isPlaying": true,
     "King": "a5"
   },
   "p2": {
-    "name": "",
+    "name": "Player2",
     "nPoints": 0,
     "bonusPointCounter": 0,
     "nPieces": 0,
     "team": "black",
     "next": "white",
+    "isPlaying": false,
     "King": "h5"
   },
   "p3": {

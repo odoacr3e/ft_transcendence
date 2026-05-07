@@ -32,7 +32,7 @@ export function onDrop(event, toSquare)
 
 	const fromSquareId = event.dataTransfer.getData('fromSquareId')
 
-	if (fromSquareId !== toSquare.id)
+	if (fromSquareId !== toSquare.id && localBoard.get(toSquare.id).highlight)
 		requestToBack(fromSquareId, toSquare.id).then(
 			function(value) {if (value) { clearHighlight(); }},
 			function(value) {if (!value) { console.log("Mossa non valida"); }}
@@ -44,6 +44,7 @@ export async function requestToBack(fromSquare, toSquare)
 {
 	try
 	{
+		// const response = await fetch("/move.json", {
 		const response = await fetch("/api/game/", {
 		  method: "POST",
 		  headers: { "Content-Type": "application/json" },

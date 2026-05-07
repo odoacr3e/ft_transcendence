@@ -7,6 +7,13 @@ import { PIECES_HIGHLIGHT }	from "../Helper/piecesHighlits.js";
 let lastClickedId = null;
 let clickedId = null;
 
+export function useAbility()
+{
+	if (localBoard.get(clickedId).piece.useAbility)
+		localBoard.get(clickedId).piece.useAbility = false;
+	else { localBoard.get(clickedId).piece.useAbility = true; }
+}
+
 export function globalEvents()
 {
 	const ROOT_DIV = getRootDiv();
