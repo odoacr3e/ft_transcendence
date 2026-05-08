@@ -126,7 +126,7 @@ const getUserByEmail = async (req, res) => {
 const validateInput = async (req, res, next) => {
 	/** @type {{ username: string, password: string, email: string }} */
 	const { username, email, password } = req.body;
-	console.log(`username: ${colors.yellow}${username}${colors.reset}, email: ${colors.yellow}${email}${colors.reset}, password: ${colors.yellow}${password}${colors.reset}`);
+	// console.log(`username: ${colors.yellow}${username}${colors.reset}, email: ${colors.yellow}${email}${colors.reset}, password: ${colors.yellow}${password}${colors.reset}`);
 	if (!username || username.length < 4)
 		return res.status(400).json({ error: "Username too short" });
 	if (!usersUtils.checkEmail(email))
@@ -140,9 +140,15 @@ const validateInput = async (req, res, next) => {
 const validateUser = async (req, res, next) => {
 	try {
 		const { username, email } = req.body;
-		if ((await usersQuery.getUserByUsername(username)).rowCount > 0)
-			return res.status(409).json({ error: "User already exists" });
-		if ((await usersQuery.getUserByEmail(email)).rowCount > 0)
+		const user = await prisma.users.findFirst({
+			where: {
+				OR: [
+					{ username: username },
+					{ email: email }
+				]
+			}
+		});
+		if (user)
 			return res.status(409).json({ error: "User already exists" });
 		console.log(`Validate User: ${colors.green}OK${colors.reset}`);
 		next();
