@@ -21,7 +21,7 @@ match = vault.getDebugMatch();
 init(match, lib.Macro.SEED);
 dangerUpdateAll(match);
 // console.log(match);
-render([], "", match);
+render(match);
 
 //SECTION - eventLoop: binda i tasti per fare cose
 
@@ -42,16 +42,16 @@ process.stdin.on('keypress', (str, key) =>
 	switch (key.name)
 	{
 		case ("up") : case ("w") :
-			dx -= 1;
+			dy += 1;
 			break ;
 		case ("down") : case ("s") :
-			dx += 1;
-			break ;
-		case ("left") : case ("a") :
 			dy -= 1;
 			break ;
+		case ("left") : case ("a") :
+			dx -= 1;
+			break ;
 		case ("right") : case ("d") :
-			dy += 1;
+			dx += 1;
 			break ;
 		case ("r") :
 			if (TargetDangerSwitch == "None")
@@ -90,7 +90,7 @@ process.stdin.on('keypress', (str, key) =>
 	}
 	console.log("row", match.cursor.getRow(), ", col", match.cursor.getCol(), ", cursor", match.cursor.square);
 	console.log("Visualizing", TargetDangerSwitch, "press \"r\" to change");
-	render(selected, TargetDangerSwitch, match);
+	render(match, selected, TargetDangerSwitch);
 	console.log(`keypressed: ${key.name}\n`, `Press \"space\" to move, \"q\" to boost, \"e\" to change turn`);
 });
 

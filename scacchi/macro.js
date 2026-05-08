@@ -15,10 +15,10 @@ const HASH_SALT = 10;
 	seed interessanti
 	0:	classic mode
 	1:	trono di spade
-	62: scacco matto ciao ciao
+	1057: scacco matto ciao ciao //FIXME - non da scacco matto
 	63: scacco matto prevenibile
 */
-const SEED = 1057;
+const SEED = 0;
 
 //ANCHOR - chess
 

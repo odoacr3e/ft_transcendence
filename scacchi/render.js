@@ -10,80 +10,98 @@ const enumNames = lib.Enums.enumNames;
 const RESET = "\x1b[0m";
 
 /**
+ * @param {Match | null} match 
  * @param {Array<String>} selected which positions are selected
  * @param {String} TargetDangerSwitch Valid value: "Target", "Danger", "None" 
- * @param {Match | null} match 
  */
-function render(selected=[], TargetDangerSwitch="", match=null)
+function render(match=null, selected=[], TargetDangerSwitch="")
 {
 	let buffer;
 	let	asciiArt;
-	let	startPos;
-	let	usedBoard;
-	let	pos;
-	let	corners;
+	let	board;
+	let	coords;
 	let	square;
 
-	// console.log(match?.board);
 	if (match)
-		usedBoard = match.board;
+		board = match.board;
 	else
 	{
 		console.log("no match!");
 		return ;
 	}
-	buffer = "";
-	startPos = usedBoard.get(match.cursor.square);
-	if (!startPos)
-		return (console.log("errore cursor"));
-	corners = getCorners();
-	pos = corners.left;//starts from top-left corner
-	
-	displayPlayerInfo(usedBoard, match);
-	while (pos)
+	coords = getCoords(match);
+	match.cursor.set(coords.start);
+	buffer = "";	
+	displayPlayerInfo(board, match);
+	do
 	{
-		asciiArt = getAscii(data);
-		if (data.piece && data.piece.team)
-			buffer += `\x1b[48;5;${getSquareColor(data.piece.team)}m`;
-		if (match.cursor.square == pos)
-			buffer += `\x1b[32m[${asciiArt}]`;
-		else if (pos == selected[0])
-			buffer += `\x1b[33m[${asciiArt}]`;
-		else if (TargetDangerSwitch == "Target" && startPos.targetZones.has(pos))
-			buffer += `\x1b[31m[${asciiArt}]`;
-		else if (TargetDangerSwitch == "Danger" && startPos.dangerZones.has(pos))
-			buffer += `\x1b[31m[${asciiArt}]`;
-		else if (match.board.get(pos)?.piece?.isBoostedBool == true)
-			buffer += `\x1b[34m[${asciiArt}]`;
-		else
-			buffer += `[${asciiArt}]`;
-		buffer += "\x1b[0m";
+		match.cursor.setCol(1);
+		do
+		{
+			coords.curr = match.cursor.square;
+			square = board.get(coords.curr);
+			if (!square)
+				throw (`board position ${match.cursor.square} gives back null pointer`);
+			asciiArt = getAscii(square);
+			if (square.piece && square.piece.team)
+				buffer += `\x1b[48;5;${getSquareColor(square.piece.team)}m`;
+			if (coords.player == coords.curr)
+				buffer += `\x1b[32m[${asciiArt}]`;
+			else if (coords.curr == selected[0])
+				buffer += `\x1b[33m[${asciiArt}]`;
+			else if (TargetDangerSwitch == "Target" && coords.playerSquare.targetZones.has(coords.curr))
+				buffer += `\x1b[31m[${asciiArt}]`;
+			else if (TargetDangerSwitch == "Danger" && coords.playerSquare.dangerZones.has(coords.curr))
+				buffer += `\x1b[31m[${asciiArt}]`;
+			else if (square.piece?.isBoostedBool == true)
+				buffer += `\x1b[34m[${asciiArt}]`;
+			else
+				buffer += `[${asciiArt}]`;
+			buffer += "\x1b[0m";
+		}
+		while (match.cursor.moveCol(+1))
+		buffer += "\n";
 	}
+	while (match.cursor.moveRow(-1))
+	match.cursor.set(coords.player);
 	console.log(buffer);
-}
-
-function getCorners()
-{
-	let	corners;
-	let	rightCol;
-
-	corners = 
-	{
-		left: "",
-		right: ""
-	};
-	corners.left = "a" + CHESSBOARD_H;
-	rightCol = CHESSBOARD_W - "a".charCodeAt(0) + 1;
-	corners.right = `${String.fromCharCode(rightCol)}1`;
-	return (corners);
 }
 
 /**
  * 
- * @param {Map<string, Square>} usedBoard
+ * @param {Match} match 
+ * @returns 
+ */
+function getCoords(match)
+{
+	let	coords;
+	let	endCol;
+
+	coords = 
+	{
+		start: "",
+		end: "",
+		curr: "",
+		player: "",
+		playerSquare: new Square()
+	};
+	coords.start = "a" + CHESSBOARD_H;
+	endCol = CHESSBOARD_W - "a".charCodeAt(0) + 1;
+	coords.end = `${String.fromCharCode(endCol)}1`;
+	coords.player = match.cursor.square;
+	// @ts-ignore
+	coords.playerSquare = match.board.get(coords.player);
+	if (!coords.playerSquare)
+		throw ("Render, getCoords: invalid cursor");
+	return (coords);
+}
+
+/**
+ * 
+ * @param {Map<string, Square>} board
  * @param {Match | null} match
  */
-function displayPlayerInfo(usedBoard, match)
+function displayPlayerInfo(board, match)
 {
 	let	player;
 	let	col;
@@ -91,10 +109,10 @@ function displayPlayerInfo(usedBoard, match)
 	if (!match)
 		return ;
 	player = match.currentPlayer;
-	col = `\x1b[${getSquareColor(player.team)}m`;
-	console.log(`It's ${col}${player.team}${RESET} turn.`);
+	col = getDotColor(match.currentPlayer.team);
+	console.log(`It's ${col} turn.`);
 	console.log(`points: ${player.nPoints}💲, bonus: ${player.bonusPointCounter}⚖️`);
-	if (kingThreat(usedBoard, match) == true)
+	if (kingThreat(board, match) == true)
 		console.log(`${player.team} king is threatened💀`);
 }
 
@@ -133,6 +151,31 @@ function getAscii(data)
 			return ("V");
 		default :
 			return (" ");
+	}
+}
+
+/**
+ * 
+ * @param {string} team
+ */
+function getDotColor(team)
+{
+	switch (team)
+	{
+		case (null) :
+			return ("???");
+		case (eTeam.Black) :
+			return ("⚫️");
+		case (eTeam.White) :
+			return ("⚪");
+		case (eTeam.Blue) :
+			return ("🔵");
+		case (eTeam.Green) :
+			return ("🟢");
+		case (eTeam.Red) :
+			return ("🔴");
+		case (eTeam.Yellow) :
+			return ("🟡");
 	}
 }
 

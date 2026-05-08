@@ -5,7 +5,6 @@ const {initBoard} = require("../../chessBoard.js");
 const {eTeam} = require("../../lib/lib.js").Enums;
 const {SEED} = require("../../lib/lib.js").Macro;
 const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("../../utils.js");
-const {render} = require("../../render.js");
 const {Match} = require("../../match.js");
 const {error, clientBoard, paramCheck, Result} = require("./utils.js");
 const {initRng} = require("../../utils/random");

@@ -59,8 +59,11 @@ function moveRow(dy)
 {
 	let tmp = this.getCol();
 
-	if ((tmp + dy) < CHESSBOARD_H && (tmp + dy) > 0)
+	if ((tmp + dy) < CHESSBOARD_H + 1 && (tmp + dy) > 0)
 		this.setCol(this.getCol() + dy);
+	else
+		return (false);
+	return (true);
 }
 
 /**
@@ -74,6 +77,9 @@ function moveCol(dx)
 
 	if ((tmp + dx) < CHESSBOARD_W + 1 && tmp + dx > 0)
 		this.setRow(tmp + dx);
+	else
+		return (false);
+	return (true);
 }
 
 /**

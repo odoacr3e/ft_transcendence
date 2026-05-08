@@ -76,7 +76,7 @@ function gameHandler(req, res)
 	if (result.status != 200)
 		return (error(res, result));
 	result = responseFormatter(result, null, null);
-	render([], "", match);
+	render(match);
 	res.status(200).json(result);
 }
 
@@ -94,7 +94,7 @@ function error(res=null, result=null, status=0, msg=null)
 	console.clear();
 	console.log("\x1b[31mGame error\x1b[0m");
 	console.log(`status: ${result.log.status}\nmsg: ${result.log.msg}`);
-	render([], "", DEBUG_MATCH);
+	render(DEBUG_MATCH);
 	if (!res)
 		return (false);
 	if (result.log.status != 0)
