@@ -181,9 +181,7 @@ const createUser = async (req, res) => {
 		if (!user)
 			return res.status(500).json({ error: "Server error creating user" });
 		req.user = user;
-		console.log("QUI ARRIVO!\nUser: ", user);
 		const token = await jwt.createJwt(req, res);
-		console.log("token:", token);
 		return res.status(201).json({ "user": user, "token": token });
 	} catch (error) {
 		return res.status(500).json({ error: "Server error creating user" });
