@@ -4,9 +4,9 @@ export async function loadReceivedMatch()
 {
 	// const response = await fetch("/match.json",
 	// const response = await fetch("/api/game/",
-	// const response = await fetch("/FILE.json",
 	// const response = await fetch("/Mino.json",
-	const response = await fetch("/Champ.json",
+	// const response = await fetch("/Champ.json",
+	const response = await fetch("/FILE.json",
 	{
 		method: "POST",
 		headers: { "Content-Type": "application/json" },
@@ -71,11 +71,10 @@ function initLocalPlayers()
 	})	
 }
 
-export function replaceMatchState(nextRaw) 
+export function updateMatchState(nextRaw)
 {
 	const validated = validateReceivedMatch(nextRaw);
 	startLocalMatchState(validated);
-  
 	try 
 	{
 		updateLocalBoard(validated);

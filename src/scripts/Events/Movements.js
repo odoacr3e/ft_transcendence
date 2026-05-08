@@ -1,4 +1,4 @@
-import { replaceMatchState } from "../Data/Archi.js"
+import { updateMatchState } from "../Data/Archi.js"
 import { clearHighlight }	from "../Helper/RenderUtils.js";
 import { localBoard }		from "../Data/Variables.js";
 
@@ -44,8 +44,8 @@ export async function requestToBack(fromSquare, toSquare)
 {
 	try
 	{
-		// const response = await fetch("/move.json", {
-		const response = await fetch("/api/game/", {
+		// const response = await fetch("/api/game/", {
+		const response = await fetch("/move.json", {
 		  method: "POST",
 		  headers: { "Content-Type": "application/json" },
 		  body: JSON.stringify({ type: "move", from: fromSquare, to: toSquare }),
@@ -55,7 +55,7 @@ export async function requestToBack(fromSquare, toSquare)
 	
 		const match = await response.json();
 	
-		replaceMatchState(match);
+		updateMatchState(match);
 		return true;
 	}
 	catch (err)

@@ -89,14 +89,15 @@ boardConverter()
 	✓ refactoring funzione che gestisce gli events
 	✓ pagina user per test con back
 	✓ rendering delle informazioni dei player
-	▫ bottone per utilizzare l'abilità [MAVI]
-	▫ drag non fastasma
-	▫ highlitghs per i pezzi boostati {LEO}
-	▫ movimento per i pezzi boostati
-	▫ bottone per fine turno
+	✓ bottone per utilizzare l'abilità
+	✓ highlitghs per i pezzi boostati
+	✓ gestione dei turni tra players (in locale)
+	▫ bottone per fine turno [MAVI]
 	▫ richieste del boosting
-	▫ gestione dei turni tra players (niente permessi di modifica per un giocatore)
-	▫ oreintamento della scacchiera in base al colore dei pezzi del giocatore
 	▫ drag non fastasma
+	▫ movimento per i pezzi boostati {LEO}
+	▫ drag non fastasma
+	? oreintamento della scacchiera in base al colore dei pezzi del giocatore
 
-//REVIEW - 
+//FIXME - 
+

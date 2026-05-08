@@ -1,17 +1,34 @@
-import { requestToBack }	from "./Movements.js";
-import { clearHighlight}	from "../Helper/RenderUtils.js";
-import { localBoard }		from "../Data/Variables.js";
-import { getRootDiv }		from "../Helper/Constants.js";
-import { PIECES_HIGHLIGHT }	from "../Helper/piecesHighlits.js";
+import { localBoard, localPlayers }	from "../Data/Variables.js";
+import { PIECES_HIGHLIGHT }			from "../Helper/piecesHighlits.js";
+import { requestToBack }			from "./Movements.js";
+import { clearHighlight}			from "../Helper/RenderUtils.js";
+import { getRootDiv }				from "../Helper/Constants.js";
 
 let lastClickedId = null;
 let clickedId = null;
 
 export function useAbility()
 {
-	if (localBoard.get(clickedId).piece.useAbility)
-		localBoard.get(clickedId).piece.useAbility = false;
-	else { localBoard.get(clickedId).piece.useAbility = true; }
+	if (localBoard.get(clickedId).piece.useAbilityBool)
+		localBoard.get(clickedId).piece.useAbilityBool = false;
+	else { localBoard.get(clickedId).piece.useAbilityBool = true; }
+
+	PIECES_HIGHLIGHT[localBoard.get(clickedId).piece.type](clickedId);
+}
+
+export function checkPermision(event)
+{
+	if (event.target.localName === "div")	{ clickedId = event.target.id; }
+	else									{ clickedId = event.target.parentNode.id; }
+	
+	if (clickedId === "" || clickedId === "board") { return (false) }; //dragging multiplo strano
+
+	const Piece = localBoard.get(clickedId).piece;
+	const Player = localPlayers.values().find(p => p.isPlaying === true);
+	 	
+	if (Piece && Piece.team != Player.team) { lastClickedId = null; return false; }
+
+	return true;
 }
 
 export function globalEvents()
@@ -19,8 +36,9 @@ export function globalEvents()
 	const ROOT_DIV = getRootDiv();
 
 	ROOT_DIV.addEventListener("click", function (event) {
-		if (assignClickedId(event)) { sendToBackend(); }
-		else 						{ highlightOnClick(event); }
+		if (!checkPermision(event))			{ clearHighlight(); return; }
+		if (checkForHighlightMove(event))	{ sendToBackend(); }
+		else 								{ highlightOnClick(event); }
 	});
 
 	ROOT_DIV.addEventListener("dragstart", function (event) {
@@ -33,15 +51,8 @@ export function globalEvents()
 
 }
 
-export function assignClickedId(event)
-{
-	
-	if (event.target.localName === "div")	{ clickedId = event.target.id; }
-	else									{ clickedId = event.target.parentNode.id; }
-	
-	if (clickedId === "" || clickedId === "board") { return (false) };
-	// console.log("entrato dio spaesato!");
-	
+export function checkForHighlightMove(event)
+{	
 	let bool = localBoard.get(clickedId).highlight;
 	// console.log(`clickedId: ${clickedId}\nbool: ${bool	}`);
 	
@@ -97,14 +108,14 @@ export function setHighlighTrue(allowedMoves, flag, team)
 							if (flag === "regular")
 								square.highlight = true;
 							else if (flag ==="boosted")
-								square.boostedHighlight = true
+								square.boostedHighlight = true;
 						}
 						else if (team === "both")
 						{
 							if (flag === "regular")
 								square.highlight = true;
 							else if (flag ==="boosted")
-								square.boostedHighlight = true
+								square.boostedHighlight = true;
 						}
 					}
 				}
@@ -119,8 +130,13 @@ export function highlightOnDrag(event)
 		const clickedId = event.target.parentNode.id;
 		if (clickedId != lastClickedId)
 			clearHighlight();
-		const piece = localBoard.get(clickedId).piece.type;
-		PIECES_HIGHLIGHT[piece](clickedId)
+
+		const Piece = localBoard.get(clickedId).piece;
+		const Player = localPlayers.values().find(p => p.isPlaying === true);
+	 	
+		if (Piece.team != Player.team) { return; }
+
+		PIECES_HIGHLIGHT[Piece.type](clickedId);
 	}
 }
 
@@ -130,6 +146,7 @@ export function rightClickSelect(event)
 	{
 		event.preventDefault();
 		clearHighlight("highlight");
+		lastClickedId = null;
 		let targetSquare;
 		if (event.target.localName === "img")
 		{

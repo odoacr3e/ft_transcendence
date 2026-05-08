@@ -8,7 +8,7 @@ class Square {
 		this.piece = piece;
 		this.highlight = false;
 		this.boostedHighlight = false;
-		this.useAbilityBool = false
+		this.useAbilityBool = false;
 		this.selected = false;
 		this.targetZones = new Set(targetZones);
 		this.boostedTargetZones = new Map(boostedTargetZones);

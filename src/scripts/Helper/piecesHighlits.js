@@ -1,6 +1,6 @@
-import { localBoard } from "../Data/Variables"
-import { setHighlighTrue } from "../Events/Global";
-import { clearHighlight } from "./RenderUtils";
+import { setHighlighTrue }	from "../Events/Global";
+import { clearHighlight }	from "./RenderUtils";
+import { localBoard }		from "../Data/Variables"
 
 const PIECES_HIGHLIGHT = Object.freeze ({
 	"King" : KingAndBastardsHL,
@@ -13,7 +13,7 @@ const PIECES_HIGHLIGHT = Object.freeze ({
 
 export function JesterHL(squareId)
 {
-	if (!squareId)
+	if (!squareId && localBoard.has(squareId))
 		return;
 	const square = localBoard.get(squareId);
 	const useAbility = square.piece.useAbilityBool && square.piece.isBoostedBool;
@@ -36,7 +36,7 @@ export function JesterHL(squareId)
 
 export function ValkiryaHL(squareId)
 {
-	if (!squareId)
+	if (!squareId && localBoard.has(squareId))
 		return;
 	const square = localBoard.get(squareId);
 	const useAbility = square.piece.useAbilityBool && square.piece.isBoostedBool;
@@ -56,7 +56,7 @@ export function ValkiryaHL(squareId)
 
 export function KingAndBastardsHL(squareId)
 {
-	if (!squareId)
+	if (!squareId && localBoard.has(squareId))
 		return;
 	const square = localBoard.get(squareId);
 	const useAbility = square.piece.useAbilityBool && square.piece.isBoostedBool;
@@ -74,12 +74,12 @@ export function KingAndBastardsHL(squareId)
 	else if (regularMoves)
 		setHighlighTrue(regularMoves, "regular", team);
 	else
-		throw Error("[BastardsHL]: qualcosa è andato storto");
+		throw Error("[KingAndBastardsHL]: qualcosa è andato storto");
 }
 
 export function ChampAndMinoHL(squareId)
 {
-	if (!squareId)
+	if (!squareId && localBoard.has(squareId))
 		return;
 	const square = localBoard.get(squareId);
 	const useAbility = square.piece.useAbilityBool && square.piece.isBoostedBool;
@@ -99,7 +99,7 @@ export function ChampAndMinoHL(squareId)
 	else if (regularMoves)
 		setHighlighTrue(regularMoves, "regular", team);
 	else
-		throw Error("[JesterHL]: qualcosa è andato storto");
+		throw Error("[ChampAndMinoHL]: qualcosa è andato storto");
 }
 
 export { PIECES_HIGHLIGHT }
