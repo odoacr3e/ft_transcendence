@@ -43,8 +43,6 @@ class Square
 //SECTION - chessBoard Map 
 //ANCHOR - Definition 
 
-/** @type {Map<string, Square>} */ const board = new Map();
-
 //ANCHOR - utils
 
 function initBoard()

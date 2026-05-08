@@ -4,6 +4,7 @@ const {eTeam} = require("./enums.js");
 const { Cursor } = require("./cursor.js");
 const lib = require("./lib/lib.js");
 const {Match} = require("./match.js");
+const {CHESSBOARD_H, CHESSBOARD_W} = require("./macro.js");
 const enumNames = lib.Enums.enumNames;
 
 const RESET = "\x1b[0m";
@@ -16,10 +17,12 @@ const RESET = "\x1b[0m";
 function render(selected=[], TargetDangerSwitch="", match=null)
 {
 	let buffer;
-	let	i;
 	let	asciiArt;
 	let	startPos;
 	let	usedBoard;
+	let	pos;
+	let	corners;
+	let	square;
 
 	// console.log(match?.board);
 	if (match)
@@ -33,9 +36,11 @@ function render(selected=[], TargetDangerSwitch="", match=null)
 	startPos = usedBoard.get(match.cursor.square);
 	if (!startPos)
 		return (console.log("errore cursor"));
+	corners = getCorners();
+	pos = corners.left;//starts from top-left corner
+	
 	displayPlayerInfo(usedBoard, match);
-	i = 0;
-	for (let [pos, data] of usedBoard)
+	while (pos)
 	{
 		asciiArt = getAscii(data);
 		if (data.piece && data.piece.team)
@@ -53,14 +58,24 @@ function render(selected=[], TargetDangerSwitch="", match=null)
 		else
 			buffer += `[${asciiArt}]`;
 		buffer += "\x1b[0m";
-		i++;
-		if (i == lib.Macro.CHESSBOARD_H)
-		{
-			buffer += `\n`;
-			i = 0;
-		}
 	}
 	console.log(buffer);
+}
+
+function getCorners()
+{
+	let	corners;
+	let	rightCol;
+
+	corners = 
+	{
+		left: "",
+		right: ""
+	};
+	corners.left = "a" + CHESSBOARD_H;
+	rightCol = CHESSBOARD_W - "a".charCodeAt(0) + 1;
+	corners.right = `${String.fromCharCode(rightCol)}1`;
+	return (corners);
 }
 
 /**
