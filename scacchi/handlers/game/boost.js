@@ -2,7 +2,7 @@
 
 const {Piece, board, Square, cursor} = require("../../lib/lib.js").Chess;
 const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("../../utils.js");
-const {match, Match} = require("../../match.js");
+const {Match} = require("../../match.js");
 const {error, paramCheck, Result} = require("./utils.js");
 const { BOOSTED_MAX, MOVEMENT_MIN } = require("../../macro.js");
 

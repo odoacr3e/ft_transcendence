@@ -4,7 +4,7 @@ const {enumNames} = require("../../pieces.js");
 const {MOVEMENT_MAX, MOVEMENT_MIN} = require("../../macro");
 const {Piece, board, Square, copyBoard, cursor} = require("../../lib/lib.js").Chess;
 const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("../../utils.js");
-const {match, Match} = require("../../match.js");
+const {Match} = require("../../match.js");
 const {error, paramCheck, Result, clientBoard, checkMateAlert} = require("./utils.js");
 const {endTurn} = require("./endTurn");
 const {CheckMateCheck} = require("../../checkMate.js");
@@ -31,12 +31,12 @@ function move(match, from, to)
 		return (result);
 	result.status = 200;
 	// @ts-ignore
-	if (CheckMateCheck(match[match.currentPlayer.next].King))
+	if (CheckMateCheck(match, match[match.currentPlayer.next].King))
 		return (console.log("haaaaaiiiiii viiiiiiintoooooooooo!!!!!!!"), checkMateAlert(result, match.currentPlayer.team));
 	// @ts-ignore
 	result.board = clientBoard(match.board, [from, to]);
 	if (match.moves == MOVEMENT_MIN && !match.currentPlayer.nPoints)
-		endTurn();
+		endTurn(match);
 	return (result);
 }
 
@@ -134,10 +134,10 @@ function simulation(selected, match)
 	let	to;
 	let	king;
 
-	tmp = copyBoard(board);
-	from = board.get(selected[0]);
-	to = board.get(selected[1]);
-	king = board.get(match.currentPlayer.King);
+	tmp = copyBoard(match.board);
+	from = match.board.get(selected[0]);
+	to = match.board.get(selected[1]);
+	king = match.board.get(match.currentPlayer.King);
 	if (!from || !to || !king)
 		return (false); // FIXME error 500 : impossibile
 	to.piece = from.piece;

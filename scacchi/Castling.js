@@ -2,7 +2,7 @@
 const {enumNames} = require("./pieces.js");
 const {Square, Piece, board, copyBoard, cursor} = require("./lib/lib.js").Chess
 const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("./utils.js");
-const {match, Match} = require("./match.js");
+const {Match} = require("./match.js");
 const {error, paramCheck, Result, clientBoard, checkMateAlert} = require("./handlers/game/utils.js");
 const {getDirection} = require("./checkMate.js");
 
@@ -38,17 +38,17 @@ function checkCastling(match, to, from)
 	pieces = getPieces(match, from, to);
 	if (!pieces)
 		return false;
-	dir = getDirection(pieces.mino.pos, pieces.king.pos);
-	if (isDangerous(pieces.kingDanger, pieces.king.team))
+	dir = getDirection(match, pieces.mino.pos, pieces.king.pos);
+	if (isDangerous(match, pieces.kingDanger, pieces.king.team))
 		return false;
 	if (dir.diffRow != 0 && dir.diffCol != 0)
 		return false;
 	else if (dir.diffRow == 0 && dir.diffCol == 0)
 		return false;
 	cursor.set(pieces.king.pos);
-	for (let i = 0; movePiece(pieces.dir[0], pieces.dir[1]); ++i)
+	for (let i = 0; movePiece(match, pieces.dir[0], pieces.dir[1]); ++i)
 	{
-		if (isDangerous(board.get(cursor.square)?.dangerZones, pieces.king.team))
+		if (isDangerous(match, board.get(cursor.square)?.dangerZones, pieces.king.team))
 			return false;
 		if (cursor.square == pieces.mino.pos || i == 1)
 			break;

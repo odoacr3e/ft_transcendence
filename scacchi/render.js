@@ -3,7 +3,7 @@ const { Square} = require("./chessBoard.js");
 const {eTeam} = require("./enums.js");
 const { Cursor } = require("./cursor.js");
 const lib = require("./lib/lib.js");
-const {match, Match} = require("./match.js");
+const {Match} = require("./match.js");
 const enumNames = lib.Enums.enumNames;
 
 const RESET = "\x1b[0m";
@@ -21,7 +21,7 @@ function render(selected=[], TargetDangerSwitch="", match=null)
 	let	startPos;
 	let	usedBoard;
 
-	console.log(match?.board);
+	// console.log(match?.board);
 	if (match)
 		usedBoard = match.board;
 	else

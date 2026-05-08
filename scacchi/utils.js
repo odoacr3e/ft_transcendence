@@ -1,9 +1,9 @@
 // @ts-check
 const {Square} = require("./chessBoard.js");
-// const {Piece} = require("./pieces.js");
+const {Piece} = require("./pieces.js");
 const Macro = require("./macro.js");
 const {Cursor} = require("./cursor.js");
-const {match, Match} = require("./match.js");
+const {Match} = require("./match.js");
 const { start } = require("node:repl");
 
 /**
@@ -82,12 +82,12 @@ let DangerUpdate = (match) =>
 		return (0);
 	for (let {dx, dy} of piece.moveArray)
 	{
-		if (!bastardChecks(match, dy, dx, piece)) // scambiato dx e dy
+		if (!bastardChecks(match, dx, dy, piece))
 		{
 			usedBoard.get(match.cursor.square)?.dangerZones.add(startPos);
 			continue ;
 		}
-		while (movePiece(match, dy, dx, false)) // scambiato dx e dy
+		while (movePiece(match, dy, dx, false))
 		{
 			usedBoard.get(match.cursor.square)?.dangerZones.add(startPos);
 			usedBoard.get(startPos)?.targetZones.add(match.cursor.square);
@@ -100,10 +100,10 @@ let DangerUpdate = (match) =>
 }
 
 /*										dy/dx	dy/dx	dy/dx
-	red/white: SOUTH, dx positivo  -->	1, 0	1,-1	1,1
-	yellow/black: NORTH dx negativo		-1, 0	-1,-1	-1,1
-	blue: WEST dy negativo				0, 1	-1,1	1,1
-	green: EAST dy positivo				0, -1	-1,-1	1,-1
+	red/white: SOUTH, dy positivo  -->	1, 0	1,-1	1,1
+	yellow/black: NORTH dy negativo		-1, 0	-1,-1	-1,1
+	blue: WEST dx positivo				0, 1	-1,1	1,1
+	green: EAST dx positivo				0, -1	-1,-1	1,-1
 */
 let bastardMove = // aggiornato movimenti
 {
@@ -133,7 +133,7 @@ function bastardChecks(match, dy, dx, piece)
 	if (!bastardMove[piece.team]) // FIXME errore grave: impossibile
 		return false;
 	// @ts-ignore
-	if (!bastardMove[piece.team].has(`${dx}|${dy}`))
+	if (!bastardMove[piece.team].has(`${dy}|${dx}`))
 		return false;
 	tmp = match.cursor.square;
 	match.cursor.moveRow(dy);
@@ -148,8 +148,8 @@ function bastardChecks(match, dy, dx, piece)
 	}
 	else if (target)//NOTE - bastards moves front
 		return (false);
-	match.cursor.moveCol(dx + dx);
 	match.cursor.moveRow(dy + dy);
+	match.cursor.moveCol(dx + dx);
 	if (!piece.isMovedBool && !match.board.get(match.cursor.square).piece)
 	{
 		match.board.get(tmp).targetZones.add(match.cursor.square);

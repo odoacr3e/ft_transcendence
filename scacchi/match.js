@@ -94,6 +94,4 @@ class Match
 	}
 }
 
-const match = new Match();
-
-module.exports = {match, Match};
+module.exports = {Match};

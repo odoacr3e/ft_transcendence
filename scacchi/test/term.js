@@ -1,7 +1,7 @@
 // @ts-check
 const {Piece, Board, Square} =					require("../lib/lib.js").Chess;
 const {eTeam, enumValues, enumNames} =			require("../lib/lib.js").Enums;
-const {match, Match} = require("../match.js");
+const {Match} = require("../match.js");
 const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("../utils.js");
 const {error, move, boost, endTurn, init} = require("../handlers/game/Game.js");
 const {Result} = require("../handlers/game/utils.js");
@@ -12,10 +12,13 @@ const {render} = 	require("../render.js");
 const readline = 	require('node:readline');
 
 //SECTION - main: inizializza e fa primo render, mette terminale in ascolto
+let	match;
+
 initTerminal();
-init(lib.Macro.SEED, match);
+match = new Match();
+init(match, lib.Macro.SEED);
 dangerUpdateAll(match);
-console.log(match);
+// console.log(match);
 render([], "", match);
 
 //SECTION - eventLoop: binda i tasti per fare cose
@@ -57,7 +60,7 @@ process.stdin.on('keypress', (str, key) =>
 				TargetDangerSwitch = "None";
 			break ;
 		case ("e") :
-			result = endTurn();
+			result = endTurn(match);
 			if (result.status != 200)
 				return (error(null, result));
 			break ;

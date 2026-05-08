@@ -56,13 +56,13 @@ function gameHandler(req, res)
 
 	console.clear();
 	if (type == "move")
-		result = move(from, to);
+		result = move(match, from, to);
 	else if (type == "boost")
 		result = boost(match, from);
 	else if (type == "endTurn")
-		result = endTurn();
+		result = endTurn(match);
 	else if (type == "init")
-		result = init(from, match);
+		result = init(match, from);
 	else
 		return (error(res, null, 400, `invalid type ${type}`));
 	if (!result || !result.status)

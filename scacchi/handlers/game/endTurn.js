@@ -3,21 +3,22 @@
 const {MOVEMENT_MAX, MOVEMENT_MIN, MOVEMENT_BONUS_POINT} = require("../../macro");
 const {Piece, board, Square, cursor} = require("../../lib/lib.js").Chess;
 const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("../../utils.js");
-const {match} = require("../../match.js");
+const {Match} = require("../../match.js");
 const {error, paramCheck, Result, checkMateAlert} = require("./utils.js");
 const {CheckMateCheck} = require("../../checkMate.js")
 //FIXME - ale: puoi sempre cambiare turno anche se non hai mosso
 
 /**
  * goes to the next turn
+ * @param {Match} match
  * @returns {Result}
  */
-function endTurn()
+function endTurn(match)
 {
 	let	result;
 
 	result = new Result();
-	if (!updateTurn(result))
+	if (!updateTurn(match, result))
 		return (result);
 	console.log(`Now it's ${match.currentPlayer.team} turn.`);
 	result.status = 200;
@@ -26,10 +27,11 @@ function endTurn()
 
 /**
  * 
+ * @param {Match} match
  * @param {Result} result 
  * @returns {boolean}
  */
-function updateTurn(result)
+function updateTurn(match, result)
 {
 	let	player;
 
@@ -45,7 +47,7 @@ function updateTurn(result)
 	else
 		player.bonusPointCounter += 1;
 	match.endTurn();
-	if (CheckMateCheck(player.King) == true)
+	if (CheckMateCheck(match, player.King) == true)
 	{
 		console.log("hai perso, sfigato, e vuoi pure muovere di nuovo?? Appenditi idiota!!!");
 		// @ts-ignore

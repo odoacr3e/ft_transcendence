@@ -1,5 +1,7 @@
 // @ts-check
 
+const {CHESSBOARD_H, CHESSBOARD_W} = require("./macro");
+
 /**
  * 
  * @this {Cursor}
@@ -28,7 +30,7 @@ function setRow(newRow)
 	let col;
 	let newSquare;
 
-	col = this.getCol();
+	col = this.getRow();
 	newSquare = String.fromCharCode(newRow + "a".charCodeAt(0) - 1);
 	newSquare += col;
 	this.square = newSquare;
@@ -43,7 +45,7 @@ function setCol(newCol)
 {
 	let newSquare;
 
-	newSquare = String.fromCharCode(this.getRow() + "a".charCodeAt(0) - 1);
+	newSquare = String.fromCharCode(this.getCol() + "a".charCodeAt(0) - 1);
 	newSquare += String(newCol);
 	this.square = newSquare;
 }
@@ -55,10 +57,10 @@ function setCol(newCol)
  */
 function moveRow(dy)
 {
-	let tmp = this.getRow();
+	let tmp = this.getCol();
 
-	if ((tmp + dy) < 9 && (tmp + dy) > 0)
-		this.setRow(this.getRow() + dy);
+	if ((tmp + dy) < CHESSBOARD_H && (tmp + dy) > 0)
+		this.setCol(this.getCol() + dy);
 }
 
 /**
@@ -68,10 +70,10 @@ function moveRow(dy)
  */
 function moveCol(dx)
 {
-	let tmp = this.getCol();
+	let tmp = this.getRow();
 
-	if ((tmp + dx) < 9 && tmp + dx > 0)
-		this.setCol(tmp + dx);
+	if ((tmp + dx) < CHESSBOARD_W + 1 && tmp + dx > 0)
+		this.setRow(tmp + dx);
 }
 
 /**

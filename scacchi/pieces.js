@@ -1,6 +1,6 @@
 // @ts-check
 const {eTeam} =  require("./enums.js");
-const {match, Match} = require("./match.js");
+const {Match} = require("./match.js");
 const {Cursor} = require("./cursor.js");
 const {isDangerous, movePiece, DangerUpdate} = require("./utils.js");
 const Macro = require("./macro.js");
@@ -332,7 +332,8 @@ const preset = {
 		price: 1,
 		movement:
 		[
-			{dx:1, dy:0}, {dx:-1, dy:0},//verticale, quello vero ora
+			{dx:1, dy:0}, {dx:-1, dy:0},//orizzontale
+			{dx:0, dy:1}, {dx:0, dy:-1},//verticale
 			{dx:1, dy:1}, {dx:-1, dy:-1},//obliquo
 			{dx:-1, dy:1}, {dx:1, dy:-1}
 		],

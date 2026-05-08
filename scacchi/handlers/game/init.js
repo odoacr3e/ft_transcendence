@@ -14,11 +14,11 @@ const {initRng} = require("../../utils/random");
  * The Map board is added to result to be sent to the client. Steps:
  * 1) the property board is added to the result object
  * 2) JSON does not support Map. So we convert the Map board to an Object
- * @param {Number | null} seed seed to start
  * @param {Match} match
+ * @param {Number | null} seed seed to start
  * @returns 
  */
-function init(seed=null, match)
+function init(match, seed=null)
 {
 	let	result;
 	let	rng;
