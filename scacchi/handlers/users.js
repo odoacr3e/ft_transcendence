@@ -192,4 +192,3 @@ const getUsersHandler = { getAllUsers, getUserById, getUserByUsername, getUserBy
 const createUserHandler = { validateInput, validateUser, createUser };
 
 module.exports = { getUsersHandler, createUserHandler };
-//FEATURE: UPDATE | fatto update users handlers da query manuali a prisma | scacchi/handlers/users.js, scacchi/routes/users.js
