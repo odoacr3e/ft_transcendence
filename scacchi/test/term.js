@@ -5,6 +5,8 @@ const {Match} = require("../match.js");
 const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("../utils.js");
 const {error, move, boost, endTurn, init} = require("../handlers/game/Game.js");
 const {Result} = require("../handlers/game/utils.js");
+const {app} = require("../server.js");
+const {vault} = require("../Vault.js");
 
 const lib =			require("../lib/lib.js");
 const {abort} = 	require("node:process");
@@ -12,10 +14,10 @@ const {render} = 	require("../render.js");
 const readline = 	require('node:readline');
 
 //SECTION - main: inizializza e fa primo render, mette terminale in ascolto
-let	match;
+let match;
 
 initTerminal();
-match = new Match();
+match = vault.getDebugMatch();
 init(match, lib.Macro.SEED);
 dangerUpdateAll(match);
 // console.log(match);

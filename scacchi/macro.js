@@ -7,6 +7,8 @@ const { abort } = require("node:process");
 
 //SECTION macro
 
+const DEBUG = true;
+
 const HASH_SALT = 10;
 
 /*
@@ -16,7 +18,7 @@ const HASH_SALT = 10;
 	62: scacco matto ciao ciao
 	63: scacco matto prevenibile
 */
-const SEED = 0;
+const SEED = 1057;
 
 //ANCHOR - chess
 
@@ -46,4 +48,4 @@ function error(text)
 	abort();
 }
 
-module.exports = { CHESSBOARD_H, CHESSBOARD_W, MOVEMENT_MIN, MOVEMENT_MAX, MOVEMENT_BONUS_POINT, BOOSTED_MAX, HASH_SALT, SEED }
+module.exports = { DEBUG, CHESSBOARD_H, CHESSBOARD_W, MOVEMENT_MIN, MOVEMENT_MAX, MOVEMENT_BONUS_POINT, BOOSTED_MAX, HASH_SALT, SEED }

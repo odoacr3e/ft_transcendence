@@ -1,6 +1,6 @@
 // @ts-check
 const {Square} = require("./chessBoard.js");
-const {Piece} = require("./pieces.js");
+// const {Piece} = require("./pieces.js");
 const Macro = require("./macro.js");
 const {Cursor} = require("./cursor.js");
 const {Match} = require("./match.js");
@@ -120,7 +120,6 @@ let bastardMove = // aggiornato movimenti
  * @param {Match} match
  * @param {Number} dy
  * @param {Number} dx
- * @param {Piece} piece
  */
 function bastardChecks(match, dy, dx, piece)
 {

@@ -25,7 +25,10 @@ function render(selected=[], TargetDangerSwitch="", match=null)
 	if (match)
 		usedBoard = match.board;
 	else
+	{
+		console.log("no match!");
 		return ;
+	}
 	buffer = "";
 	startPos = usedBoard.get(match.cursor.square);
 	if (!startPos)

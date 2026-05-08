@@ -1,6 +1,6 @@
 // @ts-check
 
-const match = require("../match").match;
+const match = require("../Vault.js").vault.getDebugMatch();;
 
 /**
  * @param {*} result the base object from which the response json is made
