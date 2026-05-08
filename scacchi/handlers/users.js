@@ -22,7 +22,8 @@ const getAllUsers = async (req, res) => {
 				email: true,
 				nationality: true,
 				points: true,
-				title: true
+				title: true,
+				preferences: true
 			}
 		});
 		if (users)
@@ -41,6 +42,17 @@ const getAllUsers = async (req, res) => {
 const getUserById = async (req, res) => {
 	try {
 		const user = await prisma.users.findUnique({
+			select: {
+				id_user: true,
+				name: true,
+				surname: true,
+				username: true,
+				email: true,
+				nationality: true,
+				points: true,
+				title: true,
+				preferences: true
+			},
 			where: {
 				id_user: Number(req.params.id)
 			}
@@ -60,6 +72,17 @@ const getUserById = async (req, res) => {
 const getUserByUsername = async (req, res) => {
 	try {
 		const user = await prisma.users.findUnique({
+			select: {
+				id_user: true,
+				name: true,
+				surname: true,
+				username: true,
+				email: true,
+				nationality: true,
+				points: true,
+				title: true,
+				preferences: true
+			},
 			where: {
 				id_user: String(req.params.id)
 			}
@@ -79,6 +102,17 @@ const getUserByUsername = async (req, res) => {
 const getUserByEmail = async (req, res) => {
 	try {
 		const user = await prisma.users.findUnique({
+			select: {
+				id_user: true,
+				name: true,
+				surname: true,
+				username: true,
+				email: true,
+				nationality: true,
+				points: true,
+				title: true,
+				preferences: true
+			},
 			where: {
 				id_user: String(req.params.email)
 			}
@@ -116,9 +150,15 @@ const validateInput = async (req, res, next) => {
 const validateUser = async (req, res, next) => {
 	try {
 		const { username, email } = req.body;
-		if ((await usersQuery.getUserByUsername(username)).rowCount > 0)
-			return res.status(409).json({ error: "User already exists" });
-		if ((await usersQuery.getUserByEmail(email)).rowCount > 0)
+		const user = await prisma.users.findFirst({
+			where: {
+				OR: [
+					{ username: username },
+					{ email: email }
+				]
+			}
+		});
+		if (user)
 			return res.status(409).json({ error: "User already exists" });
 		console.log(`Validate User: ${colors.green}OK${colors.reset}`);
 		next();
@@ -136,8 +176,27 @@ const createUser = async (req, res) => {
 		console.log(req.body);
 		const { name, surname, username, email, password, nationality } = req.body;
 		const hashedPwd = await bcrypt.hash(password, lib.Macro.HASH_SALT);
-		const user = (await usersQuery.createUser(name, surname,username, hashedPwd, email, nationality)).rows[0];
-		// console.log("🚀 ~ createUser ~ user:", user);
+		const user = await prisma.users.create({
+			data: {
+				name: name,
+				surname: surname,
+				username: username,
+				email: email,
+				password: hashedPwd,
+				nationality: true
+			},
+			select: {
+				id_user: true,
+				name: true,
+				surname: true,
+				username: true,
+				email: true,
+				nationality: true,
+				points: true,
+				title: true,
+				preferences: true
+			}
+		});
 		const token = await jwt.createJwt(user);
 		console.log("token:", token);
 		res.status(201).json({ "user": user, "token": token });
