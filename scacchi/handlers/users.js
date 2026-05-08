@@ -22,7 +22,7 @@ const getAllUsers = async (req, res) => {
 				email: true,
 				nationality: true,
 				points: true,
-				title: true
+				preferences: true
 			}
 		});
 		if (users)

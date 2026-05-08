@@ -88,14 +88,15 @@ model users {
   email                                   String               @unique(map: "unique_email") @db.VarChar(100)
   nationality                             String               @db.VarChar(50)
   image                                   Bytes?
-  preferences                             Json                 @default("{\"theme\": \"light\", \"colors\": {\"text\": \"#6b1b1b\", \"primary\": \"#420404\", \"secondary\": \"#06b6d4\", \"background\": \"#F2F3F4\"}}")
   points                                  Int                  @default(0)
   title                                   String               @default("Newbie") @db.VarChar(200)
+  id_preference                           Int                  @default(1)
   friendships_friendships_id_user1Tousers friendships[]        @relation("friendships_id_user1Tousers")
   friendships_friendships_id_user2Tousers friendships[]        @relation("friendships_id_user2Tousers")
   notifications                           notifications[]
   tournament_players                      tournament_players[]
   tournaments                             tournaments[]
+  preferences                             preferences          @relation(fields: [id_preference], references: [id_preference], onDelete: NoAction, onUpdate: NoAction, map: "fk_preference")
   users_matches                           users_matches[]
 }
 
@@ -107,6 +108,14 @@ model users_matches {
   team         Json             @default("{\n  \"team\": [\n    {\n\t\t\"type\": \"Sovrano\",\n\t\t\"count\": 1,\n\t\t\"cost\": 0\n\t},\n    {\n\t\t\"type\": \"Campione\",\n\t\t\"count\": 1,\n\t\t\"cost\": 10\n\t},\n    {\n\t\t\"type\": \"Valchiria\",\n\t\t\"count\": 2,\n\t\t\"cost\": 3\n\t},\n    {\n\t\t\"type\": \"Minotauro\",\n\t\t\"count\": 2,\n\t\t\"cost\": 5\n\t},\n    {\n\t\t\"type\": \"Giullare\",\n\t\t\"count\": 2,\n\t\t\"cost\": 5\n\t},\n    {\n\t\t\"type\": \"Bastardo\",\n\t\t\"count\": 8,\n\t\t\"cost\": 1\n\t}\n  ]\n}") @db.Json
   matches      matches          @relation(fields: [id_match], references: [id_match], onDelete: NoAction, map: "fk_id_match")
   users        users            @relation(fields: [id_user], references: [id_user], onDelete: NoAction, map: "fk_id_user")
+}
+
+model preferences {
+  id_preference Int     @id @default(autoincrement())
+  name          String  @db.VarChar(250)
+  description   String
+  colors        Json
+  users         users[]
 }
 
 enum friendships_status {
