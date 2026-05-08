@@ -7,14 +7,6 @@ CREATE TABLE IF NOT EXISTS users (
 	email varchar(100) NOT NULL,
 	nationality varchar(50) NOT NULL,
 	"image" bytea,
-	preferences JSONB NOT NULL DEFAULT '{
-		"theme": "light",
-		"colors": {
-			"primary": "#420404",
-			"secondary": "#06b6d4",
-			"background": "#F2F3F4",
-			"text": "#6b1b1b"
-		}
-	}'
+	id_preference int NOT NULL DEFAULT 1
 );
 
