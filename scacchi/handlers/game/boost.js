@@ -25,8 +25,6 @@ function boost(match, from)
 	result.status = 200;
 	if (match.boost == BOOSTED_MAX)
 		endTurn(match);
-	else
-		match.boost += 1;
 	return (result);
 }
 
@@ -54,8 +52,11 @@ function tryBoost(match, result, from)
 		return (error(result, 403, `You need ${square.piece.price} to boost this`));
 	match.currentPlayer.nPoints -= square.piece.price;
 	square.piece.isBoostedBool = !square.piece.isBoostedBool;
+	console.log("BOOST ZONES BEFORE\n", square.boostedTargetZones);
 	dangerUpdateAll(match);
+	console.log("BOOST ZONES AFTER\n", square.boostedTargetZones);
 	match.history.UpdateBoost(square, from);
+	match.boost += 1;
 	return (true);
 }
 

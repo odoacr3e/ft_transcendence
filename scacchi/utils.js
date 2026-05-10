@@ -1,10 +1,13 @@
 // @ts-check
+const fs = require("fs");
+
 const {Square} = require("./chessBoard.js");
 // const {Piece} = require("./pieces.js");
 const Macro = require("./macro.js");
+const {eEvents} = require("./enums.js");
 const {Cursor} = require("./cursor.js");
 const {Match} = require("./match.js");
-const { start } = require("node:repl");
+const { Piece } = require("./pieces.js");
 
 /**
  * 
@@ -67,16 +70,19 @@ let movePiece = (match, dy, dx, clear=false) =>
 /**
  * 
  * @param {Match} match 
+ * @param {string | null} pos
  * @returns 
  */
-let DangerUpdate = (match) =>
+let DangerUpdate = (match, pos=null) =>
 {
 	let	usedBoard;
-	let	startPos;
 	let	piece;
+	let	startPos;
 
 	usedBoard = match.board;
 	startPos = match.cursor.square;
+	if (pos != null)
+		match.cursor.set(pos);
 	piece = usedBoard.get(match.cursor.square)?.piece;
 	if (piece == null)
 		return (0);
@@ -96,6 +102,8 @@ let DangerUpdate = (match) =>
 		}
 		match.cursor.square = startPos;
 	}
+	if (piece.isBoostedBool == true)
+		piece.moveFunction(match);
 	return (1);
 }
 
@@ -120,6 +128,7 @@ let bastardMove = // aggiornato movimenti
  * @param {Match} match
  * @param {Number} dy
  * @param {Number} dx
+ * @param {Piece} piece
  */
 function bastardChecks(match, dy, dx, piece)
 {

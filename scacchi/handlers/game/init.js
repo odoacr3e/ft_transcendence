@@ -2,7 +2,7 @@
 const lib = require("../../lib/lib.js");
 const {Piece, Board, copyBoard, Square, cursor} = require("../../lib/lib.js").Chess;
 const {initBoard} = require("../../chessBoard.js");
-const {eTeam} = require("../../lib/lib.js").Enums;
+const {eTeam, enumNames} = require("../../lib/lib.js").Enums;
 const {SEED} = require("../../lib/lib.js").Macro;
 const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("../../utils.js");
 const {Match} = require("../../match.js");
@@ -36,6 +36,7 @@ function init(match, seed=null)
 	result.status = 200;
 	// @ts-ignore
 	result.board = clientBoard(match.board);
+	match.history.startBoard = Object.fromEntries(copyBoard(match.board));
 	return (result);
 }
 
@@ -61,25 +62,25 @@ function initClassicBoard(match)
 		col = match.cursor.getCol()
 		row = match.cursor.getRow();
 		if (row == 2 || row == 7)
-			data.piece = new Piece(lib.preset.Bastards, "", key, false);
+			data.piece = new Piece(enumNames.BASTARDS, key);
 		else if (row == 1 || row == 8)
 		{
 			switch (col) 
 			{
 				case 1: case 8:
-					data.piece = new Piece(lib.preset.Minotaurus, "", key, true);
+					data.piece = new Piece(enumNames.MINOTAURUS, key);
 					break;
 				case 2: case 7:
-					data.piece = new Piece(lib.preset.Jester, "", key, false);
+					data.piece = new Piece(enumNames.JESTER, key);
 					break ;
 				case 3: case 6:
-					data.piece = new Piece(lib.preset.Valkirya, "", key, true);
+					data.piece = new Piece(enumNames.VALKIRYA, key);
 					break ;
 				case 4:
-					data.piece = new Piece(lib.preset.Champion, "", key, true);
+					data.piece = new Piece(enumNames.CHAMPION, key);
 					break ;
 				case 5:
-					data.piece = new Piece(lib.preset.King, "", key, false);
+					data.piece = new Piece(enumNames.KING, key);
 					break;
 				default :
 					console.log("bischero");
@@ -97,8 +98,8 @@ function initClassicBoard(match)
 		else
 			data.color == eTeam.Black;
 	}
-	match.black.King = "e8"; // aggiornato posizioni re
-	match.white.King = "e1"; // aggiornato posizioni re
+	match.black.King = "e8";
+	match.white.King = "e1";
 	dangerUpdateAll(match);
 }
 
@@ -119,14 +120,14 @@ function initRandomBoard(match, rng)
 		data.targetZones.clear();
 		if (key == "a1" && match.black)
 		{
-			data.piece = new Piece(lib.preset.King, "", key, false);
+			data.piece = new Piece(enumNames.KING, key);
 			data.piece.team = eTeam.Black;
 			match.black.King = key;
 			continue ;
 		}
 		else if (key == "h8" && match.white)
 		{
-			data.piece = new Piece(lib.preset.King, "", key, false);
+			data.piece = new Piece(enumNames.KING, key);
 			data.piece.team = eTeam.White;
 			match.white.King = key;
 			continue ;
@@ -134,22 +135,22 @@ function initRandomBoard(match, rng)
 		else if (rand <= 10)
 			continue ;
 		else if (rand == 11)
-			data.piece = new Piece(lib.preset.Bastards, "", key, false);
+			data.piece = new Piece(enumNames.BASTARDS, key);
 		else if (rand == 12)
 		{
-			data.piece = new Piece(lib.preset.Champion, "", key, true);
+			data.piece = new Piece(enumNames.CHAMPION, key);
 		}
 		else if (rand == 13)
 		{
-			data.piece = new Piece(lib.preset.Jester, "", key, false);
+			data.piece = new Piece(enumNames.JESTER, key);
 		}
 		else if (rand == 14)
 		{
-			data.piece = new Piece(lib.preset.Minotaurus, "", key, true);
+			data.piece = new Piece(enumNames.MINOTAURUS, key);
 		}
 		else
 		{
-			data.piece = new Piece(lib.preset.Valkirya, "", key, true);
+			data.piece = new Piece(enumNames.VALKIRYA, key);
 		}
 		data.piece.team = match.currentPlayer.team;
 		match.endTurn();

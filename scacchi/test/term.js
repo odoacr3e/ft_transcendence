@@ -1,8 +1,9 @@
 // @ts-check
 const {Piece, Board, Square} =					require("../lib/lib.js").Chess;
 const {eTeam, enumValues, enumNames} =			require("../lib/lib.js").Enums;
-const {Match} = require("../match.js");
+const {DEBUG_FILE} = require("../macro.js");
 const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("../utils.js");
+const {historyRestore} = require("../utils2.js");
 const {error, move, boost, endTurn, init} = require("../handlers/game/Game.js");
 const {Result} = require("../handlers/game/utils.js");
 const {app} = require("../server.js");
@@ -37,7 +38,10 @@ process.stdin.on('keypress', (str, key) =>
 	dx = 0;
 	dy = 0;
 	if (key.ctrl && key.name == "c")
+	{
+		match.history.Log(DEBUG_FILE);
 		process.exit();
+	}
 	console.clear();
 	switch (key.name)
 	{
@@ -80,10 +84,17 @@ process.stdin.on('keypress', (str, key) =>
 				let	result = move(match, selected[0], selected[1]);
 				selected = [];
 				if (result.status != 200)
-					return (error(null, result));	
+					return (error(null, result));
 			}
+			break ;
+		case ("p"):
+		{
+			historyRestore(match, DEBUG_FILE);
+			render(match);
+			return ;
+		}
 	}
-	if (key.name != "space" && key.name != "e" && key.name != "q" && key.name != "q" &&
+	if (key.name != "space" && key.name != "e" && key.name != "q" && key.name != "r" &&
 		!movePiece(match, dx, dy, false))
 	{
 		console.log("lol no");

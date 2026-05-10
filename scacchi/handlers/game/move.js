@@ -1,6 +1,7 @@
 // @ts-check
 const lib = require("../../lib/lib.js");
 const {enumNames} = require("../../pieces.js");
+const {eEvents, eTeam} = require("../../enums.js");
 const {MOVEMENT_MAX, MOVEMENT_MIN} = require("../../macro");
 const {Piece, board, Square, copyBoard, cursor} = require("../../lib/lib.js").Chess;
 const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("../../utils.js");
@@ -63,12 +64,6 @@ function checkMove(coords=[], result, match)
 		return (error(result, 403, "invalid positions"));
 	if (from.piece == null)
 		return (error(result, 403, "Square is empty"));
-	// if (match.moves == MOVEMENT_MIN && !checkBooster(match, result, from, coords))
-	// 	return (false);
-	// if (checkCastling(match, to, from))
-	// 	return (true);
-	if (!from.targetZones.has(coords[1]))
-		return (error(result, 403, "destination not in piece targetZone"));
 	if (to.piece)
 	{
 		if (to.piece.team == from.piece.team)
@@ -76,6 +71,12 @@ function checkMove(coords=[], result, match)
 	}
 	if (from.piece?.team != match.currentPlayer.team)
 		return (error(result, 403, `it's ${match.currentPlayer.team} turn`));
+	if (!checkBooster(match, result, from, coords))
+		return (false);
+	// if (checkCastling(match, to, from))
+	// 	return (true);
+	if (!from.targetZones.has(coords[1]))
+		return (error(result, 403, "destination not in piece targetZone"));
 	if (isDangerous(match, king.dangerZones, king.piece.team) && !simulation(coords, match))
 		return (error(result, 403, "Your king is in danger"));
 	if (!simulation(coords, match))
@@ -121,21 +122,61 @@ function updateChessboard(coords=[], result, match)
 
 //SECTION - move utils
 
-// /**
-//  * 
-//  * @param {Match} match
-//  * @param {Result} result 
-//  * @param {Square} from 
-//  * @param {Array<string>} coords
-//  * @returns {boolean} 
-//  */
-// function checkBooster(match, result, from, coords)
-// {
-// 	if (!from.piece)
-// 		return (error(result, 500, "unexpected piece error"));
-// 	if (match.moveHistory.length && match.moveHistory[-1][1] == coords[0])
-// 	if (from.targetZones)
-// }
+/**
+ * 
+ * FIXME - da aggiungere check per valchiria: vuole usare boost?
+ * @param {Match} match
+ * @param {Result} result 
+ * @param {Square} from 
+ * @param {Array<string>} coords
+ * @returns {boolean}
+ */
+function checkBooster(match, result, from, coords)
+{
+	//FIXME - ale:temporaneamente lascio i commenti spiegazione per il senpai
+	//poi per la plebe verranno tolti >3
+	let	pieceMultipleMoveBool;
+	let	boostedTargetZones;
+
+	if (!from.piece)
+		return (error(result, 500, "unexpected piece error"));
+	//se la mia posizione di partenza e la posizione di arrivo dell'ultima mossa,
+	//pieceMultipleMove va a true
+	if (match.history.Last().to == coords[0])
+		pieceMultipleMoveBool = true;
+	else
+		pieceMultipleMoveBool = false;
+	if (pieceMultipleMoveBool == true && match.history.Last().type != eEvents.Move)
+		return (error(result, 500, "match History is messed up"));
+	//se il pezzo non vuole fare doppi movimenti e puo usare le target, ok
+	if (pieceMultipleMoveBool == false && from.targetZones.has(coords[1]))
+		return (true);
+	//i bastardi siccome sono strani si validano
+	if (pieceMultipleMoveBool == false && from.piece.type == enumNames.BASTARDS)
+		return (true);
+	if (from.piece.isBoostedBool == false)
+		return (error(result, 403, `illegal move`));
+	//se il pezzo vuole muoversi di nuovo, ma quel tipo di pezzo non puo, errore
+	if (pieceMultipleMoveBool == true && from.piece.multipleMovesBool == false)
+		return (error(result, 403, `piece ${from.piece.type} can move once`));
+	//per i pezzi SENZA doppio movimento, utilizziamo la booster corrente
+	if (pieceMultipleMoveBool == false)
+		boostedTargetZones = from.boostedTargetZones;
+	else//per gli altri, quello della mossa precedente
+		boostedTargetZones = match.history.Last().pieceBoosterTargetZones;
+	//otteniamo l'array per la posizione corrente, gestiamo errori vari
+	if (!boostedTargetZones)
+		return (error(result, 403, `that piece can't do any bonus move`));
+	boostedTargetZones = boostedTargetZones?.get(coords[0]);
+	if (!boostedTargetZones)
+		return (error(result, 403, `you can't move again from there ;-(`));
+	if (boostedTargetZones.has(coords[1]) == false)
+		return (error(result, 403, `that piece can't do that move`));
+	//logica: se il movimento e valido, mentiamo a checkMove
+	from.targetZones.add(coords[1]);
+	from.piece.isBoostedBool = false;
+	return (true);
+}
 
 /**
  * 

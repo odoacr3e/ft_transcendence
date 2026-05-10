@@ -1,7 +1,10 @@
 // @ts-check
+const fs = require("fs");
+
 const {Cursor} = require("./cursor.js");
 const {eTeam, eEvents} = require("./enums.js");
-const {initBoard, copyBoard, Square} = require("./chessBoard.js");
+const {Square, initBoard, copyBoard, copyBoostedTargetZones} = require("./chessBoard.js");
+const { fstat } = require("node:fs");
 const preset = {
 	white: 
 	{
@@ -93,6 +96,21 @@ class Match
 	{
 		this.currentPlayer = this.white;
 	}
+	Reset()
+	{
+		this.white = preset.white;
+		this.black = preset.black;
+		this.red = preset.red;
+		this.blue = preset.blue;
+		this.green = preset.green;
+		this.yellow = preset.yellow;
+		this.board = new Map(Object.entries(this.history.startBoard));
+		this.cursor = new Cursor();
+		this.moves = 0;
+		this.boost = 0;
+		this.history = new History(this.board);
+		this.currentPlayer = this.white;		
+	}
 }
 
 class History
@@ -103,12 +121,30 @@ class History
 	 */
 	constructor(board)
 	{
-		this.startBoard = copyBoard(board);
+		this.startBoard = Object.fromEntries(copyBoard(board));
 		/** @type {Array<HistoryEvent>} */
 		this.events = new Array();
+		this.moves = 0;
 		this.UpdateMoves = updateMoves;
 		this.UpdateBoost = updateBoost;
 		this.UpdateEndTurn = updateEndTurn;
+	}
+	Last()
+	{
+		if (this.events.length != 0)
+			return (this.events[this.events.length - 1]);
+		return (new HistoryEvent("Empty", "Empty"));
+	}
+	/** @param {string} path */
+	Log(path)
+	{
+		let	history;
+
+		history = JSON.stringify(this, null, 2);
+		if (!path)
+			console.log(history);
+		else
+			fs.writeFileSync(path, history);
 	}
 };
 
@@ -121,8 +157,9 @@ class HistoryEvent
 	 * @param {string} pieceType
 	 * @param {string} from
 	 * @param {string} to
+	 * @param {Map<string, Set<string>> | null} pieceBoosterZones
 	 */
-	constructor(eventType="", team="", pieceType="", from="", to="")
+	constructor(eventType="", team="", pieceType="", from="", to="", pieceBoosterZones=null)
 	{
 		if (!eventType)
 			throw ("History Event: invalid event type");
@@ -133,6 +170,9 @@ class HistoryEvent
 		this.movedPiece = pieceType;
 		this.team = team;
 		this.type = eventType;
+		this.pieceBoosterTargetZones = null;
+		if (pieceBoosterZones)
+			this.pieceBoosterTargetZones = copyBoostedTargetZones(pieceBoosterZones);
 	}
 }
 
@@ -154,8 +194,9 @@ function updateMoves(square, coords)
 		throw (`History: invalid square`);
 	if (!square.piece)
 		throw (`History: missing piece in square: ${square}`);
-	record = new HistoryEvent(eEvents.Move, square.piece.team, square.piece.type, coords[0], coords[1]);
+	record = new HistoryEvent(eEvents.Move, square.piece.team, square.piece.type, coords[0], coords[1], square.boostedTargetZones);
 	this.events.push(record);
+	this.moves += 1;
 }
 
 /**
@@ -178,6 +219,7 @@ function updateBoost(square, from)
 		throw (`History: missing piece in square: ${square}`);
 	record = new HistoryEvent(eEvents.Boost, square.piece.team, square.piece.type, from);
 	this.events.push(record);
+	this.moves += 1;
 }
 
 /**
@@ -199,6 +241,7 @@ function updateEndTurn(match)
 		throw (`History: invalid currentPlayer team`);
 	record = new HistoryEvent(eEvents.EndTurn, match.currentPlayer.team);
 	this.events.push(record);
+	this.moves += 1;
 }
 
-module.exports = {Match};
+module.exports = {Match, History};

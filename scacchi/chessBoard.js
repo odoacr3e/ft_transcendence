@@ -88,7 +88,33 @@ function copyBoard(src, dest=null)
 	return (dest);
 }
 
+/**
+ * 
+ * @param {Map<string, Set<string>>} src 
+ * @param {Map<string, Set<string>> | null} dest optional: if passed, is cleared
+ * @returns {Map<string, Set<string>>} a deep copy of src
+ */
+function copyBoostedTargetZones(src, dest=null)
+{
+	let	zones;
+
+	if (!dest)
+		dest = new Map();
+	dest.clear();
+	zones = new Set();
+	for (const [pos, targets] of src)
+	{
+		zones.clear();
+		for (const bonusPos of targets)
+		{
+			zones.add(bonusPos);
+		}
+		dest.set(pos, zones);
+	}
+	return (dest);
+}
+
 initBoard();
 // console.log(board);
 
-module.exports = {initBoard, copyBoard, Square};
+module.exports = {Square, initBoard, copyBoard, copyBoostedTargetZones};

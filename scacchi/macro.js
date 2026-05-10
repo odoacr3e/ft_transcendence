@@ -8,6 +8,7 @@ const { abort } = require("node:process");
 //SECTION macro
 
 const DEBUG = true;
+const DEBUG_FILE = "../HISTORY.json";
 
 const HASH_SALT = 10;
 
@@ -48,4 +49,4 @@ function error(text)
 	abort();
 }
 
-module.exports = { DEBUG, CHESSBOARD_H, CHESSBOARD_W, MOVEMENT_MIN, MOVEMENT_MAX, MOVEMENT_BONUS_POINT, BOOSTED_MAX, HASH_SALT, SEED }
+module.exports = { DEBUG, DEBUG_FILE, CHESSBOARD_H, CHESSBOARD_W, MOVEMENT_MIN, MOVEMENT_MAX, MOVEMENT_BONUS_POINT, BOOSTED_MAX, HASH_SALT, SEED }

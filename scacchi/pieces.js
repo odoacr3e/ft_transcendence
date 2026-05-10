@@ -11,22 +11,25 @@ const Macro = require("./macro.js");
 class Piece
 {
 	/**
-	 * @param {{type: string, price: number, movement: Array<{dx: number, dy:number}>, booster: Function}} obj
-	 * @param {string} team
+	 * @param {string} type
 	 * @param {string} pos
-	 * @param {boolean} long
+	 * @param {string} team
 	 */
-	constructor ({type, price, movement, booster}, team, pos, long)
+	constructor (type, pos, team="")
 	{
-		/** @type {string} */   						this.type = type;
-		/** @type {number} */   						this.price = price;
-		/** @type {string} */   						this.team = eTeam.Black;
+		let	preset;
+
+		preset = new Preset(type);
+		/** @type {string} */   						this.type = preset.type;
+		/** @type {number} */   						this.price = preset.price;
+		/** @type {string} */   						this.team = team;
 		/** @type {boolean} */  						this.isMovedBool = false;
 		/** @type {boolean} */  						this.isBoostedBool = false;
 		/** @type {string} */ 							this.pos = pos;
-		/** @type {Function} */ 						this.moveFunction = booster;
-		/** @type {Array<{dx: number, dy:number}>} */	this.moveArray = movement;
-		/** @type {boolean} */							this.moveLongRangeDEBUG = long;
+		/** @type {Function} */ 						this.moveFunction = preset.booster;
+		/** @type {Array<{dx: number, dy:number}>} */	this.moveArray = preset.movement;
+		/** @type {boolean} */							this.moveLongRangeDEBUG = preset.longRange;
+		/** @type {boolean} */							this.multipleMovesBool = preset.multipleMoves;
 	}
 }
 
@@ -75,11 +78,12 @@ function berserkMode(pos, match)
 	piece = match.board.get(pos)?.piece;
 	if (piece?.moveArray == null)
 		throw ("entering in function berserkMode with a null piece :-(") ;//FIXME - errore grave, dare 500
+	match.board.get(pos)?.boostedTargetZones.set(startPos, new Set());
 	for (let {dx, dy} of piece?.moveArray)
 	{
 		while (movePiece(match, dx, dy, false))
 		{
-			if (match.board.get(pos)?.piece?.type == enumNames.CHAMPION)
+			if (piece.type == enumNames.CHAMPION)
 			{
 				match.board.get(match.cursor.square)?.dangerZones.add(pos);
 				match.board.get(pos)?.boostedTargetZones.get(startPos)?.add(pos);
@@ -93,6 +97,8 @@ function berserkMode(pos, match)
 		}
 		match.cursor.square = startPos;
 	}
+	if (match.board.get(pos)?.boostedTargetZones.get(startPos)?.size == 0)
+		match.board.get(pos)?.boostedTargetZones.delete(startPos);
 }
 
 /**
@@ -269,11 +275,12 @@ const enumNames = {
 	GHOUL: 'Ghoul'
 };
 
-
 const preset = {
 	King: {
 		type: enumNames.KING,
-		price: 0,
+		price: enumValues.KING,
+		multipleMoves: false,
+		longRange: false,
 		movement: 
 		[
 			{dx:1, dy:1}, {dx:-1, dy:-1},//obliquo
@@ -285,7 +292,9 @@ const preset = {
 	},
 	Champion: {
 		type: enumNames.CHAMPION,
-		price: 10,
+		price: enumValues.CHAMPION,
+		multipleMoves: true,
+		longRange: true,
 		movement:
 		[
 			{dx:1, dy:1}, {dx:-1, dy:-1}, //obliquo
@@ -297,7 +306,9 @@ const preset = {
 	},
 	Jester: {
 		type: enumNames.JESTER,
-		price: 5,
+		price: enumValues.JESTER,
+		multipleMoves: false,
+		longRange: false,
 		movement:
 		[
 			{dx:2, dy:1}, {dx:2, dy:-1}, // +2 verticale
@@ -309,7 +320,9 @@ const preset = {
 	},
 	Valkirya: {
 		type: enumNames.VALKIRYA,
-		price: 3,
+		price: enumValues.VALKIRYA,
+		multipleMoves: false,
+		longRange: true,
 		movement:
 		[
 			{dx:1, dy:1}, {dx:-1, dy:-1},//obliquo
@@ -319,7 +332,9 @@ const preset = {
 	},
 	Minotaurus: {
 		type: enumNames.MINOTAURUS,
-		price: 5,
+		price: enumValues.MINOTAURUS,
+		multipleMoves: true,
+		longRange: true,
 		movement:
 		[
 		 	{dx:0, dy:1}, {dx:0, dy:-1},//orizzontale
@@ -329,7 +344,9 @@ const preset = {
 	},
 	Bastards: {
 		type: enumNames.BASTARDS,
-		price: 1,
+		price: enumValues.BASTARDS,
+		multipleMoves: false,
+		longRange: false,
 		movement:
 		[
 			{dx:1, dy:0}, {dx:-1, dy:0},//orizzontale
@@ -342,15 +359,42 @@ const preset = {
 	Mage: {
 		type: enumNames.MAGE,
 		price: 3, // da capire
+		multipleMoves: false,
+		longRange: false,
 		movement: [], // da capire
 		booster: null
 	},
 	Ghoul: {
 		type: enumNames.GHOUL,
 		price: 3, // da capire
+		multipleMoves: false,
+		longRange: false,
 		movement: [], // da capire
 		booster: null
 	},
 }
 
-module.exports = {Piece, enumNames, enumValues, preset};
+class Preset
+{
+	/**
+	 * 
+	 * @param {string} type 
+	 */
+	constructor(type)
+	{
+		let	info;
+
+		// @ts-ignore
+		info = preset[type];
+		if (!info)
+			throw (`Preset: Invalid piece type ${type}`);
+		/** @type {string} */							this.type = info.type;
+		/** @type {number} */							this.price = info.price;
+		/** @type {Array<{dx: number, dy:number}>} */	this.movement = info.movement;
+		/** @type {function} */							this.booster = info.booster;
+		/** @type {boolean} */							this.multipleMoves = info.multipleMoves;
+		/** @type {boolean} */							this.longRange = info.longRange;
+	}
+}
+
+module.exports = {Piece, enumNames, enumValues};
