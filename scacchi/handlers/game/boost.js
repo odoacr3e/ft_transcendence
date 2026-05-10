@@ -4,6 +4,7 @@ const {Piece, board, Square, cursor} = require("../../lib/lib.js").Chess;
 const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("../../utils.js");
 const {Match} = require("../../match.js");
 const {error, paramCheck, Result} = require("./utils.js");
+const endTurn = require("./endTurn.js").endTurn;
 const { BOOSTED_MAX, MOVEMENT_MIN } = require("../../macro.js");
 
 /**
@@ -22,6 +23,10 @@ function boost(match, from)
 	if (!tryBoost(match, result, from))
 		return (result);
 	result.status = 200;
+	if (match.boost == BOOSTED_MAX)
+		endTurn(match);
+	else
+		match.boost += 1;
 	return (result);
 }
 
@@ -49,8 +54,8 @@ function tryBoost(match, result, from)
 		return (error(result, 403, `You need ${square.piece.price} to boost this`));
 	match.currentPlayer.nPoints -= square.piece.price;
 	square.piece.isBoostedBool = !square.piece.isBoostedBool;
-	match.boost += 1;
 	dangerUpdateAll(match);
+	match.history.UpdateBoost(square, from);
 	return (true);
 }
 

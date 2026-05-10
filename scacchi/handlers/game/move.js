@@ -42,33 +42,32 @@ function move(match, from, to)
 
 /**
  * 
- * @param {Array<String>} arr
+ * @param {Array<String>} coords
  * @param {Result} result
  * @param {Match} match
  */
-function checkMove(arr=[], result, match)
+function checkMove(coords=[], result, match)
 {
 	let	from;
 	let	to;
 	let	king;
 
-	from = match.board.get(arr[0]);
-	to = match.board.get(arr[1]);
+	from = match.board.get(coords[0]);
+	to = match.board.get(coords[1]);
 	king = match.board.get(match.currentPlayer.King);//FIXME - usare currentPlayer.King
 	if (king == null || king.piece == null)
 		return (error(result, 500, "backend has lost track of the king, lol"));
-	if (match.moves >= MOVEMENT_MIN)
-		return (error(result, 403, "Mr. Greedy cheater"));
-	//FIXME - gestire controlli su piu mosse, per ora diamo OK
-	// if (match.moves == MOVEMENT_MIN && uri != secondMove)
-	// 	return (error(result, 403, "Mr. Greedy cheater"));
+	if (match.moves > MOVEMENT_MAX)
+		return (error(result, 403, `The maximum amount of movements is ${MOVEMENT_MAX}`));
 	if (from == null || to == null)
 		return (error(result, 403, "invalid positions"));
 	if (from.piece == null)
 		return (error(result, 403, "Square is empty"));
+	// if (match.moves == MOVEMENT_MIN && !checkBooster(match, result, from, coords))
+	// 	return (false);
 	// if (checkCastling(match, to, from))
 	// 	return (true);
-	if (!from.targetZones.has(arr[1]))
+	if (!from.targetZones.has(coords[1]))
 		return (error(result, 403, "destination not in piece targetZone"));
 	if (to.piece)
 	{
@@ -77,33 +76,33 @@ function checkMove(arr=[], result, match)
 	}
 	if (from.piece?.team != match.currentPlayer.team)
 		return (error(result, 403, `it's ${match.currentPlayer.team} turn`));
-	if (isDangerous(match, king.dangerZones, king.piece.team) && !simulation(arr, match))
+	if (isDangerous(match, king.dangerZones, king.piece.team) && !simulation(coords, match))
 		return (error(result, 403, "Your king is in danger"));
-	if (!simulation(arr, match))
+	if (!simulation(coords, match))
 		return (error(result, 403, "this would put your king in danger"));
 	return (true);
 }
 
 /**
  * 
- * @param {Array<String>} selected
+ * @param {Array<string>} coords
  * @param {Result} result
  * @param {Match} match
  */
-function updateChessboard(selected=[], result, match)
+function updateChessboard(coords=[], result, match)
 {
 	let	from;
 	let	to;
 
-	from = match.board.get(selected[0]);
-	to = match.board.get(selected[1]);
+	from = match.board.get(coords[0]);
+	to = match.board.get(coords[1]);
 	if (!from || !to || !from.piece)
 	{
 		return (error(result, 500, "from | to bug in moveFunction"));
 	}
-	if (selected[0] == match.currentPlayer.King)
-		match.currentPlayer.King = selected[1];
-	printSwap(selected, from, to);
+	if (coords[0] == match.currentPlayer.King)
+		match.currentPlayer.King = coords[1];
+	printSwap(coords, from, to);
 	if (to.piece)
 	{
 		console.log(`player ${match.currentPlayer.team} + ${to.piece.price}💲`);
@@ -111,23 +110,40 @@ function updateChessboard(selected=[], result, match)
 	}
 	to.piece = from.piece;
 	from.piece = null;
-	to.piece.pos = selected[1];
+	to.piece.pos = coords[1];
 	if (to.piece && to.piece.isMovedBool == false)
 		to.piece.isMovedBool = true;
 	match.moves++;
 	dangerUpdateAll(match);
+	match.history.UpdateMoves(to, coords);
 	return (true);
 }
 
 //SECTION - move utils
 
+// /**
+//  * 
+//  * @param {Match} match
+//  * @param {Result} result 
+//  * @param {Square} from 
+//  * @param {Array<string>} coords
+//  * @returns {boolean} 
+//  */
+// function checkBooster(match, result, from, coords)
+// {
+// 	if (!from.piece)
+// 		return (error(result, 500, "unexpected piece error"));
+// 	if (match.moveHistory.length && match.moveHistory[-1][1] == coords[0])
+// 	if (from.targetZones)
+// }
+
 /**
  * 
- * @param {Array<String>} selected
+ * @param {Array<String>} coords
  * @param {Match} match
  * @returns 
  */
-function simulation(selected, match)
+function simulation(coords, match)
 {
 	let tmp;
 	let	from;
@@ -135,14 +151,14 @@ function simulation(selected, match)
 	let	king;
 
 	tmp = copyBoard(match.board);
-	from = match.board.get(selected[0]);
-	to = match.board.get(selected[1]);
+	from = match.board.get(coords[0]);
+	to = match.board.get(coords[1]);
 	king = match.board.get(match.currentPlayer.King);
 	if (!from || !to || !king)
 		return (false); // FIXME error 500 : impossibile
 	to.piece = from.piece;
 	from.piece = null;
-	if (selected[0] == match.currentPlayer.King)
+	if (coords[0] == match.currentPlayer.King)
 		king = to;
 	dangerUpdateAll(match);
 	if (isDangerous(match, king.dangerZones, king.piece?.team))
@@ -159,11 +175,11 @@ function simulation(selected, match)
 
 /**
  * 
- * @param {Array<string>} selected 
+ * @param {Array<string>} coords 
  * @param {Square} from 
  * @param {Square} to 
  */
-function printSwap(selected, from, to)
+function printSwap(coords, from, to)
 {
 	let	fromType;
 	let	toType;
@@ -179,7 +195,7 @@ function printSwap(selected, from, to)
 	else
 		toType = `\x1b[33m${toType}\x1b[0m`;
 	console.log(`SWAP ${fromType} with ${toType}`);
-	console.log(`from ${selected[0]} to ${selected[1]}`);
+	console.log(`from ${coords[0]} to ${coords[1]}`);
 }
 
 module.exports = { move };

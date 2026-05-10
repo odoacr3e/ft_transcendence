@@ -180,7 +180,7 @@ function dangerUpdateAll(match)
 		match.cursor.set(pos);
 		if (square.piece && square.piece.isBoostedBool)
 		{
-			square.piece.moveFunction();
+			square.piece.moveFunction(match);
 			continue ;
 		}
 		DangerUpdate(match);

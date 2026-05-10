@@ -46,6 +46,7 @@ function updateTurn(match, result)
 	}
 	else
 		player.bonusPointCounter += 1;
+	match.history.UpdateEndTurn(match);
 	match.endTurn();
 	if (CheckMateCheck(match, player.King) == true)
 	{

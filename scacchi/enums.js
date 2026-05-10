@@ -13,4 +13,11 @@ const eTeam =
 	Yellow: 'yellow',
 };
 
-module.exports = {eTeam};
+const eEvents = 
+{
+	Move: 'move',
+	Boost: 'boost',
+	EndTurn: `endTurn`
+};
+
+module.exports = {eTeam, eEvents};

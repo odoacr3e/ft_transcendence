@@ -7,8 +7,6 @@ const {Match} = require("./match.js");
 const {CHESSBOARD_H, CHESSBOARD_W} = require("./macro.js");
 const enumNames = lib.Enums.enumNames;
 
-const RESET = "\x1b[0m";
-
 /**
  * @param {Match | null} match 
  * @param {Array<String>} selected which positions are selected
@@ -17,7 +15,6 @@ const RESET = "\x1b[0m";
 function render(match=null, selected=[], TargetDangerSwitch="")
 {
 	let buffer;
-	let	asciiArt;
 	let	board;
 	let	coords;
 	let	square;
@@ -42,22 +39,7 @@ function render(match=null, selected=[], TargetDangerSwitch="")
 			square = board.get(coords.curr);
 			if (!square)
 				throw (`board position ${match.cursor.square} gives back null pointer`);
-			asciiArt = getAscii(square);
-			if (square.piece && square.piece.team)
-				buffer += `\x1b[48;5;${getSquareColor(square.piece.team)}m`;
-			if (coords.player == coords.curr)
-				buffer += `\x1b[32m[${asciiArt}]`;
-			else if (coords.curr == selected[0])
-				buffer += `\x1b[33m[${asciiArt}]`;
-			else if (TargetDangerSwitch == "Target" && coords.playerSquare.targetZones.has(coords.curr))
-				buffer += `\x1b[31m[${asciiArt}]`;
-			else if (TargetDangerSwitch == "Danger" && coords.playerSquare.dangerZones.has(coords.curr))
-				buffer += `\x1b[31m[${asciiArt}]`;
-			else if (square.piece?.isBoostedBool == true)
-				buffer += `\x1b[34m[${asciiArt}]`;
-			else
-				buffer += `[${asciiArt}]`;
-			buffer += "\x1b[0m";
+			buffer += renderSquare(square, coords, selected, TargetDangerSwitch);
 		}
 		while (match.cursor.moveCol(+1))
 		buffer += "\n";
@@ -65,6 +47,38 @@ function render(match=null, selected=[], TargetDangerSwitch="")
 	while (match.cursor.moveRow(-1))
 	match.cursor.set(coords.player);
 	console.log(buffer);
+}
+
+/**
+ * 
+ * @param {Square} square 
+ * @param {*} coords 
+ * @param {Array<string>} selected
+ * @param {string} TargetDangerSwitch 
+ */
+function renderSquare(square, coords, selected, TargetDangerSwitch)
+{
+	let	asciiArt;
+	let	buffer;
+
+	buffer = "";
+	asciiArt = getAscii(square);
+	if (square.piece && square.piece.team)
+		buffer += `\x1b[48;5;${getSquareColor(square.piece.team)}m`;
+	if (coords.player == coords.curr)
+		buffer += `\x1b[32m[${asciiArt}]`;
+	else if (coords.curr == selected[0])
+		buffer += `\x1b[33m[${asciiArt}]`;
+	else if (TargetDangerSwitch == "Target" && coords.playerSquare.targetZones.has(coords.curr))
+		buffer += `\x1b[31m[${asciiArt}]`;
+	else if (TargetDangerSwitch == "Danger" && coords.playerSquare.dangerZones.has(coords.curr))
+		buffer += `\x1b[31m[${asciiArt}]`;
+	else if (square.piece?.isBoostedBool == true)
+		buffer += `\x1b[34m[${asciiArt}]`;
+	else
+		buffer += `[${asciiArt}]`;
+	buffer += "\x1b[0m";
+	return (buffer);
 }
 
 /**
