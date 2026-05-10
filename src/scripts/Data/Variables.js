@@ -15,6 +15,18 @@ class Square {
 	}
 }
 
+class metaInfo {
+	constructor() {
+		this.clickedId = null;
+		this.lastClickedId = null;
+		this.secondTurn = true;
+	}
+}
+
+//globale contiene info. riguardante le interazione dello user con la board, utile per il rendering
+let localInfo = reactive(new metaInfo());
+
+
 //Globale che contiene tutti i dati della partita conservati in locale
 let localMatchState = null;
 
@@ -65,4 +77,4 @@ export function initLocalBoard(boardData)
 	}
 }
 
-export { localMatchState, localBoard, localPlayers, DOMBoard, DOMPlayer};
+export { localMatchState, localBoard, localPlayers, localInfo, DOMBoard, DOMPlayer};

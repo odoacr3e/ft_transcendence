@@ -1,32 +1,31 @@
-import { localBoard, localPlayers }	from "../Data/Variables.js";
-import { PIECES_HIGHLIGHT }			from "../Helper/piecesHighlits.js";
-import { requestToBack }			from "./Movements.js";
-import { clearHighlight}			from "../Helper/RenderUtils.js";
-import { getRootDiv }				from "../Helper/Constants.js";
+import { localBoard, localPlayers, localInfo }	from "../Data/Variables.js";
+import { PIECES_HIGHLIGHT }						from "../Helper/piecesHighlits.js";
+import { requestToBack }						from "./Movements.js";
+import { clearHighlight}						from "../Helper/RenderUtils.js";
+import { getRootDiv }							from "../Helper/Constants.js";
 
-let lastClickedId = null;
-let clickedId = null;
 
 export function useAbility()
 {
-	if (localBoard.get(clickedId).piece.useAbilityBool)
-		localBoard.get(clickedId).piece.useAbilityBool = false;
-	else { localBoard.get(clickedId).piece.useAbilityBool = true; }
+	if (!localBoard.get(localInfo.clickedId).piece) { return; }
+	if (localBoard.get(localInfo.clickedId).piece.useAbilityBool)
+		localBoard.get(localInfo.clickedId).piece.useAbilityBool = false;
+	else { localBoard.get(localInfo.clickedId).piece.useAbilityBool = true; }
 
-	PIECES_HIGHLIGHT[localBoard.get(clickedId).piece.type](clickedId);
+	PIECES_HIGHLIGHT[localBoard.get(localInfo.clickedId).piece.type](localInfo.clickedId);
 }
 
 export function checkPermision(event)
 {
-	if (event.target.localName === "div")	{ clickedId = event.target.id; }
-	else									{ clickedId = event.target.parentNode.id; }
+	if (event.target.localName === "div")	{ localInfo.clickedId = event.target.id; }
+	else									{ localInfo.clickedId = event.target.parentNode.id; }
 	
-	if (clickedId === "" || clickedId === "board") { return (false) }; //dragging multiplo strano
+	if (localInfo.clickedId === "" || localInfo.clickedId === "board") { return (false) }; //dragging multiplo strano
 
-	const Piece = localBoard.get(clickedId).piece;
+	const Piece = localBoard.get(localInfo.clickedId).piece;
 	const Player = localPlayers.values().find(p => p.isPlaying === true);
 	 	
-	if (Piece && Piece.team != Player.team) { lastClickedId = null; return false; }
+	if (Piece && Piece.team != Player.team) { localInfo.lastClickedId = null; return false; }
 
 	return true;
 }
@@ -37,7 +36,7 @@ export function globalEvents()
 
 	ROOT_DIV.addEventListener("click", function (event) {
 		if (!checkPermision(event))			{ clearHighlight(); return; }
-		if (checkForHighlightMove(event))	{ sendToBackend(); }
+		if (checkForHighlightMove())		{ sendToBackend(); }
 		else 								{ highlightOnClick(event); }
 	});
 
@@ -51,12 +50,12 @@ export function globalEvents()
 
 }
 
-export function checkForHighlightMove(event)
+export function checkForHighlightMove()
 {	
-	let bool = localBoard.get(clickedId).highlight;
+	let bool = localBoard.get(localInfo.clickedId).highlight;
 	// console.log(`clickedId: ${clickedId}\nbool: ${bool	}`);
 	
-	if (clickedId !== lastClickedId)	{ clearHighlight(); }
+	if (localInfo.clickedId !== localInfo.lastClickedId)	{ clearHighlight(); }
 	else								{ clearHighlight("selected"); }
 
 	return(bool);
@@ -69,8 +68,8 @@ export function sendToBackend()
 	// NOTA - non possiamo usare una variabile in questo modo, e' meglio mettere tutto in un if in modo da controllare prima
 	// che lastClickedId != null in modo che localBoard.get().etc si possa fare
 
-	if (lastClickedId && lastClickedId !== clickedId && localBoard.get(lastClickedId).targetZones.has(clickedId))
-		requestToBack(lastClickedId, clickedId).then(
+	if (localInfo.lastClickedId && localInfo.lastClickedId !== localInfo.clickedId && localBoard.get(localInfo.lastClickedId).targetZones.has(localInfo.clickedId))
+		requestToBack(localInfo.lastClickedId, localInfo.clickedId).then(
 				function(value) {if (value) { clearHighlight(); } },
 				function(value) {if (!value) { console.log("[sendToBackend]: Mossa non valida"); }}
 			);
@@ -80,18 +79,18 @@ export function highlightOnClick(event)
 {
 	if (event.target.localName === "img")
 	{
-		if (clickedId === lastClickedId) 
+		if (localInfo.clickedId === localInfo.lastClickedId) 
 		{
 			clearHighlight();
-			lastClickedId = null;
+			localInfo.lastClickedId = null;
 			return;
 		}
-		const piece = localBoard.get(clickedId).piece.type;
-		PIECES_HIGHLIGHT[piece](clickedId);
-		lastClickedId = clickedId;
+		const piece = localBoard.get(localInfo.clickedId).piece.type;
+		PIECES_HIGHLIGHT[piece](localInfo.clickedId);
+		localInfo.lastClickedId = localInfo.clickedId;
 	}
 	else
-		lastClickedId = null;
+		localInfo.lastClickedId = null;
 			
 }
 
@@ -101,7 +100,7 @@ export function setHighlighTrue(allowedMoves, flag, team)
 			localBoard.forEach(square => {
 				if (square.id == highlight)
 				{
-					if (square.highlight === false && square.id != clickedId)
+					if (square.highlight === false && square.id != localInfo.clickedId)
 					{
 						if (square.piece?.team != team)
 						{
@@ -128,7 +127,7 @@ export function highlightOnDrag(event)
 	if (event.target.localName === "img")
 	{
 		const clickedId = event.target.parentNode.id;
-		if (clickedId != lastClickedId)
+		if (clickedId != localInfo.lastClickedId)
 			clearHighlight();
 
 		const Piece = localBoard.get(clickedId).piece;
@@ -146,7 +145,7 @@ export function rightClickSelect(event)
 	{
 		event.preventDefault();
 		clearHighlight("highlight");
-		lastClickedId = null;
+		localInfo.lastClickedId = null;
 		let targetSquare;
 		if (event.target.localName === "img")
 		{

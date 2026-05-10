@@ -1,16 +1,23 @@
 <script setup>
-	import { computed }		from 'vue';
-	import { DOMPlayer }	from '@/scripts/Data/Variables';
-	import { IMG_PATHS }	from '@/scripts/Helper/Constants';
-	import { useAbility }	from '@/scripts/Events/Global'
+	import { DOMPlayer, localBoard, localInfo }	from '@/scripts/Data/Variables';
+	import { useAbility }			from '@/scripts/Events/Global'
+	import { IMG_PATHS }			from '@/scripts/Helper/Constants';
+	import { computed }				from 'vue';
 
 	const prop = defineProps({
   		p: Number
 	})
-	const	player = computed(() => DOMPlayer(prop.p));
-	const	playing = computed(() => player.value.isPlaying);	
-	const	up = prop.p === 2 ? true : false,
-			down = prop.p === 1 ? true : false;
+	const	player = computed(() => DOMPlayer(prop.p)),
+			playing = computed(() => player.value.isPlaying),
+			up = prop.p === 2 ? true : false,
+			down = prop.p === 1 ? true : false,
+			endT = computed(() => localInfo.secondTurn);
+
+	const Piece = computed(() => {
+		if (!localInfo.clickedId) { return null; }
+		return localBoard.get(localInfo.clickedId)?.piece ?? null;
+	});
+
 
 </script>
 
@@ -23,15 +30,18 @@
 			<b><h1>{{ player.name }}</h1></b>
 			<h2>Points: {{ player.nPoints }}</h2>
 		</div>
-		<button class="bg-amber-300 h-full p-2 mt-4.25 rounded-2xl flex gap-1 relative left-5 cursor-pointer text-sm
+		<button class="bg-amber-300 h-full p-2 mt-4.25 rounded-2xl flex gap-1 relative left-5 text-sm 
 						transition delay-50 duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-orange-400"
+				v-bind:class="{ 'grayscale pointer-events-none':(!playing || !Piece || !Piece.isBoostedBool),
+					'cursor-pointer grayscale-0 pointer-events-auto':(playing && Piece && Piece.isBoostedBool) }"
 			@click="useAbility()" v-if="playing">
 			<img src="../assets/boost.png" alt="" class="size-5">
 			<b>Use Ability!</b>
 		</button>
-		<button class="bg-blue-500 h-full p-2 mt-4.25 rounded-2xl flex gap-1 relative left-7 cursor-pointer text-sm
-				 transition delay-50 duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-indigo-500"
-			@click="" v-if="playing">
+		<button class="bg-blue-500 h-full p-2 mt-4.25 rounded-2xl flex gap-1 relative left-7 text-sm"
+			v-bind:class="{'transition delay-50 duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-indigo-500 cursor-pointer':playing,
+							'grayscale pointer-events-none':!playing }"
+			@click="" v-if="endT && playing">
 			<img src="../assets/clock.png" alt="" class="size-5">
 			<b>End Turn</b>
 		</button>
