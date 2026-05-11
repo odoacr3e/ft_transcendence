@@ -1,4 +1,4 @@
-import { localBoard, localPlayers }	from "../Data/Variables.js";
+import { localBoard, localPlayers }	from "@/scripts/Data/Variables.js";
 import { FILES }					from "./Constants.js";
 
 //Funzione helper per convertire la mappa in un array 8x8

@@ -25,29 +25,32 @@
 <template>
 	<div class="wrap"
 		v-bind:class="{'rounded-t-md mb-1':up, 'rounded-b-md mt-1':down}">
-		<img src="../assets/default.png" alt="User Icon" :draggable="false" class="size-18.75"
+
+		<img src="../assets/default.png" alt="User Icon" :draggable="false" class="size-18.75 shrink-0"
 			v-bind:class="{'rounded-tl-md':up, 'rounded-bl-md':down}">
-		<div>
-			<b><h1>{{ player.name }}</h1></b>
+
+		<div class="shrink-0">
+			<b><h1 class="max-w-44 overflow-hidden text-ellipsis">{{ player.name }}</h1></b>
 			<h2>Points: {{ player.nPoints }}</h2>
 		</div>
-		<button class="bg-amber-300 left-5 text-sm
-						transition delay-50 duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-orange-400"
-				v-bind:class="{ 'grayscale pointer-events-none':(!playing || !Piece || !Piece.isBoostedBool || Piece.team !== player.team),
-					'cursor-pointer grayscale-0 pointer-events-auto':(playing && Piece && Piece.isBoostedBool && (Piece.team === player.team)) }"
-			@click="useAbility()" v-if="playing && localInfo.hasBoost">
-			<img src="../assets/boost.png" alt="" :draggable="false" class="size-5">
-			<b>Use Ability!</b>
-		</button>
-		<button class="bg-blue-500 left-7 text-sm
-					transition delay-50 duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-indigo-500 cursor-pointer"
-			@click="requestToBack(null, null)" v-if="endT && playing">
-			<img src="../assets/clock.png" alt="" :draggable="false" class="size-5">
-			<b>End Turn</b>
-		</button>
-		<img :src="IMG_PATHS[player.team + 'King']" alt="TeamKing" :draggable="false" class="size-18.75 relative"
-			v-bind:class="{'drop-shadow-custom':playing, 'left-85':!playing,
-				'left-24':(playing && endT), 'left-51.5':(playing && !endT) }">
+		<div class="grow flex items-center justify-start gap-2 pr-2">
+			<button class="bg-amber-300 text-sm
+							transition delay-50 duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-orange-400"
+					v-bind:class="{ 'grayscale pointer-events-none':(!playing || !Piece || !Piece.isBoostedBool || Piece.team !== player.team),
+						'cursor-pointer grayscale-0 pointer-events-auto':(playing && Piece && Piece.isBoostedBool && (Piece.team === player.team)) }"
+				@click="useAbility()" v-if="playing && localInfo.hasBoost">
+				<img src="../assets/boost.png" alt="" :draggable="false" class="size-5">
+				<b>Use Ability!</b>
+			</button>
+			<button class="bg-blue-500 text-sm
+						transition delay-50 duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-indigo-500 cursor-pointer"
+				@click="requestToBack(null, null)" v-if="endT && playing">
+				<img src="../assets/clock.png" alt="" :draggable="false" class="size-5">
+				<b>End Turn</b>
+			</button>
+		</div>
+		<img :src="IMG_PATHS[player.team + 'King']" alt="TeamKing" :draggable="false" class="size-18.75 shrink-0"
+			v-bind:class="{'drop-shadow-custom':playing }">
 	</div>
 </template>
 
@@ -80,9 +83,9 @@
 		display: flex;
 		position: relative;
 		gap: 4px;
-		height: 100%;
-		padding: 8px;
-		margin-top: 17px;
+		height: 55%;
+		padding: 10px;
+		margin-left: 5px;
 		border-radius: 16px;
 	}
 </style>

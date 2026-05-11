@@ -42,10 +42,29 @@
                 </div>
             </div>
         </div>
+		<div id="shop">
+			<img src="../assets/oldMan.png" alt="" class="shrink-0 size-20 absolute bottom-7">
+			<button class="side-button bg-amber-300 text-sm p-2.5 rounded-2xl
+						transition delay-50 duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-orange-400 cursor-pointer">
+					<b>Boost your Pieces!</b>
+			</button>
+		</div>
     </div>
 </template>
 
 <style scoped>
+	#shop {
+		position: absolute;
+		display: flex;
+		flex-flow: column;
+		align-items: center;
+		margin-left: 5px;
+		z-index: 13;
+		top: 50%;
+	    left: calc(50% + 300px + 16px); /* bordo destro board + gap */
+	    transform: translateY(-50%); /* centrato verticalmente rispetto alla board */
+	}
+
 	#board
 	{
 		display: grid;

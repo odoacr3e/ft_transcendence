@@ -1,6 +1,6 @@
-import { setHighlighTrue }	from "../Events/Global";
+import { setHighlighTrue }	from "@/scripts/Events/Global";
 import { clearHighlight }	from "./RenderUtils";
-import { localBoard }		from "../Data/Variables"
+import { localBoard }		from "@/scripts/Data/Variables"
 
 const PIECES_HIGHLIGHT = Object.freeze ({
 	"King" : KingAndBastardsHL,

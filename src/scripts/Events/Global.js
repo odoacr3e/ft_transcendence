@@ -1,8 +1,8 @@
-import { localBoard, localPlayers, localInfo }	from "../Data/Variables.js";
-import { PIECES_HIGHLIGHT }						from "../Helper/piecesHighlits.js";
+import { localBoard, localPlayers, localInfo }	from "@/scripts/Data/Variables";
+import { PIECES_HIGHLIGHT }						from "@/scripts/Helper/piecesHighlits";
 import { requestToBack }						from "./Movements.js";
-import { clearHighlight}						from "../Helper/RenderUtils.js";
-import { getRootDiv }							from "../Helper/Constants.js";
+import { clearHighlight}						from "@/scripts/Helper/RenderUtils";
+import { getRootDiv }							from "@/scripts/Helper/Constants";
 
 
 export function useAbility()

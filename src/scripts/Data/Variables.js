@@ -1,6 +1,6 @@
 //!SECTION FILE CON TUTTE LE VARIABILI GLOBALI
-import { boardConverter, getLocalPlayers }	from "../Helper/RenderUtils.js";
-import { reactive }			from "vue";
+import { boardConverter, getLocalPlayers }	from "@/scripts/Helper/RenderUtils";
+import { reactive }							from "vue";
 
 class Square {
 	constructor(id, piece, targetZones = [], boostedTargetZones = {}) {

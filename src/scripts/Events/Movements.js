@@ -1,6 +1,6 @@
-import { localBoard, localInfo }	from "../Data/Variables.js";
-import { updateMatchState }			from "../Data/Archi.js"
-import { clearHighlight }			from "../Helper/RenderUtils.js";
+import { localBoard, localInfo }	from "@/scripts/Data/Variables";
+import { updateMatchState }			from "@/scripts/Data/Archi"
+import { clearHighlight }			from "@/scripts/Helper/RenderUtils";
 
 export function movePiece(fromSquareId, toSquareId)
 {
