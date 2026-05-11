@@ -19,7 +19,7 @@ const preset = {
 	black: 
 	{
 		name: "",
-		nPoints: 0,
+		nPoints: 99,
 		bonusPointCounter: 0,
 		nPieces: 0,
 		team: eTeam.Black,
@@ -159,7 +159,7 @@ class HistoryEvent
 	 * @param {string} to
 	 * @param {Map<string, Set<string>> | null} pieceBoosterZones
 	 */
-	constructor(eventType="", team="", pieceType="", from="", to="", pieceBoosterZones=null)
+	constructor(eventType="", team="", pieceType="", from="", to="", pieceBoosterZones=null, isBoosted=false)
 	{
 		if (!eventType)
 			throw ("History Event: invalid event type");
@@ -171,6 +171,7 @@ class HistoryEvent
 		this.team = team;
 		this.type = eventType;
 		this.pieceBoosterTargetZones = null;
+		this.isBoostedBool = isBoosted;
 		if (pieceBoosterZones)
 			this.pieceBoosterTargetZones = copyBoostedTargetZones(pieceBoosterZones);
 	}
@@ -194,7 +195,7 @@ function updateMoves(square, coords)
 		throw (`History: invalid square`);
 	if (!square.piece)
 		throw (`History: missing piece in square: ${square}`);
-	record = new HistoryEvent(eEvents.Move, square.piece.team, square.piece.type, coords[0], coords[1], square.boostedTargetZones);
+	record = new HistoryEvent(eEvents.Move, square.piece.team, square.piece.type, coords[0], coords[1], square.boostedTargetZones, square.piece.isBoostedBool);
 	this.events.push(record);
 	this.moves += 1;
 }

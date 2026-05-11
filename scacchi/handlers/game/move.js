@@ -6,6 +6,7 @@ const {MOVEMENT_MAX, MOVEMENT_MIN} = require("../../macro");
 const {Piece, board, Square, copyBoard, cursor} = require("../../lib/lib.js").Chess;
 const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("../../utils.js");
 const {Match} = require("../../match.js");
+const {Preset} = require("../../pieces.js");
 const {error, paramCheck, Result, clientBoard, checkMateAlert} = require("./utils.js");
 const {endTurn} = require("./endTurn");
 const {CheckMateCheck} = require("../../checkMate.js");
@@ -131,10 +132,10 @@ function updateChessboard(coords=[], result, match)
  * @param {Array<string>} coords
  * @returns {boolean}
  */
-function checkBooster(match, result, from, coords)
+function checkBooster(match, result, from, coords) // FIXME - da aggiungere check per valchiria: vuole usare boost?
 {
 	//FIXME - ale:temporaneamente lascio i commenti spiegazione per il senpai
-	//poi per la plebe verranno tolti >3
+	//poi per la plebe verranno totti >3
 	let	pieceMultipleMoveBool;
 	let	boostedTargetZones;
 
@@ -148,12 +149,15 @@ function checkBooster(match, result, from, coords)
 		pieceMultipleMoveBool = false;
 	if (pieceMultipleMoveBool == true && match.history.Last().type != eEvents.Move)
 		return (error(result, 500, "match History is messed up"));
+	if (from.piece.type == enumNames.BASTARDS || match.history.Last().movedPiece == enumNames.BASTARDS)
+		return (doubleBastardsCheck(match, result, coords, pieceMultipleMoveBool));
+	if (pieceMultipleMoveBool == false && match.moves > 0)
+		return (error(result, 403, "Multiple moves not allowed there"));
 	//se il pezzo non vuole fare doppi movimenti e puo usare le target, ok
 	if (pieceMultipleMoveBool == false && from.targetZones.has(coords[1]))
 		return (true);
 	//i bastardi siccome sono strani si validano
-	if (pieceMultipleMoveBool == false && from.piece.type == enumNames.BASTARDS)
-		return (true);
+
 	if (from.piece.isBoostedBool == false)
 		return (error(result, 403, `illegal move`));
 	//se il pezzo vuole muoversi di nuovo, ma quel tipo di pezzo non puo, errore
@@ -176,6 +180,68 @@ function checkBooster(match, result, from, coords)
 	from.targetZones.add(coords[1]);
 	from.piece.isBoostedBool = false;
 	return (true);
+}
+
+/**
+ * 
+ * @param {Match} match
+ * @param {Result} result 
+ * @param {Array<string>} coords
+ * @param {boolean} pieceMultipleMoveBool
+ * @returns {boolean}
+ */
+function doubleBastardsCheck(match, result, coords, pieceMultipleMoveBool)
+{
+	let from;
+	let to;
+	let	bastard;
+	let	bastardSquare;
+	let	other;
+	let last;
+	let	presetBastard;
+	let	tmpCursor;
+
+	if (match.moves == 0)
+		return (true);
+	from = match.board.get(coords[0]);
+	to = match.board.get(coords[1]);
+	last = match.history.Last();
+	console.log(last);
+	tmpCursor = match.cursor.square;
+	if (!from || !to || !from.piece)
+		return (error(result, 500, "Something went wrong while searching for the position"));
+	if (from.piece?.type == enumNames.BASTARDS && from.piece?.isBoostedBool == true)
+	{
+		bastard = coords[0];
+		other = last.from;
+		bastardSquare = from;
+	}
+	else if (last.movedPiece == enumNames.BASTARDS && last.isBoostedBool)
+	{
+		bastard = last.from;
+		other = coords[0];
+		bastardSquare = match.board.get(match.history.Last().to);
+	}
+	else
+		return (error(result, 403, "Try boosting the bastard first"));
+	if (!bastardSquare || !bastardSquare.piece)
+		return (error(result, 500, "match History is messed up"));
+	presetBastard = new Preset(enumNames.BASTARDS);
+	for (let {dx, dy} of presetBastard.movement)
+	{
+		match.cursor.set(bastard);
+		if (!movePiece(match, dy, dx))
+			continue ;
+		if (match.cursor.square == other)
+		{
+			bastardSquare.piece.isBoostedBool = false;
+			from.piece.isBoostedBool = false;
+			match.cursor.set(tmpCursor);
+			return true;
+		}
+	}
+	match.cursor.set(tmpCursor);
+	return (error(result, 403, "To use the bastard boost, the pieces must be near"));
 }
 
 /**

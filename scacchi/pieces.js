@@ -2,7 +2,7 @@
 const {eTeam} =  require("./enums.js");
 const {Match} = require("./match.js");
 const {Cursor} = require("./cursor.js");
-const {isDangerous, movePiece, DangerUpdate} = require("./utils.js");
+const {isDangerous, movePiece, DangerUpdate, bastardChecks} = require("./utils.js");
 const {CHESSBOARD_H, CHESSBOARD_W} = require("./macro.js");
 
 //SECTION - Pezzo class
@@ -41,20 +41,27 @@ class Piece
  */
 let movementWithSecondTurn = function (match /* res */)
 {
-	let	startPos;
+	let	usedBoard;
 	let	piece;
+	let	startPos;
 
+	usedBoard = match.board;
 	startPos = match.cursor.square;
-	piece = match.board.get(match.cursor.square)?.piece;
+	piece = usedBoard.get(match.cursor.square)?.piece;
 	if (piece == null)
 		return (0);
 	for (let {dx, dy} of piece.moveArray)
 	{
-		while (movePiece(match, dx, dy, false))
+		if (!bastardChecks(match, dx, dy, piece))
 		{
-			match.board.get(match.cursor.square)?.dangerZones.add(startPos);
-			match.board.get(startPos)?.targetZones.add(match.cursor.square);
-			if (piece.moveLongRangeDEBUG == false || match.board.get(match.cursor.square)?.piece != null)
+			usedBoard.get(match.cursor.square)?.dangerZones.add(startPos);
+			continue ;
+		}
+		while (movePiece(match, dy, dx, false))
+		{
+			usedBoard.get(match.cursor.square)?.dangerZones.add(startPos);
+			usedBoard.get(startPos)?.targetZones.add(match.cursor.square);
+			if (piece.moveLongRangeDEBUG == false || usedBoard.get(match.cursor.square)?.piece != null)
 				break ;
 		}
 		match.cursor.square = startPos;
@@ -71,7 +78,7 @@ let movementWithSecondTurn = function (match /* res */)
  */
 function berserkMode(pos, match)
 {
-	let startPos;//current move Starting Position
+	let startPos;
 	let piece;
 	let	targetSquare;
 
@@ -354,7 +361,7 @@ const preset = {
 	Bastards: {
 		type: enumNames.BASTARDS,
 		price: enumValues.BASTARDS,
-		multipleMoves: false,
+		multipleMoves: true,
 		longRange: false,
 		movement:
 		[
@@ -406,4 +413,4 @@ class Preset
 	}
 }
 
-module.exports = {Piece, enumNames, enumValues};
+module.exports = {Piece, Preset, enumNames, enumValues};

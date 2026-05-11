@@ -7,7 +7,6 @@ const Macro = require("./macro.js");
 const {eEvents} = require("./enums.js");
 const {Cursor} = require("./cursor.js");
 const {Match} = require("./match.js");
-const { Piece } = require("./pieces.js");
 
 /**
  * 
@@ -176,7 +175,6 @@ function dangerUpdateAll(match)
 	let	temp;
 	let usedBoard
 
-	console.log("dangerUpdateAll call");
 	temp = match.cursor.square;
 	usedBoard = match.board;
 	for (let [pos, square] of usedBoard)
@@ -198,4 +196,4 @@ function dangerUpdateAll(match)
 	match.cursor.set(temp);
 }
 
-module.exports = {isDangerous, movePiece, DangerUpdate, dangerUpdateAll};
+module.exports = {isDangerous, movePiece, DangerUpdate, dangerUpdateAll, bastardChecks};
