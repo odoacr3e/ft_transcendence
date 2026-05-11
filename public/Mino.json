@@ -271,6 +271,7 @@
 	"nPieces": 0,
 	"team": "white",
 	"next": "black",
+	"isPlaying": false,
 	"King": "e1"
   },
   "p2": {
@@ -280,6 +281,7 @@
 	"nPieces": 0,
 	"team": "black",
 	"next": "white",
+	"isPlaying": true,
 	"King": "e8"
   },
   "p3": {

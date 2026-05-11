@@ -1,4 +1,4 @@
-import { initLocalBoard, localMatchState, localBoard, localPlayers, startLocalMatchState } from "./Variables.js";
+import { initLocalBoard, localMatchState, localBoard, localPlayers, localInfo, startLocalMatchState } from "./Variables.js";
 
 export async function loadReceivedMatch() 
 {
@@ -68,12 +68,41 @@ function initLocalPlayers()
 		if (wrong_type)	{ throw new Error(`[initLocalPlayers]: Player ${player} a wrong type!`); }
 
 		localPlayers.set(player, localMatchState[player]);
-	})	
+	})
+
+	hasBoost(localPlayers.values().find(p => p.isPlaying === true));
+}
+
+function hasBoost (curP)
+{
+	localInfo.hasBoost = false;
+	localBoard.forEach(square => {
+		if (square.piece && square.piece.isBoostedBool)
+			if (square.piece.team === curP.team)
+				localInfo.hasBoost = true;
+	});
+}
+
+function checkEndTurn(validated)
+{
+	let		newCurP;
+	const	players_list = ["p1", "p2", "p3", "p4"];
+	const	curP = localPlayers.values().find(p => p.isPlaying === true);
+
+	players_list.forEach((player) => {
+		if (validated[player].isPlaying) { newCurP = validated[player]; };
+	})
+
+	if (curP.name === newCurP.name) { localInfo.secondTurn = true; }
+	else 							{ localInfo.secondTurn = false; }
 }
 
 export function updateMatchState(nextRaw)
 {
 	const validated = validateReceivedMatch(nextRaw);
+
+	checkEndTurn(validated);
+
 	startLocalMatchState(validated);
 	try 
 	{
@@ -127,4 +156,6 @@ function updateLocalPlayers(changes)
 
 		localPlayers.set(player, {...localPlayers.get(player), ...changes[player]});
 	})
+
+	hasBoost(localPlayers.values().find(p => p.isPlaying === true));
 }

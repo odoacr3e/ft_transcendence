@@ -19,7 +19,8 @@ class metaInfo {
 	constructor() {
 		this.clickedId = null;
 		this.lastClickedId = null;
-		this.secondTurn = true;
+		this.secondTurn = false;
+		this.hasBoost = false;
 	}
 }
 

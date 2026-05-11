@@ -1,6 +1,6 @@
-import { updateMatchState } from "../Data/Archi.js"
-import { clearHighlight }	from "../Helper/RenderUtils.js";
-import { localBoard }		from "../Data/Variables.js";
+import { localBoard, localInfo }	from "../Data/Variables.js";
+import { updateMatchState }			from "../Data/Archi.js"
+import { clearHighlight }			from "../Helper/RenderUtils.js";
 
 export function movePiece(fromSquareId, toSquareId)
 {
@@ -39,16 +39,25 @@ export function onDrop(event, toSquare)
 		);
 }
 
-
 export async function requestToBack(fromSquare, toSquare)
 {
+	//la logia e' giusta ma bisogna fare un controllo ulteriore sullo square dove si sposta per sapere se
+	//effettivamente se e' un movimento boostato (e serve il movimento boostato per questo lol)
+	// if (localBoard.get(fromSquare).piece.useAbilityBool)
+	// 	json = JSON.stringify({ type: "boost move", from: fromSquare, to: toSquare })
+
+	let json;
+	if (fromSquare === null && toSquare === null && localInfo.secondTurn)
+		json = JSON.stringify({ type: "end turn", from: fromSquare, to: toSquare }) //la logica funziona e' che le risposte sono statiche
+	else { json = JSON.stringify({ type: "move", from: fromSquare, to: toSquare }) }
+
 	try
 	{
 		// const response = await fetch("/api/game/", {
 		const response = await fetch("/move.json", {
 		  method: "POST",
 		  headers: { "Content-Type": "application/json" },
-		  body: JSON.stringify({ type: "move", from: fromSquare, to: toSquare }),
+		  body: json,
 		});
 	
 		if (!response.ok) throw new Error(`Impossibile caricare /move.json: ${response.status}`);
