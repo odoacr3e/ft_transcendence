@@ -54,7 +54,8 @@ export async function requestToBack(fromSquare, toSquare)
 	try
 	{
 		// const response = await fetch("/api/game/", {
-		const response = await fetch("/move.json", {
+		const response = await fetch("/mino_resp.json", {
+		// const response = await fetch("move.json", {
 		  method: "POST",
 		  headers: { "Content-Type": "application/json" },
 		  body: json,

@@ -102,8 +102,8 @@
 		"price": 0,
 		"team": "white",
 		"isMovedBool": false,
-		"isBoostedBool": false,
-		"useAbilityBool": false,
+		"isBoostedBool": true,
+		"useAbilityBool": true,
 		"pos": "e1",
 		"moveArray": [
 		  { "dx": 1, "dy": 1 },
@@ -271,7 +271,7 @@
 	"nPieces": 0,
 	"team": "white",
 	"next": "black",
-	"isPlaying": false,
+	"isPlaying": true,
 	"King": "e1"
   },
   "p2": {
@@ -281,7 +281,7 @@
 	"nPieces": 0,
 	"team": "black",
 	"next": "white",
-	"isPlaying": true,
+	"isPlaying": false,
 	"King": "e8"
   },
   "p3": {

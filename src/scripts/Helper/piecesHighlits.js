@@ -70,6 +70,7 @@ export function KingAndBastardsHL(squareId)
 	{
 		setHighlighTrue(regularMoves, "regular", team);
 		setHighlighTrue(boostedMoves, "boosted", "both");
+		console.log("allora?");		
 	}
 	else if (regularMoves)
 		setHighlighTrue(regularMoves, "regular", team);

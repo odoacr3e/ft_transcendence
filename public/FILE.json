@@ -1,4 +1,47 @@
-{
+{ 
+  "youWin": false,
+  "log": {
+    "msg": "OK",
+    "status": 200
+  },
+  "p1": {
+    "name": "Player1",
+    "nPoints": 0,
+    "bonusPointCounter": 0,
+    "nPieces": 0,
+    "team": "white",
+    "next": "black",
+    "isPlaying": true,
+    "King": "e1"
+  },
+  "p2": {
+    "name": "Player2",
+    "nPoints": 0,
+    "bonusPointCounter": 0,
+    "nPieces": 0,
+    "team": "black",
+    "next": "white",
+    "isPlaying": false,
+    "King": "e8"
+  },
+  "p3": {
+    "name": "",
+    "nPoints": 0,
+    "bonusPointCounter": 0,
+    "nPieces": 0,
+    "team": "red",
+    "next": "blue",
+    "King": ""
+  },
+  "p4": {
+    "name": "",
+    "nPoints": 0,
+    "bonusPointCounter": 0,
+    "nPieces": 0,
+    "team": "yellow",
+    "next": "red",
+    "King": ""
+  },
   "board": {
     "a1": {
       "piece": {
@@ -8,24 +51,6 @@
         "isMovedBool": false,
         "isBoostedBool": false,
         "pos": "a1",
-        "moveArray": [
-          {
-            "dx": 0,
-            "dy": 1
-          },
-          {
-            "dx": 0,
-            "dy": -1
-          },
-          {
-            "dx": 1,
-            "dy": 0
-          },
-          {
-            "dx": -1,
-            "dy": 0
-          }
-        ],
         "moveLongRangeDEBUG": true
       },
       "targetZones": [
@@ -42,32 +67,6 @@
         "isMovedBool": false,
         "isBoostedBool": true,
         "pos": "a2",
-        "moveArray": [
-          {
-            "dx": 1,
-            "dy": 0
-          },
-          {
-            "dx": -1,
-            "dy": 0
-          },
-          {
-            "dx": 1,
-            "dy": 1
-          },
-          {
-            "dx": -1,
-            "dy": -1
-          },
-          {
-            "dx": -1,
-            "dy": 1
-          },
-          {
-            "dx": 1,
-            "dy": -1
-          }
-        ],
         "moveLongRangeDEBUG": false
       },
       "targetZones": [
@@ -104,32 +103,6 @@
         "isMovedBool": false,
         "isBoostedBool": false,
         "pos": "a7",
-        "moveArray": [
-          {
-            "dx": 1,
-            "dy": 0
-          },
-          {
-            "dx": -1,
-            "dy": 0
-          },
-          {
-            "dx": 1,
-            "dy": 1
-          },
-          {
-            "dx": -1,
-            "dy": -1
-          },
-          {
-            "dx": -1,
-            "dy": 1
-          },
-          {
-            "dx": 1,
-            "dy": -1
-          }
-        ],
         "moveLongRangeDEBUG": false
       },
       "targetZones": [
@@ -146,24 +119,6 @@
         "isMovedBool": false,
         "isBoostedBool": false,
         "pos": "a8",
-        "moveArray": [
-          {
-            "dx": 0,
-            "dy": 1
-          },
-          {
-            "dx": 0,
-            "dy": -1
-          },
-          {
-            "dx": 1,
-            "dy": 0
-          },
-          {
-            "dx": -1,
-            "dy": 0
-          }
-        ],
         "moveLongRangeDEBUG": true
       },
       "targetZones": [
@@ -180,40 +135,6 @@
         "isMovedBool": false,
         "isBoostedBool": false,
         "pos": "b1",
-        "moveArray": [
-          {
-            "dx": 2,
-            "dy": 1
-          },
-          {
-            "dx": 2,
-            "dy": -1
-          },
-          {
-            "dx": -2,
-            "dy": 1
-          },
-          {
-            "dx": -2,
-            "dy": -1
-          },
-          {
-            "dx": 1,
-            "dy": 2
-          },
-          {
-            "dx": 1,
-            "dy": -2
-          },
-          {
-            "dx": -1,
-            "dy": 2
-          },
-          {
-            "dx": -1,
-            "dy": -2
-          }
-        ],
         "moveLongRangeDEBUG": false
       },
       "targetZones": [
@@ -231,32 +152,6 @@
         "isMovedBool": false,
         "isBoostedBool": false,
         "pos": "b2",
-        "moveArray": [
-          {
-            "dx": 1,
-            "dy": 0
-          },
-          {
-            "dx": -1,
-            "dy": 0
-          },
-          {
-            "dx": 1,
-            "dy": 1
-          },
-          {
-            "dx": -1,
-            "dy": -1
-          },
-          {
-            "dx": -1,
-            "dy": 1
-          },
-          {
-            "dx": 1,
-            "dy": -1
-          }
-        ],
         "moveLongRangeDEBUG": false
       },
       "targetZones": [
@@ -293,32 +188,6 @@
         "isMovedBool": false,
         "isBoostedBool": false,
         "pos": "b7",
-        "moveArray": [
-          {
-            "dx": 1,
-            "dy": 0
-          },
-          {
-            "dx": -1,
-            "dy": 0
-          },
-          {
-            "dx": 1,
-            "dy": 1
-          },
-          {
-            "dx": -1,
-            "dy": -1
-          },
-          {
-            "dx": -1,
-            "dy": 1
-          },
-          {
-            "dx": 1,
-            "dy": -1
-          }
-        ],
         "moveLongRangeDEBUG": false
       },
       "targetZones": [
@@ -335,40 +204,6 @@
         "isMovedBool": false,
         "isBoostedBool": false,
         "pos": "b8",
-        "moveArray": [
-          {
-            "dx": 2,
-            "dy": 1
-          },
-          {
-            "dx": 2,
-            "dy": -1
-          },
-          {
-            "dx": -2,
-            "dy": 1
-          },
-          {
-            "dx": -2,
-            "dy": -1
-          },
-          {
-            "dx": 1,
-            "dy": 2
-          },
-          {
-            "dx": 1,
-            "dy": -2
-          },
-          {
-            "dx": -1,
-            "dy": 2
-          },
-          {
-            "dx": -1,
-            "dy": -2
-          }
-        ],
         "moveLongRangeDEBUG": false
       },
       "targetZones": [
@@ -386,24 +221,6 @@
         "isMovedBool": false,
         "isBoostedBool": false,
         "pos": "c1",
-        "moveArray": [
-          {
-            "dx": 1,
-            "dy": 1
-          },
-          {
-            "dx": -1,
-            "dy": -1
-          },
-          {
-            "dx": -1,
-            "dy": 1
-          },
-          {
-            "dx": 1,
-            "dy": -1
-          }
-        ],
         "moveLongRangeDEBUG": true
       },
       "targetZones": [
@@ -420,32 +237,6 @@
         "isMovedBool": false,
         "isBoostedBool": false,
         "pos": "c2",
-        "moveArray": [
-          {
-            "dx": 1,
-            "dy": 0
-          },
-          {
-            "dx": -1,
-            "dy": 0
-          },
-          {
-            "dx": 1,
-            "dy": 1
-          },
-          {
-            "dx": -1,
-            "dy": -1
-          },
-          {
-            "dx": -1,
-            "dy": 1
-          },
-          {
-            "dx": 1,
-            "dy": -1
-          }
-        ],
         "moveLongRangeDEBUG": false
       },
       "targetZones": [
@@ -482,32 +273,6 @@
         "isMovedBool": false,
         "isBoostedBool": false,
         "pos": "c7",
-        "moveArray": [
-          {
-            "dx": 1,
-            "dy": 0
-          },
-          {
-            "dx": -1,
-            "dy": 0
-          },
-          {
-            "dx": 1,
-            "dy": 1
-          },
-          {
-            "dx": -1,
-            "dy": -1
-          },
-          {
-            "dx": -1,
-            "dy": 1
-          },
-          {
-            "dx": 1,
-            "dy": -1
-          }
-        ],
         "moveLongRangeDEBUG": false
       },
       "targetZones": [
@@ -524,24 +289,6 @@
         "isMovedBool": false,
         "isBoostedBool": false,
         "pos": "c8",
-        "moveArray": [
-          {
-            "dx": 1,
-            "dy": 1
-          },
-          {
-            "dx": -1,
-            "dy": -1
-          },
-          {
-            "dx": -1,
-            "dy": 1
-          },
-          {
-            "dx": 1,
-            "dy": -1
-          }
-        ],
         "moveLongRangeDEBUG": true
       },
       "targetZones": [
@@ -558,40 +305,6 @@
         "isMovedBool": false,
         "isBoostedBool": false,
         "pos": "d1",
-        "moveArray": [
-          {
-            "dx": 1,
-            "dy": 1
-          },
-          {
-            "dx": -1,
-            "dy": -1
-          },
-          {
-            "dx": -1,
-            "dy": 1
-          },
-          {
-            "dx": 1,
-            "dy": -1
-          },
-          {
-            "dx": 0,
-            "dy": 1
-          },
-          {
-            "dx": 0,
-            "dy": -1
-          },
-          {
-            "dx": 1,
-            "dy": 0
-          },
-          {
-            "dx": -1,
-            "dy": 0
-          }
-        ],
         "moveLongRangeDEBUG": true
       },
       "targetZones": [
@@ -611,32 +324,6 @@
         "isMovedBool": false,
         "isBoostedBool": false,
         "pos": "d2",
-        "moveArray": [
-          {
-            "dx": 1,
-            "dy": 0
-          },
-          {
-            "dx": -1,
-            "dy": 0
-          },
-          {
-            "dx": 1,
-            "dy": 1
-          },
-          {
-            "dx": -1,
-            "dy": -1
-          },
-          {
-            "dx": -1,
-            "dy": 1
-          },
-          {
-            "dx": 1,
-            "dy": -1
-          }
-        ],
         "moveLongRangeDEBUG": false
       },
       "targetZones": [
@@ -673,32 +360,6 @@
         "isMovedBool": false,
         "isBoostedBool": false,
         "pos": "d7",
-        "moveArray": [
-          {
-            "dx": 1,
-            "dy": 0
-          },
-          {
-            "dx": -1,
-            "dy": 0
-          },
-          {
-            "dx": 1,
-            "dy": 1
-          },
-          {
-            "dx": -1,
-            "dy": -1
-          },
-          {
-            "dx": -1,
-            "dy": 1
-          },
-          {
-            "dx": 1,
-            "dy": -1
-          }
-        ],
         "moveLongRangeDEBUG": false
       },
       "targetZones": [
@@ -715,40 +376,6 @@
         "isMovedBool": false,
         "isBoostedBool": false,
         "pos": "d8",
-        "moveArray": [
-          {
-            "dx": 1,
-            "dy": 1
-          },
-          {
-            "dx": -1,
-            "dy": -1
-          },
-          {
-            "dx": -1,
-            "dy": 1
-          },
-          {
-            "dx": 1,
-            "dy": -1
-          },
-          {
-            "dx": 0,
-            "dy": 1
-          },
-          {
-            "dx": 0,
-            "dy": -1
-          },
-          {
-            "dx": 1,
-            "dy": 0
-          },
-          {
-            "dx": -1,
-            "dy": 0
-          }
-        ],
         "moveLongRangeDEBUG": true
       },
       "targetZones": [
@@ -765,43 +392,9 @@
         "type": "King",
         "price": 0,
         "team": "white",
-        "isMovedBool": false,
-        "isBoostedBool": false,
+        "isMovedBool": true,
+        "isBoostedBool": true,
         "pos": "e1",
-        "moveArray": [
-          {
-            "dx": 1,
-            "dy": 1
-          },
-          {
-            "dx": -1,
-            "dy": -1
-          },
-          {
-            "dx": -1,
-            "dy": 1
-          },
-          {
-            "dx": 1,
-            "dy": -1
-          },
-          {
-            "dx": 0,
-            "dy": 1
-          },
-          {
-            "dx": 0,
-            "dy": -1
-          },
-          {
-            "dx": 1,
-            "dy": 0
-          },
-          {
-            "dx": -1,
-            "dy": 0
-          }
-        ],
         "moveLongRangeDEBUG": false
       },
       "targetZones": [
@@ -811,7 +404,9 @@
         "d1",
         "e2"
       ],
-      "boostedTargetZones": {}
+      "boostedTargetZones": {
+		"e1": ["d2", "d1", "e2", "f2", "f1"]
+	  }
     },
     "e2": {
       "piece": {
@@ -821,32 +416,6 @@
         "isMovedBool": false,
         "isBoostedBool": true,
         "pos": "e2",
-        "moveArray": [
-          {
-            "dx": 1,
-            "dy": 0
-          },
-          {
-            "dx": -1,
-            "dy": 0
-          },
-          {
-            "dx": 1,
-            "dy": 1
-          },
-          {
-            "dx": -1,
-            "dy": -1
-          },
-          {
-            "dx": -1,
-            "dy": 1
-          },
-          {
-            "dx": 1,
-            "dy": -1
-          }
-        ],
         "moveLongRangeDEBUG": false
       },
       "targetZones": [
@@ -891,32 +460,6 @@
         "isMovedBool": false,
         "isBoostedBool": false,
         "pos": "e7",
-        "moveArray": [
-          {
-            "dx": 1,
-            "dy": 0
-          },
-          {
-            "dx": -1,
-            "dy": 0
-          },
-          {
-            "dx": 1,
-            "dy": 1
-          },
-          {
-            "dx": -1,
-            "dy": -1
-          },
-          {
-            "dx": -1,
-            "dy": 1
-          },
-          {
-            "dx": 1,
-            "dy": -1
-          }
-        ],
         "moveLongRangeDEBUG": false
       },
       "targetZones": [
@@ -933,40 +476,6 @@
         "isMovedBool": false,
         "isBoostedBool": false,
         "pos": "e8",
-        "moveArray": [
-          {
-            "dx": 1,
-            "dy": 1
-          },
-          {
-            "dx": -1,
-            "dy": -1
-          },
-          {
-            "dx": -1,
-            "dy": 1
-          },
-          {
-            "dx": 1,
-            "dy": -1
-          },
-          {
-            "dx": 0,
-            "dy": 1
-          },
-          {
-            "dx": 0,
-            "dy": -1
-          },
-          {
-            "dx": 1,
-            "dy": 0
-          },
-          {
-            "dx": -1,
-            "dy": 0
-          }
-        ],
         "moveLongRangeDEBUG": false
       },
       "targetZones": [
@@ -986,24 +495,6 @@
         "isMovedBool": false,
         "isBoostedBool": true,
         "pos": "f1",
-        "moveArray": [
-          {
-            "dx": 1,
-            "dy": 1
-          },
-          {
-            "dx": -1,
-            "dy": -1
-          },
-          {
-            "dx": -1,
-            "dy": 1
-          },
-          {
-            "dx": 1,
-            "dy": -1
-          }
-        ],
         "moveLongRangeDEBUG": true
       },
       "targetZones": [
@@ -1025,32 +516,6 @@
         "isMovedBool": false,
         "isBoostedBool": false,
         "pos": "f2",
-        "moveArray": [
-          {
-            "dx": 1,
-            "dy": 0
-          },
-          {
-            "dx": -1,
-            "dy": 0
-          },
-          {
-            "dx": 1,
-            "dy": 1
-          },
-          {
-            "dx": -1,
-            "dy": -1
-          },
-          {
-            "dx": -1,
-            "dy": 1
-          },
-          {
-            "dx": 1,
-            "dy": -1
-          }
-        ],
         "moveLongRangeDEBUG": false
       },
       "targetZones": [
@@ -1087,32 +552,6 @@
         "isMovedBool": false,
         "isBoostedBool": false,
         "pos": "f7",
-        "moveArray": [
-          {
-            "dx": 1,
-            "dy": 0
-          },
-          {
-            "dx": -1,
-            "dy": 0
-          },
-          {
-            "dx": 1,
-            "dy": 1
-          },
-          {
-            "dx": -1,
-            "dy": -1
-          },
-          {
-            "dx": -1,
-            "dy": 1
-          },
-          {
-            "dx": 1,
-            "dy": -1
-          }
-        ],
         "moveLongRangeDEBUG": false
       },
       "targetZones": [
@@ -1129,24 +568,6 @@
         "isMovedBool": false,
         "isBoostedBool": true,
         "pos": "f8",
-        "moveArray": [
-          {
-            "dx": 1,
-            "dy": 1
-          },
-          {
-            "dx": -1,
-            "dy": -1
-          },
-          {
-            "dx": -1,
-            "dy": 1
-          },
-          {
-            "dx": 1,
-            "dy": -1
-          }
-        ],
         "moveLongRangeDEBUG": true
       },
       "targetZones": [
@@ -1168,40 +589,6 @@
         "isMovedBool": false,
         "isBoostedBool": true,
         "pos": "g1",
-        "moveArray": [
-          {
-            "dx": 2,
-            "dy": 1
-          },
-          {
-            "dx": 2,
-            "dy": -1
-          },
-          {
-            "dx": -2,
-            "dy": 1
-          },
-          {
-            "dx": -2,
-            "dy": -1
-          },
-          {
-            "dx": 1,
-            "dy": 2
-          },
-          {
-            "dx": 1,
-            "dy": -2
-          },
-          {
-            "dx": -1,
-            "dy": 2
-          },
-          {
-            "dx": -1,
-            "dy": -2
-          }
-        ],
         "moveLongRangeDEBUG": false
       },
       "targetZones": [
@@ -1226,32 +613,6 @@
         "isMovedBool": false,
         "isBoostedBool": false,
         "pos": "g2",
-        "moveArray": [
-          {
-            "dx": 1,
-            "dy": 0
-          },
-          {
-            "dx": -1,
-            "dy": 0
-          },
-          {
-            "dx": 1,
-            "dy": 1
-          },
-          {
-            "dx": -1,
-            "dy": -1
-          },
-          {
-            "dx": -1,
-            "dy": 1
-          },
-          {
-            "dx": 1,
-            "dy": -1
-          }
-        ],
         "moveLongRangeDEBUG": false
       },
       "targetZones": [
@@ -1288,32 +649,6 @@
         "isMovedBool": false,
         "isBoostedBool": false,
         "pos": "g7",
-        "moveArray": [
-          {
-            "dx": 1,
-            "dy": 0
-          },
-          {
-            "dx": -1,
-            "dy": 0
-          },
-          {
-            "dx": 1,
-            "dy": 1
-          },
-          {
-            "dx": -1,
-            "dy": -1
-          },
-          {
-            "dx": -1,
-            "dy": 1
-          },
-          {
-            "dx": 1,
-            "dy": -1
-          }
-        ],
         "moveLongRangeDEBUG": false
       },
       "targetZones": [
@@ -1330,40 +665,6 @@
         "isMovedBool": false,
         "isBoostedBool": false,
         "pos": "g8",
-        "moveArray": [
-          {
-            "dx": 2,
-            "dy": 1
-          },
-          {
-            "dx": 2,
-            "dy": -1
-          },
-          {
-            "dx": -2,
-            "dy": 1
-          },
-          {
-            "dx": -2,
-            "dy": -1
-          },
-          {
-            "dx": 1,
-            "dy": 2
-          },
-          {
-            "dx": 1,
-            "dy": -2
-          },
-          {
-            "dx": -1,
-            "dy": 2
-          },
-          {
-            "dx": -1,
-            "dy": -2
-          }
-        ],
         "moveLongRangeDEBUG": false
       },
       "targetZones": [
@@ -1381,24 +682,6 @@
         "isMovedBool": false,
         "isBoostedBool": true,
         "pos": "h1",
-        "moveArray": [
-          {
-            "dx": 0,
-            "dy": 1
-          },
-          {
-            "dx": 0,
-            "dy": -1
-          },
-          {
-            "dx": 1,
-            "dy": 0
-          },
-          {
-            "dx": -1,
-            "dy": 0
-          }
-        ],
         "moveLongRangeDEBUG": true
       },
       "targetZones": [
@@ -1415,32 +698,6 @@
         "isMovedBool": false,
         "isBoostedBool": false,
         "pos": "h2",
-        "moveArray": [
-          {
-            "dx": 1,
-            "dy": 0
-          },
-          {
-            "dx": -1,
-            "dy": 0
-          },
-          {
-            "dx": 1,
-            "dy": 1
-          },
-          {
-            "dx": -1,
-            "dy": -1
-          },
-          {
-            "dx": -1,
-            "dy": 1
-          },
-          {
-            "dx": 1,
-            "dy": -1
-          }
-        ],
         "moveLongRangeDEBUG": false
       },
       "targetZones": [
@@ -1477,32 +734,6 @@
         "isMovedBool": false,
         "isBoostedBool": false,
         "pos": "h7",
-        "moveArray": [
-          {
-            "dx": 1,
-            "dy": 0
-          },
-          {
-            "dx": -1,
-            "dy": 0
-          },
-          {
-            "dx": 1,
-            "dy": 1
-          },
-          {
-            "dx": -1,
-            "dy": -1
-          },
-          {
-            "dx": -1,
-            "dy": 1
-          },
-          {
-            "dx": 1,
-            "dy": -1
-          }
-        ],
         "moveLongRangeDEBUG": false
       },
       "targetZones": [
@@ -1519,24 +750,6 @@
         "isMovedBool": false,
         "isBoostedBool": false,
         "pos": "h8",
-        "moveArray": [
-          {
-            "dx": 0,
-            "dy": 1
-          },
-          {
-            "dx": 0,
-            "dy": -1
-          },
-          {
-            "dx": 1,
-            "dy": 0
-          },
-          {
-            "dx": -1,
-            "dy": 0
-          }
-        ],
         "moveLongRangeDEBUG": true
       },
       "targetZones": [
@@ -1545,48 +758,5 @@
       ],
       "boostedTargetZones": {}
     }
-  },
-  "youWin": false,
-  "log": {
-    "msg": "OK",
-    "status": 200
-  },
-  "p1": {
-    "name": "Player1",
-    "nPoints": 0,
-    "bonusPointCounter": 0,
-    "nPieces": 0,
-    "team": "white",
-    "next": "black",
-    "isPlaying": true,
-    "King": "e1"
-  },
-  "p2": {
-    "name": "Player2",
-    "nPoints": 0,
-    "bonusPointCounter": 0,
-    "nPieces": 0,
-    "team": "black",
-    "next": "white",
-    "isPlaying": false,
-    "King": "e8"
-  },
-  "p3": {
-    "name": "",
-    "nPoints": 0,
-    "bonusPointCounter": 0,
-    "nPieces": 0,
-    "team": "red",
-    "next": "blue",
-    "King": ""
-  },
-  "p4": {
-    "name": "",
-    "nPoints": 0,
-    "bonusPointCounter": 0,
-    "nPieces": 0,
-    "team": "yellow",
-    "next": "red",
-    "King": ""
   }
 }
