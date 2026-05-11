@@ -109,6 +109,7 @@ function updateChessboard(coords=[], result, match)
 		console.log(`player ${match.currentPlayer.team} + ${to.piece.price}💲`);
 		match.currentPlayer.nPoints += to.piece.price;
 	}
+	match.history.UpdateMoves(from, coords);
 	to.piece = from.piece;
 	from.piece = null;
 	to.piece.pos = coords[1];
@@ -116,7 +117,6 @@ function updateChessboard(coords=[], result, match)
 		to.piece.isMovedBool = true;
 	match.moves++;
 	dangerUpdateAll(match);
-	match.history.UpdateMoves(to, coords);
 	return (true);
 }
 

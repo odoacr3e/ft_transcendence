@@ -3,7 +3,7 @@ const {eTeam} =  require("./enums.js");
 const {Match} = require("./match.js");
 const {Cursor} = require("./cursor.js");
 const {isDangerous, movePiece, DangerUpdate} = require("./utils.js");
-const Macro = require("./macro.js");
+const {CHESSBOARD_H, CHESSBOARD_W} = require("./macro.js");
 
 //SECTION - Pezzo class
 //ANCHOR - Definition 
@@ -66,13 +66,14 @@ let movementWithSecondTurn = function (match /* res */)
 }
 
 /**
- * @param {string} pos
+ * @param {string} pos previous move starting Position
  * @param {Match} match
  */
 function berserkMode(pos, match)
 {
-	let startPos;
+	let startPos;//current move Starting Position
 	let piece;
+	let	targetSquare;
 
 	startPos = match.cursor.square;
 	piece = match.board.get(pos)?.piece;
@@ -83,15 +84,18 @@ function berserkMode(pos, match)
 	{
 		while (movePiece(match, dx, dy, false))
 		{
+			targetSquare = match.board.get(match.cursor.square);
+			if (!targetSquare)
+				throw ("movePiece critical error");
 			if (piece.type == enumNames.CHAMPION)
 			{
-				match.board.get(match.cursor.square)?.dangerZones.add(pos);
-				match.board.get(pos)?.boostedTargetZones.get(startPos)?.add(pos);
+				targetSquare.dangerZones.add(pos);
+				match.board.get(pos)?.boostedTargetZones.get(startPos)?.add(match.cursor.square);
 			}
-			if (match.board.get(match.cursor.square)?.piece != null)
+			if (targetSquare.piece != null)
 			{
-				match.board.get(match.cursor.square)?.dangerZones.add(pos);
-				match.board.get(pos)?.boostedTargetZones.get(startPos)?.add(pos);
+				targetSquare.dangerZones.add(pos);
+				match.board.get(pos)?.boostedTargetZones.get(startPos)?.add(match.cursor.square);
 				break ;
 			}
 		}
@@ -143,6 +147,7 @@ let movementMinotaurus = function (match /* res */)
 {
 	let	startPos;
 	let	piece;
+	let	otherPiece;
 
 	startPos = match.cursor.square;
 	piece = match.board.get(match.cursor.square)?.piece;
@@ -152,11 +157,13 @@ let movementMinotaurus = function (match /* res */)
 	{
 		while (movePiece(match, dx, dy, false))
 		{
+			otherPiece = match.board.get(match.cursor.square)?.piece;
 			match.board.get(match.cursor.square)?.dangerZones.add(startPos);
 			match.board.get(startPos)?.targetZones.add(match.cursor.square);
-			if (match.board.get(match.cursor.square)?.piece != null)
+			if (otherPiece != null)
 			{
-				berserkMode(startPos, match);
+				if (otherPiece.team != piece.team)
+					berserkMode(startPos, match);
 				break ;
 			}
 		}
@@ -181,19 +188,21 @@ let movementJester = function (match)
 	piece = match.board.get(match.cursor.square)?.piece;
 	if (piece == null)
 		return (0);
+		match.board.get(startPos)?.boostedTargetZones.set(startPos, new Set());
 	for (let {dx, dy} of piece.moveArray)
 	{
 		let row = match.cursor.getRow();
 		let col = match.cursor.getCol();
 		row = row + dx;
 		col = col + dy;
-		if (row > 8 || row <= 0 || col > 8 || col <= 0)
+		if (row > CHESSBOARD_H || row <= 0 || col > CHESSBOARD_W || col <= 0)
 		{
-			row = row % 8;
-			col = col % 8;
-			if (row < 0) row += 8;
-			if (col < 0) col += 8;
-			if (col == 0) col = 8;
+			row = row % CHESSBOARD_H;
+			col = col % CHESSBOARD_W;
+			if (row < 0) row += CHESSBOARD_H;
+			if (row == 0) row = CHESSBOARD_H;
+			if (col < 0) col += CHESSBOARD_W;
+			if (col == 0) col = CHESSBOARD_W;
 			match.cursor.setCursor(row, col);
 			match.board.get(startPos)?.boostedTargetZones.get(startPos)?.add(match.cursor.square);
 		}

@@ -176,6 +176,7 @@ function dangerUpdateAll(match)
 	let	temp;
 	let usedBoard
 
+	console.log("dangerUpdateAll call");
 	temp = match.cursor.square;
 	usedBoard = match.board;
 	for (let [pos, square] of usedBoard)
