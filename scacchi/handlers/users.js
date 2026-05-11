@@ -153,15 +153,14 @@ const validateUser = async (req, res, next) => {
 		console.log(`Validate User: ${colors.green}OK${colors.reset}`);
 		next();
 	} catch (error) {
-		next(error);
+		return res.status(500).json({ error: "Server error creating user" });
 	}
 }
 
 const createUser = async (req, res) => {
 	try {
-		console.log(req.body);
 		const { name, surname, username, email, password, nationality } = req.body;
-		const hashedPwd = await bcrypt.hash(password, lib.Macro.HASH_SALT);
+		const hashedPwd = await bcrypt.hash(password, parseInt(lib.Macro.HASH_SALT));
 		const user = await prisma.users.create({
 			data: {
 				name: name,

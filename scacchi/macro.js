@@ -10,7 +10,7 @@ const { abort } = require("node:process");
 const DEBUG = true;
 const DEBUG_FILE = "../HISTORY.json";
 
-const HASH_SALT = 10;
+const HASH_SALT = process.env.HASH_SALT;
 
 /*
 	seed interessanti

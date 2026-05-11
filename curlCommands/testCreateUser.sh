@@ -11,7 +11,7 @@ if [ -n "$1" ]; then
 	port=$1
 fi
 
-url="http://localhost:$port/api/users/"
+url="http://localhost:$port/auth/register"
 
 toJson() {
 	local name="$1"

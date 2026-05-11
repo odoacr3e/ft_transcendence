@@ -23,7 +23,7 @@ app.use((err, req, res, next) =>
 
 // routes
 app.use("/api", require("./routes/api.js"));
-app.use("/login", require("./routes/auth.js"))
+app.use("/auth", require("./routes/auth.js"))
 
 app.listen(PORT, () => {
   console.log("Server is listening on port " + PORT);

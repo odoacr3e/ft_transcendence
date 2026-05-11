@@ -3,6 +3,7 @@ const lib = require("../lib/lib.js");
 const bcrypt = require("bcryptjs");
 const { prisma } = require("../lib/prisma.js")
 const { error } = require("node:console");
+const { createJwt } = require("../utils/auth.js");
 
 /** 
  * autenticazione tramite middleware
@@ -23,17 +24,19 @@ const checkCredentials = (req, res, next) => {
 	next();
 }
 
-const checkUser = async (req, res, next) => {
+const checkUser = async (req, res) => {
 	try {
 		const { username, password } = req.body;
 		const user = await prisma.users.findUnique({ where: { username: String(username) } })
-		if (!user || user.password !== bcrypt.compare(password))
+		if (!user || !(await bcrypt.compare(password, user.password)))
 			return res.status(401).json({ error: "Credenziali non valide" });
 		console.log("User " + user.username + " trovato");
+		delete(user.password);
 		req.user = user; // aggiungo lo user trovato all'oggetto request per averlo anche nel successivo middleware
-		next();
+		const token = await createJwt(req, res);
+		return res.status(201).json({ "user": user, "token": token });
 	} catch (error) {
-		next(error);
+		return res.status(500).json({ error: "Server error checking user" });
 	}
 };
 
