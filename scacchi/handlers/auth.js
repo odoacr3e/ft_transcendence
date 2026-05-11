@@ -41,5 +41,4 @@ const checkUser = async (req, res) => {
 };
 
 
-
 module.exports = { checkCredentials, checkUser };

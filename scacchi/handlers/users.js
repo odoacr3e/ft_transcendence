@@ -180,7 +180,13 @@ const createUser = async (req, res) => {
 				nationality: true,
 				points: true,
 				title: true,
-				preferences: true
+				preferences: {
+					select: {
+						name: true,
+						description: true,
+						colors: true,
+					}
+				}
 			}
 		});
 		if (!user)

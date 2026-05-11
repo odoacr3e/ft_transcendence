@@ -19,6 +19,7 @@ const checkJwt = async (req, res) => {
 	return res.status(200).json({ log: "Loggato" });
 };
 
+// Header.Payload.sign
 /**
  * @param {{ id_user: number, name: string, surname: string, username: string, email: string, nationality: string }} user
  */

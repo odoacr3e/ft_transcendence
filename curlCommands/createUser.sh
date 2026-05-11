@@ -5,4 +5,4 @@ if [ -n "$7" ]; then
 	port=$7
 fi
 
-curl -X POST -H "Content-Type: application/json" -d "{\"name\": \"$1\", \"surname\": \"$2\", \"username\": \"$3\", \"email\": \"$4\", \"nationality\": \"$5\", \"password\": \"$6\"}" http://localhost:"$port"/api/users/
+curl -X POST -H "Content-Type: application/json" -d "{\"name\": \"$1\", \"surname\": \"$2\", \"username\": \"$3\", \"email\": \"$4\", \"nationality\": \"$5\", \"password\": \"$6\"}" http://localhost:"$port"/auth/register
