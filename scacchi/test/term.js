@@ -2,7 +2,7 @@
 const {Piece, Board, Square} =					require("../lib/lib.js").Chess;
 const {eTeam, enumValues, enumNames} =			require("../lib/lib.js").Enums;
 const {DEBUG_FILE} = require("../macro.js");
-const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("../utils.js");
+const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll, includesOneOf} =	require("../utils.js");
 const {historyRestore} = require("../utils2.js");
 const {error, move, boost, endTurn, init} = require("../handlers/game/Game.js");
 const {Result} = require("../handlers/game/utils.js");
@@ -28,6 +28,7 @@ render(match);
 
 								let	TargetDangerSwitch = "None";
 /** @type {Array<String>} */	let	selected = [];
+let	boostBool = false;
 
 process.stdin.on('keypress', (str, key) => 
 {
@@ -75,13 +76,16 @@ process.stdin.on('keypress', (str, key) =>
 			if (result.status != 200)
 				return (error(null, result));
 			break ;
+		case ("t") :
+			boostBool = !boostBool;
+			break ;
 		case ("space") :
 			console.assert((selected.length < 2), "move array too large");
 			selected.push(match.cursor.square);
 			if (selected.length == 2)
 			{
 				console.clear();
-				let	result = move(match, selected[0], selected[1]);
+				let	result = move(match, selected[0], selected[1], boostBool);
 				selected = [];
 				if (result.status != 200)
 					return (error(null, result));
@@ -94,14 +98,13 @@ process.stdin.on('keypress', (str, key) =>
 			return ;
 		}
 	}
-	if (key.name != "space" && key.name != "e" && key.name != "q" && key.name != "r" &&
-		!movePiece(match, dx, dy, false))
+	if (!includesOneOf(key.name, "r", "e", "space") && !movePiece(match, dx, dy, false))
 	{
 		console.log("lol no");
 	}
 	console.log("row", match.cursor.getRow(), ", col", match.cursor.getCol(), ", cursor", match.cursor.square);
 	console.log("Visualizing", TargetDangerSwitch, "press \"r\" to change");
-	render(match, selected, TargetDangerSwitch);
+	render(match, selected, TargetDangerSwitch, boostBool);
 	console.log(`keypressed: ${key.name}\n`, `Press \"space\" to move, \"q\" to boost, \"e\" to change turn`);
 });
 

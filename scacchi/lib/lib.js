@@ -13,6 +13,7 @@ const include = {http, https, url, fs, path, express, app};
 //SECTION - chess classes/objects
 const {Piece} = require("../pieces.js");
 const {cursor} = require("../cursor.js");
+const {includesOneOf} = require("../utils/string.js");
 const {board, Square, copyBoard} = require("../chessBoard.js");
 const Chess = {Piece, board, copyBoard, cursor, Square};
 
@@ -25,6 +26,7 @@ const {enumValues, enumNames} = require("../pieces.js");
 const Enums = {eTeam, enumValues, enumNames};
 
 //SECTION - utils function
-const utils = require("../utils.js");
+let utils = require("../utils.js");
+
 
 module.exports = {include, Chess, Macro, Enums, preset, utils};

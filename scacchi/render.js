@@ -11,8 +11,9 @@ const enumNames = lib.Enums.enumNames;
  * @param {Match | null} match 
  * @param {Array<String>} selected which positions are selected
  * @param {String} TargetDangerSwitch Valid value: "Target", "Danger", "None" 
+ * @param {boolean} boostBool
  */
-function render(match=null, selected=[], TargetDangerSwitch="")
+function render(match=null, selected=[], TargetDangerSwitch="", boostBool=false)
 {
 	let buffer;
 	let	board;
@@ -29,7 +30,7 @@ function render(match=null, selected=[], TargetDangerSwitch="")
 	coords = getCoords(match);
 	match.cursor.set(coords.start);
 	buffer = "";	
-	displayPlayerInfo(board, match);
+	displayPlayerInfo(board, match, boostBool);
 	do
 	{
 		match.cursor.setCol(1);
@@ -114,8 +115,9 @@ function getCoords(match)
  * 
  * @param {Map<string, Square>} board
  * @param {Match | null} match
+ * @param {boolean} boostBool
  */
-function displayPlayerInfo(board, match)
+function displayPlayerInfo(board, match, boostBool)
 {
 	let	player;
 	let	col;
@@ -126,6 +128,10 @@ function displayPlayerInfo(board, match)
 	col = getDotColor(match.currentPlayer.team);
 	console.log(`It's ${col} turn.`);
 	console.log(`points: ${player.nPoints}💲, bonus: ${player.bonusPointCounter}⚖️`);
+	if (boostBool)
+		console.log("Ready to use boost! press t to cancel");
+	else
+		console.log("Press t to use boost!");
 	if (kingThreat(board, match) == true)
 		console.log(`${player.team} king is threatened💀`);
 }
