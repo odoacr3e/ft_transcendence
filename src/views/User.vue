@@ -11,7 +11,7 @@
             <img src="../assets/Burn-Paper.png" alt="Burned Paper" draggable="false" class="max-h-120 absolute rotate-90">
             <div class="z-11">
                 <b><h1>Registrati</h1></b>
-                <LoggingForm url="/user.json"/>
+                <LoggingForm url="/auth"/>
             </div>
         </div>
     </div>

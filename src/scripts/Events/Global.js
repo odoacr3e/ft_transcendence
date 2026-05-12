@@ -1,7 +1,7 @@
 import { localBoard, localPlayers, localInfo }	from "@/scripts/Data/Variables";
+import { clearHighlight, resetPrice }			from "@/scripts/Helper/RenderUtils";
 import { PIECES_HIGHLIGHT }						from "@/scripts/Helper/piecesHighlits";
 import { requestToBack }						from "./Movements.js";
-import { clearHighlight}						from "@/scripts/Helper/RenderUtils";
 import { getRootDiv }							from "@/scripts/Helper/Constants";
 
 
@@ -13,6 +13,26 @@ export function useAbility()
 	else { localBoard.get(localInfo.clickedId).piece.useAbilityBool = true; }
 
 	PIECES_HIGHLIGHT[localBoard.get(localInfo.clickedId).piece.type](localInfo.clickedId);
+}
+
+export function shopAbility()
+{
+	const Piece = localBoard.get(localInfo.clickedId).piece;
+	const Player = localPlayers.values().find(p => p.isPlaying === true);
+
+	if (!Piece.isBoostedBool && Player.nPoints >= Piece.price)
+		requestToBack(localInfo.clickedId, null).then(
+			function(value) {if (value) { clearHighlight(); }},
+			function(value) {if (!value) { console.log("Mossa non valida"); }}
+		);
+}
+
+export function sendEndTurn()
+{
+	requestToBack(null, null).then(
+		function(value) {if (value) { clearHighlight(); }},
+		function(value) {if (!value) { console.log("Mossa non valida"); }}
+	);
 }
 
 export function checkPermision(event)
@@ -75,10 +95,24 @@ export function sendToBackend()
 			);
 }
 
+function updatePrice()
+{
+	const Piece = localBoard.get(localInfo.clickedId).piece;
+	const Player = localPlayers.values().find(p => p.isPlaying === true);
+
+	if (Piece.isBoostedBool)
+		localInfo.priceSelected = "This piece is already boosted you fool!";
+	else if (Piece.price > Player.nPoints)
+		localInfo.priceSelected = "AHAH! You're too poor to buy that!";
+	else
+		localInfo.priceSelected = "Price: " + Piece.price;
+}
+
 export function highlightOnClick(event)
 {
 	if (event.target.localName === "img")
 	{
+		updatePrice();
 		if (localInfo.clickedId === localInfo.lastClickedId) 
 		{
 			clearHighlight();
@@ -90,7 +124,10 @@ export function highlightOnClick(event)
 		localInfo.lastClickedId = localInfo.clickedId;
 	}
 	else
+	{
 		localInfo.lastClickedId = null;
+		resetPrice();
+	}
 			
 }
 
@@ -136,6 +173,7 @@ export function highlightOnDrag(event)
 		if (Piece.team != Player.team) { return; }
 
 		PIECES_HIGHLIGHT[Piece.type](clickedId);
+		resetPrice();
 	}
 }
 
@@ -146,6 +184,7 @@ export function rightClickSelect(event)
 		event.preventDefault();
 		clearHighlight("highlight");
 		localInfo.lastClickedId = null;
+		resetPrice();
 		let targetSquare;
 		if (event.target.localName === "img")
 		{

@@ -1,10 +1,10 @@
 <script setup>
-	import { onMounted, computed }	from 'vue';
-	import { onDragStart, onDrop }	from '@/scripts/Events/Movements';
-	import { getSquareColor } 		from '@/scripts/Helper/RenderUtils';
-	import { globalEvents } 		from '@/scripts/Events/Global';
-	import { IMG_PATHS }			from '@/scripts/Helper/Constants';
-	import { DOMBoard }				from '@/scripts/Data/Variables';
+	import { globalEvents, shopAbility }	from '@/scripts/Events/Global';
+	import { onDragStart, onDrop }			from '@/scripts/Events/Movements';
+	import { onMounted, computed }			from 'vue';
+	import { DOMBoard, localInfo }			from '@/scripts/Data/Variables';
+	import { getSquareColor } 				from '@/scripts/Helper/RenderUtils';
+	import { IMG_PATHS }					from '@/scripts/Helper/Constants';
 
 	const domBoardComputed = computed(() => DOMBoard());
 
@@ -43,9 +43,11 @@
             </div>
         </div>
 		<div id="shop">
-			<img src="../assets/oldMan.png" alt="" class="shrink-0 size-20 absolute bottom-7">
-			<button class="side-button bg-amber-300 text-sm p-2.5 rounded-2xl cursor-pointer">
-					<b>Boost your Pieces!</b>
+			<img src="../assets/Frame1.png" alt="" class="shrink-0 size-35 absolute bottom-15 z-12">
+			<button class="side-button bg-amber-300 text-sm p-2.5 rounded-2xl cursor-pointer z-13"
+					@click="shopAbility()">
+					<b>Boost your Pieces!</b><br>
+					<p style="white-space: pre-line"><i>{{ localInfo.priceSelected }}</i></p>
 			</button>
 		</div>
     </div>

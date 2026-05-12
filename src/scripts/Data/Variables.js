@@ -21,6 +21,7 @@ class metaInfo {
 		this.lastClickedId = null;
 		this.secondTurn = false;
 		this.hasBoost = false;
+		this.priceSelected = "...";
 	}
 }
 

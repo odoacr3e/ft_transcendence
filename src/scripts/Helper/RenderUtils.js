@@ -1,5 +1,5 @@
-import { localBoard, localPlayers }	from "@/scripts/Data/Variables.js";
-import { FILES }					from "./Constants.js";
+import { localBoard, localPlayers, localInfo }	from "@/scripts/Data/Variables.js";
+import { FILES }								from "./Constants.js";
 
 //Funzione helper per convertire la mappa in un array 8x8
 export function boardConverter()
@@ -58,4 +58,9 @@ export function clearHighlight(flag)
 				square.boostedHighlight = false;
 			}
 	})
+}
+
+export function resetPrice()
+{
+	localInfo.priceSelected = "...";
 }

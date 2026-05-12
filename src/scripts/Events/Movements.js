@@ -44,21 +44,22 @@ export async function requestToBack(fromSquare, toSquare)
 	//la logia e' giusta ma bisogna fare un controllo ulteriore sullo square dove si sposta per sapere se
 	//effettivamente se e' un movimento boostato (e serve il movimento boostato per questo lol)
 	// if (localBoard.get(fromSquare).piece.useAbilityBool)
-	// 	json = JSON.stringify({ type: "boost move", from: fromSquare, to: toSquare })
+	// 	{type = "boostMove"; url = "move.json" }	
 
-	let json;
+	let type, url;
+
 	if (fromSquare === null && toSquare === null && localInfo.secondTurn)
-		json = JSON.stringify({ type: "end turn", from: fromSquare, to: toSquare }) //la logica funziona e' che le risposte sono statiche
-	else { json = JSON.stringify({ type: "move", from: fromSquare, to: toSquare }) }
+		{type = "endTurn"; url = "move.json" }	
+	else if (fromSquare && toSquare === null)
+		{type = "boost"; url = "move.json" }	
+	else {type = "move"; url = "move.json" }	
 
 	try
 	{
-		// const response = await fetch("/api/game/", {
-		const response = await fetch("/mino_resp.json", {
-		// const response = await fetch("move.json", {
+		const response = await fetch(url, {
 		  method: "POST",
 		  headers: { "Content-Type": "application/json" },
-		  body: json,
+		  body: JSON.stringify({ type: type, from: fromSquare, to: toSquare }),
 		});
 	
 		if (!response.ok) throw new Error(`Impossibile caricare /move.json: ${response.status}`);

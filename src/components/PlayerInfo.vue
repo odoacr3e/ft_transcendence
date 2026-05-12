@@ -1,7 +1,6 @@
 <script setup>
 	import { DOMPlayer, localBoard, localInfo }	from '@/scripts/Data/Variables';
-	import { requestToBack }					from '@/scripts/Events/Movements'
-	import { useAbility }						from '@/scripts/Events/Global'
+	import { useAbility, sendEndTurn }			from '@/scripts/Events/Global'
 	import { IMG_PATHS }						from '@/scripts/Helper/Constants';
 	import { computed }							from 'vue';
 
@@ -44,7 +43,7 @@
 			</button>
 			<button class="bg-blue-500 text-sm
 						transition delay-50 duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-indigo-500 cursor-pointer"
-				@click="requestToBack(null, null)" v-if="endT && playing">
+				@click="sendEndTurn()" v-if="endT && playing">
 				<img src="../assets/clock.png" alt="" :draggable="false" class="size-5">
 				<b>End Turn</b>
 			</button>
