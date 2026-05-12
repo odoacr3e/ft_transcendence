@@ -195,7 +195,7 @@ let movementJester = function (match)
 	piece = match.board.get(match.cursor.square)?.piece;
 	if (piece == null)
 		return (0);
-		match.board.get(startPos)?.boostedTargetZones.set(startPos, new Set());
+	match.board.get(startPos)?.boostedTargetZones.set(startPos, new Set());
 	for (let {dx, dy} of piece.moveArray)
 	{
 		let row = match.cursor.getRow();
@@ -237,6 +237,7 @@ let movementValkirya = function (match)
 	piece = match.board.get(match.cursor.square)?.piece;
 	if (piece == null)
 		return (0);
+	match.board.get(startPos)?.boostedTargetZones.set(startPos, new Set());
 	for (let {dx, dy} of piece.moveArray)
 	{
 		let maxTarget = 2; 

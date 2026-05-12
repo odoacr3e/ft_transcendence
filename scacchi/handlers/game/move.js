@@ -10,6 +10,7 @@ const {Preset} = require("../../pieces.js");
 const {error, paramCheck, Result, clientBoard, checkMateAlert} = require("./utils.js");
 const {endTurn} = require("./endTurn");
 const {CheckMateCheck} = require("../../checkMate.js");
+const { boost } = require("./boost.js");
 
 /** @typedef {import('../../chessBoard.js').Square} Square */
 
@@ -18,18 +19,19 @@ const {CheckMateCheck} = require("../../checkMate.js");
  * @param {Match} match
  * @param {String} from the piece to move's coords
  * @param {String} to the new piece location's coords
+ * @param {boolean} boostBool player wants to use a boost?
  * @returns {Result}
  */
-function move(match, from, to)
+function move(match, from, to, boostBool = false)
 {
 	let	result;
 
 	result = new Result();
 	if (!paramCheck(result, from, to))
 		return (result);
-	if (!checkMove([from, to], result, match))
+	if (!checkMove([from, to], result, match, boostBool))
 		return (result);
-	if (!updateChessboard([from, to], result, match))
+	if (!updateChessboard([from, to], result, match, boostBool))
 		return (result);
 	result.status = 200;
 	// @ts-ignore
@@ -47,8 +49,9 @@ function move(match, from, to)
  * @param {Array<String>} coords
  * @param {Result} result
  * @param {Match} match
+ * @param {boolean} boostBool
  */
-function checkMove(coords=[], result, match)
+function checkMove(coords=[], result, match, boostBool)
 {
 	let	from;
 	let	to;
@@ -72,7 +75,7 @@ function checkMove(coords=[], result, match)
 	}
 	if (from.piece?.team != match.currentPlayer.team)
 		return (error(result, 403, `it's ${match.currentPlayer.team} turn`));
-	if (!checkBooster(match, result, from, coords))
+	if (!checkBooster(match, result, from, coords, boostBool))
 		return (false);
 	// if (checkCastling(match, to, from))
 	// 	return (true);
@@ -90,8 +93,9 @@ function checkMove(coords=[], result, match)
  * @param {Array<string>} coords
  * @param {Result} result
  * @param {Match} match
+ * @param {boolean} boostBool
  */
-function updateChessboard(coords=[], result, match)
+function updateChessboard(coords=[], result, match, boostBool)
 {
 	let	from;
 	let	to;
@@ -111,9 +115,18 @@ function updateChessboard(coords=[], result, match)
 		match.currentPlayer.nPoints += to.piece.price;
 	}
 	match.history.UpdateMoves(from, coords);
-	to.piece = from.piece;
-	from.piece = null;
-	to.piece.pos = coords[1];
+	console.log(from.piece.type, boostBool);
+	if (from.piece.type == enumNames.VALKIRYA && boostBool == true)
+	{
+		to.piece = null;
+		from.piece.isBoostedBool = false;
+	}
+	else
+	{
+		to.piece = from.piece;
+		from.piece = null;
+		to.piece.pos = coords[1];
+	}
 	if (to.piece && to.piece.isMovedBool == false)
 		to.piece.isMovedBool = true;
 	match.moves++;
@@ -130,53 +143,57 @@ function updateChessboard(coords=[], result, match)
  * @param {Result} result 
  * @param {Square} from 
  * @param {Array<string>} coords
+ * @param {boolean} boostBool
  * @returns {boolean}
  */
-function checkBooster(match, result, from, coords) // FIXME - da aggiungere check per valchiria: vuole usare boost?
+function checkBooster(match, result, from, coords, boostBool) // FIXME - da aggiungere check per valchiria: vuole usare boost?
 {
-	//FIXME - ale:temporaneamente lascio i commenti spiegazione per il senpai
-	//poi per la plebe verranno totti >3
 	let	pieceMultipleMoveBool;
 	let	boostedTargetZones;
 
 	if (!from.piece)
 		return (error(result, 500, "unexpected piece error"));
-	//se la mia posizione di partenza e la posizione di arrivo dell'ultima mossa,
-	//pieceMultipleMove va a true
-	if (match.history.Last().to == coords[0])
+	if (boostBool == false)
+		pieceMultipleMoveBool = false;
+	else if (match.history.Last().to == coords[0])
 		pieceMultipleMoveBool = true;
 	else
 		pieceMultipleMoveBool = false;
 	if (pieceMultipleMoveBool == true && match.history.Last().type != eEvents.Move)
 		return (error(result, 500, "match History is messed up"));
 	if (from.piece.type == enumNames.BASTARDS || match.history.Last().movedPiece == enumNames.BASTARDS)
-		return (doubleBastardsCheck(match, result, coords, pieceMultipleMoveBool));
+		return (doubleBastardsCheck(match, result, coords));
 	if (pieceMultipleMoveBool == false && match.moves > 0)
 		return (error(result, 403, "Multiple moves not allowed there"));
-	//se il pezzo non vuole fare doppi movimenti e puo usare le target, ok
+	/**
+	 * boostBool false => multipleBool false
+	 * 
+	 * 
+	 * boostBool == false
+	 * {
+	 * 		puoi fare questa mossa senza potenziamento?
+	 * 			si: true
+	 * 			no: vaffanculo
+	 * } OK!
+	 * 
+	 */
 	if (pieceMultipleMoveBool == false && from.targetZones.has(coords[1]))
 		return (true);
-	//i bastardi siccome sono strani si validano
-
-	if (from.piece.isBoostedBool == false)
+	if (from.piece.isBoostedBool == false || boostBool == false)
 		return (error(result, 403, `illegal move`));
-	//se il pezzo vuole muoversi di nuovo, ma quel tipo di pezzo non puo, errore
 	if (pieceMultipleMoveBool == true && from.piece.multipleMovesBool == false)
 		return (error(result, 403, `piece ${from.piece.type} can move once`));
-	//per i pezzi SENZA doppio movimento, utilizziamo la booster corrente
 	if (pieceMultipleMoveBool == false)
 		boostedTargetZones = from.boostedTargetZones;
-	else//per gli altri, quello della mossa precedente
+	else
 		boostedTargetZones = match.history.Last().pieceBoosterTargetZones;
-	//otteniamo l'array per la posizione corrente, gestiamo errori vari
 	if (!boostedTargetZones)
 		return (error(result, 403, `that piece can't do any bonus move`));
 	boostedTargetZones = boostedTargetZones?.get(coords[0]);
 	if (!boostedTargetZones)
-		return (error(result, 403, `you can't move again from there ;-(`));
+		return (error(result, 403, `you can't move from there ;-(`));
 	if (boostedTargetZones.has(coords[1]) == false)
 		return (error(result, 403, `that piece can't do that move`));
-	//logica: se il movimento e valido, mentiamo a checkMove
 	from.targetZones.add(coords[1]);
 	from.piece.isBoostedBool = false;
 	return (true);
@@ -187,10 +204,9 @@ function checkBooster(match, result, from, coords) // FIXME - da aggiungere chec
  * @param {Match} match
  * @param {Result} result 
  * @param {Array<string>} coords
- * @param {boolean} pieceMultipleMoveBool
  * @returns {boolean}
  */
-function doubleBastardsCheck(match, result, coords, pieceMultipleMoveBool)
+function doubleBastardsCheck(match, result, coords)
 {
 	let from;
 	let to;
