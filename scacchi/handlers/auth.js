@@ -19,7 +19,9 @@ const { colors } = require("../utils/colors");
  * 3. generazione token JWT
 */
 
-// ANCHOR: login functions
+
+
+// NOTE: login functions
 
 /**
  * @param {import('express').Request} req
@@ -39,20 +41,41 @@ const checkCredentials = (req, res, next) => {
 const checkUser = async (req, res) => {
 	try {
 		const { username, password } = req.body;
-		const user = await prisma.users.findUnique({ where: { username: String(username) } }); // da espandere campi richiesti
+		const user = await prisma.users.findUnique({
+			where: { username: String(username) },
+			select: {
+				id_user: true,
+				name: true,
+				password: true,
+				surname: true,
+				username: true,
+				email: true,
+				image: true,
+				nationality: true,
+				points: true,
+				title: true,
+				preferences: {
+					select: {
+						name: true,
+						description: true,
+						colors: true,
+					}
+				}
+			}
+		}); // da espandere campi richiesti
 		if (!user || !(await bcrypt.compare(password, user.password)))
 			return res.status(401).json({ error: "Credenziali non valide" });
-		console.log("User " + user.username + " trovato");
+		// console.log("User " + user.username + " trovato");
 		delete(user.password);
 		req.user = user; // aggiungo lo user trovato all'oggetto request per averlo anche nel successivo middleware
 		const token = await createJwt(req, res);
-		return res.status(201).json({ "user": user, "token": token });
+		return res.status(201).json({ "status": "success", "code": res.statusCode, "data": { "user": user, "token": token } });
 	} catch (error) {
 		return res.status(500).json({ error: "Server error checking user" });
 	}
 };
 
-//ANCHOR: create user function
+// NOTE: create user function
 
 /**
  * @param {import('express').Request} req
@@ -142,7 +165,7 @@ const createUser = async (req, res) => {
 	}
 }
 
-const createUserHandler = { validateInput, validateUser, createUser };
 const loginUserHandler = { checkCredentials, checkUser };
+const createUserHandler = { validateInput, validateUser, createUser };
 
 module.exports = { loginUserHandler, createUserHandler };
