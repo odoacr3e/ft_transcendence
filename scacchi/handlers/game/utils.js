@@ -47,6 +47,7 @@ function clientBoard(src, selected=null)
 {
 	let	dest;
 
+	console.log("clientBoard");
 	if (!selected || selected.length != 2)
 		dest = copyBoard(src);
 	else
@@ -56,8 +57,6 @@ function clientBoard(src, selected=null)
 	for (let [key, square] of dest)
 	{
 		square.dangerZones.clear();
-		// @ts-ignore
-		delete (square).dangerZones;
 		// @ts-ignore
 		square.targetZones = [...square.targetZones];
 		// @ts-ignore

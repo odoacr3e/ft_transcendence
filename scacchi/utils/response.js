@@ -57,6 +57,8 @@ function responseFormatter(result, msg, status)
 	delete result.status;
 	if (!result.board)
 		delete result.board;
+	else
+		modifyBoard(result.board);
 	if (!p3)// @ts-ignore
 		delete p3;
 	if (!p4)// @ts-ignore
@@ -68,7 +70,34 @@ function responseFormatter(result, msg, status)
 	result.p2 = p2;
 	result.p3 = p3;
 	result.p4 = p4;
+	delete result.p1.King;
+	delete result.p1.next;
+	delete result.p2.King;
+	delete result.p2.next;
+	delete result.p3.King;
+	delete result.p3.next;
+	delete result.p4.King;
+	delete result.p4.next;
 	return (result);
+}
+
+function modifyBoard(board)
+{
+	for (const [pos, square] of board)
+	{
+		// @ts-ignore
+		delete (square).dangerZones;
+		// @ts-ignore
+		delete (square).piece?.moveArray;
+		// @ts-ignore
+		delete (square).piece?.isMovedBool;
+		// @ts-ignore
+		delete (square).piece?.multipleMovesBool;
+		// @ts-ignore
+		delete (square).piece?.moveLongRangeDEBUG;
+		// @ts-ignore
+		delete (square).piece?.pos;
+	}
 }
 
 module.exports = {responseFormatter};

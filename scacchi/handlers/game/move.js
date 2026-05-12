@@ -195,7 +195,8 @@ function checkBooster(match, result, from, coords, boostBool) // FIXME - da aggi
 	if (boostedTargetZones.has(coords[1]) == false)
 		return (error(result, 403, `that piece can't do that move`));
 	from.targetZones.add(coords[1]);
-	from.piece.isBoostedBool = false;
+	if (from.piece.type != enumNames.VALKIRYA)
+		from.piece.isBoostedBool = false;
 	return (true);
 }
 

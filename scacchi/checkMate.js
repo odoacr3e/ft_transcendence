@@ -172,7 +172,7 @@ function CheckMateCheck(match, kingSquareString)
 	if (!kingSquare)
 		throw (`missing king for team `);//FIXME - Ale: errore grave, dare 500
 	team = kingSquare.piece?.team;
-	if (!kingSquare || !isDangerous(match, kingSquare.dangerZones, team))
+	if (!isDangerous(match, kingSquare.dangerZones, team))
 		return false;
 	for (let x of kingSquare.targetZones)
 	{

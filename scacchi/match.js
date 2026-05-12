@@ -9,7 +9,7 @@ const preset = {
 	white: 
 	{
 		name: "",
-		nPoints: 99,
+		nPoints: 0,
 		bonusPointCounter: 0,
 		nPieces: 0,
 		team: eTeam.White,
@@ -19,7 +19,7 @@ const preset = {
 	black: 
 	{
 		name: "",
-		nPoints: 99,
+		nPoints: 0,
 		bonusPointCounter: 0,
 		nPieces: 0,
 		team: eTeam.Black,

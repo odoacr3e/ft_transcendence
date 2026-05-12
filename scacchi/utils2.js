@@ -25,6 +25,7 @@ function historyRestore(match, path)
 	/** @type {History} */
 	let	history;
 	let	buffer;
+	let	result;
 
 	if (!path || !fs.existsSync(path))
 		throw (`History, restore: path ${path} invalid`);
@@ -36,26 +37,33 @@ function historyRestore(match, path)
 	{
 		if (square.piece)
 		{
-			square.piece.isBoostedBool = false;
-			square.piece.isMovedBool = false;
+			square.piece = new Piece(square.piece.type, pos, square.piece.team);
 		}
 		square.boostedTargetZones = new Map();
 		square.dangerZones = new Set();
 		square.targetZones = new Set();
 	}
 	dangerUpdateAll(match);
+	console.log("first board");
+	render(match);
 	for (const event of history.events)
 	{
 		if (event.type == eEvents.Move)
-			move(match, event.from, event.to);
+			result = move(match, event.from, event.to);
 		else if (event.type == eEvents.Boost)
-			boost(match, event.from);
+			result = boost(match, event.from);
 		else if (event.type == eEvents.EndTurn)
-			endTurn(match);
+			result = endTurn(match);
+		else
+			continue ;
+		if (result.status != 200)
+			console.log(`\x1b[31m${result.msg}\x1b[0m`);
 	}
 	match.history.startBoard = history.startBoard;
 	match.history.events = history.events;
 	match.history.moves = history.moves;
+	console.log("first board");
+	render(match);
 }
 
 module.exports = {historyRestore};
