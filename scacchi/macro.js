@@ -8,7 +8,9 @@ const { abort } = require("node:process");
 //SECTION macro
 
 const DEBUG = true;
-const DEBUG_FILE = "../HISTORY.json";
+const HISTORY_PATH = "../history/";
+const HISTORY_FILE = "HISTORY.json";
+const HISTORY_DEFAULT = `${HISTORY_PATH}${HISTORY_FILE}`;
 
 const HASH_SALT = process.env.HASH_SALT;
 
@@ -49,4 +51,4 @@ function error(text)
 	abort();
 }
 
-module.exports = { DEBUG, DEBUG_FILE, CHESSBOARD_H, CHESSBOARD_W, MOVEMENT_MIN, MOVEMENT_MAX, MOVEMENT_BONUS_POINT, BOOSTED_MAX, HASH_SALT, SEED }
+module.exports = { DEBUG, HISTORY_FILE, HISTORY_DEFAULT, HISTORY_PATH, CHESSBOARD_H, CHESSBOARD_W, MOVEMENT_MIN, MOVEMENT_MAX, MOVEMENT_BONUS_POINT, BOOSTED_MAX, HASH_SALT, SEED }

@@ -1,7 +1,7 @@
 // @ts-check
 const {Piece, Board, Square} =					require("../lib/lib.js").Chess;
 const {eTeam, enumValues, enumNames} =			require("../lib/lib.js").Enums;
-const {DEBUG_FILE} = require("../macro.js");
+const {HISTORY_FILE, HISTORY_DEFAULT} = require("../macro.js");
 const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll, includesOneOf} =	require("../utils.js");
 const {historyRestore} = require("../utils2.js");
 const {error, move, boost, endTurn, init} = require("../handlers/game/Game.js");
@@ -40,7 +40,28 @@ process.stdin.on('keypress', (str, key) =>
 	dy = 0;
 	if (key.ctrl && key.name == "c")
 	{
-		match.history.Log(DEBUG_FILE);
+		const	buffer = Buffer.alloc(50);
+		let		bRead;
+
+		process.stdin.setRawMode(false);
+		while (key != "y" && key != "n")
+		{
+			console.log("Save game in a backup file?[y;n]");
+			bRead = lib.include.fs.readSync(1, buffer);
+			key = buffer.toString('utf8', 0, bRead).trim().toLowerCase();
+		}
+		if (key == "y")
+		{
+			let	name;
+
+			console.log("Choose name of the history file. empty = default name");
+			bRead = lib.include.fs.readSync(1, buffer);
+			name = buffer.toString('utf8', 0, bRead).trim().toLowerCase();
+			if (!name)
+				match.history.Log(HISTORY_FILE);
+			else
+				match.history.Log(name);
+		}
 		process.exit();
 	}
 	console.clear();
@@ -93,7 +114,7 @@ process.stdin.on('keypress', (str, key) =>
 			break ;
 		case ("p"):
 		{
-			historyRestore(match, DEBUG_FILE);
+			historyRestore(match, HISTORY_DEFAULT);
 			render(match);
 			return ;
 		}

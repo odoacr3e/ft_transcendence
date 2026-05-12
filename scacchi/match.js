@@ -4,7 +4,8 @@ const fs = require("fs");
 const {Cursor} = require("./cursor.js");
 const {eTeam, eEvents} = require("./enums.js");
 const {Square, initBoard, copyBoard, copyBoostedTargetZones} = require("./chessBoard.js");
-const { fstat } = require("node:fs");
+const {HISTORY_DEFAULT, HISTORY_PATH} = require("./macro.js");
+
 const preset = {
 	white: 
 	{
@@ -135,16 +136,24 @@ class History
 			return (this.events[this.events.length - 1]);
 		return (new HistoryEvent("Empty", "Empty"));
 	}
-	/** @param {string} path */
-	Log(path)
+	/** @param {string} name */
+	Log(name)
 	{
 		let	history;
 
+		if (fs.existsSync(HISTORY_PATH) == false)
+			fs.mkdirSync(HISTORY_PATH);
+		if (name)
+		{
+			name = HISTORY_PATH + name;
+			if (name.indexOf(".json") == -1)
+				name = name + ".json";
+		}
 		history = JSON.stringify(this, null, 2);
-		if (!path)
+		if (!name)
 			console.log(history);
 		else
-			fs.writeFileSync(path, history);
+			fs.writeFileSync(name, history);
 	}
 };
 
