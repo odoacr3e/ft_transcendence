@@ -15,7 +15,8 @@ const {CheckMateCheck} = require("../../checkMate.js")
  */
 function endTurn(match)
 {
-	let	result;
+	let	
+	result;
 
 	result = new Result();
 	if (!updateTurn(match, result))
@@ -35,7 +36,7 @@ function updateTurn(match, result)
 {
 	let	player;
 
-	player = match.currentPlayer; 
+	player = match.currentPlayer;
 	if (match.moves < MOVEMENT_MIN)
 		return (error(result, 403, "You need to move first"));
 	if (player.bonusPointCounter == MOVEMENT_BONUS_POINT)

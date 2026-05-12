@@ -35,24 +35,9 @@ function checkCastling(match, to, from)
 
 	board = match.board;
 	tmp = cursor.square;
-	pieces = getPieces(match, from, to);
-	if (!pieces)
-		return false;
-	dir = getDirection(match, pieces.mino.pos, pieces.king.pos);
-	if (isDangerous(match, pieces.kingDanger, pieces.king.team))
-		return false;
-	if (dir.diffRow != 0 && dir.diffCol != 0)
-		return false;
-	else if (dir.diffRow == 0 && dir.diffCol == 0)
-		return false;
-	cursor.set(pieces.king.pos);
-	for (let i = 0; movePiece(match, pieces.dir[0], pieces.dir[1]); ++i)
-	{
-		if (isDangerous(match, board.get(cursor.square)?.dangerZones, pieces.king.team))
-			return false;
-		if (cursor.square == pieces.mino.pos || i == 1)
-			break;
-	}
+
+
+
 	cursor.set(tmp);
 	return true;
 }

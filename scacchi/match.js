@@ -12,6 +12,7 @@ const preset = {
 		name: "",
 		nPoints: 0,
 		bonusPointCounter: 0,
+		useBoostBool: false,
 		nPieces: 0,
 		team: eTeam.White,
 		next: eTeam.Black,
@@ -22,6 +23,7 @@ const preset = {
 		name: "",
 		nPoints: 0,
 		bonusPointCounter: 0,
+		useBoostBool: false,
 		nPieces: 0,
 		team: eTeam.Black,
 		next: eTeam.White,
@@ -32,6 +34,7 @@ const preset = {
 		name: "",
 		nPoints: 0,
 		bonusPointCounter: 0,
+		useBoostBool: false,
 		nPieces: 0,
 		team: eTeam.Red,
 		next: eTeam.Blue,
@@ -42,6 +45,7 @@ const preset = {
 		name: "",
 		nPoints: 0,
 		bonusPointCounter: 0,
+		useBoostBool: false,
 		nPieces: 0,
 		team: eTeam.Blue,
 		next: eTeam.Green,
@@ -52,6 +56,7 @@ const preset = {
 		name: "",
 		nPoints: 0,
 		bonusPointCounter: 0,
+		useBoostBool: false,
 		nPieces: 0,
 		team: eTeam.Green,
 		next: eTeam.Yellow,
@@ -62,6 +67,7 @@ const preset = {
 		name: "",
 		nPoints: 0,
 		bonusPointCounter: 0,
+		useBoostBool: false,
 		nPieces: 0,
 		team: eTeam.Yellow,
 		next: eTeam.Red,
@@ -84,6 +90,7 @@ class Match
 		this.moves = 0;
 		this.boost = 0;
 		this.history = new History(this.board);
+		this.historyCreateBool = false;
 		this.currentPlayer = this.white;
 	}
 	endTurn = () =>
@@ -91,6 +98,10 @@ class Match
 		/** @type {String} */ let	next = this.currentPlayer.next;
 
 		// @ts-ignore
+		if (!this.currentPlayer || !next || !this[next])
+		{
+			throw ("currentPlayer BUG");
+		}
 		this.currentPlayer = this[next];
 	}
 	forceWhiteTurn = () =>
@@ -181,6 +192,7 @@ class HistoryEvent
 		this.type = eventType;
 		this.pieceBoosterTargetZones = null;
 		this.isBoostedBool = isBoosted;
+		this.useBoostBool = false;
 		if (pieceBoosterZones)
 			this.pieceBoosterTargetZones = copyBoostedTargetZones(pieceBoosterZones);
 	}
@@ -189,10 +201,11 @@ class HistoryEvent
 /**
  * 
  * @this {History}
+ * @param {Match} match
  * @param {Square} square 
  * @param {Array<string>} coords 
  */
-function updateMoves(square, coords)
+function updateMoves(match, square, coords)
 {
 	let	record;
 
@@ -205,6 +218,7 @@ function updateMoves(square, coords)
 	if (!square.piece)
 		throw (`History: missing piece in square: ${square}`);
 	record = new HistoryEvent(eEvents.Move, square.piece.team, square.piece.type, coords[0], coords[1], square.boostedTargetZones, square.piece.isBoostedBool);
+	record.useBoostBool = match.currentPlayer.useBoostBool;
 	this.events.push(record);
 	this.moves += 1;
 }

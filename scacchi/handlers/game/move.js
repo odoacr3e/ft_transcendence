@@ -22,7 +22,7 @@ const { boost } = require("./boost.js");
  * @param {boolean} boostBool player wants to use a boost?
  * @returns {Result}
  */
-function move(match, from, to, boostBool = false)
+function move(match, from, to, boostBool=false)
 {
 	let	result;
 
@@ -39,7 +39,7 @@ function move(match, from, to, boostBool = false)
 		return (console.log("haaaaaiiiiii viiiiiiintoooooooooo!!!!!!!"), checkMateAlert(result, match.currentPlayer.team));
 	// @ts-ignore
 	result.board = clientBoard(match.board, [from, to]);
-	if (match.moves == MOVEMENT_MIN && !match.currentPlayer.nPoints)
+	if (match.moves == MOVEMENT_MIN && !match.currentPlayer.nPoints && match.historyCreateBool == false)
 		endTurn(match);
 	return (result);
 }
@@ -59,10 +59,10 @@ function checkMove(coords=[], result, match, boostBool)
 
 	from = match.board.get(coords[0]);
 	to = match.board.get(coords[1]);
-	king = match.board.get(match.currentPlayer.King);//FIXME - usare currentPlayer.King
+	king = match.board.get(match.currentPlayer.King);
 	if (king == null || king.piece == null)
 		return (error(result, 500, "backend has lost track of the king, lol"));
-	if (match.moves > MOVEMENT_MAX)
+	if ( match.moves > MOVEMENT_MAX)
 		return (error(result, 403, `The maximum amount of movements is ${MOVEMENT_MAX}`));
 	if (from == null || to == null)
 		return (error(result, 403, "invalid positions"));
@@ -114,9 +114,9 @@ function updateChessboard(coords=[], result, match, boostBool)
 		console.log(`player ${match.currentPlayer.team} + ${to.piece.price}💲`);
 		match.currentPlayer.nPoints += to.piece.price;
 	}
-	match.history.UpdateMoves(from, coords);
+	match.history.UpdateMoves(match, from, coords);
 	console.log(from.piece.type, boostBool);
-	if (from.piece.type == enumNames.VALKIRYA && boostBool == true)
+	if (from.piece.type == enumNames.VALKIRYA && result.usedBoost == true)
 	{
 		to.piece = null;
 		from.piece.isBoostedBool = false;
@@ -197,6 +197,7 @@ function checkBooster(match, result, from, coords, boostBool) // FIXME - da aggi
 	from.targetZones.add(coords[1]);
 	if (from.piece.type != enumNames.VALKIRYA)
 		from.piece.isBoostedBool = false;
+	result.usedBoost = true;
 	return (true);
 }
 
@@ -251,6 +252,7 @@ function doubleBastardsCheck(match, result, coords)
 			continue ;
 		if (match.cursor.square == other)
 		{
+			result.usedBoost = true;
 			bastardSquare.piece.isBoostedBool = false;
 			from.piece.isBoostedBool = false;
 			match.cursor.set(tmpCursor);

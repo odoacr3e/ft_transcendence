@@ -44,12 +44,13 @@ function historyRestore(match, path)
 		square.targetZones = new Set();
 	}
 	dangerUpdateAll(match);
-	console.log("first board");
 	render(match);
+	match.historyCreateBool = true;
 	for (const event of history.events)
 	{
+		console.log(event);
 		if (event.type == eEvents.Move)
-			result = move(match, event.from, event.to);
+			result = move(match, event.from, event.to, true);
 		else if (event.type == eEvents.Boost)
 			result = boost(match, event.from);
 		else if (event.type == eEvents.EndTurn)
@@ -58,7 +59,9 @@ function historyRestore(match, path)
 			continue ;
 		if (result.status != 200)
 			console.log(`\x1b[31m${result.msg}\x1b[0m`);
+		render(match);
 	}
+	match.historyCreateBool = false;
 	match.history.startBoard = history.startBoard;
 	match.history.events = history.events;
 	match.history.moves = history.moves;

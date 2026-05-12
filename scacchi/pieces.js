@@ -169,7 +169,7 @@ let movementMinotaurus = function (match /* res */)
 			match.board.get(startPos)?.targetZones.add(match.cursor.square);
 			if (otherPiece != null)
 			{
-				if (otherPiece.team != piece.team)
+				// if (otherPiece.team != piece.team)
 					berserkMode(startPos, match);
 				break ;
 			}

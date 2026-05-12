@@ -24,6 +24,7 @@ class Result
 		/** @type {string | null} */this.msg = "OK";
 		/** @type {Board | null} */	this.board = null;
 		/** @type {boolean} */		this.youWin = false;
+									this.usedBoost = false;
 		
 		if (!other)
 			return ;

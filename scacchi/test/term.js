@@ -28,7 +28,6 @@ render(match);
 
 								let	TargetDangerSwitch = "None";
 /** @type {Array<String>} */	let	selected = [];
-let	boostBool = false;
 
 process.stdin.on('keypress', (str, key) => 
 {
@@ -38,6 +37,7 @@ process.stdin.on('keypress', (str, key) =>
 
 	dx = 0;
 	dy = 0;
+	console.log(match.currentPlayer);
 	if (key.ctrl && key.name == "c")
 	{
 		const	buffer = Buffer.alloc(50);
@@ -98,7 +98,7 @@ process.stdin.on('keypress', (str, key) =>
 				return (error(null, result));
 			break ;
 		case ("t") :
-			boostBool = !boostBool;
+			match.currentPlayer.useBoostBool = !match.currentPlayer.useBoostBool;
 			break ;
 		case ("space") :
 			console.assert((selected.length < 2), "move array too large");
@@ -106,7 +106,7 @@ process.stdin.on('keypress', (str, key) =>
 			if (selected.length == 2)
 			{
 				console.clear();
-				let	result = move(match, selected[0], selected[1], boostBool);
+				let	result = move(match, selected[0], selected[1], match.currentPlayer.useBoostBool);
 				selected = [];
 				if (result.status != 200)
 					return (error(null, result));
@@ -125,7 +125,7 @@ process.stdin.on('keypress', (str, key) =>
 	}
 	console.log("row", match.cursor.getRow(), ", col", match.cursor.getCol(), ", cursor", match.cursor.square);
 	console.log("Visualizing", TargetDangerSwitch, "press \"r\" to change");
-	render(match, selected, TargetDangerSwitch, boostBool);
+	render(match, selected, TargetDangerSwitch);
 	console.log(`keypressed: ${key.name}\n`, `Press \"space\" to move, \"q\" to boost, \"e\" to change turn`);
 });
 

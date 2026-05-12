@@ -23,7 +23,7 @@ function boost(match, from)
 	if (!tryBoost(match, result, from))
 		return (result);
 	result.status = 200;
-	if (match.boost == BOOSTED_MAX)
+	if (match.boost == BOOSTED_MAX && match.historyCreateBool == false)
 		endTurn(match);
 	return (result);
 }

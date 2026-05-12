@@ -170,7 +170,7 @@ function CheckMateCheck(match, kingSquareString)
 
 	kingSquare = match.board.get(kingSquareString);
 	if (!kingSquare)
-		throw (`missing king for team `);//FIXME - Ale: errore grave, dare 500
+		throw (`missing king for team `);
 	team = kingSquare.piece?.team;
 	if (!isDangerous(match, kingSquare.dangerZones, team))
 		return false;
