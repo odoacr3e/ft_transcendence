@@ -1,11 +1,11 @@
 
-const lib = require("../lib/lib.js");
+const lib = require("../../lib/lib.js");
 const bcrypt = require("bcryptjs");
-const { prisma } = require("../lib/prisma.js")
-const { createJwt } = require("../utils/auth.js");
-const usersUtils = require("../utils/users");
-const { colors } = require("../utils/colors");
-const { jsonErrorResponse } = require("../utils/response.js");
+const { prisma } = require("../../lib/prisma.js");
+const { createJwt } = require("../../utils/auth.js");
+const usersUtils = require("../../utils/users.js");
+const { colors } = require("../../utils/colors.js");
+const { jsonErrorResponse } = require("../../utils/response.js");
 
 /** 
  * autenticazione tramite middleware
@@ -163,7 +163,7 @@ const createUser = async (req, res) => {
 	}
 }
 
-const loginUserHandler = { checkCredentials, checkUser };
+
 const createUserHandler = { validateInput, validateUser, createUser };
 
-module.exports = { loginUserHandler, createUserHandler };
+module.exports = { createUserHandler };
