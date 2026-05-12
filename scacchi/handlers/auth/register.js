@@ -84,11 +84,11 @@ const validateInput = async (req, res, next) => {
 	const { username, email, password } = req.body;
 	// console.log(`username: ${colors.yellow}${username}${colors.reset}, email: ${colors.yellow}${email}${colors.reset}, password: ${colors.yellow}${password}${colors.reset}`);
 	if (!username || username.length < 4)
-		return res.status(400).json({ error: "Username too short" });
+		return res.status(400).json(jsonErrorResponse(res.statusCode, "Username too short"));
 	if (!usersUtils.checkEmail(email))
-		return res.status(400).json({ error: "Invalid email format" });
+		return res.status(400).json(jsonErrorResponse(res.statusCode, "Invalid email format"));
 	if (!usersUtils.checkPassword(password))
-		return res.status(400).json({ error: "Invalid password format" });
+		return res.status(400).json(jsonErrorResponse(res.statusCode, "Invalid password format"));
 	console.log(`Validate input: ${colors.green}OK${colors.reset}`);
 	next();
 }
@@ -109,11 +109,11 @@ const validateUser = async (req, res, next) => {
 			}
 		});
 		if (user)
-			return res.status(409).json({ error: "User already exists" });
+			return res.status(409).json(jsonErrorResponse(res.statusCode, "User already exists"));
 		console.log(`Validate User: ${colors.green}OK${colors.reset}`);
 		next();
 	} catch (error) {
-		return res.status(500).json({ error: "Server error creating user" });
+		return res.status(500).json(jsonErrorResponse(res.statusCode, "Server error creating user"));
 	}
 }
 
@@ -154,12 +154,12 @@ const createUser = async (req, res) => {
 			}
 		});
 		if (!user)
-			return res.status(500).json({ error: "Server error creating user 1" });
+			return res.status(500).json(jsonErrorResponse(res.statusCode, "Server error creating user"));
 		req.user = user;
 		const token = await createJwt(req, res);
 		return res.status(201).json({ "user": user, "token": token });
 	} catch (error) {
-		return res.status(500).json({ error: "Server error creating user 2" });
+		return res.status(500).json(jsonErrorResponse(res.statusCode, "Server error creating user"));
 	}
 }
 
