@@ -22,6 +22,7 @@ class metaInfo {
 		this.secondTurn = false;
 		this.hasBoost = false;
 		this.priceSelected = "...";
+		this.savedBoostedMap = null;
 	}
 }
 

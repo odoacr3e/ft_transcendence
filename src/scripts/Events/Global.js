@@ -1,18 +1,27 @@
 import { localBoard, localPlayers, localInfo }	from "@/scripts/Data/Variables";
 import { clearHighlight, resetPrice }			from "@/scripts/Helper/RenderUtils";
-import { PIECES_HIGHLIGHT }						from "@/scripts/Helper/piecesHighlits";
+import { PIECES_HIGHLIGHT }						from "@/scripts/Helper/piecesHighlights.js";
+import { boostedMovement } 						from "../Helper/abilityMovement.js";
 import { requestToBack }						from "./Movements.js";
 import { getRootDiv }							from "@/scripts/Helper/Constants";
 
 
 export function useAbility()
 {
-	if (!localBoard.get(localInfo.clickedId).piece) { return; }
-	if (localBoard.get(localInfo.clickedId).piece.useAbilityBool)
-		localBoard.get(localInfo.clickedId).piece.useAbilityBool = false;
-	else { localBoard.get(localInfo.clickedId).piece.useAbilityBool = true; }
+	const clickedId = localInfo.clickedId;
+	const piece = localBoard.get(clickedId).piece;
 
-	PIECES_HIGHLIGHT[localBoard.get(localInfo.clickedId).piece.type](localInfo.clickedId);
+	if (!piece) 
+		return;
+	if (piece.useAbilityBool)
+		piece.useAbilityBool = false;
+	else 
+	{ 
+		piece.useAbilityBool = true; 
+		//chiamata alla funzione mvimento?
+	}
+
+	PIECES_HIGHLIGHT[piece.type](clickedId);
 }
 
 export function shopAbility()
@@ -55,9 +64,10 @@ export function globalEvents()
 	const ROOT_DIV = getRootDiv();
 
 	ROOT_DIV.addEventListener("click", function (event) {
-		if (!checkPermision(event))			{ clearHighlight(); return; }
-		if (checkForHighlightMove())		{ sendToBackend(); }
-		else 								{ highlightOnClick(event); }
+		if (!checkPermision(event))		{ clearHighlight(); return; }
+		if (usingAbility())				{ boostedMovement(event, localInfo.clickedId, localInfo.lastClickedId); return; }
+		if (checkForHighlightMove())	{ sendToBackend(); }
+		else 							{ highlightOnClick(event); }
 	});
 
 	ROOT_DIV.addEventListener("dragstart", function (event) {
@@ -73,7 +83,7 @@ export function globalEvents()
 export function checkForHighlightMove()
 {	
 	let bool = localBoard.get(localInfo.clickedId).highlight;
-	// console.log(`clickedId: ${clickedId}\nbool: ${bool	}`);
+	// console.log(`clickedId: ${clickedId}\nbool: ${bool}`);
 	
 	if (localInfo.clickedId !== localInfo.lastClickedId)	{ clearHighlight(); }
 	else								{ clearHighlight("selected"); }
@@ -81,14 +91,25 @@ export function checkForHighlightMove()
 	return(bool);
 }
 
+export function usingAbility()
+{
+    const lastPiece  = localBoard.get(localInfo.lastClickedId)?.piece;
+    const piece      = localBoard.get(localInfo.clickedId)?.piece;
+	const secondTurn = localInfo.secondTurn;
+
+	const lastUseAbility = lastPiece?.useAbilityBool && lastPiece?.isBoostedBool
+	const useAbility	 = piece?.useAbilityBool && piece?.isBoostedBool;
+
+    return (useAbility || lastUseAbility || secondTurn);
+}
+
 export function sendToBackend()
 {
-	// console.log(`lastClickedId: ${lastClickedId}\nclickedId: ${clickedId}`);
-	// const clickedIsValidMove = localBoard.get(lastClickedId).targetZones.has(clickedId); //--> questo non è più un Set, probabilmente lo perdiamo durante la riassegnazione [RISOLTO]
-	// NOTA - non possiamo usare una variabile in questo modo, e' meglio mettere tutto in un if in modo da controllare prima
-	// che lastClickedId != null in modo che localBoard.get().etc si possa fare
+	const lastClickedId = localInfo.lastClickedId;
+	const clickedId = localInfo.clickedId;
+	const hasClickedTargetZone = localBoard.get(clickedId).targetZones.has(clickedId);
 
-	if (localInfo.lastClickedId && localInfo.lastClickedId !== localInfo.clickedId && localBoard.get(localInfo.lastClickedId).targetZones.has(localInfo.clickedId))
+	if (lastClickedId && lastClickedId !== clickedId && hasClickedTargetZone)
 		requestToBack(localInfo.lastClickedId, localInfo.clickedId).then(
 				function(value) {if (value) { clearHighlight(); } },
 				function(value) {if (!value) { console.log("[sendToBackend]: Mossa non valida"); }}
@@ -131,32 +152,22 @@ export function highlightOnClick(event)
 			
 }
 
-export function setHighlighTrue(allowedMoves, flag, team)
+export function setHighlightTrue(toSet, flag, team)
 {
-	allowedMoves.forEach((highlight) => {
-			localBoard.forEach(square => {
-				if (square.id == highlight)
-				{
-					if (square.highlight === false && square.id != localInfo.clickedId)
-					{
-						if (square.piece?.team != team)
-						{
-							if (flag === "regular")
-								square.highlight = true;
-							else if (flag ==="boosted")
-								square.boostedHighlight = true;
-						}
-						else if (team === "both")
-						{
-							if (flag === "regular")
-								square.highlight = true;
-							else if (flag ==="boosted")
-								square.boostedHighlight = true;
-						}
-					}
-				}
-		});
-	});
+    toSet.forEach((highlight) => {
+        const square = localBoard.get(highlight);
+        if (!square || square.id === localInfo.clickedId)
+            return;
+
+        const canHighlight = team === "both" || square.piece?.team !== team;
+        if (!canHighlight)
+            return;
+
+        if (flag === "regular")
+            square.highlight = true;
+        else if (flag === "boosted")
+            square.boostedHighlight = true;
+    });
 }
 
 export function highlightOnDrag(event)

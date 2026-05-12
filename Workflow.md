@@ -92,9 +92,10 @@ boardConverter()
 	✓ bottone per utilizzare l'abilità
 	✓ highlitghs per i pezzi boostati
 	✓ gestione dei turni tra players (in locale)
-	✓ bottone per fine turno [MAVI]
-	▫ richieste del boosting
+	✓ bottone per fine turno
+	✓ richieste del boosting
 	▫ drag non fastasma
+	▫ Coordinate delle caselle della scacchiera [MAVI]
 	▫ movimento per i pezzi boostati {LEO}
 	? oreintamento della scacchiera in base al colore dei pezzi del giocatore
 

@@ -41,11 +41,6 @@ export function onDrop(event, toSquare)
 
 export async function requestToBack(fromSquare, toSquare)
 {
-	//la logia e' giusta ma bisogna fare un controllo ulteriore sullo square dove si sposta per sapere se
-	//effettivamente se e' un movimento boostato (e serve il movimento boostato per questo lol)
-	// if (localBoard.get(fromSquare).piece.useAbilityBool)
-	// 	{type = "boostMove"; url = "move.json" }	
-
 	let type, url;
 
 	if (fromSquare === null && toSquare === null && localInfo.secondTurn)

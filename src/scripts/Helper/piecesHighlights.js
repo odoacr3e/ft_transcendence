@@ -1,4 +1,4 @@
-import { setHighlighTrue }	from "@/scripts/Events/Global";
+import { setHighlightTrue }	from "@/scripts/Events/Global";
 import { clearHighlight }	from "./RenderUtils";
 import { localBoard }		from "@/scripts/Data/Variables"
 
@@ -20,16 +20,16 @@ export function JesterHL(squareId)
 	const team = square.piece.team;
 	const regularMoves = square.targetZones;
 	const boostedMoves = square.boostedTargetZones.get(squareId);
-	console.log(`boosted moves ${boostedMoves}, useAbility: ${useAbility}, team: ${team}`);
+	// console.log(`boosted moves ${boostedMoves}, useAbility: ${useAbility}, team: ${team}`);
 	
 	clearHighlight();
 	if (useAbility && boostedMoves)
 	{
-		setHighlighTrue(regularMoves, "regular", team);
-		setHighlighTrue(boostedMoves, "boosted", team);
+		setHighlightTrue(regularMoves, "regular", team);
+		setHighlightTrue(boostedMoves, "boosted", team);
 	}
 	else if (regularMoves)
-		setHighlighTrue(regularMoves, "regular", team);
+		setHighlightTrue(regularMoves, "regular", team);
 	else
 		throw Error("[JesterHL]: qualcosa è andato storto");
 }
@@ -43,13 +43,13 @@ export function ValkiryaHL(squareId)
 	const team = square.piece.team;
 	const regularMoves = square.targetZones;
 	const boostedMoves = square.boostedTargetZones.get(squareId);
-	console.log(`boosted moves ${boostedMoves}, useAbility: ${useAbility}`);
+	// console.log(`boosted moves ${boostedMoves}, useAbility: ${useAbility}`);
 	
 	clearHighlight();
 	if (useAbility && boostedMoves)
-		setHighlighTrue(boostedMoves, "boosted", team);
+		setHighlightTrue(boostedMoves, "boosted", team);
 	else if (regularMoves)
-		setHighlighTrue(regularMoves, "regular", team);
+		setHighlightTrue(regularMoves, "regular", team);
 	else
 		throw Error("[ValkiryaHL]: qualcosa è andato storto");
 }
@@ -63,17 +63,16 @@ export function KingAndBastardsHL(squareId)
 	const team = square.piece.team;
 	const regularMoves = square.targetZones;
 	const boostedMoves = square.boostedTargetZones.get(squareId);
-	console.log(`boosted moves ${boostedMoves}, useAbility: ${useAbility}`);
+	// console.log(`boosted moves ${boostedMoves}, useAbility: ${useAbility}`);
 	
 	clearHighlight();
 	if (useAbility && boostedMoves)
 	{
-		setHighlighTrue(regularMoves, "regular", team);
-		setHighlighTrue(boostedMoves, "boosted", "both");
-		console.log("allora?");		
+		setHighlightTrue(regularMoves, "regular", team);
+		setHighlightTrue(boostedMoves, "boosted", "both");
 	}
 	else if (regularMoves)
-		setHighlighTrue(regularMoves, "regular", team);
+		setHighlightTrue(regularMoves, "regular", team);
 	else
 		throw Error("[KingAndBastardsHL]: qualcosa è andato storto");
 }
@@ -87,18 +86,18 @@ export function ChampAndMinoHL(squareId)
 	const team = square.piece.team;
 	const regularMoves = square.targetZones;
 	const boostedMoves = new Map(square.boostedTargetZones);
-	console.log(`boosted moves ${boostedMoves}, useAbility: ${useAbility}, team: ${team}`);
+	// console.log(`boosted moves ${boostedMoves}, useAbility: ${useAbility}, team: ${team}`);
 	
 	clearHighlight();
 	if (useAbility && boostedMoves)
 	{
-		setHighlighTrue(regularMoves, "regular", team);
+		setHighlightTrue(regularMoves, "regular", team);
 		boostedMoves.forEach((targetSquares, sourceSquare) => {
-			setHighlighTrue(targetSquares, "boosted", team);
+			setHighlightTrue(targetSquares, "boosted", team);
 		});
 	}
 	else if (regularMoves)
-		setHighlighTrue(regularMoves, "regular", team);
+		setHighlightTrue(regularMoves, "regular", team);
 	else
 		throw Error("[ChampAndMinoHL]: qualcosa è andato storto");
 }
