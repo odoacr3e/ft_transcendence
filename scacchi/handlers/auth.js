@@ -2,10 +2,10 @@
 const lib = require("../lib/lib.js");
 const bcrypt = require("bcryptjs");
 const { prisma } = require("../lib/prisma.js")
-const { error } = require("node:console");
 const { createJwt } = require("../utils/auth.js");
 const usersUtils = require("../utils/users");
 const { colors } = require("../utils/colors");
+const { jsonErrorResponse } = require("../utils/response.js");
 
 /** 
  * autenticazione tramite middleware
@@ -19,8 +19,6 @@ const { colors } = require("../utils/colors");
  * 3. generazione token JWT
 */
 
-
-
 // NOTE: login functions
 
 /**
@@ -30,7 +28,7 @@ const { colors } = require("../utils/colors");
 const checkCredentials = (req, res, next) => {
 	const { username, password } = req.body;
 	if (!username || !password)
-		return (res.status(400).json({ error: "Credenziali mancanti" }));
+		return (res.status(400).json(jsonErrorResponse(res.statusCode, "Credenziali mancanti")));
 	next();
 }
 
@@ -64,14 +62,14 @@ const checkUser = async (req, res) => {
 			}
 		}); // da espandere campi richiesti
 		if (!user || !(await bcrypt.compare(password, user.password)))
-			return res.status(401).json({ error: "Credenziali non valide" });
+			return res.status(401).json(jsonErrorResponse(res.statusCode, "Credenziali non valide"));
 		// console.log("User " + user.username + " trovato");
 		delete(user.password);
 		req.user = user; // aggiungo lo user trovato all'oggetto request per averlo anche nel successivo middleware
 		const token = await createJwt(req, res);
 		return res.status(201).json({ "status": "success", "code": res.statusCode, "data": { "user": user, "token": token } });
 	} catch (error) {
-		return res.status(500).json({ error: "Server error checking user" });
+		return res.status(500).json(jsonErrorResponse(res.statusCode, "Server error checking for user"));
 	}
 };
 

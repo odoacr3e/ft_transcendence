@@ -3,6 +3,15 @@
 const match = require("../Vault.js").vault.getDebugMatch();;
 
 /**
+ * 
+ * @param {Number} code
+ * @param {String} message
+ */
+const jsonErrorResponse = (code, message) => {
+	return ({ "status": "error", "code": code, "message": message });
+}
+
+/**
  * @param {*} result the base object from which the response json is made
  * @param {String | null} msg 
  * @param {Number | null} status 
@@ -100,4 +109,4 @@ function modifyBoard(board)
 	}
 }
 
-module.exports = {responseFormatter};
+module.exports = { jsonErrorResponse, responseFormatter };
