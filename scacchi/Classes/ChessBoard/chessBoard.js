@@ -109,7 +109,7 @@ function copyBoostedTargetZones(src, dest=null)
 		{
 			zones.add(bonusPos);
 		}
-		dest.set(pos, zones);
+		dest.set(pos, new Set(zones));
 	}
 	return (dest);
 }

@@ -10,7 +10,7 @@ const preset = {
 	white: 
 	{
 		name: "",
-		nPoints: 0,
+		nPoints: 5,
 		bonusPointCounter: 0,
 		useBoostBool: false,
 		nPieces: 0,
