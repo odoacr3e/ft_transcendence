@@ -25,10 +25,15 @@ const { boost } = require("./boost.js");
 function move(match, from, to, boostBool=false)
 {
 	let	result;
+	let type;
+	let boost;
+	let near = false;
 
 	result = new Result();
 	if (!paramCheck(result, from, to))
 		return (result);
+	type = match.board.get(from)?.piece?.type;
+	boost = match.board.get(from)?.piece?.isBoostedBool;
 	if (!checkMove([from, to], result, match, boostBool))
 		return (result);
 	if (!updateChessboard([from, to], result, match, boostBool))
@@ -39,12 +44,44 @@ function move(match, from, to, boostBool=false)
 		return (console.log("haaaaaiiiiii viiiiiiintoooooooooo!!!!!!!"), checkMateAlert(result, match.currentPlayer.team));
 	// @ts-ignore
 	result.board = clientBoard(match.board, [from, to]);
-	if (match.moves == MOVEMENT_MIN && !match.currentPlayer.nPoints && match.historyCreateBool == false)
+	near = isNear(match, from);
+	if ((match.moves >= MOVEMENT_MIN && !match.currentPlayer.nPoints && match.historyCreateBool == false) && !(near && boostBool))
+	{
 		endTurn(match);
+	}
 	return (result);
 }
 
 // da qui in giu metto in file a parte
+
+/**
+ * 
+ * @param {Match} match 
+ * @param {string} from 
+ */
+function isNear(match, from)
+{
+	let tmp;
+	let piece;
+
+	tmp = match.cursor.square;
+	match.cursor.set(from);
+	for (let {dx, dy} of new Preset(enumNames.KING).movement)
+	{
+		if (movePiece(match, dy, dx))
+		{
+			piece = match.board.get(match.cursor.square)?.piece;
+			if (piece?.type == enumNames.BASTARDS && piece.isBoostedBool == true)
+			{
+				match.cursor.set(tmp);
+				return true;
+			}
+		}
+		match.cursor.set(from);
+	}
+	match.cursor.square;
+	return false;
+}
 
 /**
  * 
@@ -214,7 +251,6 @@ function doubleBastardsCheck(match, result, coords)
 	from = match.board.get(coords[0]);
 	to = match.board.get(coords[1]);
 	last = match.history.Last();
-	console.log(last);
 	tmpCursor = match.cursor.square;
 	if (!from || !to || !from.piece)
 		return (error(result, 500, "Something went wrong while searching for the position"));
