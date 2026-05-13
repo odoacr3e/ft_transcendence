@@ -94,8 +94,8 @@ boardConverter()
 	✓ gestione dei turni tra players (in locale)
 	✓ bottone per fine turno
 	✓ richieste del boosting
-	▫ drag non fastasma
-	▫ Coordinate delle caselle della scacchiera [MAVI]
+	✓ Coordinate delle caselle della scacchiera
+	▫ drag non fastasma [MAVI]
 	▫ movimento per i pezzi boostati {LEO}
 	? oreintamento della scacchiera in base al colore dei pezzi del giocatore
 

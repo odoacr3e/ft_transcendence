@@ -1,7 +1,7 @@
 import { localBoard, localPlayers, localInfo }	from "@/scripts/Data/Variables";
 import { clearHighlight, resetPrice }			from "@/scripts/Helper/RenderUtils";
-import { PIECES_HIGHLIGHT }						from "@/scripts/Helper/piecesHighlights.js";
-import { boostedMovement } 						from "../Helper/abilityMovement.js";
+import { PIECES_HIGHLIGHT }						from "@/scripts/Helper/piecesHighlights";
+import { boostedMovement } 						from "@/scripts/Helper/abilityMovement";
 import { requestToBack }						from "./Movements.js";
 import { getRootDiv }							from "@/scripts/Helper/Constants";
 
@@ -82,8 +82,15 @@ export function globalEvents()
 
 export function checkForHighlightMove()
 {	
-	let bool = localBoard.get(localInfo.clickedId).highlight;
+	let bool;
+	// const pieceMoving = localInfo.lastClickedId ? localBoard.get(localInfo.lastClickedId).piece : null;
 	// console.log(`clickedId: ${clickedId}\nbool: ${bool}`);
+
+
+	// if (pieceMoving && pieceMoving.type !== ("Bastards" || "King") && pieceMoving.useAbilityBool)
+	// 	bool = localBoard.get(localInfo.clickedId).boostedHighlight;
+	// else
+		bool = localBoard.get(localInfo.clickedId).highlight
 	
 	if (localInfo.clickedId !== localInfo.lastClickedId)	{ clearHighlight(); }
 	else								{ clearHighlight("selected"); }

@@ -30,14 +30,27 @@
 							{'selectedB': getSquareColor(square.id) == 'black' && (square.selected || square.highlight && square.piece)}]"
                     @drop="onDrop($event, square)"
                     @dragover.prevent>
+					<p v-if="square.id.charAt(1) == '1'" class="absolute ml-15 mt-13"
+						v-bind:class="{ 'text-[#1b0000]': getSquareColor(square.id) == 'white' && !square.selected, 
+										'text-white	': getSquareColor(square.id) == 'black' && !square.selected,
+										'text-[#801a12]' : getSquareColor(square.id) == 'white' && square.selected,
+										'text-[#bb4232]' : getSquareColor(square.id) == 'black' && square.selected }">
+						<b>{{ square.id.charAt(0) }}</b>
+					</p>
                     <img
                         v-if="square.piece"
                         class="piece"
 						v-bind:class="{ '':square.piece.isBoostedBool }"
                         :src="IMG_PATHS[square.piece.team + square.piece.type]"
                         :draggable="true"
-                        @dragstart="onDragStart($event, square)"
-				/>
+                        @dragstart="onDragStart($event, square)"/>
+					<p v-if="square.id.charAt(0) == 'a'" class="absolute mr-15 mb-13"
+						v-bind:class="{ 'text-[#1b0000]':getSquareColor(square.id) == 'white' && !square.selected, 
+										'text-white':getSquareColor(square.id) == 'black' && !square.selected,
+										'text-[#801a12]' : getSquareColor(square.id) == 'white' && square.selected,
+										'text-[#bb4232]' : getSquareColor(square.id) == 'black' && square.selected }">
+						<b>{{square.id.charAt(1)}}</b>
+					</p>
                     <span v-if="square.highlight && !square.piece" class="highlight"></span>
                     <span v-if="square.boostedHighlight && !square.piece" class="boostedHighlight"></span>
                 </div>

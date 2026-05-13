@@ -4,8 +4,16 @@
 
 <template>
     <form :action="url" method="post" class="text-[#111318]">
-        <b>Username:</b> <input class="form" autofocus="true" type="text" name="Username"><br>
-        <b>Password:</b> <input class="form mt-0.5 ml-1.25" type="password" name="Password"><br>
+        <span v-if="url === '/auth/register'">
+            <b>Name:</b> <input class="form mt-0.5 ml-1.25" type="text" name="name"><br>
+            <b>Surname:</b> <input class="form mt-0.5 ml-1.25" type="text" name="surname"><br>
+            <b>Email:</b> <input class="form mt-0.5 ml-1.25" type="email" name="email"><br>
+        </span>
+        <b>Username:</b> <input class="form" autofocus="true" type="text" name="username"><br>
+        <b>Password:</b> <input class="form mt-0.5 ml-1.25" type="password" name="password"><br>
+        <span v-if="url === '/auth/register'">
+            <b>Nationality:</b> <input class="form mt-0.5 ml-1.25" type="text" name="nationality"><br>
+        </span>
         <b><input class="mt-2 p-1.5 bg-[#a52a2a] rounded-[10px] text-[#f1f5f7]" type="submit" value="Submit"></b>
     </form>
 </template>
