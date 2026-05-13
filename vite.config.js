@@ -20,11 +20,11 @@ export default defineConfig({
   //     },
   //   },
   // },
-  server: {
-    host: '10.11.4.5',
-    port: 5173,
-    strictPort: true,
-  },
+  // server: {
+  //   host: '10.11.4.5',
+  //   port: 5173,
+  //   strictPort: true,
+  // },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),

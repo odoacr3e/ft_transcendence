@@ -33,6 +33,7 @@
                     <img
                         v-if="square.piece"
                         class="piece"
+						v-bind:class="{ '':square.piece.isBoostedBool }"
                         :src="IMG_PATHS[square.piece.team + square.piece.type]"
                         :draggable="true"
                         @dragstart="onDragStart($event, square)"
@@ -43,8 +44,8 @@
             </div>
         </div>
 		<div id="shop">
-			<img src="../assets/Frame1.png" alt="" class="shrink-0 size-35 absolute bottom-15 z-12">
-			<button class="side-button bg-amber-300 text-sm p-2.5 rounded-2xl cursor-pointer z-13"
+			<img src="../assets/Frame1.png" alt="" class="shrink-0 size-35 absolute bottom-[80%] z-12">
+			<button class="side-button bg-amber-300 text-sm p-2.5 rounded-2xl cursor-pointer z-13 w-45"
 					@click="shopAbility()">
 					<b>Boost your Pieces!</b><br>
 					<p style="white-space: pre-line"><i>{{ localInfo.priceSelected }}</i></p>

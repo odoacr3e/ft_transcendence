@@ -34,7 +34,7 @@
 		</div>
 		<div class="grow flex items-center justify-start gap-2 pr-2">
 			<button class="bg-amber-300 text-sm
-							transition delay-50 duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-orange-400"
+							transition delay-50 duration-300 ease-in-out hover:-translate-y-0.5 hover:scale-105 hover:bg-orange-400"
 					v-bind:class="{ 'grayscale pointer-events-none':(!playing || !Piece || !Piece.isBoostedBool || Piece.team !== player.team),
 						'cursor-pointer grayscale-0 pointer-events-auto':(playing && Piece && Piece.isBoostedBool && (Piece.team === player.team)) }"
 				@click="useAbility()" v-if="playing && localInfo.hasBoost">
@@ -42,7 +42,7 @@
 				<b>Use Ability!</b>
 			</button>
 			<button class="bg-blue-500 text-sm
-						transition delay-50 duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-indigo-500 cursor-pointer"
+						transition delay-50 duration-300 ease-in-out hover:-translate-y-0.5 hover:scale-105 hover:bg-indigo-500 cursor-pointer"
 				@click="sendEndTurn()" v-if="endT && playing">
 				<img src="../assets/clock.png" alt="" :draggable="false" class="size-5">
 				<b>End Turn</b>

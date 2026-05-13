@@ -107,7 +107,7 @@ export function sendToBackend()
 {
 	const lastClickedId = localInfo.lastClickedId;
 	const clickedId = localInfo.clickedId;
-	const hasClickedTargetZone = localBoard.get(clickedId).targetZones.has(clickedId);
+	const hasClickedTargetZone = localBoard.get(lastClickedId).targetZones.has(clickedId);
 
 	if (lastClickedId && lastClickedId !== clickedId && hasClickedTargetZone)
 		requestToBack(localInfo.lastClickedId, localInfo.clickedId).then(
@@ -122,9 +122,9 @@ function updatePrice()
 	const Player = localPlayers.values().find(p => p.isPlaying === true);
 
 	if (Piece.isBoostedBool)
-		localInfo.priceSelected = "This piece is already boosted you fool!";
+		localInfo.priceSelected = "This piece is already\nboosted you fool!";
 	else if (Piece.price > Player.nPoints)
-		localInfo.priceSelected = "AHAH! You're too poor to buy that!";
+		localInfo.priceSelected = "AHAH! You're too poor\nto buy that!";
 	else
 		localInfo.priceSelected = "Price: " + Piece.price;
 }
