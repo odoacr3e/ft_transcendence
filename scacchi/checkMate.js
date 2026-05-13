@@ -1,7 +1,7 @@
 // @ts-check
 const {Piece, Board, Square, preset} =			require("./lib/lib.js").Chess;
 const {eTeam, enumValues, enumNames} =			require("./lib/lib.js").Enums;
-const {Match} = require("./match.js");
+const {Match} = require("./Classes/Vault/match.js");
 const {isDangerous, movePiece, DangerUpdate} =	require("./utils.js");
 
 /**

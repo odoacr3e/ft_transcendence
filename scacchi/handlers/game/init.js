@@ -1,11 +1,11 @@
 // @ts-check
 const lib = require("../../lib/lib.js");
 const {Piece, Board, copyBoard, Square, cursor} = require("../../lib/lib.js").Chess;
-const {initBoard} = require("../../chessBoard.js");
+const {initBoard} = require("../../Classes/ChessBoard/chessBoard.js");
 const {eTeam, enumNames} = require("../../lib/lib.js").Enums;
 const {SEED} = require("../../lib/lib.js").Macro;
 const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("../../utils.js");
-const {Match} = require("../../match.js");
+const {Match} = require("../../Classes/Vault/match.js");
 const {error, clientBoard, paramCheck, Result} = require("./utils.js");
 const {initRng} = require("../../utils/random");
 

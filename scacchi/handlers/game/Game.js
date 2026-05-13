@@ -1,7 +1,7 @@
 // @ts-check
 
 const	{abort} = require("node:process");
-const	{Match} = require("../../match"); 
+const	{Match} = require("../../Classes/Vault/match.js"); 
 const	{ Result } = require("./utils");
 const	{responseFormatter} = require("../../utils/response");
 const	move = require("./move").move; 
@@ -10,7 +10,7 @@ const	boost = require("./boost").boost;
 const	init = require("./init").init;
 const	render = require("../../render").render;
 //FIXME - solo debug
-const	vault = require("../../Vault.js").vault;
+const	vault = require("../../Classes/Vault/Vault.js").vault;
 const DEBUG_MATCH = vault.getDebugMatch();
 
 //FIXME - ale: i controlli di gameChecks danno per scontato che:

@@ -1,10 +1,10 @@
 // @ts-check
 const fs = require("fs");
 
-const {Cursor} = require("./cursor.js");
-const {eTeam, eEvents} = require("./enums.js");
-const {Square, initBoard, copyBoard, copyBoostedTargetZones} = require("./chessBoard.js");
-const {HISTORY_DEFAULT, HISTORY_PATH} = require("./macro.js");
+const {Cursor} = require("../../cursor.js");
+const {eTeam, eEvents} = require("../../enums.js");
+const {Square, initBoard, copyBoard, copyBoostedTargetZones} = require("../ChessBoard/chessBoard.js");
+const {HISTORY_DEFAULT, HISTORY_PATH} = require("../../macro.js");
 
 const preset = {
 	white: 
@@ -102,6 +102,7 @@ class Match
 		{
 			throw ("currentPlayer BUG");
 		}
+		// @ts-ignore
 		this.currentPlayer = this[next];
 	}
 	forceWhiteTurn = () =>

@@ -1,19 +1,19 @@
 // @ts-check
 const fs = require("fs");
 
-const {Square} = require("./chessBoard.js");
+const {Square} = require("./Classes/ChessBoard/chessBoard.js");
 // const {Piece} = require("./pieces.js");
 const Macro = require("./macro.js");
 const {eEvents} = require("./enums.js");
 const {Cursor} = require("./cursor.js");
-const {Match} = require("./match.js");
-const { Piece } = require("./pieces.js");
+const {Match} = require("./Classes/Vault/match.js");
+const { Piece } = require("./Classes/Pieces/pieces.js");
 const {dangerUpdateAll} = require("./utils.js");
 const {move, boost, endTurn} = require("./handlers/game/Game.js");
 const { render } = require("./render.js");
 
 
-/** @typedef {import ("./match.js").History} History */
+/** @typedef {import ("./Classes/Vault/match.js").History} History */
 
 /** 
  * 

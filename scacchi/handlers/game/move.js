@@ -1,18 +1,18 @@
 // @ts-check
 const lib = require("../../lib/lib.js");
-const {enumNames} = require("../../pieces.js");
+const {enumNames} = require("../../Classes/Pieces/preset.js");
 const {eEvents, eTeam} = require("../../enums.js");
 const {MOVEMENT_MAX, MOVEMENT_MIN} = require("../../macro");
 const {Piece, board, Square, copyBoard, cursor} = require("../../lib/lib.js").Chess;
 const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("../../utils.js");
-const {Match} = require("../../match.js");
-const {Preset} = require("../../pieces.js");
+const {Match} = require("../../Classes/Vault/match.js");
+const {Preset} = require("../../Classes/Pieces/preset.js");
 const {error, paramCheck, Result, clientBoard, checkMateAlert} = require("./utils.js");
 const {endTurn} = require("./endTurn");
 const {CheckMateCheck} = require("../../checkMate.js");
 const { boost } = require("./boost.js");
 
-/** @typedef {import('../../chessBoard.js').Square} Square */
+/** @typedef {import('../../Classes/ChessBoard/chessBoard.js').Square} Square */
 
 /**
  * 
@@ -43,6 +43,8 @@ function move(match, from, to, boostBool=false)
 		endTurn(match);
 	return (result);
 }
+
+// da qui in giu metto in file a parte
 
 /**
  * 
@@ -165,18 +167,6 @@ function checkBooster(match, result, from, coords, boostBool) // FIXME - da aggi
 		return (doubleBastardsCheck(match, result, coords));
 	if (pieceMultipleMoveBool == false && match.moves > 0)
 		return (error(result, 403, "Multiple moves not allowed there"));
-	/**
-	 * boostBool false => multipleBool false
-	 * 
-	 * 
-	 * boostBool == false
-	 * {
-	 * 		puoi fare questa mossa senza potenziamento?
-	 * 			si: true
-	 * 			no: vaffanculo
-	 * } OK!
-	 * 
-	 */
 	if (pieceMultipleMoveBool == false && from.targetZones.has(coords[1]))
 		return (true);
 	if (from.piece.isBoostedBool == false || boostBool == false)

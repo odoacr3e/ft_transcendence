@@ -7,7 +7,7 @@ const {historyRestore} = require("../utils2.js");
 const {error, move, boost, endTurn, init} = require("../handlers/game/Game.js");
 const {Result} = require("../handlers/game/utils.js");
 const {app} = require("../server.js");
-const {vault} = require("../Vault.js");
+const {vault} = require("../Classes/Vault/Vault.js");
 
 const lib =			require("../lib/lib.js");
 const {abort} = 	require("node:process");

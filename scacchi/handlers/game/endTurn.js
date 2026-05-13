@@ -3,7 +3,7 @@
 const {MOVEMENT_MAX, MOVEMENT_MIN, MOVEMENT_BONUS_POINT} = require("../../macro");
 const {Piece, board, Square, cursor} = require("../../lib/lib.js").Chess;
 const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("../../utils.js");
-const {Match} = require("../../match.js");
+const {Match} = require("../../Classes/Vault/match.js");
 const {error, paramCheck, Result, checkMateAlert} = require("./utils.js");
 const {CheckMateCheck} = require("../../checkMate.js")
 //FIXME - ale: puoi sempre cambiare turno anche se non hai mosso

@@ -1,7 +1,7 @@
 // @ts-check
 
 const { assert } = require("node:console");
-const { Square, copyBoard } = require("../../chessBoard");
+const { Square, copyBoard } = require("../../Classes/ChessBoard/chessBoard");
 
 /** @typedef {Map<String, Square>} Board */
 
@@ -144,6 +144,7 @@ function error(result, status, msg)
 	result.status = status;
 	return (false);
 }
+
 /**
  * 
  * @param {Result} result 

@@ -1,13 +1,29 @@
 // @ts-check
-const {enumNames} = require("./pieces.js");
+const {enumNames} = require("./Classes/Pieces/preset.js");
 const {Square, Piece, board, copyBoard, cursor} = require("./lib/lib.js").Chess
 const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("./utils.js");
-const {Match} = require("./match.js");
+const {Match} = require("./Classes/Vault/match.js");
 const {error, paramCheck, Result, clientBoard, checkMateAlert} = require("./handlers/game/utils.js");
 const {getDirection} = require("./checkMate.js");
 
-/** @typedef {import('./pieces.js').Piece} Piece */
-/** @typedef {import('./chessBoard.js').Square} Square */
+/* 
+
+Classi/
+		Piecese/ un file per pezzo (con dentro la funzione moveBoost), e uno per i preset
+		ChessBoard/ ChessBoard, cursor 
+		Vault/ Vault, match, history
+Utility/
+		match/ 
+		move/
+Macro/ macro, enum
+GameLogic/ checkMate, Castling, 
+
+test + render
+
+*/
+
+/** @typedef {import('./Classes/Pieces/pieces.js').Piece} Piece */
+/** @typedef {import('./Classes/ChessBoard/chessBoard.js').Square} Square */
 
 /**@typedef {{"king": Piece, "mino": Piece, "dir": [0, 0], "kingDanger": Set<string>}} pieces */
 /* 

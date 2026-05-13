@@ -1,6 +1,8 @@
 // @ts-check
 
-const match = require("../Vault.js").vault.getDebugMatch();;
+const { Square } = require("../Classes/ChessBoard/chessBoard.js");
+
+const match = require("../Classes/Vault/Vault.js").vault.getDebugMatch();;
 
 /**
  * 
@@ -90,6 +92,10 @@ function responseFormatter(result, msg, status)
 	return (result);
 }
 
+/**
+ * 
+ * @param {Map<string, Square>} board 
+ */
 function modifyBoard(board)
 {
 	for (const [pos, square] of board)

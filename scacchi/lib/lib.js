@@ -5,16 +5,16 @@ const fs = require('fs');
 const path = require('path');
 const express = require('express');
 const app = express();
-const {preset} = require("../pieces.js");
+const {preset} = require("../Classes/Pieces/pieces.js");
 
 //SECTION - external inclusions
 const include = {http, https, url, fs, path, express, app};
 
 //SECTION - chess classes/objects
-const {Piece} = require("../pieces.js");
+const {Piece} = require("../Classes/Pieces/pieces.js");
 const {cursor} = require("../cursor.js");
 const {includesOneOf} = require("../utils/string.js");
-const {board, Square, copyBoard} = require("../chessBoard.js");
+const {board, Square, copyBoard} = require("../Classes/ChessBoard/chessBoard.js");
 const Chess = {Piece, board, copyBoard, cursor, Square};
 
 //SECTION - macro
@@ -22,7 +22,7 @@ const Macro = require("../macro.js");
 
 //SECTION - Enums
 const {eTeam} = require("../enums.js");
-const {enumValues, enumNames} = require("../pieces.js");
+const {enumValues, enumNames} = require("../Classes/Pieces/preset.js");
 const Enums = {eTeam, enumValues, enumNames};
 
 //SECTION - utils function
