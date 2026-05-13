@@ -1,5 +1,6 @@
 // @ts-check
 const {movePiece} = require("../../utils.js");
+const {enumNames} = require("./preset.js");
 /**
  * 
  * @param {string} pos 
@@ -14,7 +15,7 @@ function berserkMode(pos, match)
 	startPos = match.cursor.square;
 	piece = match.board.get(pos)?.piece;
 	if (piece?.moveArray == null)
-		throw ("entering in function berserkMode with a null piece :-(") ;//FIXME - errore grave, dare 500
+		throw ("entering in function berserkMode with a null piece :-("); //FIXME - errore grave, dare 500
 	match.board.get(pos)?.boostedTargetZones.set(startPos, new Set());
 	for (let {dx, dy} of piece?.moveArray)
 	{
@@ -23,7 +24,7 @@ function berserkMode(pos, match)
 			targetSquare = match.board.get(match.cursor.square);
 			if (!targetSquare)
 				throw ("movePiece critical error");
-			if (piece.type == "Champion" /* == enumNames.CHAMPION */) //FIXME - da mettere l'enum appena verra' spostato
+			if (piece.type  == enumNames.CHAMPION )
 			{
 				targetSquare.dangerZones.add(pos);
 				match.board.get(pos)?.boostedTargetZones.get(startPos)?.add(match.cursor.square);
