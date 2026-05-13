@@ -24,6 +24,7 @@ const { jsonErrorResponse } = require("../../utils/response.js");
  * @param {import('express').Response} res
  */
 const checkCredentials = (req, res, next) => {
+	// console.log(req.body);
 	const { username, password } = req.body;
 	if (!username || !password)
 		return (res.status(400).json(jsonErrorResponse(res.statusCode, "Credenziali mancanti")));
@@ -65,7 +66,7 @@ const checkUser = async (req, res) => {
 		delete(user.password);
 		req.user = user; // aggiungo lo user trovato all'oggetto request per averlo anche nel successivo middleware
 		const token = await createJwt(req, res);
-		return res.status(201).json({ "status": "success", "code": res.statusCode, "data": { "user": user, "token": token } });
+		return res.status(200).json({ "status": "success", "code": res.statusCode, "data": { "user": user, "token": token } });
 	} catch (error) {
 		return res.status(500).json(jsonErrorResponse(res.statusCode, "Server error checking for user"));
 	}
