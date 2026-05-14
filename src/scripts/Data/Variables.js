@@ -24,7 +24,7 @@ class metaInfo {
 		this.priceSelected = "...";
 		this.savedBoostedMap = null;
 		this.dragClone = null;
-		// this.dropDone = false;
+		this.dropDone = false;
 	}
 }
 

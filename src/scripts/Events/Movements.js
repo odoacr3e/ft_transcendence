@@ -44,10 +44,13 @@ export function onDrop(event, toSquare)
 
 	const fromSquareId = event.dataTransfer.getData('fromSquareId')
 	if (fromSquareId !== toSquare.id && localBoard.get(toSquare.id).highlight)
+	{
+		localInfo.dropDone = true;
 		requestToBack(fromSquareId, toSquare.id).then(
 			function(value) {if (value) { clearHighlight(); }},
-			function(value) {if (!value) { console.log("Mossa non valida"); }}
+			function(value) {if (!value) { localInfo.dropDone = false; console.log("Mossa non valida"); }}
 		);
+	}
 }
 
 export async function requestToBack(fromSquare, toSquare)

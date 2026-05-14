@@ -109,13 +109,14 @@ export function globalEvents()
 	});
 
 	ROOT_DIV.addEventListener('dragend', function(event) {
-	  if (event.target.className === 'piece' && !localInfo.dropDone )
-	    event.target.style.visibility = 'visible';
+		if (event.target.className === 'piece' && !localInfo.dropDone)
+			event.target.style.visibility = 'visible';
+		if (localInfo.dropDone) { localInfo.dropDone = false; }
 
-	if (localInfo.dragClone) {
-		localInfo.dragClone.remove();
-		localInfo.dragClone = null;
-	}
+		if (localInfo.dragClone) {
+			localInfo.dragClone.remove();
+			localInfo.dragClone = null;
+		}
 	});
 }
 
