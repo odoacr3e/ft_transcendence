@@ -10,6 +10,7 @@ const lib =			require("../lib/lib.js");
 const {abort} = 	require("node:process");
 const {render} = 	require("./render.js");
 const readline = 	require('node:readline');
+const server = require("../server.js");
 
 //SECTION - main: inizializza e fa primo render, mette terminale in ascolto
 let match;
