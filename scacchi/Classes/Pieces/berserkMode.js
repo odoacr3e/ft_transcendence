@@ -1,6 +1,6 @@
 // @ts-check
 const {movePiece} = require("../../utils.js");
-// const {enumNames} = require("./preset.js");
+const {enumNames} = require("../../Macro/enums.js");
 /**
  * 
  * @param {string} pos 
@@ -24,7 +24,7 @@ function berserkMode(pos, match)
 			targetSquare = match.board.get(match.cursor.square);
 			if (!targetSquare)
 				throw ("movePiece critical error");
-			if (piece.type  == "Champion")
+			if (piece.type  == enumNames.CHAMPION)
 			{
 				targetSquare.dangerZones.add(pos);
 				match.board.get(pos)?.boostedTargetZones.get(startPos)?.add(match.cursor.square);

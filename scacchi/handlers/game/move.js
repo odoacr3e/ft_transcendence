@@ -1,15 +1,13 @@
 // @ts-check
-const lib = require("../../lib/lib.js");
-const {eEvents, eTeam, enumNames} = require("../../Macro/enums.js");
+const {eEvents, enumNames} = require("../../Macro/enums.js");
 const {MOVEMENT_MAX, MOVEMENT_MIN} = require("../../Macro/macro.js");
-const {Piece, board, Square, copyBoard, cursor} = require("../../lib/lib.js").Chess;
-const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("../../utils.js");
+const {Square, copyBoard} = require("../../lib/lib.js").Chess;
+const {isDangerous, movePiece, dangerUpdateAll} =	require("../../utils.js");
 const {Match} = require("../../Classes/Vault/match.js");
 const {Preset} = require("../../Classes/Pieces/preset.js");
 const {error, paramCheck, Result, clientBoard, checkMateAlert} = require("./utils.js");
 const {endTurn} = require("./endTurn");
 const {CheckMateCheck} = require("../../checkMate.js");
-const { boost } = require("./boost.js");
 
 /** @typedef {import('../../Classes/ChessBoard/chessBoard.js').Square} Square */
 

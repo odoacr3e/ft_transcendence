@@ -1,8 +1,8 @@
 // @ts-check
-const {Piece, Board, Square, preset} =			require("./lib/lib.js").Chess;
-const {eTeam, enumValues, enumNames} =			require("./Macro/enums.js");
+const {preset} =			require("./lib/lib.js").Chess;
+const {enumNames} =			require("./Macro/enums.js");
 const {Match} = require("./Classes/Vault/match.js");
-const {isDangerous, movePiece, DangerUpdate} =	require("./utils.js");
+const {isDangerous} =	require("./utils.js");
 
 /**
  * 

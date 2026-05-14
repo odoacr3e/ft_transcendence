@@ -1,12 +1,9 @@
 // @ts-check
-const {Piece, Board, Square} =					require("../lib/lib.js").Chess;
-const {eTeam, enumValues, enumNames} =			require("../lib/lib.js").Enums;
 const {HISTORY_FILE, HISTORY_DEFAULT} = require("../Macro/macro.js");
-const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll, includesOneOf} =	require("../utils.js");
+const {movePiece, dangerUpdateAll, includesOneOf} =	require("../utils.js");
 const {historyRestore} = require("../utils2.js");
 const {error, move, boost, endTurn, init} = require("../handlers/game/Game.js");
 const {Result} = require("../handlers/game/utils.js");
-const {app} = require("../server.js");
 const {vault} = require("../Classes/Vault/Vault.js");
 
 const lib =			require("../lib/lib.js");

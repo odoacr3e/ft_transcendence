@@ -1,9 +1,5 @@
 // @ts-check
-const {eTeam} =  require("../../Macro/enums.js");
-const {Match} = require("../Vault/match.js");
-const {Cursor} = require("../../cursor.js");
 const {Preset} = require("./preset.js");
-const {isDangerous, movePiece, DangerUpdate, bastardChecks} = require("../../utils.js");
 
 //SECTION - Pezzo class
 //ANCHOR - Definition 

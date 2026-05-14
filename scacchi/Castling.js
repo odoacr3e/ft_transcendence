@@ -15,11 +15,12 @@ Classi/ -> Fatto
 Utility/
 		match/ 
 		move/
-Macro/ macro, enum -> Fatto
-GameLogic/ checkMate, Castling e roba dentro move
-
-test + render -> Fatto
-
+Macro/ -> Fatto
+	macro, enum
+GameLogic/ 
+	checkMate, Castling e roba dentro move
+test/ -> Fatto
+	render
 */
 
 /** @typedef {import('./Classes/Pieces/pieces.js').Piece} Piece */

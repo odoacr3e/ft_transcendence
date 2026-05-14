@@ -1,7 +1,6 @@
 // @ts-check
 
-const {Piece, board, Square, cursor} = require("../../lib/lib.js").Chess;
-const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("../../utils.js");
+const {dangerUpdateAll} =	require("../../utils.js");
 const {Match} = require("../../Classes/Vault/match.js");
 const {error, paramCheck, Result} = require("./utils.js");
 const endTurn = require("./endTurn.js").endTurn;

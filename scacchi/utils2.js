@@ -1,11 +1,6 @@
 // @ts-check
 const fs = require("fs");
-
-const {Square} = require("./Classes/ChessBoard/chessBoard.js");
-// const {Piece} = require("./pieces.js");
-const Macro = require("./Macro/macro.js");
 const {eEvents} = require("./Macro/enums.js");
-const {Cursor} = require("./cursor.js");
 const {Match} = require("./Classes/Vault/match.js");
 const { Piece } = require("./Classes/Pieces/pieces.js");
 const {dangerUpdateAll} = require("./utils.js");
