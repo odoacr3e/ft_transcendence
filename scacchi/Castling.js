@@ -16,7 +16,7 @@ Utility/
 		match/ 
 		move/
 Macro/ macro, enum
-GameLogic/ checkMate, Castling, 
+GameLogic/ checkMate, Castling e roba dentro move
 
 test + render
 

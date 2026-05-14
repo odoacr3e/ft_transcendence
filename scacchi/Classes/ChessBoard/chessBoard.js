@@ -115,6 +115,5 @@ function copyBoostedTargetZones(src, dest=null)
 }
 
 initBoard();
-// console.log(board);
 
 module.exports = {Square, initBoard, copyBoard, copyBoostedTargetZones};

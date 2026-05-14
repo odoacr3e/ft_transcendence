@@ -25,15 +25,11 @@ const { boost } = require("./boost.js");
 function move(match, from, to, boostBool=false)
 {
 	let	result;
-	let type;
-	let boost;
-	let near = false;
+	let secondMoveBool = false;
 
 	result = new Result();
 	if (!paramCheck(result, from, to))
 		return (result);
-	type = match.board.get(from)?.piece?.type;
-	boost = match.board.get(from)?.piece?.isBoostedBool;
 	if (!checkMove([from, to], result, match, boostBool))
 		return (result);
 	if (!updateChessboard([from, to], result, match, boostBool))
@@ -44,11 +40,9 @@ function move(match, from, to, boostBool=false)
 		return (console.log("haaaaaiiiiii viiiiiiintoooooooooo!!!!!!!"), checkMateAlert(result, match.currentPlayer.team));
 	// @ts-ignore
 	result.board = clientBoard(match.board, [from, to]);
-	near = isNear(match, from);
-	if ((match.moves >= MOVEMENT_MIN && !match.currentPlayer.nPoints && match.historyCreateBool == false) && !(near && boostBool))
-	{
+	secondMoveBool = checkSecondMove(match, to);
+	if ((match.moves >= MOVEMENT_MIN && !match.currentPlayer.nPoints && match.historyCreateBool == false) && !(secondMoveBool && boostBool))
 		endTurn(match);
-	}
 	return (result);
 }
 
@@ -57,15 +51,17 @@ function move(match, from, to, boostBool=false)
 /**
  * 
  * @param {Match} match 
- * @param {string} from 
+ * @param {string} to 
  */
-function isNear(match, from)
+function checkSecondMove(match, to)
 {
 	let tmp;
 	let piece;
+	let type;
 
 	tmp = match.cursor.square;
-	match.cursor.set(from);
+	match.cursor.set(to);
+	type = match.board.get(to)?.piece?.type;
 	for (let {dx, dy} of new Preset(enumNames.KING).movement)
 	{
 		if (movePiece(match, dy, dx))
@@ -77,9 +73,11 @@ function isNear(match, from)
 				return true;
 			}
 		}
-		match.cursor.set(from);
+		match.cursor.set(to);
 	}
-	match.cursor.square;
+	match.cursor.set(tmp);
+	if ((type == enumNames.CHAMPION || type == enumNames.MINOTAURUS) && match.board.get(to)?.piece?.isBoostedBool == true)
+		return true;
 	return false;
 }
 
