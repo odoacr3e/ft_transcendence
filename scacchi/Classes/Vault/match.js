@@ -1,7 +1,7 @@
 // @ts-check
 const fs = require("fs");
 
-const {Cursor} = require("../../cursor.js");
+const {Cursor} = require("./cursor.js");
 const {eTeam, eEvents} = require("../../Macro/enums.js");
 const {Square, initBoard, copyBoard, copyBoostedTargetZones} = require("../ChessBoard/chessBoard.js");
 const {HISTORY_DEFAULT, HISTORY_PATH} = require("../../Macro/macro.js");

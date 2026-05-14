@@ -1,9 +1,9 @@
 // @ts-check
-const {enumNames} = require("./Macro/enums.js");
-const {Square, Piece, board, copyBoard, cursor} = require("./lib/lib.js").Chess
-const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("./utils.js");
-const {Match} = require("./Classes/Vault/match.js");
-const {error, paramCheck, Result, clientBoard, checkMateAlert} = require("./handlers/game/utils.js");
+const {enumNames} = require("../Macro/enums.js");
+const {Square, Piece, board, copyBoard, cursor} = require("../lib/lib.js").Chess
+const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("../utils.js");
+const {Match} = require("../Classes/Vault/match.js");
+const {error, paramCheck, Result, clientBoard, checkMateAlert} = require("../handlers/game/utils.js");
 const {getDirection} = require("./checkMate.js");
 
 /* 
@@ -23,8 +23,8 @@ test/ -> Fatto
 	render
 */
 
-/** @typedef {import('./Classes/Pieces/pieces.js').Piece} Piece */
-/** @typedef {import('./Classes/ChessBoard/chessBoard.js').Square} Square */
+/** @typedef {import('../Classes/Pieces/pieces.js').Piece} Piece */
+/** @typedef {import('../Classes/ChessBoard/chessBoard.js').Square} Square */
 
 /**@typedef {{"king": Piece, "mino": Piece, "dir": [0, 0], "kingDanger": Set<string>}} pieces */
 /* 
