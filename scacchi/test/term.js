@@ -35,7 +35,6 @@ process.stdin.on('keypress', (str, key) =>
 
 	dx = 0;
 	dy = 0;
-	console.log(match.currentPlayer);
 	if (key.ctrl && key.name == "c")
 	{
 		const	buffer = Buffer.alloc(50);
@@ -63,6 +62,7 @@ process.stdin.on('keypress', (str, key) =>
 		process.exit();
 	}
 	console.clear();
+	console.log(match.currentPlayer);
 	switch (key.name)
 	{
 		case ("up") : case ("w") :

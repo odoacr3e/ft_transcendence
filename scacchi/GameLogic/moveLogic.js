@@ -38,7 +38,7 @@ function checkSecondMove(match, to)
 		match.cursor.set(to);
 	}
 	match.cursor.set(tmp);
-	if ((type == enumNames.CHAMPION || type == enumNames.MINOTAURUS) && match.board.get(to)?.piece?.isBoostedBool == true)
+	if ((type == enumNames.CHAMPION || type == enumNames.MINOTAURUS || type == enumNames.BASTARDS) && match.board.get(to)?.piece?.isBoostedBool == true)
 		return true;
 	return false;
 }
@@ -114,17 +114,21 @@ function updateChessboard(coords=[], result, match, boostBool)
 		match.currentPlayer.nPoints += to.piece.price;
 	}
 	match.history.UpdateMoves(match, from, coords);
-	console.log(from.piece.type, boostBool);
 	if (from.piece.type == enumNames.VALKIRYA && result.usedBoost == true)
 	{
 		to.piece = null;
 		from.piece.isBoostedBool = false;
+		match.currentPlayer.boostedPiece = "";
 	}
 	else
 	{
 		to.piece = from.piece;
 		from.piece = null;
 		to.piece.pos = coords[1];
+		if (to.piece.isBoostedBool)
+			match.currentPlayer.boostedPiece = to.piece.pos;
+		else if (boostBool)
+			match.currentPlayer.boostedPiece = "";
 	}
 	if (to.piece && to.piece.isMovedBool == false)
 		to.piece.isMovedBool = true;
@@ -183,7 +187,10 @@ function checkBooster(match, result, from, coords, boostBool) // FIXME - da aggi
 		return (error(result, 403, `that piece can't do that move`));
 	from.targetZones.add(coords[1]);
 	if (from.piece.type != enumNames.VALKIRYA)
+	{
 		from.piece.isBoostedBool = false;
+		match.currentPlayer.boostedPiece = "";
+	}
 	result.usedBoost = true;
 	return (true);
 }
