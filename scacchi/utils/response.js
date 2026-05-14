@@ -14,6 +14,15 @@ const jsonErrorResponse = (code, message) => {
 }
 
 /**
+ * 
+ * @param {Number} code
+ * @param {Object} object
+ */
+const jsonSuccessResponse = (code, object) => {
+	return ({ "status": "success", "code": code, "data": object })
+}
+
+/**
  * @param {*} result the base object from which the response json is made
  * @param {String | null} msg 
  * @param {Number | null} status 
@@ -115,4 +124,6 @@ function modifyBoard(board)
 	}
 }
 
-module.exports = { jsonErrorResponse, responseFormatter };
+const jsonResponse = { jsonSuccessResponse, jsonErrorResponse };
+
+module.exports = { jsonResponse, responseFormatter };

@@ -5,7 +5,8 @@ const { prisma } = require("../../lib/prisma.js");
 const { createJwt } = require("../../utils/auth.js");
 const usersUtils = require("../../utils/users.js");
 const { colors } = require("../../utils/colors.js");
-const { jsonErrorResponse } = require("../../utils/response.js");
+const { jsonResponse } = require("../../utils/response.js");
+const usersQuery = require("../../query/usersQuery.js");
 
 /** 
  * autenticazione tramite middleware
@@ -28,11 +29,11 @@ const validateInput = async (req, res, next) => {
 	const { username, email, password } = req.body;
 	// console.log(`username: ${colors.yellow}${username}${colors.reset}, email: ${colors.yellow}${email}${colors.reset}, password: ${colors.yellow}${password}${colors.reset}`);
 	if (!username || username.length < 4)
-		return res.status(400).json(jsonErrorResponse(res.statusCode, "Username too short"));
+		return res.status(400).json(jsonResponse.jsonErrorResponse(res.statusCode, "Username too short"));
 	if (!usersUtils.checkEmail(email))
-		return res.status(400).json(jsonErrorResponse(res.statusCode, "Invalid email format"));
+		return res.status(400).json(jsonResponse.jsonErrorResponse(res.statusCode, "Invalid email format"));
 	if (!usersUtils.checkPassword(password))
-		return res.status(400).json(jsonErrorResponse(res.statusCode, "Invalid password format"));
+		return res.status(400).json(jsonResponse.jsonErrorResponse(res.statusCode, "Invalid password format"));
 	console.log(`Validate input: ${colors.green}OK${colors.reset}`);
 	next();
 }
@@ -53,11 +54,11 @@ const validateUser = async (req, res, next) => {
 			}
 		});
 		if (user)
-			return res.status(409).json(jsonErrorResponse(res.statusCode, "User already exists"));
-		console.log(`Validate User: ${colors.green}OK${colors.reset}`);
+			return res.status(409).json(jsonResponse.jsonErrorResponse(res.statusCode, "User already exists"));
+		// console.log(`Validate User: ${colors.green}OK${colors.reset}`);
 		next();
 	} catch (error) {
-		return res.status(500).json(jsonErrorResponse(res.statusCode, "Server error creating user"));
+		return res.status(500).json(jsonResponse.jsonErrorResponse(res.statusCode, "Server error creating user"));
 	}
 }
 
@@ -69,41 +70,15 @@ const createUser = async (req, res) => {
 	try {
 		const { name, surname, username, email, password, nationality } = req.body;
 		const hashedPwd = await bcrypt.hash(password, parseInt(lib.Macro.HASH_SALT));
-		const user = await prisma.users.create({
-			data: {
-				name: name,
-				surname: surname,
-				username: username,
-				email: email,
-				password: hashedPwd,
-				nationality: nationality
-			},
-			select: {
-				id_user: true,
-				name: true,
-				surname: true,
-				username: true,
-				email: true,
-				image: true,
-				nationality: true,
-				points: true,
-				title: true,
-				preferences: {
-					select: {
-						name: true,
-						description: true,
-						colors: true,
-					}
-				}
-			}
-		});
+		const user = await usersQuery.createUser(name, surname, username, hashedPwd, email, nationality);
 		if (!user)
-			return res.status(500).json(jsonErrorResponse(res.statusCode, "Server error creating user"));
+			return res.status(500).json(jsonResponse.jsonErrorResponse(res.statusCode, "Server error creating user"));
 		req.user = user;
 		const token = await createJwt(req, res);
-		return res.status(201).json({ "user": user, "token": token });
+		const ret = { "user": user, "token": token };
+		return res.status(201).json( jsonResponse.jsonSuccessResponse(res.statusCode, ret));
 	} catch (error) {
-		return res.status(500).json(jsonErrorResponse(res.statusCode, "Server error creating user"));
+		return res.status(500).json(jsonResponse.jsonErrorResponse(res.statusCode, "Server error creating user"));
 	}
 }
 

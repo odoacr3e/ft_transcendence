@@ -1,7 +1,6 @@
 
 const lib = require("./lib/lib.js");
 const app = lib.include.express();
-// const { db } = require("./services/dbConnection.js");
 const {responseFormatter} = require("./utils/response.js");
 
 // setup
