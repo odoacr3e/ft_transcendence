@@ -23,6 +23,8 @@ class metaInfo {
 		this.hasBoost = false;
 		this.priceSelected = "...";
 		this.savedBoostedMap = null;
+		this.dragClone = null;
+		// this.dropDone = false;
 	}
 }
 

@@ -21,17 +21,28 @@ export function movePiece(fromSquareId, toSquareId)
 
 export function onDragStart(event, square)
 {
-  event.dataTransfer.setData('pieceId', `piece-${square.id}`)
-  event.dataTransfer.setData('fromSquareId', square.id)
+	event.dataTransfer.setData('pieceId', `piece-${square.id}`)
+	event.dataTransfer.setData('fromSquareId', square.id)
+
+	event.dataTransfer.setDragImage(event.target, window.outerWidth, window.outerHeight);
+
+  	localInfo.dragClone = event.target.cloneNode(true);
+	localInfo.dragClone.id = "floatingPiece";
+  	localInfo.dragClone.style.position = 'fixed';
+  	localInfo.dragClone.style.pointerEvents = 'none';
+  	localInfo.dragClone.style.zIndex = '13';
+  	localInfo.dragClone.style.width = event.target.offsetWidth + 'px';
+  	localInfo.dragClone.style.height = event.target.offsetHeight + 'px';
+  	document.body.appendChild(localInfo.dragClone);
+
+  	setTimeout(() => { event.target.style.visibility = 'hidden'; }, 0);
 }
 
 export function onDrop(event, toSquare)
 {
-	event.preventDefault()
-	// if (toSquare.piece) { return }
+	event.preventDefault();
 
 	const fromSquareId = event.dataTransfer.getData('fromSquareId')
-
 	if (fromSquareId !== toSquare.id && localBoard.get(toSquare.id).highlight)
 		requestToBack(fromSquareId, toSquare.id).then(
 			function(value) {if (value) { clearHighlight(); }},

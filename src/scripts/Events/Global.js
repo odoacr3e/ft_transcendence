@@ -2,6 +2,7 @@ import { localBoard, localPlayers, localInfo }	from "@/scripts/Data/Variables";
 import { clearHighlight, resetPrice }			from "@/scripts/Helper/RenderUtils";
 import { PIECES_HIGHLIGHT }						from "@/scripts/Helper/piecesHighlights";
 import { boostedMovement } 						from "@/scripts/Helper/abilityMovement";
+import { computePosition }						from "@floating-ui/dom";
 import { requestToBack }						from "./Movements.js";
 import { getRootDiv }							from "@/scripts/Helper/Constants";
 
@@ -78,6 +79,44 @@ export function globalEvents()
 		rightClickSelect(event);
 	});
 
+	ROOT_DIV.addEventListener("drag", function (event) {
+		if (event.target.className === "piece")
+		{
+			if (event.clientX === 0 && event.clientY === 0) return;
+
+			const cursor = {
+				getBoundingClientRect() {
+				  return {
+					  	width: 0,
+						height: 0,
+						x: event.clientX,
+						y: event.clientY,
+						left: event.clientX,
+						right: event.clientX,
+						top: event.clientY,
+						bottom: event.clientY
+					};
+					}
+				};
+
+				computePosition(cursor, localInfo.dragClone).then(({ x, y }) => {
+					Object.assign(localInfo.dragClone.style, {
+					top: `${y - 40}px`,
+					left: `${x}px`
+					});
+				});
+		}
+	});
+
+	ROOT_DIV.addEventListener('dragend', function(event) {
+	  if (event.target.className === 'piece' && !localInfo.dropDone )
+	    event.target.style.visibility = 'visible';
+
+	if (localInfo.dragClone) {
+		localInfo.dragClone.remove();
+		localInfo.dragClone = null;
+	}
+	});
 }
 
 export function checkForHighlightMove()
@@ -161,20 +200,20 @@ export function highlightOnClick(event)
 
 export function setHighlightTrue(toSet, flag, team)
 {
-    toSet.forEach((highlight) => {
-        const square = localBoard.get(highlight);
-        if (!square || square.id === localInfo.clickedId)
-            return;
+	toSet.forEach((highlight) => {
+		const square = localBoard.get(highlight);
+		if (!square || square.id === localInfo.clickedId)
+			return;
 
-        const canHighlight = team === "both" || square.piece?.team !== team;
-        if (!canHighlight)
-            return;
+		const canHighlight = team === "both" || square.piece?.team !== team;
+		if (!canHighlight)
+			return;
 
-        if (flag === "regular")
-            square.highlight = true;
-        else if (flag === "boosted")
-            square.boostedHighlight = true;
-    });
+		if (flag === "regular")
+			square.highlight = true;
+		else if (flag === "boosted")
+			square.boostedHighlight = true;
+	});
 }
 
 export function highlightOnDrag(event)
