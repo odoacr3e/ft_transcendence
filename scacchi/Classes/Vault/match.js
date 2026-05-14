@@ -10,13 +10,14 @@ const preset = {
 	white: 
 	{
 		name: "",
-		nPoints: 10,
+		nPoints: 0,
 		bonusPointCounter: 0,
 		useBoostBool: false,
 		nPieces: 0,
 		team: eTeam.White,
 		next: eTeam.Black,
-		King: "a1"
+		King: "",
+		boostedPiece: ""
 	},
 	black: 
 	{
@@ -27,7 +28,8 @@ const preset = {
 		nPieces: 0,
 		team: eTeam.Black,
 		next: eTeam.White,
-		King: "a1"
+		King: "",
+		boostedPiece: ""
 	},
 	red: 
 	{
@@ -38,7 +40,8 @@ const preset = {
 		nPieces: 0,
 		team: eTeam.Red,
 		next: eTeam.Blue,
-		King: ""
+		King: "",
+		boostedPiece: ""
 	},
 	blue: 
 	{
@@ -49,7 +52,8 @@ const preset = {
 		nPieces: 0,
 		team: eTeam.Blue,
 		next: eTeam.Green,
-		King: ""
+		King: "",
+		boostedPiece: ""
 	},
 	green: 
 	{
@@ -60,7 +64,8 @@ const preset = {
 		nPieces: 0,
 		team: eTeam.Green,
 		next: eTeam.Yellow,
-		King: ""
+		King: "",
+		boostedPiece: ""
 	},
 	yellow: 
 	{
@@ -71,7 +76,8 @@ const preset = {
 		nPieces: 0,
 		team: eTeam.Yellow,
 		next: eTeam.Red,
-		King: ""
+		King: "",
+		boostedPiece: ""
 	},
 }
 
