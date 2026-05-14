@@ -5,32 +5,7 @@ const {movementValkirya} = require("./movementValkirya.js");
 const {movementBastards} = require("./movementBastards.js");
 const {movementChampion} = require("./movementChampion.js");
 const {movementMinotaurus} = require("./movementMinotaurus.js");
-
-/**
- * @enum {number}
- */
-const enumValues = {
-	KING: 0,
-	CHAMPION: 10,
-	MINOTAURUS: 5,
-	JESTER: 5,
-	VALKIRYA: 3,
-	BASTARDS: 1
-};
-
-/**
- * @enum {string}
- */
-const enumNames = {
-	KING: 'King',
-	CHAMPION: 'Champion',
-	MINOTAURUS: 'Minotaurus',
-	JESTER: 'Jester',
-	VALKIRYA: 'Valkirya',
-	BASTARDS: 'Bastards',
-	MAGE: 'Mage',
-	GHOUL: 'Ghoul'
-};
+const {enumNames, enumValues} = require("../../Macro/enums.js");
 
 const preset = {
 	King: {
@@ -154,4 +129,4 @@ class Preset
 	}
 }
 
-module.exports = {Preset, enumNames, enumValues};
+module.exports = {Preset};

@@ -1,7 +1,7 @@
 // @ts-check
 const {Piece, Board, Square} =					require("../lib/lib.js").Chess;
 const {eTeam, enumValues, enumNames} =			require("../lib/lib.js").Enums;
-const {HISTORY_FILE, HISTORY_DEFAULT} = require("../macro.js");
+const {HISTORY_FILE, HISTORY_DEFAULT} = require("../Macro/macro.js");
 const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll, includesOneOf} =	require("../utils.js");
 const {historyRestore} = require("../utils2.js");
 const {error, move, boost, endTurn, init} = require("../handlers/game/Game.js");
@@ -11,7 +11,7 @@ const {vault} = require("../Classes/Vault/Vault.js");
 
 const lib =			require("../lib/lib.js");
 const {abort} = 	require("node:process");
-const {render} = 	require("../render.js");
+const {render} = 	require("./render.js");
 const readline = 	require('node:readline');
 
 //SECTION - main: inizializza e fa primo render, mette terminale in ascolto

@@ -3,8 +3,8 @@ const fs = require("fs");
 
 const {Square} = require("./Classes/ChessBoard/chessBoard.js");
 // const {Piece} = require("./pieces.js");
-const Macro = require("./macro.js");
-const {eEvents} = require("./enums.js");
+const Macro = require("./Macro/macro.js");
+const {eEvents} = require("./Macro/enums.js");
 const {Cursor} = require("./cursor.js");
 const {Match} = require("./Classes/Vault/match.js");
 
@@ -127,7 +127,7 @@ let bastardMove = // aggiornato movimenti
  * @param {Match} match
  * @param {Number} dy
  * @param {Number} dx
- * @param {Piece} piece
+ * @param {*} piece
  */
 function bastardChecks(match, dy, dx, piece)
 {

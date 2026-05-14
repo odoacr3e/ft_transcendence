@@ -1,5 +1,5 @@
 // @ts-check
-const {enumNames} = require("./Classes/Pieces/preset.js");
+const {enumNames} = require("./Macro/enums.js");
 const {Square, Piece, board, copyBoard, cursor} = require("./lib/lib.js").Chess
 const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("./utils.js");
 const {Match} = require("./Classes/Vault/match.js");
@@ -8,17 +8,17 @@ const {getDirection} = require("./checkMate.js");
 
 /* 
 
-Classi/
+Classi/ -> Fatto
 		Piecese/ un file per pezzo (con dentro la funzione moveBoost), e uno per i preset
 		ChessBoard/ ChessBoard, cursor 
 		Vault/ Vault, match, history
 Utility/
 		match/ 
 		move/
-Macro/ macro, enum
+Macro/ macro, enum -> Fatto
 GameLogic/ checkMate, Castling e roba dentro move
 
-test + render
+test + render -> Fatto
 
 */
 

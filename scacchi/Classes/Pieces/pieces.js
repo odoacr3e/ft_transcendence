@@ -1,5 +1,5 @@
 // @ts-check
-const {eTeam} =  require("../../enums.js");
+const {eTeam} =  require("../../Macro/enums.js");
 const {Match} = require("../Vault/match.js");
 const {Cursor} = require("../../cursor.js");
 const {Preset} = require("./preset.js");

@@ -1,5 +1,5 @@
 // @ts-check
-const {CHESSBOARD_H, CHESSBOARD_W} = require("../../macro.js");
+const {CHESSBOARD_H, CHESSBOARD_W} = require("../../Macro/macro.js");
 /**
  * 
  * @param {*} match 

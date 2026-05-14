@@ -18,11 +18,10 @@ const {board, Square, copyBoard} = require("../Classes/ChessBoard/chessBoard.js"
 const Chess = {Piece, board, copyBoard, cursor, Square};
 
 //SECTION - macro
-const Macro = require("../macro.js");
+const Macro = require("../Macro/macro.js");
 
 //SECTION - Enums
-const {eTeam} = require("../enums.js");
-const {enumValues, enumNames} = require("../Classes/Pieces/preset.js");
+const {eTeam, enumNames, enumValues} = require("../Macro/enums.js");
 const Enums = {eTeam, enumValues, enumNames};
 
 //SECTION - utils function

@@ -1,7 +1,7 @@
 // @ts-check
 
 const {Match} = require("./match.js");
-const {DEBUG} = require("../../macro.js");
+const {DEBUG} = require("../../Macro/macro.js");
 
 const	TEST_MATCH = "0";
 

@@ -1,13 +1,11 @@
 // @ts-check
 //const {include} = require("./lib/lib.js");
-const {CHESSBOARD_H, CHESSBOARD_W} = require("../../macro.js");
+const {CHESSBOARD_H, CHESSBOARD_W} = require("../../Macro/macro.js");
 //const {Enum} = require("./lib/lib.js");
 
 /** @typedef {pieces.Piece} Piece */
 
 //SECTION import
-
-const macro = require("../../macro.js");
 const pieces = require("../Pieces/pieces.js");
 
 //ANCHOR - Definition 

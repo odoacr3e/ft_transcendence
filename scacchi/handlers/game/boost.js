@@ -5,7 +5,7 @@ const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("../../u
 const {Match} = require("../../Classes/Vault/match.js");
 const {error, paramCheck, Result} = require("./utils.js");
 const endTurn = require("./endTurn.js").endTurn;
-const { BOOSTED_MAX, MOVEMENT_MIN } = require("../../macro.js");
+const { BOOSTED_MAX, MOVEMENT_MIN } = require("../../Macro/macro.js");
 
 /**
  * 

@@ -1,6 +1,6 @@
 // @ts-check
 
-const {SEED} = require("../macro");
+const {SEED} = require("../Macro/macro.js");
 
 /**
  * @param {number | null} seed

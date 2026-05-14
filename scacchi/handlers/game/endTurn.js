@@ -1,6 +1,6 @@
 // @ts-check
 
-const {MOVEMENT_MAX, MOVEMENT_MIN, MOVEMENT_BONUS_POINT} = require("../../macro");
+const {MOVEMENT_MAX, MOVEMENT_MIN, MOVEMENT_BONUS_POINT} = require("../../Macro/macro.js");
 const {Piece, board, Square, cursor} = require("../../lib/lib.js").Chess;
 const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("../../utils.js");
 const {Match} = require("../../Classes/Vault/match.js");
