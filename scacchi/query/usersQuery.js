@@ -57,7 +57,7 @@ const getUserByUsername = async (username) => {
 				preferences: true
 			},
 			where: {
-				id_user: String(username)
+				username: String(username)
 			}
 		});
 }

@@ -34,7 +34,6 @@ const validateInput = async (req, res, next) => {
 		return res.status(400).json(jsonResponse.jsonErrorResponse(res.statusCode, "Invalid email format"));
 	if (!usersUtils.checkPassword(password))
 		return res.status(400).json(jsonResponse.jsonErrorResponse(res.statusCode, "Invalid password format"));
-	console.log(`Validate input: ${colors.green}OK${colors.reset}`);
 	next();
 }
 
@@ -55,7 +54,6 @@ const validateUser = async (req, res, next) => {
 		});
 		if (user)
 			return res.status(409).json(jsonResponse.jsonErrorResponse(res.statusCode, "User already exists"));
-		// console.log(`Validate User: ${colors.green}OK${colors.reset}`);
 		next();
 	} catch (error) {
 		return res.status(500).json(jsonResponse.jsonErrorResponse(res.statusCode, "Server error creating user"));
@@ -75,13 +73,11 @@ const createUser = async (req, res) => {
 			return res.status(500).json(jsonResponse.jsonErrorResponse(res.statusCode, "Server error creating user"));
 		req.user = user;
 		const token = await createJwt(req, res);
-		const ret = { "user": user, "token": token };
-		return res.status(201).json( jsonResponse.jsonSuccessResponse(res.statusCode, ret));
+		return res.status(201).json(jsonResponse.jsonSuccessResponse(res.statusCode, { "user": user, "token": token }));
 	} catch (error) {
 		return res.status(500).json(jsonResponse.jsonErrorResponse(res.statusCode, "Server error creating user"));
 	}
 }
-
 
 const createUserHandler = { validateInput, validateUser, createUser };
 
