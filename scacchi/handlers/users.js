@@ -43,11 +43,12 @@ const getUserById = async (req, res) => {
 const deleteUserById = async (req, res) => {
 	try {
 		const user = await usersQuery.deleteUserById(req.params.id);
-		console.log("User: ", user);
 		if (user)
-			return res.status(204).json(jsonResponse.ResponseSuccess({ "user": user }));
+			return res.status(204).send();
 		return res.status(404).json(jsonResponse.ResponseError("User not found"));
 	} catch (error) {
+		if (error.code === 'P2025')
+			return res.status(404).json(jsonResponse.ResponseError("User not found"));
 		console.log("Error: ", error);
 		return res.status(500).json(jsonResponse.ResponseError("Server error"));
 	}
