@@ -25,7 +25,7 @@ const usersQuery = require("../../query/usersQuery.js");
 const checkCredentials = (req, res, next) => {
 	const { username, password } = req.body;
 	if (!username || !password)
-		return (res.status(400).json(jsonErrorResponse(res.statusCode, "Credenziali mancanti")));
+		return (res.status(400).json(jsonErrorResponse("Missing credentials")));
 	next();
 }
 
@@ -55,14 +55,14 @@ const checkUser = async (req, res) => {
 			}
 		});;
 		if (!user || !(await bcrypt.compare(password, user.password)))
-			return res.status(401).json(jsonResponse.jsonErrorResponse(res.statusCode, "Credenziali non valide"));
+			return res.status(401).json(jsonResponse.jsonErrorResponse("Credenziali non valide"));
 		delete(user.password);
 		req.user = user; // aggiungo lo user trovato all'oggetto request per averlo anche nel successivo middleware
 		const token = await createJwt(req, res);
-		return res.status(200).json(jsonResponse.jsonSuccessResponse(res.statusCode, { "user": user, "token": token }));
+		return res.status(200).json(jsonResponse.jsonSuccessResponse({ "user": user, "token": token }));
 	} catch (error) {
 		console.log("Server error: ", error);
-		return res.status(500).json(jsonResponse.jsonErrorResponse(res.statusCode, "Server error checking for user"));
+		return res.status(500).json(jsonResponse.jsonErrorResponse("Server error checking for user"));
 	}
 };
 

@@ -6,20 +6,18 @@ const match = require("../Classes/Vault/Vault.js").vault.getDebugMatch();;
 
 /**
  * 
- * @param {Number} code
  * @param {String} message
  */
-const jsonErrorResponse = (code, message) => {
-	return ({ "status": "error", "code": code, "message": message });
+const jsonErrorResponse = (message) => {
+	return ({ "status": "error", "message": message });
 }
 
 /**
  * 
- * @param {Number} code
  * @param {Object} object
  */
-const jsonSuccessResponse = (code, object) => {
-	return ({ "status": "success", "code": code, "data": object })
+const jsonSuccessResponse = (object) => {
+	return ({ "status": "success", "data": object })
 }
 
 /**
