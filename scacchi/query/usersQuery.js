@@ -119,4 +119,18 @@ const deleteUserById = async (id) => {
 	});
 }
 
-module.exports = { getAllUsers, getUserById, getUserByUsername, getUserByEmail, createUser, deleteUserById };
+const updateUserFieldsById = async (id, data) => {
+	const fields = ['name', 'surname', 'username', 'email', 'nationality', 'preferences'];
+	const updates = {};
+	for (const f of fields)
+	{
+		if (data[f] !== undefined)
+			updates[f] = data[f];
+	}
+	return await prisma.users.update({
+		where: { id_user: id },
+		data: updates
+	});
+}
+
+module.exports = { getAllUsers, getUserById, getUserByUsername, getUserByEmail, createUser, deleteUserById, updateUserFieldsById };

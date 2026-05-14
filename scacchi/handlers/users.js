@@ -54,7 +54,23 @@ const deleteUserById = async (req, res) => {
 	}
 };
 
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
+const updateUserById = async (req, res) => {
+	try {
+		const user = usersQuery.updateUserFieldsById(req.params.id, req.body);
+		if (user)
+			return res.status(200).json(jsonResponse.ResponseSuccess(user));
+		return res.status(404).json(jsonResponse.ResponseError("User not found"));
+	} catch (error) {
+		return res.status(500).json(jsonResponse.ResponseError("Server error"));
+	}
+};
+
 const getUsersHandler = { getAllUsers, getUserById };
 const deleteUserHandler = { deleteUserById };
+const updateUserHandler = { updateUserById };
 
-module.exports = { getUsersHandler, deleteUserHandler };
+module.exports = { getUsersHandler, deleteUserHandler, updateUserHandler };

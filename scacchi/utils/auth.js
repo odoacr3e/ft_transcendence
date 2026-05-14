@@ -1,7 +1,7 @@
 
 const lib = require("../lib/lib.js");
 const jwt = require("jsonwebtoken");
-
+const { jsonResponse } = require("../utils/response.js");
 
 /**
  * Jwt format
@@ -14,9 +14,15 @@ const jwt = require("jsonwebtoken");
  */
 
 const checkJwt = async (req, res) => {
-	console.log(req.user);
-	console.log("User " + req.user.username + " trovato");
-	return res.status(200).json({ log: "Loggato" });
+	const token = req.headers.authorization?.split(' ')[1];
+	if (!token)
+		return res.status(401).json(jsonResponse.ResponseError("User not autorized"));
+	try {
+		req.utente = jwt.verify(token, process.env.JWT_SECRET);
+		next();
+	} catch {
+		res.status(403).json(jsonResponse.ResponseError("Invalid token"));
+	}
 };
 
 // Header.Payload.sign
@@ -24,7 +30,7 @@ const checkJwt = async (req, res) => {
  * @param {{ id_user: number, name: string, surname: string, username: string, email: string, nationality: string }} user
  */
 const createJwt = async (req, res) => {
-	const token = await jwt.sign(
+	const token = jwt.sign(
 		{ id_user: req.user.id_user, username: req.user.username },
 		process.env.JWT_SECRET,
 		{ expiresIn: "1d" }
