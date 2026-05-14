@@ -2,7 +2,7 @@
 const lib = require("../lib/lib");
 const jwt = require("../utils/auth");
 const bcrypt = require("bcryptjs");
-const usersQuery = require("../services/usersQuery");
+// const usersQuery = require("../services/usersQuery");
 // const usersUtils = require("../utils/users");
 const { prisma } = require("../lib/prisma.js");
 

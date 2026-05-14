@@ -1,7 +1,7 @@
 
 const { PrismaClient } = require('../generated/prisma');
 const { PrismaPg } = require('@prisma/adapter-pg')
-// require('dotenv').config()
+require('dotenv').config()
 
 /** @type { PrismaClient } */
 const prisma = global.prisma ?? new PrismaClient(

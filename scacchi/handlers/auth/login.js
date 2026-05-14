@@ -38,6 +38,7 @@ const checkCredentials = (req, res, next) => {
 const checkUser = async (req, res) => {
 	try {
 		const { username, password } = req.body;
+		console.log(req.body);
 		const user = await prisma.users.findUnique({
 			where: { username: String(username) },
 			select: {
@@ -59,7 +60,7 @@ const checkUser = async (req, res) => {
 					}
 				}
 			}
-		}); // da espandere campi richiesti
+		});
 		if (!user || !(await bcrypt.compare(password, user.password)))
 			return res.status(401).json(jsonErrorResponse(res.statusCode, "Credenziali non valide"));
 		// console.log("User " + user.username + " trovato");
@@ -68,6 +69,7 @@ const checkUser = async (req, res) => {
 		const token = await createJwt(req, res);
 		return res.status(200).json({ "status": "success", "code": res.statusCode, "data": { "user": user, "token": token } });
 	} catch (error) {
+		console.log("Server error: ", error);
 		return res.status(500).json(jsonErrorResponse(res.statusCode, "Server error checking for user"));
 	}
 };
