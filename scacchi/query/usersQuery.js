@@ -113,4 +113,10 @@ const createUser = async (name, surname, username, password, email, nationality)
 	});
 }
 
-module.exports = { getAllUsers, getUserById, getUserByUsername, getUserByEmail, createUser };
+const deleteUserById = async (id) => {
+	return await prisma.users.delete({
+		where: { id_user: Number(id) }
+	});
+}
+
+module.exports = { getAllUsers, getUserById, getUserByUsername, getUserByEmail, createUser, deleteUserById };

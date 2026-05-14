@@ -55,14 +55,14 @@ const checkUser = async (req, res) => {
 			}
 		});;
 		if (!user || !(await bcrypt.compare(password, user.password)))
-			return res.status(401).json(jsonResponse.jsonErrorResponse("Credenziali non valide"));
+			return res.status(401).json(jsonResponse.ResponseError("Credenziali non valide"));
 		delete(user.password);
 		req.user = user; // aggiungo lo user trovato all'oggetto request per averlo anche nel successivo middleware
 		const token = await createJwt(req, res);
-		return res.status(200).json(jsonResponse.jsonSuccessResponse({ "user": user, "token": token }));
+		return res.status(200).json(jsonResponse.ResponseSuccess({ "user": user, "token": token }));
 	} catch (error) {
 		console.log("Server error: ", error);
-		return res.status(500).json(jsonResponse.jsonErrorResponse("Server error checking for user"));
+		return res.status(500).json(jsonResponse.ResponseError("Server error checking for user"));
 	}
 };
 

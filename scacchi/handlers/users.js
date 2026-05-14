@@ -13,13 +13,13 @@ const getAllUsers = async (req, res) => {
 	try {
 		const users = await usersQuery.getAllUsers();
 		if (users)
-			return res.status(200).json(jsonResponse.jsonSuccessResponse({ "user": users }));
-		return res.status(404).json({ error: "Users not found" });
+			return res.status(200).json(jsonResponse.ResponseSuccess({ "user": users }));
+		return res.status(404).json(jsonResponse.ResponseError("User not found"));
 	} catch (error) {
 		console.log("Prisma: ", error);
-		return res.status(500).json({ error: "Server error" });
+		return res.status(500).json(jsonResponse.ResponseError("Server error"));
 	}
-}
+};
 
 /**
  * @param {import('express').Request} req
@@ -29,13 +29,31 @@ const getUserById = async (req, res) => {
 	try {
 		const user = await usersQuery.getUserById(req.params.id);
 		if (user)
-			return res.status(200).json(jsonResponse.jsonSuccessResponse({ "user": user }));
-		return res.status(404).json({ error: "User not found" });
+			return res.status(200).json(jsonResponse.ResponseSuccess({ "user": user }));
+		return res.status(404).json(jsonResponse.ResponseError("User not found"));
 	} catch (error) {
-		return res.status(500).json({ error: "Server error" });
+		return res.status(500).json(jsonResponse.ResponseError("Server error"));
 	}
-}
+};
+
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
+const deleteUserById = async (req, res) => {
+	try {
+		const user = await usersQuery.deleteUserById(req.params.id);
+		console.log("User: ", user);
+		if (user)
+			return res.status(204).json(jsonResponse.ResponseSuccess({ "user": user }));
+		return res.status(404).json(jsonResponse.ResponseError("User not found"));
+	} catch (error) {
+		console.log("Error: ", error);
+		return res.status(500).json(jsonResponse.ResponseError("Server error"));
+	}
+};
 
 const getUsersHandler = { getAllUsers, getUserById };
+const deleteUserHandler = { deleteUserById };
 
-module.exports = { getUsersHandler };
+module.exports = { getUsersHandler, deleteUserHandler };
