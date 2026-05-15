@@ -1,6 +1,6 @@
 // @ts-check
-const {eEvents, enumNames} = require("../Macro/enums.js");
-const {MOVEMENT_MAX} = require("../Macro/macro.js");
+const {eEvents, enumNames, eTeam} = require("../Macro/enums.js");
+const {MOVEMENT_MAX, CHESSBOARD_H} = require("../Macro/macro.js");
 const {copyBoard} = require("../lib/lib.js").Chess;
 const {movePiece, dangerUpdateAll} =	require("../utils/moveUtils.js");
 const {isDangerous} = require("../utils/gameUtils.js");
@@ -134,6 +134,7 @@ function updateChessboard(coords=[], result, match, boostBool)
 	}
 	if (to.piece && to.piece.isMovedBool == false)
 		to.piece.isMovedBool = true;
+	trasfiguration(match, to);
 	match.moves++;
 	dangerUpdateAll(match);
 	return (true);
@@ -291,6 +292,46 @@ function simulation(coords, match)
 	copyBoard(tmp, match.board);
 	dangerUpdateAll(match);
 	return (true);
+}
+
+/*
+/**
+ * @enum {string}
+ */
+const eTeam = 
+{
+	Black: 'black',
+	White: 'white',
+	Red: 'red',
+	Blue: 'blue',
+	Green: 'green',
+	Yellow: 'yellow',
+};
+
+/**
+ * 
+ * @param {Match} match
+ * @param {Square} to
+ */
+function trasfiguration(match, to)
+{
+	let	team;
+	let	tmp;
+	let row;
+	let  col;
+
+	if (!to.piece)
+		throw ("transiguration: to has no piece");
+	if (to.piece.type != enumNames.BASTARDS)
+		return ;
+	team = to.piece.team;
+	tmp = match.cursor.square;
+	match.cursor.set(to.piece.pos);
+	row = match.cursor.getRow();
+	col = match.cursor.getCol();
+	if (((team == eTeam.White || team == eTeam.Blue) && col == CHESSBOARD_H) || 
+	)
+		
 }
 
 module.exports = {checkMove, updateChessboard, checkSecondMove};
