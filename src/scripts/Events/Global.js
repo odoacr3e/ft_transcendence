@@ -6,8 +6,9 @@ import { computePosition }						from "@floating-ui/dom";
 import { requestToBack }						from "./Movements.js";
 import { getRootDiv }							from "@/scripts/Helper/Constants";
 
+// ANCHOR USER INTERACTION FUNCTIONS
 
-export function useAbility()
+function useAbility()
 {
 	const clickedId = localInfo.clickedId;
 	const piece = localBoard.get(clickedId).piece;
@@ -25,7 +26,7 @@ export function useAbility()
 	PIECES_HIGHLIGHT[piece.type](clickedId);
 }
 
-export function shopAbility()
+function shopAbility()
 {
 	const Piece = localBoard.get(localInfo.clickedId).piece;
 	const Player = localPlayers.values().find(p => p.isPlaying === true);
@@ -37,7 +38,7 @@ export function shopAbility()
 		);
 }
 
-export function sendEndTurn()
+function sendEndTurn()
 {
 	requestToBack(null, null).then(
 		function(value) {if (value) { clearHighlight(); }},
@@ -45,22 +46,9 @@ export function sendEndTurn()
 	);
 }
 
-export function checkPermision(event)
-{
-	if (event.target.localName === "div")	{ localInfo.clickedId = event.target.id; }
-	else									{ localInfo.clickedId = event.target.parentNode.id; }
-	
-	if (localInfo.clickedId === "" || localInfo.clickedId === "board") { return (false) }; //dragging multiplo strano
+// ANCHOR EVENT-LISTENERS FUNCTIONS
 
-	const Piece = localBoard.get(localInfo.clickedId).piece;
-	const Player = localPlayers.values().find(p => p.isPlaying === true);
-	 	
-	if (Piece && Piece.team != Player.team) { localInfo.lastClickedId = null; return false; }
-
-	return true;
-}
-
-export function globalEvents()
+function globalEvents()
 {
 	const ROOT_DIV = getRootDiv();
 
@@ -120,7 +108,37 @@ export function globalEvents()
 	});
 }
 
-export function checkForHighlightMove()
+function sendToBackend()
+{
+	const lastClickedId = localInfo.lastClickedId;
+	const clickedId = localInfo.clickedId;
+	const hasClickedTargetZone = localBoard.get(lastClickedId).targetZones.has(clickedId);
+
+	if (lastClickedId && lastClickedId !== clickedId && hasClickedTargetZone)
+		requestToBack(localInfo.lastClickedId, localInfo.clickedId).then(
+				function(value) {if (value) { clearHighlight(); } },
+				function(value) {if (!value) { console.log("[sendToBackend]: Mossa non valida"); }}
+			);
+}
+
+// ANCHOR UTILS FUNCTIONS
+
+function checkPermision(event)
+{
+	if (event.target.localName === "div")	{ localInfo.clickedId = event.target.id; }
+	else									{ localInfo.clickedId = event.target.parentNode.id; }
+	
+	if (localInfo.clickedId === "" || localInfo.clickedId === "board") { return (false) }; //dragging multiplo strano
+
+	const Piece = localBoard.get(localInfo.clickedId).piece;
+	const Player = localPlayers.values().find(p => p.isPlaying === true);
+	 	
+	if (Piece && Piece.team != Player.team) { localInfo.lastClickedId = null; return false; }
+
+	return true;
+}
+
+function checkForHighlightMove()
 {	
 	let bool;
 	// const pieceMoving = localInfo.lastClickedId ? localBoard.get(localInfo.lastClickedId).piece : null;
@@ -138,7 +156,7 @@ export function checkForHighlightMove()
 	return(bool);
 }
 
-export function usingAbility()
+function usingAbility()
 {
     const lastPiece  = localBoard.get(localInfo.lastClickedId)?.piece;
     const piece      = localBoard.get(localInfo.clickedId)?.piece;
@@ -148,19 +166,6 @@ export function usingAbility()
 	const useAbility	 = piece?.useAbilityBool && piece?.isBoostedBool;
 
     return (useAbility || lastUseAbility || secondTurn);
-}
-
-export function sendToBackend()
-{
-	const lastClickedId = localInfo.lastClickedId;
-	const clickedId = localInfo.clickedId;
-	const hasClickedTargetZone = localBoard.get(lastClickedId).targetZones.has(clickedId);
-
-	if (lastClickedId && lastClickedId !== clickedId && hasClickedTargetZone)
-		requestToBack(localInfo.lastClickedId, localInfo.clickedId).then(
-				function(value) {if (value) { clearHighlight(); } },
-				function(value) {if (!value) { console.log("[sendToBackend]: Mossa non valida"); }}
-			);
 }
 
 function updatePrice()
@@ -176,7 +181,27 @@ function updatePrice()
 		localInfo.priceSelected = "Price: " + Piece.price;
 }
 
-export function highlightOnClick(event)
+// ANCHOR HIGHLIGHT AND SELECT FUNCTIONS
+
+function setHighlightTrue(toSet, flag, team)
+{
+	toSet.forEach((highlight) => {
+		const square = localBoard.get(highlight);
+		if (!square || square.id === localInfo.clickedId)
+			return;
+
+		const canHighlight = team === "both" || square.piece?.team !== team;
+		if (!canHighlight)
+			return;
+
+		if (flag === "regular")
+			square.highlight = true;
+		else if (flag === "boosted")
+			square.boostedHighlight = true;
+	});
+}
+
+function highlightOnClick(event)
 {
 	if (event.target.localName === "img")
 	{
@@ -199,25 +224,7 @@ export function highlightOnClick(event)
 			
 }
 
-export function setHighlightTrue(toSet, flag, team)
-{
-	toSet.forEach((highlight) => {
-		const square = localBoard.get(highlight);
-		if (!square || square.id === localInfo.clickedId)
-			return;
-
-		const canHighlight = team === "both" || square.piece?.team !== team;
-		if (!canHighlight)
-			return;
-
-		if (flag === "regular")
-			square.highlight = true;
-		else if (flag === "boosted")
-			square.boostedHighlight = true;
-	});
-}
-
-export function highlightOnDrag(event)
+function highlightOnDrag(event)
 {
 	if (event.target.localName === "img")
 	{
@@ -235,7 +242,7 @@ export function highlightOnDrag(event)
 	}
 }
 
-export function rightClickSelect(event)
+function rightClickSelect(event)
 {
 	if (event.button == 2)
 	{
@@ -261,3 +268,5 @@ export function rightClickSelect(event)
 			targetSquare.selected = false;
 	}
 }
+
+export { globalEvents, sendToBackend, useAbility, shopAbility, sendEndTurn, setHighlightTrue };

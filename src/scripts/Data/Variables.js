@@ -29,22 +29,22 @@ class metaInfo {
 }
 
 //globale contiene info. riguardante le interazione dello user con la board, utile per il rendering
-let localInfo = reactive(new metaInfo());
+export let localInfo = reactive(new metaInfo());
 
 
 //Globale che contiene tutti i dati della partita conservati in locale
-let localMatchState = null;
+export let localMatchState = null;
 
 //Globale della scacchiera con tutti i dati delle caselle messa reactive
-let localBoard = reactive(new Map());
+export let localBoard = reactive(new Map());
 
 //Globale array di giocatori che contiene tutti gli oggetti giocatori validi
-let localPlayers = reactive(new Map());
+export let localPlayers = reactive(new Map());
 
 //Funzione reattiva che ricalcola ogni volta che localBoard cambia
-const DOMBoard = () => boardConverter();
+export const DOMBoard = () => boardConverter();
 
-const DOMPlayer = (p) => getLocalPlayers(p);
+export const DOMPlayer = (p) => getLocalPlayers(p);
 
 // Funzioni setter per aggiornare le variabili globali
 export function startLocalMatchState(newMatchState) {
@@ -81,5 +81,3 @@ export function initLocalBoard(boardData)
 		});
 	}
 }
-
-export { localMatchState, localBoard, localPlayers, localInfo, DOMBoard, DOMPlayer};

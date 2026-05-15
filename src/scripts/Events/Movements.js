@@ -2,6 +2,7 @@ import { localBoard, localInfo }	from "@/scripts/Data/Variables";
 import { updateMatchState }			from "@/scripts/Data/Archi"
 import { clearHighlight }			from "@/scripts/Helper/RenderUtils";
 
+// Deprecata
 export function movePiece(fromSquareId, toSquareId)
 {
 	const fromS = localBoard.get(fromSquareId);

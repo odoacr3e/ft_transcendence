@@ -2,9 +2,9 @@ export function getRootDiv() {
 	return document.getElementById("board");
 }
 
-const FILES = ["a", "b", "c", "d", "e", "f", "g", "h"]
+export const FILES = ["a", "b", "c", "d", "e", "f", "g", "h"]
 
-const IMG_PATHS = Object.freeze ({
+export const IMG_PATHS = Object.freeze ({
 	"whiteKing" : new URL("../../assets/pieces/white/king.png", import.meta.url).href,
 	"whiteChampion" : new URL("../../assets/pieces/white/queen.png", import.meta.url).href,
 	"whiteJester" : new URL("../../assets/pieces/white/knight.png", import.meta.url).href,
@@ -18,5 +18,3 @@ const IMG_PATHS = Object.freeze ({
 	"blackMinotaurus" : new URL("../../assets/pieces/black/rook.png", import.meta.url).href,
 	"blackBastards" : new URL("../../assets/pieces/black/pawn.png", import.meta.url).href
 });
-
-export { IMG_PATHS, FILES };

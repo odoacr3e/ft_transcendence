@@ -2,7 +2,7 @@ import { setHighlightTrue }	from "@/scripts/Events/Global";
 import { clearHighlight }	from "./RenderUtils";
 import { localBoard }		from "@/scripts/Data/Variables"
 
-const PIECES_HIGHLIGHT = Object.freeze ({
+export const PIECES_HIGHLIGHT = Object.freeze ({
 	"King" : KingAndBastardsHL,
 	"Champion" : ChampAndMinoHL,
 	"Jester" : JesterHL,
@@ -101,5 +101,3 @@ export function ChampAndMinoHL(squareId)
 	else
 		throw Error("[ChampAndMinoHL]: qualcosa è andato storto");
 }
-
-export { PIECES_HIGHLIGHT }
