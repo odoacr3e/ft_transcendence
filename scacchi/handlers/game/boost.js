@@ -4,6 +4,7 @@ const {dangerUpdateAll} =	require("../../utils.js");
 const {Match} = require("../../Classes/Vault/match.js");
 const {error, paramCheck, Result} = require("./utils.js");
 const endTurn = require("./endTurn.js").endTurn;
+const {CheckMateCheck} = require("../../GameLogic/checkMate.js");
 const { BOOSTED_MAX, MOVEMENT_MIN } = require("../../Macro/macro.js");
 
 /**
@@ -23,7 +24,13 @@ function boost(match, from)
 		return (result);
 	result.status = 200;
 	if (match.boost == BOOSTED_MAX && match.historyCreateBool == false)
-		endTurn(match);
+	{
+		// @ts-ignore
+		if (CheckMateCheck(match, match[match.currentPlayer.next].King))
+			console.log("haaaaaiiiiii viiiiiiintoooooooooo!!!!!!!");
+		else
+			endTurn(match);
+	}
 	return (result);
 }
 

@@ -196,6 +196,8 @@ function CheckMateCheck(match, kingSquareString)
 	let enemySet = match.board.get(enemySquare)?.dangerZones;
 	if (!enemySet) // ts-check stuff
 		return false;
+	if (enemySet.has(enemySquare) && enemySet.has(kingSquareString))
+		enemySet.delete(enemySquare);
 	if (isDangerous(match, enemySet, team) && enemySet.has(kingSquareString))
 		enemySet?.delete(kingSquareString);
 	if (isDangerous(match, enemySet, match.board.get(enemySquare)?.piece?.team))

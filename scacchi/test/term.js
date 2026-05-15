@@ -62,7 +62,6 @@ process.stdin.on('keypress', (str, key) =>
 		process.exit();
 	}
 	console.clear();
-	console.log(match.currentPlayer);
 	switch (key.name)
 	{
 		case ("up") : case ("w") :

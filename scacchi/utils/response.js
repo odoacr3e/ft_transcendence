@@ -101,16 +101,18 @@ function responseFormatter(result, msg, status)
 
 /**
  * 
- * @param {Map<string, Square>} board 
+ * @param {*} board 
  */
 function modifyBoard(board)
 {
-	for (const [pos, square] of board)
+	for (const [pos, square] of Object.entries(board))
 	{
 		// @ts-ignore
 		delete (square).dangerZones;
 		// @ts-ignore
-		delete (square).piece?.moveArray;
+		if (!square.piece)
+			continue ;
+		square.piece.moveArray = [];
 		// @ts-ignore
 		delete (square).piece?.isMovedBool;
 		// @ts-ignore

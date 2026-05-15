@@ -122,10 +122,16 @@ class Preset
 			throw (`Preset: Invalid piece type ${type}`);
 		/** @type {string} */							this.type = info.type;
 		/** @type {number} */							this.price = info.price;
-		/** @type {Array<{dx: number, dy:number}>} */	this.movement = info.movement;
+		/** @type {Array<{dx: number, dy:number}>} */	this.movement;
 		/** @type {function} */							this.booster = info.booster;
 		/** @type {boolean} */							this.multipleMoves = info.multipleMoves;
 		/** @type {boolean} */							this.longRange = info.longRange;
+
+		this.movement = [];
+		for (const movement of info.movement)
+		{
+			this.movement.push({dx: movement.dx, dy: movement.dy});
+		}
 	}
 }
 

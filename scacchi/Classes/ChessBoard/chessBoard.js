@@ -25,12 +25,15 @@ class Square
 		if (other == null)
 			return ;
 		this.color = other.color;
+		if (other.piece != null)
+			this.piece = pieces.copyPiece(other.piece);
+		else
+			this.piece = null;
 		this.piece = other.piece;
 		this.targetZones = other.targetZones;
 		this.boostedTargetZones = other.boostedTargetZones;
 		this.dangerZones = other.dangerZones;
 	}
-    //tutti i dati
 }
 
 //ANCHOR - Methods

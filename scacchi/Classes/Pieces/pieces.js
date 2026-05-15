@@ -29,4 +29,41 @@ class Piece
 	}
 }
 
-module.exports = {Piece};
+/**
+ * 
+ * @param {Piece} other
+ */
+function copyPiece(other)
+{
+	let	preset;
+	let	piece;
+	let	moveArray;
+
+	preset = new Preset(other.type);
+	piece = new Piece(other.type, other.pos, other.team);
+	if (!piece)
+		throw ("Piece, copy: something bad happen");
+	// console.log("Piece: copy constructor");
+	piece.price = other.price;
+	piece.isMovedBool = other.isMovedBool;
+	piece.isBoostedBool = other.isBoostedBool;
+	piece.moveFunction = other.moveFunction;
+	moveArray = [];
+	if (other.moveArray)
+	{
+		for (const move of other.moveArray)
+		{
+			moveArray.push({dx: move.dx, dy: move.dy});
+		}
+	}
+	else
+	{
+		throw ("copyPiece error: " + piece.pos + "NO");
+	}
+	piece.moveArray = moveArray;
+	piece.moveLongRangeDEBUG = other.moveLongRangeDEBUG;
+	piece.multipleMovesBool = other.multipleMovesBool;
+	return (piece);
+}
+
+module.exports = {Piece, copyPiece};

@@ -282,7 +282,6 @@ function simulation(coords, match)
 	dangerUpdateAll(match);
 	if (isDangerous(match, king.dangerZones, king.piece?.team))
 	{
-		console.log()
 		copyBoard(tmp, match.board);
 		dangerUpdateAll(match);
 		return (false);

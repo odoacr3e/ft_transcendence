@@ -4,7 +4,7 @@ const Macro = require("./Macro/macro.js");
 
 /**
  * 
- * @param {Match} match
+ * @param {*} match
  * @param {Set<string> | undefined} setZones dangerZone to check
  * @param {string | undefined} team enumTeam to the piece to check
  */
@@ -27,7 +27,7 @@ let isDangerous = (match, setZones, team) =>
 
 /**
  * 
- * @param {Match} match
+ * @param {*} match
  * @param {number} dx 
  * @param {number} dy
  * @param {boolean} clear
@@ -62,7 +62,7 @@ let movePiece = (match, dy, dx, clear=false) =>
 
 /**
  * 
- * @param {Match} match 
+ * @param {*} match 
  * @param {string | null} pos
  * @returns 
  */
@@ -118,7 +118,7 @@ let bastardMove = // aggiornato movimenti
 
 /**
  * 
- * @param {Match} match
+ * @param {*} match
  * @param {Number} dy
  * @param {Number} dx
  * @param {*} piece
@@ -162,7 +162,7 @@ function bastardChecks(match, dy, dx, piece)
 
 /**
  * 
- * @param {Match} match 
+ * @param {*} match 
  */
 function dangerUpdateAll(match)
 {
