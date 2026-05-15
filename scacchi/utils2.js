@@ -3,7 +3,7 @@ const fs = require("fs");
 const {eEvents} = require("./Macro/enums.js");
 const {Match} = require("./Classes/Vault/match.js");
 const { Piece } = require("./Classes/Pieces/pieces.js");
-const {dangerUpdateAll} = require("./utils.js");
+const {dangerUpdateAll} = require("./utils/moveUtils.js");
 const {move, boost, endTurn} = require("./handlers/game/Game.js");
 const { render } = require("./test/render.js");
 

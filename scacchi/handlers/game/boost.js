@@ -1,6 +1,6 @@
 // @ts-check
 
-const {dangerUpdateAll} =	require("../../utils.js");
+const {dangerUpdateAll} =	require("../../utils/moveUtils.js");
 const {Match} = require("../../Classes/Vault/match.js");
 const {error, paramCheck, Result} = require("./utils.js");
 const endTurn = require("./endTurn.js").endTurn;

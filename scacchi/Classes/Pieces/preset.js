@@ -1,5 +1,5 @@
 // @ts-check
-const {DangerUpdate} = require("../../utils.js");
+const {DangerUpdate} = require("../../utils/moveUtils.js");
 const {movementJester} = require("./movementJester.js");
 const {movementValkirya} = require("./movementValkirya.js");
 const {movementBastards} = require("./movementBastards.js");

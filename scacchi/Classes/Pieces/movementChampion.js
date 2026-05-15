@@ -1,6 +1,6 @@
 // @ts-check
 const {berserkMode} = require("./berserkMode.js");
-const {isDangerous, movePiece} = require("../../utils.js");
+const {isDangerous, movePiece} = require("../../utils/moveUtils.js");
 /**
  * 
  * @param {*} match 

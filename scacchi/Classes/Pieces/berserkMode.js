@@ -1,5 +1,5 @@
 // @ts-check
-const {movePiece} = require("../../utils.js");
+const {movePiece} = require("../../utils/moveUtils.js");
 const {enumNames} = require("../../Macro/enums.js");
 /**
  * 

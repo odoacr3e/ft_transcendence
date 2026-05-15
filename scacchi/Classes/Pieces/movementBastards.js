@@ -1,5 +1,6 @@
 // @ts-check
-const {bastardChecks, movePiece} = require("../../utils.js");
+const {movePiece} = require("../../utils/moveUtils.js");
+const {bastardChecks} = require("../../utils/gameUtils.js");
 /**
  * 
  * @param {*} match 

@@ -1,11 +1,8 @@
 // @ts-check
-const {eEvents, enumNames} = require("../../Macro/enums.js");
-const {MOVEMENT_MAX, MOVEMENT_MIN} = require("../../Macro/macro.js");
-const {Square, copyBoard} = require("../../lib/lib.js").Chess;
-const {isDangerous, movePiece, dangerUpdateAll} =	require("../../utils.js");
+const {MOVEMENT_MIN} = require("../../Macro/macro.js");
+const {Square} = require("../../lib/lib.js").Chess;
 const {Match} = require("../../Classes/Vault/match.js");
-const {Preset} = require("../../Classes/Pieces/preset.js");
-const {error, paramCheck, Result, clientBoard, checkMateAlert} = require("./utils.js");
+const {paramCheck, Result, clientBoard, checkMateAlert} = require("./utils.js");
 const {endTurn} = require("./endTurn");
 const {CheckMateCheck} = require("../../GameLogic/checkMate.js");
 const {checkMove, updateChessboard, checkSecondMove} = require("../../GameLogic/moveLogic.js");

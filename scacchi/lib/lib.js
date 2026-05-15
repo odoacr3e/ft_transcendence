@@ -25,7 +25,8 @@ const {eTeam, enumNames, enumValues} = require("../Macro/enums.js");
 const Enums = {eTeam, enumValues, enumNames};
 
 //SECTION - utils function
-let utils = require("../utils.js");
+let utils = require("../utils/moveUtils.js");
+let {bastardChecks, isDangerous} = require("../utils/gameUtils.js");
+let gameUtils = {bastardChecks, isDangerous};
 
-
-module.exports = {include, Chess, Macro, Enums, preset, utils};
+module.exports = {include, Chess, Macro, Enums, preset, utils, gameUtils};

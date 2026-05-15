@@ -2,7 +2,7 @@
 const {Piece, copyBoard} = require("../../lib/lib.js").Chess;
 const {initBoard} = require("../../Classes/ChessBoard/chessBoard.js");
 const {eTeam, enumNames} = require("../../lib/lib.js").Enums;
-const {dangerUpdateAll} =	require("../../utils.js");
+const {dangerUpdateAll} =	require("../../utils/moveUtils.js");
 const {Match} = require("../../Classes/Vault/match.js");
 const {clientBoard, Result} = require("./utils.js");
 const {initRng} = require("../../utils/random");

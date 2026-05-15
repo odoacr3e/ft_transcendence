@@ -137,12 +137,37 @@ function displayPlayerInfo(board, match)
 /**
  * @param {*} board
  * @param {*} match
- */
+*/
 function kingThreat(board, match)
 {
-	if (lib.utils.isDangerous(match, match.board.get(match.currentPlayer.King)?.dangerZones, match.currentPlayer.team))
+	if (lib.gameUtils.isDangerous(match, match.board.get(match.currentPlayer.King)?.dangerZones, match.currentPlayer.team))
 		return (true);
 	return (false);
+}
+
+/**
+ * 
+ * @param {Array<string>} coords 
+ * @param {Square} from 
+ * @param {Square} to 
+ */
+function printSwap(coords, from, to)
+{
+	let	fromType;
+	let	toType;
+
+	fromType = from.piece?.type;
+	toType = to.piece?.type;
+	if (fromType == null)
+		fromType = "Square";
+	else
+		fromType = `\x1b[33m${fromType}\x1b[0m`;
+	if (toType == null)
+		toType = "Square";
+	else
+		toType = `\x1b[33m${toType}\x1b[0m`;
+	console.log(`SWAP ${fromType} with ${toType}`);
+	console.log(`from ${coords[0]} to ${coords[1]}`);
 }
 
 /**
@@ -224,4 +249,4 @@ function getSquareColor(team)
 	}
 }
 
-module.exports = {render};
+module.exports = {render, printSwap};

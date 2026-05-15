@@ -1,7 +1,8 @@
 // @ts-check
 const {enumNames} = require("../Macro/enums.js");
 const {Square, Piece, board, copyBoard, cursor} = require("../lib/lib.js").Chess
-const {isDangerous, movePiece, DangerUpdate, dangerUpdateAll} =	require("../utils.js");
+const {isDangerous, bastardChecks} = require("../utils/gameUtils.js");
+const {DangerUpdate, dangerUpdateAll, movePiece} = require("../utils/moveUtils.js");
 const {Match} = require("../Classes/Vault/match.js");
 const {error, paramCheck, Result, clientBoard, checkMateAlert} = require("../handlers/game/utils.js");
 const {getDirection} = require("./checkMate.js");

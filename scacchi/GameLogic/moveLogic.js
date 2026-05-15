@@ -2,11 +2,13 @@
 const {eEvents, enumNames} = require("../Macro/enums.js");
 const {MOVEMENT_MAX} = require("../Macro/macro.js");
 const {copyBoard} = require("../lib/lib.js").Chess;
-const {isDangerous, movePiece, dangerUpdateAll} =	require("../utils.js");
+const {movePiece, dangerUpdateAll} =	require("../utils/moveUtils.js");
+const {isDangerous} = require("../utils/gameUtils.js");
 const {Match} = require("../Classes/Vault/match.js");
 const {Preset} = require("../Classes/Pieces/preset.js");
 const {error, Result} = require("../handlers/game/utils.js");
 const {Square} = require("../Classes/ChessBoard/chessBoard.js");
+const {printSwap} = require("../test/render.js");
 
 //FIXME - da mettere alcune funzioni in un utilis
 
@@ -289,31 +291,6 @@ function simulation(coords, match)
 	copyBoard(tmp, match.board);
 	dangerUpdateAll(match);
 	return (true);
-}
-
-/**
- * 
- * @param {Array<string>} coords 
- * @param {Square} from 
- * @param {Square} to 
- */
-function printSwap(coords, from, to)
-{
-	let	fromType;
-	let	toType;
-
-	fromType = from.piece?.type;
-	toType = to.piece?.type;
-	if (fromType == null)
-		fromType = "Square";
-	else
-		fromType = `\x1b[33m${fromType}\x1b[0m`;
-	if (toType == null)
-		toType = "Square";
-	else
-		toType = `\x1b[33m${toType}\x1b[0m`;
-	console.log(`SWAP ${fromType} with ${toType}`);
-	console.log(`from ${coords[0]} to ${coords[1]}`);
 }
 
 module.exports = {checkMove, updateChessboard, checkSecondMove};
