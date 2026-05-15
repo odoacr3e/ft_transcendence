@@ -1,8 +1,8 @@
-import { sendToBackend, setHighlightTrue, highlightOnClick, checkForHighlightMove }	from "../Events/Global";
-import { requestToBack } 															from "../Events/Movements";
-import { localInfo, localBoard }													from "../Data/Variables";
-import { clearHighlight } 															from "./RenderUtils";
-import { PIECES_HIGHLIGHT } 														from "./piecesHighlights";
+import { sendToBackend, setHighlightTrue }	from "../Events/Global";
+import { localInfo, localBoard }			from "../Data/Variables";
+import { PIECES_HIGHLIGHT } 				from "./piecesHighlights";
+import { clearHighlight } 					from "./RenderUtils";
+import { requestToBack } 					from "../Events/Movements";
 
 const PIECES_ABILITY = Object.freeze ({
 	"King" : moveKing,

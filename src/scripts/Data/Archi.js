@@ -97,6 +97,18 @@ function checkEndTurn(validated)
 	else 							{ localInfo.secondTurn = false; }
 }
 
+function DEBUGSetVisible()
+{
+	localBoard.forEach((square , key) => {
+		if (square.piece)
+		{
+			const DOMPiece = document.getElementById(key).getElementsByClassName("piece")[0];
+			if (DOMPiece && DOMPiece.style.visibility === "hidden")
+				DOMPiece.style.visibility = "visible";
+		}
+	});
+}
+
 export function updateMatchState(nextRaw)
 {
 	const validated = validateReceivedMatch(nextRaw);
@@ -107,10 +119,11 @@ export function updateMatchState(nextRaw)
 	try 
 	{
 		updateLocalBoard(validated);
+		DEBUGSetVisible();
 		updateLocalPlayers(validated);
 	} 
 	catch(err){
-		console.error("[updateLocalMatchState]: Errore di update del Match!");
+		console.error("[updateLocalMatchState]: Errore di update del Match!\n" + err);
   	}
 }
 

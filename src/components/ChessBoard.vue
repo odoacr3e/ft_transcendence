@@ -15,7 +15,6 @@
 
 <template>
     <div id="root">
-		<!-- <div id="ability_button"></div> -->
         <div id="board" oncontextmenu="return false;">
             <div v-for="row in domBoardComputed" :key="row[0]?.id" class="squareRow">
                 <div
