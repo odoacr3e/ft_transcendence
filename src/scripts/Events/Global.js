@@ -11,7 +11,7 @@ import { getRootDiv }							from "@/scripts/Helper/Constants";
 function useAbility()
 {
 	const clickedId = localInfo.clickedId;
-	const piece = localBoard.get(clickedId).piece;
+	const piece 	= localBoard.get(clickedId).piece;
 
 	if (!piece) 
 		return;
@@ -48,14 +48,15 @@ function sendEndTurn()
 
 // ANCHOR EVENT-LISTENERS FUNCTIONS
 
-function globalEvents()
+async function globalEvents()
 {
 	const ROOT_DIV = getRootDiv();
 
 	ROOT_DIV.addEventListener("click", function (event) {
 		if (!checkPermision(event))		{ clearHighlight(); return; }
-		if (usingAbility())				{ boostedMovement(event, localInfo.clickedId, localInfo.lastClickedId); return; }
-		if (checkForHighlightMove())	{ sendToBackend(); }
+		// console.log(`CID: ${localInfo.clickedId}, LCID: ${localInfo.lastClickedId}`);
+		if (usingAbility())				{ boostedMovement(); return; }
+		if (checkForHighlightMove())	{ sendToBackend(); } //dovrebbe esserci un wait ma non lo vuole????????
 		else 							{ highlightOnClick(event); }
 	});
 
@@ -108,17 +109,35 @@ function globalEvents()
 	});
 }
 
-function sendToBackend()
+async function sendToBackend(flag)
 {
 	const lastClickedId = localInfo.lastClickedId;
 	const clickedId = localInfo.clickedId;
-	const hasClickedTargetZone = localBoard.get(lastClickedId).targetZones.has(clickedId);
+	const pMoving = localBoard.get(lastClickedId).piece ? localBoard.get(lastClickedId).piece : null;
 
-	if (lastClickedId && lastClickedId !== clickedId && hasClickedTargetZone)
-		requestToBack(localInfo.lastClickedId, localInfo.clickedId).then(
-				function(value) {if (value) { clearHighlight(); } },
-				function(value) {if (!value) { console.log("[sendToBackend]: Mossa non valida"); }}
-			);
+	let TargetZone;
+
+	if (pMoving?.useAbilityBool && pMoving?.type !== ("Bastards" || "King"))
+		TargetZone = localBoard.get(lastClickedId).boostedTargetZones.has(clickedId);
+	else
+		TargetZone = localBoard.get(lastClickedId).targetZones.has(clickedId);
+
+	if (lastClickedId && lastClickedId !== clickedId && TargetZone)
+	{
+		const promise = await requestToBack(localInfo.lastClickedId, localInfo.clickedId)
+		if (promise) 
+		{
+			clearHighlight();
+			if (flag)
+				return (true);
+		}
+		else
+		{
+			console.log("[sendToBackend]: Mossa non valida");
+			if (flag)
+				return (false);
+		}
+	}
 }
 
 // ANCHOR UTILS FUNCTIONS
@@ -140,18 +159,10 @@ function checkPermision(event)
 
 function checkForHighlightMove()
 {	
-	let bool;
-	// const pieceMoving = localInfo.lastClickedId ? localBoard.get(localInfo.lastClickedId).piece : null;
-	// console.log(`clickedId: ${clickedId}\nbool: ${bool}`);
-
-
-	// if (pieceMoving && pieceMoving.type !== ("Bastards" || "King") && pieceMoving.useAbilityBool)
-	// 	bool = localBoard.get(localInfo.clickedId).boostedHighlight;
-	// else
-		bool = localBoard.get(localInfo.clickedId).highlight
+	let bool = localBoard.get(localInfo.clickedId).highlight
 	
-	if (localInfo.clickedId !== localInfo.lastClickedId)	{ clearHighlight(); }
-	else								{ clearHighlight("selected"); }
+	if (localInfo.clickedId !== localInfo.lastClickedId) { clearHighlight(); }
+	else { clearHighlight("selected"); }
 
 	return(bool);
 }
@@ -165,7 +176,7 @@ function usingAbility()
 	const lastUseAbility = lastPiece?.useAbilityBool && lastPiece?.isBoostedBool
 	const useAbility	 = piece?.useAbilityBool && piece?.isBoostedBool;
 
-    return (useAbility || lastUseAbility || secondTurn);
+    return ((localInfo.lastClickedId && (useAbility || lastUseAbility)) || secondTurn);
 }
 
 function updatePrice()

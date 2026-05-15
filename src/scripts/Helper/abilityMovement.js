@@ -2,7 +2,6 @@ import { sendToBackend, setHighlightTrue }	from "../Events/Global";
 import { localInfo, localBoard }			from "../Data/Variables";
 import { PIECES_HIGHLIGHT } 				from "./piecesHighlights";
 import { clearHighlight } 					from "./RenderUtils";
-import { requestToBack } 					from "../Events/Movements";
 
 const PIECES_ABILITY = Object.freeze ({
 	"King" : moveKing,
@@ -13,20 +12,19 @@ const PIECES_ABILITY = Object.freeze ({
 	"Bastards" : moveBastard,
 })
 
-export async function boostedMovement(event, clickedId, lastClickedId)
+export async function boostedMovement()
 {
 	if (!localInfo.secondTurn)
 	{
-		const square = localBoard.get(lastClickedId);
-		const boostedZones = square.boostedTargetZones.get(lastClickedId);
-		const result = await requestToBack(lastClickedId, clickedId);
+		const square = localBoard.get(localInfo.lastClickedId);
+		const boostedZones = square.boostedTargetZones.get(localInfo.lastClickedId);
+		const result = await sendToBackend(true);
 		if (result)
 		{
-			clearHighlight();
 			setHighlightTrue(boostedZones, "boosted", "both");
 			localInfo.savedBoostedMap = boostedZones;
 			localInfo.secondTurn = true;
-			localInfo.lastClickedId = clickedId;
+			localInfo.lastClickedId = localInfo.clickedId;
 		}
 		else
 		{
@@ -37,10 +35,16 @@ export async function boostedMovement(event, clickedId, lastClickedId)
 	else
 	{
 		boostHlOnClick();
-		if (localInfo.savedBoostedMap.has(clickedId))
+		if (localInfo.savedBoostedMap.has(localInfo.clickedId))
 			return;
-		else if (localBoard.savedBoostedMap.has(lastClickedId) && localBoard.get(clickedId).targetZones.has(localInfo.clickedId))
-			sendToBackend(localInfo.lastClickedId, localInfo.clickedId);
+		else if (localInfo.savedBoostedMap.has(localInfo.lastClickedId) && localBoard.get(localInfo.lastClickedId).targetZones.has(localInfo.clickedId))
+		{
+			const result = await sendToBackend(true);
+			if(!result)
+				console.log("[bostedMovent]: invalid move");
+			else
+				console.log("yippie");
+		}
 	}
 }
 
@@ -48,9 +52,10 @@ export function boostHlOnClick()
 {
 	if (!localInfo.savedBoostedMap.has(localInfo.clickedId))
 	{
-		console.log("giorgio");
 		clearHighlight();
 		setHighlightTrue(localInfo.savedBoostedMap, "boosted", "both");
+		if (!localBoard.get(localInfo.lastClickedId)?.targetZones.has(localInfo.clickedId))
+			localInfo.lastClickedId = localInfo.clickedId;
 		return;
 	}
 	if (localInfo.clickedId === localInfo.lastClickedId) 
