@@ -21,43 +21,40 @@ const usersQuery = require("../../query/usersQuery.js");
 */
 
 /**
- * @param {import('express').Request} req
- * @param {import('express').Response} res
+ * 
+ * @param {String} username 
+ * @param {String} email 
+ * @param {String} password 
+ * @returns {String}
  */
-const validateInputRegister = async (req, res, next) => {
-	/** @type {{ username: string, password: string, email: string }} */
-	const { username, email, password } = req.body;
-	// console.log(`username: ${colors.yellow}${username}${colors.reset}, email: ${colors.yellow}${email}${colors.reset}, password: ${colors.yellow}${password}${colors.reset}`);
+
+const validateInputRegister = (username, email, password) => {
 	if (!username || username.length < 4)
-		return res.status(400).json(jsonResponse.ResponseError("Username too short"));
+		return ("Username too short");
 	if (!email || !usersUtils.checkEmail(email))
-		return res.status(400).json(jsonResponse.ResponseError("Invalid email format"));
+		return ("Invalid email format");
 	if (!password || !usersUtils.checkPassword(password))
-		return res.status(400).json(jsonResponse.ResponseError("Invalid password format"));
-	next();
+		return ("Invalid password format");
+	return ("OK");
 }
 
 /**
- * @param {import('express').Request} req
- * @param {import('express').Response} res
+ * 
+ * @returns 
  */
-const validateUser = async (req, res, next) => {
-	try {
-		const { username, email } = req.body;
-		const user = await prisma.users.findFirst({
-			where: {
-				OR: [
-					{ username: username },
-					{ email: email }
-				]
-			}
-		});
-		if (user)
-			return res.status(409).json(jsonResponse.ResponseError("User already exists"));
-		next();
-	} catch (error) {
-		return res.status(500).json(jsonResponse.ResponseError("Server error creating user"));
-	}
+const validateUser = async (username, email) => {
+	const userEmail = await usersQuery.getUserByEmail
+	const user = await prisma.users.findFirst({
+		where: {
+			OR: [
+				{ username: username },
+				{ email: email }
+			]
+		}
+	});
+	if (user)
+		return (false);
+	return (true);
 }
 
 /**
@@ -67,6 +64,11 @@ const validateUser = async (req, res, next) => {
 const createUser = async (req, res) => {
 	try {
 		const { name, surname, username, email, password, nationality } = req.body;
+		const inputs = validateInputRegister(username, email, password);
+		if (inputs != "OK")
+			return res.status(400).json(jsonResponse.ResponseError(inputs));
+		if (!(await validateUser(username, email)))
+			return res.status(409).json(jsonResponse.ResponseError("User already exists"));
 		const hashedPwd = await bcrypt.hash(password, parseInt(lib.Macro.HASH_SALT));
 		const user = await usersQuery.createUser(name, surname, username, hashedPwd, email, nationality);
 		if (!user)
@@ -75,10 +77,9 @@ const createUser = async (req, res) => {
 		const token = await createJwt(req, res);
 		return res.status(201).json(jsonResponse.ResponseSuccess({ "user": user, "token": token }));
 	} catch (error) {
+		console.log("Error: ", error);
 		return res.status(500).json(jsonResponse.ResponseError("Server error creating user"));
 	}
 }
 
-const createUserHandler = { validateInputRegister, validateUser, createUser };
-
-module.exports = { createUserHandler };
+module.exports = { createUser };

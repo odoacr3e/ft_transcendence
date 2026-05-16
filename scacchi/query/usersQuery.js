@@ -85,6 +85,15 @@ const getUserByEmail = async (email) => {
 		});
 }
 
+/**
+ * @description Asyncronous function for creating users with Prisma client
+ * @param {String} name 
+ * @param {String} surname 
+ * @param {String} username 
+ * @param {String} password
+ * @param {String} email
+ * @param {String} nationality 
+ */
 const createUser = async (name, surname, username, password, email, nationality) => {
 	return await prisma.users.create({
 		data: {
