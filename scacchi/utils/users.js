@@ -17,4 +17,14 @@ const checkPassword = (password) => {
 	return (minLen && hasUpper && hasLower && hasNumber && hasSpecial);
 }
 
-module.exports = { checkEmail, checkPassword }
+const checkInputs = (username, email, password) => {
+	if (username && username.length < 4)
+		return ("Username too short");
+	if (email && !checkEmail(email))
+		return ("Invalid email format");
+	if (password && !checkPassword(password))
+		return ("Invalid password format");
+	return ("OK");
+}
+
+module.exports = { checkEmail, checkPassword, checkInputs }

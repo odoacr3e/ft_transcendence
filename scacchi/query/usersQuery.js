@@ -1,6 +1,8 @@
 
 const { connect } = require("node:http2");
 const { prisma } = require("../lib/prisma.js");
+const bcrypt = require("bcryptjs");
+const lib = require("../lib/lib.js");
 
 const getAllUsers = async () => {
 	return await prisma.users.findMany({
@@ -127,10 +129,11 @@ const updateUserFieldsById = async (id, data) => {
 	{
 		if (data[f] !== undefined)
 			updates[f] = data[f];
-		if (f === 'preferences')
+		if (data.preferences && f === 'preferences')
 			updates.preferences = { connect: { id_preference: Number(data[f]) }};
+		if (data.password && f === 'password')
+			updates.password = await bcrypt.hash(updates.password, parseInt(lib.Macro.HASH_SALT));
 	}
-	console.log("Updates: ", updates);
 	return await prisma.users.update({
 		where: { id_user: Number(id) },
 		data: updates

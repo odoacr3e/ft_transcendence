@@ -316,8 +316,8 @@ function trasfiguration(match, to)
 	match.cursor.set(to.piece.pos);
 	row = match.cursor.getRow();
 	col = match.cursor.getCol();
-	if (((team == eTeam.White || team == eTeam.Blue) && col == CHESSBOARD_H))
-		;
+	// if (((team == eTeam.White || team == eTeam.Blue) && col == CHESSBOARD_H))
+		
 }
 
-module.exports = {checkMove, updateChessboard, checkSecondMove};
+module.exports = { checkMove, updateChessboard, checkSecondMove };
