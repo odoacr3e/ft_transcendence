@@ -23,12 +23,12 @@ function boost(match, from)
 	if (!tryBoost(match, result, from))
 		return (result);
 	result.status = 200;
-	if (match.boost == BOOSTED_MAX && match.historyCreateBool == false)
+	if (match.boost == BOOSTED_MAX)
 	{
 		// @ts-ignore
 		if (CheckMateCheck(match, match[match.currentPlayer.next].King))
-			console.log("haaaaaiiiiii viiiiiiintoooooooooo!!!!!!!");
-		else
+			match.CheckMate();
+		else if (match.historyCreateBool == false)
 			endTurn(match);
 	}
 	return (result);

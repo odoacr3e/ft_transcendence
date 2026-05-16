@@ -48,7 +48,6 @@ function clientBoard(src, selected=null)
 {
 	let	dest;
 
-	console.log("clientBoard");
 	if (!selected || selected.length != 2)
 		dest = copyBoard(src);
 	else

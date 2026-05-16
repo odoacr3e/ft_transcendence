@@ -12,7 +12,7 @@ const {abort} = 	require("node:process");
 const {render} = 	require("./render.js");
 const readline = 	require('node:readline');
 const server = require("../server.js");
-const cmd = require("./termEnums.js").cmd;
+const cmd = require("./enumsTest.js").cmd;
 
 
 //SECTION - main: inizializza e fa primo render, mette terminale in ascolto
@@ -175,9 +175,9 @@ function termCleanup(key)
 		bRead = lib.include.fs.readSync(1, buffer);
 		name = buffer.toString('utf8', 0, bRead).trim().toLowerCase();
 		if (!name)
-			match.history.Log(HISTORY_FILE);
+			match.Log(HISTORY_FILE);
 		else
-			match.history.Log(name);
+			match.Log(name);
 	}
 	process.exit();
 }

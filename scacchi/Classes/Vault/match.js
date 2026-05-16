@@ -98,8 +98,9 @@ class Match
 		this.history = new History();
 		this.historyCreateBool = false;
 		this.currentPlayer = this.white;
+		this.victory = "";
 	}
-	endTurn = () =>
+	endTurn()
 	{
 		/** @type {String} */ let	next = this.currentPlayer.next;
 
@@ -111,9 +112,15 @@ class Match
 		// @ts-ignore
 		this.currentPlayer = this[next];
 	}
-	forceWhiteTurn = () =>
+	forceWhiteTurn()
 	{
 		this.currentPlayer = this.white;
+	}
+	CheckMate()
+	{
+		console.log("haaaaaiiiiii viiiiiiintoooooooooo!!!!!!!");
+		this.victory = this.currentPlayer.team;
+		this.history.victory = this.victory;
 	}
 	Reset()
 	{
@@ -130,6 +137,11 @@ class Match
 		this.history = new History();
 		this.currentPlayer = this.white;		
 	}
+	/** @param {string} name */
+	Log(name)
+	{
+		this.history.Log(this, name);
+	}
 }
 
 class History
@@ -140,6 +152,8 @@ class History
 		/** @type {Array<HistoryEvent>} */
 		this.events = new Array();
 		this.moves = 0;
+		this.victory = "";
+		this.finalBoard = "";
 		this.UpdateMoves = updateMoves;
 		this.UpdateBoost = updateBoost;
 		this.UpdateEndTurn = updateEndTurn;
@@ -150,8 +164,12 @@ class History
 			return (this.events[this.events.length - 1]);
 		return (new HistoryEvent("Empty", "Empty"));
 	}
-	/** @param {string} name */
-	Log(name)
+	/** 
+	 * 
+	 * @param {Match} match 
+	 * @param {string} name 
+	 * */
+	Log(match, name)
 	{
 		let	history;
 

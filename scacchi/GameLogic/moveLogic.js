@@ -8,7 +8,7 @@ const {Match} = require("../Classes/Vault/match.js");
 const {Preset} = require("../Classes/Pieces/preset.js");
 const {error, Result} = require("../handlers/game/utils.js");
 const {Square} = require("../Classes/ChessBoard/chessBoard.js");
-const {printSwap} = require("../test/render.js");
+const {printSwap, boardStringify} = require("../test/render.js");
 
 //FIXME - da mettere alcune funzioni in un utilis
 
@@ -136,6 +136,7 @@ function updateChessboard(coords=[], result, match, boostBool)
 		to.piece.isMovedBool = true;
 	// trasfiguration(match, to);
 	match.moves++;
+	match.history.finalBoard = boardStringify(match);
 	dangerUpdateAll(match);
 	return (true);
 }
@@ -294,20 +295,6 @@ function simulation(coords, match)
 	return (true);
 }
 
-/*
-/**
- * @enum {string}
- */
-// const eTeam = 
-// {
-// 	Black: 'black',
-// 	White: 'white',
-// 	Red: 'red',
-// 	Blue: 'blue',
-// 	Green: 'green',
-// 	Yellow: 'yellow',
-// };
-
 /**
  * 
  * @param {Match} match
@@ -329,8 +316,8 @@ function trasfiguration(match, to)
 	match.cursor.set(to.piece.pos);
 	row = match.cursor.getRow();
 	col = match.cursor.getCol();
-	// if (((team == eTeam.White || team == eTeam.Blue) && col == CHESSBOARD_H))
-		
-// }
+	if (((team == eTeam.White || team == eTeam.Blue) && col == CHESSBOARD_H))
+		;
+}
 
 module.exports = {checkMove, updateChessboard, checkSecondMove};

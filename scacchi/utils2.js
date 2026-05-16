@@ -5,7 +5,7 @@ const {Match} = require("./Classes/Vault/match.js");
 const { Piece } = require("./Classes/Pieces/pieces.js");
 const {dangerUpdateAll} = require("./utils/moveUtils.js");
 const {move, boost, endTurn, init} = require("./handlers/game/Game.js");
-const { render } = require("./test/render.js");
+const { render, boardStringify } = require("./test/render.js");
 
 
 /** @typedef {import ("./Classes/Vault/match.js").History} History */
@@ -40,8 +40,7 @@ function historyRestore(match, path)
 		else
 			continue ;
 		if (result.status != 200)
-			throw (`\x1b[31m${result.msg}\x1b[0m`);
-		render(match);
+			throw (`${result.status}: ${result.msg}\n${JSON.stringify(event, null, 2)}`);
 	}
 	match.historyCreateBool = false;
 	match.history.events = history.events;

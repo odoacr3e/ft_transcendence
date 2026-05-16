@@ -43,7 +43,6 @@ function copyPiece(other)
 	piece = new Piece(other.type, other.pos, other.team);
 	if (!piece)
 		throw ("Piece, copy: something bad happen");
-	// console.log("Piece: copy constructor");
 	piece.price = other.price;
 	piece.isMovedBool = other.isMovedBool;
 	piece.isBoostedBool = other.isBoostedBool;

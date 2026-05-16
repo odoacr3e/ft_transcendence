@@ -4,8 +4,9 @@ const {eTeam} = require("../Macro/enums.js");
 const lib = require("../lib/lib.js");
 const {Match} = require("../Classes/Vault/match.js");
 const {CHESSBOARD_H, CHESSBOARD_W} = require("../Macro/macro.js");
+const { board } = require("../../PROVE_scacchi/data/chessBoard.js");
 const enumNames = lib.Enums.enumNames;
-const cmd = require("./termEnums.js").cmd;
+const cmd = require("./enumsTest.js").cmd;
 
 /**
  * @param {Match | null} match 
@@ -250,4 +251,48 @@ function getSquareColor(team)
 	}
 }
 
-module.exports = {render, printSwap};
+/**
+ * 
+ * @param {Match} match
+ */
+function boardStringify(match)
+{
+	let buffer;
+	let	board;
+	let	coords;
+	let	square;
+	let	ascii;
+
+	if (match)
+		board = match.board;
+	else
+	{
+		throw("no match!");
+	}
+	coords = getCoords(match);
+	match.cursor.set(coords.start);
+	buffer = "";
+	do
+	{
+		buffer += "|";
+		match.cursor.setCol(1);
+		do
+		{
+			coords.curr = match.cursor.square;
+			square = board.get(coords.curr);
+			if (!square)
+				throw (`board position ${match.cursor.square} gives back null pointer`);
+			ascii = getAscii(square);
+			if (square.piece?.isBoostedBool)
+				ascii = `+${ascii}`;
+			buffer += `${ascii}|`;
+		}
+		while (match.cursor.moveCol(+1))
+		buffer += "\n";
+	}
+	while (match.cursor.moveRow(-1))
+	match.cursor.set(coords.player);
+	return (buffer);
+}
+
+module.exports = {render, printSwap, boardStringify};
