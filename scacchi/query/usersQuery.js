@@ -1,4 +1,5 @@
 
+const { connect } = require("node:http2");
 const { prisma } = require("../lib/prisma.js");
 
 const getAllUsers = async () => {
@@ -120,15 +121,18 @@ const deleteUserById = async (id) => {
 }
 
 const updateUserFieldsById = async (id, data) => {
-	const fields = ['name', 'surname', 'username', 'email', 'nationality', 'preferences'];
+	const fields = ['name', 'surname', 'username', 'email', 'nationality', 'image', 'password', 'preferences'];
 	const updates = {};
 	for (const f of fields)
 	{
 		if (data[f] !== undefined)
 			updates[f] = data[f];
+		if (f === 'preferences')
+			updates.preferences = { connect: { id_preference: Number(data[f]) }};
 	}
+	console.log("Updates: ", updates);
 	return await prisma.users.update({
-		where: { id_user: id },
+		where: { id_user: Number(id) },
 		data: updates
 	});
 }

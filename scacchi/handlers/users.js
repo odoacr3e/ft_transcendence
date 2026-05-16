@@ -60,11 +60,12 @@ const deleteUserById = async (req, res) => {
  */
 const updateUserById = async (req, res) => {
 	try {
-		const user = usersQuery.updateUserFieldsById(req.params.id, req.body);
+		const user = await usersQuery.updateUserFieldsById(req.params.id, req.body);
 		if (user)
 			return res.status(200).json(jsonResponse.ResponseSuccess(user));
 		return res.status(404).json(jsonResponse.ResponseError("User not found"));
 	} catch (error) {
+		console.log("Error: ", error);
 		return res.status(500).json(jsonResponse.ResponseError("Server error"));
 	}
 };

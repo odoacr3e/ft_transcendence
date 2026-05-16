@@ -294,29 +294,42 @@ function simulation(coords, match)
 	return (true);
 }
 
-// /**
-//  * 
-//  * @param {Match} match
-//  * @param {Square} to
-//  */
-// function trasfiguration(match, to)
+/*
+/**
+ * @enum {string}
+ */
+// const eTeam = 
 // {
-// 	let	team;
-// 	let	tmp;
-// 	let row;
-// 	let  col;
+// 	Black: 'black',
+// 	White: 'white',
+// 	Red: 'red',
+// 	Blue: 'blue',
+// 	Green: 'green',
+// 	Yellow: 'yellow',
+// };
 
-// 	if (!to.piece)
-// 		throw ("transiguration: to has no piece");
-// 	if (to.piece.type != enumNames.BASTARDS)
-// 		return ;
-// 	team = to.piece.team;
-// 	tmp = match.cursor.square;
-// 	match.cursor.set(to.piece.pos);
-// 	row = match.cursor.getRow();
-// 	col = match.cursor.getCol();
-// 	if (((team == eTeam.White || team == eTeam.Blue) && col == CHESSBOARD_H) || 
-// 	)
+/**
+ * 
+ * @param {Match} match
+ * @param {Square} to
+ */
+function trasfiguration(match, to)
+{
+	let	team;
+	let	tmp;
+	let row;
+	let  col;
+
+	if (!to.piece)
+		throw ("transiguration: to has no piece");
+	if (to.piece.type != enumNames.BASTARDS)
+		return ;
+	team = to.piece.team;
+	tmp = match.cursor.square;
+	match.cursor.set(to.piece.pos);
+	row = match.cursor.getRow();
+	col = match.cursor.getCol();
+	// if (((team == eTeam.White || team == eTeam.Blue) && col == CHESSBOARD_H))
 		
 // }
 
