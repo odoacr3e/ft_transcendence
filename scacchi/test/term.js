@@ -12,16 +12,25 @@ const {abort} = 	require("node:process");
 const {render} = 	require("./render.js");
 const readline = 	require('node:readline');
 const server = require("../server.js");
+const cmd = require("./termEnums.js").cmd;
+
 
 //SECTION - main: inizializza e fa primo render, mette terminale in ascolto
-let match;
+function mainTerm()
+{
+	let	match;
 
-initTerminal();
-match = vault.getDebugMatch();
-init(match, lib.Macro.SEED);
-dangerUpdateAll(match);
-// console.log(match);
-render(match);
+	termInit();
+	match = vault.getDebugMatch();
+	init(match, lib.Macro.SEED);
+	dangerUpdateAll(match);
+	// console.log(match);
+	render(match);
+	return (match);
+}
+
+let match = mainTerm();
+let	helpBool = true;
 
 //SECTION - eventLoop: binda i tasti per fare cose
 
@@ -38,46 +47,24 @@ process.stdin.on('keypress', (str, key) =>
 	dy = 0;
 	if (key.ctrl && key.name == "c")
 	{
-		const	buffer = Buffer.alloc(50);
-		let		bRead;
-
-		process.stdin.setRawMode(false);
-		while (key != "y" && key != "n")
-		{
-			console.log("Save game in a backup file?[y;n]");
-			bRead = lib.include.fs.readSync(1, buffer);
-			key = buffer.toString('utf8', 0, bRead).trim().toLowerCase();
-		}
-		if (key == "y")
-		{
-			let	name;
-
-			console.log("Choose name of the history file. empty = default name");
-			bRead = lib.include.fs.readSync(1, buffer);
-			name = buffer.toString('utf8', 0, bRead).trim().toLowerCase();
-			if (!name)
-				match.history.Log(HISTORY_FILE);
-			else
-				match.history.Log(name);
-		}
-		process.exit();
+		termCleanup(key.name);
 	}
 	console.clear();
 	switch (key.name)
 	{
-		case ("up") : case ("w") :
+		case (cmd.UP) : case (cmd.W) :
 			dy += 1;
 			break ;
-		case ("down") : case ("s") :
+		case (cmd.DOWN) : case (cmd.S) :
 			dy -= 1;
 			break ;
-		case ("left") : case ("a") :
+		case (cmd.LEFT) : case (cmd.A) :
 			dx -= 1;
 			break ;
-		case ("right") : case ("d") :
+		case (cmd.RIGHT) : case (cmd.D) :
 			dx += 1;
 			break ;
-		case ("r") :
+		case (cmd.TARGET_DANGER_SWITCH) :
 			if (TargetDangerSwitch == "None")
 				TargetDangerSwitch = "Target";
 			else if (TargetDangerSwitch == "Target")
@@ -85,20 +72,20 @@ process.stdin.on('keypress', (str, key) =>
 			else if (TargetDangerSwitch == "Danger")
 				TargetDangerSwitch = "None";
 			break ;
-		case ("e") :
+		case (cmd.END_TURN) :
 			result = endTurn(match);
 			if (result.status != 200)
 				return (error(null, result));
 			break ;
-		case ("q") :
+		case (cmd.BUY_BOOST) :
 			result = boost(match, match.cursor.square);
 			if (result.status != 200)
 				return (error(null, result));
 			break ;
-		case ("t") :
+		case (cmd.USE_BOOST) :
 			match.currentPlayer.useBoostBool = !match.currentPlayer.useBoostBool;
 			break ;
-		case ("space") :
+		case (cmd.MOVE) :
 			console.assert((selected.length < 2), "move array too large");
 			selected.push(match.cursor.square);
 			if (selected.length == 2)
@@ -110,24 +97,48 @@ process.stdin.on('keypress', (str, key) =>
 					return (error(null, result));
 			}
 			break ;
-		case ("p"):
+		case (cmd.HELP):
+			helpBool = !helpBool;
+			break ;
+		case (cmd.LOAD_HISTORY):
 		{
 			historyRestore(match, HISTORY_DEFAULT);
 			render(match);
 			return ;
 		}
 	}
-	if (!includesOneOf(key.name, "r", "e", "space") && !movePiece(match, dx, dy, false))
+	if (includesOneOf(key.name, cmd.MOVEMENTS) && !movePiece(match, dx, dy, false))
 	{
 		console.log("lol no");
 	}
-	console.log("row", match.cursor.getRow(), ", col", match.cursor.getCol(), ", cursor", match.cursor.square);
-	console.log("Visualizing", TargetDangerSwitch, "press \"r\" to change");
-	render(match, selected, TargetDangerSwitch);
-	console.log(`keypressed: ${key.name}\n`, `Press \"space\" to move, \"q\" to boost, \"e\" to change turn`);
+	print(key.name);
 });
 
-function initTerminal()
+//SECTION - utils
+
+/**
+ * 
+ * @param {string} key 
+ * @returns 
+ */
+function print(key)
+{
+	console.log("row", match.cursor.getRow(), ", col", match.cursor.getCol(), ", cursor", match.cursor.square);
+	if (TargetDangerSwitch != "None")
+		console.log(`Visualizing ${TargetDangerSwitch} zones`);
+	render(match, selected, TargetDangerSwitch);
+	console.log(`keypressed: ${key}`);
+	console.log(`Commands summary: ${cmd.HELP}`);
+	if (!helpBool)
+		return ;
+	console.log(`"move: "${cmd.MOVE}"`);
+	console.log(`buyBoost: "${cmd.BUY_BOOST}"`);
+	console.log(`useBoost: "${cmd.USE_BOOST}"`);
+	console.log(`dangerLightMode: "${cmd.TARGET_DANGER_SWITCH}"`);
+	console.log(`endTurn "${cmd.END_TURN}"`);
+}
+
+function termInit()
 {
 	readline.emitKeypressEvents(process.stdin);
 
@@ -140,4 +151,33 @@ function initTerminal()
 		console.log("questo test funziona da terminale");
 		abort();
 	}
+}
+
+/**
+ * 
+ * @param {string} key 
+ */
+function termCleanup(key)
+{
+	const	buffer = Buffer.alloc(50);
+	let		bRead;
+	process.stdin.setRawMode(false);
+	while (key != "y" && key != "n")
+	{
+		console.log("Save game in a backup file?[y;n]");
+		bRead = lib.include.fs.readSync(1, buffer);
+		key = buffer.toString('utf8', 0, bRead).trim().toLowerCase();
+	}
+	if (key == "y")
+	{
+		let	name;
+		console.log("Choose name of the history file. empty = default name");
+		bRead = lib.include.fs.readSync(1, buffer);
+		name = buffer.toString('utf8', 0, bRead).trim().toLowerCase();
+		if (!name)
+			match.history.Log(HISTORY_FILE);
+		else
+			match.history.Log(name);
+	}
+	process.exit();
 }

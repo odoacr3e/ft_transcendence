@@ -5,6 +5,7 @@ const lib = require("../lib/lib.js");
 const {Match} = require("../Classes/Vault/match.js");
 const {CHESSBOARD_H, CHESSBOARD_W} = require("../Macro/macro.js");
 const enumNames = lib.Enums.enumNames;
+const cmd = require("./termEnums.js").cmd;
 
 /**
  * @param {Match | null} match 
@@ -127,9 +128,9 @@ function displayPlayerInfo(board, match)
 	console.log(`points: ${player.nPoints}💲, bonus: ${player.bonusPointCounter}⚖️`);
 	console.log(match.currentPlayer.boostedPiece);
 	if (match.currentPlayer.useBoostBool == true)
-		console.log("Ready to use boost! press t to cancel");
+		console.log(`Ready to use boost!`);
 	else
-		console.log("Press t to use boost!");
+		console.log(`Boost NOT used`);
 	if (kingThreat(board, match) == true)
 		console.log(`${player.team} king is threatened💀`);
 }

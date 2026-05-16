@@ -20,7 +20,7 @@ const preset = {
 		 	{dx:0, dy:1}, {dx:0, dy:-1},//verticale
 		 	{dx:1, dy:0}, {dx:-1, dy:0},//orizzontale
 		],
-		booster: DangerUpdate
+		booster: () => {}
 	},
 	Champion: {
 		type: enumNames.CHAMPION,
