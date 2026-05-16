@@ -69,7 +69,7 @@ const createUser = async (req, res) => {
 		const inputs = validateInputRegister(username, email, password);
 		if (inputs != "OK")
 			return res.status(400).json(jsonResponse.ResponseError(inputs));
-		if (!(validateUser(username, email)))
+		if (!(await validateUser(username, email)))
 			return res.status(409).json(jsonResponse.ResponseError("User already exists"));
 		const hashedPwd = await bcrypt.hash(password, parseInt(lib.Macro.HASH_SALT));
 		const user = await usersQuery.createUser(name, surname, username, hashedPwd, email, nationality);
