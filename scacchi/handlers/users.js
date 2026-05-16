@@ -4,7 +4,7 @@ const jwt = require("../utils/auth");
 const bcrypt = require("bcryptjs");
 const usersQuery = require("../query/usersQuery");
 const { jsonResponse } = require("../utils/response.js");
-const { validateInput } = require("../utils/users.js");
+const { checkInputs } = require("../utils/users.js");
 
 /**
  * @param {import('express').Request} req
@@ -55,31 +55,20 @@ const deleteUserById = async (req, res) => {
 	}
 };
 
-
-/**
- * @param {import('express').Request} req
- * @param {import('express').Response} res
- */
-const validateInput = async (req, res, next) => {
-	try {
-		const { username, email, password } = req.body;
-		const inputs = validateInput(username, email, password);
-		if (input != "OK")
-			return res.status(400).json(jsonResponse.ResponseError(inputs));
-	} catch (error) {
-		
-	}
-}
-
 /**
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  */
 const updateUserById = async (req, res) => {
 	try {
+		const { username, email, password } = req.body;
+		const inputs = checkInputs(username, email, password);
+		if (inputs != "OK")
+			return res.status(400).json(jsonResponse.ResponseError(inputs));
 		const user = await usersQuery.updateUserFieldsById(req.params.id, req.body);
+		delete(user.password);
 		if (user)
-			return res.status(200).json(jsonResponse.ResponseSuccess(user));
+			return res.status(200).json(jsonResponse.ResponseSuccess({ "user": user }));
 		return res.status(404).json(jsonResponse.ResponseError("User not found"));
 	} catch (error) {
 		console.log("Error: ", error);

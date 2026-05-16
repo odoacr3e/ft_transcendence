@@ -10,7 +10,7 @@ router.get("/:id", getUsersHandler.getUserById);
 
 router.delete("/:id", deleteUserHandler.deleteUserById);
 
-router.patch("/:id", validateInput, updateUserHandler.updateUserById);
+router.patch("/:id", updateUserHandler.updateUserById);
 
 
 module.exports = router; // esportato come funzione e non come oggetto

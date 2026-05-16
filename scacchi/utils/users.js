@@ -20,9 +20,9 @@ const checkPassword = (password) => {
 const checkInputs = (username, email, password) => {
 	if (username && username.length < 4)
 		return ("Username too short");
-	if (email && checkEmail(email))
+	if (email && !checkEmail(email))
 		return ("Invalid email format");
-	if (password && checkPassword(password))
+	if (password && !checkPassword(password))
 		return ("Invalid password format");
 	return ("OK");
 }
