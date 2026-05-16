@@ -34,7 +34,6 @@ function init(match, seed=null)
 	result.status = 200;
 	// @ts-ignore
 	result.board = clientBoard(match.board);
-	match.history.startBoard = Object.fromEntries(copyBoard(match.board));
 	return (result);
 }
 

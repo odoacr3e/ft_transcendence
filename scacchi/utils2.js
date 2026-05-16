@@ -4,7 +4,7 @@ const {eEvents} = require("./Macro/enums.js");
 const {Match} = require("./Classes/Vault/match.js");
 const { Piece } = require("./Classes/Pieces/pieces.js");
 const {dangerUpdateAll} = require("./utils/moveUtils.js");
-const {move, boost, endTurn} = require("./handlers/game/Game.js");
+const {move, boost, endTurn, init} = require("./handlers/game/Game.js");
 const { render } = require("./test/render.js");
 
 
@@ -27,23 +27,10 @@ function historyRestore(match, path)
 	buffer = fs.readFileSync(path, "utf-8");
 	history = JSON.parse(buffer);
 	match.Reset();
-	match.board = new Map(Object.entries(history.startBoard));
-	for (let [pos, square] of match.board)
-	{
-		if (square.piece)
-		{
-			square.piece = new Piece(square.piece.type, pos, square.piece.team);
-		}
-		square.boostedTargetZones = new Map();
-		square.dangerZones = new Set();
-		square.targetZones = new Set();
-	}
-	dangerUpdateAll(match);
-	render(match);
+	init(match, history.seed);
 	match.historyCreateBool = true;
 	for (const event of history.events)
 	{
-		console.log(event);
 		if (event.type == eEvents.Move)
 			result = move(match, event.from, event.to, true);
 		else if (event.type == eEvents.Boost)
@@ -53,15 +40,12 @@ function historyRestore(match, path)
 		else
 			continue ;
 		if (result.status != 200)
-			console.log(`\x1b[31m${result.msg}\x1b[0m`);
+			throw (`\x1b[31m${result.msg}\x1b[0m`);
 		render(match);
 	}
 	match.historyCreateBool = false;
-	match.history.startBoard = history.startBoard;
 	match.history.events = history.events;
 	match.history.moves = history.moves;
-	console.log("first board");
-	render(match);
 }
 
 module.exports = {historyRestore};

@@ -95,7 +95,7 @@ class Match
 		this.cursor = new Cursor();
 		this.moves = 0;
 		this.boost = 0;
-		this.history = new History(this.board);
+		this.history = new History();
 		this.historyCreateBool = false;
 		this.currentPlayer = this.white;
 	}
@@ -123,24 +123,20 @@ class Match
 		this.blue = preset.blue;
 		this.green = preset.green;
 		this.yellow = preset.yellow;
-		this.board = new Map(Object.entries(this.history.startBoard));
+		this.board = new Map();
 		this.cursor = new Cursor();
 		this.moves = 0;
 		this.boost = 0;
-		this.history = new History(this.board);
+		this.history = new History();
 		this.currentPlayer = this.white;		
 	}
 }
 
 class History
 {
-	/**
-	 * 
-	 * @param {Map<string, Square>} board 
-	 */
-	constructor(board)
+	constructor()
 	{
-		this.startBoard = Object.fromEntries(copyBoard(board));
+		this.seed = 0;
 		/** @type {Array<HistoryEvent>} */
 		this.events = new Array();
 		this.moves = 0;
