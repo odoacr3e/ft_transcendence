@@ -331,6 +331,6 @@ function trasfiguration(match, to)
 	col = match.cursor.getCol();
 	// if (((team == eTeam.White || team == eTeam.Blue) && col == CHESSBOARD_H))
 		
-// }
+}
 
-module.exports = {checkMove, updateChessboard, checkSecondMove};
+module.exports = { checkMove, updateChessboard, checkSecondMove };

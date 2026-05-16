@@ -24,15 +24,15 @@ const usersQuery = require("../../query/usersQuery.js");
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  */
-const validateInput = async (req, res, next) => {
+const validateInputRegister = async (req, res, next) => {
 	/** @type {{ username: string, password: string, email: string }} */
 	const { username, email, password } = req.body;
 	// console.log(`username: ${colors.yellow}${username}${colors.reset}, email: ${colors.yellow}${email}${colors.reset}, password: ${colors.yellow}${password}${colors.reset}`);
 	if (!username || username.length < 4)
 		return res.status(400).json(jsonResponse.ResponseError("Username too short"));
-	if (!usersUtils.checkEmail(email))
+	if (!email || !usersUtils.checkEmail(email))
 		return res.status(400).json(jsonResponse.ResponseError("Invalid email format"));
-	if (!usersUtils.checkPassword(password))
+	if (!password || !usersUtils.checkPassword(password))
 		return res.status(400).json(jsonResponse.ResponseError("Invalid password format"));
 	next();
 }
@@ -79,6 +79,6 @@ const createUser = async (req, res) => {
 	}
 }
 
-const createUserHandler = { validateInput, validateUser, createUser };
+const createUserHandler = { validateInputRegister, validateUser, createUser };
 
 module.exports = { createUserHandler };

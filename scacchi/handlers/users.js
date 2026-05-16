@@ -4,6 +4,7 @@ const jwt = require("../utils/auth");
 const bcrypt = require("bcryptjs");
 const usersQuery = require("../query/usersQuery");
 const { jsonResponse } = require("../utils/response.js");
+const { validateInput } = require("../utils/users.js");
 
 /**
  * @param {import('express').Request} req
@@ -53,6 +54,22 @@ const deleteUserById = async (req, res) => {
 		return res.status(500).json(jsonResponse.ResponseError("Server error"));
 	}
 };
+
+
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
+const validateInput = async (req, res, next) => {
+	try {
+		const { username, email, password } = req.body;
+		const inputs = validateInput(username, email, password);
+		if (input != "OK")
+			return res.status(400).json(jsonResponse.ResponseError(inputs));
+	} catch (error) {
+		
+	}
+}
 
 /**
  * @param {import('express').Request} req
