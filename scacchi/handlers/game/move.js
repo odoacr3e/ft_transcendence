@@ -32,7 +32,7 @@ function move(match, from, to, boostBool=false)
 	result.status = 200;
 	// @ts-ignore
 	if (CheckMateCheck(match, match[match.currentPlayer.next].King))
-		return (console.log("haaaaaiiiiii viiiiiiintoooooooooo!!!!!!!"), checkMateAlert(result, match.currentPlayer.team));
+		return (match.CheckMate(result));
 	// @ts-ignore
 	result.board = clientBoard(match.board, [from, to]);
 	secondMoveBool = checkSecondMove(match, to);

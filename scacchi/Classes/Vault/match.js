@@ -116,7 +116,7 @@ class Match
 	{
 		this.currentPlayer = this.white;
 	}
-	CheckMate()
+	CheckMate(result)
 	{
 		console.log("haaaaaiiiiii viiiiiiintoooooooooo!!!!!!!");
 		console.log("Premi un qualsiasi tasto per concludere...");
