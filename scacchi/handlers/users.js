@@ -14,7 +14,7 @@ const getAllUsers = async (req, res) => {
 	try {
 		const users = await usersQuery.getAllUsers();
 		if (users)
-			return res.status(200).json(jsonResponse.ResponseSuccess({ "user": users }));
+			return res.status(200).json(jsonResponse.ResponseSuccess({ "users": users }));
 		return res.status(404).json(jsonResponse.ResponseError("User not found"));
 	} catch (error) {
 		console.log("Prisma: ", error);

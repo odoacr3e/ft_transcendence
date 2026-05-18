@@ -1,0 +1,36 @@
+
+const lib = require("../lib/lib");
+const piecesQuery = require("../query/piecesQuery.js");
+const { jsonResponse } = require("../utils/response.js");
+
+const getAllPieces = async (req, res) => {
+	try {
+		const pieces = await piecesQuery.getAllPieces();
+		if (pieces)
+			return res.status(200).json(jsonResponse.ResponseSuccess({ "pieces": pieces }));
+		return res.status(404).json(jsonResponse.ResponseError("Pieces not found"));
+	} catch (error) {
+		console.log("Error: ", error);
+		return res.status(500).json(jsonResponse.ResponseError("Server error searching pieces"));
+	}
+}
+
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
+const getPieceById = async (req, res) => {
+	try {
+		const piece = await piecesQuery.getPieceById(req.params.id);
+		if (piece)
+			return res.status(200).json(jsonResponse.ResponseSuccess({ "piece": piece }));
+		return res.status(404).json(jsonResponse.ResponseError("Piece not found"));
+	} catch (error) {
+		console.log("Error: ", error);
+		return res.status(500).json(jsonResponse.ResponseError("Server error searching piece"));
+	}
+}
+
+const getPiecesHandlers = { getAllPieces, getPieceById };
+
+module.exports = { getPiecesHandlers };

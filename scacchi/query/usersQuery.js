@@ -1,5 +1,4 @@
 
-const { connect } = require("node:http2");
 const { prisma } = require("../lib/prisma.js");
 const bcrypt = require("bcryptjs");
 const lib = require("../lib/lib.js");
@@ -37,7 +36,13 @@ const getUserById = async (id) => {
 			nationality: true,
 			points: true,
 			title: true,
-			preferences: true
+			preferences: {
+				select: {
+					name: true,
+					description: true,
+					colors: true,
+				}
+			}
 		},
 		where: {
 			id_user: Number(id)
