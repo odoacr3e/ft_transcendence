@@ -2,14 +2,10 @@
 const lib = require("../lib/lib.js");
 const router = lib.include.express.Router();
 const { createUser } = require("../handlers/auth/register.js");
-const { loginUserHandler } = require("../handlers/auth/login.js");
-
-// TODO: da togliere checkCredentials come middleware e da inserire come funzione in checkUser
-const login = [ loginUserHandler.checkCredentials, loginUserHandler.checkUser ];
-
+const { checkUser } = require("../handlers/auth/login.js");
 
 // route /auth
-router.post("/", login);
+router.post("/", checkUser);
 router.post("/register", createUser);
 
 
