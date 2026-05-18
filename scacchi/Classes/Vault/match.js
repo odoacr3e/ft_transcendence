@@ -119,6 +119,7 @@ class Match
 	CheckMate()
 	{
 		console.log("haaaaaiiiiii viiiiiiintoooooooooo!!!!!!!");
+		console.log("Premi un qualsiasi tasto per concludere...");
 		this.victory = this.currentPlayer.team;
 		this.history.victory = this.victory;
 	}

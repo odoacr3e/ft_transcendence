@@ -24,7 +24,6 @@ function mainTerm()
 	match = vault.getDebugMatch();
 	init(match, lib.Macro.SEED);
 	dangerUpdateAll(match);
-	// console.log(match);
 	render(match);
 	return (match);
 }
@@ -45,7 +44,7 @@ process.stdin.on('keypress', (str, key) =>
 
 	dx = 0;
 	dy = 0;
-	if (key.ctrl && key.name == "c")
+	if ((key.ctrl && key.name == "c") || match.victory)
 	{
 		termCleanup(key.name);
 	}
@@ -103,8 +102,7 @@ process.stdin.on('keypress', (str, key) =>
 		case (cmd.LOAD_HISTORY):
 		{
 			historyRestore(match, HISTORY_DEFAULT);
-			render(match);
-			return ;
+			break ;
 		}
 	}
 	if (includesOneOf(key.name, cmd.MOVEMENTS) && !movePiece(match, dx, dy, false))
