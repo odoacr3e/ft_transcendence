@@ -145,7 +145,25 @@ const updateUserFieldsById = async (id, data) => {
 	}
 	return await prisma.users.update({
 		where: { id_user: Number(id) },
-		data: updates
+		data: updates,
+		select: {
+			id_user: true,
+			name: true,
+			surname: true,
+			username: true,
+			email: true,
+			image: true,
+			nationality: true,
+			points: true,
+			title: true,
+			preferences: {
+				select: {
+					name: true,
+					description: true,
+					colors: true,
+				}
+			}
+		}
 	});
 }
 
