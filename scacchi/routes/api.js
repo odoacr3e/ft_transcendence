@@ -4,5 +4,6 @@ const router = lib.include.express.Router();
 
 router.use("/users", require("./users.js"));
 router.use("/game", require("./game.js"));
+router.use("/piece", require("./pieces.js"));
 
 module.exports = router;
