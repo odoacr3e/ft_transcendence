@@ -10,7 +10,7 @@ const usersQuery = require("../../query/usersQuery.js");
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  */
-const checkUser = async (req, res) => {
+const checkLogin = async (req, res) => {
 	try {
 		const { username, password } = req.body;
 		if (!username || !password)
@@ -52,4 +52,4 @@ const checkUser = async (req, res) => {
 };
 
 
-module.exports = { checkUser };
+module.exports = { checkLogin };
