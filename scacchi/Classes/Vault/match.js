@@ -99,6 +99,8 @@ class Match
 		this.history = new History();
 		this.historyCreateBool = false;
 		this.currentPlayer = this.white;
+		this.playerNum = 2;
+		this.sizeBoard = {w: 8, h: 8};
 		this.victory = "";
 	}
 	endTurn()

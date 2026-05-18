@@ -6,9 +6,9 @@
             "request": "launch",
             "name": "Launch Program",
             "skipFiles": ["<node_internals>/**"],
-            "program": "${workspaceFolder}/prove/scacchi/data/cursor.js",
+            "program": "${workspaceFolder}/scacchi/test/term.js",
             "console": "integratedTerminal", // Forza l'uso del terminale integrato
-            "internalConsoleOptions": "neverOpen" 
+            "internalConsoleOptions": "neverOpen"
         }
     ]
 }

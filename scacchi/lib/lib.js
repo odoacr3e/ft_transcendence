@@ -21,8 +21,7 @@ const Chess = {Piece, board, copyBoard, cursor, Square};
 const Macro = require("../Macro/macro.js");
 
 //SECTION - Enums
-const {eTeam, enumNames, enumValues} = require("../Macro/enums.js");
-const Enums = {eTeam, enumValues, enumNames};
+const Enums = require("../Macro/enums.js");
 
 //SECTION - utils function
 let utils = require("../utils/moveUtils.js");

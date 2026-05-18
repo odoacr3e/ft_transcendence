@@ -22,7 +22,7 @@ function mainTerm()
 
 	termInit();
 	match = vault.getDebugMatch();
-	init(match, lib.Macro.SEED);//, "|M|J|V|C|K|V|+J|M|\n|B|B| |B|B|B|B|B|\n| | | | | | | | |\n| |B| | | | | | |\n| | | | | | | | |\n| | | | | | | | |\n|B|B|B|B|B|B|B|B|\n|M| |V|C|K|V|J|M|\n");
+	init(match, lib.Macro.SEED);
 	dangerUpdateAll(match);
 	render(match);
 	return (match);
@@ -34,7 +34,7 @@ let	helpBool = true;
 //SECTION - eventLoop: binda i tasti per fare cose
 
 								let	TargetDangerSwitch = "None";
-/** @type {Array<String>} */	let	selected = [];
+/** @type {Array<string>} */	let	selected = [];
 
 process.stdin.on('keypress', (str, key) => 
 {

@@ -1,11 +1,12 @@
 // @ts-check
 const {Piece, copyBoard} = require("../../lib/lib.js").Chess;
 const {initBoard} = require("../../Classes/ChessBoard/chessBoard.js");
-const {eTeam, enumNames} = require("../../lib/lib.js").Enums;
+const {eTeam, enumNames, enumInitNames} = require("../../lib/lib.js").Enums;
 const {dangerUpdateAll} =	require("../../utils/moveUtils.js");
 const {Match} = require("../../Classes/Vault/match.js");
 const {clientBoard, Result} = require("./utils.js");
 const {initRng} = require("../../utils/random");
+const { Cursor } = require("../../Classes/Vault/cursor.js");
 
 /**
  * The Map board is added to result to be sent to the client. Steps:
@@ -81,16 +82,6 @@ function initSavedBoard(match, boardStr)
 	while (match.cursor.moveRow(-1))
 	dangerUpdateAll(match);
 	match.cursor.Restore();
-}
-
-/**
- * 
- * @param {Match} match 
- * @param {string} curr 
- */
-function assignPieceByType(match, curr)
-{
-
 }
 
 /**
@@ -210,6 +201,93 @@ function initRandomBoard(match, rng)
 	}
 	match.forceWhiteTurn();
 	dangerUpdateAll(match);
+}
+
+//SECTION - utils
+
+/**
+ * 
+ * @param {Match} match 
+ * @param {string} curr 
+ */
+function assignPieceByType(match, curr)
+{
+	let	pos;
+	let	team;
+	let	square;
+
+	if (!curr || curr == " ")
+		return ;
+	pos = match.cursor.square;
+	team = getTeamByCoord(match);
+	square = match.board.get(pos);
+	if (!square)
+		throw ("init: invalid coord");
+	if (curr.at(0) == "+")
+		curr = curr.slice(1);
+	switch (curr)
+	{
+		case (enumInitNames.BASTARDS) :
+			square.piece = new Piece(enumNames.BASTARDS, pos, team);
+			break ;
+		case (enumInitNames.CHAMPION) :
+			square.piece = new Piece(enumNames.CHAMPION, pos, team);
+			break ;
+		case (enumInitNames.GHOUL) :
+			square.piece = new Piece(enumNames.GHOUL, pos, team);
+			break ;
+		case (enumInitNames.JESTER) :
+			square.piece = new Piece(enumNames.JESTER, pos, team);
+			break ;
+		case (enumInitNames.KING) :
+			square.piece = new Piece(enumNames.KING, pos, team);
+			break ;
+		case (enumInitNames.MAGE) :
+			square.piece = new Piece(enumNames.MAGE, pos, team);
+			break ;
+		case (enumInitNames.MINOTAURUS) :
+			square.piece = new Piece(enumNames.MINOTAURUS, pos, team);
+			break ;
+		case (enumInitNames.VALKIRYA) :
+			square.piece = new Piece(enumNames.VALKIRYA, pos, team);
+			break ;
+		default:
+			throw ("init: unrecognized piece");
+	}
+}
+
+/**
+ * 
+ * @param {Match} match
+ */
+function getTeamByCoord(match)
+{
+	let	upper;
+	let	left;
+	let	right;
+
+	upper = (match.sizeBoard.h / 2);
+	left = (match.sizeBoard.w / 4);
+	right = match.sizeBoard.w - left;
+	if (match.playerNum == 2)
+	{
+		if (match.cursor.getRow() <= upper)
+			return (eTeam.Black);
+		return (eTeam.White);
+	}
+	if (match.playerNum == 4)
+	{
+		if (match.cursor.getCol() <= left)
+			return (eTeam.Blue);
+		else if (match.cursor.getCol() > right)
+			return (eTeam.Green);
+		else if (match.cursor.getRow() <= upper)
+			return (eTeam.Yellow);
+		else
+			return (eTeam.Red);
+	}
+	else
+		throw (`init: invalid number of player: ${match.playerNum}`);
 }
 
 module.exports = {init};

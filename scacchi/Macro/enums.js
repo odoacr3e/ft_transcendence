@@ -46,4 +46,17 @@ const enumNames = {
 	GHOUL: 'Ghoul'
 };
 
-module.exports = {eTeam, eEvents, enumNames, enumValues};
+
+const enumInitNames = 
+{
+	KING: 'K',
+	CHAMPION: 'C',
+	MINOTAURUS: 'M',
+	JESTER: 'J',
+	VALKIRYA: 'V',
+	BASTARDS: 'B',
+	MAGE: 'W',
+	GHOUL: 'G'
+};
+
+module.exports = {eTeam, eEvents, enumNames, enumInitNames, enumValues};

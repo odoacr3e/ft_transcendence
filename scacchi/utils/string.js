@@ -25,4 +25,27 @@ function includesOneOf(str)
     return ("");
 }
 
-module.exports = {includesOneOf};
+/**
+ * counts the occurences of needle in haystack
+ * @param {string} haystack the bigger string
+ * @param {string} needle the substring to find
+ */
+function strCount(haystack, needle)
+{
+	let	needleLen;
+	let	count;
+	let	i;
+
+	needleLen = needle.length;
+	count = 0;
+	i = 0;
+	while (i != haystack.length)
+	{
+		if (haystack.slice(i, needleLen + 1) == needle)
+			count++;
+		i++;
+	}
+	return (count);
+}
+
+module.exports = {includesOneOf, strCount};
