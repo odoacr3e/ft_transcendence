@@ -61,7 +61,6 @@ function gameHandler(req, res)
 	console.clear();
 	if (type == "move")
 		result = move(match, from, to);
-	
 	else if (type == "boost")
 		result = boost(match, from);
 	else if (type == "boostMove")

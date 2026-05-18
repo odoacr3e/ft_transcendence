@@ -5,6 +5,7 @@ const {Cursor} = require("./cursor.js");
 const {eTeam, eEvents} = require("../../Macro/enums.js");
 const {Square, initBoard, copyBoard, copyBoostedTargetZones} = require("../ChessBoard/chessBoard.js");
 const {HISTORY_DEFAULT, HISTORY_PATH} = require("../../Macro/macro.js");
+const {Result} = require("../endPoint/result.js");
 
 const preset = {
 	white: 
@@ -116,12 +117,20 @@ class Match
 	{
 		this.currentPlayer = this.white;
 	}
-	CheckMate(result)
+	/** @param {Result | null} result */
+	CheckMate(result=null)
 	{
 		console.log("haaaaaiiiiii viiiiiiintoooooooooo!!!!!!!");
 		console.log("Premi un qualsiasi tasto per concludere...");
 		this.victory = this.currentPlayer.team;
 		this.history.victory = this.victory;
+		if (result != null)
+		{
+			result.msg = "you win!";
+			result.status = 200;
+			result.youWin = true;
+		}
+		return (result);
 	}
 	Reset()
 	{

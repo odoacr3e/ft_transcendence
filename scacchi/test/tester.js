@@ -23,14 +23,16 @@ function testerMain()
 	matchName = process.argv.at(2);
 	if (!matchName)
 		return (execAllTests());
+	if (matchName.endsWith(".json") == false)
+		matchName = matchName + ".json";
 	currMatch = matchName;
-	if (matchName.indexOf(".."))
+	if (matchName.indexOf("..") != -1)
 		return (testerFail(MSG.INVALID_DIR));
-	matchPath = `${HISTORY_PATH}${process.argv.at(2)}`;
+	matchPath = `${HISTORY_PATH}${matchName}`;
 	if (!matchPath)
-		return (testerFail(MSG.INVALID_PATH));
+		return (testerFail(MSG.INVALID_PATH, matchPath));
 	if (fs.existsSync(matchPath) == false)
-		return (testerFail(MSG.INVALID_PATH));
+		return (testerFail(MSG.INVALID_PATH, matchPath));
 	execTest(matchPath);
 }
 
