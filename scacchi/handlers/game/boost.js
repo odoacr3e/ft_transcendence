@@ -27,7 +27,7 @@ function boost(match, from)
 	{
 		// @ts-ignore
 		if (CheckMateCheck(match, match[match.currentPlayer.next].King))
-			match.CheckMate();
+			return (match.CheckMate(result));
 		else if (match.historyCreateBool == false)
 			endTurn(match);
 	}

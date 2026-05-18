@@ -35,7 +35,7 @@ const testerEnum =
 	INVALID_JSON: "The test JSON is missing some core data",
 	INVALID_MSG: "Some of these message got broken",
 	//SECTION - programErrors: problems caused by alerusso, mbiagi or edraccan
-	WIN_WRONG: "No player should NOT have won",
+	WIN_WRONG: "No player should have won",
 	WIN_MISS: "The player $1 should have won",
 	WIN_PLAYER: "Wrong winner: the player $1 should have won",
 	BOARD: "Board does not match\nCorrect:\n$1Wrong:\n$2"

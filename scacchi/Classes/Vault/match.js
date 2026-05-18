@@ -130,6 +130,8 @@ class Match
 			result.status = 200;
 			result.youWin = true;
 		}
+		else
+			return (new Result());
 		return (result);
 	}
 	Reset()
@@ -145,7 +147,8 @@ class Match
 		this.moves = 0;
 		this.boost = 0;
 		this.history = new History();
-		this.currentPlayer = this.white;		
+		this.currentPlayer = this.white;	
+		this.victory = "";	
 	}
 	/** @param {string} name */
 	Log(name)
@@ -185,6 +188,15 @@ class History
 
 		if (fs.existsSync(HISTORY_PATH) == false)
 			fs.mkdirSync(HISTORY_PATH);
+		for (const event of this.events)
+		{
+			// @ts-ignore
+			delete event.pieceBoosterTargetZones;
+			// @ts-ignore
+			delete event.movedPiece;
+			//@ts-ignore
+			delete event.isBoostedBool;
+		}
 		if (name)
 		{
 			name = HISTORY_PATH + name;
