@@ -68,7 +68,7 @@ function gameHandler(req, res)
 	else if (type == "endTurn")
 		result = endTurn(match);
 	else if (type == "init")
-		result = init(match, from);
+		result = init(match, from, from);
 	else
 		return (error(res, null, 400, `invalid type ${type}`));
 	if (!result || !result.status)

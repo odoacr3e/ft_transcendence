@@ -22,7 +22,7 @@ function mainTerm()
 
 	termInit();
 	match = vault.getDebugMatch();
-	init(match, lib.Macro.SEED);
+	init(match, lib.Macro.SEED);//, "|M|J|V|C|K|V|+J|M|\n|B|B| |B|B|B|B|B|\n| | | | | | | | |\n| |B| | | | | | |\n| | | | | | | | |\n| | | | | | | | |\n|B|B|B|B|B|B|B|B|\n|M| |V|C|K|V|J|M|\n");
 	dangerUpdateAll(match);
 	render(match);
 	return (match);

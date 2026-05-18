@@ -128,15 +128,24 @@ class Cursor
 {
 	constructor()
 	{
-		/** @type {string} */ this.square = "a1", // the string position: a1, b2, c3...
-		this.getRow = getCol.bind(this),
-		this.getCol = getRow.bind(this),
-		this.setRow = setCol.bind(this),
-		this.setCol = setRow.bind(this),
-		this.moveRow = moveCol.bind(this),
-		this.moveCol = moveRow.bind(this),
-		this.set = set.bind(this),
-		this.setCursor = setCursor.bind(this)
+		/** @type {string} */ this.square = "a1"; // the string position: a1, b2, c3...
+		this._save_pos = "a1"; 
+		this.getRow = getCol.bind(this);
+		this.getCol = getRow.bind(this);
+		this.setRow = setCol.bind(this);
+		this.setCol = setRow.bind(this);
+		this.moveRow = moveCol.bind(this);
+		this.moveCol = moveRow.bind(this);
+		this.set = set.bind(this);
+		this.setCursor = setCursor.bind(this);
+	}
+	Save()
+	{
+		this._save_pos = this.square;
+	}
+	Restore()
+	{
+		this.square = this._save_pos;
 	}
 }
 

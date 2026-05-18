@@ -12,29 +12,85 @@ const {initRng} = require("../../utils/random");
  * 1) the property board is added to the result object
  * 2) JSON does not support Map. So we convert the Map board to an Object
  * @param {Match} match
- * @param {Number | null} seed seed to start
+ * @param {number | null} seed seed to start
+ * @param {string | null} boardString seed to start
  * @returns 
  */
-function init(match, seed=null)
+function init(match, seed=null, boardString=null)
 {
 	let	result;
 	let	rng;
 
-	// match.board = initBoard();
-	console.log(seed);
+	if (boardString && boardString.indexOf("|") == -1)
+		boardString = null;
 	if (seed == null)
 		seed = Math.floor(Math.random() * (1 << 30));
 	result = new Result();
 	rng = initRng(seed);
 	match.board = initBoard();
-	if (seed != 0)
-		initRandomBoard(match, rng);
-	else
+	if (boardString != null)
+		initSavedBoard(match, boardString);
+	else if (seed == 0)
 		initClassicBoard(match);
+	else
+		initRandomBoard(match, rng);
+	// @ts-ignore
 	result.status = 200;
 	// @ts-ignore
 	result.board = clientBoard(match.board);
 	return (result);
+}
+
+/**
+ * 
+ * @param {Match} match 
+ * @param {string} boardStr 
+ */
+function initSavedBoard(match, boardStr)
+{
+	let	rows;
+	let	i;
+	let	indexSep;//|C|B... |= sep >> indexSep = 2
+	let	curr;
+
+	match.cursor.Save();
+	rows = boardStr.split("\n");
+	rows.pop();
+	match.cursor.set(`a${rows.length}`);
+	i = 0;
+	do
+	{
+		match.cursor.setCol(1);
+		do
+		{// |C|B|...
+			if (rows[i]?.at(0) == "|") // @ts-ignore
+				rows[i] = rows[i]?.slice(1);// C|B|...
+			indexSep = rows[i]?.indexOf("|");
+			if (indexSep != undefined && indexSep != -1)
+			{
+				curr = rows[i]?.slice(0, indexSep);// curr = C
+				//@ts-ignore
+				rows[i] = rows[i]?.slice(indexSep + 1);// next = B|...
+				console.log(curr, match.cursor.square);
+				assignPieceByType(match, curr);
+			}
+		}
+		while (match.cursor.moveCol(1))
+		++i;
+	}
+	while (match.cursor.moveRow(-1))
+	dangerUpdateAll(match);
+	match.cursor.Restore();
+}
+
+/**
+ * 
+ * @param {Match} match 
+ * @param {string} curr 
+ */
+function assignPieceByType(match, curr)
+{
+
 }
 
 /**
