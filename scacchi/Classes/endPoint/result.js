@@ -28,6 +28,18 @@ class Result
 		if (other.board)
 			this.board = copyBoard(other.board, this.board);
 	}
+	Success(msg="OK")
+	{
+		this.status = 200;
+		this.msg = msg;
+		return (true);
+	}
+	Error(msg="Backend failed for unknown reasons", status=500)
+	{
+		this.status = status;
+		this.msg = msg;
+		return (false);
+	}
 }
 
 module.exports = {Result};

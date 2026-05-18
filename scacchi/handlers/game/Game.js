@@ -2,6 +2,7 @@
 
 const	{abort} = require("node:process");
 const	{responseFormatter} = require("../../utils/response");
+const { Result, clientBoard } = require("./utils.js");
 const	move = require("./move").move; 
 const	endTurn = require("./endTurn").endTurn; 
 const	boost = require("./boost").boost;
@@ -47,7 +48,7 @@ function gameChecks(req, res, next)
 }
 
 /**
- * 
+ * handler of game POST requests
  * @param {*} req 
  * @param {*} res 
  */
@@ -81,6 +82,40 @@ function gameHandler(req, res)
 }
 
 /**
+ * handler of game GET requests
+ * @param {*} req 
+ * @param {*} res 
+ */
+function gameInfo(req, res)
+{
+	const	{type, from, to} = req?.body;
+	let		result;
+	let		match;
+
+	if (!res || !res.status || !res.end || !req)
+		return (error(res, null, 500, "bad response object format"));
+	if (!req.body || !req.body.type)
+		return (error(res, null, 400, "json must have a string named `type`"));
+	match = vault.getDebugMatch();
+	result = new Result();
+	if (type == "reload")
+	{
+		result.Success();//@ts-ignore
+		result.board = clientBoard(match.board);
+		result.youWin = match.victory != "";
+	}
+	else if (type == "history")
+	{
+		result.Success();//@ts-ignore
+		result.history = match.history;
+	}
+	else
+		return (error(res, null, 400, `invalid type ${type}`));
+	result = responseFormatter(result, null, null);
+	res.status(200).json(result);
+}
+
+/**
  * prints the error in console and return a valid json
  * @param {Response | null} res default: null
  * @param {*} result
@@ -102,4 +137,4 @@ function error(res=null, result=null, status=0, msg=null)
 	res.json(result);
 }
 
-module.exports = {gameChecks, gameHandler, error, move, endTurn, boost, init};
+module.exports = {gameChecks, gameHandler, gameInfo, error, move, endTurn, boost, init};

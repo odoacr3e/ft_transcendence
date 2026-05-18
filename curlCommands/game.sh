@@ -24,6 +24,17 @@ if [[ $1 == "--help" ||  $1 == "" ]];then
 	usage; exit 0
 fi
 
+if [[ $1 == "--get" ]];then
+	curl -X GET -H "Content-Type: application/json" -d "\
+	{\
+		\"type\": \"$2\",\
+		\"from\": \"$3\",\
+		\"to\": \"$4\"\
+	}\
+	" http://localhost:"$port"/api/game/	
+	exit 0
+fi
+
 curl -X POST -H "Content-Type: application/json" -d "\
 {\
 	\"type\": \"$1\",\
