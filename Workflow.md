@@ -95,9 +95,16 @@ boardConverter()
 	✓ bottone per fine turno
 	✓ richieste del boosting
 	✓ Coordinate delle caselle della scacchiera
-	▫ drag non fastasma [MAVI]
-	▫ movimento per i pezzi boostati {LEO}
-	? oreintamento della scacchiera in base al colore dei pezzi del giocatore
+	✓ drag non fastasma
+	▫ movimento per i pezzi boostati
+	↳	▫ implementazione del drag [MAVI]
+		✓ bastardo
+		▫ minotauro {LEO}
+		▫ giullare
+		▫ valkiaria
+		▫ campione
+		▫ re
+	? orientamento della scacchiera in base al colore dei pezzi del giocatore
 
 //FIXME - 
 

@@ -23,7 +23,6 @@ export async function boostedMovement()
 		{
 			setHighlightTrue(boostedZones, "boosted", "both");
 			localInfo.savedBoostedMap = boostedZones;
-			localInfo.secondTurn = true;
 			localInfo.lastClickedId = localInfo.clickedId;
 		}
 		else
