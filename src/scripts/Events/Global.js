@@ -169,15 +169,17 @@ function checkForHighlightMove()
 {	
 	let bool
 
-	if (localInfo.secondTurn && localInfo.savedBoostedMap.has(localInfo.clickedId))
+	if (localInfo.secondTurn && ((localInfo.savedBoostedMap && 
+		localInfo.savedBoostedMap.has(localInfo.clickedId)) ||
+		localInfo.secondMove))
 		bool = true;
 	else
 		bool = localBoard.get(localInfo.clickedId).highlight;
 	
 	if (localInfo.clickedId !== localInfo.lastClickedId)
 	{
-		if (localBoard.get(localInfo.lastClickedId)?.piece.type === ("Bastard" || "King") && 
-			localBoard.get(localInfo.lastClickedId)?.piece.useAbilityBool)
+		const piece = localBoard.get(localInfo.lastClickedId)?.piece;
+		if (piece && piece.type !== ("Bastard" || "King") && !piece.useAbilityBool)
 			clearHighlight();
 	}
 	else { clearHighlight("selected"); }

@@ -11,7 +11,7 @@
         "price": 1,
         "team": "white",
         "isMovedBool": true,
-        "isBoostedBool": false,
+        "isBoostedBool": true,
         "pos": "e3",
         "moveLongRangeDEBUG": false
       },
