@@ -8,7 +8,6 @@ const getAllPieces = async () => {
 			id_piece: true,
 			name: true,
 			cost: true,
-			image: true,
 			movement: true,
 			info: true,
 			lore: true,
@@ -16,8 +15,7 @@ const getAllPieces = async () => {
 				select: {
 					id_ability: true,
 					name: true,
-					description: true,
-					image: true
+					description: true
 				}
 			}
 		}
@@ -33,7 +31,6 @@ const getPieceById = async (id) => {
 			id_piece: true,
 			name: true,
 			cost: true,
-			image: true,
 			movement: true,
 			info: true,
 			lore: true,
@@ -41,8 +38,7 @@ const getPieceById = async (id) => {
 				select: {
 					id_ability: true,
 					name: true,
-					description: true,
-					image: true
+					description: true
 				}
 			}
 		}

@@ -11,7 +11,6 @@ model abilities {
   id_ability  Int      @id @default(autoincrement())
   name        String   @db.VarChar(250)
   description String
-  image       Bytes?
   pieces      pieces[]
 }
 
@@ -51,7 +50,6 @@ model pieces {
   id_piece   Int       @id @default(autoincrement())
   name       String    @db.VarChar(250)
   cost       Int       @default(4)
-  image      Bytes?
   id_ability Int
   movement   String
   info       String?
