@@ -47,7 +47,7 @@ async function loadReceivedMatch()
 	// const response = await fetch("/api/game/",
 	// const response = await fetch("/Mino.json",
 	// const response = await fetch("/Champ.json",
-	const response = await fetch("/FILE.json",
+	const response = await fetch("/FILE-ONE.json",
 	{
 		method: "POST",
 		headers: { "Content-Type": "application/json" },

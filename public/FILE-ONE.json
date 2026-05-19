@@ -65,7 +65,7 @@
         "price": 1,
         "team": "white",
         "isMovedBool": false,
-        "isBoostedBool": true,
+        "isBoostedBool": false,
         "pos": "a2",
         "moveLongRangeDEBUG": false
       },
@@ -393,7 +393,7 @@
         "price": 0,
         "team": "white",
         "isMovedBool": true,
-        "isBoostedBool": true,
+        "isBoostedBool": false,
         "pos": "e1",
         "moveLongRangeDEBUG": false
       },
@@ -404,9 +404,7 @@
         "d1",
         "e2"
       ],
-      "boostedTargetZones": {
-		"e1": ["d2", "d1", "e2", "f2", "f1"]
-	  }
+      "boostedTargetZones": {}
     },
     "e2": {
       "piece": {
@@ -493,7 +491,7 @@
         "price": 3,
         "team": "white",
         "isMovedBool": false,
-        "isBoostedBool": true,
+        "isBoostedBool": false,
         "pos": "f1",
         "moveLongRangeDEBUG": true
       },
@@ -501,12 +499,7 @@
         "g2",
         "e2"
       ],
-      "boostedTargetZones": {
-		"f1": [
-			"b5",
-			"h3"
-		]
-	  }
+      "boostedTargetZones": {}
     },
     "f2": {
       "piece": {
@@ -566,7 +559,7 @@
         "price": 3,
         "team": "black",
         "isMovedBool": false,
-        "isBoostedBool": true,
+        "isBoostedBool": false,
         "pos": "f8",
         "moveLongRangeDEBUG": true
       },
@@ -574,12 +567,7 @@
         "e7",
         "g7"
       ],
-      "boostedTargetZones": {
-		"f8": [
-			"b5",
-			"h3"
-		]
-	  }
+      "boostedTargetZones": {}
     },
     "g1": {
       "piece": {
@@ -587,7 +575,7 @@
         "price": 5,
         "team": "white",
         "isMovedBool": false,
-        "isBoostedBool": true,
+        "isBoostedBool": false,
         "pos": "g1",
         "moveLongRangeDEBUG": false
       },
@@ -596,14 +584,7 @@
         "f3",
         "e2"
       ],
-      "boostedTargetZones": {
-		"g1": [
-			"e8",
-			"f7",
-			"a8",
-			"h7"
-		]
-	  }
+      "boostedTargetZones": {}
     },
     "g2": {
       "piece": {
@@ -680,7 +661,7 @@
         "price": 5,
         "team": "white",
         "isMovedBool": false,
-        "isBoostedBool": true,
+        "isBoostedBool": false,
         "pos": "h1",
         "moveLongRangeDEBUG": true
       },

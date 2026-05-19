@@ -54,7 +54,7 @@
         "price": 3,
         "team": "white",
         "isMovedBool": false,
-        "isBoostedBool": true,
+        "isBoostedBool": false,
         "pos": "f1",
         "moveLongRangeDEBUG": true
       },
@@ -66,12 +66,7 @@
 		"b5",
 		"a6"
       ],
-      "boostedTargetZones": {
-		"f1": [
-			"b5",
-			"h3"
-		]
-	  }
+      "boostedTargetZones": {}
     }
   },
   "youWin": false,

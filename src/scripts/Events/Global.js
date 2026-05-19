@@ -69,7 +69,9 @@ async function globalEvents()
 	});
 
 	ROOT_DIV.addEventListener("dragstart", function (event) {
-		highlightOnDrag(event);
+		if ((localInfo.secondMove && localInfo.savedBoostedMap && 
+			localInfo.savedBoostedMap.has(event.target.parentNode.id)) || !localInfo.secondMove)
+			highlightOnDrag(event);
 	});
 
 	ROOT_DIV.addEventListener("mousedown", function (event) {
@@ -268,7 +270,11 @@ function highlightOnDrag(event)
 	 	
 		if (Piece.team != Player.team) { return; }
 
+		// non so perche' ma non funziona al 100%...
 		PIECES_HIGHLIGHT[Piece.type](clickedId);
+		if (localInfo.savedBoostedMap && localInfo.savedBoostedMap.has(clickedId))
+			localBoard.get(clickedId).boostedHighlight = true;
+		localInfo.lastClickedId = event.target.parentNode.id;
 		resetPrice();
 	}
 }

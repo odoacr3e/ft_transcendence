@@ -1,6 +1,7 @@
 import { localBoard, localInfo }	from "@/scripts/Data/Variables";
 import { updateMatchState }			from "@/scripts/Data/Archi"
 import { clearHighlight }			from "@/scripts/Helper/RenderUtils";
+import { setHighlightTrue }			from '@/scripts/Events/Global'
 
 // Deprecata
 export function movePiece(fromSquareId, toSquareId)
@@ -43,8 +44,30 @@ export function onDrop(event, toSquare)
 {
 	event.preventDefault();
 
-	const fromSquareId = event.dataTransfer.getData('fromSquareId')
-	if (fromSquareId !== toSquare.id && localBoard.get(toSquare.id).highlight)
+	const fromSquareId = event.dataTransfer.getData('fromSquareId');
+	if (localInfo.secondMove || localBoard.get(fromSquareId).piece.useAbilityBool)
+	{
+		let TargetZone;
+		const boostedZones = localBoard.get(fromSquareId).boostedTargetZones.get(fromSquareId);
+		if (localBoard.get(fromSquareId).piece.type !== ("Bastards" || "King"))
+			TargetZone = localBoard.get(fromSquareId).boostedTargetZones.has(toSquare.id);
+		else
+			TargetZone = localBoard.get(fromSquareId).targetZones.has(toSquare.id);
+		if (TargetZone)
+		{
+			localInfo.dropDone = true;
+			requestToBack(fromSquareId, toSquare.id).then(
+				function(value) {if (value) {
+					clearHighlight();
+					setHighlightTrue(boostedZones, "boosted", "both");
+					localInfo.savedBoostedMap = boostedZones;
+					localInfo.secondMove = true;
+				}},
+				function(value) {if (!value) { localInfo.dropDone = false; console.log("Mossa non valida"); }}
+			);
+		}
+	}
+	else if (fromSquareId !== toSquare.id && localBoard.get(toSquare.id).highlight)
 	{
 		localInfo.dropDone = true;
 		requestToBack(fromSquareId, toSquare.id).then(

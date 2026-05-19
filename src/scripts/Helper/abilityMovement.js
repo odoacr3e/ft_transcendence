@@ -43,7 +43,7 @@ export async function boostedMovement()
 			if(!result)
 				console.log("[bostedMovent]: invalid move");
 			else
-				console.log("yippie");
+				localInfo.secondMove = false;
 		}
 	}
 }
