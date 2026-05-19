@@ -53,11 +53,19 @@ async function globalEvents()
 	const ROOT_DIV = getRootDiv();
 
 	ROOT_DIV.addEventListener("click", function (event) {
-		if (!checkPermision(event))		{ clearHighlight(); return; }
+		if (!checkPermision(event))	{ clearHighlight(); return; }
 		// console.log(`CID: ${localInfo.clickedId}, LCID: ${localInfo.lastClickedId}`);
-		if (usingAbility())				{ boostedMovement(); return; }
-		if (checkForHighlightMove())	{ sendToBackend(); } //dovrebbe esserci un wait ma non lo vuole????????
-		else 							{ highlightOnClick(event); }
+		if (checkForHighlightMove()) 
+		{
+			if (usingAbility())
+			{
+				boostedMovement(); 
+				return;
+			}
+			sendToBackend(); 
+		}
+		else
+			highlightOnClick(event);
 	});
 
 	ROOT_DIV.addEventListener("dragstart", function (event) {
@@ -159,9 +167,19 @@ function checkPermision(event)
 
 function checkForHighlightMove()
 {	
-	let bool = localBoard.get(localInfo.clickedId).highlight
+	let bool
+
+	if (localInfo.secondTurn && localInfo.savedBoostedMap.has(localInfo.clickedId))
+		bool = true;
+	else
+		bool = localBoard.get(localInfo.clickedId).highlight;
 	
-	if (localInfo.clickedId !== localInfo.lastClickedId) { clearHighlight(); }
+	if (localInfo.clickedId !== localInfo.lastClickedId)
+	{
+		if (localBoard.get(localInfo.lastClickedId)?.piece.type === ("Bastard" || "King") && 
+			localBoard.get(localInfo.lastClickedId)?.piece.useAbilityBool)
+			clearHighlight();
+	}
 	else { clearHighlight("selected"); }
 
 	return(bool);
