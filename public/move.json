@@ -1,71 +1,20 @@
 {
   "board": {
-    "e2": {
+    "g1": {
       "piece": null,
       "targetZones": [],
       "boostedTargetZones": {}
     },
-    "e3": {
+    "a8": {
       "piece": {
-        "type": "Bastards",
-        "price": 1,
-        "team": "white",
-        "isMovedBool": true,
-        "isBoostedBool": true,
-        "pos": "e3",
-        "moveLongRangeDEBUG": false
-      },
-      "targetZones": [ "e4" ],
-      "boostedTargetZones": {
-		"e2" : [
-			"d2",
-			"d1",
-			"f2",
-			"f1",
-			"e1"
-		]
-	  }
-    },
-    "d1": {
-      "piece": {
-        "type": "Champion",
-        "price": 10,
+        "type": "Jester",
+        "price": 5,
         "team": "white",
         "isMovedBool": false,
         "isBoostedBool": false,
-        "pos": "d1",
-        "moveLongRangeDEBUG": true
+        "pos": "h8"
       },
-      "targetZones": [
-        "e2",
-        "c2",
-        "e1",
-        "c1",
-        "d2",
-		"f3",
-		"g4",
-		"h5"
-      ],
-      "boostedTargetZones": {}
-    },
-    "f1": {
-      "piece": {
-        "type": "Valkirya",
-        "price": 3,
-        "team": "white",
-        "isMovedBool": false,
-        "isBoostedBool": false,
-        "pos": "f1",
-        "moveLongRangeDEBUG": true
-      },
-      "targetZones": [
-        "g2",
-        "e2",
-		"d3",
-		"c4",
-		"b5",
-		"a6"
-      ],
+      "targetZones": [],
       "boostedTargetZones": {}
     }
   },

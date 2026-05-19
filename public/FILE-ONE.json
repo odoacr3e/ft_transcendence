@@ -66,8 +66,7 @@
         "team": "white",
         "isMovedBool": false,
         "isBoostedBool": false,
-        "pos": "a2",
-        "moveLongRangeDEBUG": false
+        "pos": "a2"
       },
       "targetZones": [
         "a4",
@@ -102,8 +101,7 @@
         "team": "black",
         "isMovedBool": false,
         "isBoostedBool": false,
-        "pos": "a7",
-        "moveLongRangeDEBUG": false
+        "pos": "a7"
       },
       "targetZones": [
         "a5",
@@ -134,8 +132,7 @@
         "team": "white",
         "isMovedBool": false,
         "isBoostedBool": false,
-        "pos": "b1",
-        "moveLongRangeDEBUG": false
+        "pos": "b1"
       },
       "targetZones": [
         "c3",
@@ -151,8 +148,7 @@
         "team": "white",
         "isMovedBool": false,
         "isBoostedBool": false,
-        "pos": "b2",
-        "moveLongRangeDEBUG": false
+        "pos": "b2"
       },
       "targetZones": [
         "b4",
@@ -187,8 +183,7 @@
         "team": "black",
         "isMovedBool": false,
         "isBoostedBool": false,
-        "pos": "b7",
-        "moveLongRangeDEBUG": false
+        "pos": "b7"
       },
       "targetZones": [
         "b5",
@@ -203,8 +198,7 @@
         "team": "black",
         "isMovedBool": false,
         "isBoostedBool": false,
-        "pos": "b8",
-        "moveLongRangeDEBUG": false
+        "pos": "b8"
       },
       "targetZones": [
         "c6",
@@ -236,8 +230,7 @@
         "team": "white",
         "isMovedBool": false,
         "isBoostedBool": false,
-        "pos": "c2",
-        "moveLongRangeDEBUG": false
+        "pos": "c2"
       },
       "targetZones": [
         "c4",
@@ -272,8 +265,7 @@
         "team": "black",
         "isMovedBool": false,
         "isBoostedBool": false,
-        "pos": "c7",
-        "moveLongRangeDEBUG": false
+        "pos": "c7"
       },
       "targetZones": [
         "c5",
@@ -323,8 +315,7 @@
         "team": "white",
         "isMovedBool": false,
         "isBoostedBool": false,
-        "pos": "d2",
-        "moveLongRangeDEBUG": false
+        "pos": "d2"
       },
       "targetZones": [
         "d4",
@@ -359,8 +350,7 @@
         "team": "black",
         "isMovedBool": false,
         "isBoostedBool": false,
-        "pos": "d7",
-        "moveLongRangeDEBUG": false
+        "pos": "d7"
       },
       "targetZones": [
         "d5",
@@ -394,8 +384,7 @@
         "team": "white",
         "isMovedBool": true,
         "isBoostedBool": false,
-        "pos": "e1",
-        "moveLongRangeDEBUG": false
+        "pos": "e1"
       },
       "targetZones": [
         "f2",
@@ -412,9 +401,8 @@
         "price": 1,
         "team": "white",
         "isMovedBool": false,
-        "isBoostedBool": true,
-        "pos": "e2",
-        "moveLongRangeDEBUG": false
+        "isBoostedBool": false,
+        "pos": "e2"
       },
       "targetZones": [
         "e4",
@@ -457,8 +445,7 @@
         "team": "black",
         "isMovedBool": false,
         "isBoostedBool": false,
-        "pos": "e7",
-        "moveLongRangeDEBUG": false
+        "pos": "e7"
       },
       "targetZones": [
         "e5",
@@ -473,8 +460,7 @@
         "team": "black",
         "isMovedBool": false,
         "isBoostedBool": false,
-        "pos": "e8",
-        "moveLongRangeDEBUG": false
+        "pos": "e8"
       },
       "targetZones": [
         "d7",
@@ -508,8 +494,7 @@
         "team": "white",
         "isMovedBool": false,
         "isBoostedBool": false,
-        "pos": "f2",
-        "moveLongRangeDEBUG": false
+        "pos": "f2"
       },
       "targetZones": [
         "f4",
@@ -544,8 +529,7 @@
         "team": "black",
         "isMovedBool": false,
         "isBoostedBool": false,
-        "pos": "f7",
-        "moveLongRangeDEBUG": false
+        "pos": "f7"
       },
       "targetZones": [
         "f5",
@@ -575,9 +559,8 @@
         "price": 5,
         "team": "white",
         "isMovedBool": false,
-        "isBoostedBool": false,
-        "pos": "g1",
-        "moveLongRangeDEBUG": false
+        "isBoostedBool": true,
+        "pos": "g1"
       },
       "targetZones": [
         "h3",
@@ -593,8 +576,7 @@
         "team": "white",
         "isMovedBool": false,
         "isBoostedBool": false,
-        "pos": "g2",
-        "moveLongRangeDEBUG": false
+        "pos": "g2"
       },
       "targetZones": [
         "g4",
@@ -629,8 +611,7 @@
         "team": "black",
         "isMovedBool": false,
         "isBoostedBool": false,
-        "pos": "g7",
-        "moveLongRangeDEBUG": false
+        "pos": "g7"
       },
       "targetZones": [
         "g5",
@@ -645,8 +626,7 @@
         "team": "black",
         "isMovedBool": false,
         "isBoostedBool": false,
-        "pos": "g8",
-        "moveLongRangeDEBUG": false
+        "pos": "g8"
       },
       "targetZones": [
         "h6",
@@ -678,8 +658,7 @@
         "team": "white",
         "isMovedBool": false,
         "isBoostedBool": false,
-        "pos": "h2",
-        "moveLongRangeDEBUG": false
+        "pos": "h2"
       },
       "targetZones": [
         "h4",
@@ -714,8 +693,7 @@
         "team": "black",
         "isMovedBool": false,
         "isBoostedBool": false,
-        "pos": "h7",
-        "moveLongRangeDEBUG": false
+        "pos": "h7"
       },
       "targetZones": [
         "h5",

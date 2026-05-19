@@ -1,7 +1,7 @@
 import { localBoard, localPlayers, localInfo }	from "@/scripts/Data/Variables";
 import { clearHighlight, resetPrice }			from "@/scripts/Helper/RenderUtils";
 import { PIECES_HIGHLIGHT }						from "@/scripts/Helper/piecesHighlights";
-import { boostedMovement } 						from "@/scripts/Helper/abilityMovement";
+import { PIECES_ABILITY } 						from "@/scripts/Helper/abilityMovement";
 import { computePosition }						from "@floating-ui/dom";
 import { requestToBack }						from "./Movements.js";
 import { getRootDiv }							from "@/scripts/Helper/Constants";
@@ -19,10 +19,10 @@ function useAbility()
 		piece.useAbilityBool = false;
 	else 
 	{ 
-		piece.useAbilityBool = true; 
-		//chiamata alla funzione mvimento?
+		piece.useAbilityBool = true;
+		localInfo.usingAbility = piece.type;
+		console.log(`who the fuck i am: ${localInfo.usingAbility}`);
 	}
-
 	PIECES_HIGHLIGHT[piece.type](clickedId);
 }
 
@@ -52,14 +52,15 @@ async function globalEvents()
 {
 	const ROOT_DIV = getRootDiv();
 
-	ROOT_DIV.addEventListener("click", function (event) {
+	ROOT_DIV.addEventListener("click", async function (event) {
 		if (!checkPermision(event))	{ clearHighlight(); return; }
-		// console.log(`CID: ${localInfo.clickedId}, LCID: ${localInfo.lastClickedId}`);
+		console.log(`CID: ${localInfo.clickedId}, LCID: ${localInfo.lastClickedId}`);
 		if (checkForHighlightMove()) 
 		{
 			if (usingAbility())
 			{
-				boostedMovement(); 
+				// console.log("avemmu finiu de grata o cu ae mosche?");
+				await PIECES_ABILITY[localInfo.usingAbility]();
 				return;
 			}
 			sendToBackend(); 
@@ -127,7 +128,7 @@ async function sendToBackend(flag)
 
 	let TargetZone;
 
-	if (pMoving?.useAbilityBool && pMoving?.type !== ("Bastards" || "King"))
+	if (pMoving?.useAbilityBool && pMoving?.type !== "Bastards" && pMoving?.type !== "King")
 		TargetZone = localBoard.get(lastClickedId).boostedTargetZones.has(clickedId);
 	else
 		TargetZone = localBoard.get(lastClickedId).targetZones.has(clickedId);
@@ -159,12 +160,16 @@ function checkPermision(event)
 	
 	if (localInfo.clickedId === "" || localInfo.clickedId === "board") { return (false) }; //dragging multiplo strano
 
-	const Piece = localBoard.get(localInfo.clickedId).piece;
-	const Player = localPlayers.values().find(p => p.isPlaying === true);
-	 	
+	const Square  = localBoard.get(localInfo.clickedId);
+	const Piece   = Square.piece;
+	const Player  = localPlayers.values().find(p => p.isPlaying === true);
+
+	if (Square.highlight || Square.boostedHighlight) 
+		return (true);
+
 	if (Piece && Piece.team != Player.team) { localInfo.lastClickedId = null; return false; }
 
-	return true;
+	return (true);
 }
 
 function checkForHighlightMove()
@@ -176,16 +181,18 @@ function checkForHighlightMove()
 		localInfo.secondMove))
 		bool = true;
 	else
-		bool = localBoard.get(localInfo.clickedId).highlight;
+		bool =	localBoard.get(localInfo.clickedId).highlight ||
+				localBoard.get(localInfo.clickedId).boostedHighlight;
 	
 	if (localInfo.clickedId !== localInfo.lastClickedId)
 	{
 		const piece = localBoard.get(localInfo.lastClickedId)?.piece;
-		if (piece && piece.type !== ("Bastard" || "King") && !piece.useAbilityBool)
+		if (piece && piece.type !== "Bastard" && piece.type !== "King" && !piece.useAbilityBool)
 			clearHighlight();
 	}
 	else { clearHighlight("selected"); }
-
+	// console.log(`checkForHighlightMove: ${bool}`);
+	
 	return(bool);
 }
 

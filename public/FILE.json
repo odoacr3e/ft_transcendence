@@ -1,0 +1,762 @@
+{ 
+  "youWin": false,
+  "log": {
+    "msg": "OK",
+    "status": 200
+  },
+  "p1": {
+    "name": "Player1",
+    "nPoints": 0,
+    "bonusPointCounter": 0,
+    "nPieces": 0,
+    "team": "white",
+    "next": "black",
+    "isPlaying": true,
+    "King": "e1"
+  },
+  "p2": {
+    "name": "Player2",
+    "nPoints": 0,
+    "bonusPointCounter": 0,
+    "nPieces": 0,
+    "team": "black",
+    "next": "white",
+    "isPlaying": false,
+    "King": "e8"
+  },
+  "p3": {
+    "name": "",
+    "nPoints": 0,
+    "bonusPointCounter": 0,
+    "nPieces": 0,
+    "team": "red",
+    "next": "blue",
+    "King": ""
+  },
+  "p4": {
+    "name": "",
+    "nPoints": 0,
+    "bonusPointCounter": 0,
+    "nPieces": 0,
+    "team": "yellow",
+    "next": "red",
+    "King": ""
+  },
+  "board": {
+    "a1": {
+      "piece": {
+        "type": "Minotaurus",
+        "price": 5,
+        "team": "white",
+        "isMovedBool": false,
+        "isBoostedBool": false,
+        "pos": "a1",
+        "moveLongRangeDEBUG": true
+      },
+      "targetZones": [
+        "b1",
+        "a2"
+      ],
+      "boostedTargetZones": {}
+    },
+    "a2": {
+      "piece": {
+        "type": "Bastards",
+        "price": 1,
+        "team": "white",
+        "isMovedBool": false,
+        "isBoostedBool": true,
+        "pos": "a2",
+        "moveLongRangeDEBUG": false
+      },
+      "targetZones": [
+        "a4",
+        "a3"
+      ],
+      "boostedTargetZones": {}
+    },
+    "a3": {
+      "piece": null,
+      "targetZones": [],
+      "boostedTargetZones": {}
+    },
+    "a4": {
+      "piece": null,
+      "targetZones": [],
+      "boostedTargetZones": {}
+    },
+    "a5": {
+      "piece": null,
+      "targetZones": [],
+      "boostedTargetZones": {}
+    },
+    "a6": {
+      "piece": null,
+      "targetZones": [],
+      "boostedTargetZones": {}
+    },
+    "a7": {
+      "piece": {
+        "type": "Bastards",
+        "price": 1,
+        "team": "black",
+        "isMovedBool": false,
+        "isBoostedBool": false,
+        "pos": "a7",
+        "moveLongRangeDEBUG": false
+      },
+      "targetZones": [
+        "a5",
+        "a6"
+      ],
+      "boostedTargetZones": {}
+    },
+    "a8": {
+      "piece": {
+        "type": "Minotaurus",
+        "price": 5,
+        "team": "black",
+        "isMovedBool": false,
+        "isBoostedBool": false,
+        "pos": "a8",
+        "moveLongRangeDEBUG": true
+      },
+      "targetZones": [
+        "b8",
+        "a7"
+      ],
+      "boostedTargetZones": {}
+    },
+    "b1": {
+      "piece": {
+        "type": "Jester",
+        "price": 5,
+        "team": "white",
+        "isMovedBool": false,
+        "isBoostedBool": false,
+        "pos": "b1",
+        "moveLongRangeDEBUG": false
+      },
+      "targetZones": [
+        "c3",
+        "a3",
+        "d2"
+      ],
+      "boostedTargetZones": {}
+    },
+    "b2": {
+      "piece": {
+        "type": "Bastards",
+        "price": 1,
+        "team": "white",
+        "isMovedBool": false,
+        "isBoostedBool": false,
+        "pos": "b2",
+        "moveLongRangeDEBUG": false
+      },
+      "targetZones": [
+        "b4",
+        "b3"
+      ],
+      "boostedTargetZones": {}
+    },
+    "b3": {
+      "piece": null,
+      "targetZones": [],
+      "boostedTargetZones": {}
+    },
+    "b4": {
+      "piece": null,
+      "targetZones": [],
+      "boostedTargetZones": {}
+    },
+    "b5": {
+      "piece": null,
+      "targetZones": [],
+      "boostedTargetZones": {}
+    },
+    "b6": {
+      "piece": null,
+      "targetZones": [],
+      "boostedTargetZones": {}
+    },
+    "b7": {
+      "piece": {
+        "type": "Bastards",
+        "price": 1,
+        "team": "black",
+        "isMovedBool": false,
+        "isBoostedBool": false,
+        "pos": "b7",
+        "moveLongRangeDEBUG": false
+      },
+      "targetZones": [
+        "b5",
+        "b6"
+      ],
+      "boostedTargetZones": {}
+    },
+    "b8": {
+      "piece": {
+        "type": "Jester",
+        "price": 5,
+        "team": "black",
+        "isMovedBool": false,
+        "isBoostedBool": false,
+        "pos": "b8",
+        "moveLongRangeDEBUG": false
+      },
+      "targetZones": [
+        "c6",
+        "a6",
+        "d7"
+      ],
+      "boostedTargetZones": {}
+    },
+    "c1": {
+      "piece": {
+        "type": "Valkirya",
+        "price": 3,
+        "team": "white",
+        "isMovedBool": false,
+        "isBoostedBool": false,
+        "pos": "c1",
+        "moveLongRangeDEBUG": true
+      },
+      "targetZones": [
+        "d2",
+        "b2"
+      ],
+      "boostedTargetZones": {}
+    },
+    "c2": {
+      "piece": {
+        "type": "Bastards",
+        "price": 1,
+        "team": "white",
+        "isMovedBool": false,
+        "isBoostedBool": false,
+        "pos": "c2",
+        "moveLongRangeDEBUG": false
+      },
+      "targetZones": [
+        "c4",
+        "c3"
+      ],
+      "boostedTargetZones": {}
+    },
+    "c3": {
+      "piece": null,
+      "targetZones": [],
+      "boostedTargetZones": {}
+    },
+    "c4": {
+      "piece": null,
+      "targetZones": [],
+      "boostedTargetZones": {}
+    },
+    "c5": {
+      "piece": null,
+      "targetZones": [],
+      "boostedTargetZones": {}
+    },
+    "c6": {
+      "piece": null,
+      "targetZones": [],
+      "boostedTargetZones": {}
+    },
+    "c7": {
+      "piece": {
+        "type": "Bastards",
+        "price": 1,
+        "team": "black",
+        "isMovedBool": false,
+        "isBoostedBool": false,
+        "pos": "c7",
+        "moveLongRangeDEBUG": false
+      },
+      "targetZones": [
+        "c5",
+        "c6"
+      ],
+      "boostedTargetZones": {}
+    },
+    "c8": {
+      "piece": {
+        "type": "Valkirya",
+        "price": 3,
+        "team": "black",
+        "isMovedBool": false,
+        "isBoostedBool": false,
+        "pos": "c8",
+        "moveLongRangeDEBUG": true
+      },
+      "targetZones": [
+        "b7",
+        "d7"
+      ],
+      "boostedTargetZones": {}
+    },
+    "d1": {
+      "piece": {
+        "type": "Champion",
+        "price": 10,
+        "team": "white",
+        "isMovedBool": false,
+        "isBoostedBool": false,
+        "pos": "d1",
+        "moveLongRangeDEBUG": true
+      },
+      "targetZones": [
+        "e2",
+        "c2",
+        "e1",
+        "c1",
+        "d2"
+      ],
+      "boostedTargetZones": {}
+    },
+    "d2": {
+      "piece": {
+        "type": "Bastards",
+        "price": 1,
+        "team": "white",
+        "isMovedBool": false,
+        "isBoostedBool": false,
+        "pos": "d2",
+        "moveLongRangeDEBUG": false
+      },
+      "targetZones": [
+        "d4",
+        "d3"
+      ],
+      "boostedTargetZones": {}
+    },
+    "d3": {
+      "piece": null,
+      "targetZones": [],
+      "boostedTargetZones": {}
+    },
+    "d4": {
+      "piece": null,
+      "targetZones": [],
+      "boostedTargetZones": {}
+    },
+    "d5": {
+      "piece": null,
+      "targetZones": [],
+      "boostedTargetZones": {}
+    },
+    "d6": {
+      "piece": null,
+      "targetZones": [],
+      "boostedTargetZones": {}
+    },
+    "d7": {
+      "piece": {
+        "type": "Bastards",
+        "price": 1,
+        "team": "black",
+        "isMovedBool": false,
+        "isBoostedBool": false,
+        "pos": "d7",
+        "moveLongRangeDEBUG": false
+      },
+      "targetZones": [
+        "d5",
+        "d6"
+      ],
+      "boostedTargetZones": {}
+    },
+    "d8": {
+      "piece": {
+        "type": "Champion",
+        "price": 10,
+        "team": "black",
+        "isMovedBool": false,
+        "isBoostedBool": false,
+        "pos": "d8",
+        "moveLongRangeDEBUG": true
+      },
+      "targetZones": [
+        "c7",
+        "e7",
+        "e8",
+        "c8",
+        "d7"
+      ],
+      "boostedTargetZones": {}
+    },
+    "e1": {
+      "piece": {
+        "type": "King",
+        "price": 0,
+        "team": "white",
+        "isMovedBool": true,
+        "isBoostedBool": true,
+        "pos": "e1",
+        "moveLongRangeDEBUG": false
+      },
+      "targetZones": [
+        "f2",
+        "d2",
+        "f1",
+        "d1",
+        "e2"
+      ],
+      "boostedTargetZones": {
+		"e1": ["d2", "d1", "e2", "f2", "f1"]
+	  }
+    },
+    "e2": {
+      "piece": {
+        "type": "Bastards",
+        "price": 1,
+        "team": "white",
+        "isMovedBool": false,
+        "isBoostedBool": true,
+        "pos": "e2",
+        "moveLongRangeDEBUG": false
+      },
+      "targetZones": [
+        "e4",
+        "e3"
+      ],
+      "boostedTargetZones": {
+		"e2" : [
+			"d2",
+			"d1",
+			"f2",
+			"f1",
+			"e1"
+		]
+	  }
+    },
+    "e3": {
+      "piece": null,
+      "targetZones": [],
+      "boostedTargetZones": {}
+    },
+    "e4": {
+      "piece": null,
+      "targetZones": [],
+      "boostedTargetZones": {}
+    },
+    "e5": {
+      "piece": null,
+      "targetZones": [],
+      "boostedTargetZones": {}
+    },
+    "e6": {
+      "piece": null,
+      "targetZones": [],
+      "boostedTargetZones": {}
+    },
+    "e7": {
+      "piece": {
+        "type": "Bastards",
+        "price": 1,
+        "team": "black",
+        "isMovedBool": false,
+        "isBoostedBool": false,
+        "pos": "e7",
+        "moveLongRangeDEBUG": false
+      },
+      "targetZones": [
+        "e5",
+        "e6"
+      ],
+      "boostedTargetZones": {}
+    },
+    "e8": {
+      "piece": {
+        "type": "King",
+        "price": 0,
+        "team": "black",
+        "isMovedBool": false,
+        "isBoostedBool": false,
+        "pos": "e8",
+        "moveLongRangeDEBUG": false
+      },
+      "targetZones": [
+        "d7",
+        "f7",
+        "f8",
+        "d8",
+        "e7"
+      ],
+      "boostedTargetZones": {}
+    },
+    "f1": {
+      "piece": {
+        "type": "Valkirya",
+        "price": 3,
+        "team": "white",
+        "isMovedBool": false,
+        "isBoostedBool": true,
+        "pos": "f1",
+        "moveLongRangeDEBUG": true
+      },
+      "targetZones": [
+        "g2",
+        "e2"
+      ],
+      "boostedTargetZones": {
+		"f1": [
+			"b5",
+			"h3"
+		]
+	  }
+    },
+    "f2": {
+      "piece": {
+        "type": "Bastards",
+        "price": 1,
+        "team": "white",
+        "isMovedBool": false,
+        "isBoostedBool": false,
+        "pos": "f2",
+        "moveLongRangeDEBUG": false
+      },
+      "targetZones": [
+        "f4",
+        "f3"
+      ],
+      "boostedTargetZones": {}
+    },
+    "f3": {
+      "piece": null,
+      "targetZones": [],
+      "boostedTargetZones": {}
+    },
+    "f4": {
+      "piece": null,
+      "targetZones": [],
+      "boostedTargetZones": {}
+    },
+    "f5": {
+      "piece": null,
+      "targetZones": [],
+      "boostedTargetZones": {}
+    },
+    "f6": {
+      "piece": null,
+      "targetZones": [],
+      "boostedTargetZones": {}
+    },
+    "f7": {
+      "piece": {
+        "type": "Bastards",
+        "price": 1,
+        "team": "black",
+        "isMovedBool": false,
+        "isBoostedBool": false,
+        "pos": "f7",
+        "moveLongRangeDEBUG": false
+      },
+      "targetZones": [
+        "f5",
+        "f6"
+      ],
+      "boostedTargetZones": {}
+    },
+    "f8": {
+      "piece": {
+        "type": "Valkirya",
+        "price": 3,
+        "team": "black",
+        "isMovedBool": false,
+        "isBoostedBool": true,
+        "pos": "f8",
+        "moveLongRangeDEBUG": true
+      },
+      "targetZones": [
+        "e7",
+        "g7"
+      ],
+      "boostedTargetZones": {
+		"f8": [
+			"b5",
+			"h3"
+		]
+	  }
+    },
+    "g1": {
+      "piece": {
+        "type": "Jester",
+        "price": 5,
+        "team": "white",
+        "isMovedBool": false,
+        "isBoostedBool": true,
+        "pos": "g1",
+        "moveLongRangeDEBUG": false
+      },
+      "targetZones": [
+        "h3",
+        "f3",
+        "e2"
+      ],
+      "boostedTargetZones": {
+		"g1": [
+			"e8",
+			"f7",
+			"a8",
+			"h7"
+		]
+	  }
+    },
+    "g2": {
+      "piece": {
+        "type": "Bastards",
+        "price": 1,
+        "team": "white",
+        "isMovedBool": false,
+        "isBoostedBool": false,
+        "pos": "g2",
+        "moveLongRangeDEBUG": false
+      },
+      "targetZones": [
+        "g4",
+        "g3"
+      ],
+      "boostedTargetZones": {}
+    },
+    "g3": {
+      "piece": null,
+      "targetZones": [],
+      "boostedTargetZones": {}
+    },
+    "g4": {
+      "piece": null,
+      "targetZones": [],
+      "boostedTargetZones": {}
+    },
+    "g5": {
+      "piece": null,
+      "targetZones": [],
+      "boostedTargetZones": {}
+    },
+    "g6": {
+      "piece": null,
+      "targetZones": [],
+      "boostedTargetZones": {}
+    },
+    "g7": {
+      "piece": {
+        "type": "Bastards",
+        "price": 1,
+        "team": "black",
+        "isMovedBool": false,
+        "isBoostedBool": false,
+        "pos": "g7",
+        "moveLongRangeDEBUG": false
+      },
+      "targetZones": [
+        "g5",
+        "g6"
+      ],
+      "boostedTargetZones": {}
+    },
+    "g8": {
+      "piece": {
+        "type": "Jester",
+        "price": 5,
+        "team": "black",
+        "isMovedBool": false,
+        "isBoostedBool": false,
+        "pos": "g8",
+        "moveLongRangeDEBUG": false
+      },
+      "targetZones": [
+        "h6",
+        "f6",
+        "e7"
+      ],
+      "boostedTargetZones": {}
+    },
+    "h1": {
+      "piece": {
+        "type": "Minotaurus",
+        "price": 5,
+        "team": "white",
+        "isMovedBool": false,
+        "isBoostedBool": true,
+        "pos": "h1",
+        "moveLongRangeDEBUG": true
+      },
+      "targetZones": [
+        "g1",
+        "h2"
+      ],
+      "boostedTargetZones": {}
+    },
+    "h2": {
+      "piece": {
+        "type": "Bastards",
+        "price": 1,
+        "team": "white",
+        "isMovedBool": false,
+        "isBoostedBool": false,
+        "pos": "h2",
+        "moveLongRangeDEBUG": false
+      },
+      "targetZones": [
+        "h4",
+        "h3"
+      ],
+      "boostedTargetZones": {}
+    },
+    "h3": {
+      "piece": null,
+      "targetZones": [],
+      "boostedTargetZones": {}
+    },
+    "h4": {
+      "piece": null,
+      "targetZones": [],
+      "boostedTargetZones": {}
+    },
+    "h5": {
+      "piece": null,
+      "targetZones": [],
+      "boostedTargetZones": {}
+    },
+    "h6": {
+      "piece": null,
+      "targetZones": [],
+      "boostedTargetZones": {}
+    },
+    "h7": {
+      "piece": {
+        "type": "Bastards",
+        "price": 1,
+        "team": "black",
+        "isMovedBool": false,
+        "isBoostedBool": false,
+        "pos": "h7",
+        "moveLongRangeDEBUG": false
+      },
+      "targetZones": [
+        "h5",
+        "h6"
+      ],
+      "boostedTargetZones": {}
+    },
+    "h8": {
+      "piece": {
+        "type": "Minotaurus",
+        "price": 5,
+        "team": "black",
+        "isMovedBool": false,
+        "isBoostedBool": false,
+        "pos": "h8",
+        "moveLongRangeDEBUG": true
+      },
+      "targetZones": [
+        "g8",
+        "h7"
+      ],
+      "boostedTargetZones": {}
+    }
+  }
+}

@@ -21,6 +21,7 @@ class metaInfo {
 		this.lastClickedId = null;
 		this.secondTurn = false;
 		this.secondMove = false;
+		this.usingAbility = "";
 		this.hasBoost = false;
 		this.priceSelected = "...";
 		this.savedBoostedMap = null;

@@ -2,18 +2,45 @@ import { sendToBackend, setHighlightTrue }	from "../Events/Global";
 import { localInfo, localBoard }			from "../Data/Variables";
 import { PIECES_HIGHLIGHT } 				from "./piecesHighlights";
 import { clearHighlight } 					from "./RenderUtils";
+import { requestToBack } 					from "../Events/Movements";
 
 const PIECES_ABILITY = Object.freeze ({
 	"King" : moveKing,
 	"Champion" : "giorgio",
-	"Jester" : "giorgio",
+	"Jester" : moveJester,
 	"Valkirya" : "giorgio",
 	"Minotaurus" : "giorgio",
 	"Bastards" : moveBastard,
+	"": error,
 })
 
-export async function boostedMovement()
+export function boostHlOnClick()
 {
+	if (!localInfo.savedBoostedMap.has(localInfo.clickedId))
+	{
+		clearHighlight();
+		setHighlightTrue(localInfo.savedBoostedMap, "boosted", "both");
+		if (!localBoard.get(localInfo.lastClickedId)?.targetZones.has(localInfo.clickedId))
+			localInfo.lastClickedId = localInfo.clickedId;
+		return;
+	}
+	if (localInfo.clickedId === localInfo.lastClickedId) 
+	{
+		clearHighlight();
+		setHighlightTrue(localInfo.savedBoostedMap, "boosted", "both");
+		localBoard.get(localInfo.clickedId).boostedHighlight = true;
+		localInfo.lastClickedId = null;
+		return;
+	}
+	const piece = localBoard.get(localInfo.clickedId).piece.type;
+	PIECES_HIGHLIGHT[piece](localInfo.clickedId);
+	localBoard.get(localInfo.clickedId).boostedHighlight = true;
+	localInfo.lastClickedId = localInfo.clickedId;
+}
+
+export async function moveBastard()
+{
+	// console.log("qui");
 	if (!localInfo.secondTurn)
 	{
 		const square = localBoard.get(localInfo.lastClickedId);
@@ -41,57 +68,47 @@ export async function boostedMovement()
 		{
 			const result = await sendToBackend(true);
 			if(!result)
-				console.log("[bostedMovent]: invalid move");
+				throw new Error("[bostedMovent]: invalid move");
 			else
+			{
 				localInfo.secondMove = false;
+				localInfo.usingAbility = "";
+				throw new Error("yippie");
+			}
 		}
 	}
 }
 
-export function boostHlOnClick()
+export async function moveKing()
 {
-	if (!localInfo.savedBoostedMap.has(localInfo.clickedId))
+	console.log("Va bene mavi, la smetto");
+}
+
+export async function moveJester()
+{
+	const square = localBoard.get(localInfo.lastClickedId);
+	const boostedZones = square.boostedTargetZones.get(localInfo.lastClickedId);
+
+	localInfo.savedBoostedMap = boostedZones;
+	// console.log("entrato");
+	if (boostedZones.has(localInfo.clickedId)) 
 	{
-		clearHighlight();
-		setHighlightTrue(localInfo.savedBoostedMap, "boosted", "both");
-		if (!localBoard.get(localInfo.lastClickedId)?.targetZones.has(localInfo.clickedId))
-			localInfo.lastClickedId = localInfo.clickedId;
-		return;
+		// console.log("orcamadonna");		
+		const result = await requestToBack(localInfo.lastClickedId, localInfo.clickedId);
+		if (!result)
+			throw new Error("[abilityMovement.js:moveJester]: invalid move!");
+		else {
+			clearHighlight();
+			localInfo.usingAbility = "";
+		}
 	}
-	if (localInfo.clickedId === localInfo.lastClickedId) 
-	{
-		clearHighlight();
-		setHighlightTrue(localInfo.savedBoostedMap, "boosted", "both");
-		localBoard.get(localInfo.clickedId).boostedHighlight = true;
-		localInfo.lastClickedId = null;
-		return;
-	}
-	const piece = localBoard.get(localInfo.clickedId).piece.type;
-	PIECES_HIGHLIGHT[piece](localInfo.clickedId);
-	localBoard.get(localInfo.clickedId).boostedHighlight = true;
-	localInfo.lastClickedId = localInfo.clickedId;
+	else
+		throw new Error("[abilityMovement.js:moveJester]: non hai cliccato nelle boosted abbelinou!");
 }
 
-export function moveKing(from, to)
+function error()
 {
-	const hasBoost = localBoard.get(from).piece.isBoostedBool;
-	const useAbility = localBoard.get(from).piece.useAbilityBool;
-	const hasAndUse = hasBoost && useAbility;
-
-	if (!hasAndUse)
-		return;
-
-	//logica per applicare il movimento boostato oppure il movimento normale
+	throw new Error("[PIECES_ABILITY]: Qualcuno ha chiamato qualcosa che non esiste eh")
 }
 
-export function moveBastard(from, to)
-{
-	const hasBoost = localBoard.get(from).piece.isBoostedBool;
-	const useAbility = localBoard.get(from).piece.useAbilityBool;
-	const hasAndUse = hasBoost && useAbility;
-
-	if (!hasAndUse)
-		return;
-
-	//logica per applicare il movimento boostato oppure il movimento normale
-}
+export { PIECES_ABILITY }
