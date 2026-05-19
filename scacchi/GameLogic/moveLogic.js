@@ -9,6 +9,7 @@ const {Preset} = require("../Classes/Pieces/preset.js");
 const {error, Result} = require("../handlers/game/utils.js");
 const {Square} = require("../Classes/ChessBoard/chessBoard.js");
 const {printSwap, boardStringify} = require("../test/render.js");
+const {checkCastling, getPieces} = require("./Castling.js");
 
 //FIXME - da mettere alcune funzioni in un utilis
 
@@ -69,17 +70,19 @@ function checkMove(coords=[], result, match, boostBool)
 		return (error(result, 403, "invalid positions"));
 	if (from.piece == null)
 		return (error(result, 403, "Square is empty"));
+	if (from.piece?.team != match.currentPlayer.team)
+		return (error(result, 403, `it's ${match.currentPlayer.team} turn`));
 	if (to.piece)
 	{
 		if (to.piece.team == from.piece.team)
+		{
+			if (checkCastling(match, to, from))
+				return (true);
 			return (error(result, 403, "you can't eat your team mates"));
+		}
 	}
-	if (from.piece?.team != match.currentPlayer.team)
-		return (error(result, 403, `it's ${match.currentPlayer.team} turn`));
 	if (!checkBooster(match, result, from, coords, boostBool))
 		return (false);
-	// if (checkCastling(match, to, from))
-	// 	return (true);
 	if (!from.targetZones.has(coords[1]))
 		return (error(result, 403, "destination not in piece targetZone"));
 	if (isDangerous(match, king.dangerZones, king.piece.team) && !simulation(coords, match))
@@ -110,7 +113,7 @@ function updateChessboard(coords=[], result, match, boostBool)
 	if (coords[0] == match.currentPlayer.King)
 		match.currentPlayer.King = coords[1];
 	printSwap(coords, from, to);
-	if (to.piece)
+	if (to.piece && to.piece.team != from.piece.team)
 	{
 		console.log(`player ${match.currentPlayer.team} + ${to.piece.price}💲`);
 		match.currentPlayer.nPoints += to.piece.price;
@@ -122,6 +125,10 @@ function updateChessboard(coords=[], result, match, boostBool)
 		from.piece.isBoostedBool = false;
 		match.currentPlayer.boostedPiece = "";
 	}
+	else if (((from.piece.type == enumNames.MINOTAURUS && to.piece?.type == enumNames.KING) ||
+	(to.piece?.type == enumNames.MINOTAURUS && from.piece.type == enumNames.KING)) && 
+	to.piece.team == from.piece.team)
+		moveCastling(match, from, to);
 	else
 	{
 		to.piece = from.piece;
@@ -142,6 +149,48 @@ function updateChessboard(coords=[], result, match, boostBool)
 }
 
 //SECTION - move utils
+
+/**
+ * 
+ * @param {Match} match 
+ * @param {Square} from 
+ * @param {Square} to 
+ */
+function moveCastling(match, from, to)
+{
+	let pieces = getPieces(match, from, to);
+	let	tmp;
+	let kpos;
+	let mpos;
+
+	kpos = pieces?.king.pos;
+	mpos = pieces?.mino.pos;
+	tmp = match.cursor.square;
+	if (pieces == null)
+		return ;
+	match.cursor.set(pieces.king.pos);
+	for (let i = 0; movePiece(match, pieces.dir.diffCol, pieces.dir.diffRow); ++i)
+	{
+		if (match.cursor.square == pieces.mino.pos || i == 1)
+			break;
+	}
+	let square1 = match.board.get(match.cursor.square);
+	if (square1)
+		square1.piece = pieces.king;
+	// @ts-ignore
+	let square2 = match.board.get(kpos);
+	if (square2)
+		square2.piece = null;
+	movePiece(match, -pieces.dir.diffCol, -pieces.dir.diffRow);
+	let square3 = match.board.get(match.cursor.square);
+	if (square3)
+		square3.piece = pieces.mino;
+	// @ts-ignore
+	let square4 = match.board.get(mpos);
+	if (square4)
+		square4.piece = null;
+	match.cursor.set(tmp);
+}
 
 /**
  * 

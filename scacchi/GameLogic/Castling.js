@@ -1,11 +1,10 @@
 // @ts-check
 const {enumNames} = require("../Macro/enums.js");
-const {Square, Piece, board, copyBoard, cursor} = require("../lib/lib.js").Chess
-const {isDangerous, bastardChecks} = require("../utils/gameUtils.js");
-const {DangerUpdate, dangerUpdateAll, movePiece} = require("../utils/moveUtils.js");
+const {Square, Piece} = require("../lib/lib.js").Chess
 const {Match} = require("../Classes/Vault/match.js");
-const {error, paramCheck, Result, clientBoard, checkMateAlert} = require("../handlers/game/utils.js");
 const {getDirection} = require("./checkMate.js");
+const {isDangerous} = require("../utils/gameUtils.js");
+const {movePiece} = require("../utils/moveUtils.js");
 
 /* 
 
@@ -27,7 +26,7 @@ test/ -> Fatto
 /** @typedef {import('../Classes/Pieces/pieces.js').Piece} Piece */
 /** @typedef {import('../Classes/ChessBoard/chessBoard.js').Square} Square */
 
-/**@typedef {{"king": Piece, "mino": Piece, "dir": [0, 0], "kingDanger": Set<string>}} pieces */
+/**@typedef {{"king": Piece, "mino": Piece, "dir": { diffRow: number; diffCol: number; }, "kingDanger": Set<string>}} pieces */
 /* 
 stesso team - OK
 non mossi -  OK
@@ -48,15 +47,30 @@ function checkCastling(match, to, from)
 {
 	let	pieces;
 	let tmp;
-	let dir;
 	let	board;
 
 	board = match.board;
-	tmp = cursor.square;
-
-
-
-	cursor.set(tmp);
+	tmp = match.cursor.square;
+	pieces = getPieces(match, from, to);
+	if (!pieces)
+		return false;
+	if (isDangerous(match, pieces.kingDanger, pieces.king.team))
+		return false;
+	if (pieces.king.isMovedBool || pieces.mino.isMovedBool)
+		return false;
+	if (pieces.dir.diffRow != 0 && pieces.dir.diffCol != 0)
+		return false;
+	else if (pieces.dir.diffRow == 0 && pieces.dir.diffCol == 0)
+		return false;
+	match.cursor.set(pieces.king.pos);
+	for (let i = 0; movePiece(match, pieces.dir.diffCol, pieces.dir.diffRow); ++i)
+	{
+		if (isDangerous(match, board.get(match.cursor.square)?.dangerZones, pieces.king.team))
+			return false;
+		if (match.cursor.square == pieces.mino.pos || i == 1)
+			break;
+	}
+	match.cursor.set(tmp);
 	return true;
 }
 
@@ -91,15 +105,16 @@ function getPieces(match, from, to)
 		pieces.mino = from.piece;
 	}
 	else if (fromType == enumNames.KING || toType == enumNames.MINOTAURUS)
-	{
-		pieces.king = from.piece;
-		pieces.mino = to.piece;
-	}
+		{
+			pieces.king = from.piece;
+			pieces.mino = to.piece;
+		}
 	else
 		return (null);
+	pieces.dir = getDirection(match, pieces.mino.pos, pieces.king.pos);
 	// @ts-ignore
 	pieces.kingDanger = board.get(pieces.king.pos)?.dangerZones;
 	return (pieces);
 }
 
-module.exports = {checkCastling};
+module.exports = {checkCastling, getPieces};
