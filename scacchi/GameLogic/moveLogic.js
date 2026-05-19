@@ -1,6 +1,6 @@
 // @ts-check
 const {eEvents, enumNames, eTeam} = require("../Macro/enums.js");
-const {MOVEMENT_MAX, CHESSBOARD_H} = require("../Macro/macro.js");
+const {MOVEMENT_MAX, CHESSBOARD_H, CHESSBOARD_W} = require("../Macro/macro.js");
 const {copyBoard} = require("../lib/lib.js").Chess;
 const {movePiece, dangerUpdateAll} =	require("../utils/moveUtils.js");
 const {isDangerous} = require("../utils/gameUtils.js");
@@ -10,6 +10,7 @@ const {error, Result} = require("../handlers/game/utils.js");
 const {Square} = require("../Classes/ChessBoard/chessBoard.js");
 const {printSwap, boardStringify} = require("../test/render.js");
 const {checkCastling, getPieces} = require("./Castling.js");
+const { Piece } = require("../Classes/Pieces/pieces.js");
 
 //FIXME - da mettere alcune funzioni in un utilis
 
@@ -141,7 +142,7 @@ function updateChessboard(coords=[], result, match, boostBool)
 	}
 	if (to.piece && to.piece.isMovedBool == false)
 		to.piece.isMovedBool = true;
-	// trasfiguration(match, to);
+	trasfiguration(match, to);
 	match.moves++;
 	match.history.finalBoard = boardStringify(match);
 	dangerUpdateAll(match);
@@ -365,8 +366,11 @@ function trasfiguration(match, to)
 	match.cursor.set(to.piece.pos);
 	row = match.cursor.getRow();
 	col = match.cursor.getCol();
-	// if (((team == eTeam.White || team == eTeam.Blue) && col == CHESSBOARD_H))
-		
+	if (((team == eTeam.White || team == eTeam.Blue) && row == CHESSBOARD_H) ||
+	((team == eTeam.Black || team == eTeam.Red) && row == 1) ||
+	(team == eTeam.Green && col == CHESSBOARD_W) ||
+	(team == eTeam.Yellow && col == 1))
+		to.piece = new Piece(enumNames.CHAMPION, match.cursor.square, team);
 }
 
 module.exports = { checkMove, updateChessboard, checkSecondMove };
