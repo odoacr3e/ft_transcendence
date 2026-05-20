@@ -1,5 +1,5 @@
 // @ts-check
-const {eEvents, enumNames, eTeam, enumSpecialMoves} = require("../Macro/enums.js");
+const {eEvents, enumNames, arrayNames, enumSpecialMoves} = require("../Macro/enums.js");
 const {MOVEMENT_MAX, CHESSBOARD_H, CHESSBOARD_W} = require("../Macro/macro.js");
 const {copyBoard} = require("../lib/lib.js").Chess;
 const {movePiece, dangerUpdateAll} =	require("../utils/moveUtils.js");
@@ -11,6 +11,8 @@ const {Square} = require("../Classes/ChessBoard/chessBoard.js");
 const {printSwap, boardStringify} = require("../test/render.js");
 const {checkCastling, getPieces} = require("./Castling.js");
 const { Piece } = require("../Classes/Pieces/pieces.js");
+const { Cursor } = require("../Classes/Vault/cursor.js");
+const { includesOneOf } = require("../utils/string.js");
 
 //FIXME - da mettere alcune funzioni in un utilis
 
@@ -344,30 +346,47 @@ function simulation(coords, match)
 
 /**
  * 
- * @param {Match} match
- * @param {Square} to
+ * @param {Match} match 
+ * @param {Result} result 
+ * @param {Piece} piece
+ * @param {string} newType
  */
-function trasfiguration(match, to)
+function CheckTransfiguration(match, result, piece, newType)
 {
-	let	team;
-	let	tmp;
-	let row;
-	let  col;
-
-	if (!to.piece)
-		throw ("transiguration: to has no piece");
-	if (to.piece.type != enumNames.BASTARDS)
-		return ;
-	team = to.piece.team;
-	tmp = match.cursor.square;
-	match.cursor.set(to.piece.pos);
-	row = match.cursor.getRow();
-	col = match.cursor.getCol();
-	if (((team == eTeam.White || team == eTeam.Blue) && row == CHESSBOARD_H) ||
-	((team == eTeam.Black || team == eTeam.Red) && row == 1) ||
-	(team == eTeam.Green && col == CHESSBOARD_W) ||
-	(team == eTeam.Yellow && col == 1))
-		to.piece = new Piece(enumNames.CHAMPION, match.cursor.square, team);
+	if (match.moves == 0)
+		return (error(result, 403, `you should move before transform`));
+	if (piece.type != enumNames.BASTARDS)
+		return (error(result, 403, `currently, boosting pieces different by
+		${enumNames.BASTARDS} is not allowed. However, this may be a cool idea.
+		you should tell the developers to think about it.
+		Maybe you should stop cheating too, if it possible`));
+	if (match.cursor.EdgeCheck(match.currentPlayer.team) == false)
+		return (error(result, 403, `you must be on a edge to transform`));
+	if (!includesOneOf(newType, arrayNames))
+		return (error(result, 403, `${newType} not in array "${arrayNames}"`));
+	return (true);
 }
 
-module.exports = { checkMove, updateChessboard, checkSecondMove };
+/**
+ * 
+ * @param {Match} match
+ * @param {Result} result
+ * @param {string} coord
+ * @param {string} newType
+ */
+function transfiguration(match, result, coord, newType)
+{
+	let	square;
+	let	isBoostedBool;
+
+	square = match.board.get(coord);
+	if (!square || !square.piece)
+		return (error(result, 400, `invalid coord ${coord}`));
+	if (CheckTransfiguration(match, result, square.piece, newType) == false)
+		return (result);
+	isBoostedBool = square.piece.isBoostedBool;
+	square.piece = new Piece(newType, square.piece.pos, square.piece.team);
+	square.piece.isBoostedBool = isBoostedBool;
+}
+
+module.exports = { checkMove, updateChessboard, checkSecondMove, transfiguration};

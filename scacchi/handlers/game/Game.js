@@ -8,6 +8,7 @@ const	endTurn = require("./endTurn").endTurn;
 const	boost = require("./boost").boost;
 const	init = require("./init").init;
 const	render = require("../../test/render.js").render;
+const	{makeTransfiguration} = require("./transfiguration.js");
 //FIXME - solo debug
 const	vault = require("../../Classes/Vault/Vault.js").vault;
 const DEBUG_MATCH = vault.getDebugMatch();
@@ -33,8 +34,17 @@ function gameChecks(req, res, next)
 		return (error(res, null, 400, "bad request format"));
 	if (!res || !res.status || !res.end || !next)
 		return (error(res, null, 500, "bad response object format"));
+	if (req.body.from && typeof(req.body.from) != "string")
+		return (error(res, null, 400, "param `from` must be of type string"));
+	if (req.body.from && typeof(req.body.to) != "string")
+		return (error(res, null, 400, "param `to` must be of type string"));
 	if (!req.body.type)
 		return (error(res, null, 400, "json must have a string named `type`"));
+	if (typeof(req.body.type) != "string")
+		return (error(res, null, 400, "param `type` must be of type string"));
+	req.body.type = req.body.type.trim().toLowerCase();
+	if (req.body.type == "trasfiguration")
+		return (error(res, null, 400, "maybe you mean `traNsfiguration`?"));
 	try
 	{
 		next();
@@ -64,12 +74,14 @@ function gameHandler(req, res)
 		result = move(match, from, to);
 	else if (type == "boost")
 		result = boost(match, from);
-	else if (type == "boostMove")
+	else if (type == "boostmove")
 		result = move(match, from, to, true);
-	else if (type == "endTurn")
+	else if (type == "endturn")
 		result = endTurn(match);
 	else if (type == "init")
 		result = init(match, from, from);
+	else if (type == "transfiguration")
+		result = makeTransfiguration(match, from, to);
 	else
 		return (error(res, null, 400, `invalid type ${type}`));
 	if (!result || !result.status)

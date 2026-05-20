@@ -1,4 +1,6 @@
 // @ts-check
+const {eTeam} = require("../../Macro/enums.js");
+
 
 const {CHESSBOARD_H, CHESSBOARD_W} = require("../../Macro/macro.js");
 
@@ -148,6 +150,37 @@ class Cursor
 	Restore()
 	{
 		this.square = this._save_pos;
+	}
+	/** @param {string} team */
+	EdgeCheck(team="")
+	{
+		switch (team)
+		{
+			case (eTeam.Black): case (eTeam.Yellow):
+			{
+				return (this.getRow() == 1);
+			}
+			case (eTeam.White): case (eTeam.Red):
+			{
+				return (this.getRow() == CHESSBOARD_H);
+			}
+			case (eTeam.Blue):
+			{
+				return (this.getCol() == 1);
+			}
+			case (eTeam.Green):
+			{
+				return (this.getCol() == CHESSBOARD_W);
+			}
+			case (""):
+			{
+				let col = this.getCol();
+				let row = this.getRow();
+				return (col == 1 || row == CHESSBOARD_H || col == 1 || col == CHESSBOARD_W);
+			}
+			default:
+				throw (`EdgeCheck: invalid team ${team}`);
+		}
 	}
 }
 

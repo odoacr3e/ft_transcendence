@@ -46,6 +46,9 @@ const enumNames = {
 	GHOUL: 'Ghoul'
 };
 
+const arrayNames = Object.values(enumNames);
+arrayNames.forEach((name, i) => {arrayNames[i] = name.toLocaleLowerCase();});
+
 
 const enumInitNames = 
 {
@@ -67,4 +70,4 @@ const enumSpecialMoves =
 	TRANSFIGURATION: 1 << 1,
 }
 
-module.exports = {eTeam, eEvents, enumNames, enumInitNames, enumValues, enumSpecialMoves};
+module.exports = {eTeam, eEvents, enumNames, arrayNames, enumInitNames, enumValues, enumSpecialMoves};

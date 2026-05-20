@@ -15,6 +15,7 @@ const cmd =
 	END_TURN: "e",
 	BUY_BOOST: "q",
 	USE_BOOST: "t",
+	TRANSFORM: "y",
 	MOVE: "space",
 	LOAD_HISTORY: "p",
 	HELP: "h"

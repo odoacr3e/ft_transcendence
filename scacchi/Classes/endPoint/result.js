@@ -1,6 +1,7 @@
 //@ts-check
 const move = require("../../Macro/enums").enumSpecialMoves;
 
+/** @typedef {import('../../Classes/ChessBoard/chessBoard.js').Square} Square */
 /** @typedef {Map<String, Square>} Board */
 
 //SECTION - contents

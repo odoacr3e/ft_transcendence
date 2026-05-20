@@ -12,6 +12,7 @@ const {abort} = 	require("node:process");
 const {render} = 	require("./render.js");
 const readline = 	require('node:readline');
 const server = require("../server.js");
+const { makeTransfiguration } = require("../handlers/game/transfiguration.js");
 const cmd = require("./enumsTest.js").cmd;
 
 
@@ -98,6 +99,12 @@ process.stdin.on('keypress', (str, key) =>
 			break ;
 		case (cmd.HELP):
 			helpBool = !helpBool;
+			break ;
+		case (cmd.TRANSFORM):
+			let	newType = getline("insert new piece type");
+			result = makeTransfiguration(match, match.cursor.square, newType);
+			if (result.status != 200)
+				return (error(null, result));
 			break ;
 		case (cmd.LOAD_HISTORY):
 		{
