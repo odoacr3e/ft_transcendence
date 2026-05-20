@@ -1,5 +1,4 @@
-import { localBoard, localPlayers, localInfo }	from "@/scripts/Data/Variables.js";
-import { FILES }								from "./Constants.js";
+import { localBoard, localPlayers, localInfo, FILES }	from "@/scripts/Data/Variables.js";
 
 //Funzione helper per convertire la mappa in un array 8x8
 export function boardConverter()

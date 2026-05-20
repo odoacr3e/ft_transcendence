@@ -1,7 +1,8 @@
-import { sendToBackend, setHighlightTrue }	from "../Events/Global";
-import { localInfo, localBoard }			from "../Data/Variables";
-import { PIECES_HIGHLIGHT } 				from "./piecesHighlights";
-import { clearHighlight } 					from "./RenderUtils";
+import { localInfo, localBoard }	from "../Data/Variables.js";
+import { setHighlightTrue }			from "../Events/utils/HighlightUtils.js";
+import { PIECES_HIGHLIGHT } 		from "./piecesHighlights.js";
+import { clearHighlight } 			from "./RenderUtils.js";
+import { sendToBackend }			from "../Events/temp.js";
 
 const PIECES_ABILITY = Object.freeze ({
 	"King" : moveKing,

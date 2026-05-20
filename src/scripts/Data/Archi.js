@@ -1,49 +1,8 @@
-import { initLocalBoard, localMatchState, localBoard, localPlayers, 
-			localInfo, startLocalMatchState } from "./Variables.js";
+import { initLocalBoard, localMatchState, localBoard,  
+			localPlayers, startLocalMatchState } 		from "./Variables.js";
+import { checkEndTurn, hasBoost, DEBUGSetVisible }		from "./utils/ArchiUtils.js";
 
-// ANCHOR UTILS FUNCTIONS
-
-function hasBoost (curP)
-{
-	localInfo.hasBoost = false;
-	localBoard.forEach(square => {
-		if (square.piece && square.piece.isBoostedBool)
-			if (square.piece.team === curP.team)
-				localInfo.hasBoost = true;
-	});
-}
-
-function checkEndTurn(validated)
-{
-	let		newCurP;
-	const	players_list = ["p1", "p2", "p3", "p4"];
-	const	curP = localPlayers.values().find(p => p.isPlaying === true);
-
-	players_list.forEach((player) => {
-		if (validated[player].isPlaying) { newCurP = validated[player]; };
-	})
-
-	if (curP.name === newCurP.name) { localInfo.secondTurn = true; }
-	else
-	{
-		localInfo.secondTurn = false;
-		localInfo.savedBoostedMap = null;
-	}
-}
-
-function DEBUGSetVisible()
-{
-	localBoard.forEach((square , key) => {
-		if (square.piece)
-		{
-			const DOMPiece = document.getElementById(key).getElementsByClassName("piece")[0];
-			if (DOMPiece && DOMPiece.style.visibility === "hidden")
-				DOMPiece.style.visibility = "visible";
-		}
-	});
-}
-
-// ANCHOR INIT FUNCTIONS
+//SECTION - INIT FUNCTIONS
 
 async function loadReceivedMatch() 
 {
@@ -119,9 +78,9 @@ function initLocalPlayers()
 
 	hasBoost(localPlayers.values().find(p => p.isPlaying === true));
 }
+//!SECTION
 
-// ANCHOR UPDATE FUNCTIONS
-
+//SECTION - UPDATE FUNCTIONS
 function updateMatchState(nextRaw)
 {
 	const validated = validateReceivedMatch(nextRaw);
@@ -185,5 +144,6 @@ function updateLocalPlayers(changes)
 
 	hasBoost(localPlayers.values().find(p => p.isPlaying === true));
 }
+//!SECTION
 
 export { initLocalMatchState, updateMatchState };

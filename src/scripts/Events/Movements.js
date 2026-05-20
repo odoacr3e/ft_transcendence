@@ -1,7 +1,7 @@
 import { localBoard, localInfo }	from "@/scripts/Data/Variables";
-import { updateMatchState }			from "@/scripts/Data/Archi"
 import { clearHighlight }			from "@/scripts/Helper/RenderUtils";
-import { setHighlightTrue }			from '@/scripts/Events/Global'
+import { requestToBack }			from "./temp.js";
+import { setHighlightTrue }			from "./utils/HighlightUtils.js";
 
 // Deprecata
 export function movePiece(fromSquareId, toSquareId)
@@ -92,37 +92,3 @@ export function onDrop(event, toSquare)
 	}
 }
 
-// {type = "endTurn"; url = "BastardMove.json" }
-export async function requestToBack(fromSquare, toSquare)
-{
-	let type, url;
-
-	if (fromSquare === null && toSquare === null && localInfo.secondTurn)
-		{type = "endTurn"; url = "move.json" }	
-	else if (fromSquare && toSquare === null)
-		{type = "boost"; url = "move.json" }
-	else if (fromSquare && toSquare && localInfo.usingAbility !== "")
-		{type = "boostMove"; url = "move.json" }	
-	else {type = "move"; url = "move.json" }	
-
-	try
-	{
-		const response = await fetch(url, {
-		  method: "POST",
-		  headers: { "Content-Type": "application/json" },
-		  body: JSON.stringify({ type: type, from: fromSquare, to: toSquare }),
-		});
-	
-		if (!response.ok) throw new Error(`Impossibile caricare /move.json: ${response.status}`);
-	
-		const match = await response.json();
-	
-		updateMatchState(match);
-		return true;
-	}
-	catch (err)
-	{
-		console.error(err);
-		return false;
-	}
-}

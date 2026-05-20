@@ -1,7 +1,6 @@
 <script setup>
-	import { DOMPlayer, localBoard, localInfo }	from '@/scripts/Data/Variables';
+	import { DOMPlayer, localBoard, localInfo, IMG_PATHS }	from '@/scripts/Data/Variables';
 	import { useAbility, sendEndTurn }			from '@/scripts/Events/Global'
-	import { IMG_PATHS }						from '@/scripts/Helper/Constants';
 	import { computed }							from 'vue';
 
 	const prop = defineProps({

@@ -1,10 +1,9 @@
 <script setup>
-	import { globalEvents, shopAbility }	from '@/scripts/Events/Global';
-	import { onDragStart, onDrop }			from '@/scripts/Events/Movements';
-	import { onMounted, computed }			from 'vue';
-	import { DOMBoard, localInfo }			from '@/scripts/Data/Variables';
-	import { getSquareColor } 				from '@/scripts/Helper/RenderUtils';
-	import { IMG_PATHS }					from '@/scripts/Helper/Constants';
+	import { DOMBoard, localInfo, IMG_PATHS }	from '@/scripts/Data/Variables';
+	import { globalEvents, shopAbility }		from '@/scripts/Events/Global';
+	import { onDragStart, onDrop }				from '@/scripts/Events/Movements';
+	import { onMounted, computed }				from 'vue';
+	import { getSquareColor } 					from '@/scripts/Helper/RenderUtils';
 
 	const domBoardComputed = computed(() => DOMBoard());
 
