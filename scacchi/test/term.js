@@ -208,6 +208,6 @@ function getline(prompt)
 	process.stdin.setRawMode(true);
 	if (!bRead)
 		return ("");
-	input = buffer.toString('utf8', 0, bRead).trim().toLowerCase();
+	input = buffer.toString('utf8', 0, bRead).trim();
 	return (input);
 }

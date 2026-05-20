@@ -47,8 +47,6 @@ const enumNames = {
 };
 
 const arrayNames = Object.values(enumNames);
-arrayNames.forEach((name, i) => {arrayNames[i] = name.toLocaleLowerCase();});
-
 
 const enumInitNames = 
 {

@@ -117,6 +117,7 @@ class Preset
 		let	info;
 
 		// @ts-ignore
+		
 		info = preset[type];
 		if (!info)
 			throw (`Preset: Invalid piece type ${type}`);

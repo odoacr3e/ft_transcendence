@@ -1,5 +1,6 @@
 //@ts-check
 const move = require("../../Macro/enums").enumSpecialMoves;
+const {copyBoard} = require("../ChessBoard/chessBoard.js")
 
 /** @typedef {import('../../Classes/ChessBoard/chessBoard.js').Square} Square */
 /** @typedef {Map<String, Square>} Board */
@@ -31,7 +32,7 @@ class Result
 	 */
 	constructor (other=null)
 	{
-		/** @type {Number | null} */this.status = null;
+		/** @type {Number | null} */this.status = 200;
 		/** @type {string | null} */this.msg = "OK";
 		/** @type {Board | null} */	this.board = null;
 		/** @type {boolean} */		this.youWin = false;

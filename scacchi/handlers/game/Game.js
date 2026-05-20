@@ -74,7 +74,7 @@ function gameHandler(req, res)
 		result = move(match, from, to);
 	else if (type == "boost")
 		result = boost(match, from);
-	else if (type == "boostmove")
+	else if (type == "moveBoost")
 		result = move(match, from, to, true);
 	else if (type == "endturn")
 		result = endTurn(match);

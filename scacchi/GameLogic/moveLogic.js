@@ -381,12 +381,16 @@ function transfiguration(match, result, coord, newType)
 
 	square = match.board.get(coord);
 	if (!square || !square.piece)
-		return (error(result, 400, `invalid coord ${coord}`));
+		return (error(result, 400, `invalid coord ${coord}`), result);
 	if (CheckTransfiguration(match, result, square.piece, newType) == false)
 		return (result);
 	isBoostedBool = square.piece.isBoostedBool;
 	square.piece = new Piece(newType, square.piece.pos, square.piece.team);
 	square.piece.isBoostedBool = isBoostedBool;
+	dangerUpdateAll(match);
+	result.status = 200;
+	result.msg = "OK";
+	return (result);
 }
 
 module.exports = { checkMove, updateChessboard, checkSecondMove, transfiguration};
