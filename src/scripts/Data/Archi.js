@@ -24,7 +24,11 @@ function checkEndTurn(validated)
 	})
 
 	if (curP.name === newCurP.name) { localInfo.secondTurn = true; }
-	else 							{ localInfo.secondTurn = false; }
+	else
+	{
+		localInfo.secondTurn = false;
+		localInfo.savedBoostedMap = null;
+	}
 }
 
 function DEBUGSetVisible()
@@ -48,7 +52,7 @@ async function loadReceivedMatch()
 	// const response = await fetch("/Mino.json",
 	// const response = await fetch("/Champ.json",
 	// const response = await fetch("/FILE-ONE.json",
-	// const response = await fetch("/BastardMatch.json",
+	// const response = await fetch("/Ba stardMatch.json",
 	const response = await fetch("/FILE.json",
 	{
 		method: "POST",

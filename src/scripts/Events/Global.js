@@ -57,7 +57,7 @@ async function globalEvents()
 
 	ROOT_DIV.addEventListener("click", async function (event) {
 		if (!checkPermision(event))	{ clearHighlight(); return; }
-		console.log(`CID: ${localInfo.clickedId}, LCID: ${localInfo.lastClickedId}`);
+		// console.log(`CID: ${localInfo.clickedId}, LCID: ${localInfo.lastClickedId}`);
 		if (checkForHighlightMove()) 
 		{
 			if (usingAbility())
@@ -242,6 +242,7 @@ function setHighlightTrue(toSet, flag, team)
 			square.highlight = true;
 		else if (flag === "boosted")
 			square.boostedHighlight = true;
+		
 	});
 }
 
@@ -285,7 +286,6 @@ function highlightOnDrag(event)
 		PIECES_HIGHLIGHT[Piece.type](clickedId);
 		if (localInfo.savedBoostedMap && localInfo.savedBoostedMap.has(clickedId))
 			localBoard.get(clickedId).boostedHighlight = true;
-		localInfo.lastClickedId = event.target.parentNode.id;
 		resetPrice();
 	}
 }

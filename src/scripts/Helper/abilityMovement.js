@@ -87,8 +87,6 @@ export async function moveJester()
 	const boostedZones = square.boostedTargetZones.get(localInfo.lastClickedId);
 
 	localInfo.savedBoostedMap = boostedZones;
-	// if (boostedZones.has(localInfo.clickedId)) 
-	// {		
 	const result = await sendToBackend(true);
 	if (!result)
 		throw new Error("[abilityMovement.js:moveJester]: invalid move!");
@@ -97,9 +95,6 @@ export async function moveJester()
 		clearHighlight();
 		localInfo.usingAbility = "";
 	}
-	// }
-	// else
-	// 	throw new Error("[abilityMovement.js:moveJester]: non hai cliccato nelle boosted abbelinou!");
 }
 
 function error()

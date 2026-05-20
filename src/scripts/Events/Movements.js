@@ -100,7 +100,9 @@ export async function requestToBack(fromSquare, toSquare)
 	if (fromSquare === null && toSquare === null && localInfo.secondTurn)
 		{type = "endTurn"; url = "move.json" }	
 	else if (fromSquare && toSquare === null)
-		{type = "boost"; url = "move.json" }	
+		{type = "boost"; url = "move.json" }
+	else if (fromSquare && toSquare && localInfo.usingAbility !== "")
+		{type = "boostMove"; url = "move.json" }	
 	else {type = "move"; url = "move.json" }	
 
 	try
