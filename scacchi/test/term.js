@@ -1,5 +1,5 @@
 // @ts-check
-const {HISTORY_FILE, HISTORY_DEFAULT} = require("../Macro/macro.js");
+const {HISTORY_FILE, HISTORY_PATH} = require("../Macro/macro.js");
 const {movePiece, dangerUpdateAll} =	require("../utils/moveUtils.js");
 const {includesOneOf} = require("../utils/string.js");
 const {historyRestore} = require("../utils2.js");
@@ -101,7 +101,12 @@ process.stdin.on('keypress', (str, key) =>
 			break ;
 		case (cmd.LOAD_HISTORY):
 		{
-			historyRestore(match, HISTORY_DEFAULT);
+			let	name;
+
+			name = getline(`name of the file? press enter for default name "${HISTORY_FILE}"`);
+			if (!name)
+				name = HISTORY_FILE;
+			historyRestore(match, HISTORY_PATH + name);
 			break ;
 		}
 	}
@@ -178,4 +183,24 @@ function termCleanup(key)
 			match.Log(name);
 	}
 	process.exit();
+}
+
+/**
+ * 
+ * @param {string} prompt 
+ */
+function getline(prompt)
+{
+	const 	buffer = Buffer.alloc(50);
+	let		bRead;
+	let		input;
+
+	console.log(prompt);
+	process.stdin.setRawMode(false);
+	bRead = lib.include.fs.readSync(1, buffer);
+	process.stdin.setRawMode(true);
+	if (!bRead)
+		return ("");
+	input = buffer.toString('utf8', 0, bRead).trim().toLowerCase();
+	return (input);
 }

@@ -5,6 +5,7 @@ const {Match} = require("../Classes/Vault/match.js");
 const {getDirection} = require("./checkMate.js");
 const {isDangerous} = require("../utils/gameUtils.js");
 const {movePiece} = require("../utils/moveUtils.js");
+const { Result } = require("../Classes/endPoint/result.js");
 
 /* 
 
@@ -39,18 +40,18 @@ non in diagonale - OK
 /**
  * 
  * @param {Match} match
+ * @param {Result} result
  * @param {Square} to
  * @param {Square} from 
  * @returns {boolean} 
  */
-function checkCastling(match, to, from)
+function checkCastling(match, result, to, from)
 {
 	let	pieces;
-	let tmp;
 	let	board;
 
 	board = match.board;
-	tmp = match.cursor.square;
+	match.cursor.Save();
 	pieces = getPieces(match, from, to);
 	if (!pieces)
 		return false;
@@ -66,11 +67,15 @@ function checkCastling(match, to, from)
 	for (let i = 0; movePiece(match, pieces.dir.diffCol, pieces.dir.diffRow); ++i)
 	{
 		if (isDangerous(match, board.get(match.cursor.square)?.dangerZones, pieces.king.team))
+		{
+			match.cursor.Restore();
 			return false;
+		}
 		if (match.cursor.square == pieces.mino.pos || i == 1)
 			break;
 	}
-	match.cursor.set(tmp);
+	match.cursor.Restore();
+	result.specialMoves.SetCastling();
 	return true;
 }
 

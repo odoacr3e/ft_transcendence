@@ -139,10 +139,12 @@ class Cursor
 		this.set = set.bind(this);
 		this.setCursor = setCursor.bind(this);
 	}
+	/** saves the current cursor square */
 	Save()
 	{
 		this._save_pos = this.square;
 	}
+	/** restore the cursor square saved by cursor::Save */
 	Restore()
 	{
 		this.square = this._save_pos;

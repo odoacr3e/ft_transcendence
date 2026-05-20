@@ -59,4 +59,12 @@ const enumInitNames =
 	GHOUL: 'G'
 };
 
-module.exports = {eTeam, eEvents, enumNames, enumInitNames, enumValues};
+
+const enumSpecialMoves =
+{
+	NONE: 0,
+	CASTLING: 1 << 0,
+	TRANSFIGURATION: 1 << 1,
+}
+
+module.exports = {eTeam, eEvents, enumNames, enumInitNames, enumValues, enumSpecialMoves};

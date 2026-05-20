@@ -1,5 +1,5 @@
 // @ts-check
-const {eEvents, enumNames, eTeam} = require("../Macro/enums.js");
+const {eEvents, enumNames, eTeam, enumSpecialMoves} = require("../Macro/enums.js");
 const {MOVEMENT_MAX, CHESSBOARD_H, CHESSBOARD_W} = require("../Macro/macro.js");
 const {copyBoard} = require("../lib/lib.js").Chess;
 const {movePiece, dangerUpdateAll} =	require("../utils/moveUtils.js");
@@ -77,7 +77,7 @@ function checkMove(coords=[], result, match, boostBool)
 	{
 		if (to.piece.team == from.piece.team)
 		{
-			if (checkCastling(match, to, from))
+			if (checkCastling(match, result, to, from))
 				return (true);
 			return (error(result, 403, "you can't eat your team mates"));
 		}
@@ -126,9 +126,7 @@ function updateChessboard(coords=[], result, match, boostBool)
 		from.piece.isBoostedBool = false;
 		match.currentPlayer.boostedPiece = "";
 	}
-	else if (((from.piece.type == enumNames.MINOTAURUS && to.piece?.type == enumNames.KING) ||
-	(to.piece?.type == enumNames.MINOTAURUS && from.piece.type == enumNames.KING)) && 
-	to.piece.team == from.piece.team)
+	else if (result.specialMoves.CheckCastling())
 		moveCastling(match, from, to);
 	else
 	{
@@ -142,7 +140,6 @@ function updateChessboard(coords=[], result, match, boostBool)
 	}
 	if (to.piece && to.piece.isMovedBool == false)
 		to.piece.isMovedBool = true;
-	trasfiguration(match, to);
 	match.moves++;
 	match.history.finalBoard = boardStringify(match);
 	dangerUpdateAll(match);
@@ -160,13 +157,12 @@ function updateChessboard(coords=[], result, match, boostBool)
 function moveCastling(match, from, to)
 {
 	let pieces = getPieces(match, from, to);
-	let	tmp;
 	let kpos;
 	let mpos;
 
 	kpos = pieces?.king.pos;
 	mpos = pieces?.mino.pos;
-	tmp = match.cursor.square;
+	match.cursor.Save();
 	if (pieces == null)
 		return ;
 	match.cursor.set(pieces.king.pos);
@@ -190,7 +186,8 @@ function moveCastling(match, from, to)
 	let square4 = match.board.get(mpos);
 	if (square4)
 		square4.piece = null;
-	match.cursor.set(tmp);
+	match.cursor.Restore();
+
 }
 
 /**

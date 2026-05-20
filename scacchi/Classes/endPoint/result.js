@@ -1,9 +1,24 @@
+//@ts-check
+const move = require("../../Macro/enums").enumSpecialMoves;
+
 /** @typedef {Map<String, Square>} Board */
 
 //SECTION - contents
 //	class Result
 //	Board manipulation
 //	game error management utils
+
+class bitMaskMoves
+{
+	constructor()
+	{
+		this._mask = 0;
+	}
+	SetCastling(){this._mask |= move.CASTLING};
+	CheckCastling(){return (this._mask & move.CASTLING)};
+	SetTransfiguration(){this._mask |= move.TRANSFIGURATION};
+	CheckTransfiguration(){return (this._mask & move.TRANSFIGURATION)};
+}
 
 //SECTION - class Result
 
@@ -20,6 +35,7 @@ class Result
 		/** @type {Board | null} */	this.board = null;
 		/** @type {boolean} */		this.youWin = false;
 									this.usedBoost = false;
+									this.specialMoves = new bitMaskMoves();
 		
 		if (!other)
 			return ;

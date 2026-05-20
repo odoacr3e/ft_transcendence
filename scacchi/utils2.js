@@ -22,8 +22,10 @@ function historyRestore(match, path)
 	let	buffer;
 	let	result;
 
+	if (path.endsWith(".json") == false)
+		path += ".json";
 	if (!path || !fs.existsSync(path))
-		throw (`History, restore: path ${path} invalid`);
+		throw (`History, restore: path "${path}" invalid`);
 	buffer = fs.readFileSync(path, "utf-8");
 	history = JSON.parse(buffer);
 	match.Reset();
