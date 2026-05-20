@@ -52,7 +52,7 @@ const preset = {
 		useBoostBool: false,
 		nPieces: 0,
 		team: eTeam.Blue,
-		next: eTeam.Green,
+		next: eTeam.Yellow,
 		King: "",
 		boostedPiece: ""
 	},
@@ -64,7 +64,7 @@ const preset = {
 		useBoostBool: false,
 		nPieces: 0,
 		team: eTeam.Green,
-		next: eTeam.Yellow,
+		next: eTeam.Red,
 		King: "",
 		boostedPiece: ""
 	},
@@ -76,7 +76,7 @@ const preset = {
 		useBoostBool: false,
 		nPieces: 0,
 		team: eTeam.Yellow,
-		next: eTeam.Red,
+		next: eTeam.Green,
 		King: "",
 		boostedPiece: ""
 	},

@@ -164,11 +164,11 @@ class Cursor
 			{
 				return (this.getRow() == CHESSBOARD_H);
 			}
-			case (eTeam.Blue):
+			case (eTeam.Green):
 			{
 				return (this.getCol() == 1);
 			}
-			case (eTeam.Green):
+			case (eTeam.Blue):
 			{
 				return (this.getCol() == CHESSBOARD_W);
 			}
