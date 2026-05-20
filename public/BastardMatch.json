@@ -401,7 +401,7 @@
         "price": 1,
         "team": "white",
         "isMovedBool": false,
-        "isBoostedBool": false,
+        "isBoostedBool": true,
         "pos": "e2"
       },
       "targetZones": [
@@ -559,7 +559,7 @@
         "price": 5,
         "team": "white",
         "isMovedBool": false,
-        "isBoostedBool": true,
+        "isBoostedBool": false,
         "pos": "g1"
       },
       "targetZones": [

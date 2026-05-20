@@ -43,25 +43,37 @@ export function onDragStart(event, square)
 export function onDrop(event, toSquare)
 {
 	event.preventDefault();
+	const	fromSquareId = event.dataTransfer.getData('fromSquareId'),
+			fromPiece = localBoard.get(fromSquareId).piece;
 
-	const fromSquareId = event.dataTransfer.getData('fromSquareId');
-	if (localInfo.secondMove || localBoard.get(fromSquareId).piece.useAbilityBool)
+	if (fromPiece.useAbilityBool)
 	{
-		let TargetZone;
-		const boostedZones = localBoard.get(fromSquareId).boostedTargetZones.get(fromSquareId);
-		if (localBoard.get(fromSquareId).piece.type !== ("Bastards" || "King"))
-			TargetZone = localBoard.get(fromSquareId).boostedTargetZones.has(toSquare.id);
+		let		TargetZone;
+		const	boostedZones = localBoard.get(fromSquareId).boostedTargetZones.get(fromSquareId);
+
+		if (((fromPiece.type !== ("Bastards" || "King" || "Minotaurus")) || (fromPiece.type === "Minotaurus" && localInfo.secondMove)) && 
+			boostedZones.has(toSquare.id))
+			TargetZone = boostedZones.has(toSquare.id);
 		else
+		{
 			TargetZone = localBoard.get(fromSquareId).targetZones.has(toSquare.id);
+			if (fromPiece.type !== ("Bastards" || "King") && !localInfo.secondMove && !boostedZones.has(toSquare.id))
+				localInfo.usingAbility = "";
+		}
 		if (TargetZone)
 		{
 			localInfo.dropDone = true;
 			requestToBack(fromSquareId, toSquare.id).then(
 				function(value) {if (value) {
 					clearHighlight();
-					setHighlightTrue(boostedZones, "boosted", "both");
 					localInfo.savedBoostedMap = boostedZones;
-					localInfo.secondMove = true;
+					if (fromPiece.useAbilityBool && fromPiece.type === ("Bastards" || "King" || "Minotaurus"))
+					{
+						setHighlightTrue(boostedZones, "boosted", "both");
+						localInfo.secondMove = true;
+					}
+					if ((fromPiece.type !== ("Bastards" || "King" || "Minotaurus")) || (fromPiece.type === "Minotaurus" && localInfo.secondMove))
+						localInfo.usingAbility = "";
 				}},
 				function(value) {if (!value) { localInfo.dropDone = false; console.log("Mossa non valida"); }}
 			);
@@ -71,12 +83,16 @@ export function onDrop(event, toSquare)
 	{
 		localInfo.dropDone = true;
 		requestToBack(fromSquareId, toSquare.id).then(
-			function(value) {if (value) { clearHighlight(); }},
+			function(value) {if (value) {
+				clearHighlight();
+				localInfo.usingAbility = "";
+			 }},
 			function(value) {if (!value) { localInfo.dropDone = false; console.log("Mossa non valida"); }}
 		);
 	}
 }
 
+// {type = "endTurn"; url = "BastardMove.json" }
 export async function requestToBack(fromSquare, toSquare)
 {
 	let type, url;

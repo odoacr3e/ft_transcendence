@@ -13,10 +13,13 @@ function useAbility()
 	const clickedId = localInfo.clickedId;
 	const piece 	= localBoard.get(clickedId).piece;
 
-	if (!piece) 
-		return;
+	if (!piece) { return; }
+
 	if (piece.useAbilityBool)
+	{
 		piece.useAbilityBool = false;
+		localInfo.usingAbility = "";
+	}
 	else 
 	{ 
 		piece.useAbilityBool = true;
@@ -59,7 +62,6 @@ async function globalEvents()
 		{
 			if (usingAbility())
 			{
-				// console.log("avemmu finiu de grata o cu ae mosche?");
 				await PIECES_ABILITY[localInfo.usingAbility]();
 				return;
 			}
@@ -122,31 +124,34 @@ async function globalEvents()
 
 async function sendToBackend(flag)
 {
-	const lastClickedId = localInfo.lastClickedId;
-	const clickedId = localInfo.clickedId;
-	const pMoving = localBoard.get(lastClickedId).piece ? localBoard.get(lastClickedId).piece : null;
+	let		TargetZone;
+	const	lastClickedId = localInfo.lastClickedId,
+			clickedId = localInfo.clickedId,
+			pMoving = localBoard.get(lastClickedId).piece ? localBoard.get(lastClickedId).piece : null,
+			boostedZones = localBoard.get(lastClickedId).boostedTargetZones.get(lastClickedId);
 
-	let TargetZone;
-
-	if (pMoving?.useAbilityBool && pMoving?.type !== "Bastards" && pMoving?.type !== "King")
-		TargetZone = localBoard.get(lastClickedId).boostedTargetZones.has(clickedId);
+	if (pMoving?.useAbilityBool && boostedZones.has(clickedId) &&
+		((pMoving?.type !== ("Bastards" || "King" || "Minotaurus")) || (pMoving?.type === "Minotaurus" && localInfo.secondMove)))
+		TargetZone = boostedZones.has(clickedId);
 	else
+	{
 		TargetZone = localBoard.get(lastClickedId).targetZones.has(clickedId);
-
+			if (pMoving.type !== ("Bastards" || "King") && !localInfo.secondMove && !boostedZones.has(clickedId))
+				localInfo.usingAbility = "";
+	}
+	
 	if (lastClickedId && lastClickedId !== clickedId && TargetZone)
 	{
 		const promise = await requestToBack(localInfo.lastClickedId, localInfo.clickedId)
 		if (promise) 
 		{
 			clearHighlight();
-			if (flag)
-				return (true);
+			if (flag) { return (true); }
 		}
 		else
 		{
 			console.log("[sendToBackend]: Mossa non valida");
-			if (flag)
-				return (false);
+			if (flag) { return (false); }
 		}
 	}
 }
@@ -158,7 +163,7 @@ function checkPermision(event)
 	if (event.target.localName === "div")	{ localInfo.clickedId = event.target.id; }
 	else									{ localInfo.clickedId = event.target.parentNode.id; }
 	
-	if (localInfo.clickedId === "" || localInfo.clickedId === "board") { return (false) }; //dragging multiplo strano
+	if (localInfo.clickedId === "" || localInfo.clickedId === "board") { return (false) };
 
 	const Square  = localBoard.get(localInfo.clickedId);
 	const Piece   = Square.piece;
@@ -191,7 +196,6 @@ function checkForHighlightMove()
 			clearHighlight();
 	}
 	else { clearHighlight("selected"); }
-	// console.log(`checkForHighlightMove: ${bool}`);
 	
 	return(bool);
 }

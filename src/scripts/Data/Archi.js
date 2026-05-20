@@ -48,6 +48,7 @@ async function loadReceivedMatch()
 	// const response = await fetch("/Mino.json",
 	// const response = await fetch("/Champ.json",
 	// const response = await fetch("/FILE-ONE.json",
+	// const response = await fetch("/BastardMatch.json",
 	const response = await fetch("/FILE.json",
 	{
 		method: "POST",

@@ -2,7 +2,6 @@ import { sendToBackend, setHighlightTrue }	from "../Events/Global";
 import { localInfo, localBoard }			from "../Data/Variables";
 import { PIECES_HIGHLIGHT } 				from "./piecesHighlights";
 import { clearHighlight } 					from "./RenderUtils";
-import { requestToBack } 					from "../Events/Movements";
 
 const PIECES_ABILITY = Object.freeze ({
 	"King" : moveKing,
@@ -40,7 +39,6 @@ export function boostHlOnClick()
 
 export async function moveBastard()
 {
-	// console.log("qui");
 	if (!localInfo.secondTurn)
 	{
 		const square = localBoard.get(localInfo.lastClickedId);
@@ -73,7 +71,6 @@ export async function moveBastard()
 			{
 				localInfo.secondMove = false;
 				localInfo.usingAbility = "";
-				throw new Error("yippie");
 			}
 		}
 	}
@@ -90,20 +87,19 @@ export async function moveJester()
 	const boostedZones = square.boostedTargetZones.get(localInfo.lastClickedId);
 
 	localInfo.savedBoostedMap = boostedZones;
-	// console.log("entrato");
-	if (boostedZones.has(localInfo.clickedId)) 
-	{
-		// console.log("orcamadonna");		
-		const result = await requestToBack(localInfo.lastClickedId, localInfo.clickedId);
-		if (!result)
-			throw new Error("[abilityMovement.js:moveJester]: invalid move!");
-		else {
-			clearHighlight();
-			localInfo.usingAbility = "";
-		}
-	}
+	// if (boostedZones.has(localInfo.clickedId)) 
+	// {		
+	const result = await sendToBackend(true);
+	if (!result)
+		throw new Error("[abilityMovement.js:moveJester]: invalid move!");
 	else
-		throw new Error("[abilityMovement.js:moveJester]: non hai cliccato nelle boosted abbelinou!");
+	{
+		clearHighlight();
+		localInfo.usingAbility = "";
+	}
+	// }
+	// else
+	// 	throw new Error("[abilityMovement.js:moveJester]: non hai cliccato nelle boosted abbelinou!");
 }
 
 function error()
