@@ -364,6 +364,8 @@ function CheckTransfiguration(match, result, piece, newType)
 		return (error(result, 403, `you must be on a edge to transform`));
 	if (!includesOneOf(newType, arrayNames))
 		return (error(result, 403, `${newType} not in array "${arrayNames}"`));
+	if (match.history.Last().to != piece.pos)
+		return (error(result, 403, `That's too late to boost that bastard.`));
 	return (true);
 }
 
