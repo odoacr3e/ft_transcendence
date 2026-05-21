@@ -41,6 +41,7 @@ export function highlightOnClick(event)
 	}
 	else
 	{
+		clearHighlight();
 		localInfo.lastClickedId = null;
 		resetPrice();
 	}
@@ -72,8 +73,14 @@ export function rightClickSelect(event)
 	if (event.button == 2)
 	{
 		event.preventDefault();
+		console.log(`CID: ${localInfo.clickedId}, LCID: ${localInfo.lastClickedId}`);
+		// if (localBoard.get(localInfo.lastClickedId)?.targetZones)
+		// {
+		// 	console.log("AAAAAAAAAAAAAAAAAAH");
+		// 	if (localBoard.get(localBoard.get(localInfo.lastClickedId).targetZones).highlight)
+		// 		localInfo.lastClickedId = null;
+		// }
 		clearHighlight("highlight");
-		localInfo.lastClickedId = null;
 		resetPrice();
 		let targetSquare;
 		if (event.target.localName === "img")

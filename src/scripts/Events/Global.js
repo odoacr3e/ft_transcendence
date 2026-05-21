@@ -14,7 +14,7 @@ export async function globalEvents()
 
 	ROOT_DIV.addEventListener("click", async function (event) {
 		if (!checkPermision(event))	{ clearHighlight(); return; }
-		// console.log(`CID: ${localInfo.clickedId}, LCID: ${localInfo.lastClickedId}`);
+		console.log(`CID: ${localInfo.clickedId}, LCID: ${localInfo.lastClickedId}`);
 		if (checkForHighlightMove()) 
 		{
 			if (usingAbility())
@@ -30,20 +30,24 @@ export async function globalEvents()
 	});
 
 	ROOT_DIV.addEventListener("mousedown", function (event) {
+		// console.log("DIO MERDA");
 		rightClickSelect(event);
 	});
 
 	ROOT_DIV.addEventListener("dragstart", function (event) {
+		console.log("DIO MERDA START");
 		if ((localInfo.secondMove && localInfo.savedBoostedMap && 
 			localInfo.savedBoostedMap.has(event.target.parentNode.id)) || !localInfo.secondMove)
 			highlightOnDrag(event);
 	});
 
 	ROOT_DIV.addEventListener("drag", function (event) {
+		// console.log("DIO MERDA DRAG QUEEN");
 		moveDragClone(event);
 	});
 
 	ROOT_DIV.addEventListener('dragend', function(event) {
+		// console.log("DIO MERDA END");
 		if (event.target.className === 'piece' && !localInfo.dropDone)
 			event.target.style.visibility = 'visible';
 		if (localInfo.dropDone) { localInfo.dropDone = false; }

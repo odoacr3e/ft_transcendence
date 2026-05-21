@@ -103,8 +103,8 @@ async function moveMinoNChamp()
 	}
 	else
 	{
-		if (!localInfo.savedBoostedMap.has(localInfo.clickedId)) //onde evitare di aggiornare lasclicked e clicked quando non clicchi nelle caselle boosted
-			return;
+		// if (!localInfo.savedBoostedMap.has(localInfo.clickedId)) //onde evitare di aggiornare lasclicked e clicked quando non clicchi nelle caselle boosted
+		// 	return;
 		boostHlOnClick();
 		if (localInfo.savedBoostedMap.has(localInfo.clickedId))
 		{
@@ -132,8 +132,9 @@ function boostHlOnClick()
 	{
 		clearHighlight();
 		setHighlightTrue(localInfo.savedBoostedMap, "boosted", "both");
-		if (!localBoard.get(localInfo.lastClickedId)?.targetZones.has(localInfo.clickedId))
-			localInfo.lastClickedId = localInfo.clickedId;
+		if (["Bastards","King"].includes(localInfo.usingAbility))
+			if (!localBoard.get(localInfo.lastClickedId)?.targetZones.has(localInfo.clickedId))
+				localInfo.lastClickedId = localInfo.clickedId;
 		return;
 	}
 	if (localInfo.clickedId === localInfo.lastClickedId) 
