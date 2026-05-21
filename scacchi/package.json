@@ -18,7 +18,7 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "modules": "npm install node; npm install express; npm install pg; npm install dotenv; npm install jsonwebtoken; npm install bcryptjs; npm install prisma --save-dev; npm install @prisma/client",
+    "modules": "npm install node; npm install express; npm install pg; npm install dotenv; npm install jsonwebtoken; npm install bcryptjs; npm install prisma --save-dev; npm install @prisma/client; npm install redis --save; ",
     "confprisma": "npm install prisma --save-dev; npm install @prisma/client; npm install @prisma/adapter-pg --save; npx prisma generate; npm i --save-dev @types/node",
     "server": "node server.js",
     "pulldb": "npx prisma db pull && npx prisma generate"

@@ -42,7 +42,13 @@ const refreshToken = async (req, res) => {
 			return res.status(403).json(jsonResponse.ResponseError("Token already used"));
 		}
 		req.user = user;
+		await redis.set(
+			`refresh:${refresh}`,
+			JSON.stringify({ ...rawToken, used: true }),
+			'KEEPTTL'
+		);
 		const token = await createJwt(req, res);
+		await redis.del(`refresh:${refresh}`);
 		return res.status(200).json(jsonResponse.ResponseSuccess({ "user": user, "token": token }));
 	} catch (error) {
 		console.log("Error: ", error);

@@ -51,9 +51,9 @@ model pieces {
   name       String    @db.VarChar(250)
   cost       Int       @default(4)
   id_ability Int
-  movement   String
   info       String?
   lore       String?
+  quote      String?
   abilities  abilities @relation(fields: [id_ability], references: [id_ability], onDelete: NoAction, map: "fk_id_ability")
 }
 
