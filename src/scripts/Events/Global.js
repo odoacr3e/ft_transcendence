@@ -30,7 +30,7 @@ export async function globalEvents()
 	});
 
 	ROOT_DIV.addEventListener("mousedown", function (event) {
-		// console.log("DIO MERDA");
+		console.log("DIO MERDA");
 		rightClickSelect(event);
 	});
 
@@ -42,12 +42,12 @@ export async function globalEvents()
 	});
 
 	ROOT_DIV.addEventListener("drag", function (event) {
-		// console.log("DIO MERDA DRAG QUEEN");
+		console.log("DIO MERDA DRAG QUEEN");
 		moveDragClone(event);
 	});
 
 	ROOT_DIV.addEventListener('dragend', function(event) {
-		// console.log("DIO MERDA END");
+		console.log("DIO MERDA END");
 		if (event.target.className === 'piece' && !localInfo.dropDone)
 			event.target.style.visibility = 'visible';
 		if (localInfo.dropDone) { localInfo.dropDone = false; }
