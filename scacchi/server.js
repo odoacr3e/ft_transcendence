@@ -1,7 +1,7 @@
 
 const lib = require("./lib/lib.js");
 const app = lib.include.express();
-const {responseFormatter} = require("./utils/response.js");
+const { responseFormatter } = require("./utils/response.js");
 
 // setup
 const PORT = 8080;

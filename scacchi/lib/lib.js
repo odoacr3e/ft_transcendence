@@ -7,6 +7,11 @@ const express = require('express');
 const app = express();
 const {preset} = require("../Classes/Pieces/pieces.js");
 
+// NOTE: connections
+const { prisma } = require("./prisma.js");
+const { redis } = require("./redis.js");
+const crypto = require('crypto');
+
 //SECTION - external inclusions
 const include = {http, https, url, fs, path, express, app};
 
@@ -28,4 +33,6 @@ let utils = require("../utils/moveUtils.js");
 let {bastardChecks, isDangerous} = require("../utils/gameUtils.js");
 let gameUtils = {bastardChecks, isDangerous};
 
-module.exports = {include, Chess, Macro, Enums, preset, utils, gameUtils};
+const conn = { prisma, redis, crypto } 
+
+module.exports = { include, Chess, Macro, Enums, preset, utils, gameUtils, conn};
