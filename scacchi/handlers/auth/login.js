@@ -2,7 +2,7 @@
 const lib = require("../../lib/lib.js");
 const bcrypt = require("bcryptjs");
 const { prisma } = require("../../lib/prisma.js");
-const { createJwt } = require("../../utils/auth.js");
+const { createJwt, checkJwt } = require("../../utils/auth.js");
 const { jsonResponse } = require("../../utils/response.js");
 const usersQuery = require("../../query/usersQuery.js");
 
@@ -14,7 +14,7 @@ const checkLogin = async (req, res) => {
 	try {
 		const { username, password } = req.body;
 		if (!username || !password)
-			return (res.status(400).json(jsonErrorResponse("Missing credentials")));
+			return (res.status(400).json(jsonResponse.ResponseError("Missing credentials")));
 		const user = await prisma.users.findUnique({
 			select: {
 				id_user: true,
@@ -44,6 +44,8 @@ const checkLogin = async (req, res) => {
 		delete(user.password);
 		req.user = user; // aggiungo lo user trovato all'oggetto request per averlo anche nel successivo middleware
 		const token = await createJwt(req, res);
+		// token.jwt = "abcd";
+		// if (checkJwt(req))
 		return res.status(200).json(jsonResponse.ResponseSuccess({ "user": user, "token": token }));
 	} catch (error) {
 		console.log("Server error: ", error);
