@@ -65,7 +65,7 @@
         "isBoostedBool": false,
         "pos": "b6"
       },
-      "targetZones": [ "b5" ],
+      "targetZones": ["b5"],
       "boostedTargetZones": {}
     },
     "b7": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
@@ -83,7 +83,7 @@
         "isBoostedBool": false,
         "pos": "c5"
       },
-      "targetZones": [ "c4" ],
+      "targetZones": ["c4"],
       "boostedTargetZones": {}
     },
     "c6": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
@@ -106,7 +106,7 @@
         "isBoostedBool": false,
         "pos": "e1"
       },
-      "targetZones": [ "f2", "d2", "f1", "d1", "e2" ],
+      "targetZones": ["f2", "d2", "f1", "d1", "e2"],
       "boostedTargetZones": {}
     },
     "e2": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
@@ -117,12 +117,11 @@
         "team": "white",
         "isMovedBool": true,
         "isBoostedBool": true,
-        "pos": "e3",
-        "moveLongRangeDEBUG": true
+        "pos": "e3"
       },
-      "targetZones": [ "h6", "c5", "g5", "d4", "f4", "d2", "f2", "c1", "g1" ],
+      "targetZones": ["h6", "c5", "g5", "d4", "f4", "d2", "f2", "c1", "g1"],
       "boostedTargetZones": {
-        "e3" : [ "b6", "c5" ]
+        "e3": ["b6", "c5"]
       }
     },
     "e4": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
@@ -138,7 +137,7 @@
         "isBoostedBool": false,
         "pos": "e8"
       },
-      "targetZones": [ "d7", "f7", "f8", "d8", "e7" ],
+      "targetZones": ["d7", "f7", "f8", "d8", "e7"],
       "boostedTargetZones": {}
     },
     "f1": { "piece": null, "targetZones": [], "boostedTargetZones": {} },

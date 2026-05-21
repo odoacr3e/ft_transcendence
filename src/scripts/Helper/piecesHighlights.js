@@ -1,5 +1,5 @@
 import { setHighlightTrue }	from "@/scripts/Events/utils/HighlightUtils.js";
-import { clearHighlight }	from "./RenderUtils.js";
+import { clearHighlight }	from "@/scripts/Events/utils/HighlightUtils.js";
 import { localBoard }		from "@/scripts/Data/Variables.js"
 
 export const PIECES_HIGHLIGHT = Object.freeze ({

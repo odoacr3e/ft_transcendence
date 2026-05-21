@@ -41,17 +41,4 @@ export function getSquareColor(squareId)
 	return (row + col) % 2 === 0 ? "white" : "black";
 }
 
-export function clearHighlight(flag)
-{
-	localBoard.forEach(square => {
-		if (square.selected === true && (flag === "selected" || flag === undefined))
-			square.selected = false;
-		if ((square.highlight === true || square.boostedHighlight == true)&& (flag === "highlight" || flag === undefined))
-			{
-				square.highlight = false;
-				square.boostedHighlight = false;
-			}
-	})
-}
-
 export function resetPrice() { localInfo.priceSelected = "..."; }

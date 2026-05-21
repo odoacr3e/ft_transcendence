@@ -1,6 +1,6 @@
 import { localBoard, localInfo }	from "@/scripts/Data/Variables";
 import { setHighlightTrue }			from "./utils/HighlightUtils.js";
-import { clearHighlight }			from "@/scripts/Helper/RenderUtils";
+import { clearHighlight }			from "@/scripts/Events/utils/HighlightUtils.js";
 import { requestToBack }			from "./BackLink.js";
 import { getTarget }				from "./utils/MovementUtils.js"
 

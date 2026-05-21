@@ -1,15 +1,7 @@
 {
   "board": {
-    "g1": {
-      "piece": null,
-      "targetZones": [],
-      "boostedTargetZones": {}
-    },
-    "f3": {
-      "piece": null,
-      "targetZones": [],
-      "boostedTargetZones": {}
-    },
+    "g1": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "f3": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
     "a8": {
       "piece": {
         "type": "Jester",

@@ -1,7 +1,7 @@
 import { localInfo, localBoard, localPlayers }	from "@/scripts/Data/Variables";
 import { PIECES_HIGHLIGHT }						from "@/scripts/Helper/piecesHighlights";
 import { computePosition }						from "@floating-ui/dom";
-import { clearHighlight }						from "@/scripts/Helper/RenderUtils";
+import { clearHighlight }						from "@/scripts/Events/utils/HighlightUtils.js";
 import { requestToBack }						from "@/scripts/Events/BackLink.js";
 
 // ANCHOR USER INTERACTION FUNCTIONS
@@ -21,7 +21,7 @@ export function useAbility()
 	{ 
 		piece.useAbilityBool = true;
 		localInfo.usingAbility = piece.type;
-		// console.log(`who the fuck i am: ${localInfo.usingAbility}`);
+		console.log(`who the fuck i am: ${localInfo.usingAbility}`);
 	}
 	PIECES_HIGHLIGHT[piece.type](clickedId);
 }

@@ -1,8 +1,8 @@
 import { usingAbility, checkPermision, 
 			checkForHighlightMove, moveDragClone }				from "./utils/GlobalUtils.js";
-import { rightClickSelect, highlightOnClick, highlightOnDrag }	from "./utils/HighlightUtils.js";
+import { rightClickSelect, highlightOnClick, highlightOnDrag,
+		 clearHighlight }										from "./utils/HighlightUtils.js";
 import { localInfo, getRootDiv }								from "@/scripts/Data/Variables";
-import { clearHighlight }										from "@/scripts/Helper/RenderUtils";
 import { PIECES_ABILITY } 										from "@/scripts/Helper/abilityMovement";
 import { sendToBackend }										from "./BackLink.js";
 
@@ -19,6 +19,7 @@ export async function globalEvents()
 		{
 			if (usingAbility())
 			{
+				console.log(`Boosted Piece: ${localInfo.usingAbility}`);				
 				await PIECES_ABILITY[localInfo.usingAbility]();
 				return;
 			}
@@ -28,14 +29,14 @@ export async function globalEvents()
 			highlightOnClick(event);
 	});
 
+	ROOT_DIV.addEventListener("mousedown", function (event) {
+		rightClickSelect(event);
+	});
+
 	ROOT_DIV.addEventListener("dragstart", function (event) {
 		if ((localInfo.secondMove && localInfo.savedBoostedMap && 
 			localInfo.savedBoostedMap.has(event.target.parentNode.id)) || !localInfo.secondMove)
 			highlightOnDrag(event);
-	});
-
-	ROOT_DIV.addEventListener("mousedown", function (event) {
-		rightClickSelect(event);
 	});
 
 	ROOT_DIV.addEventListener("drag", function (event) {
@@ -53,5 +54,3 @@ export async function globalEvents()
 		}
 	});
 }
-
-// export { globalEvents, sendToBackend, useAbility, shopAbility, sendEndTurn };

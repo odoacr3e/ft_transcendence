@@ -1,10 +1,6 @@
 {
   "board": {
-    "e2": {
-      "piece": null,
-      "targetZones": [],
-      "boostedTargetZones": {}
-    },
+    "e2": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
     "e3": {
       "piece": {
         "type": "Bastards",
@@ -14,19 +10,10 @@
         "isBoostedBool": true,
         "pos": "e2"
       },
-      "targetZones": [
-        "e4",
-        "e3"
-      ],
+      "targetZones": ["e4", "e3"],
       "boostedTargetZones": {
-		"e2" : [
-			"d2",
-			"d1",
-			"f2",
-			"f1",
-			"e1"
-		]
-	  }
+        "e2": ["d2", "d1", "f2", "f1", "e1"]
+      }
     },
     "d1": {
       "piece": {
@@ -35,19 +22,9 @@
         "team": "white",
         "isMovedBool": false,
         "isBoostedBool": false,
-        "pos": "d1",
-        "moveLongRangeDEBUG": true
+        "pos": "d1"
       },
-      "targetZones": [
-        "e2",
-        "c2",
-        "e1",
-        "c1",
-        "d2",
-        "f3",
-        "g4",
-        "h5"
-      ],
+      "targetZones": ["e2", "c2", "e1", "c1", "d2", "f3", "g4", "h5"],
       "boostedTargetZones": {}
     },
     "f1": {
@@ -57,17 +34,9 @@
         "team": "white",
         "isMovedBool": false,
         "isBoostedBool": false,
-        "pos": "f1",
-        "moveLongRangeDEBUG": true
+        "pos": "f1"
       },
-      "targetZones": [
-        "g2",
-        "e2",
-        "d3",
-        "c4",
-        "b5",
-        "a6"
-      ],
+      "targetZones": ["g2", "e2", "d3", "c4", "b5", "a6"],
       "boostedTargetZones": {}
     }
   },

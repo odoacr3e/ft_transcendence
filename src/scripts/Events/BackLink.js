@@ -1,5 +1,5 @@
 import { updateMatchState }	from "@/scripts/Data/Archi";
-import { clearHighlight }	from "@/scripts/Helper/RenderUtils";
+import { clearHighlight }	from "@/scripts/Events/utils/HighlightUtils.js";
 import { localInfo }		from "@/scripts/Data/Variables";
 import { getTarget }		from "./utils/MovementUtils.js"
 
@@ -30,13 +30,50 @@ export async function requestToBack(fromSquare, toSquare)
 {
 	let type, url;
 
+	// MOVE GENERICA
+	// if (fromSquare === null && toSquare === null && localInfo.secondTurn)
+	// 	{type = "endTurn"; url = "move.json" }
+	// else if (fromSquare && toSquare === null)
+	// 	{type = "boost"; url = "move.json" }
+	// else if (fromSquare && toSquare && localInfo.usingAbility !== "")
+	// 	{type = "boostMove"; url = "move.json" }
+	// else {type = "move"; url = "move.json" }
+
+	// MOVE MINOTAURUS
+	// if (fromSquare === null && toSquare === null && localInfo.secondTurn)
+	// 	{type = "endTurn"; url = "MinoMove.json" }
+	// else if (fromSquare && toSquare === null)
+	// 	{type = "boost"; url = "MinoMove.json" }
+	// else if (fromSquare && toSquare && localInfo.usingAbility !== "")
+	// 	{type = "boostMove"; url = "MinoMove.json" }
+	// else {type = "move"; url = "MinoMove.json" }
+
+	// MOVE BASTARD
+	// if (fromSquare === null && toSquare === null && localInfo.secondTurn)
+	// 	{type = "endTurn"; url = "BastardMove.json" }
+	// else if (fromSquare && toSquare === null)
+	// 	{type = "boost"; url = "BastardMove.json" }
+	// else if (fromSquare && toSquare && localInfo.usingAbility !== "")
+	// 	{type = "boostMove"; url = "BastardMove.json" }
+	// else {type = "move"; url = "BastardMove.json" }
+
+	// MOVE VALKIRYA
+	// if (fromSquare === null && toSquare === null && localInfo.secondTurn)
+	// 	{type = "endTurn"; url = "ValkiryaBMove.json" }
+	// else if (fromSquare && toSquare === null)
+	// 	{type = "boost"; url = "ValkiryaBMove.json" }
+	// else if (fromSquare && toSquare && localInfo.usingAbility !== "")
+	// 	{type = "boostMove"; url = "ValkiryaBMove.json" }
+	// else {type = "move"; url = "ValkiryaBMove.json" }
+
+	// MOVE CHAMPION
 	if (fromSquare === null && toSquare === null && localInfo.secondTurn)
-		{type = "endTurn"; url = "move.json" }
+		{type = "endTurn"; url = "ChampMove.json" }
 	else if (fromSquare && toSquare === null)
-		{type = "boost"; url = "move.json" }
+		{type = "boost"; url = "ChampMove.json" }
 	else if (fromSquare && toSquare && localInfo.usingAbility !== "")
-		{type = "boostMove"; url = "move.json" }
-	else {type = "move"; url = "move.json" }
+		{type = "boostMove"; url = "ChampMove.json" }
+	else {type = "move"; url = "ChampMove.json" }
 
 	try
 	{

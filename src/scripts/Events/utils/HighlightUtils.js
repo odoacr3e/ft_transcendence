@@ -1,5 +1,5 @@
 import { localInfo, localBoard, localPlayers }	from "@/scripts/Data/Variables";
-import { clearHighlight, resetPrice }			from "@/scripts/Helper/RenderUtils";
+import { resetPrice }							from "@/scripts/Helper/RenderUtils";
 import { PIECES_HIGHLIGHT }						from "@/scripts/Helper/piecesHighlights";
 import { updatePrice }							from "./GlobalUtils";
 
@@ -92,4 +92,17 @@ export function rightClickSelect(event)
 		else if (targetSquare.selected)
 			targetSquare.selected = false;
 	}
+}
+
+export function clearHighlight(flag)
+{
+	localBoard.forEach(square => {
+		if (square.selected === true && (flag === "selected" || flag === undefined))
+			square.selected = false;
+		if ((square.highlight === true || square.boostedHighlight == true)&& (flag === "highlight" || flag === undefined))
+			{
+				square.highlight = false;
+				square.boostedHighlight = false;
+			}
+	})
 }
