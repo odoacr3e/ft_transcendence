@@ -2,7 +2,7 @@ import { localInfo, localBoard }	from "../Data/Variables.js";
 import { setHighlightTrue }			from "../Events/utils/HighlightUtils.js";
 import { PIECES_HIGHLIGHT } 		from "./piecesHighlights.js";
 import { clearHighlight } 			from "./RenderUtils.js";
-import { sendToBackend }			from "../Events/temp.js";
+import { sendToBackend }			from "../Events/BackLink.js";
 
 const PIECES_ABILITY = Object.freeze ({
 	"King" : moveKing,

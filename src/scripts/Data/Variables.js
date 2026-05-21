@@ -1,4 +1,4 @@
-//!SECTION FILE CON TUTTE LE VARIABILI GLOBALI
+// SECTION - LE VARIABILI GLOBALI
 import { boardConverter, getLocalPlayers }	from "@/scripts/Helper/RenderUtils";
 import { reactive }							from "vue";
 

@@ -1,6 +1,7 @@
 <script setup>
 	import { DOMBoard, localInfo, IMG_PATHS }	from '@/scripts/Data/Variables';
-	import { globalEvents, shopAbility }		from '@/scripts/Events/Global';
+	import { globalEvents }						from '@/scripts/Events/Global';
+	import { shopAbility }						from '@/scripts/Events/utils/GlobalUtils';
 	import { onDragStart, onDrop }				from '@/scripts/Events/Movements';
 	import { onMounted, computed }				from 'vue';
 	import { getSquareColor } 					from '@/scripts/Helper/RenderUtils';

@@ -1,7 +1,8 @@
 import { localBoard, localInfo }	from "@/scripts/Data/Variables";
-import { clearHighlight }			from "@/scripts/Helper/RenderUtils";
-import { requestToBack }			from "./temp.js";
 import { setHighlightTrue }			from "./utils/HighlightUtils.js";
+import { clearHighlight }			from "@/scripts/Helper/RenderUtils";
+import { requestToBack }			from "./BackLink.js";
+import { getTarget }				from "./utils/MovementUtils.js"
 
 // Deprecata
 export function movePiece(fromSquareId, toSquareId)
@@ -48,28 +49,18 @@ export function onDrop(event, toSquare)
 
 	if (fromPiece.useAbilityBool)
 	{
-		let		TargetZone;
-		const	boostedZones = localBoard.get(fromSquareId).boostedTargetZones.get(fromSquareId);
+		const	TargetZone = getTarget(fromSquareId, toSquare.id);
 
-		if (((fromPiece.type !== ("Bastards" || "King" || "Minotaurus")) || (fromPiece.type === "Minotaurus" && localInfo.secondMove)) && 
-			boostedZones.has(toSquare.id))
-			TargetZone = boostedZones.has(toSquare.id);
-		else
-		{
-			TargetZone = localBoard.get(fromSquareId).targetZones.has(toSquare.id);
-			if (fromPiece.type !== ("Bastards" || "King") && !localInfo.secondMove && !boostedZones.has(toSquare.id))
-				localInfo.usingAbility = "";
-		}
 		if (TargetZone)
 		{
 			localInfo.dropDone = true;
 			requestToBack(fromSquareId, toSquare.id).then(
 				function(value) {if (value) {
 					clearHighlight();
-					localInfo.savedBoostedMap = boostedZones;
+					localInfo.savedBoostedMap = localBoard.get(fromSquareId).boostedTargetZones.get(fromSquareId);
 					if (fromPiece.useAbilityBool && fromPiece.type === ("Bastards" || "King" || "Minotaurus"))
 					{
-						setHighlightTrue(boostedZones, "boosted", "both");
+						setHighlightTrue(localInfo.savedBoostedMap, "boosted", "both");
 						localInfo.secondMove = true;
 					}
 					if ((fromPiece.type !== ("Bastards" || "King" || "Minotaurus")) || (fromPiece.type === "Minotaurus" && localInfo.secondMove))
@@ -92,3 +83,15 @@ export function onDrop(event, toSquare)
 	}
 }
 
+// let		TargetZone;
+// const	boostedZones = localBoard.get(fromSquareId).boostedTargetZones.get(fromSquareId);
+
+// if (((fromPiece.type !== ("Bastards" || "King" || "Minotaurus")) || (fromPiece.type === "Minotaurus" && localInfo.secondMove)) && 
+// 	boostedZones.has(toSquare.id))
+// 	TargetZone = boostedZones.has(toSquare.id);
+// else
+// {
+// 	TargetZone = localBoard.get(fromSquareId).targetZones.has(toSquare.id);
+// 	if (fromPiece.type !== ("Bastards" || "King") && !localInfo.secondMove && !boostedZones.has(toSquare.id))
+// 		localInfo.usingAbility = "";
+// }

@@ -1,19 +1,14 @@
-import { useAbility, 
-		shopAbility, 
-		sendEndTurn, 
-		usingAbility, 
-		checkPermision, 
-		checkForHighlightMove,}									from "./utils/GlobalUtils.js";
-import { localInfo, getRootDiv }								from "@/scripts/Data/Variables";
+import { usingAbility, checkPermision, 
+			checkForHighlightMove, moveDragClone }				from "./utils/GlobalUtils.js";
 import { rightClickSelect, highlightOnClick, highlightOnDrag }	from "./utils/HighlightUtils.js";
+import { localInfo, getRootDiv }								from "@/scripts/Data/Variables";
 import { clearHighlight }										from "@/scripts/Helper/RenderUtils";
 import { PIECES_ABILITY } 										from "@/scripts/Helper/abilityMovement";
-import { computePosition }										from "@floating-ui/dom";
-import { sendToBackend }										from "./temp.js";
+import { sendToBackend }										from "./BackLink.js";
 
 // ANCHOR EVENT-LISTENERS FUNCTIONS
 
-async function globalEvents()
+export async function globalEvents()
 {
 	const ROOT_DIV = getRootDiv();
 
@@ -44,32 +39,7 @@ async function globalEvents()
 	});
 
 	ROOT_DIV.addEventListener("drag", function (event) {
-		if (event.target.className === "piece")
-		{
-			if (event.clientX === 0 && event.clientY === 0) return;
-
-			const cursor = {
-				getBoundingClientRect() {
-				  return {
-					  	width: 0,
-						height: 0,
-						x: event.clientX,
-						y: event.clientY,
-						left: event.clientX,
-						right: event.clientX,
-						top: event.clientY,
-						bottom: event.clientY
-					};
-					}
-				};
-
-				computePosition(cursor, localInfo.dragClone).then(({ x, y }) => {
-					Object.assign(localInfo.dragClone.style, {
-					top: `${y - 40}px`,
-					left: `${x}px`
-					});
-				});
-		}
+		moveDragClone(event);
 	});
 
 	ROOT_DIV.addEventListener('dragend', function(event) {
@@ -84,4 +54,4 @@ async function globalEvents()
 	});
 }
 
-export { globalEvents, sendToBackend, useAbility, shopAbility, sendEndTurn };
+// export { globalEvents, sendToBackend, useAbility, shopAbility, sendEndTurn };

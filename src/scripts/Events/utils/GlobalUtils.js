@@ -1,7 +1,8 @@
 import { localInfo, localBoard, localPlayers }	from "@/scripts/Data/Variables";
 import { PIECES_HIGHLIGHT }						from "@/scripts/Helper/piecesHighlights";
+import { computePosition }						from "@floating-ui/dom";
 import { clearHighlight }						from "@/scripts/Helper/RenderUtils";
-import { requestToBack }						from "@/scripts/Events/temp.js";
+import { requestToBack }						from "@/scripts/Events/BackLink.js";
 
 // ANCHOR USER INTERACTION FUNCTIONS
 export function useAbility()
@@ -46,6 +47,36 @@ export function sendEndTurn()
 }
 
 //UTILS - GENERAL UTILS
+
+export function moveDragClone(event)
+{
+	if (event.target.className === "piece")
+	{
+		if (event.clientX === 0 && event.clientY === 0) 
+			return;
+
+		const cursor = {
+			getBoundingClientRect() {
+				return {
+					width: 0,
+					height: 0,
+					x: event.clientX,
+					y: event.clientY,
+					left: event.clientX,
+					right: event.clientX,
+					top: event.clientY,
+					bottom: event.clientY
+				};
+			}
+		};
+		computePosition(cursor, localInfo.dragClone).then(({ x, y }) => {
+			Object.assign(localInfo.dragClone.style, {
+			top: `${y - 40}px`,
+			left: `${x}px`
+			});
+		});
+	}
+}
 
 export function checkPermision(event)
 {
