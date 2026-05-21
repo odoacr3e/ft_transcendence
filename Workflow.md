@@ -97,11 +97,11 @@ boardConverter()
 	✓ Coordinate delle caselle della scacchiera
 	✓ drag non fastasma
 	▫ movimento per i pezzi boostati
-	↳	▫ implementazione del drag [MAVI]
+	↳	✓ implementazione del drag
 		✓ bastardo
-		▫ minotauro {LEO}
-		▫ giullare
-		▫ valkiaria
+		▫ minotauro {LEO} [MAVI]
+		✓ giullare
+		✓ valkiaria
 		▫ campione
 		▫ re
 	? orientamento della scacchiera in base al colore dei pezzi del giocatore

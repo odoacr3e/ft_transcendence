@@ -24,6 +24,8 @@ export async function sendToBackend(flag)
 }
 
 // {type = "endTurn"; url = "BastardMove.json" }
+// {type = "endTurn"; url = "ValkiryaMove.json" }
+// {type = "endTurn"; url = "ValkiryaBMove.json" }
 export async function requestToBack(fromSquare, toSquare)
 {
 	let type, url;

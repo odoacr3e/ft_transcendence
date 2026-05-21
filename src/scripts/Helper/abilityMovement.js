@@ -7,14 +7,14 @@ import { sendToBackend }			from "../Events/BackLink.js";
 const PIECES_ABILITY = Object.freeze ({
 	"King" : moveKing,
 	"Champion" : "giorgio",
-	"Jester" : moveJester,
-	"Valkirya" : "giorgio",
+	"Jester" : moveJesternValkirya,
+	"Valkirya" : moveJesternValkirya,
 	"Minotaurus" : "giorgio",
 	"Bastards" : moveBastard,
 	"": error,
 })
 
-export function boostHlOnClick()
+function boostHlOnClick()
 {
 	if (!localInfo.savedBoostedMap.has(localInfo.clickedId))
 	{
@@ -38,7 +38,7 @@ export function boostHlOnClick()
 	localInfo.lastClickedId = localInfo.clickedId;
 }
 
-export async function moveBastard()
+async function moveBastard()
 {
 	if (!localInfo.secondTurn)
 	{
@@ -77,12 +77,12 @@ export async function moveBastard()
 	}
 }
 
-export async function moveKing()
+async function moveKing()
 {
 	console.log("Va bene mavi, la smetto");
 }
 
-export async function moveJester()
+async function moveJesternValkirya()
 {
 	const square = localBoard.get(localInfo.lastClickedId);
 	const boostedZones = square.boostedTargetZones.get(localInfo.lastClickedId);
