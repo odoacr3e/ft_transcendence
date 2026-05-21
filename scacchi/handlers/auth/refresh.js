@@ -1,7 +1,7 @@
 
 const lib = require("../../lib/lib.js");
-const { redis } = lib.conn.redis;
-const { crypto } = lib.conn.crypto;
+const redis = lib.conn.redis;
+const crypto = lib.conn.crypto;
 const { createJwt } = require("../../utils/auth.js");
 const { colors } = require("../../utils/colors.js");
 const { jsonResponse } = require("../../utils/response.js");
@@ -28,32 +28,26 @@ async function revokeTokenSessions(userId) {
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  */
-const refresh = async (req, res) => {
-	const { refreshToken } = req.body;
-	const token = await redis.get(`refresh:${refreshToken}`);
-	if (!token)
-		return res.status(403).json(jsonResponse.ResponseError("Invalid or expired token"));
-	/** @type {token} raw */
-	const raw = JSON.parse(token);
-	if (raw.used == true)
-	{
-		revokeTokenSessions(raw.userId)
-		return res.status(403).json(jsonResponse.ResponseError("Token already used"));
+const refreshToken = async (req, res) => {
+	try {
+		const { refresh, user } = req.body;
+		const refToken = await redis.get(`refresh:${refresh}`);
+		if (!refToken)
+			return res.status(403).json(jsonResponse.ResponseError("Invalid or expired token"));
+		/** @type {token} raw */
+		const rawToken = JSON.parse(refToken);
+		if (rawToken.used == true)
+		{
+			revokeTokenSessions(rawToken.userId)
+			return res.status(403).json(jsonResponse.ResponseError("Token already used"));
+		}
+		req.user = user;
+		const token = await createJwt(req, res);
+		return res.status(200).json(jsonResponse.ResponseSuccess({ "user": user, "token": token }));
+	} catch (error) {
+		console.log("Error: ", error);
+		return res.status(403).json(jsonResponse.ResponseError("Server error refreshing token"));
 	}
-	const newRefresh = crypto.randomUUID();
-	await redis.set(
-		`refresh:${newRefresh}`,
-		JSON.stringify({
-			"userId": req.user.id_user,
-			"used": false
-		}),
-		'EX', 60 * 60 * 24 * 7 // 7 giorni in secondi
-	);
-	const token = jwt.sign(
-		{ id_user: req.user.id_user, username: req.user.username },
-		process.env.JWT_SECRET,
-		{ expiresIn: "1m" }
-	);
 }
 
-module.exports = { refresh };
+module.exports = { refreshToken };

@@ -34,10 +34,11 @@ const checkJwt = async (req, res, next) => {
 };
 
 /**
- * @description creazione JWT per login/registrazione utente
+ * @description async funztion, creazione JWT per login/registrazione utente
  * @param {{ id_user: number, name: string, surname: string, username: string, email: string, nationality: string }} user
  */
 const createJwt = async (req, res) => {
+	console.log("User createJwt:", req.user);
 	const token = jwt.sign(
 		{ id_user: req.user.id_user, username: req.user.username },
 		process.env.JWT_SECRET,

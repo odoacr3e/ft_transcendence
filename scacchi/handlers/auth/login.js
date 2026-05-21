@@ -44,8 +44,6 @@ const checkLogin = async (req, res) => {
 		delete(user.password);
 		req.user = user; // aggiungo lo user trovato all'oggetto request per averlo anche nel successivo middleware
 		const token = await createJwt(req, res);
-		// token.jwt = "abcd";
-		// if (checkJwt(req))
 		return res.status(200).json(jsonResponse.ResponseSuccess({ "user": user, "token": token }));
 	} catch (error) {
 		console.log("Server error: ", error);
