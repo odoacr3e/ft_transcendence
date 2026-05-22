@@ -5,7 +5,7 @@ const { getUsersHandler, deleteUserHandler, updateUserHandler } = require("../ha
 const { checkJwt } = require("../utils/auth.js");
 
 // NOTE: route /api/users/
-router.get("/", checkJwt, getUsersHandler.getAllUsers);
+router.get("/", /* checkJwt, */ getUsersHandler.getAllUsers);
 router.get("/:id", getUsersHandler.getUserById);
 
 router.delete("/:id", deleteUserHandler.deleteUserById);

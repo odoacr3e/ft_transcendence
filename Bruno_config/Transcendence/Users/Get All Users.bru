@@ -5,9 +5,13 @@ meta {
 }
 
 get {
-  url: http://localhost:8080/api/users/
+  url: http://localhost:8080/api/users?username=Investigatopo12
   body: json
   auth: bearer
+}
+
+params:query {
+  username: Investigatopo12
 }
 
 auth:bearer {
@@ -16,4 +20,6 @@ auth:bearer {
 
 settings {
   encodeUrl: true
+  timeout: 0
 }
+​
