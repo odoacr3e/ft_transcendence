@@ -73,13 +73,8 @@ export function rightClickSelect(event)
 	if (event.button == 2)
 	{
 		event.preventDefault();
-		console.log(`CID: ${localInfo.clickedId}, LCID: ${localInfo.lastClickedId}`);
-		// if (localBoard.get(localInfo.lastClickedId)?.targetZones)
-		// {
-		// 	console.log("AAAAAAAAAAAAAAAAAAH");
-		// 	if (localBoard.get(localBoard.get(localInfo.lastClickedId).targetZones).highlight)
-		// 		localInfo.lastClickedId = null;
-		// }
+		if (!localInfo.secondMove)
+			localInfo.lastClickedId = null;
 		clearHighlight("highlight");
 		resetPrice();
 		let targetSquare;

@@ -8,7 +8,7 @@ export function getTarget(fromId, toId)
 	// console.log(`flaggino: ${fromP?.useAbilityBool}, last: ${localInfo.lastClickedId}, now: ${localInfo.clickedId}`);	
     if (fromP?.useAbilityBool && boostedZones?.has(toId) &&
         (!["Bastards","King","Minotaurus"].includes(fromP?.type) || (fromP?.type === "Minotaurus" && localInfo.secondMove)))
-        	{ /* console.log("stronzo"); */ return (boostedZones.has(toId));}
+        	{ return (boostedZones.has(toId)); }
     else
     {
         if (!["Bastards","King"].includes(fromP?.type) && localInfo.secondMove && !boostedZones?.has(toId))
