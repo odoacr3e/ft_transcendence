@@ -4,8 +4,15 @@ const fs = require("fs");
 const {Cursor} = require("./cursor.js");
 const {eTeam, eEvents} = require("../../Macro/enums.js");
 const {Square, initBoard, copyBoard, copyBoostedTargetZones} = require("../ChessBoard/chessBoard.js");
-const {HISTORY_DEFAULT, HISTORY_PATH} = require("../../Macro/macro.js");
+const {HISTORY_PATH, MATCHTIMER} = require("../../Macro/macro.js");
 const {Result} = require("../endPoint/result.js");
+
+/**
+ * timeout = puntatore alla funzione setTimeout
+ * start = tempo in cui inizia il countdown
+ * time = tempo limite del coutdown
+ * @typedef {{timeout: number, start: number, time: number}} Timer
+ */
 
 const preset = {
 	white: 
@@ -18,7 +25,8 @@ const preset = {
 		team: eTeam.White,
 		next: eTeam.Black,
 		King: "",
-		boostedPiece: ""
+		boostedPiece: "",
+		time: MATCHTIMER
 	},
 	black: 
 	{
@@ -30,7 +38,8 @@ const preset = {
 		team: eTeam.Black,
 		next: eTeam.White,
 		King: "",
-		boostedPiece: ""
+		boostedPiece: "",
+		time: MATCHTIMER
 	},
 	red: 
 	{
@@ -42,7 +51,8 @@ const preset = {
 		team: eTeam.Red,
 		next: eTeam.Blue,
 		King: "",
-		boostedPiece: ""
+		boostedPiece: "",
+		time: MATCHTIMER
 	},
 	blue: 
 	{
@@ -54,7 +64,8 @@ const preset = {
 		team: eTeam.Blue,
 		next: eTeam.Yellow,
 		King: "",
-		boostedPiece: ""
+		boostedPiece: "",
+		time: MATCHTIMER
 	},
 	green: 
 	{
@@ -66,7 +77,8 @@ const preset = {
 		team: eTeam.Green,
 		next: eTeam.Red,
 		King: "",
-		boostedPiece: ""
+		boostedPiece: "",
+		time: MATCHTIMER
 	},
 	yellow: 
 	{
@@ -78,7 +90,8 @@ const preset = {
 		team: eTeam.Yellow,
 		next: eTeam.Green,
 		King: "",
-		boostedPiece: ""
+		boostedPiece: "",
+		time: MATCHTIMER
 	},
 }
 
@@ -102,6 +115,7 @@ class Match
 		this.playerNum = 2;
 		this.sizeBoard = {w: 8, h: 8};
 		this.victory = "";
+		/** @type {Timer | null} */ this.timer = null;
 	}
 	endTurn()
 	{
@@ -149,8 +163,8 @@ class Match
 		this.moves = 0;
 		this.boost = 0;
 		this.history = new History();
-		this.currentPlayer = this.white;	
-		this.victory = "";	
+		this.currentPlayer = this.white;
+		this.victory = "";
 	}
 	/** @param {string} name */
 	Log(name)

@@ -1,0 +1,106 @@
+{
+  "seed": 0,
+  "events": [
+    {
+      "from": "g1",
+      "to": "f3",
+      "team": "white",
+      "type": "move",
+      "useBoostBool": false
+    },
+    {
+      "from": "",
+      "to": "",
+      "team": "white",
+      "type": "endTurn",
+      "useBoostBool": false
+    },
+    {
+      "from": "f7",
+      "to": "f6",
+      "team": "black",
+      "type": "move",
+      "useBoostBool": false
+    },
+    {
+      "from": "",
+      "to": "",
+      "team": "black",
+      "type": "endTurn",
+      "useBoostBool": false
+    },
+    {
+      "from": "g2",
+      "to": "g3",
+      "team": "white",
+      "type": "move",
+      "useBoostBool": false
+    },
+    {
+      "from": "",
+      "to": "",
+      "team": "white",
+      "type": "endTurn",
+      "useBoostBool": false
+    },
+    {
+      "from": "g7",
+      "to": "g6",
+      "team": "black",
+      "type": "move",
+      "useBoostBool": false
+    },
+    {
+      "from": "",
+      "to": "",
+      "team": "black",
+      "type": "endTurn",
+      "useBoostBool": false
+    },
+    {
+      "from": "f1",
+      "to": "g2",
+      "team": "white",
+      "type": "move",
+      "useBoostBool": false
+    },
+    {
+      "from": "",
+      "to": "",
+      "team": "white",
+      "type": "endTurn",
+      "useBoostBool": false
+    },
+    {
+      "from": "h7",
+      "to": "h6",
+      "team": "black",
+      "type": "move",
+      "useBoostBool": false
+    },
+    {
+      "from": "",
+      "to": "",
+      "team": "black",
+      "type": "endTurn",
+      "useBoostBool": false
+    },
+    {
+      "from": "e1",
+      "to": "h1",
+      "team": "white",
+      "type": "move",
+      "useBoostBool": false
+    },
+    {
+      "from": "",
+      "to": "",
+      "team": "white",
+      "type": "endTurn",
+      "useBoostBool": false
+    }
+  ],
+  "moves": 14,
+  "victory": "",
+  "finalBoard": "|M|J|V|C|K|V|J|M|\n|B|B|B|B|B| | | |\n| | | | | |B|B|B|\n| | | | | | | | |\n| | | | | | | | |\n| | | | | |J|B| |\n|B|B|B|B|B|B|V|B|\n|M|J|V|C| |M|K| |\n"
+}

@@ -4,6 +4,7 @@ const {MOVEMENT_MIN, MOVEMENT_BONUS_POINT} = require("../../Macro/macro.js");
 const {Match} = require("../../Classes/Match/match.js");
 const {error, Result, checkMateAlert} = require("./utils.js");
 const {CheckMateCheck} = require("../../GameLogic/checkMate.js");
+const {globals} = require("../../Classes/Match/globals.js");
 //FIXME - ale: puoi sempre cambiare turno anche se non hai mosso
 
 /**
@@ -13,12 +14,37 @@ const {CheckMateCheck} = require("../../GameLogic/checkMate.js");
  */
 function endTurn(match)
 {
-	let	
-	result;
+	let	result;
+	let timeout;
+	let start;
+	let time;
+	let d;
 
 	result = new Result();
+	time = match.currentPlayer.time;
+	d = new Date;
+	// @ts-ignore
+	// if (match.timer != null)
+	// {
+	// 	clearTimeout(match.timer.timeout);
+	// 	match.timer.time = match.timer.time - (d.getMilliseconds() - match.timer.start);
+	// }
 	if (!updateTurn(match, result))
 		return (result);
+	// time = match.currentPlayer.time;
+	// timeout = setTimeout(() =>
+	// {
+		// let result;
+		// let match = globals.matches.get("0");
+		// result = new Result();
+		// result.status = 200;
+		// result.youWin = true;
+		// result.msg = `Player ${team} has lost!!!`
+		// return (match.CheckMate(result));
+	// }, time);
+	// let t = new Date;
+	// start = t.getMilliseconds();
+	// match.timer = {timeout, start, time};
 	console.log(`Now it's ${match.currentPlayer.team} turn.`);
 	result.status = 200;
 	return (result);
