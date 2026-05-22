@@ -1,0 +1,8 @@
+Se non ancora configurato Prisma:
+lanciare questi comandi dentro la cartella scacchi/ per installare i moduli di prisma, generare il client e impostare il tipo di file in node
+
+npm install prisma --save-dev
+npm install @prisma/client
+npm install @prisma/adapter-pg --save
+npx prisma generate
+npm i --save-dev @types/node

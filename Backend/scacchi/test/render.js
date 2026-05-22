@@ -1,0 +1,298 @@
+// @ts-check
+const { Square} = require("../Classes/ChessBoard/chessBoard.js");
+const {eTeam} = require("../Macro/enums.js");
+const lib = require("../lib/lib.js");
+const {Match} = require("../Classes/Match/match.js");
+const {CHESSBOARD_H, CHESSBOARD_W} = require("../Macro/macro.js");
+const { board } = require("../../../PROVE_scacchi/data/chessBoard.js");
+const enumNames = lib.Enums.enumNames;
+const cmd = require("./enumsTest.js").cmd;
+
+/**
+ * @param {Match | null} match 
+ * @param {Array<String>} selected which positions are selected
+ * @param {String} TargetDangerSwitch Valid value: "Target", "Danger", "None" 
+ */
+function render(match=null, selected=[], TargetDangerSwitch="")
+{
+	let buffer;
+	let	board;
+	let	coords;
+	let	square;
+
+	if (match)
+		board = match.board;
+	else
+	{
+		console.log("no match!");
+		return ;
+	}
+	coords = getCoords(match);
+	match.cursor.set(coords.start);
+	buffer = "";	
+	displayPlayerInfo(board, match);
+	do
+	{
+		match.cursor.setCol(1);
+		do
+		{
+			coords.curr = match.cursor.square;
+			square = board.get(coords.curr);
+			if (!square)
+				throw (`board position ${match.cursor.square} gives back null pointer`);
+			buffer += renderSquare(square, coords, selected, TargetDangerSwitch);
+		}
+		while (match.cursor.moveCol(+1))
+		buffer += "\n";
+	}
+	while (match.cursor.moveRow(-1))
+	match.cursor.set(coords.player);
+	console.log(buffer);
+}
+
+/**
+ * 
+ * @param {Square} square 
+ * @param {*} coords 
+ * @param {Array<string>} selected
+ * @param {string} TargetDangerSwitch 
+ */
+function renderSquare(square, coords, selected, TargetDangerSwitch)
+{
+	let	asciiArt;
+	let	buffer;
+
+	buffer = "";
+	asciiArt = getAscii(square);
+	if (square.piece && square.piece.team)
+		buffer += `\x1b[48;5;${getSquareColor(square.piece.team)}m`;
+	if (coords.player == coords.curr)
+		buffer += `\x1b[32m[${asciiArt}]`;
+	else if (coords.curr == selected[0])
+		buffer += `\x1b[33m[${asciiArt}]`;
+	else if (TargetDangerSwitch == "Target" && coords.playerSquare.targetZones.has(coords.curr))
+		buffer += `\x1b[31m[${asciiArt}]`;
+	else if (TargetDangerSwitch == "Danger" && coords.playerSquare.dangerZones.has(coords.curr))
+		buffer += `\x1b[31m[${asciiArt}]`;
+	else if (square.piece?.isBoostedBool == true)
+		buffer += `\x1b[34m[${asciiArt}]`;
+	else
+		buffer += `[${asciiArt}]`;
+	buffer += "\x1b[0m";
+	return (buffer);
+}
+
+/**
+ * 
+ * @param {Match} match 
+ * @returns 
+ */
+function getCoords(match)
+{
+	let	coords;
+	let	endCol;
+
+	coords = 
+	{
+		start: "",
+		end: "",
+		curr: "",
+		player: "",
+		playerSquare: new Square()
+	};
+	coords.start = "a" + CHESSBOARD_H;
+	endCol = CHESSBOARD_W - "a".charCodeAt(0) + 1;
+	coords.end = `${String.fromCharCode(endCol)}1`;
+	coords.player = match.cursor.square;
+	// @ts-ignore
+	coords.playerSquare = match.board.get(coords.player);
+	if (!coords.playerSquare)
+		throw ("Render, getCoords: invalid cursor");
+	return (coords);
+}
+
+/**
+ * 
+ * @param {Map<string, Square>} board
+ * @param {Match | null} match
+ */
+function displayPlayerInfo(board, match)
+{
+	let	player;
+	let	col;
+
+	if (!match)
+		return ;
+	player = match.currentPlayer;
+	col = getDotColor(match.currentPlayer.team);
+	console.log(`It's ${col} turn.`);
+	console.log(`points: ${player.nPoints}💲, bonus: ${player.bonusPointCounter}⚖️`);
+	console.log(match.currentPlayer.boostedPiece);
+	if (match.currentPlayer.useBoostBool == true)
+		console.log(`Ready to use boost!`);
+	else
+		console.log(`Boost NOT used`);
+	if (kingThreat(board, match) == true)
+		console.log(`${player.team} king is threatened💀`);
+}
+
+/**
+ * @param {*} board
+ * @param {*} match
+*/
+function kingThreat(board, match)
+{
+	if (lib.gameUtils.isDangerous(match, match.board.get(match.currentPlayer.King)?.dangerZones, match.currentPlayer.team))
+		return (true);
+	return (false);
+}
+
+/**
+ * 
+ * @param {Array<string>} coords 
+ * @param {Square} from 
+ * @param {Square} to 
+ */
+function printSwap(coords, from, to)
+{
+	let	fromType;
+	let	toType;
+
+	fromType = from.piece?.type;
+	toType = to.piece?.type;
+	if (fromType == null)
+		fromType = "Square";
+	else
+		fromType = `\x1b[33m${fromType}\x1b[0m`;
+	if (toType == null)
+		toType = "Square";
+	else
+		toType = `\x1b[33m${toType}\x1b[0m`;
+	console.log(`SWAP ${fromType} with ${toType}`);
+	console.log(`from ${coords[0]} to ${coords[1]}`);
+}
+
+/**
+ * 
+ * @param {Square} data 
+ */
+function getAscii(data)
+{
+	switch (data.piece?.type)
+	{
+		case (null) :
+			return (" ");
+		case (enumNames.BASTARDS) :
+			return ("B");
+		case (enumNames.CHAMPION) :
+			return ("C");
+		case (enumNames.JESTER) :
+			return ("J");
+		case (enumNames.KING) :
+			return ("K");
+		case (enumNames.MINOTAURUS) :
+			return ("M");
+		case (enumNames.VALKIRYA) :
+			return ("V");
+		default :
+			return (" ");
+	}
+}
+
+/**
+ * 
+ * @param {string} team
+ */
+function getDotColor(team)
+{
+	switch (team)
+	{
+		case (null) :
+			return ("???");
+		case (eTeam.Black) :
+			return ("⚫️");
+		case (eTeam.White) :
+			return ("⚪");
+		case (eTeam.Blue) :
+			return ("🔵");
+		case (eTeam.Green) :
+			return ("🟢");
+		case (eTeam.Red) :
+			return ("🔴");
+		case (eTeam.Yellow) :
+			return ("🟡");
+	}
+}
+
+/**
+ * 
+ * @param {eTeam | null} team 
+ */
+function getSquareColor(team)
+{
+	switch (team)
+	{
+		case (null) :
+			return ("49");
+		case (eTeam.Black) :
+			return ("232");
+		case (eTeam.Blue) :
+			return ("44");
+		case (eTeam.Green) :
+			return ("42");
+		case (eTeam.Red) :
+			return ("41");
+		case (eTeam.White) :
+			return ("247");
+		case (eTeam.Yellow) :
+			return ("43");
+		default :
+			return ("49");
+	}
+}
+
+/**
+ * 
+ * @param {Match} match
+ */
+function boardStringify(match)
+{
+	let buffer;
+	let	board;
+	let	coords;
+	let	square;
+	let	ascii;
+
+	if (match)
+		board = match.board;
+	else
+	{
+		throw("no match!");
+	}
+	coords = getCoords(match);
+	match.cursor.set(coords.start);
+	buffer = "";
+	do
+	{
+		buffer += "|";
+		match.cursor.setCol(1);
+		do
+		{
+			coords.curr = match.cursor.square;
+			square = board.get(coords.curr);
+			if (!square)
+				throw (`board position ${match.cursor.square} gives back null pointer`);
+			ascii = getAscii(square);
+			if (square.piece?.isBoostedBool)
+				ascii = `+${ascii}`;
+			buffer += `${ascii}|`;
+		}
+		while (match.cursor.moveCol(+1))
+		buffer += "\n";
+	}
+	while (match.cursor.moveRow(-1))
+	match.cursor.set(coords.player);
+	return (buffer);
+}
+
+module.exports = {render, printSwap, boardStringify};
