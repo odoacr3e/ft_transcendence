@@ -1,0 +1,62 @@
+{
+  "board": {
+    "d4": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "a7": {
+      "piece": {
+        "type": "Champion",
+        "price": 5,
+        "team": "white",
+        "isMovedBool": true,
+        "isBoostedBool": true,
+        "pos": "d4"
+      },
+      "targetZones": [],
+      "boostedTargetZones": {
+        "a7": ["b8", "b7", "c7", "d7", "a6", "a5", "a4", "a3", "a2", "a1"]
+      }
+    }
+  },
+  "youWin": false,
+  "log": {
+    "msg": "OK",
+    "status": 200
+  },
+  "p1": {
+    "name": "",
+    "nPoints": 0,
+    "bonusPointCounter": 0,
+    "nPieces": 0,
+    "team": "white",
+    "isPlaying": true,
+    "next": "black",
+    "King": "e1"
+  },
+  "p2": {
+    "name": "",
+    "nPoints": 0,
+    "bonusPointCounter": 0,
+    "nPieces": 0,
+    "team": "black",
+    "isPlaying": false,
+    "next": "white",
+    "King": "e8"
+  },
+  "p3": {
+    "name": "",
+    "nPoints": 0,
+    "bonusPointCounter": 0,
+    "nPieces": 0,
+    "team": "red",
+    "next": "blue",
+    "King": ""
+  },
+  "p4": {
+    "name": "",
+    "nPoints": 0,
+    "bonusPointCounter": 0,
+    "nPieces": 0,
+    "team": "yellow",
+    "next": "red",
+    "King": ""
+  }
+}
