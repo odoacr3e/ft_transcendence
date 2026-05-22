@@ -2,7 +2,7 @@
 //SECTION - external libraries
 const fs = require("fs");
 //SECTION - backend cute stuff >3
-const vault = require("../Classes/Vault/Vault").vault;
+const globals = require("../Classes/Match/globals").globals;
 const historyRestore = require("../utils2").historyRestore;
 const {HISTORY_PATH} = require("../Macro/macro");
 const color = require("../utils/colors").colors;
@@ -61,7 +61,7 @@ function execTest(matchPath)
 	let	board;
 	let	boards;
 
-	match = vault.getDebugMatch();
+	match = globals.getDebugMatch();
 	history = JSON.parse(fs.readFileSync(matchPath, 'utf-8'));
 	if (history.seed == undefined || history.victory == undefined)
 		return (testerFail(MSG.INVALID_JSON));

@@ -10,7 +10,7 @@ const	init = require("./init").init;
 const	render = require("../../test/render.js").render;
 const	{makeTransfiguration} = require("./transfiguration.js");
 //FIXME - solo debug
-const	vault = require("../../Classes/Vault/Vault.js").vault;
+const	vault = require("../../Classes/Match/globals.js").globals;
 const DEBUG_MATCH = vault.getDebugMatch();
 
 //FIXME - ale: i controlli di gameChecks danno per scontato che:
@@ -43,8 +43,6 @@ function gameChecks(req, res, next)
 	if (typeof(req.body.type) != "string")
 		return (error(res, null, 400, "param `type` must be of type string"));
 	req.body.type = req.body.type.trim().toLowerCase();
-	if (req.body.type == "trasfiguration")
-		return (error(res, null, 400, "maybe you mean `traNsfiguration`?"));
 	try
 	{
 		next();
@@ -80,7 +78,7 @@ function gameHandler(req, res)
 		result = endTurn(match);
 	else if (type == "init")
 		result = init(match, from, from);
-	else if (type == "transfiguration")
+	else if (type == "trans")
 		result = makeTransfiguration(match, from, to);
 	else
 		return (error(res, null, 400, `invalid type ${type}`));

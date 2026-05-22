@@ -1,7 +1,7 @@
 // @ts-check
 
 const {MOVEMENT_MIN, MOVEMENT_BONUS_POINT} = require("../../Macro/macro.js");
-const {Match} = require("../../Classes/Vault/match.js");
+const {Match} = require("../../Classes/Match/match.js");
 const {error, Result, checkMateAlert} = require("./utils.js");
 const {CheckMateCheck} = require("../../GameLogic/checkMate.js");
 //FIXME - ale: puoi sempre cambiare turno anche se non hai mosso

@@ -4,14 +4,14 @@ const {MOVEMENT_MAX, CHESSBOARD_H, CHESSBOARD_W} = require("../Macro/macro.js");
 const {copyBoard} = require("../lib/lib.js").Chess;
 const {movePiece, dangerUpdateAll} =	require("../utils/moveUtils.js");
 const {isDangerous} = require("../utils/gameUtils.js");
-const {Match} = require("../Classes/Vault/match.js");
+const {Match} = require("../Classes/Match/match.js");
 const {Preset} = require("../Classes/Pieces/preset.js");
 const {error, Result} = require("../handlers/game/utils.js");
 const {Square} = require("../Classes/ChessBoard/chessBoard.js");
 const {printSwap, boardStringify} = require("../test/render.js");
 const {checkCastling, getPieces} = require("./Castling.js");
 const { Piece } = require("../Classes/Pieces/pieces.js");
-const { Cursor } = require("../Classes/Vault/cursor.js");
+const { Cursor } = require("../Classes/Match/cursor.js");
 const { includesOneOf } = require("../utils/string.js");
 
 //FIXME - da mettere alcune funzioni in un utilis

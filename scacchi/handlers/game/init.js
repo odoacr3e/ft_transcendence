@@ -3,10 +3,10 @@ const {Piece, copyBoard} = require("../../lib/lib.js").Chess;
 const {initBoard} = require("../../Classes/ChessBoard/chessBoard.js");
 const {eTeam, enumNames, enumInitNames} = require("../../lib/lib.js").Enums;
 const {dangerUpdateAll} =	require("../../utils/moveUtils.js");
-const {Match} = require("../../Classes/Vault/match.js");
+const {Match} = require("../../Classes/Match/match.js");
 const {clientBoard, Result} = require("./utils.js");
 const {initRng} = require("../../utils/random");
-const { Cursor } = require("../../Classes/Vault/cursor.js");
+const { Cursor } = require("../../Classes/Match/cursor.js");
 
 /**
  * The Map board is added to result to be sent to the client. Steps:

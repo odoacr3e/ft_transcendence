@@ -1,7 +1,7 @@
 // @ts-check
 
 const {dangerUpdateAll} =	require("../../utils/moveUtils.js");
-const {Match} = require("../../Classes/Vault/match.js");
+const {Match} = require("../../Classes/Match/match.js");
 const {error, paramCheck, Result} = require("./utils.js");
 const endTurn = require("./endTurn.js").endTurn;
 const {CheckMateCheck} = require("../../GameLogic/checkMate.js");

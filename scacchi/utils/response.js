@@ -2,7 +2,7 @@
 
 const { Square } = require("../Classes/ChessBoard/chessBoard.js");
 
-const match = require("../Classes/Vault/Vault.js").vault.getDebugMatch();;
+const match = require("../Classes/Match/globals.js").globals.getDebugMatch();;
 
 /**
  * 

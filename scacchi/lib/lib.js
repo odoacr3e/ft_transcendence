@@ -17,7 +17,7 @@ const include = {http, https, url, fs, path, express, app};
 
 //SECTION - chess classes/objects
 const {Piece} = require("../Classes/Pieces/pieces.js");
-const {cursor} = require("../Classes/Vault/cursor.js");
+const {cursor} = require("../Classes/Match/cursor.js");
 const {includesOneOf} = require("../utils/string.js");
 const {board, Square, copyBoard} = require("../Classes/ChessBoard/chessBoard.js");
 const Chess = {Piece, board, copyBoard, cursor, Square};

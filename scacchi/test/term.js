@@ -5,7 +5,7 @@ const {includesOneOf} = require("../utils/string.js");
 const {historyRestore} = require("../utils2.js");
 const {error, move, boost, endTurn, init} = require("../handlers/game/Game.js");
 const {Result} = require("../handlers/game/utils.js");
-const {vault} = require("../Classes/Vault/Vault.js");
+const {globals} = require("../Classes/Match/globals.js");
 
 const lib =			require("../lib/lib.js");
 const {abort} = 	require("node:process");
@@ -22,7 +22,7 @@ function mainTerm()
 	let	match;
 
 	termInit();
-	match = vault.getDebugMatch();
+	match = globals.getDebugMatch();
 	init(match, lib.Macro.SEED);
 	dangerUpdateAll(match);
 	render(match);

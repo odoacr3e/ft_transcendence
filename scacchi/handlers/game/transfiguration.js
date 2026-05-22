@@ -2,7 +2,7 @@
 
 const {paramCheck} = require("./utils");
 const {transfiguration} = require("../../GameLogic/moveLogic");
-const { Match } = require("../../Classes/Vault/match");
+const { Match } = require("../../Classes/Match/match");
 const { Result } = require("../../Classes/endPoint/result");
 
 /**

@@ -1,7 +1,7 @@
 // @ts-check
 const {MOVEMENT_MIN} = require("../../Macro/macro.js");
 const {Square} = require("../../lib/lib.js").Chess;
-const {Match} = require("../../Classes/Vault/match.js");
+const {Match} = require("../../Classes/Match/match.js");
 const {paramCheck, Result, clientBoard, checkMateAlert} = require("./utils.js");
 const {endTurn} = require("./endTurn");
 const {CheckMateCheck} = require("../../GameLogic/checkMate.js");

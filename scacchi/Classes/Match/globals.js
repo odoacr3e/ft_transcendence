@@ -5,11 +5,11 @@ const {DEBUG} = require("../../Macro/macro.js");
 
 const	TEST_MATCH = "0";
 
-/**SECTION class Vault 
+/**SECTION class Globals 
  * the place where server runtime data are stored
  * 
 */
-class Vault
+class Globals
 {
 	constructor()
 	{
@@ -28,11 +28,11 @@ class Vault
 			throw ("Please turn DEBUG on to use this function");
 		debugMatch = this.matches.get(TEST_MATCH);
 		if (!debugMatch)
-			throw ("No debug match in Vault!");
+			throw ("No debug match in Globals!");
 		return (debugMatch);
 	}
 }
 
-const	vault = new Vault();
+const	globals = new Globals();
 
-module.exports = {vault};
+module.exports = {globals};

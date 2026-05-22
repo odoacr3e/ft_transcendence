@@ -2,7 +2,7 @@
 const { Square} = require("../Classes/ChessBoard/chessBoard.js");
 const {eTeam} = require("../Macro/enums.js");
 const lib = require("../lib/lib.js");
-const {Match} = require("../Classes/Vault/match.js");
+const {Match} = require("../Classes/Match/match.js");
 const {CHESSBOARD_H, CHESSBOARD_W} = require("../Macro/macro.js");
 const { board } = require("../../PROVE_scacchi/data/chessBoard.js");
 const enumNames = lib.Enums.enumNames;
