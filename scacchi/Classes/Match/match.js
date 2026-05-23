@@ -11,7 +11,7 @@ const {Result} = require("../endPoint/result.js");
  * timeout = puntatore alla funzione setTimeout
  * start = tempo in cui inizia il countdown
  * time = tempo limite del coutdown
- * @typedef {{timeout: number, start: number, time: number}} Timer
+ * @typedef {{timeout: object, start: number, time: number}} Timer
  */
 
 const preset = {

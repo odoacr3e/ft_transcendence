@@ -21,29 +21,29 @@ function endTurn(match)
 	let d;
 
 	result = new Result();
-	time = match.currentPlayer.time;
-	d = new Date;
-	// @ts-ignore
+	// time = match.currentPlayer.time;
+	// // @ts-ignore
 	// if (match.timer != null)
 	// {
+	// 	// @ts-ignore
 	// 	clearTimeout(match.timer.timeout);
-	// 	match.timer.time = match.timer.time - (d.getMilliseconds() - match.timer.start);
+	// 	match.currentPlayer.time = match.timer.time - (Date.now() - match.timer.start);
 	// }
 	if (!updateTurn(match, result))
 		return (result);
+	// // console.log("time", match.currentPlayer.time);
 	// time = match.currentPlayer.time;
 	// timeout = setTimeout(() =>
 	// {
-		// let result;
-		// let match = globals.matches.get("0");
-		// result = new Result();
-		// result.status = 200;
-		// result.youWin = true;
-		// result.msg = `Player ${team} has lost!!!`
-		// return (match.CheckMate(result));
+	// 	let result;
+	// 	let match = globals.matches.get("0");
+	// 	result = new Result();
+	// 	result.status = 200;
+	// 	result.youWin = true;
+	// 	result.msg = `Player ${match?.currentPlayer.team} has lost!!!`
+	// 	return (match.CheckMate(result));
 	// }, time);
-	// let t = new Date;
-	// start = t.getMilliseconds();
+	// start = Date.now();
 	// match.timer = {timeout, start, time};
 	console.log(`Now it's ${match.currentPlayer.team} turn.`);
 	result.status = 200;
