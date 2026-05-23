@@ -3,10 +3,20 @@ const lib = require("../lib/lib");
 const piecesQuery = require("../query/piecesQuery.js");
 const { jsonResponse } = require("../utils/response.js");
 
+
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
 const getAllPieces = async (req, res) => {
 	try {
-		const pieces = await piecesQuery.getAllPieces();
-		if (pieces)
+		const { name } = req.query;
+		let pieces;
+		if (name)
+			pieces = await piecesQuery.findPieceByName(name);
+		else
+			pieces = await piecesQuery.getAllPieces();
+		if (pieces && pieces.length > 0)
 			return res.status(200).json(jsonResponse.ResponseSuccess({ "pieces": pieces }));
 		return res.status(404).json(jsonResponse.ResponseError("Pieces not found"));
 	} catch (error) {

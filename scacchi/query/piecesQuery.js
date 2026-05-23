@@ -8,7 +8,6 @@ const getAllPieces = async () => {
 			id_piece: true,
 			name: true,
 			cost: true,
-			movement: true,
 			info: true,
 			lore: true,
 			abilities: {
@@ -18,6 +17,37 @@ const getAllPieces = async () => {
 					description: true
 				}
 			}
+		},
+		orderBy: {
+			id_piece: 'asc'
+		}
+	});
+}
+
+const findPieceByName = async (name) => {
+	return await prisma.pieces.findMany({
+		select: {
+			id_piece: true,
+			name: true,
+			cost: true,
+			info: true,
+			lore: true,
+			abilities: {
+				select: {
+					id_ability: true,
+					name: true,
+					description: true
+				}
+			}
+		},
+		where: {
+			name: {
+				contains: String(name),
+				mode: 'insensitive'
+			}
+		},
+		orderBy: {
+			id_piece: 'asc'
 		}
 	});
 }
@@ -31,7 +61,6 @@ const getPieceById = async (id) => {
 			id_piece: true,
 			name: true,
 			cost: true,
-			movement: true,
 			info: true,
 			lore: true,
 			abilities: {
@@ -41,8 +70,11 @@ const getPieceById = async (id) => {
 					description: true
 				}
 			}
+		},
+		orderBy: {
+			id_piece: 'asc'
 		}
 	});
 }
 
-module.exports = { getAllPieces, getPieceById };
+module.exports = { getAllPieces, findPieceByName, getPieceById };

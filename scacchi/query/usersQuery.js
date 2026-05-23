@@ -20,6 +20,9 @@ const getAllUsers = async () => {
 					colors: true,
 				}
 			}
+		},
+		orderBy: {
+			id_user: 'asc'
 		}
 	});
 }
@@ -77,6 +80,9 @@ const findUserByUsername = async (username) => {
 				contains: String(username),
 				mode: 'insensitive'
 			}
+		},
+		orderBy: {
+			id_user: 'asc'
 		}
 	});
 }
