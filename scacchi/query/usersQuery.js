@@ -50,6 +50,37 @@ const getUserById = async (id) => {
 	});
 }
 
+// NOTE: cerca un utente che contiene come username lo username passato
+// e possibile passare anche solo una parte dello username -> passando 'Mario' trovera 'Mariorossi' 'supermario' oppure 'robomarione'
+const findUserByUsername = async (username) => {
+	return await prisma.users.findMany({
+		select: {
+			id_user: true,
+			name: true,
+			surname: true,
+			username: true,
+			email: true,
+			image: true,
+			nationality: true,
+			points: true,
+			title: true,
+			preferences: {
+				select: {
+					name: true,
+					description: true,
+					colors: true,
+				}
+			}
+		},
+		where: {
+			username: {
+				contains: String(username),
+				mode: 'insensitive'
+			}
+		}
+	});
+}
+
 const getUserByUsername = async (username) => {
 	return await prisma.users.findUnique({
 			select: {
@@ -62,7 +93,13 @@ const getUserByUsername = async (username) => {
 				nationality: true,
 				points: true,
 				title: true,
-				preferences: true
+				preferences: {
+					select: {
+						name: true,
+						description: true,
+						colors: true,
+					}
+				}
 			},
 			where: {
 				username: String(username)
@@ -82,7 +119,13 @@ const getUserByEmail = async (email) => {
 				nationality: true,
 				points: true,
 				title: true,
-				preferences: true
+				preferences: {
+					select: {
+						name: true,
+						description: true,
+						colors: true,
+					}
+				}
 			},
 			where: {
 				id_user: String(email)
@@ -172,4 +215,4 @@ const updateUserFieldsById = async (id, data) => {
 	});
 }
 
-module.exports = { getAllUsers, getUserById, getUserByUsername, getUserByEmail, createUser, deleteUserById, updateUserFieldsById };
+module.exports = { getAllUsers, getUserById, findUserByUsername, getUserByUsername, getUserByEmail, createUser, deleteUserById, updateUserFieldsById };

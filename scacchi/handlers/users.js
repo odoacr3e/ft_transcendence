@@ -12,13 +12,13 @@ const { checkInputs } = require("../utils/users.js");
  */
 const getAllUsers = async (req, res) => {
 	try {
-		const { username, id } = req.query;
+		const { username } = req.query;
 		let users;
 		if (username)
-			users = await usersQuery.getUserByUsername(username);
+			users = await usersQuery.findUserByUsername(username);
 		else
 			users = await usersQuery.getAllUsers();
-		if (users)
+		if (users && users.length > 0)
 			return res.status(200).json(jsonResponse.ResponseSuccess({ "users": users }));
 		return res.status(404).json(jsonResponse.ResponseError("User not found"));
 	} catch (error) {
