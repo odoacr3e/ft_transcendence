@@ -2,10 +2,11 @@
 const {MOVEMENT_MIN} = require("../../Macro/macro.js");
 const {Square} = require("../../lib/lib.js").Chess;
 const {Match} = require("../../Classes/Match/match.js");
-const {paramCheck, Result, clientBoard, checkMateAlert} = require("./utils.js");
+const {paramCheck, Result, clientBoard} = require("./utils.js");
 const {endTurn} = require("./endTurn");
 const {CheckMateCheck} = require("../../GameLogic/checkMate.js");
 const {checkMove, updateChessboard, checkSecondMove} = require("../../GameLogic/moveLogic.js");
+const {enumNames} = require("../../Macro/enums.js")
 
 /** @typedef {import('../../Classes/ChessBoard/chessBoard.js').Square} Square */
 
@@ -36,7 +37,8 @@ function move(match, from, to, boostBool=false)
 	// @ts-ignore
 	result.board = clientBoard(match.board, [from, to]);
 	secondMoveBool = checkSecondMove(match, to);
-	if ((match.moves >= MOVEMENT_MIN && !match.currentPlayer.nPoints && match.historyCreateBool == false) && !(secondMoveBool && boostBool))
+	if ((match.moves >= MOVEMENT_MIN && !match.currentPlayer.nPoints && match.historyCreateBool == false) && !(secondMoveBool && boostBool) && 
+	!(match.cursor.EdgeCheck(match.currentPlayer.team) && match.board.get(match.cursor.square)?.piece?.type == enumNames.BASTARDS))
 		endTurn(match);
 	return (result);
 }

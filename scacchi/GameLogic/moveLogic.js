@@ -390,6 +390,7 @@ function transfiguration(match, result, coord, newType)
 	square.piece = new Piece(newType, square.piece.pos, square.piece.team);
 	square.piece.isBoostedBool = isBoostedBool;
 	dangerUpdateAll(match);
+	match.endTurn();
 	result.status = 200;
 	result.msg = "OK";
 	return (result);
