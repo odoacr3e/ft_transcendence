@@ -1,7 +1,5 @@
 
 const lib = require("../lib/lib");
-const jwt = require("../utils/auth");
-const bcrypt = require("bcryptjs");
 const usersQuery = require("../query/usersQuery");
 const { jsonResponse } = require("../utils/response.js");
 const { checkInputs } = require("../utils/users.js");

@@ -1,7 +1,7 @@
 
-const { prisma } = require("../lib/prisma.js");
 const bcrypt = require("bcryptjs");
 const lib = require("../lib/lib.js");
+const prisma = lib.conn.prisma;
 
 const getAllUsers = async () => {
 	return await prisma.users.findMany({
