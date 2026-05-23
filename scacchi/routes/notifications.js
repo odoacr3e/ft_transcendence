@@ -1,12 +1,12 @@
 
 const lib = require("../lib/lib.js");
 const router = lib.include.express.Router();
-const { getAllNotifications } = require("../handlers/notifications.js");
+const handlersNotify = require("../handlers/notifications.js");
 
 
 // NOTE: /api/notifications
-router.get("/", getAllNotifications);
-router.get("/:id", () => {console.log("Notifications")});
+router.get("/", handlersNotify.getNotifications);
+router.get("/:id", handlersNotify.getNotificationById);
 
 // router.get("/user/:id")
 

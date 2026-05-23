@@ -23,7 +23,6 @@ function checkQueryParams(req) {
 		else
 			filter[key] = value;
 	}
-	console.log(filter)
 	return (filter);
 }
 
@@ -31,7 +30,7 @@ function checkQueryParams(req) {
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  */
-const getAllNotifications = async (req, res) => {
+const getNotifications = async (req, res) => {
 	try {
 		let notif;
 		const filter = checkQueryParams(req);		
@@ -44,10 +43,25 @@ const getAllNotifications = async (req, res) => {
 		return res.status(404).json(jsonResponse.ResponseError("Notifications not found"));
 	} catch (error) {
 		console.log("error: ", error);
-		return res.status(500).json(jsonResponse.ResponseError("Server error finding notifications"));
+		return res.status(500).json(jsonResponse.ResponseError("Server error retrieving notifications"));
 	}
 }
 
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
+const getNotificationById = async (req, res) => {
+	try {
+		const notif = await getNotify.getNotificationById(req.params.id);
+		if (notif)
+			return res.status(200).json(jsonResponse.ResponseSuccess({ "notification": notif }));
+		return res.status(404).json(jsonResponse.ResponseError("Notification not found"));
+	} catch (error) {
+		console.log("error: ", error);
+		return res.status(500).json(jsonResponse.ResponseError("Server error retrieving notifications by id"));
+	}
+};
 
 
-module.exports = { getAllNotifications };
+module.exports = { getNotifications, getNotificationById };
