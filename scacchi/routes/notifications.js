@@ -6,7 +6,6 @@ const { getAllNotifications } = require("../handlers/notifications.js");
 
 // NOTE: /api/notifications
 router.get("/", getAllNotifications);
-// router.get("/", () => {console.log("ARRIVO")});
 router.get("/:id", () => {console.log("Notifications")});
 
 // router.get("/user/:id")

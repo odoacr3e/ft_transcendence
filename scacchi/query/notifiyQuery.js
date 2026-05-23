@@ -7,6 +7,12 @@ const getAllNotifications = async () => {
 	});
 }
 
-const getNotify = { getAllNotifications };
+const getFilteredNotifications = async (filter) => {
+	return await prisma.notifications.findMany({
+		where: filter
+	});
+}
+
+const getNotify = { getAllNotifications, getFilteredNotifications };
 
 module.exports = { getNotify };
