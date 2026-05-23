@@ -315,9 +315,93 @@
       "team": "white",
       "type": "move",
       "useBoostBool": false
+    },
+    {
+      "from": "",
+      "to": "",
+      "team": "white",
+      "type": "endTurn",
+      "useBoostBool": false
+    },
+    {
+      "from": "e6",
+      "to": "e5",
+      "team": "black",
+      "type": "move",
+      "useBoostBool": false
+    },
+    {
+      "from": "",
+      "to": "",
+      "team": "black",
+      "type": "endTurn",
+      "useBoostBool": false
+    },
+    {
+      "from": "d5",
+      "to": "e6",
+      "team": "white",
+      "type": "move",
+      "useBoostBool": false
+    },
+    {
+      "from": "",
+      "to": "",
+      "team": "white",
+      "type": "endTurn",
+      "useBoostBool": false
+    },
+    {
+      "from": "c8",
+      "to": "b7",
+      "team": "black",
+      "type": "move",
+      "useBoostBool": false
+    },
+    {
+      "from": "",
+      "to": "",
+      "team": "black",
+      "type": "endTurn",
+      "useBoostBool": false
+    },
+    {
+      "from": "e6",
+      "to": "e8",
+      "team": "white",
+      "type": "move",
+      "useBoostBool": false
+    },
+    {
+      "from": "e8",
+      "to": "",
+      "team": "white",
+      "type": "boost",
+      "useBoostBool": false
+    },
+    {
+      "from": "",
+      "to": "",
+      "team": "white",
+      "type": "endTurn",
+      "useBoostBool": false
+    },
+    {
+      "from": "b5",
+      "to": "b4",
+      "team": "black",
+      "type": "move",
+      "useBoostBool": false
+    },
+    {
+      "from": "",
+      "to": "",
+      "team": "black",
+      "type": "endTurn",
+      "useBoostBool": false
     }
   ],
-  "moves": 45,
+  "moves": 57,
   "victory": "",
-  "finalBoard": "|M|J|V| | |V|B|M|\n| | | |C| | | |B|\n|B|K|B| |B| | | |\n| |B| |C| | | | |\n| | | |B| | | | |\n| | | | | | | | |\n|B|B|B| |B|B| |B|\n|M|J|V| |K|V|J|M|\n"
+  "finalBoard": "|M|J| | |+C|V|B|M|\n| |V| |C| | | |B|\n|B|K|B| | | | | |\n| | | | |B| | | |\n| |B| |B| | | | |\n| | | | | | | | |\n|B|B|B| |B|B| |B|\n|M|J|V| |K|V|J|M|\n"
 }

@@ -366,6 +366,8 @@ function CheckTransfiguration(match, result, piece, newType)
 		return (error(result, 403, `${newType} not in array "${arrayNames}"`));
 	if (match.history.Last().to != piece.pos)
 		return (error(result, 403, `That's too late to boost that bastard.`));
+	if (newType == enumNames.KING)
+		return (error(result, 403, `You can't create a new king.`));
 	return (true);
 }
 
