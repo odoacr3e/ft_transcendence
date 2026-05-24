@@ -3,8 +3,8 @@ const fs = require("fs");
 
 const {Cursor} = require("./cursor.js");
 const {eTeam, eEvents} = require("../../Macro/enums.js");
-const {Square, initBoard, copyBoard, copyBoostedTargetZones} = require("../ChessBoard/chessBoard.js");
-const {HISTORY_PATH, MATCHTIMER} = require("../../Macro/macro.js");
+const {Square, initBoard, copyBoard, copyBoostedTargetZones, ChessBoard} = require("../ChessBoard/chessBoard.js");
+const {HISTORY_PATH, MATCHTIMER, CHESSBOARD_W, CHESSBOARD_H} = require("../../Macro/macro.js");
 const {Result} = require("../endPoint/result.js");
 
 /**
@@ -105,7 +105,7 @@ class Match
 		this.blue = preset.blue;
 		this.green = preset.green;
 		this.yellow = preset.yellow;
-		this.board = initBoard();
+		this.board = new ChessBoard(CHESSBOARD_W, CHESSBOARD_H);//FIXME - conf json?
 		this.cursor = new Cursor();
 		this.moves = 0;
 		this.boost = 0;
@@ -113,7 +113,6 @@ class Match
 		this.historyCreateBool = false;
 		this.currentPlayer = this.white;
 		this.playerNum = 2;
-		this.sizeBoard = {w: 8, h: 8};
 		this.victory = "";
 		/** @type {Timer | null} */ this.timer = null;
 	}

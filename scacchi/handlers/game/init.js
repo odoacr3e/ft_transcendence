@@ -1,12 +1,13 @@
 // @ts-check
-const {Piece, copyBoard} = require("../../lib/lib.js").Chess;
-const {initBoard} = require("../../Classes/ChessBoard/chessBoard.js");
+const {Piece} = require("../../lib/lib.js").Chess;
+const {initBoard, ChessBoard} = require("../../Classes/ChessBoard/chessBoard.js");
 const {eTeam, enumNames, enumInitNames} = require("../../lib/lib.js").Enums;
 const {dangerUpdateAll} =	require("../../utils/moveUtils.js");
 const {Match} = require("../../Classes/Match/match.js");
 const {clientBoard, Result} = require("./utils.js");
 const {initRng} = require("../../utils/random");
 const { Cursor } = require("../../Classes/Match/cursor.js");
+const { CHESSBOARD_W, CHESSBOARD_H } = require("../../Macro/macro.js");
 
 /**
  * The Map board is added to result to be sent to the client. Steps:
@@ -28,7 +29,7 @@ function init(match, seed=null, boardString=null)
 		seed = Math.floor(Math.random() * (1 << 30));
 	result = new Result();
 	rng = initRng(seed);
-	match.board = initBoard();
+	match.board = new ChessBoard(CHESSBOARD_W, CHESSBOARD_H);
 	if (boardString != null)
 		initSavedBoard(match, boardString);
 	else if (seed == 0)
@@ -155,6 +156,7 @@ function initClassicBoard(match)
 function initRandomBoard(match, rng)
 {
 	let	rand;
+	let	blackPos;
 
 	for (let [key, data] of match.board)
 	{
@@ -162,21 +164,7 @@ function initRandomBoard(match, rng)
 		data.boostedTargetZones.clear();
 		data.dangerZones.clear();
 		data.targetZones.clear();
-		if (key == "a1" && match.black)
-		{
-			data.piece = new Piece(enumNames.KING, key);
-			data.piece.team = eTeam.Black;
-			match.black.King = key;
-			continue ;
-		}
-		else if (key == "h8" && match.white)
-		{
-			data.piece = new Piece(enumNames.KING, key);
-			data.piece.team = eTeam.White;
-			match.white.King = key;
-			continue ;
-		}
-		else if (rand <= 10)
+		if (rand <= 10)
 			continue ;
 		else if (rand == 11)
 			data.piece = new Piece(enumNames.BASTARDS, key);
@@ -199,6 +187,12 @@ function initRandomBoard(match, rng)
 		data.piece.team = match.currentPlayer.team;
 		match.endTurn();
 	}
+	match.board.get("a1").piece = new Piece(enumNames.KING, "a1", eTeam.White);
+	match.white.King = "a1";
+	match.cursor.setCursor(match.board.width, match.board.heigth);
+	blackPos = match.cursor.square;
+	match.board.get(blackPos).piece = new Piece(enumNames.KING, blackPos, eTeam.Black);
+	match.black.King = blackPos;
 	match.forceWhiteTurn();
 	dangerUpdateAll(match);
 }
@@ -241,6 +235,8 @@ function assignPieceByType(match, curr)
 			break ;
 		case (enumInitNames.KING) :
 			square.piece = new Piece(enumNames.KING, pos, team);
+			//@ts-ignore
+			match[team].King = pos;
 			break ;
 		case (enumInitNames.MAGE) :
 			square.piece = new Piece(enumNames.MAGE, pos, team);

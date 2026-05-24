@@ -41,21 +41,72 @@ class Square
 //SECTION - chessBoard Map 
 //ANCHOR - Definition 
 
+class ChessBoard
+{
+	/**
+	 * 
+	 * @param {number} w 
+	 * @param {number} h 
+	 */
+	constructor(w, h)
+	{
+		this._data = initBoard(w, h);
+		this.width = w;
+		this.heigth = h;
+	}
+	clear(){this._data.clear();}
+	/** @param {string} key*/
+	delete(key){return (this._data.delete(key));}
+	entries(){return (this._data.entries());}
+	/**
+	 * 
+	 * @param {(value: Square, key: string, map: Map<string, Square>) => void} f
+	 * @param {*} args 
+	 */
+	forEach(f, args=null){this._data.forEach(f, args);}
+	/** @param {string} key*/
+	get(key)
+	{
+		let	val;
+
+		val = this._data.get(key);
+		if (!val)
+			throw (`ChessBoard: invalid position ${key}`);
+		return (val);
+	}
+	/**
+	 * 
+	 * @param {string} key 
+	 * @param {Square} val 
+	 */
+	set(key, val){this._data.set(key, val);}
+	/** @param {string} key*/
+	has(key){return (this._data.has(key));}
+	keys(){return (this._data.keys());}
+	values(){return (this._data.values());}
+	[Symbol.iterator](){return (this._data[Symbol.iterator]());}
+};
+
 //ANCHOR - utils
 
-function initBoard()
+/**
+ * 
+ * @param {number} maxWidth 
+ * @param {number} maxHeigth 
+ * @returns 
+ */
+function initBoard(maxWidth=CHESSBOARD_W, maxHeigth=CHESSBOARD_H)
 {
 	/** @type {string} */				let	row;
 	/** @type {number} */				let	col;
 	/** @type {string} */				let	squareId;
 	/** @type {Map<string, Square>} */	let	board;
 
-	// @ts-ignore
 	board = new Map();
 	row = "a";
-	for (let i = 0; i < CHESSBOARD_H; i++)
+	for (let i = 0; i < maxHeigth; i++)
 	{
-		for (col = 1; col <= CHESSBOARD_W; col++)
+		for (col = 1; col <= maxWidth; col++)
 		{
 			squareId = row + col;
 			board.set(squareId, new Square());
@@ -112,6 +163,4 @@ function copyBoostedTargetZones(src, dest=null)
 	return (dest);
 }
 
-initBoard();
-
-module.exports = {Square, initBoard, copyBoard, copyBoostedTargetZones};
+module.exports = {ChessBoard, Square, initBoard, copyBoard, copyBoostedTargetZones};
