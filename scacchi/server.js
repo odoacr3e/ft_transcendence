@@ -8,6 +8,13 @@ const PORT = 8080;
 let requests = 0;
 
 app.set('json spaces', 2);
+app.use((req, res, next) => {
+	res.setHeader('Access-Control-Allow-Origin', '*');
+	res.setHeader('Access-Control-Allow-Methods', '*');
+	res.setHeader('Access-Control-Allow-Headers', '*');
+	if (req.method === 'OPTIONS') return res.sendStatus(204);
+	next();
+});
 app.use(lib.include.express.json());
 
 // global error middleware
