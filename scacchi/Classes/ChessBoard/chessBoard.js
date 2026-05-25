@@ -119,7 +119,6 @@ function initBoard(maxWidth=CHESSBOARD_W, maxHeigth=CHESSBOARD_H, cursor=new Cur
 	}
 	while (cursor.moveRow(1))
 	cursor.Restore();
-	console.log(board);
 	return (board);
 }
 

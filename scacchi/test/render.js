@@ -1,5 +1,5 @@
 // @ts-check
-const { Square} = require("../Classes/ChessBoard/chessBoard.js");
+const { Square, ChessBoard} = require("../Classes/ChessBoard/chessBoard.js");
 const {eTeam} = require("../Macro/enums.js");
 const lib = require("../lib/lib.js");
 const {Match} = require("../Classes/Match/match.js");
@@ -29,7 +29,6 @@ function render(match=null, selected=[], TargetDangerSwitch="")
 	coords = getCoords(match);
 	match.cursor.set(coords.start);
 	buffer = "";
-	// @ts-ignore
 	displayPlayerInfo(board, match);
 	do
 	{
@@ -113,7 +112,7 @@ function getCoords(match)
 
 /**
  * 
- * @param {Map<string, Square>} board
+ * @param {ChessBoard} board
  * @param {Match | null} match
  */
 function displayPlayerInfo(board, match)

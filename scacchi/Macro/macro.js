@@ -23,8 +23,8 @@ const SEED = 3;
 //ANCHOR - chess
 
 const MAX_CHESSBOARD_SIZE = 25;
-let CHESSBOARD_H = 10;
-let CHESSBOARD_W = 10;
+let CHESSBOARD_H = 8;
+let CHESSBOARD_W = 8;
 let MOVEMENT_MAX = 2;
 let MOVEMENT_MIN = 1;
 let BOOSTED_MAX = 1;

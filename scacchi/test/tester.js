@@ -34,6 +34,7 @@ function testerMain()
 	if (fs.existsSync(matchPath) == false)
 		return (testerFail(MSG.INVALID_PATH, matchPath));
 	execTest(matchPath);
+	process.exit();
 }
 
 testerMain();
@@ -46,6 +47,7 @@ function execAllTests()
 		currMatch = file;
 		execTest(`${HISTORY_PATH}${file}`);
 	}
+	process.exit();
 }
 
 /**
