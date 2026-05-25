@@ -18,7 +18,7 @@ const HASH_SALT = process.env.HASH_SALT;
 	1057: scacco matto ciao ciao //FIXME - non da scacco matto
 	63: scacco matto prevenibile
 */
-const SEED = 3;
+const SEED = 0;
 
 //ANCHOR - chess
 
