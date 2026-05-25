@@ -34,7 +34,7 @@ function setRow(newRow)
 
 	col = this.getRow();
 	newSquare = String.fromCharCode(newRow + "a".charCodeAt(0) - 1);
-	newSquare += col;
+	newSquare += String.fromCharCode(col + "0".charCodeAt(0));
 	this.square = newSquare;
 }
 
@@ -48,7 +48,7 @@ function setCol(newCol)
 	let newSquare;
 
 	newSquare = String.fromCharCode(this.getCol() + "a".charCodeAt(0) - 1);
-	newSquare += String(newCol);
+	newSquare += String.fromCharCode(newCol + "0".charCodeAt(0));
 	this.square = newSquare;
 }
 
@@ -102,7 +102,7 @@ function setCursor(newCol, newRow)
 	if (typeof newRow === "number" && typeof newCol === "number")
 	{
 		newSquare = String.fromCharCode(newRow + "a".charCodeAt(0) - 1);
-		newSquare += String(newCol);
+		newSquare += String.fromCharCode(Number(newCol) + "0".charCodeAt(0));
 		this.square = newSquare;
 		return ;
 	}
@@ -181,6 +181,29 @@ class Cursor
 			default:
 				throw (`EdgeCheck: invalid team ${team}`);
 		}
+	}
+	/** @param {string} coord */
+	Normify(coord=this.square)
+	{
+		let tmp;
+		let col;
+		let newSquare;
+
+		tmp = this.square;
+		this.square = coord;
+		if (coord.length > 2)
+		{
+			coord = coord.slice(1, coord.length);
+			col = String.fromCharCode(this.getCol() + "a".charCodeAt(0) - 1);
+			newSquare = col + String.fromCharCode(Number(coord) + "0".charCodeAt(0));
+		}
+		else
+		{
+			col = String.fromCharCode(this.getCol() + "a".charCodeAt(0) - 1);
+			newSquare = col + String(this.getRow());
+		}
+		this.square = tmp;
+		return (newSquare);
 	}
 }
 

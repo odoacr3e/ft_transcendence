@@ -28,7 +28,8 @@ function render(match=null, selected=[], TargetDangerSwitch="")
 	}
 	coords = getCoords(match);
 	match.cursor.set(coords.start);
-	buffer = "";	
+	buffer = "";
+	// @ts-ignore
 	displayPlayerInfo(board, match);
 	do
 	{
@@ -99,9 +100,9 @@ function getCoords(match)
 		player: "",
 		playerSquare: new Square()
 	};
-	coords.start = "a" + CHESSBOARD_H;
-	endCol = CHESSBOARD_W - "a".charCodeAt(0) + 1;
-	coords.end = `${String.fromCharCode(endCol)}1`;
+	coords.start = "a" + String.fromCharCode(match.board.heigth + "0".charCodeAt(0));
+	endCol = String.fromCharCode(match.board.width - "a".charCodeAt(0) - 1);
+	coords.end = `${endCol}1`;
 	coords.player = match.cursor.square;
 	// @ts-ignore
 	coords.playerSquare = match.board.get(coords.player);

@@ -157,7 +157,7 @@ class Match
 		this.blue = preset.blue;
 		this.green = preset.green;
 		this.yellow = preset.yellow;
-		this.board = new Map();
+		this.board = new ChessBoard(CHESSBOARD_W, CHESSBOARD_H);//FIXME
 		this.cursor = new Cursor();
 		this.moves = 0;
 		this.boost = 0;

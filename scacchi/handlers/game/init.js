@@ -190,6 +190,8 @@ function initRandomBoard(match, rng)
 	match.board.get("a1").piece = new Piece(enumNames.KING, "a1", eTeam.White);
 	match.white.King = "a1";
 	match.cursor.setCursor(match.board.width, match.board.heigth);
+	match.cursor.setRow(match.board.heigth);
+	match.cursor.setCol(match.board.width);
 	blackPos = match.cursor.square;
 	match.board.get(blackPos).piece = new Piece(enumNames.KING, blackPos, eTeam.Black);
 	match.black.King = blackPos;

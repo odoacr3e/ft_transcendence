@@ -3,6 +3,7 @@
 
 //SECTION import
 const {CHESSBOARD_H, CHESSBOARD_W} = require("../../Macro/macro.js");
+const { Cursor } = require("../Match/cursor.js");
 const pieces = require("../Pieces/pieces.js");
 
 //ANCHOR - Definition 
@@ -44,7 +45,7 @@ class Square
 class ChessBoard
 {
 	/**
-	 * 
+	 * shield to use the Map data structure safely
 	 * @param {number} w 
 	 * @param {number} h 
 	 */
@@ -93,9 +94,10 @@ class ChessBoard
  * 
  * @param {number} maxWidth 
  * @param {number} maxHeigth 
+ * @param {Cursor} cursor
  * @returns 
  */
-function initBoard(maxWidth=CHESSBOARD_W, maxHeigth=CHESSBOARD_H)
+function initBoard(maxWidth=CHESSBOARD_W, maxHeigth=CHESSBOARD_H, cursor=new Cursor())
 {
 	/** @type {string} */				let	row;
 	/** @type {number} */				let	col;
@@ -103,16 +105,21 @@ function initBoard(maxWidth=CHESSBOARD_W, maxHeigth=CHESSBOARD_H)
 	/** @type {Map<string, Square>} */	let	board;
 
 	board = new Map();
-	row = "a";
-	for (let i = 0; i < maxHeigth; i++)
+	cursor.Save();
+	cursor.set("a1");
+	do
 	{
-		for (col = 1; col <= maxWidth; col++)
+		cursor.setCol(1);
+		do
 		{
-			squareId = row + col;
+			squareId = cursor.square;
 			board.set(squareId, new Square());
 		}
-		row = String.fromCharCode(row.charCodeAt(0) + 1);
+		while (cursor.moveCol(1))
 	}
+	while (cursor.moveRow(1))
+	cursor.Restore();
+	console.log(board);
 	return (board);
 }
 

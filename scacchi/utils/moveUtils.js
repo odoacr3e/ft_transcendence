@@ -1,4 +1,5 @@
 // @ts-check
+// const { Match } = require("../Classes/Match/match.js");
 const Macro = require("../Macro/macro.js");
 const {bastardChecks} = require("./gameUtils.js");
 
@@ -14,9 +15,9 @@ let movePiece = (match, dy, dx, clear=false) =>
 	let newRow = match.cursor.getRow() + dx;
 	let newCol = match.cursor.getCol() + dy;
 
-	if (newRow < 1 || newRow > Macro.CHESSBOARD_H)
+	if (newRow < 1 || newRow > match.board.heigth)
 		return false;
-	else if (newCol <= 0 || newCol > Macro.CHESSBOARD_W)
+	else if (newCol <= 0 || newCol > match.board.width)
 		return false;
 
 	if (clear == true)

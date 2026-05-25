@@ -25,6 +25,11 @@ function mainTerm()
 	match = globals.getDebugMatch();
 	init(match, lib.Macro.SEED);
 	dangerUpdateAll(match);
+	// match.cursor.Save();
+	// match.cursor.moveRow(1);
+	// match.cursor.moveCol(1);
+	// console.log("cursor:", match.cursor.Normify());
+	// match.cursor.Restore();
 	render(match);
 	return (match);
 }
