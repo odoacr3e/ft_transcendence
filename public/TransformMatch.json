@@ -49,7 +49,18 @@
     "a4": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
     "a5": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
     "a6": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
-    "a7": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "a7": {
+      "piece": {
+        "type": "Bastards",
+        "price": 1,
+        "team": "white",
+        "isMovedBool": true,
+        "isBoostedBool": false,
+        "pos": "a7"
+      },
+      "targetZones": ["a8"],
+      "boostedTargetZones": {}
+    },
     "a8": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
     "b1": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
     "b2": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
@@ -149,23 +160,23 @@
     "f7": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
     "f8": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
     "g1": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
-    "g2": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "g2": {
+      "piece": {
+        "type": "Bastards",
+        "price": 1,
+        "team": "black",
+        "isMovedBool": true,
+        "isBoostedBool": false,
+        "pos": "g2"
+      },
+      "targetZones": ["g1"],
+      "boostedTargetZones": {}
+    },
     "g3": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
     "g4": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
     "g5": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
     "g6": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
-    "g7": {
-      "piece": {
-        "type": "Bastards",
-        "price": 1,
-        "team": "white",
-        "isMovedBool": true,
-        "isBoostedBool": false,
-        "pos": "g7"
-      },
-      "targetZones": ["g8"],
-      "boostedTargetZones": {}
-    },
+    "g7": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
     "g8": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
     "h1": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
     "h2": { "piece": null, "targetZones": [], "boostedTargetZones": {} },

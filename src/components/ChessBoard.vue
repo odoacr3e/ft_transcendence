@@ -17,6 +17,7 @@
 
 <template>
     <div id="root">
+		<div v-if="localInfo.goatId" id="overlay" v-bind:class="{ 'opacity-60 pointer-events-auto':localInfo.goatId }"></div>
         <div id="board" oncontextmenu="return false;">
             <div v-for="row in domBoardComputed" :key="row[0]?.id" class="squareRow">
                 <div
@@ -56,18 +57,19 @@
                     <span v-if="square.boostedHighlight && !square.piece" class="boostedHighlight"></span>
                 </div>
             </div>
-			<div v-if="localInfo.goatId" id="choseMenu" class="flex absolute size-75 gap-0.5">
-				<button @click="upgradeBastard('Champion')">
-					<img :src="IMG_PATHS[currP.team + 'Champion']" alt="Champion">
+			<div v-if="localInfo.goatId" id="choseMenu" class="flex absolute pointer-events-none size-75 z-14 gap-0.5 p-1.5 
+					border-2 border-[#1b0000] rounded-md bg-[#fafafa] max-h-[10%]">
+				<button @click="upgradeBastard('Champion')" class="rounded-md p-1 hover:bg-[#a52a2a]">
+					<img :src="IMG_PATHS[currP.team + 'Champion']" alt="Champion" :draggable="false">
 				</button>
-				<button @click="upgradeBastard('Jester')">
-					<img :src="IMG_PATHS[currP.team + 'Jester']" alt="Jester">
+				<button @click="upgradeBastard('Jester')" class="rounded-md p-1 hover:bg-[#a52a2a]">
+					<img :src="IMG_PATHS[currP.team + 'Jester']" alt="Jester" :draggable="false">
 				</button>
-				<button @click="upgradeBastard('Minotaurus')">
-					<img :src="IMG_PATHS[currP.team + 'Minotaurus']" alt="Minotaurus">
+				<button @click="upgradeBastard('Minotaurus')" class="rounded-md p-1 hover:bg-[#a52a2a]">
+					<img :src="IMG_PATHS[currP.team + 'Minotaurus']" alt="Minotaurus" :draggable="false">
 				</button>
-				<button @click="upgradeBastard('Valkirya')">
-					<img :src="IMG_PATHS[currP.team + 'Valkirya']" alt="Valkirya">
+				<button @click="upgradeBastard('Valkirya')" class="rounded-md p-1 hover:bg-[#a52a2a]">
+					<img :src="IMG_PATHS[currP.team + 'Valkirya']" alt="Valkirya" :draggable="false">
 				</button>
 			</div>
         </div>
@@ -83,10 +85,15 @@
 </template>
 
 <style scoped>
-	/* div#choseMenu {
-		background-color: white;
-		
-	} */
+	div#overlay {
+		opacity: 0.4;                    /* fisso, la transizione la gestisci con v-if */
+		background: rgba(0, 0, 0, 0.35);
+		inset: 0;
+		position: fixed;
+		z-index: 14;                     /* sotto al menu */
+		pointer-events: auto;            /* blocca i click sotto */
+		transition: opacity 0.2s ease;
+}
 
 	#shop {
 		position: absolute;

@@ -85,16 +85,27 @@ export async function requestToBack(fromSquare, toSquare)
 	// 	{type = "boostMove"; url = "ChampMove.json" }
 	// else {type = "move"; url = "ChampMove.json" }
 
-	// MOVE TRANSFORM BASTARD
+	// MOVE TRANSFORM BASTARD BLACK
+	// if (fromSquare === null && toSquare === null && localInfo.secondTurn)
+	// 	{type = "endTurn"; url = "TransformMoveBlack.json" }
+	// else if (fromSquare && toSquare === null)
+	// 	{type = "boost"; url = "TransformMoveBlack.json" }
+	// else if (fromSquare == null && toSquare)
+	// 	{type = "trans"; url = "TransformMoveBlack.json"; fromSquare = localInfo.goatId; localInfo.goatId = null; }
+	// else if (fromSquare && toSquare && localInfo.usingAbility !== "")
+	// 	{type = "boostMove"; url = "TransformMoveBlack.json" }
+	// else {type = "move"; url = "TransformMoveBlack.json" }
+
+	// MOVE TRANSFORM BASTARD WHITE
 	if (fromSquare === null && toSquare === null && localInfo.secondTurn)
-		{type = "endTurn"; url = "TransformMove.json" }
+		{type = "endTurn"; url = "TransformMoveWhite.json" }
 	else if (fromSquare && toSquare === null)
-		{type = "boost"; url = "TransformMove.json" }
+		{type = "boost"; url = "TransformMoveWhite.json" }
 	else if (fromSquare == null && toSquare)
-		{type = "trans"; url = "TransformMove.json"; fromSquare = localInfo.goatId; localInfo.goatId = null; }
+		{type = "trans"; url = "TransformMoveWhite.json"; fromSquare = localInfo.goatId; localInfo.goatId = null; }
 	else if (fromSquare && toSquare && localInfo.usingAbility !== "")
-		{type = "boostMove"; url = "TransformMove.json" }
-	else {type = "move"; url = "TransformMove.json" }
+		{type = "boostMove"; url = "TransformMoveWhite.json" }
+	else {type = "move"; url = "TransformMoveWhite.json" }
 
 	try
 	{

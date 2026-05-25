@@ -1,5 +1,7 @@
-import { computePosition, offset, flip, shift }	from "@floating-ui/dom"; 
+import { computePosition, offset, flip, shift, autoUpdate }	from "@floating-ui/dom"; 
 import { localBoard, localInfo, localPlayers } from "../Variables";
+
+let stopAutoUpdate = null;
 
 export function hasBoost (curP)
 {
@@ -51,27 +53,41 @@ export function checkUpgrade()
 			square.piece && square.piece.type === "Bastards")
 		{
 			localInfo.goatId = id;
-			requestAnimationFrame(() => { // <- aspetta che il DOM sia aggiornato
+			localInfo.secondTurn = false;
+			requestAnimationFrame(() => {
 				const fromEl = document.getElementById(id);
 				const menuEl = document.getElementById("choseMenu");
 
-				if (fromEl && menuEl) {
+				if (!fromEl || !menuEl) { return; }
+
+				function updatePosition() {
 					computePosition(fromEl, menuEl, {
 						middleware: [
-							offset(6),  // margine opzionale dal reference element
-							flip(),     // evita che esca fuori schermo
+							offset(6),
+							flip(),
 							shift({ padding: 5 })
 						],
 						strategy: 'fixed'
 					})
 					.then(({ x, y }) => {
 						menuEl.style.position = 'fixed';
-						menuEl.style.left = '0px';
-						menuEl.style.top = '-60px'; // deve essere 0,0 con il transform
+						menuEl.style.pointerEvents = 'auto';
+						if (id.charAt(1) === '8')
+						{
+							menuEl.style.top = '-6px';
+							menuEl.style.left = '0px';
+						}
+						else
+						{
+							menuEl.style.top = '-173px';
+							menuEl.style.left = '-75px';
+						}
 						menuEl.style.transform = `translate(${Math.round(x)}px, ${Math.round(y)}px)`;
 					})
 					.catch(console.error);
 				}
+				if (stopAutoUpdate) { stopAutoUpdate(); stopAutoUpdate = null; }
+                stopAutoUpdate = autoUpdate(fromEl, menuEl, updatePosition);
 			});
 		}
 	})

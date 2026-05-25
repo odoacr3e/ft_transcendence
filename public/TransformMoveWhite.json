@@ -43,15 +43,15 @@
     "King": ""
   },
   "board": {
-    "g7": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
-    "g8": {
+    "a7": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "a8": {
       "piece": {
         "type": "Bastards",
         "price": 1,
         "team": "white",
         "isMovedBool": true,
         "isBoostedBool": false,
-        "pos": "g8"
+        "pos": "a8"
       },
       "targetZones": [],
       "boostedTargetZones": {}
