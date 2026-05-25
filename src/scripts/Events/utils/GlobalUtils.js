@@ -46,6 +46,14 @@ export function sendEndTurn()
 	);
 }
 
+export function upgradeBastard(newType)
+{
+	requestToBack(null, newType).then(
+		function(value) {if (value) { localInfo.goatId = null; clearHighlight(); }},
+		function(value) {if (!value) { console.log("Mossa non valida"); }}
+	);
+}
+
 //UTILS - GENERAL UTILS
 
 export function moveDragClone(event)

@@ -27,6 +27,7 @@ class metaInfo {
 		this.savedBoostedMap = null;
 		this.dragClone = null;
 		this.dropDone = false;
+		this.goatId = null;
 	}
 }
 

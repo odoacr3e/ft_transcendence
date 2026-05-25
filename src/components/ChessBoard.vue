@@ -1,16 +1,18 @@
 <script setup>
-	import { DOMBoard, localInfo, IMG_PATHS }	from '@/scripts/Data/Variables';
-	import { globalEvents }						from '@/scripts/Events/Global';
-	import { shopAbility }						from '@/scripts/Events/utils/GlobalUtils';
+	import { DOMBoard, localInfo, localPlayers, IMG_PATHS }	from '@/scripts/Data/Variables';
+	import { shopAbility,upgradeBastard }		from '@/scripts/Events/utils/GlobalUtils';
+	import { onMounted, computed, ref }			from 'vue';
 	import { onDragStart, onDrop }				from '@/scripts/Events/Movements';
-	import { onMounted, computed }				from 'vue';
 	import { getSquareColor } 					from '@/scripts/Helper/RenderUtils';
+	import { globalEvents }						from '@/scripts/Events/Global';
 
 	const domBoardComputed = computed(() => DOMBoard());
 
     onMounted(() => {
         globalEvents()
     })
+
+	const currP = ref(localPlayers.values().find(p => p.isPlaying === true));
 </script>
 
 <template>
@@ -54,6 +56,20 @@
                     <span v-if="square.boostedHighlight && !square.piece" class="boostedHighlight"></span>
                 </div>
             </div>
+			<div v-if="localInfo.goatId" id="choseMenu" class="flex absolute size-75 gap-0.5">
+				<button @click="upgradeBastard('Champion')">
+					<img :src="IMG_PATHS[currP.team + 'Champion']" alt="Champion">
+				</button>
+				<button @click="upgradeBastard('Jester')">
+					<img :src="IMG_PATHS[currP.team + 'Jester']" alt="Jester">
+				</button>
+				<button @click="upgradeBastard('Minotaurus')">
+					<img :src="IMG_PATHS[currP.team + 'Minotaurus']" alt="Minotaurus">
+				</button>
+				<button @click="upgradeBastard('Valkirya')">
+					<img :src="IMG_PATHS[currP.team + 'Valkirya']" alt="Valkirya">
+				</button>
+			</div>
         </div>
 		<div id="shop">
 			<img src="../assets/Frame1.png" alt="" class="shrink-0 size-35 absolute bottom-[80%] z-12">
@@ -67,6 +83,11 @@
 </template>
 
 <style scoped>
+	/* div#choseMenu {
+		background-color: white;
+		
+	} */
+
 	#shop {
 		position: absolute;
 		display: flex;

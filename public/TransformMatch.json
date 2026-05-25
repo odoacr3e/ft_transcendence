@@ -1,0 +1,179 @@
+{
+  "youWin": false,
+  "log": {
+    "msg": "OK",
+    "status": 200
+  },
+  "p1": {
+    "name": "Player1",
+    "nPoints": 0,
+    "bonusPointCounter": 0,
+    "nPieces": 0,
+    "team": "white",
+    "next": "black",
+    "isPlaying": true,
+    "King": "e1"
+  },
+  "p2": {
+    "name": "Player2",
+    "nPoints": 0,
+    "bonusPointCounter": 0,
+    "nPieces": 0,
+    "team": "black",
+    "next": "white",
+    "isPlaying": false,
+    "King": "e8"
+  },
+  "p3": {
+    "name": "",
+    "nPoints": 0,
+    "bonusPointCounter": 0,
+    "nPieces": 0,
+    "team": "red",
+    "next": "blue",
+    "King": ""
+  },
+  "p4": {
+    "name": "",
+    "nPoints": 0,
+    "bonusPointCounter": 0,
+    "nPieces": 0,
+    "team": "yellow",
+    "next": "red",
+    "King": ""
+  },
+  "board": {
+    "a1": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "a2": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "a3": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "a4": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "a5": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "a6": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "a7": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "a8": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "b1": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "b2": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "b3": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "b4": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "b5": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "b6": {
+      "piece": {
+        "type": "Bastards",
+        "price": 1,
+        "team": "black",
+        "isMovedBool": true,
+        "isBoostedBool": false,
+        "pos": "b6"
+      },
+      "targetZones": ["b5"],
+      "boostedTargetZones": {}
+    },
+    "b7": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "b8": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "c1": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "c2": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "c3": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "c4": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "c5": {
+      "piece": {
+        "type": "Bastards",
+        "price": 1,
+        "team": "black",
+        "isMovedBool": true,
+        "isBoostedBool": false,
+        "pos": "c5"
+      },
+      "targetZones": ["c4"],
+      "boostedTargetZones": {}
+    },
+    "c6": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "c7": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "c8": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "d1": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "d2": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "d3": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "d4": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "d5": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "d6": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "d7": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "d8": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "e1": {
+      "piece": {
+        "type": "King",
+        "price": 0,
+        "team": "white",
+        "isMovedBool": true,
+        "isBoostedBool": false,
+        "pos": "e1"
+      },
+      "targetZones": ["f2", "d2", "f1", "d1", "e2"],
+      "boostedTargetZones": {}
+    },
+    "e2": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "e3": {
+      "piece": {
+        "type": "Valkirya",
+        "price": 3,
+        "team": "white",
+        "isMovedBool": true,
+        "isBoostedBool": true,
+        "pos": "e3"
+      },
+      "targetZones": ["h6", "c5", "g5", "d4", "f4", "d2", "f2", "c1", "g1"],
+      "boostedTargetZones": {
+        "e3": ["b6", "c5"]
+      }
+    },
+    "e4": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "e5": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "e6": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "e7": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "e8": {
+      "piece": {
+        "type": "King",
+        "price": 0,
+        "team": "black",
+        "isMovedBool": false,
+        "isBoostedBool": false,
+        "pos": "e8"
+      },
+      "targetZones": ["d7", "f7", "f8", "d8", "e7"],
+      "boostedTargetZones": {}
+    },
+    "f1": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "f2": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "f3": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "f4": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "f5": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "f6": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "f7": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "f8": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "g1": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "g2": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "g3": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "g4": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "g5": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "g6": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "g7": {
+      "piece": {
+        "type": "Bastards",
+        "price": 1,
+        "team": "white",
+        "isMovedBool": true,
+        "isBoostedBool": false,
+        "pos": "g7"
+      },
+      "targetZones": ["g8"],
+      "boostedTargetZones": {}
+    },
+    "g8": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "h1": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "h2": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "h3": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "h4": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "h5": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "h6": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "h7": { "piece": null, "targetZones": [], "boostedTargetZones": {} },
+    "h8": { "piece": null, "targetZones": [], "boostedTargetZones": {} }
+  }
+}

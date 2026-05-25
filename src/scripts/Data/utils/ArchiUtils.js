@@ -1,3 +1,4 @@
+import { computePosition, offset, flip, shift }	from "@floating-ui/dom"; 
 import { localBoard, localInfo, localPlayers } from "../Variables";
 
 export function hasBoost (curP)
@@ -38,4 +39,40 @@ export function DEBUGSetVisible()
 				DOMPiece.style.visibility = "visible";
 		}
 	});
+}
+
+export function checkUpgrade()
+{
+	const	curP = localPlayers.values().find(p => p.isPlaying === true);
+
+	localBoard.forEach((square ,id) => {
+		if ((id.charAt(1) === '1' && curP.team === "black") ||
+			(id.charAt(1) === '8' && curP.team === "white") &&
+			square.piece && square.piece.type === "Bastards")
+		{
+			localInfo.goatId = id;
+			requestAnimationFrame(() => { // <- aspetta che il DOM sia aggiornato
+				const fromEl = document.getElementById(id);
+				const menuEl = document.getElementById("choseMenu");
+
+				if (fromEl && menuEl) {
+					computePosition(fromEl, menuEl, {
+						middleware: [
+							offset(6),  // margine opzionale dal reference element
+							flip(),     // evita che esca fuori schermo
+							shift({ padding: 5 })
+						],
+						strategy: 'fixed'
+					})
+					.then(({ x, y }) => {
+						menuEl.style.position = 'fixed';
+						menuEl.style.left = '0px';
+						menuEl.style.top = '-60px'; // deve essere 0,0 con il transform
+						menuEl.style.transform = `translate(${Math.round(x)}px, ${Math.round(y)}px)`;
+					})
+					.catch(console.error);
+				}
+			});
+		}
+	})
 }

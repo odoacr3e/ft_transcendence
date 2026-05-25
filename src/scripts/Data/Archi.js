@@ -1,6 +1,6 @@
 import { initLocalBoard, localMatchState, localBoard,  
-			localPlayers, startLocalMatchState } 		from "./Variables.js";
-import { checkEndTurn, hasBoost, DEBUGSetVisible }		from "./utils/ArchiUtils.js";
+			localPlayers, startLocalMatchState }					from "./Variables.js";
+import { checkEndTurn, hasBoost, DEBUGSetVisible, checkUpgrade }	from "./utils/ArchiUtils.js";
 
 //SECTION - INIT FUNCTIONS
 
@@ -8,12 +8,13 @@ async function loadReceivedMatch()
 {
 	// const response = await fetch("/match.json",
 	// const response = await fetch("/api/game/",
-	const response = await fetch("/ChampMatch.json",
+	// const response = await fetch("/ChampMatch.json",
 	// const response = await fetch("/FILE.json",
 	// const response = await fetch("/FILE-ONE.json",
 	// const response = await fetch("/BastardMatch.json",
 	// const response = await fetch("ValkiryaMatch.json",
 	// const response = await fetch("/MinoMatch.json",
+	const response = await fetch("/TransformMatch.json",
 	{
 		method: "POST",
 		headers: { "Content-Type": "application/json" },
@@ -82,6 +83,7 @@ function initLocalPlayers()
 //!SECTION
 
 //SECTION - UPDATE FUNCTIONS
+
 function updateMatchState(nextRaw)
 {
 	const validated = validateReceivedMatch(nextRaw);
@@ -93,6 +95,7 @@ function updateMatchState(nextRaw)
 	{
 		updateLocalBoard(validated);
 		DEBUGSetVisible();
+		checkUpgrade();
 		updateLocalPlayers(validated);
 	} 
 	catch(err){
