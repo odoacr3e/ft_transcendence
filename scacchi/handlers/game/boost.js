@@ -2,10 +2,11 @@
 
 const {dangerUpdateAll} =	require("../../utils/moveUtils.js");
 const {Match} = require("../../Classes/Match/match.js");
-const {error, paramCheck, Result} = require("./utils.js");
+const {error, paramCheck, Result, clientBoard} = require("./utils.js");
 const endTurn = require("./endTurn.js").endTurn;
 const {CheckMateCheck} = require("../../GameLogic/checkMate.js");
 const { BOOSTED_MAX, MOVEMENT_MIN } = require("../../Macro/macro.js");
+const { Square } = require("../../Classes/ChessBoard/chessBoard.js");
 
 /**
  * 
@@ -31,6 +32,8 @@ function boost(match, from)
 		else if (match.historyCreateBool == false)
 			endTurn(match);
 	}
+	// @ts-ignore
+	result.board = clientBoard(match.board, [from, from]);
 	return (result);
 }
 
