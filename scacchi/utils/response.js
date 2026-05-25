@@ -90,14 +90,30 @@ function responseFormatter(result, msg, status)
 	result.p2 = p2;
 	result.p3 = p3;
 	result.p4 = p4;
-	// delete result.p1.King;
-	// delete result.p1.next;
-	// delete result.p2.King;
-	// delete result.p2.next;
-	// delete result.p3.King;
-	// delete result.p3.next;
-	// delete result.p4.King;
-	// delete result.p4.next;
+	result.p1.name = "p1";
+	result.p2.name = "p2";
+	result.p3.name = "p3";
+	result.p4.name = "p4";
+	if (match.currentPlayer === result.p1) {
+		result.p1.isPlaying = true;
+	}
+	else
+		result.p1.isPlaying = false;
+	if (match.currentPlayer === result.p2) {
+		result.p2.isPlaying = true;
+	}
+	else
+		result.p2.isPlaying = false;
+	if (match.currentPlayer === result.p3) {
+		result.p3.isPlaying = true;
+	}
+	else
+		result.p3.isPlaying = false;
+	if (match.currentPlayer === result.p4) {
+		result.p4.isPlaying = true;
+	}
+	else
+		result.p4.isPlaying = false;
 	return (result);
 }
 
