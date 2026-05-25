@@ -96,14 +96,16 @@ boardConverter()
 	✓ richieste del boosting
 	✓ Coordinate delle caselle della scacchiera
 	✓ drag non fastasma
-	▫ movimento per i pezzi boostati
+	✓ movimento per i pezzi boostati
 	↳	✓ implementazione del drag
 		✓ bastardo
-		▫ minotauro {LEO} [MAVI]
+		✓ minotauro
 		✓ giullare
 		✓ valkiaria
-		▫ campione
-		▫ re
+		✓ campione
+		✓ re
+	▫ bottone di potenziamento clickabile solo durante il second turn 
+	▫ refactor di archi nel caso la board non esista
 	? orientamento della scacchiera in base al colore dei pezzi del giocatore
 
 //FIXME - 

@@ -14,11 +14,11 @@ async function loadReceivedMatch()
 	// const response = await fetch("/BastardMatch.json",
 	// const response = await fetch("ValkiryaMatch.json",
 	// const response = await fetch("/MinoMatch.json",
-	const response = await fetch("/TransformMatch.json",
+	const response = await fetch("http://localhost:8080/api/game",
 	{
 		method: "POST",
 		headers: { "Content-Type": "application/json" },
-		body: JSON.stringify({ type: "init", from: "0", to: null }),
+		body: JSON.stringify({ type: "init", from: "0", to: "0" }),
 	});	
 	if (!response.ok)
 		throw new Error(`Impossibile caricare /match.json: ${response.status}`);

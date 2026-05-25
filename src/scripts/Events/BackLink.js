@@ -35,8 +35,6 @@ export async function requestToBack(fromSquare, toSquare)
 	// 	{type = "endTurn"; url = "move.json" }
 	// else if (fromSquare && toSquare === null)
 	// 	{type = "boost"; url = "move.json" }
-	// else if (fromSquare == null && toSquare)
-	// 	{type = "trans"; url = "move.json"; fromSquare = localInfo.goatId; localInfo.goatId = null; }
 	// else if (fromSquare && toSquare && localInfo.usingAbility !== "")
 	// 	{type = "boostMove"; url = "move.json" }
 	// else {type = "move"; url = "move.json" }
@@ -46,8 +44,6 @@ export async function requestToBack(fromSquare, toSquare)
 	// 	{type = "endTurn"; url = "MinoMove.json" }
 	// else if (fromSquare && toSquare === null)
 	// 	{type = "boost"; url = "MinoMove.json" }
-	// else if (fromSquare == null && toSquare)
-	// 	{type = "trans"; url = "MinoMove.json"; fromSquare = localInfo.goatId; localInfo.goatId = null; }
 	// else if (fromSquare && toSquare && localInfo.usingAbility !== "")
 	// 	{type = "boostMove"; url = "MinoMove.json" }
 	// else {type = "move"; url = "MinoMove.json" }
@@ -57,8 +53,6 @@ export async function requestToBack(fromSquare, toSquare)
 	// 	{type = "endTurn"; url = "BastardMove.json" }
 	// else if (fromSquare && toSquare === null)
 	// 	{type = "boost"; url = "BastardMove.json" }
-	// else if (fromSquare == null && toSquare)
-	// 	{type = "trans"; url = "BastardMove.json"; fromSquare = localInfo.goatId; localInfo.goatId = null; }
 	// else if (fromSquare && toSquare && localInfo.usingAbility !== "")
 	// 	{type = "boostMove"; url = "BastardMove.json" }
 	// else {type = "move"; url = "BastardMove.json" }
@@ -68,48 +62,22 @@ export async function requestToBack(fromSquare, toSquare)
 	// 	{type = "endTurn"; url = "ValkiryaBMove.json" }
 	// else if (fromSquare && toSquare === null)
 	// 	{type = "boost"; url = "ValkiryaBMove.json" }
-	// else if (fromSquare == null && toSquare)
-	// 	{type = "trans"; url = "ValkiryaBMove.json"; fromSquare = localInfo.goatId; localInfo.goatId = null; }
 	// else if (fromSquare && toSquare && localInfo.usingAbility !== "")
 	// 	{type = "boostMove"; url = "ValkiryaBMove.json" }
 	// else {type = "move"; url = "ValkiryaBMove.json" }
 
 	// MOVE CHAMPION
-	// if (fromSquare === null && toSquare === null && localInfo.secondTurn)
-	// 	{type = "endTurn"; url = "ChampMove.json" }
-	// else if (fromSquare && toSquare === null)
-	// 	{type = "boost"; url = "ChampMove.json" }
-	// else if (fromSquare == null && toSquare)
-	// 	{type = "trans"; url = "ChampMove.json"; fromSquare = localInfo.goatId; localInfo.goatId = null; }
-	// else if (fromSquare && toSquare && localInfo.usingAbility !== "")
-	// 	{type = "boostMove"; url = "ChampMove.json" }
-	// else {type = "move"; url = "ChampMove.json" }
-
-	// MOVE TRANSFORM BASTARD BLACK
-	// if (fromSquare === null && toSquare === null && localInfo.secondTurn)
-	// 	{type = "endTurn"; url = "TransformMoveBlack.json" }
-	// else if (fromSquare && toSquare === null)
-	// 	{type = "boost"; url = "TransformMoveBlack.json" }
-	// else if (fromSquare == null && toSquare)
-	// 	{type = "trans"; url = "TransformMoveBlack.json"; fromSquare = localInfo.goatId; localInfo.goatId = null; }
-	// else if (fromSquare && toSquare && localInfo.usingAbility !== "")
-	// 	{type = "boostMove"; url = "TransformMoveBlack.json" }
-	// else {type = "move"; url = "TransformMoveBlack.json" }
-
-	// MOVE TRANSFORM BASTARD WHITE
 	if (fromSquare === null && toSquare === null && localInfo.secondTurn)
-		{type = "endTurn"; url = "TransformMoveWhite.json" }
+		{type = "endTurn"; }
 	else if (fromSquare && toSquare === null)
-		{type = "boost"; url = "TransformMoveWhite.json" }
-	else if (fromSquare == null && toSquare)
-		{type = "trans"; url = "TransformMoveWhite.json"; fromSquare = localInfo.goatId; localInfo.goatId = null; }
+		{type = "boost"; }
 	else if (fromSquare && toSquare && localInfo.usingAbility !== "")
-		{type = "boostMove"; url = "TransformMoveWhite.json" }
-	else {type = "move"; url = "TransformMoveWhite.json" }
+		{type = "boostMove"; }
+	else {type = "move"; }
 
 	try
 	{
-		const response = await fetch(url, {
+		const response = await fetch("http://localhost:8080/api/game", {
 		  method: "POST",
 		  headers: { "Content-Type": "application/json" },
 		  body: JSON.stringify({ type: type, from: fromSquare, to: toSquare }),

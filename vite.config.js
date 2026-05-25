@@ -12,14 +12,14 @@ export default defineConfig({
     vueDevTools(),
     tailwindcss()
   ],
-  // server: {
-  //   proxy: {
-  //     '/api': {
-  //       target: 'http://localhost:8080',
-  //       changeOrigin: true,
-  //     },
-  //   },
-  // },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+      },
+    },
+  },
 //   server: {
 //     host: '10.11.4.4',
 //     port: 5173,
