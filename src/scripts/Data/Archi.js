@@ -1,5 +1,6 @@
 import { initLocalBoard, localMatchState, localBoard,  
-			localPlayers, startLocalMatchState }					from "./Variables.js";
+			localPlayers, startLocalMatchState, 
+			localInfo}					from "./Variables.js";
 import { checkEndTurn, hasBoost, DEBUGSetVisible, checkUpgrade }	from "./utils/ArchiUtils.js";
 
 //SECTION - INIT FUNCTIONS
@@ -14,6 +15,7 @@ async function loadReceivedMatch()
 	// const response = await fetch("/BastardMatch.json",
 	// const response = await fetch("ValkiryaMatch.json",
 	// const response = await fetch("/MinoMatch.json",
+	// const response = await fetch("/TransformMatch.json",
 	const response = await fetch("http://localhost:8080/api/game",
 	{
 		method: "POST",
@@ -38,20 +40,31 @@ function validateReceivedMatch(rawJson)
 	const has_p4 = Object.prototype.hasOwnProperty.call(rawJson, "p4");
 	const has_board = Object.prototype.hasOwnProperty.call(rawJson, "board");
 
-	if (!has_p1 || !has_p2 || !has_p3 || !has_p4 || !has_board)
+	if (!has_p1 || !has_p2 || !has_p3 || !has_p4 || (!has_board && !localInfo.secondTurn))
 		throw new Error("[validateReceivedMatch]: Payload non valido: servono players e board.");
 
-	if (!rawJson.board || typeof rawJson.board !== "object" || Array.isArray(rawJson.board))
+	if (has_board && (!rawJson.board || typeof rawJson.board !== "object" || Array.isArray(rawJson.board)))
 		throw new Error("[validateReceivedMatch]: Payload non valido: board deve essere un oggetto mappa.");
 
-	return {
-		p1: rawJson.p1,
-		p2: rawJson.p2,
-		p3: rawJson.p3,
-		p4: rawJson.p4,
-		board: rawJson.board,
-	};
+	if (has_board)
+		return {
+			p1: rawJson.p1,
+			p2: rawJson.p2,
+			p3: rawJson.p3,
+			p4: rawJson.p4,
+			board: rawJson.board,
+		};
+	else
+		return {
+			p1: rawJson.p1,
+			p2: rawJson.p2,
+			p3: rawJson.p3,
+			p4: rawJson.p4
+		};
+
 }
+
+// boost di pezzi
 
 async function initLocalMatchState() 
 {
@@ -93,7 +106,8 @@ function updateMatchState(nextRaw)
 	startLocalMatchState(validated);
 	try 
 	{
-		updateLocalBoard(validated);
+		if (validated.board)
+			updateLocalBoard(validated);
 		DEBUGSetVisible();
 		checkUpgrade();
 		updateLocalPlayers(validated);

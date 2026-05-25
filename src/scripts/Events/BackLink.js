@@ -68,9 +68,11 @@ export async function requestToBack(fromSquare, toSquare)
 
 	// MOVE CHAMPION
 	if (fromSquare === null && toSquare === null && localInfo.secondTurn)
-		{type = "endTurn"; }
+		{type = "endTurn"; fromSquare = ""; toSquare = ""; }
 	else if (fromSquare && toSquare === null)
-		{type = "boost"; }
+		{type = "boost"; toSquare = ""; }
+	else if (fromSquare == null && toSquare)
+		{type = "trans"; fromSquare = localInfo.goatId; localInfo.goatId = null; }
 	else if (fromSquare && toSquare && localInfo.usingAbility !== "")
 		{type = "boostMove"; }
 	else {type = "move"; }

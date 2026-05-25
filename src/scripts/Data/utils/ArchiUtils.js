@@ -48,8 +48,8 @@ export function checkUpgrade()
 	const	curP = localPlayers.values().find(p => p.isPlaying === true);
 
 	localBoard.forEach((square ,id) => {
-		if ((id.charAt(1) === '1' && curP.team === "black") ||
-			(id.charAt(1) === '8' && curP.team === "white") &&
+		if (((id.charAt(1) === '1' && curP.team === "black") ||
+			(id.charAt(1) === '8' && curP.team === "white")) &&
 			square.piece && square.piece.type === "Bastards")
 		{
 			localInfo.goatId = id;
