@@ -63,7 +63,7 @@ export function KingAndBastardsHL(squareId)
 	const team = square.piece.team;
 	const regularMoves = square.targetZones;
 	const boostedMoves = square.boostedTargetZones.get(squareId);
-	// console.log(`boosted moves ${boostedMoves}, useAbility: ${useAbility}`);
+	// console.log(`boosted moves ${boostedMoves.size}, useAbility: ${useAbility}`);
 	
 	clearHighlight();
 	if (useAbility && boostedMoves)

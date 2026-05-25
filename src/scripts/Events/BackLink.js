@@ -29,7 +29,7 @@ export async function sendToBackend(flag)
 export async function requestToBack(fromSquare, toSquare)
 {
 	let type, url;
-
+	let	boostMove = false;
 	// MOVE GENERICA
 	// if (fromSquare === null && toSquare === null && localInfo.secondTurn)
 	// 	{type = "endTurn"; url = "move.json" }
@@ -74,7 +74,7 @@ export async function requestToBack(fromSquare, toSquare)
 	else if (fromSquare == null && toSquare)
 		{type = "trans"; fromSquare = localInfo.goatId; localInfo.goatId = null; }
 	else if (fromSquare && toSquare && localInfo.usingAbility !== "")
-		{type = "boostMove"; }
+		{type = "move"; boostMove = true;}
 	else {type = "move"; }
 
 	try
@@ -82,7 +82,7 @@ export async function requestToBack(fromSquare, toSquare)
 		const response = await fetch("http://localhost:8080/api/game", {
 		  method: "POST",
 		  headers: { "Content-Type": "application/json" },
-		  body: JSON.stringify({ type: type, from: fromSquare, to: toSquare }),
+		  body: JSON.stringify({ type: type, from: fromSquare, to: toSquare , boostBool: boostMove}),
 		});
 
 		if (!response.ok) throw new Error(`Impossibile caricare /move.json: ${response.status}`);
