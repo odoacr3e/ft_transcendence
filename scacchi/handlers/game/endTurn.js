@@ -18,19 +18,19 @@ function endTurn(match)
 	let timeout;
 	let start;
 	let time;
-	let d;
+	let p = match.currentPlayer;
 
 	result = new Result();
-	// time = match.currentPlayer.time;
-	// // @ts-ignore
+	time = match.currentPlayer.time;
+	// @ts-ignore
+	if (!updateTurn(match, result))
+		return (result);
 	// if (match.timer != null)
 	// {
 	// 	// @ts-ignore
 	// 	clearTimeout(match.timer.timeout);
-	// 	match.currentPlayer.time = match.timer.time - (Date.now() - match.timer.start);
+	// 	p.time = match.timer.time - (Date.now() - match.timer.start);
 	// }
-	if (!updateTurn(match, result))
-		return (result);
 	// // console.log("time", match.currentPlayer.time);
 	// time = match.currentPlayer.time;
 	// timeout = setTimeout(() =>
