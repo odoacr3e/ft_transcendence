@@ -9,10 +9,11 @@ export async function sendToBackend(flag)
 
 	if (localInfo.lastClickedId && localInfo.lastClickedId !== localInfo.clickedId && TargetZone)
 	{
-		const promise = await requestToBack(localInfo.lastClickedId, localInfo.clickedId)
+		const promise = await requestToBack(localInfo.lastClickedId, localInfo.clickedId);
 		if (promise)
 		{
 			clearHighlight();
+			new Audio("/src/assets/audios/moving.mp3").play();
 			if (flag) { return (true); }
 		}
 		else
@@ -23,9 +24,6 @@ export async function sendToBackend(flag)
 	}
 }
 
-// {type = "endTurn"; url = "BastardMove.json" }
-// {type = "endTurn"; url = "ValkiryaMove.json" }
-// {type = "endTurn"; url = "ValkiryaBMove.json" }
 export async function requestToBack(fromSquare, toSquare)
 {
 	let type, url;

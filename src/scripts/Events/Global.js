@@ -75,7 +75,7 @@ export async function globalEvents()
 			sendEndTurn();
 		if (event.code === "Enter")
 			shopAbility();
-		if (event.code === "ShiftLeft" && localBoard.get(localInfo.clickedId).piece.isBoostedBool)
+		if (event.code === "ShiftLeft" && localBoard.get(localInfo.clickedId)?.piece.isBoostedBool)
 			useAbility();
 	});
 }

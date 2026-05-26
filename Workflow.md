@@ -84,26 +84,26 @@ boardConverter()
 			-> boardConverter() esegue
 			-> ChessBoard.vue re-renderizza
 //TODO - (▫ = da fare, ✓ = completato)
-	✓ movimento al click
-	✓ highlight e selected corretti al 100%
-	✓ refactoring funzione che gestisce gli events
-	✓ pagina user per test con back
-	✓ rendering delle informazioni dei player
-	✓ bottone per utilizzare l'abilità
-	✓ highlitghs per i pezzi boostati
-	✓ gestione dei turni tra players (in locale)
-	✓ bottone per fine turno
-	✓ richieste del boosting
-	✓ Coordinate delle caselle della scacchiera
-	✓ drag non fastasma
-	✓ movimento per i pezzi boostati
-	↳	✓ implementazione del drag
-		✓ bastardo
-		✓ minotauro
-		✓ giullare
-		✓ valkiaria
-		✓ campione
-		✓ re
+	✓	movimento al click
+	✓	highlight e selected corretti al 100%
+	✓	refactoring funzione che gestisce gli events
+	✓	pagina user per test con back
+	✓	rendering delle informazioni dei player
+	✓	bottone per utilizzare l'abilità
+	✓	highlitghs per i pezzi boostati
+	✓	gestione dei turni tra players (in locale)
+	✓	bottone per fine turno
+	✓	richieste del boosting
+	✓	Coordinate delle caselle della scacchiera
+	✓	drag non fastasma
+	✓	movimento per i pezzi boostati
+	↳		✓ implementazione del drag
+			✓ bastardo
+			✓ minotauro
+			✓ giullare
+			✓ valkiaria
+			✓ campione
+			✓ re
 	✓ aura dei pezzi boostati visibile [LEO] 
 	▫ end turn, boost e useAbility triggerabili da pulsanti da tastiera [LEO]
 	▫ bottone di potenziamento clickabile solo durante il second turn 
@@ -117,5 +117,12 @@ boardConverter()
 	▫ Si fa fatica a capire di chi è il turno attuale
 	? orientamento della scacchiera in base al colore dei pezzi del giocatore
 
-//FIXME - 
-
+//FIXME - Bugs
+	▫	quando finisci l'esecuzione di una mossa boostata di un pedone e clicchi su un'altro pezzo
+		dello stesso colore del pedone appena mosso lancia eccezione
+	▫	quando finisci l'esecuzione di una mossa boostata di un pedone e al turno dopo vuoi muovere
+		lo stesso pedone manda eccezione (ma penso sia dovuto al backend)
+	▫	Gli highlits vengono displayati anche se la mossa è già stata fatta e si è semplicemente in
+		attesa che il giocatore schiacci end turn oppure boosti un pezzo
+	▫	Il pulsante use ability rimane interagibile e cliccabile anche se il pezzo si è appena
+		moso senza voler utilizzare l'abilità

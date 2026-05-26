@@ -3,6 +3,7 @@ import { PIECES_HIGHLIGHT }						from "@/scripts/Helper/piecesHighlights";
 import { computePosition }						from "@floating-ui/dom";
 import { clearHighlight }						from "@/scripts/Events/utils/HighlightUtils.js";
 import { requestToBack }						from "@/scripts/Events/BackLink.js";
+import { audioWorklet } from "globals";
 
 // ANCHOR USER INTERACTION FUNCTIONS
 export function useAbility()
@@ -21,6 +22,7 @@ export function useAbility()
 	{ 
 		piece.useAbilityBool = true;
 		localInfo.usingAbility = piece.type;
+		new Audio("/src/assets/audios/useAbility.mp3").play();
 		console.log(`who the fuck i am: ${localInfo.usingAbility}`);
 	}
 	PIECES_HIGHLIGHT[piece.type](clickedId);
@@ -28,12 +30,16 @@ export function useAbility()
 
 export function shopAbility()
 {
-	const Piece = localBoard.get(localInfo.clickedId).piece;
+	const Piece = localBoard.get(localInfo.clickedId)?.piece;
 	const Player = localPlayers.values().find(p => p.isPlaying === true);
 
-	if (!Piece.isBoostedBool && Player.nPoints && localInfo.secondTurn >= Piece.price)
+	if (!Piece?.isBoostedBool && Player.nPoints && localInfo.secondTurn >= Piece?.price)
 		requestToBack(localInfo.clickedId, null).then(
-			function(value) {if (value) { clearHighlight(); }},
+			function(value) {if (value) 
+			{ 
+				clearHighlight();
+				new Audio("/src/assets/audios/boost.mp3").play(); 
+			}},
 			function(value) {if (!value) { console.log("Mossa non valida"); }}
 		);
 }
@@ -41,7 +47,11 @@ export function shopAbility()
 export function sendEndTurn()
 {
 	requestToBack(null, null).then(
-		function(value) {if (value) { clearHighlight(); }},
+		function(value) {if (value) 
+		{ 
+			clearHighlight();
+			new Audio("/src/assets/audios/endTurn.mp3").play();
+		}},
 		function(value) {if (!value) { console.log("Mossa non valida"); }}
 	);
 }
@@ -107,7 +117,7 @@ export function checkPermision(event)
 
 export function checkForHighlightMove()
 {	
-	let bool
+	let bool;
 
 	if (localInfo.secondTurn && ((localInfo.savedBoostedMap && 
 		localInfo.savedBoostedMap.has(localInfo.clickedId)) ||
@@ -134,7 +144,7 @@ export function usingAbility()
     const piece      = localBoard.get(localInfo.clickedId)?.piece;
 	const secondTurn = localInfo.secondTurn;
 
-	const lastUseAbility = lastPiece?.useAbilityBool && lastPiece?.isBoostedBool
+	const lastUseAbility = lastPiece?.useAbilityBool && lastPiece?.isBoostedBool;
 	const useAbility	 = piece?.useAbilityBool && piece?.isBoostedBool;
 
     return ((localInfo.lastClickedId && (useAbility || lastUseAbility)) || secondTurn);
