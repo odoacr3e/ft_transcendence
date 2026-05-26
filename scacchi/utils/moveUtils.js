@@ -54,9 +54,9 @@ let DangerUpdate = (match, pos=null) =>
 	let	startPos;
 
 	usedBoard = match.board;
-	startPos = match.cursor.square;
 	if (pos != null)
 		match.cursor.set(pos);
+	startPos = match.cursor.square;
 	piece = usedBoard.get(match.cursor.square)?.piece;
 	if (piece == null)
 		return (0);
@@ -64,7 +64,7 @@ let DangerUpdate = (match, pos=null) =>
 	{
 		if (!bastardChecks(match, dx, dy, piece))
 		{
-			usedBoard.get(match.cursor.square)?.dangerZones.add(startPos);
+			usedBoard.get(match.cursor.square).dangerZones.add(startPos);
 			continue ;
 		}
 		while (movePiece(match, dy, dx, false))
@@ -92,8 +92,6 @@ function dangerDelPiece(match, pos=match.cursor.square, result=null)
 	let	pieceSquare;
 
 	pieceSquare = match.board.get(pos);
-	// if (!pieceSquare.piece)
-	// 	throw ("dangerDelPiece: coord fatal error");
 	for (const target of pieceSquare.targetZones)
 	{
 		match.board.get(target).dangerZones.delete(pos);
@@ -113,6 +111,7 @@ function dangerDelPiece(match, pos=match.cursor.square, result=null)
 			DangerUpdate(match, target);
 		match.board.updates.add(target);
 	}
+	pieceSquare.ClearZones();
 	match.board.updates.add(pos);
 }
 
@@ -145,9 +144,7 @@ function dangerUpdateAll(match)
 	usedBoard = match.board;
 	for (let [pos, square] of usedBoard)
 	{
-		square.boostedTargetZones.clear();
-		square.dangerZones.clear();
-		square.targetZones.clear();
+		square.ClearZones();
 	}
 	for (let [pos, square] of usedBoard)
 	{

@@ -1,5 +1,7 @@
 // @ts-check
 
+const { enumNames } = require("../Macro/enums");
+
 /**
  * 
  * @param {*} match
@@ -51,11 +53,11 @@ function bastardChecks(match, dy, dx, piece)
 	let tmp;
 	let	target;
 
-	if (piece.type != "Bastards")
+	if (piece.type != enumNames.BASTARDS)
 		return true;
 	//@ts-ignore
-	if (!bastardMove[piece.team]) // FIXME errore grave: impossibile
-		return false;
+	if (!bastardMove[piece.team])
+		throw ("bastardChecks: unknown piece team")
 	// @ts-ignore
 	if (!bastardMove[piece.team].has(`${dy}|${dx}`))
 		return false;

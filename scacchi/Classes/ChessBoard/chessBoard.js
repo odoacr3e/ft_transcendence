@@ -36,6 +36,13 @@ class Square
 		this.boostedTargetZones = other.boostedTargetZones;
 		this.dangerZones = other.dangerZones;
 	}
+	//calls .clear on target, boostedTarget, danger zones 
+	ClearZones()
+	{
+		this.boostedTargetZones.clear();
+		this.dangerZones.clear();
+		this.targetZones.clear();
+	}
 }
 
 //ANCHOR - Methods

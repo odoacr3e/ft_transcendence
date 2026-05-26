@@ -9,7 +9,8 @@ const {preset} = require("../Classes/Pieces/pieces.js");
 
 // NOTE: connections
 const { prisma } = require("./prisma.js");
-const { redis } = require("./redis.js");
+//const { redis } = require("./redis.js");
+const redis = {};
 const crypto = require('crypto');
 
 //SECTION - external inclusions
