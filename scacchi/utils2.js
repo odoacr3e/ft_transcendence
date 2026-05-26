@@ -3,9 +3,7 @@ const fs = require("fs");
 const {eEvents} = require("./Macro/enums.js");
 const {Match} = require("./Classes/Match/match.js");
 const { Piece } = require("./Classes/Pieces/pieces.js");
-const {dangerUpdateAll} = require("./utils/moveUtils.js");
 const {move, boost, endTurn, init} = require("./handlers/game/Game.js");
-const { render, boardStringify } = require("./test/render.js");
 
 
 /** @typedef {import ("./Classes/Match/match.js").History} History */

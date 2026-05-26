@@ -85,31 +85,32 @@ let DangerUpdate = (match, pos=null) =>
  * 
  * @param {Match} match
  * @param {string} pos
+ * @param {Result | null} result
  */
-function dangerDelPiece(match, pos=match.cursor.square)
+function dangerDelPiece(match, pos=match.cursor.square, result=null)
 {
 	let	pieceSquare;
 
 	pieceSquare = match.board.get(pos);
-	if (!pieceSquare.piece)
-		throw ("dangerDelPiece: coord fatal error");
-	for (const [key, target] of pieceSquare.targetZones)
+	// if (!pieceSquare.piece)
+	// 	throw ("dangerDelPiece: coord fatal error");
+	for (const target of pieceSquare.targetZones)
 	{
 		match.board.get(target).dangerZones.delete(pos);
 		// DangerUpdate(match, target);
 	}
 	for (const [key, set] of pieceSquare.boostedTargetZones)
 	{
-		for (const [key, target] of pieceSquare.targetZones)
+		for (const [key, target] of set)
 		{
 			match.board.get(target).dangerZones.delete(pos);
 			// DangerUpdate(match, target);
 		}
 	}
-	for (const [key, target] of pieceSquare.dangerZones)
+	for (const target of pieceSquare.dangerZones)
 	{
-		//FIXME - la valchiria potenziata lascia un posto vacante
-		DangerUpdate(match, target);
+		if (!result || result.specialMoves.CheckSniperMove() == 0)
+			DangerUpdate(match, target);
 		match.board.updates.add(target);
 	}
 	match.board.updates.add(pos);
@@ -119,15 +120,16 @@ function dangerDelPiece(match, pos=match.cursor.square)
  * 
  * @param {Match} match 
  * @param {Array<string>} selected /* 0 = from, 1 = to
- * @param {Result} result
+ * @param {Result | null} result
  */
-function dangerUpdateMoved(match, selected=[], result)
+function dangerUpdateMoved(match, selected=[], result=null)
 {
 	if (selected.length != 2)
 		throw ("dangerUpdateMoved must be called with two pieces: from, to");
 	dangerDelPiece(match, selected[0]);
 	dangerDelPiece(match, selected[1]);
 	DangerUpdate(match, selected[1]);
+	console.log(match.board._data);
 }
 
 /**
@@ -160,4 +162,4 @@ function dangerUpdateAll(match)
 	match.cursor.set(temp);
 }
 
-module.exports = {movePiece, DangerUpdate, dangerUpdateAll};
+module.exports = {movePiece, DangerUpdate, dangerUpdateAll, dangerUpdateMoved};

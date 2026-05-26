@@ -2,7 +2,7 @@
 const {eEvents, enumNames, arrayNames, enumSpecialMoves} = require("../Macro/enums.js");
 const {MOVEMENT_MAX, CHESSBOARD_H, CHESSBOARD_W} = require("../Macro/macro.js");
 const {copyBoard} = require("../lib/lib.js").Chess;
-const {movePiece, dangerUpdateAll} =	require("../utils/moveUtils.js");
+const {movePiece, DangerUpdate, dangerUpdateAll, dangerUpdateMoved} =	require("../utils/moveUtils.js");
 const {isDangerous} = require("../utils/gameUtils.js");
 const {Match} = require("../Classes/Match/match.js");
 const {Preset} = require("../Classes/Pieces/preset.js");
@@ -147,7 +147,7 @@ function updateChessboard(coords=[], result, match, boostBool)
 		to.piece.isMovedBool = true;
 	match.moves++;
 	match.history.finalBoard = boardStringify(match);
-	dangerUpdateAll(match);
+	dangerUpdateMoved(match, coords, result);
 	return (true);
 }
 
@@ -346,15 +346,15 @@ function simulation(coords, match)
 	from.piece = null;
 	if (coords[0] == match.currentPlayer.King)
 		king = to;
-	dangerUpdateAll(match);
+	dangerUpdateMoved(match, coords);
 	if (isDangerous(match, king.dangerZones, king.piece?.team))
 	{
 		copyBoard(tmp, match.board._data);
-		dangerUpdateAll(match);
+		dangerUpdateMoved(match, coords);
 		return (false);
 	}
 	copyBoard(tmp, match.board._data);
-	dangerUpdateAll(match);
+	dangerUpdateMoved(match, coords);
 	return (true);
 }
 
@@ -405,7 +405,7 @@ function transfiguration(match, result, coord, newType)
 	isBoostedBool = square.piece.isBoostedBool;
 	square.piece = new Piece(newType, square.piece.pos, square.piece.team);
 	square.piece.isBoostedBool = isBoostedBool;
-	dangerUpdateAll(match);
+	DangerUpdate(match, coord);
 	match.endTurn();
 	result.status = 200;
 	result.msg = "OK";

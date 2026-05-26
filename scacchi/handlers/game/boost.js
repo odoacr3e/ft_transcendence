@@ -1,6 +1,6 @@
 // @ts-check
 
-const {dangerUpdateAll} =	require("../../utils/moveUtils.js");
+const {dangerUpdateAll, DangerUpdate} =	require("../../utils/moveUtils.js");
 const {Match} = require("../../Classes/Match/match.js");
 const {error, paramCheck, Result, clientBoard} = require("./utils.js");
 const endTurn = require("./endTurn.js").endTurn;
@@ -75,7 +75,7 @@ function tryBoost(match, result, from)
 	}
 	match.currentPlayer.boostedPiece = square.piece.pos;
 	match.history.UpdateBoost(square, from);
-	dangerUpdateAll(match);
+	DangerUpdate(match, from);
 	match.boost += 1;
 	return (true);
 }
