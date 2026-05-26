@@ -53,6 +53,7 @@ class ChessBoard
 	constructor(w, h)
 	{
 		this._data = initBoard(w, h);
+		this.updates = new Set();
 		this.width = w;
 		this.heigth = h;
 	}
@@ -87,6 +88,7 @@ class ChessBoard
 	keys(){return (this._data.keys());}
 	values(){return (this._data.values());}
 	[Symbol.iterator](){return (this._data[Symbol.iterator]());}
+	/** @param {string} pos */
 };
 
 //ANCHOR - utils

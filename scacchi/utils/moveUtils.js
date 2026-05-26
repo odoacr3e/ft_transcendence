@@ -3,6 +3,9 @@
 const Macro = require("../Macro/macro.js");
 const {bastardChecks} = require("./gameUtils.js");
 
+/**@typedef {import("../Classes/Match/match.js").Match} Match*/
+/**@typedef {import("../Classes/endPoint/result.js").Result} Result*/
+
 /**
  * 
  * @param {*} match
@@ -66,8 +69,8 @@ let DangerUpdate = (match, pos=null) =>
 		}
 		while (movePiece(match, dy, dx, false))
 		{
-			usedBoard.get(match.cursor.square)?.dangerZones.add(startPos);
-			usedBoard.get(startPos)?.targetZones.add(match.cursor.square);
+			usedBoard.get(match.cursor.square).dangerZones.add(startPos);
+			usedBoard.get(startPos).targetZones.add(match.cursor.square);
 			if (piece.moveLongRangeDEBUG == false || usedBoard.get(match.cursor.square)?.piece != null)
 				break ;
 		}
@@ -76,6 +79,55 @@ let DangerUpdate = (match, pos=null) =>
 	if (piece.isBoostedBool == true)
 		piece.moveFunction(match);
 	return (1);
+}
+
+/**
+ * 
+ * @param {Match} match
+ * @param {string} pos
+ */
+function dangerDelPiece(match, pos=match.cursor.square)
+{
+	let	pieceSquare;
+
+	pieceSquare = match.board.get(pos);
+	if (!pieceSquare.piece)
+		throw ("dangerDelPiece: coord fatal error");
+	for (const [key, target] of pieceSquare.targetZones)
+	{
+		match.board.get(target).dangerZones.delete(pos);
+		// DangerUpdate(match, target);
+	}
+	for (const [key, set] of pieceSquare.boostedTargetZones)
+	{
+		for (const [key, target] of pieceSquare.targetZones)
+		{
+			match.board.get(target).dangerZones.delete(pos);
+			// DangerUpdate(match, target);
+		}
+	}
+	for (const [key, target] of pieceSquare.dangerZones)
+	{
+		//FIXME - la valchiria potenziata lascia un posto vacante
+		DangerUpdate(match, target);
+		match.board.updates.add(target);
+	}
+	match.board.updates.add(pos);
+}
+
+/**
+ * 
+ * @param {Match} match 
+ * @param {Array<string>} selected /* 0 = from, 1 = to
+ * @param {Result} result
+ */
+function dangerUpdateMoved(match, selected=[], result)
+{
+	if (selected.length != 2)
+		throw ("dangerUpdateMoved must be called with two pieces: from, to");
+	dangerDelPiece(match, selected[0]);
+	dangerDelPiece(match, selected[1]);
+	DangerUpdate(match, selected[1]);
 }
 
 /**

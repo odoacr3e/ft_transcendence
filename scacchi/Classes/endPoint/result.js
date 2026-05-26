@@ -27,6 +27,8 @@ class bitMaskMoves
 	CheckKingDanger(){return (this._mask & move.CHECK)};
 	SetCheckMate(){this._mask |= (move.CHECKMATE | move.ENDGAME)};
 	CheckKingCheck(){return (this._mask & move.CHECKMATE)};
+	SetSniperMove(){this._mask |= (move.SNIPER)};
+	CheckSniperMove(){return (this._mask & move.SNIPER)};
 }
 
 //SECTION - class Result

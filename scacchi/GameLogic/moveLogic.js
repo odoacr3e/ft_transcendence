@@ -256,6 +256,7 @@ function checkBooster(match, result, from, coords, boostBool) // FIXME - da aggi
 	{
 		from.piece.isBoostedBool = false;
 		match.currentPlayer.boostedPiece = "";
+		result.specialMoves.SetSniperMove();
 	}
 	result.usedBoost = true;
 	return (true);
@@ -335,7 +336,7 @@ function simulation(coords, match)
 	let	to;
 	let	king;
 
-	tmp = copyBoard(match.board);
+	tmp = copyBoard(match.board._data);
 	from = match.board.get(coords[0]);
 	to = match.board.get(coords[1]);
 	king = match.board.get(match.currentPlayer.King);
@@ -348,11 +349,11 @@ function simulation(coords, match)
 	dangerUpdateAll(match);
 	if (isDangerous(match, king.dangerZones, king.piece?.team))
 	{
-		copyBoard(tmp, match.board);
+		copyBoard(tmp, match.board._data);
 		dangerUpdateAll(match);
 		return (false);
 	}
-	copyBoard(tmp, match.board);
+	copyBoard(tmp, match.board._data);
 	dangerUpdateAll(match);
 	return (true);
 }
