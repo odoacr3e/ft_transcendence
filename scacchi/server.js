@@ -23,7 +23,7 @@ app.use((err, req, res, next) =>
 	let	formattedResponse;
 
 	console.error(err);
-	formattedResponse = responseFormatter(null, err, 500);
+	formattedResponse = responseFormatter(null, null, err, 500);
 	res.status(500).json(formattedResponse);
 });
 

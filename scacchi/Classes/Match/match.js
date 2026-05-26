@@ -144,6 +144,7 @@ class Match
 			result.msg = "you win!";
 			result.status = 200;
 			result.youWin = true;
+			result.specialMoves.SetCheckMate();
 		}
 		else
 			return (new Result());

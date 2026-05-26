@@ -66,6 +66,9 @@ const enumSpecialMoves =
 	NONE: 0,
 	CASTLING: 1 << 0,
 	TRANSFIGURATION: 1 << 1,
+	ENDGAME: 1 << 2,
+	CHECK: 1 << 3,
+	CHECKMATE: 1 << 4
 }
 
 module.exports = {eTeam, eEvents, enumNames, arrayNames, enumInitNames, enumValues, enumSpecialMoves};

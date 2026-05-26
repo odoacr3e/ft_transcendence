@@ -88,10 +88,13 @@ function checkMove(coords=[], result, match, boostBool)
 		return (false);
 	if (!from.targetZones.has(coords[1]))
 		return (error(result, 403, "destination not in piece targetZone"));
-	if (isDangerous(match, king.dangerZones, king.piece.team) && !simulation(coords, match))
-		return (error(result, 403, "Your king is in danger"));
+	// if (isDangerous(match, king.dangerZones, king.piece.team) && !simulation(coords, match))
+	// 	return (error(result, 403, "Your king is in danger"));
 	if (!simulation(coords, match))
+	{
+		result.specialMoves.SetKingDanger();
 		return (error(result, 403, "this would put your king in danger"));
+	}
 	return (true);
 }
 
@@ -166,7 +169,7 @@ function moveCastling(match, from, to)
 	mpos = pieces?.mino.pos;
 	match.cursor.Save();
 	if (pieces == null)
-		return ;
+		throw ("moveCastling: we have lost our pieces coords, sorry");
 	match.cursor.set(pieces.king.pos);
 	for (let i = 0; movePiece(match, pieces.dir.diffCol, pieces.dir.diffRow); ++i)
 	{
@@ -175,7 +178,10 @@ function moveCastling(match, from, to)
 	}
 	let square1 = match.board.get(match.cursor.square);
 	if (square1)
+	{
+		pieces.king.pos = match.cursor.square;
 		square1.piece = pieces.king;
+	}
 	// @ts-ignore
 	let square2 = match.board.get(kpos);
 	if (square2)
@@ -183,11 +189,18 @@ function moveCastling(match, from, to)
 	movePiece(match, -pieces.dir.diffCol, -pieces.dir.diffRow);
 	let square3 = match.board.get(match.cursor.square);
 	if (square3)
+	{
+		pieces.mino.pos = match.cursor.square;
 		square3.piece = pieces.mino;
+	}
 	// @ts-ignore
 	let square4 = match.board.get(mpos);
 	if (square4)
 		square4.piece = null;
+	if (square1.piece)
+		match.currentPlayer.King = square1.piece.pos;
+	else
+		throw ("moveCastling: backend has lost the king");
 	match.cursor.Restore();
 
 }

@@ -3,6 +3,7 @@ const move = require("../../Macro/enums").enumSpecialMoves;
 const {copyBoard} = require("../ChessBoard/chessBoard.js")
 
 /** @typedef {import('../../Classes/ChessBoard/chessBoard.js').Square} Square */
+/** @typedef {import('../../Classes/Match/match.js').Match} Match */
 /** @typedef {Map<String, Square>} Board */
 
 //SECTION - contents
@@ -20,6 +21,12 @@ class bitMaskMoves
 	CheckCastling(){return (this._mask & move.CASTLING)};
 	SetTransfiguration(){this._mask |= move.TRANSFIGURATION};
 	CheckTransfiguration(){return (this._mask & move.TRANSFIGURATION)};
+	SetEndGame(){this._mask |= move.ENDGAME};
+	CheckEndGame(){return (this._mask & move.ENDGAME)};
+	SetKingDanger(){this._mask |= move.CHECK};
+	CheckKingDanger(){return (this._mask & move.CHECK)};
+	SetCheckMate(){this._mask |= (move.CHECKMATE | move.ENDGAME)};
+	CheckKingCheck(){return (this._mask & move.CHECKMATE)};
 }
 
 //SECTION - class Result
@@ -34,15 +41,19 @@ class Result
 	{
 		/** @type {Number | null} */this.status = 200;
 		/** @type {string | null} */this.msg = "OK";
+		/**	@type {*} */			this.log = {}; 
 		/** @type {Board | null} */	this.board = null;
 		/** @type {boolean} */		this.youWin = false;
 									this.usedBoost = false;
 									this.specialMoves = new bitMaskMoves();
-		
+		/** @type {Match | null} */	this.match = null;
+
 		if (!other)
 			return ;
 		this.status = other.status;
 		this.msg = other.msg;
+		if (other.match)
+			this.match = other.match;
 		if (other.board)
 			this.board = copyBoard(other.board, this.board);
 	}

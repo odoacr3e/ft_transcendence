@@ -22,6 +22,7 @@ class Square
 		/** @type {Set<string>} */				this.targetZones = new Set();
 		/** @type {Map<string, Set<string>>} */	this.boostedTargetZones = new Map();
 		/** @type {Set<string>} */				this.dangerZones = new Set();
+		/** @type {boolean} */					this.isInvolved = false;
 
 		if (other == null)
 			return ;

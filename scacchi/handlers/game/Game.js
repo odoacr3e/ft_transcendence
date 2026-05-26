@@ -72,7 +72,7 @@ function gameHandler(req, res)
 		result = move(match, from, to);
 	else if (type == "boost")
 		result = boost(match, from);
-	else if (type == "moveBoost")
+	else if (type == "moveboost")
 		result = move(match, from, to, true);
 	else if (type == "endturn")
 		result = endTurn(match);
@@ -86,7 +86,7 @@ function gameHandler(req, res)
 		return (error(res, null, 500, "backend function failed for unknown reasons"));
 	if (result.status != 200)
 		return (error(res, result));
-	result = responseFormatter(result, null, null);
+	result = responseFormatter(match, result, null, null);
 	render(match);
 	res.status(200).json(result);
 }
@@ -121,7 +121,7 @@ function gameInfo(req, res)
 	}
 	else
 		return (error(res, null, 400, `invalid type ${type}`));
-	result = responseFormatter(result, null, null);
+	result = responseFormatter(match, result, null, null);
 	res.status(200).json(result);
 }
 
@@ -135,7 +135,7 @@ function gameInfo(req, res)
  */
 function error(res=null, result=null, status=0, msg=null)
 {
-	result = responseFormatter(result, msg, status);
+	result = responseFormatter(result.match, result, msg, status);
 	console.clear();
 	console.log("\x1b[31mGame error\x1b[0m");
 	console.log(`status: ${result.log.status}\nmsg: ${result.log.msg}`);

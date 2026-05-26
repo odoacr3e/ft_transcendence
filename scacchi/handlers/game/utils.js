@@ -3,6 +3,7 @@
 const { assert } = require("node:console");
 const { Square, copyBoard } = require("../../Classes/ChessBoard/chessBoard");
 const {Result} = require("../../Classes/endPoint/result");
+const {jsonParser} = require("../../utils/response.js");
 
 /** @typedef {Map<String, Square>} Board */
 
@@ -25,15 +26,8 @@ function clientBoard(src, selected=null)
 	{
 		dest = copyOnlyBoardUpdates(src, selected);
 	}
-	for (let [key, square] of dest)
-	{
-		square.dangerZones.clear();
-		// @ts-ignore
-		square.targetZones = [...square.targetZones];
-		// @ts-ignore
-		square.boostedTargetZones = Object.fromEntries([...square.boostedTargetZones].map(([k, set]) => [k, [...set]]))
-	}
-	return (Object.fromEntries(dest));
+	modifyBoard(dest);
+	return (jsonParser(dest));
 }
 
 /**
@@ -61,6 +55,31 @@ function copyOnlyBoardUpdates(src, selected)
 	addDangerZonesCoords(src, newBoard, from);
 	addDangerZonesCoords(src, newBoard, to);
 	return (newBoard);
+}
+
+/**
+ * 
+ * @param {Board} copiedBoard
+ */
+function modifyBoard(copiedBoard)
+{
+	for (const [pos, square] of copiedBoard)
+	{
+		// @ts-ignore
+		delete (square).dangerZones;
+		// @ts-ignore
+		if (!square.piece)
+			continue ;
+		square.piece.moveArray = [];
+		// @ts-ignore
+		delete (square).piece?.isMovedBool;
+		// @ts-ignore
+		delete (square).piece?.multipleMovesBool;
+		// @ts-ignore
+		delete (square).piece?.moveLongRangeDEBUG;
+		// @ts-ignore
+		delete (square).piece?.pos;
+	}
 }
 
 /**

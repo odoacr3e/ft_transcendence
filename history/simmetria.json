@@ -1,0 +1,120 @@
+{
+  "seed": 0,
+  "events": [
+    {
+      "from": "g2",
+      "to": "g4",
+      "team": "white",
+      "type": "move",
+      "useBoostBool": false
+    },
+    {
+      "from": "",
+      "to": "",
+      "team": "white",
+      "type": "endTurn",
+      "useBoostBool": false
+    },
+    {
+      "from": "f7",
+      "to": "f5",
+      "team": "black",
+      "type": "move",
+      "useBoostBool": false
+    },
+    {
+      "from": "",
+      "to": "",
+      "team": "black",
+      "type": "endTurn",
+      "useBoostBool": false
+    },
+    {
+      "from": "e2",
+      "to": "e4",
+      "team": "white",
+      "type": "move",
+      "useBoostBool": false
+    },
+    {
+      "from": "",
+      "to": "",
+      "team": "white",
+      "type": "endTurn",
+      "useBoostBool": false
+    },
+    {
+      "from": "d7",
+      "to": "d5",
+      "team": "black",
+      "type": "move",
+      "useBoostBool": false
+    },
+    {
+      "from": "",
+      "to": "",
+      "team": "black",
+      "type": "endTurn",
+      "useBoostBool": false
+    },
+    {
+      "from": "c2",
+      "to": "c4",
+      "team": "white",
+      "type": "move",
+      "useBoostBool": false
+    },
+    {
+      "from": "",
+      "to": "",
+      "team": "white",
+      "type": "endTurn",
+      "useBoostBool": false
+    },
+    {
+      "from": "b7",
+      "to": "b5",
+      "team": "black",
+      "type": "move",
+      "useBoostBool": false
+    },
+    {
+      "from": "",
+      "to": "",
+      "team": "black",
+      "type": "endTurn",
+      "useBoostBool": false
+    },
+    {
+      "from": "a2",
+      "to": "a4",
+      "team": "white",
+      "type": "move",
+      "useBoostBool": false
+    },
+    {
+      "from": "",
+      "to": "",
+      "team": "white",
+      "type": "endTurn",
+      "useBoostBool": false
+    },
+    {
+      "from": "h7",
+      "to": "h5",
+      "team": "black",
+      "type": "move",
+      "useBoostBool": false
+    },
+    {
+      "from": "",
+      "to": "",
+      "team": "black",
+      "type": "endTurn",
+      "useBoostBool": false
+    }
+  ],
+  "moves": 16,
+  "victory": "",
+  "finalBoard": "|M|J|V|C|K|V|J|M|\n|B| |B| |B| |B| |\n| | | | | | | | |\n| |B| |B| |B| |B|\n|B| |B| |B| |B| |\n| | | | | | | | |\n| |B| |B| |B| |B|\n|M|J|V|C|K|V|J|M|\n"
+}

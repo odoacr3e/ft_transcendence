@@ -17,10 +17,12 @@ const { Square } = require("../../Classes/ChessBoard/chessBoard.js");
 function boost(match, from)
 {
 	let	result;
+	let prevBoost;
 
 	result = new Result();
 	if (!paramCheck(result, from))
 		return (result);
+	prevBoost = match.currentPlayer.boostedPiece;
 	if (!tryBoost(match, result, from))
 		return (result);
 	result.status = 200;
@@ -32,8 +34,11 @@ function boost(match, from)
 		else if (match.historyCreateBool == false)
 			endTurn(match);
 	}
+	if (prevBoost == "")
+		prevBoost = from;
 	// @ts-ignore
-	result.board = clientBoard(match.board, [from, from]);
+	result.board = clientBoard(match.board, [from, prevBoost]);
+	result.match = match;
 	return (result);
 }
 

@@ -1,8 +1,7 @@
 // @ts-check
-
+const { Match } = require("../Classes/Match/match.js")
 const { Square } = require("../Classes/ChessBoard/chessBoard.js");
-
-const match = require("../Classes/Match/globals.js").globals.getDebugMatch();;
+const Result = require("../Classes/endPoint/result.js").Result;
 
 /**
  * 
@@ -21,6 +20,8 @@ const ResponseSuccess = (object) => {
 }
 
 /**
+ * 
+ * @param {Match} match
  * @param {*} result the base object from which the response json is made
  * @param {String | null} msg 
  * @param {Number | null} status 
@@ -43,14 +44,14 @@ const ResponseSuccess = (object) => {
  * }
  * ```
  */
-function responseFormatter(result, msg, status)
+function responseFormatter(match, result, msg, status)
 {
 	let	log;
-	let	p1 = match.white ? match.white : match.green;
-	let	p2 = match.black ? match.black : match.blue;
-	let	p3 = match.red;
-	let	p4 = match.yellow;
 
+	if (match)
+	{
+		formatPlayer(match, result);
+	}
 	if (result && result.msg && result.status)
 		log = {msg: result.msg, status: result.status};
 	else
@@ -60,86 +61,50 @@ function responseFormatter(result, msg, status)
 		log.msg = "backend function failed for unknown reasons";
 		log.status = 500;
 	}
-	if (!p1 || !p2)
-	{
-		log.msg = `cannot find p1 or p2`;
-		log.status = 500;
-		// @ts-ignore
-		p1 = {};
-		// @ts-ignore
-		p2 = {};
-	}
 	if (!result)
 		result = {};
 	delete result.msg;
 	delete result.status;
 	if (!result.board)
 		delete result.board;
-	else
-		modifyBoard(result.board);
-	if (!p3)// @ts-ignore
-		delete p3;
-	if (!p4)// @ts-ignore
-		delete p4;
 	result.log = log;
 	if (!result.youWin)
 		result.youWin = false;
 	if (log.status != 200)
 		result.log.msg = "Game Error: " + result.log.msg;
-	result.p1 = p1;
-	result.p2 = p2;
-	result.p3 = p3;
-	result.p4 = p4;
-	result.p1.name = "p1";
-	result.p2.name = "p2";
-	result.p3.name = "p3";
-	result.p4.name = "p4";
-	if (match.currentPlayer === result.p1) {
-		result.p1.isPlaying = true;
-	}
-	else
-		result.p1.isPlaying = false;
-	if (match.currentPlayer === result.p2) {
-		result.p2.isPlaying = true;
-	}
-	else
-		result.p2.isPlaying = false;
-	if (match.currentPlayer === result.p3) {
-		result.p3.isPlaying = true;
-	}
-	else
-		result.p3.isPlaying = false;
-	if (match.currentPlayer === result.p4) {
-		result.p4.isPlaying = true;
-	}
-	else
-		result.p4.isPlaying = false;
+	result.match = null;
+	delete result.match;
+	result.mask = result.specialMoves._mask;
 	return (result);
 }
 
 /**
  * 
- * @param {*} board 
+ * @param {Match} match 
+ * @param {*} result 
  */
-function modifyBoard(board)
+function formatPlayer(match, result)
 {
-	for (const [pos, square] of Object.entries(board))
-	{
-		// @ts-ignore
-		delete (square).dangerZones;
-		// @ts-ignore
-		if (!square.piece)
-			continue ;
-		square.piece.moveArray = [];
-		// @ts-ignore
-		delete (square).piece?.isMovedBool;
-		// @ts-ignore
-		delete (square).piece?.multipleMovesBool;
-		// @ts-ignore
-		delete (square).piece?.moveLongRangeDEBUG;
-		// @ts-ignore
-		delete (square).piece?.pos;
-	}
+	result.p1 = match.white ? match.white : match.green;
+	result.p2 = match.black ? match.black : match.blue;
+	result.p3 = match.red;
+	result.p4 = match.yellow;
+	result.p1.name = "p1";
+	result.p2.name = "p2";
+	result.p3.name = "p3";
+	result.p4.name = "p4";
+	result.p1.isPlaying = false;
+	result.p2.isPlaying = false;
+	result.p3.isPlaying = false;
+	result.p4.isPlaying = false;
+	if (match.currentPlayer === result.p1)
+		result.p1.isPlaying = true;
+	if (match.currentPlayer === result.p2)
+		result.p2.isPlaying = true;
+	if (match.currentPlayer === result.p3)
+		result.p3.isPlaying = true;
+	if (match.currentPlayer === result.p4)
+		result.p4.isPlaying = true;
 }
 
 /**
@@ -160,6 +125,39 @@ function jsonParser(key, val)
 	}
 	else
 		return (val);
+}
+
+/**
+ * this function is used by JSON to recursively parse Objects
+ * this should not be called
+ * @param {*} key 
+ * @param {*} val 
+ */
+function _jsonParser(key, val)
+{
+	if (val instanceof Set)
+	{
+		return [...val];
+	}
+	else if (val instanceof Map) 
+	{
+		return Object.fromEntries(val);
+	}
+	else
+		return (val);
+}
+
+/**
+ * JSON does not support Maps, Sets. This function manages this
+ * it stringify and then parse because Express calls stringify natively
+ * so we need to parse it again (the RAM is happy)
+ * @param {object} data a javascript object
+ * @returns {object}
+ * @example let dataForClient = jsonParser(data)
+ */
+function jsonParser(data)
+{
+	return (JSON.parse(JSON.stringify(data, _jsonParser, 2)));
 }
 
 const jsonResponse = { ResponseError, ResponseSuccess };
