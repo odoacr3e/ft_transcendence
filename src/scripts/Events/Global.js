@@ -1,5 +1,7 @@
 import { usingAbility, checkPermision, 
-		checkForHighlightMove, moveDragClone }	from "./utils/GlobalUtils.js";
+		checkForHighlightMove, moveDragClone, 
+		sendEndTurn,
+		shopAbility}	from "./utils/GlobalUtils.js";
 import { rightClickSelect, highlightOnClick,
 		highlightOnDrag, clearHighlight }		from "./utils/HighlightUtils.js";
 import { localInfo, getRootDiv }				from "@/scripts/Data/Variables";
@@ -11,8 +13,11 @@ import { sendToBackend }						from "./BackLink.js";
 export async function globalEvents()
 {
 	const ROOT_DIV = getRootDiv();
+	// ROOT_DIV.setAttribute('tabindex', '0'); --> concetti molto interessanti che non vanno ignorati
+	// ROOT_DIV.focus();
 
-	ROOT_DIV.addEventListener("click", async function (event) {
+	ROOT_DIV.addEventListener("click", async function (event) 
+	{
 		if (!checkPermision(event))	{ clearHighlight(); return; }
 		console.log(`CID: ${localInfo.clickedId}, LCID: ${localInfo.lastClickedId}`);
 		if (checkForHighlightMove()) 
@@ -33,7 +38,8 @@ export async function globalEvents()
 		rightClickSelect(event);
 	});
 
-	ROOT_DIV.addEventListener("dragstart", function (event) {
+	ROOT_DIV.addEventListener("dragstart", function (event)
+	{
 		if ((localInfo.secondMove && localInfo.savedBoostedMap && 
 			localInfo.savedBoostedMap.has(event.target.parentNode.id)) || !localInfo.secondMove)
 			{
@@ -50,7 +56,8 @@ export async function globalEvents()
 		moveDragClone(event);
 	});
 
-	ROOT_DIV.addEventListener('dragend', function(event) {
+	ROOT_DIV.addEventListener('dragend', function(event) 
+	{
 		if (event.target.className === 'piece' && !localInfo.dropDone)
 			event.target.style.visibility = 'visible';
 		if (localInfo.dropDone) { localInfo.dropDone = false; }
@@ -59,5 +66,13 @@ export async function globalEvents()
 			localInfo.dragClone.remove();
 			localInfo.dragClone = null;
 		}
+	});
+
+	document.addEventListener('keydown', function(event)
+	{
+		if (event.code === 'Space')
+			sendEndTurn();
+		if (event.code === 'Enter')
+			shopAbility();
 	});
 }

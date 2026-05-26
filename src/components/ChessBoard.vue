@@ -9,8 +9,8 @@
 	const domBoardComputed = computed(() => DOMBoard());
 
     onMounted(() => {
-        globalEvents()
-    })
+        globalEvents();
+    });
 
 	const currP = ref(localPlayers.values().find(p => p.isPlaying === true));
 </script>
