@@ -5,7 +5,7 @@
 
 	const prop = defineProps({
   		p: Number
-	})
+	});
 	const	player = computed(() => DOMPlayer(prop.p)),
 			playing = computed(() => player.value.isPlaying),
 			up = prop.p === 2 ? true : false,

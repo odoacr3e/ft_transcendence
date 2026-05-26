@@ -1,10 +1,11 @@
 import { usingAbility, checkPermision, 
 		checkForHighlightMove, moveDragClone, 
 		sendEndTurn,
-		shopAbility}	from "./utils/GlobalUtils.js";
+		shopAbility,
+		useAbility}	from "./utils/GlobalUtils.js";
 import { rightClickSelect, highlightOnClick,
 		highlightOnDrag, clearHighlight }		from "./utils/HighlightUtils.js";
-import { localInfo, getRootDiv }				from "@/scripts/Data/Variables";
+import { localInfo, getRootDiv, localBoard }				from "@/scripts/Data/Variables";
 import { PIECES_ABILITY } 						from "@/scripts/Helper/abilityMovement";
 import { sendToBackend }						from "./BackLink.js";
 
@@ -56,10 +57,10 @@ export async function globalEvents()
 		moveDragClone(event);
 	});
 
-	ROOT_DIV.addEventListener('dragend', function(event) 
+	ROOT_DIV.addEventListener("dragend", function(event) 
 	{
-		if (event.target.className === 'piece' && !localInfo.dropDone)
-			event.target.style.visibility = 'visible';
+		if (event.target.className === "piece" && !localInfo.dropDone)
+			event.target.style.visibility = "visible";
 		if (localInfo.dropDone) { localInfo.dropDone = false; }
 
 		if (localInfo.dragClone) {
@@ -68,11 +69,13 @@ export async function globalEvents()
 		}
 	});
 
-	document.addEventListener('keydown', function(event)
+	document.addEventListener("keydown", function(event)
 	{
-		if (event.code === 'Space')
+		if (event.code === "Space" && localInfo.secondTurn)
 			sendEndTurn();
-		if (event.code === 'Enter')
+		if (event.code === "Enter")
 			shopAbility();
+		if (event.code === "ShiftLeft" && localBoard.get(localInfo.clickedId).piece.isBoostedBool)
+			useAbility();
 	});
 }

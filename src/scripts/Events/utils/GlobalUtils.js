@@ -31,7 +31,7 @@ export function shopAbility()
 	const Piece = localBoard.get(localInfo.clickedId).piece;
 	const Player = localPlayers.values().find(p => p.isPlaying === true);
 
-	if (!Piece.isBoostedBool && Player.nPoints >= Piece.price)
+	if (!Piece.isBoostedBool && Player.nPoints && localInfo.secondTurn >= Piece.price)
 		requestToBack(localInfo.clickedId, null).then(
 			function(value) {if (value) { clearHighlight(); }},
 			function(value) {if (!value) { console.log("Mossa non valida"); }}
