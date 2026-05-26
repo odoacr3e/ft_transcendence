@@ -8,8 +8,8 @@
     "express": "^5.2.1",
     "ioredis": "^5.10.1",
     "jsonwebtoken": "^9.0.3",
-    "node": "^26.1.0",
-    "pg": "^8.20.0",
+    "node": "^26.2.0",
+    "pg": "^8.21.0",
     "redis": "^5.12.1",
     "seedrandom": "^3.0.5"
   },
@@ -21,7 +21,8 @@
     "modules": "npm install node; npm install express; npm install pg; npm install dotenv; npm install jsonwebtoken; npm install bcryptjs; npm install prisma --save-dev; npm install @prisma/client; npm install redis --save; ",
     "confprisma": "npm install prisma --save-dev; npm install @prisma/client; npm install @prisma/adapter-pg --save; npx prisma generate; npm i --save-dev @types/node",
     "server": "node server.js",
-    "pulldb": "npx prisma db pull && npx prisma generate"
+    "pulldb": "npx prisma db pull && npx prisma generate",
+    "make": "r='npm run';R='\\033[31m';G='\\033[32m';Y='\\033[33m';Q='\\033[0m'; echo ♔ $Y waiting... $Q;((echo ♖ $Y updating node modules... $Q >/dev/stderr;$r modules) && (echo ♗ $Y configurating prisma...>/dev/stderr;$r confprisma) && (echo ♘ $Y pulling from db... remember to get the .env from Slack $Q >/dev/stderr;$r pulldb)) >/dev/null && echo ♕ $G OK $Q || echo 𝖈𝖍𝖊𝖈𝖐𝖒𝖆𝖙𝖊! $R ERROR $Q"
   },
   "keywords": [],
   "author": "",
