@@ -1,7 +1,8 @@
 import { updateMatchState }	from "@/scripts/Data/Archi";
 import { clearHighlight }	from "@/scripts/Events/utils/HighlightUtils.js";
 import { localInfo }		from "@/scripts/Data/Variables";
-import { getTarget }		from "./utils/MovementUtils.js"
+import { getTarget }		from "./utils/MovementUtils.js";
+import { MACRO } 			from "@/scripts/Data/Variables";
 
 export async function sendToBackend(flag)
 {
@@ -13,7 +14,8 @@ export async function sendToBackend(flag)
 		if (promise)
 		{
 			clearHighlight();
-			new Audio("/src/assets/audios/moving.mp3").play();
+			if (MACRO.AUDIO)
+				new Audio("/src/assets/audios/moving.mp3").play();
 			if (flag) { return (true); }
 		}
 		else

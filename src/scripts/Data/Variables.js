@@ -88,7 +88,11 @@ export function getRootDiv() {
 	return document.getElementById("board");
 }
 
-export const FILES = ["a", "b", "c", "d", "e", "f", "g", "h"]
+export const FILES = ["a", "b", "c", "d", "e", "f", "g", "h"];
+
+export let MACRO = Object ({
+	"AUDIO" : true,
+});
 
 export const IMG_PATHS = Object.freeze ({
 	"whiteKing" : new URL("../../assets/pieces/white/king.png", import.meta.url).href,

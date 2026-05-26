@@ -1,9 +1,8 @@
-import { localInfo, localBoard, localPlayers }	from "@/scripts/Data/Variables";
-import { PIECES_HIGHLIGHT }						from "@/scripts/Helper/piecesHighlights";
-import { computePosition }						from "@floating-ui/dom";
-import { clearHighlight }						from "@/scripts/Events/utils/HighlightUtils.js";
-import { requestToBack }						from "@/scripts/Events/BackLink.js";
-import { audioWorklet } from "globals";
+import { localInfo, localBoard, localPlayers, MACRO }	from "@/scripts/Data/Variables";
+import { PIECES_HIGHLIGHT }								from "@/scripts/Helper/piecesHighlights";
+import { computePosition }								from "@floating-ui/dom";
+import { clearHighlight }								from "@/scripts/Events/utils/HighlightUtils.js";
+import { requestToBack }								from "@/scripts/Events/BackLink.js";
 
 // ANCHOR USER INTERACTION FUNCTIONS
 export function useAbility()
@@ -22,7 +21,8 @@ export function useAbility()
 	{ 
 		piece.useAbilityBool = true;
 		localInfo.usingAbility = piece.type;
-		new Audio("/src/assets/audios/useAbility.mp3").play();
+		if (MACRO.AUDIO)
+			new Audio("/src/assets/audios/useAbility.mp3").play();
 		console.log(`who the fuck i am: ${localInfo.usingAbility}`);
 	}
 	PIECES_HIGHLIGHT[piece.type](clickedId);
@@ -38,7 +38,8 @@ export function shopAbility()
 			function(value) {if (value) 
 			{ 
 				clearHighlight();
-				new Audio("/src/assets/audios/boost.mp3").play(); 
+				if (MACRO.AUDIO)
+					new Audio("/src/assets/audios/boost.mp3").play(); 
 			}},
 			function(value) {if (!value) { console.log("Mossa non valida"); }}
 		);
@@ -50,7 +51,8 @@ export function sendEndTurn()
 		function(value) {if (value) 
 		{ 
 			clearHighlight();
-			new Audio("/src/assets/audios/endTurn.mp3").play();
+			if (MACRO.AUDIO)
+				new Audio("/src/assets/audios/endTurn.mp3").play();
 		}},
 		function(value) {if (!value) { console.log("Mossa non valida"); }}
 	);
@@ -59,7 +61,13 @@ export function sendEndTurn()
 export function upgradeBastard(newType)
 {
 	requestToBack(null, newType).then(
-		function(value) {if (value) { localInfo.goatId = null; clearHighlight(); }},
+		function(value) {if (value) 
+		{ 
+			localInfo.goatId = null; 
+			clearHighlight(); 
+			if (MACRO.AUDIO)
+				new Audio("/src/assets/audios/transformation.mp3").play();
+		}},
 		function(value) {if (!value) { console.log("Mossa non valida"); }}
 	);
 }
