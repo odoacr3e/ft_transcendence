@@ -42,7 +42,7 @@
                     <img
                         v-if="square.piece"
                         class="piece"
-						v-bind:class="{ '':square.piece.isBoostedBool }"
+						v-bind:class="{ 'boosted-aura':square.piece.isBoostedBool }"
                         :src="IMG_PATHS[square.piece.team + square.piece.type]"
                         :draggable="true"
                         @dragstart="onDragStart($event, square)"/>
@@ -188,5 +188,27 @@
 	.selectedBstW
 	{
 		background-color: rgb(9, 214, 19);
+	}
+
+	.boosted-aura{
+		animation: auraPulse 0.4s ease-in-out infinite;
+	}
+
+	@keyframes auraPulse
+	{
+		0%, 100%
+		{
+			filter:
+				drop-shadow(0 0 2px #FFD700)
+				drop-shadow(0 0 6px #FFA500)
+				drop-shadow(0 0 12px #FF8C00);
+		}
+		50%
+    	{
+    	    filter:
+    	        drop-shadow(0 0 4px #FFD700)
+    	        drop-shadow(0 0 10px #FFA500)
+    	        drop-shadow(0 0 20px #FF4500)
+    	}
 	}
 </style>

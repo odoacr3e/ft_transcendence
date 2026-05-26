@@ -104,8 +104,15 @@ boardConverter()
 		✓ valkiaria
 		✓ campione
 		✓ re
+	✓ aura dei pezzi boostati visibile [LEO] 
+	▫ end turn e boost triggerabili da pulsanti da tastiera [LEO]
 	▫ bottone di potenziamento clickabile solo durante il second turn 
 	▫ refactor di archi nel caso la board non esista
+	▫ non si dovrebbe poter boostare se non hai ancora mosso nessun pezzo
+	▫ feedback quando il re è sotto scacco	
+	▫ quando fai hover sul bottone per boostare il pezzo sarebbe carino poter avere
+	  una preview delle target zones rese visibili sulla scacchiera, si può fare una route apposta per chiedere 
+	  l'update delle target zones di un pezzo specifico
 	? orientamento della scacchiera in base al colore dei pezzi del giocatore
 
 //FIXME - 

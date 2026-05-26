@@ -21,7 +21,12 @@ async function loadReceivedMatch()
 		method: "POST",
 		headers: { "Content-Type": "application/json" },
 		body: JSON.stringify({ type: "init", from: "0", to: "0" }),
-	});	
+	});
+	// const response = await fetch("http://localhost:8080/api/game/reload",
+	// {
+	// 	method: "POST",
+	// 	headers: { "Content-Type": "application/json" },
+	// });
 	if (!response.ok)
 		throw new Error(`Impossibile caricare /match.json: ${response.status}`);
 	const match = await response.json();
