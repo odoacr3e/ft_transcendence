@@ -55,7 +55,7 @@ function tryBoost(match, result, from)
 	let	tmp;
 
 	if (match.boost >= BOOSTED_MAX || match.moves < MOVEMENT_MIN)
-		return (error(result, 403, "Mr. Greedy cheata!!!"));
+		return (error(result, 403, "You can't boost now"));
 	square = match.board.get(from);
 	if (!square?.piece)
 		return (error(result, 403, "Nothing to be boosted in there man"));
