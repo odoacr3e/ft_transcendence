@@ -31,7 +31,7 @@ function clientBoard(src, selected=null)
 		// @ts-ignore
 		square.targetZones = [...square.targetZones];
 		// @ts-ignore
-		square.boostedTargetZones = Object.fromEntries(square.boostedTargetZones);
+		square.boostedTargetZones = Object.fromEntries([...square.boostedTargetZones].map(([k, set]) => [k, [...set]]))
 	}
 	return (Object.fromEntries(dest));
 }

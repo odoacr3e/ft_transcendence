@@ -122,7 +122,7 @@ function updateChessboard(coords=[], result, match, boostBool)
 		match.currentPlayer.nPoints += to.piece.price;
 	}
 	match.history.UpdateMoves(match, from, coords);
-	if (from.piece.type == enumNames.VALKIRYA && result.usedBoost == true)
+	if (from.piece.type == enumNames.VALKIRYA && result.usedBoost == true && from.piece.isBoostedBool == true)
 	{
 		to.piece = null;
 		from.piece.isBoostedBool = false;

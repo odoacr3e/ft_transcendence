@@ -142,6 +142,26 @@ function modifyBoard(board)
 	}
 }
 
+/**
+ * convert a javascript object to a json object
+ * @param {*} key 
+ * @param {*} val 
+ * @example JSON.stringify(data, jsonParser);
+ */
+function jsonParser(key, val)
+{
+	if (val instanceof Set)
+	{
+		return [...val];
+	}
+	else if (val instanceof Map) 
+	{
+		return Object.fromEntries(val);
+	}
+	else
+		return (val);
+}
+
 const jsonResponse = { ResponseError, ResponseSuccess };
 
-module.exports = { jsonResponse, responseFormatter };
+module.exports = { jsonResponse, jsonParser, responseFormatter };
