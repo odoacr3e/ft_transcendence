@@ -8,7 +8,6 @@ const {HISTORY_PATH} = require("../Macro/macro");
 const color = require("../utils/colors").colors;
 const MSG = require("./enumsTest").testerEnum;
 const {boardStringify} = require("./render");
-const { diff } = require("util");
 
 /** @typedef {import ("../../history/HISTORY.json")} historyData */
 
@@ -172,3 +171,5 @@ function putColor(str, i, col)
 {
 	return (str.slice(0, i) + `${col}${str.at(i)}${color.reset}` + str.slice(i + 1, str.length)); 
 }
+
+module.exports = {HISTORY_PATH, MSG, color, currMatch, boardStringify, fail, gameFail, highLightBoardDiff, putColor, testerFail, success};
