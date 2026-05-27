@@ -327,4 +327,4 @@ function updateEndTurn(match)
 	this.moves += 1;
 }
 
-module.exports = {Match, History};
+module.exports = {Match, History, HistoryEvent};

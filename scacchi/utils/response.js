@@ -74,7 +74,8 @@ function responseFormatter(match, result, msg, status)
 		result.log.msg = "Game Error: " + result.log.msg;
 	result.match = null;
 	delete result.match;
-	result.mask = result.specialMoves._mask;
+	if (result.specialMoves)
+		result.mask = result.specialMoves._mask;
 	return (result);
 }
 

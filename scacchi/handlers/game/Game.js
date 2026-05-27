@@ -77,9 +77,22 @@ function gameHandler(req, res)
 	else if (type == "endturn")
 		result = endTurn(match);
 	else if (type == "init")
-		result = init(match, from, from);
+		result = init(match, from, null);
 	else if (type == "trans")
 		result = makeTransfiguration(match, from, to);
+	else if (type == "reload")
+	{
+		result = new Result();
+		result.Success();
+		result.board = clientBoard(match, true, true);
+		result.youWin = match.victory != "";
+	}
+	else if (type == "history")
+	{
+		result = new Result();
+		result.Success();//@ts-ignore
+		result.history = match.history;
+	}
 	else
 		return (error(res, null, 400, `invalid type ${type}`));
 	if (!result || !result.status)
@@ -135,7 +148,10 @@ function gameInfo(req, res)
  */
 function error(res=null, result=null, status=0, msg=null)
 {
-	result = responseFormatter(result.match, result, msg, status);
+	if (!result)
+		result = responseFormatter(null, result, msg, status);
+	else
+		result = responseFormatter(result.match, result, msg, status);
 	console.clear();
 	console.log("\x1b[31mGame error\x1b[0m");
 	console.log(`status: ${result.log.status}\nmsg: ${result.log.msg}`);
