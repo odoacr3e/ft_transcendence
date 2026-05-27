@@ -36,7 +36,8 @@ export function highlightOnClick(event)
 			return;
 		}
 		const piece = localBoard.get(localInfo.clickedId).piece.type;
-		PIECES_HIGHLIGHT[piece](localInfo.clickedId);
+		if (!localInfo.secondTurn || (localInfo.secondTurn && localInfo.secondMove))
+			PIECES_HIGHLIGHT[piece](localInfo.clickedId);
 		localInfo.lastClickedId = localInfo.clickedId;
 	}
 	else

@@ -5,7 +5,7 @@ import { usingAbility, checkPermision,
 		useAbility}	from "./utils/GlobalUtils.js";
 import { rightClickSelect, highlightOnClick,
 		highlightOnDrag, clearHighlight }		from "./utils/HighlightUtils.js";
-import { localInfo, getRootDiv, localBoard }				from "@/scripts/Data/Variables";
+import { localInfo, getRootDiv, localBoard, localPlayers }	from "@/scripts/Data/Variables";
 import { PIECES_ABILITY } 						from "@/scripts/Helper/abilityMovement";
 import { sendToBackend }						from "./BackLink.js";
 
@@ -31,7 +31,7 @@ export async function globalEvents()
 			}
 			sendToBackend(); 
 		}
-		else	
+		else
 			highlightOnClick(event);
 	});
 
@@ -42,15 +42,9 @@ export async function globalEvents()
 	ROOT_DIV.addEventListener("dragstart", function(event)
 	{
 		if ((localInfo.secondMove && localInfo.savedBoostedMap && 
-			localInfo.savedBoostedMap.has(event.target.parentNode.id)) || !localInfo.secondMove)
-			{
+			localInfo.savedBoostedMap.has(event.target.parentNode.id)) || !localInfo.secondTurn ||
+			(localInfo.secondTurn && localInfo.secondMove))
 				highlightOnDrag(event);
-				//TODO - controllare che questa cosa abbia senso 
-				// if (event.target.parentNode.id == localInfo.clickedId)
-				// 	localInfo.lastClickedId = null;
-				// else
-				// 	localInfo.lastClickedId = event.target.parentNode.id;
-			}
 	});
 
 	ROOT_DIV.addEventListener("drag", function(event) {
@@ -59,7 +53,7 @@ export async function globalEvents()
 
 	ROOT_DIV.addEventListener("dragend", function(event) 
 	{
-		if (event.target.className === "piece" && !localInfo.dropDone)
+		if (event.target.classList.contains("piece") && !localInfo.dropDone)
 			event.target.style.visibility = "visible";
 		if (localInfo.dropDone) { localInfo.dropDone = false; }
 
@@ -73,7 +67,7 @@ export async function globalEvents()
 	{
 		if (event.code === "Space" && localInfo.secondTurn)
 			sendEndTurn();
-		if (event.code === "Enter" && localBoard.get(localInfo.clickedId)?.piece.team === )
+		if (event.code === "Enter" && localBoard.get(localInfo.clickedId)?.piece.team === localPlayers.values().find(p => p.isPlaying === true).team)
 			shopAbility();
 		if (event.code === "ShiftLeft" && localBoard.get(localInfo.clickedId)?.piece.isBoostedBool)
 			useAbility();

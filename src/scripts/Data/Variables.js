@@ -91,7 +91,7 @@ export function getRootDiv() {
 export const FILES = ["a", "b", "c", "d", "e", "f", "g", "h"];
 
 export let MACRO = Object ({
-	"AUDIO" : true,
+	"AUDIO" : false,
 });
 
 export const IMG_PATHS = Object.freeze ({

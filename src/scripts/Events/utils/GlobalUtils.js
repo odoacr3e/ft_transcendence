@@ -33,7 +33,7 @@ export function shopAbility()
 	const Piece = localBoard.get(localInfo.clickedId)?.piece;
 	const Player = localPlayers.values().find(p => p.isPlaying === true);
 
-	if (!Piece?.isBoostedBool && Player.nPoints && localInfo.secondTurn >= Piece?.price)
+	if (!Piece?.isBoostedBool && Player.nPoints >= Piece?.price && localInfo.secondTurn)
 		requestToBack(localInfo.clickedId, null).then(
 			function(value) {if (value) 
 			{ 
@@ -76,7 +76,7 @@ export function upgradeBastard(newType)
 
 export function moveDragClone(event)
 {
-	if (event.target.className === "piece")
+	if (event.target.classList.contains("piece"))
 	{
 		if (event.clientX === 0 && event.clientY === 0) 
 			return;
