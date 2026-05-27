@@ -111,7 +111,7 @@ function gameInfo(req, res)
 	if (type == "reload")
 	{
 		result.Success();//@ts-ignore
-		result.board = clientBoard(match.board);
+		result.board = clientBoard(match.board, true, true);
 		result.youWin = match.victory != "";
 	}
 	else if (type == "history")

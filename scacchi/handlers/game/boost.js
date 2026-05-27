@@ -37,7 +37,7 @@ function boost(match, from)
 	if (prevBoost == "")
 		prevBoost = from;
 	// @ts-ignore
-	result.board = clientBoard(match.board, [from, prevBoost]);
+	result.board = clientBoard(match);
 	result.match = match;
 	return (result);
 }

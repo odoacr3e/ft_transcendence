@@ -1,4 +1,5 @@
 // @ts-check
+/** @typedef {import("../../Classes/Match/match.js").Match} Match*/
 
 const { assert } = require("node:console");
 const { Square, copyBoard } = require("../../Classes/ChessBoard/chessBoard");
@@ -12,20 +13,25 @@ const {jsonParser} = require("../../utils/response.js");
 
 /**
  * generate a copy of a board without dangerZones and other useless info
- * @param {Board} src the board to copy
- * @param {Array<string> | null} selected optional: the squares to swap
+ * @param {Match} match
+ * @param {boolean} copyAll if false copies only updates, else copy all
+ * @param {boolean} avoidReset if true, avoid resetting the update array 
  * @returns {Object} a regular Object is returned. JSON does not support Map
  */
-function clientBoard(src, selected=null)
+function clientBoard(match, copyAll=false, avoidReset=false)
 {
+	let	src;
 	let	dest;
 
-	if (!selected || selected.length != 2)
+	src = match.board._data;
+	if (copyAll == true)
 		dest = copyBoard(src);
 	else
 	{
-		dest = copyOnlyBoardUpdates(src, selected);
+		dest = copyOnlyBoardUpdates(match);
 	}
+	if (avoidReset == false)
+		match.board.updates.clear();
 	modifyBoard(dest);
 	return (jsonParser(dest));
 }
@@ -38,22 +44,38 @@ function clientBoard(src, selected=null)
  * @param {Array<string>} selected the squares to swap
  * @returns {Board}
  */
-function copyOnlyBoardUpdates(src, selected)
-{
-	let	newBoard;
-	let	from;
-	let	to;
 
+/**
+ * perform a deep copy only on the squares useful for client:
+ * 1. the from, to square;
+ * 2. the square from the dangerZone of from and to.
+ * @param {Match} match 
+ * @returns 
+ */
+function copyOnlyBoardUpdates(match)
+{
+	let	src;
+	let	newBoard;
+	let	square;
+
+	src = match.board;
 	newBoard = new Map();
-	from = src.get(selected[0]);
-	to = src.get(selected[1]);
-	assert(from && to, `invalid from "${selected[0]}" or to "${selected[1]}"`)
-	if (!from || !to)
-		return (newBoard);
-	newBoard.set(selected[0], new Square(from));
-	newBoard.set(selected[1], new Square(to));
-	addDangerZonesCoords(src, newBoard, from);
-	addDangerZonesCoords(src, newBoard, to);
+	for (const coord of match.board.updates)
+	{
+		square = src.get(coord);
+		newBoard.set(coord, new Square(square));
+		addDangerZonesCoords(src._data, newBoard, square);
+	}
+	// //OLD
+	// from = src.get(selected[0]);
+	// to = src.get(selected[1]);
+	// assert(from && to, `invalid from "${selected[0]}" or to "${selected[1]}"`);
+	// if (!from || !to)
+	// 	return (newBoard);
+	// newBoard.set(selected[0], new Square(from));
+	// newBoard.set(selected[1], new Square(to));
+	// addDangerZonesCoords(src, newBoard, from);
+	// addDangerZonesCoords(src, newBoard, to);
 	return (newBoard);
 }
 

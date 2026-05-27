@@ -78,6 +78,10 @@ let DangerUpdate = (match, pos=null) =>
 	}
 	if (piece.isBoostedBool == true)
 		piece.moveFunction(match);
+	if (pos != null)
+		match.board.updates.add(pos);
+	else
+		match.board.updates.add(match.cursor.square);
 	return (1);
 }
 
@@ -109,9 +113,13 @@ function dangerDelPiece(match, pos=match.cursor.square, result=null)
 	{
 		if (!result || result.specialMoves.CheckSniperMove() == 0)
 			DangerUpdate(match, target);
+		if (pos == null)
+			throw ("DEBUG throw dangerZones");
 		match.board.updates.add(target);
 	}
 	pieceSquare.ClearZones();
+	if (pos == null)
+		throw ("DEBUG throw REMOVE");
 	match.board.updates.add(pos);
 }
 

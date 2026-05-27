@@ -61,6 +61,7 @@ class ChessBoard
 	{
 		this._data = initBoard(w, h);
 		this.updates = new Set();
+		this.updates.clear();
 		this.width = w;
 		this.heigth = h;
 	}

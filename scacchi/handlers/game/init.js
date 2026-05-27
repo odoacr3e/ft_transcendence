@@ -36,7 +36,7 @@ function init(match, seed=null, boardString=null)
 	// @ts-ignore
 	result.status = 200;
 	// @ts-ignore
-	result.board = clientBoard(match.board);
+	result.board = clientBoard(match, true);
 	return (result);
 }
 
