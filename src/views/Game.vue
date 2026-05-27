@@ -3,7 +3,6 @@
   import { onMounted, ref }       from 'vue';
   import ChessBoard               from '../components/ChessBoard.vue';
   import PlayerInfo               from '../components/PlayerInfo.vue';
-  import MainLogo                 from '../components/MainLogo.vue';
 
   const ready = ref(false);
 

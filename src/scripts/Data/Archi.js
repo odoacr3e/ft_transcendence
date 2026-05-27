@@ -5,28 +5,15 @@ import { checkEndTurn, hasBoost, DEBUGSetVisible, checkUpgrade }	from "./utils/A
 
 //SECTION - INIT FUNCTIONS
 
-async function loadReceivedMatch() 
+export async function loadReceivedMatch(seed = 0) 
 {
-	// const response = await fetch("/match.json",
-	// const response = await fetch("/api/game/",
-	// const response = await fetch("/ChampMatch.json",
-	// const response = await fetch("/FILE.json",
-	// const response = await fetch("/FILE-ONE.json",
-	// const response = await fetch("/BastardMatch.json",
-	// const response = await fetch("ValkiryaMatch.json",
-	// const response = await fetch("/MinoMatch.json",
-	// const response = await fetch("/TransformMatch.json",
 	const response = await fetch("http://localhost:8080/api/game",
 	{
 		method: "POST",
 		headers: { "Content-Type": "application/json" },
-		body: JSON.stringify({ type: "init", from: "0", to: "0" }),
+		body: JSON.stringify({ type: "init", from: seed, to: seed }),
 	});
-	// const response = await fetch("http://localhost:8080/api/game/reload",
-	// {
-	// 	method: "POST",
-	// 	headers: { "Content-Type": "application/json" },
-	// });
+
 	if (!response.ok)
 		throw new Error(`Impossibile caricare /match.json: ${response.status}`);
 	const match = await response.json();
@@ -34,7 +21,7 @@ async function loadReceivedMatch()
 	return match;
 }
 
-function validateReceivedMatch(rawJson)
+export function validateReceivedMatch(rawJson)
 {
 	if (!rawJson || typeof rawJson !== "object" || Array.isArray(rawJson))
 		throw new Error("Payload non valido: root deve essere un oggetto.");
@@ -71,9 +58,9 @@ function validateReceivedMatch(rawJson)
 
 // boost di pezzi
 
-async function initLocalMatchState() 
+export async function initLocalMatchState(seed = 0)
 {
-	const raw = await loadReceivedMatch();
+	const raw = await loadReceivedMatch(seed);
 	const validated = validateReceivedMatch(raw);
 	startLocalMatchState(validated);
 
@@ -81,7 +68,7 @@ async function initLocalMatchState()
 	initLocalPlayers();
 }
 
-function initLocalPlayers()
+export function initLocalPlayers()
 {
 	const players_list = ["p1", "p2", "p3", "p4"];
 
@@ -102,7 +89,7 @@ function initLocalPlayers()
 
 //SECTION - UPDATE FUNCTIONS
 
-function updateMatchState(nextRaw)
+export function updateMatchState(nextRaw)
 {
 	const validated = validateReceivedMatch(nextRaw);
 
@@ -124,7 +111,7 @@ function updateMatchState(nextRaw)
   	}
 }
 
-function updateLocalBoard(changes)
+export function updateLocalBoard(changes)
 {
 	const board = changes.board;
 
@@ -151,7 +138,7 @@ function updateLocalBoard(changes)
 	});
 }
 
-function updateLocalPlayers(changes) 
+export function updateLocalPlayers(changes) 
 {
 	const players_list = ["p1", "p2", "p3", "p4"];
 
@@ -170,5 +157,3 @@ function updateLocalPlayers(changes)
 	hasBoost(localPlayers.values().find(p => p.isPlaying === true));
 }
 //!SECTION
-
-export { initLocalMatchState, updateMatchState };

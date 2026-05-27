@@ -1,8 +1,8 @@
 // SECTION - LE VARIABILI GLOBALI
-import { boardConverter, getLocalPlayers }	from "@/scripts/Helper/RenderUtils";
+// import { boardConverter, getLocalPlayers }	from "src/scripts/Helper/RenderUtils";
 import { reactive }							from "vue";
 
-class Square {
+export class Square {
 	constructor(id, piece, targetZones = [], boostedTargetZones = {}) {
 		this.id = id;
 		this.piece = piece;
@@ -53,7 +53,7 @@ export function startLocalMatchState(newMatchState) {
 	localMatchState = newMatchState;
 }
 
-//inizializzazione della variabile localBoard utilizzando la variabile localMatchState
+//inizializzazione della variabile localBoard utilizzando la variabile board presente in LocalMatchState
 export function initLocalBoard(boardData)
 {
 	if (!localMatchState)
