@@ -1,4 +1,5 @@
 // @ts-check
+/** @typedef {import("../Classes/Match/match").Match} Match */
 
 const { enumNames } = require("../Macro/enums");
 
@@ -43,15 +44,15 @@ let bastardMove = // aggiornato movimenti
 
 /**
  * 
- * @param {*} match
+ * @param {Match} match
  * @param {Number} dy
  * @param {Number} dx
  * @param {*} piece
  */
 function bastardChecks(match, dy, dx, piece)
 {
-	let tmp;
 	let	target;
+	let	startPos;
 
 	if (piece.type != enumNames.BASTARDS)
 		return true;
@@ -61,27 +62,32 @@ function bastardChecks(match, dy, dx, piece)
 	// @ts-ignore
 	if (!bastardMove[piece.team].has(`${dy}|${dx}`))
 		return false;
-	tmp = match.cursor.square;
-	match.cursor.moveRow(dy);
-	match.cursor.moveCol(dx);
+	match.cursor.Save();
+	startPos = match.cursor.square;
+	if (match.cursor.moveRow(dy) == false)
+		return (false);
+	if (match.cursor.moveCol(dx) == false)
+		return (match.cursor.Restore(), false);
 	target = match.board.get(match.cursor.square)?.piece;
-	match.cursor.set(tmp);
 	if (dx != 0 && dy != 0)//NOTE - bastards moves diagonally
 	{
+		match.board.get(match.cursor.square).dangerZones.add(startPos);
+		match.cursor.Restore();
 		if (!target || target.team == piece.team)
 			return (false);
 		return (true);
 	}
 	else if (target)//NOTE - bastards moves front
-		return (false);
+		return (match.cursor.Restore(), false);
+	match.cursor.Restore();
 	match.cursor.moveRow(dy + dy);
 	match.cursor.moveCol(dx + dx);
 	if (!piece.isMovedBool && !match.board.get(match.cursor.square).piece)
 	{
-		match.board.get(tmp).targetZones.add(match.cursor.square);
-		match.board.get(match.cursor.square).dangerZones.add(tmp);
+		match.board.get(startPos).targetZones.add(match.cursor.square);
+		match.board.get(match.cursor.square).dangerZones.add(startPos);
 	}
-	match.cursor.set(tmp);
+	match.cursor.Restore();
 	return (true);
 }
 

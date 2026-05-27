@@ -136,7 +136,9 @@ class Cursor
 		this.getCol = getRow.bind(this);
 		this.setRow = setCol.bind(this);
 		this.setCol = setRow.bind(this);
+		//moves cursor to n row. Returns false if failed, true if succeed
 		this.moveRow = moveCol.bind(this);
+		//moves cursor to n col. Returns false if failed, true if succeed
 		this.moveCol = moveRow.bind(this);
 		this.set = set.bind(this);
 		this.setCursor = setCursor.bind(this);

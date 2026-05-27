@@ -128,7 +128,6 @@ function dangerUpdateMoved(match, selected=[], result=null)
 	dangerDelPiece(match, selected[0]);
 	dangerDelPiece(match, selected[1]);
 	DangerUpdate(match, selected[1]);
-	console.log(match.board._data);
 }
 
 /**

@@ -64,17 +64,19 @@ class ChessBoard
 		this.width = w;
 		this.heigth = h;
 	}
+	//SECTION - custom function
+	//clear the map
 	clear(){this._data.clear();}
-	/** @param {string} key*/
+	/** delete a key @param {string} key */
 	delete(key){return (this._data.delete(key));}
 	entries(){return (this._data.entries());}
 	/**
-	 * 
+	 * iterate a function in all the ChessBoard
 	 * @param {(value: Square, key: string, map: Map<string, Square>) => void} f
 	 * @param {*} args 
 	 */
 	forEach(f, args=null){this._data.forEach(f, args);}
-	/** @param {string} key*/
+	/** return the value. Throw if failed @param {string} key*/
 	get(key)
 	{
 		let	val;
@@ -85,7 +87,7 @@ class ChessBoard
 		return (val);
 	}
 	/**
-	 * 
+	 * Add a value to the ChessBoard. Update it if it don't exist
 	 * @param {string} key 
 	 * @param {Square} val 
 	 */
@@ -95,7 +97,7 @@ class ChessBoard
 	keys(){return (this._data.keys());}
 	values(){return (this._data.values());}
 	[Symbol.iterator](){return (this._data[Symbol.iterator]());}
-	/** @param {string} pos */
+	//SECTION - custom function
 };
 
 //ANCHOR - utils
