@@ -7,7 +7,7 @@ const {isDangerous} = require("../../utils/gameUtils.js");
  * @param {*} match 
  * @returns 
  */
-let movementChampion = function (match /* res */)
+let movementChampion = function (match)
 {
 	let	startPos;
 	let	piece;
@@ -31,9 +31,6 @@ let movementChampion = function (match /* res */)
 		}
 		match.cursor.square = startPos;
 	}
-	/* 
-		da aggiungere la parte in cui mettiamo SecondMove nell'header
-	*/
 	return (1);
 }
 

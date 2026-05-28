@@ -65,6 +65,34 @@
       "useBoostBool": false
     },
     {
+      "from": "",
+      "to": "",
+      "team": "white",
+      "type": "endTurn",
+      "useBoostBool": false
+    },
+    {
+      "from": "d7",
+      "to": "d6",
+      "team": "black",
+      "type": "move",
+      "useBoostBool": false
+    },
+    {
+      "from": "",
+      "to": "",
+      "team": "black",
+      "type": "endTurn",
+      "useBoostBool": false
+    },
+    {
+      "from": "f6",
+      "to": "e7",
+      "team": "white",
+      "type": "move",
+      "useBoostBool": false
+    },
+    {
       "from": "h1",
       "to": "",
       "team": "white",
@@ -79,8 +107,8 @@
       "useBoostBool": false
     },
     {
-      "from": "e7",
-      "to": "e6",
+      "from": "f7",
+      "to": "f5",
       "team": "black",
       "type": "move",
       "useBoostBool": false
@@ -93,7 +121,7 @@
       "useBoostBool": false
     }
   ],
-  "moves": 14,
+  "moves": 18,
   "victory": "",
-  "finalBoard": "|M|J|V|C|K|V| |M|\n|B|B|B|B| |B| |+M|\n| | | | |B|B| | |\n| | | | | | | | |\n| | | | | | | | |\n| | | | | | | | |\n|B|B|B|B|B|B|B| |\n|M|J|V|C|K|V|J| |\n"
+  "finalBoard": "|M|J|V|C|K|V| |M|\n|B|B|B| |B| | |B|\n| | | |B| | | | |\n| | | | | |B| | |\n| | | | | | | | |\n| | | | | | | |J|\n|B|B|B|B|B|B|B| |\n|M|J|V|C|K|V| |+M|\n"
 }

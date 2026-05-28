@@ -6,7 +6,7 @@ const {movePiece} = require("../../utils/moveUtils.js");
  * @param {*} match 
  * @returns 
  */
-let movementMinotaurus = function (match /* res */)
+let movementMinotaurus = function (match)
 {
 	let	startPos;
 	let	piece;
@@ -25,16 +25,14 @@ let movementMinotaurus = function (match /* res */)
 			match.board.get(startPos)?.targetZones.add(match.cursor.square);
 			if (otherPiece != null)
 			{
-				// if (otherPiece.team != piece.team)
-					berserkMode(startPos, match);
+				if (otherPiece.team != piece.team) //FIXME - da capire perche' era commentato
+				{berserkMode(startPos, match);
+				match.board.get(startPos).boostedTargetZones.get(match.cursor.square).delete(startPos);}
 				break ;
 			}
 		}
 		match.cursor.square = startPos;
 	}
-	/* 
-		da aggiungere la parte in cui mettiamo SecondMove nell'header
-	*/
 	return (1);
 }
 
