@@ -2,8 +2,8 @@
   "seed": 0,
   "events": [
     {
-      "from": "a2",
-      "to": "a4",
+      "from": "h2",
+      "to": "h4",
       "team": "white",
       "type": "move",
       "useBoostBool": false
@@ -16,8 +16,8 @@
       "useBoostBool": false
     },
     {
-      "from": "b8",
-      "to": "c6",
+      "from": "g7",
+      "to": "g5",
       "team": "black",
       "type": "move",
       "useBoostBool": false
@@ -30,8 +30,8 @@
       "useBoostBool": false
     },
     {
-      "from": "b2",
-      "to": "b3",
+      "from": "h4",
+      "to": "g5",
       "team": "white",
       "type": "move",
       "useBoostBool": false
@@ -44,8 +44,8 @@
       "useBoostBool": false
     },
     {
-      "from": "b7",
-      "to": "b5",
+      "from": "g8",
+      "to": "f6",
       "team": "black",
       "type": "move",
       "useBoostBool": false
@@ -58,42 +58,14 @@
       "useBoostBool": false
     },
     {
-      "from": "a4",
-      "to": "b5",
+      "from": "g5",
+      "to": "f6",
       "team": "white",
       "type": "move",
       "useBoostBool": false
     },
     {
-      "from": "",
-      "to": "",
-      "team": "white",
-      "type": "endTurn",
-      "useBoostBool": false
-    },
-    {
-      "from": "d7",
-      "to": "d6",
-      "team": "black",
-      "type": "move",
-      "useBoostBool": false
-    },
-    {
-      "from": "",
-      "to": "",
-      "team": "black",
-      "type": "endTurn",
-      "useBoostBool": false
-    },
-    {
-      "from": "b5",
-      "to": "c6",
-      "team": "white",
-      "type": "move",
-      "useBoostBool": false
-    },
-    {
-      "from": "a1",
+      "from": "h1",
       "to": "",
       "team": "white",
       "type": "boost",
@@ -121,7 +93,7 @@
       "useBoostBool": false
     }
   ],
-  "moves": 17,
+  "moves": 14,
   "victory": "",
-  "finalBoard": "|M| |V|C|K|V|J|M|\n|B| |B| | |B|B|B|\n| | |B|B|B| | | |\n| | | | | | | | |\n| | | | | | | | |\n| |B| | | | | | |\n| | |B|B|B|B|B|B|\n|+M|J|V|C|K|V|J|M|\n"
+  "finalBoard": "|M|J|V|C|K|V| |M|\n|B|B|B|B| |B| |+M|\n| | | | |B|B| | |\n| | | | | | | | |\n| | | | | | | | |\n| | | | | | | | |\n|B|B|B|B|B|B|B| |\n|M|J|V|C|K|V|J| |\n"
 }

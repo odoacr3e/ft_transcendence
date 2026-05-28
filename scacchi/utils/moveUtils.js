@@ -103,7 +103,7 @@ function dangerDelPiece(match, pos=match.cursor.square, result=null)
 	}
 	for (const [key, set] of pieceSquare.boostedTargetZones)
 	{
-		for (const [key, target] of set)
+		for (const target of set)
 		{
 			match.board.get(target).dangerZones.delete(pos);
 			// DangerUpdate(match, target);
