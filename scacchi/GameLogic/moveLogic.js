@@ -351,10 +351,12 @@ function simulation(coords, match)
 	{
 		copyBoard(tmp, match.board._data);
 		dangerUpdateMoved(match, coords);
+		DangerUpdate(match, coords[0]);
 		return (false);
 	}
 	copyBoard(tmp, match.board._data);
 	dangerUpdateMoved(match, coords);
+	DangerUpdate(match, coords[0]);
 	return (true);
 }
 
