@@ -123,8 +123,12 @@ function updateChessboard(coords=[], result, match, boostBool)
 	{
 		console.log(`player ${match.currentPlayer.team} + ${to.piece.price}💲`);
 		match.currentPlayer.nPoints += to.piece.price;
+		if (to.piece.isBoostedBool == true)//@ts-ignore
+			match[to.piece.team].boostedPiece = "";
 	}
 	match.history.UpdateMoves(match, from, coords);
+	if (coords.at(0) == match.currentPlayer.boostedPiece)
+		match.currentPlayer.boostedPiece = coords[1];
 	if (from.piece.type == enumNames.VALKIRYA && result.usedBoost == true && from.piece.isBoostedBool == true)
 	{
 		to.piece = null;

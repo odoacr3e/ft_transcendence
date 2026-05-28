@@ -66,7 +66,7 @@ function tryBoost(match, result, from)
 	else if (square.piece.price > match.currentPlayer.nPoints)
 		return (error(result, 403, `You need ${square.piece.price} to boost this`));
 	match.currentPlayer.nPoints -= square.piece.price;
-	square.piece.isBoostedBool = !square.piece.isBoostedBool;
+	square.piece.isBoostedBool = true;
 	if (match.currentPlayer.boostedPiece)
 	{
 		tmp = match.board.get(match.currentPlayer.boostedPiece);

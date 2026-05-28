@@ -4,107 +4,20 @@ const fs = require("fs");
 const {Cursor} = require("./cursor.js");
 const {eTeam, eEvents} = require("../../Macro/enums.js");
 const {Square, initBoard, copyBoard, copyBoostedTargetZones, ChessBoard} = require("../ChessBoard/chessBoard.js");
-const {HISTORY_PATH, MATCHTIMER, CHESSBOARD_W, CHESSBOARD_H} = require("../../Macro/macro.js");
+const {HISTORY_PATH, CHESSBOARD_W, CHESSBOARD_H} = require("../../Macro/macro.js");
 const {Result} = require("../endPoint/result.js");
-
-/**
- * timeout = puntatore alla funzione setTimeout
- * start = tempo in cui inizia il countdown
- * time = tempo limite del coutdown
- * @typedef {{timeout: object, start: number, time: number}} Timer
- */
-
-const preset = {
-	white: 
-	{
-		name: "",
-		nPoints: 0,
-		bonusPointCounter: 0,
-		useBoostBool: false,
-		nPieces: 0,
-		team: eTeam.White,
-		next: eTeam.Black,
-		King: "",
-		boostedPiece: "",
-		time: MATCHTIMER
-	},
-	black: 
-	{
-		name: "",
-		nPoints: 0,
-		bonusPointCounter: 0,
-		useBoostBool: false,
-		nPieces: 0,
-		team: eTeam.Black,
-		next: eTeam.White,
-		King: "",
-		boostedPiece: "",
-		time: MATCHTIMER
-	},
-	red: 
-	{
-		name: "",
-		nPoints: 0,
-		bonusPointCounter: 0,
-		useBoostBool: false,
-		nPieces: 0,
-		team: eTeam.Red,
-		next: eTeam.Blue,
-		King: "",
-		boostedPiece: "",
-		time: MATCHTIMER
-	},
-	blue: 
-	{
-		name: "",
-		nPoints: 0,
-		bonusPointCounter: 0,
-		useBoostBool: false,
-		nPieces: 0,
-		team: eTeam.Blue,
-		next: eTeam.Yellow,
-		King: "",
-		boostedPiece: "",
-		time: MATCHTIMER
-	},
-	green: 
-	{
-		name: "",
-		nPoints: 0,
-		bonusPointCounter: 0,
-		useBoostBool: false,
-		nPieces: 0,
-		team: eTeam.Green,
-		next: eTeam.Red,
-		King: "",
-		boostedPiece: "",
-		time: MATCHTIMER
-	},
-	yellow: 
-	{
-		name: "",
-		nPoints: 0,
-		bonusPointCounter: 0,
-		useBoostBool: false,
-		nPieces: 0,
-		team: eTeam.Yellow,
-		next: eTeam.Green,
-		King: "",
-		boostedPiece: "",
-		time: MATCHTIMER
-	},
-}
+const {Player, Timer} = require("./player.js");
 
 class Match
 {
 	constructor()
 	{
-		this.white = preset.white;
-		this.black = preset.black;
-		this.red = preset.red;
-		this.blue = preset.blue;
-		this.green = preset.green;
-		this.yellow = preset.yellow;
+		this.white = new Player(eTeam.White);
+		this.black = new Player(eTeam.Black);
+		this.red = new Player(eTeam.Red);
+		this.blue = new Player(eTeam.Blue);
+		this.green = new Player(eTeam.Green);
+		this.yellow = new Player(eTeam.Yellow);
 		this.board = new ChessBoard(CHESSBOARD_W, CHESSBOARD_H);//FIXME - conf json?
 		this.cursor = new Cursor();
 		this.moves = 0;
@@ -152,12 +65,12 @@ class Match
 	}
 	Reset()
 	{
-		this.white = preset.white;
-		this.black = preset.black;
-		this.red = preset.red;
-		this.blue = preset.blue;
-		this.green = preset.green;
-		this.yellow = preset.yellow;
+		this.white = new Player(eTeam.White);
+		this.black = new Player(eTeam.Black);
+		this.red = new Player(eTeam.Red);
+		this.blue = new Player(eTeam.Blue);
+		this.green = new Player(eTeam.Green);
+		this.yellow = new Player(eTeam.Yellow);
 		this.board = new ChessBoard(CHESSBOARD_W, CHESSBOARD_H);//FIXME
 		this.cursor = new Cursor();
 		this.moves = 0;

@@ -12,13 +12,14 @@ const {boardStringify} = require("./render");
 /** @typedef {import ("../../history/HISTORY.json")} historyData */
 
 let	currMatch = "";
+let	errorFlag = 0;
 
 function testerMain()
 {
 	let	matchName;
 	let	matchPath;
 
-	console.log = () => {};
+	//console.log = () => {};
 	matchName = process.argv.at(2);
 	if (!matchName)
 		return (execAllTests());
@@ -33,7 +34,7 @@ function testerMain()
 	if (fs.existsSync(matchPath) == false)
 		return (testerFail(MSG.INVALID_PATH, matchPath));
 	execTest(matchPath);
-	process.exit();
+	process.exit(errorFlag);
 }
 
 testerMain();
@@ -46,7 +47,7 @@ function execAllTests()
 		currMatch = file;
 		execTest(`${HISTORY_PATH}${file}`);
 	}
-	process.exit();
+	process.exit(errorFlag);
 }
 
 /**
@@ -120,6 +121,7 @@ function testerFail(msg, p1="", p2="")
  */
 function gameFail(msg, p1="", p2="")
 {
+	errorFlag = 1;
 	console.debug(`${currMatch}: ${MSG.RESULT_FAIL}`);
 	fail(msg, p1, p2);
 }

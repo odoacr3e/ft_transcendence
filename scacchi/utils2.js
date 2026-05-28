@@ -4,6 +4,7 @@ const {eEvents} = require("./Macro/enums.js");
 const {Match} = require("./Classes/Match/match.js");
 const { Piece } = require("./Classes/Pieces/pieces.js");
 const {move, boost, endTurn, init} = require("./handlers/game/Game.js");
+const { render } = require("./test/render.js");
 
 
 /** @typedef {import ("./Classes/Match/match.js").History} History */
@@ -32,7 +33,7 @@ function historyRestore(match, path)
 	for (const event of history.events)
 	{
 		if (event.type == eEvents.Move)
-			result = move(match, event.from, event.to, true);
+			result = move(match, event.from, event.to, event.useBoostBool);
 		else if (event.type == eEvents.Boost)
 			result = boost(match, event.from);
 		else if (event.type == eEvents.EndTurn)
