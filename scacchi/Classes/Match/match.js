@@ -191,7 +191,7 @@ class History
 	{
 		if (this.events.length != 0)
 			return (this.events[this.events.length - 1]);
-		return (new HistoryEvent("Empty", "Empty"));
+		return (new HistoryEvent(0, "Empty", "Empty"));
 	}
 	/** 
 	 * 
@@ -231,6 +231,7 @@ class HistoryEvent
 {
 	/**
 	 * 
+	 * @param {number} counter
 	 * @param {string} eventType
 	 * @param {string} team
 	 * @param {string} pieceType
@@ -238,7 +239,7 @@ class HistoryEvent
 	 * @param {string} to
 	 * @param {Map<string, Set<string>> | null} pieceBoosterZones
 	 */
-	constructor(eventType="", team="", pieceType="", from="", to="", pieceBoosterZones=null, isBoosted=false)
+	constructor(counter, eventType="", team="", pieceType="", from="", to="", pieceBoosterZones=null, isBoosted=false)
 	{
 		if (!eventType)
 			throw ("History Event: invalid event type");
@@ -252,6 +253,7 @@ class HistoryEvent
 		this.pieceBoosterTargetZones = null;
 		this.isBoostedBool = isBoosted;
 		this.useBoostBool = false;
+		this.counter = counter;
 		if (pieceBoosterZones)
 			this.pieceBoosterTargetZones = copyBoostedTargetZones(pieceBoosterZones);
 	}
@@ -276,7 +278,7 @@ function updateMoves(match, square, coords)
 		throw (`History: invalid square`);
 	if (!square.piece)
 		throw (`History: missing piece in square: ${square}`);
-	record = new HistoryEvent(eEvents.Move, square.piece.team, square.piece.type, coords[0], coords[1], square.boostedTargetZones, square.piece.isBoostedBool);
+	record = new HistoryEvent(this.moves, eEvents.Move, square.piece.team, square.piece.type, coords[0], coords[1], square.boostedTargetZones, square.piece.isBoostedBool);
 	record.useBoostBool = match.currentPlayer.useBoostBool;
 	this.events.push(record);
 	this.moves += 1;
@@ -300,7 +302,7 @@ function updateBoost(square, from)
 		throw (`History: invalid square`);
 	if (!square.piece)
 		throw (`History: missing piece in square: ${square}`);
-	record = new HistoryEvent(eEvents.Boost, square.piece.team, square.piece.type, from);
+	record = new HistoryEvent(this.moves, eEvents.Boost, square.piece.team, square.piece.type, from);
 	this.events.push(record);
 	this.moves += 1;
 }
@@ -322,7 +324,7 @@ function updateEndTurn(match)
 		throw (`History: invalid currentPlayer`);
 	if (!match.currentPlayer.team)
 		throw (`History: invalid currentPlayer team`);
-	record = new HistoryEvent(eEvents.EndTurn, match.currentPlayer.team);
+	record = new HistoryEvent(this.moves, eEvents.EndTurn, match.currentPlayer.team);
 	this.events.push(record);
 	this.moves += 1;
 }

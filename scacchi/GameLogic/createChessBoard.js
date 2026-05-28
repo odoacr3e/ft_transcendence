@@ -16,6 +16,7 @@ function initSavedBoard(match, boardStr)
 	let	indexSep;//|C|B... |= sep >> indexSep = 2
 	let	curr;
 
+	match.Reset();
 	match.cursor.Save();
 	rows = boardStr.split("\n");
 	rows.pop();
@@ -56,6 +57,7 @@ function initClassicBoard(match)
 	let	col;
 	let	color;
 
+	match.Reset();
 	color = true;
 	for (let [key, data] of match.board)
 	{
@@ -119,6 +121,7 @@ function initRandomBoard(match, rng)
 	let	rand;
 	let	blackPos;
 
+	match.Reset();
 	for (let [key, data] of match.board)
 	{
 		rand = rng(16);
