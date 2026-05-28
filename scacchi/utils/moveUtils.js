@@ -117,7 +117,54 @@ function dangerDelPiece(match, pos=match.cursor.square, result=null)
 			throw ("DEBUG throw dangerZones");
 		match.board.updates.add(target);
 	}
-	pieceSquare.ClearZones();
+	pieceSquare.targetZones.clear();
+	pieceSquare.boostedTargetZones.clear();
+	// pieceSquare.ClearZones();
+	if (pos == null)
+		throw ("DEBUG throw REMOVE");
+	match.board.updates.add(pos);
+}
+
+/**
+ * 
+ * @param {Match} match
+ * @param {string} pos
+ * @param {Result | null} result
+ */
+function dangerUpPiece(match, pos=match.cursor.square, result=null)
+{
+	let	pieceSquare;
+	let tmpSet;
+
+	pieceSquare = match.board.get(pos);
+	tmpSet = new Set(pieceSquare.dangerZones);
+	for (const target of pieceSquare.targetZones)
+	{
+		match.board.get(target).dangerZones.delete(pos);
+		// DangerUpdate(match, target);
+	}
+	for (const [key, set] of pieceSquare.boostedTargetZones)
+	{
+		for (const target of set)
+		{
+			match.board.get(target).dangerZones.delete(pos);
+			// DangerUpdate(match, target);
+		}
+	}
+	for (const target of tmpSet)
+	{
+		if (!result || result.specialMoves.CheckSniperMove() == 0)
+		{
+			dangerDelPiece(match, target);
+			DangerUpdate(match, target);
+		}
+		if (pos == null)
+			throw ("DEBUG throw dangerZones");
+		match.board.updates.add(target);
+	}
+	pieceSquare.targetZones.clear();
+	pieceSquare.boostedTargetZones.clear();
+	// pieceSquare.ClearZones();
 	if (pos == null)
 		throw ("DEBUG throw REMOVE");
 	match.board.updates.add(pos);
@@ -134,7 +181,7 @@ function dangerUpdateMoved(match, selected=[], result=null)
 	if (selected.length != 2)
 		throw ("dangerUpdateMoved must be called with two pieces: from, to");
 	dangerDelPiece(match, selected[0]);
-	dangerDelPiece(match, selected[1]);
+	dangerUpPiece(match, selected[1]);
 	DangerUpdate(match, selected[1]);
 }
 
