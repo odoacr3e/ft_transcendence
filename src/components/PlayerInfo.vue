@@ -34,8 +34,8 @@
 		<div class="grow flex items-center justify-start gap-2 pr-2">
 			<button class="bg-amber-300 text-sm
 							transition delay-50 duration-300 ease-in-out hover:-translate-y-0.5 hover:scale-105 hover:bg-orange-400"
-					v-bind:class="{ 'grayscale pointer-events-none':(!playing || !Piece || !Piece.isBoostedBool || Piece.team !== player.team),
-						'cursor-pointer grayscale-0 pointer-events-auto':(playing && Piece && Piece.isBoostedBool && (Piece.team === player.team)) }"
+					v-bind:class="{ 'grayscale pointer-events-none':(!playing || !Piece || !Piece.isBoostedBool || Piece.team !== player.team || localInfo.secondTurn),
+						'cursor-pointer grayscale-0 pointer-events-auto':(playing && Piece && Piece.isBoostedBool && (Piece.team === player.team) && !localInfo.secondTurn) }"
 				@click="useAbility()" v-if="playing && localInfo.hasBoost">
 				<img src="../assets/boost.png" alt="" :draggable="false" class="size-5">
 				<b>Use Ability!</b>

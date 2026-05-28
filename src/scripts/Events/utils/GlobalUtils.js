@@ -8,24 +8,24 @@ import { requestToBack }								from "@/scripts/Events/BackLink.js";
 export function useAbility()
 {
 	const clickedId = localInfo.clickedId;
-	const piece 	= localBoard.get(clickedId).piece;
+	const square 	= localBoard.get(clickedId);
 
-	if (!piece) { return; }
+	if (!square) { return; }
 
-	if (piece.useAbilityBool)
+	if (square.useAbilityBool)
 	{
-		piece.useAbilityBool = false;
+		square.useAbilityBool = false;
 		localInfo.usingAbility = "";
 	}
 	else 
 	{ 
-		piece.useAbilityBool = true;
-		localInfo.usingAbility = piece.type;
+		square.useAbilityBool = true;
+		localInfo.usingAbility = square.piece.type;
 		if (MACRO.AUDIO)
 			new Audio("/src/assets/audios/useAbility.mp3").play();
 		console.log(`who the fuck i am: ${localInfo.usingAbility}`);
 	}
-	PIECES_HIGHLIGHT[piece.type](clickedId);
+	PIECES_HIGHLIGHT[square.piece.type](clickedId);
 }
 
 export function shopAbility()
@@ -137,8 +137,8 @@ export function checkForHighlightMove()
 	
 	if (localInfo.clickedId !== localInfo.lastClickedId)
 	{
-		const piece = localBoard.get(localInfo.lastClickedId)?.piece;
-		if (piece && piece.type !== "Bastard" && piece.type !== "King" && !piece.useAbilityBool)
+		const square = localBoard.get(localInfo.lastClickedId);
+		if (square?.piece && !["Bastards","King"].includes(square.piece.type) && !square.useAbilityBool)
 			clearHighlight();
 	}
 	else { clearHighlight("selected"); }
@@ -148,12 +148,12 @@ export function checkForHighlightMove()
 
 export function usingAbility()
 {
-    const lastPiece  = localBoard.get(localInfo.lastClickedId)?.piece;
-    const piece      = localBoard.get(localInfo.clickedId)?.piece;
+    const lastSquare  = localBoard.get(localInfo.lastClickedId);
+    const square      = localBoard.get(localInfo.clickedId);
 	const secondTurn = localInfo.secondTurn;
 
-	const lastUseAbility = lastPiece?.useAbilityBool && lastPiece?.isBoostedBool;
-	const useAbility	 = piece?.useAbilityBool && piece?.isBoostedBool;
+	const lastUseAbility = lastSquare?.useAbilityBool && lastSquare?.piece.isBoostedBool;
+	const useAbility	 = square.useAbilityBool && square.piece.isBoostedBool;
 
     return ((localInfo.lastClickedId && (useAbility || lastUseAbility)) || secondTurn);
 }

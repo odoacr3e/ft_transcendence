@@ -1,6 +1,6 @@
-import { setHighlightTrue }	from "@/scripts/Events/utils/HighlightUtils.js";
-import { clearHighlight }	from "@/scripts/Events/utils/HighlightUtils.js";
-import { localBoard }		from "@/scripts/Data/Variables.js"
+import { localBoard, localInfo }	from "@/scripts/Data/Variables.js"
+import { setHighlightTrue }			from "@/scripts/Events/utils/HighlightUtils.js";
+import { clearHighlight }			from "@/scripts/Events/utils/HighlightUtils.js";
 
 export const PIECES_HIGHLIGHT = Object.freeze ({
 	"King" : KingAndBastardsHL,
@@ -16,7 +16,7 @@ export function JesterHL(squareId)
 	if (!squareId && localBoard.has(squareId))
 		return;
 	const square = localBoard.get(squareId);
-	const useAbility = square.piece.useAbilityBool && square.piece.isBoostedBool;
+	const useAbility = square.useAbilityBool && square.piece.isBoostedBool;
 	const team = square.piece.team;
 	const regularMoves = square.targetZones;
 	const boostedMoves = square.boostedTargetZones.get(squareId);
@@ -39,7 +39,7 @@ export function ValkiryaHL(squareId)
 	if (!squareId && localBoard.has(squareId))
 		return;
 	const square = localBoard.get(squareId);
-	const useAbility = square.piece.useAbilityBool && square.piece.isBoostedBool;
+	const useAbility = square.useAbilityBool && square.piece.isBoostedBool;
 	const team = square.piece.team;
 	const regularMoves = square.targetZones;
 	const boostedMoves = square.boostedTargetZones.get(squareId);
@@ -59,7 +59,7 @@ export function KingAndBastardsHL(squareId)
 	if (!squareId && localBoard.has(squareId))
 		return;
 	const square = localBoard.get(squareId);
-	const useAbility = square.piece.useAbilityBool && square.piece.isBoostedBool;
+	const useAbility = square.useAbilityBool && square.piece.isBoostedBool;
 	const team = square.piece.team;
 	const regularMoves = square.targetZones;
 	const boostedMoves = square.boostedTargetZones.get(squareId);
@@ -82,7 +82,7 @@ export function ChampAndMinoHL(squareId)
 	if (!squareId && localBoard.has(squareId))
 		return;
 	const square = localBoard.get(squareId);
-	const useAbility = square.piece.useAbilityBool && square.piece.isBoostedBool;
+	const useAbility = square.useAbilityBool && square.piece.isBoostedBool;
 	const team = square.piece.team;
 	const regularMoves = square.targetZones;
 	const boostedMoves = new Map(square.boostedTargetZones);
@@ -91,10 +91,15 @@ export function ChampAndMinoHL(squareId)
 	clearHighlight();
 	if (useAbility && boostedMoves)
 	{
-		setHighlightTrue(regularMoves, "regular", team);
-		boostedMoves.forEach((targetSquares, sourceSquare) => {
-			setHighlightTrue(targetSquares, "boosted", team);
-		});
+		if (!localInfo.secondMove)
+		{
+			setHighlightTrue(regularMoves, "regular", team);
+			boostedMoves.forEach((targetSquares, sourceSquare) => {
+				setHighlightTrue(targetSquares, "boosted", team);
+			});
+		}
+		else
+			setHighlightTrue(localInfo.savedBoostedMap, "boosted", "both");
 	}
 	else if (regularMoves)
 		setHighlightTrue(regularMoves, "regular", team);

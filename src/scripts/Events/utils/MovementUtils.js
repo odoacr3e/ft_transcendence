@@ -2,13 +2,14 @@ import { localBoard, localInfo } from "@/scripts/Data/Variables";
 
 export function getTarget(fromId, toId)
 {
-    const	boostedZones = localBoard.get(fromId).boostedTargetZones.get(fromId);
+    const	boostedZones = localBoard.get(fromId)?.boostedTargetZones?.get(fromId);
     const	fromP = localBoard.get(fromId).piece ? localBoard.get(fromId).piece : null;
 
-	// console.log(`flaggino: ${fromP?.useAbilityBool}, last: ${localInfo.lastClickedId}, now: ${localInfo.clickedId}`);	
-    if (fromP?.useAbilityBool && boostedZones?.has(toId) &&
-        (!["Bastards","King","Minotaurus"].includes(fromP?.type) || (fromP?.type === "Minotaurus" && localInfo.secondMove)))
-        	{ return (boostedZones.has(toId)); }
+    if (localBoard.get(fromId).useAbilityBool && boostedZones?.has(toId) &&
+        !["Bastards","King","Minotaurus","Champion"].includes(fromP?.type))
+        	return (boostedZones.has(toId));
+    else if (["Minotaurus","Champion"].includes(fromP?.type) && localInfo.secondMove && localInfo.savedBoostedMap)
+        return (localInfo.savedBoostedMap.has(toId));
     else
     {
         if (!["Bastards","King"].includes(fromP?.type) && localInfo.secondMove && !boostedZones?.has(toId))

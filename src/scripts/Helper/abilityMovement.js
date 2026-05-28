@@ -13,22 +13,21 @@ const PIECES_ABILITY = Object.freeze ({
 	"": error,
 })
 
-async function moveBastard()
+async function moveBastard(fromId, toId, flag)
 {
 	if (!localInfo.secondTurn)
 	{
-		const square = localBoard.get(localInfo.lastClickedId);
-		const boostedZones = square.boostedTargetZones.get(localInfo.lastClickedId);
-		const result = await sendToBackend(true);
+		const square = localBoard.get(fromId);
+		const boostedZones = square.boostedTargetZones.get(fromId);
+		const result = await sendToBackend(fromId, toId, true);
 		if (result)
 		{
 			setHighlightTrue(boostedZones, "boosted", "both");
 			localInfo.savedBoostedMap = boostedZones;
 			localInfo.secondMove = true;
-			const movedPiece = localBoard.get(localInfo.clickedId)?.piece;
-			if (movedPiece) 
-				movedPiece.useAbilityBool = true; // porca madonna maledetta se fai update la flag la perdi grazie al cazzo che ritorna undefined
-			localInfo.lastClickedId = localInfo.clickedId;
+			localBoard.get(fromId).useAbilityBool = false;
+			if (flag === "click")
+				localInfo.lastClickedId = toId;
 		}
 		else
 		{
@@ -38,12 +37,13 @@ async function moveBastard()
 	}
 	else
 	{
-		boostHlOnClick();
-		if (localInfo.savedBoostedMap.has(localInfo.clickedId))
+		if (flag === "click")
+			boostHlOnClick();
+		if (localInfo.savedBoostedMap.has(toId) && flag === "click")
 			return;
-		else if (localInfo.savedBoostedMap.has(localInfo.lastClickedId) && localBoard.get(localInfo.lastClickedId).targetZones.has(localInfo.clickedId))
+		else if (localInfo.savedBoostedMap.has(fromId) && localBoard.get(fromId).targetZones.has(toId))
 		{
-			const result = await sendToBackend(true);
+			const result = await sendToBackend(fromId, toId, true);
 			if(!result)
 				throw new Error("[bostedMovent]: invalid move");
 			else
@@ -60,40 +60,39 @@ async function moveKing()
 	console.log("Va bene mavi, la smetto");
 }
 
-async function moveJesterNValkirya()
+async function moveJesterNValkirya(fromId, toId, flag)
 {
-	const square = localBoard.get(localInfo.lastClickedId);
-	const boostedZones = square.boostedTargetZones.get(localInfo.lastClickedId);
+	const square = localBoard.get(fromId);
+	const boostedZones = square.boostedTargetZones.get(fromId);
 
 	localInfo.savedBoostedMap = boostedZones;
-	const result = await sendToBackend(true);
+	const result = await sendToBackend(fromId, toId, true);
 	if (!result)
 		throw new Error("[abilityMovement.js:moveJester]: invalid move!");
 	else
 	{
+		localBoard.get(fromId).useAbilityBool = false;
 		clearHighlight();
 		localInfo.usingAbility = "";
 	}
 }
 
-async function moveMinoNChamp()
+async function moveMinoNChamp(fromId, toId, flag)
 {
-	console.log(`clickedId: ${localInfo.clickedId}, last: ${localInfo.lastClickedId}`);
-	
-	if (!localInfo.secondTurn)
+	if (!localInfo.secondMove)
 	{
-		const square = localBoard.get(localInfo.lastClickedId);
-		const boostedZones = square.boostedTargetZones.get(localInfo.clickedId);
-		const result = await sendToBackend(true);
+		const square = localBoard.get(fromId);
+		const boostedZones = square.boostedTargetZones.get(toId);
+		const result = await sendToBackend(fromId, toId, true);
 		if (result)
 		{
 			setHighlightTrue(boostedZones, "boosted", "both");
 			localInfo.savedBoostedMap = boostedZones;
 			localInfo.secondMove = true;
-			const movedPiece = localBoard.get(localInfo.clickedId)?.piece;
-			if (movedPiece) 
-				movedPiece.useAbilityBool = true; // porca madonna maledetta se fai update la flag la perdi grazie al cazzo che ritorna undefined
-			localInfo.lastClickedId = localInfo.clickedId;
+			localBoard.get(toId).useAbilityBool = true;
+			localBoard.get(fromId).useAbilityBool = false;
+			if (flag === "click")
+				localInfo.lastClickedId = toId;
 		}
 		else
 		{
@@ -103,17 +102,19 @@ async function moveMinoNChamp()
 	}
 	else
 	{
-		// if (!localInfo.savedBoostedMap.has(localInfo.clickedId)) //onde evitare di aggiornare lasclicked e clicked quando non clicchi nelle caselle boosted
+		// if (!localInfo.savedBoostedMap.has(toId)) //onde evitare di aggiornare lasclicked e clicked quando non clicchi nelle caselle boosted
 		// 	return;
-		boostHlOnClick();
-		if (localInfo.savedBoostedMap.has(localInfo.clickedId))
+		if (flag === "click")
+			boostHlOnClick();
+		if (localInfo.savedBoostedMap.has(toId))
 		{
-			console.log(`from: ${localInfo.lastClickedId}, to: ${localInfo.clickedId}`);
-			const result = await sendToBackend(true);
+			console.log(`from: ${fromId}, to: ${toId}`);
+			const result = await sendToBackend(fromId, toId, true);
 			if(!result)
 				throw new Error("[bostedMovent]: Seconda mossa non valida");
 			else
 			{
+				localBoard.get(fromId).useAbilityBool = false;
 				localInfo.secondMove = false;
 				localInfo.usingAbility = "";
 			}

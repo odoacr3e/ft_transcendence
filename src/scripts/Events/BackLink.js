@@ -1,16 +1,16 @@
-import { updateMatchState }	from "@/scripts/Data/Archi";
-import { clearHighlight }	from "@/scripts/Events/utils/HighlightUtils.js";
-import { localInfo }		from "@/scripts/Data/Variables";
-import { getTarget }		from "./utils/MovementUtils.js";
-import { MACRO } 			from "@/scripts/Data/Variables";
+import { localBoard, localInfo }	from "@/scripts/Data/Variables";
+import { updateMatchState }			from "@/scripts/Data/Archi";
+import { clearHighlight }			from "@/scripts/Events/utils/HighlightUtils.js";
+import { getTarget }				from "./utils/MovementUtils.js";
+import { MACRO } 					from "@/scripts/Data/Variables";
 
-export async function sendToBackend(flag)
+export async function sendToBackend(fromId, toId, flag)
 {
-	const	TargetZone = getTarget(localInfo.lastClickedId, localInfo.clickedId);
+	const	TargetZone = getTarget(fromId, toId);
 
-	if (localInfo.lastClickedId && localInfo.lastClickedId !== localInfo.clickedId && TargetZone)
+	if (fromId && fromId !== toId && TargetZone)
 	{
-		const promise = await requestToBack(localInfo.lastClickedId, localInfo.clickedId);
+		const promise = await requestToBack(fromId, toId);
 		if (promise)
 		{
 			clearHighlight();
@@ -73,7 +73,7 @@ export async function requestToBack(fromSquare, toSquare)
 		{type = "boost"; toSquare = ""; }
 	else if (fromSquare == null && toSquare)
 		{type = "trans"; fromSquare = localInfo.goatId; localInfo.goatId = null; }
-	else if (fromSquare && toSquare && localInfo.usingAbility !== "")
+	else if (fromSquare && toSquare && ((localInfo.secondMove && localInfo.secondTurn) || localBoard.get(fromSquare).useAbilityBool))
 		{type = "moveBoost";} //--> quel bastardo di ale mi ha fatto riscrivere sto type 8 volte perchè mi dimenticavo le maiuscole nonostante loro convertano le maiuscole in minuscole
 	else {type = "move"; }
 

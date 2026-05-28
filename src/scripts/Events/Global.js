@@ -25,11 +25,11 @@ export async function globalEvents()
 		{
 			if (usingAbility())
 			{
-				console.log(`Boosted Piece: ${localInfo.usingAbility}`);				
-				await PIECES_ABILITY[localInfo.usingAbility]();
+				console.log(`Boosted Piece: ${localInfo.usingAbility}`);
+				await PIECES_ABILITY[localInfo.usingAbility](localInfo.lastClickedId, localInfo.clickedId, "click");
 				return;
 			}
-			sendToBackend(); 
+			sendToBackend(localInfo.lastClickedId, localInfo.clickedId); 
 		}
 		else
 			highlightOnClick(event);

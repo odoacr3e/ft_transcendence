@@ -1,8 +1,7 @@
 import { localBoard, localInfo }	from "@/scripts/Data/Variables";
-import { setHighlightTrue }			from "./utils/HighlightUtils.js";
 import { clearHighlight }			from "@/scripts/Events/utils/HighlightUtils.js";
 import { requestToBack }			from "./BackLink.js";
-import { getTarget }				from "./utils/MovementUtils.js"
+import { PIECES_ABILITY } 						from "@/scripts/Helper/abilityMovement";
 
 // Deprecata
 export function movePiece(fromSquareId, toSquareId)
@@ -47,69 +46,61 @@ export function onDrop(event, toSquare)
 	const	fromSquareId = event.dataTransfer.getData('fromSquareId'),
 			fromPiece = localBoard.get(fromSquareId).piece;
 
-	if (fromPiece.useAbilityBool)
-	{
-		const	TargetZone = getTarget(fromSquareId, toSquare.id);
-		let		boostMap;
-		if (!localInfo.secondMove)
-		{
-			if (["Minotaurus", "Champion"].includes(fromPiece?.type))
-				boostMap = localBoard.get(fromSquareId).boostedTargetZones.get(toSquare.id);
-			else
-				boostMap = localBoard.get(fromSquareId).boostedTargetZones.get(fromSquareId);
-		}
-
-		if (TargetZone)
-		{
-			localInfo.dropDone = true;
-			requestToBack(fromSquareId, toSquare.id).then(
-				function(value) { if (value) {
-					clearHighlight();
-					
-					if (!localInfo.secondMove)
-					{
-						localInfo.savedBoostedMap = boostMap;
-						if (["Bastards","King","Minotaurus","Champion"].includes(fromPiece?.type))
-							localBoard.get(toSquare.id).piece.useAbilityBool = true;
-					}
-
-					if (!["Bastards","King","Minotaurus","Champion"].includes(fromPiece?.type) ||
-						(["Minotaurus", "Champion"].includes(fromPiece?.type) && localInfo.secondMove))
-						localInfo.usingAbility = "";
-
-					if (fromPiece.useAbilityBool && !localInfo.secondMove && 
-						["Bastards","King","Minotaurus","Champion"].includes(fromPiece?.type))
-					{
-						setHighlightTrue(localInfo.savedBoostedMap, "boosted", "both");
-						localInfo.secondMove = true;
-					}
-				}},
-				function(value) {if (!value) { localInfo.dropDone = false; console.log("Mossa non valida"); }}
-			);
-		}
+	if (localBoard.get(fromSquareId).useAbilityBool || localInfo.secondMove)
+	{			
+		PIECES_ABILITY[localInfo.usingAbility](fromSquareId, toSquare.id, "").then ();
 	}
 	else if (fromSquareId !== toSquare.id && localBoard.get(toSquare.id).highlight)
 	{
 		localInfo.dropDone = true;
 		requestToBack(fromSquareId, toSquare.id).then(
 			function(value) {if (value) {
+				// localInfo.dropDone = true;
 				clearHighlight();
 				localInfo.usingAbility = "";
-			 }},
+			 }
+			if (!value) { localInfo.dropDone = false; console.log("Mossa non valida"); }
+			},
 			function(value) {if (!value) { localInfo.dropDone = false; console.log("Mossa non valida"); }}
 		);
 	}
 }
 
-// let		TargetZone;
-// const	boostedZones = localBoard.get(fromSquareId).boostedTargetZones.get(fromSquareId);
+// const	TargetZone = getTarget(fromSquareId, toSquare.id);
+		// let		boostMap;
+		// if (!localInfo.secondMove)
+		// {
+		// 	if (["Minotaurus", "Champion"].includes(fromPiece?.type))
+		// 		boostMap = localBoard.get(fromSquareId).boostedTargetZones.get(toSquare.id);
+		// 	else
+		// 		boostMap = localBoard.get(fromSquareId).boostedTargetZones.get(fromSquareId);
+		// }
 
-// if (((fromPiece.type !== ("Bastards" || "King" || "Minotaurus")) || (fromPiece.type === "Minotaurus" && localInfo.secondMove)) && 
-// 	boostedZones.has(toSquare.id))
-// 	TargetZone = boostedZones.has(toSquare.id);
-// else
-// {
-// 	TargetZone = localBoard.get(fromSquareId).targetZones.has(toSquare.id);
-// 	if (fromPiece.type !== ("Bastards" || "King") && !localInfo.secondMove && !boostedZones.has(toSquare.id))
-// 		localInfo.usingAbility = "";
-// }
+		// if (TargetZone)
+		// {
+		// 	localInfo.dropDone = true;
+		// 	requestToBack(fromSquareId, toSquare.id).then(
+		// 		function(value) { if (value) {
+		// 			clearHighlight();
+					
+		// 			if (!localInfo.secondMove)
+		// 			{
+		// 				localInfo.savedBoostedMap = boostMap;
+		// 				if (["Bastards","King","Minotaurus","Champion"].includes(fromPiece?.type))
+		// 					localBoard.get(toSquare.id).piece.useAbilityBool = true;
+		// 			}
+
+		// 			if (!["Bastards","King","Minotaurus","Champion"].includes(fromPiece?.type) ||
+		// 				(["Minotaurus", "Champion"].includes(fromPiece?.type) && localInfo.secondMove))
+		// 				localInfo.usingAbility = "";
+
+		// 			if (fromPiece.useAbilityBool && !localInfo.secondMove && 
+		// 				["Bastards","King","Minotaurus","Champion"].includes(fromPiece?.type))
+		// 			{
+		// 				setHighlightTrue(localInfo.savedBoostedMap, "boosted", "both");
+		// 				localInfo.secondMove = true;
+		// 			}
+		// 		}},
+		// 		function(value) {if (!value) { localInfo.dropDone = false; console.log("Mossa non valida"); }}
+		// 	);
+		// }
