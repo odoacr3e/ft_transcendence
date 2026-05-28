@@ -2,6 +2,7 @@
 const lib = require("./lib/lib.js");
 const app = lib.include.express();
 const { responseFormatter } = require("./utils/response.js");
+const cors = require('cors');
 
 // setup
 const PORT = 8080;
@@ -16,6 +17,8 @@ app.set('json spaces', 2);
 // 	if (req.method === 'OPTIONS') return res.sendStatus(204);
 // 	next();
 // });
+
+app.use(cors());
 app.use(lib.include.express.json());
 
 // global error middleware
