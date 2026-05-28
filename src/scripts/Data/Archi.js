@@ -5,13 +5,13 @@ import { checkEndTurn, hasBoost, DEBUGSetVisible, checkUpgrade }	from "./utils/A
 
 //SECTION - INIT FUNCTIONS
 
-export async function loadReceivedMatch(seed = 0) 
+export async function loadReceivedMatch() 
 {
 	const response = await fetch("http://localhost:8080/api/game",
 	{
 		method: "POST",
 		headers: { "Content-Type": "application/json" },
-		body: JSON.stringify({ type: "init", from: seed, to: seed }),
+		body: JSON.stringify({ type: "init", from: "0", to: "0" }),
 	});
 
 	if (!response.ok)

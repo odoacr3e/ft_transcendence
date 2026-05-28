@@ -1,5 +1,5 @@
 // SECTION - LE VARIABILI GLOBALI
-// import { boardConverter, getLocalPlayers }	from "src/scripts/Helper/RenderUtils";
+import { boardConverter, getLocalPlayers }	from "../Helper/RenderUtils.js";
 import { reactive }							from "vue";
 
 export class Square {
