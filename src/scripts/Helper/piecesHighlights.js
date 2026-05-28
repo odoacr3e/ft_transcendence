@@ -9,7 +9,7 @@ export const PIECES_HIGHLIGHT = Object.freeze ({
 	"Valkirya" : ValkiryaHL,
 	"Minotaurus" : ChampAndMinoHL,
 	"Bastards" : KingAndBastardsHL,
-})
+});
 
 export function JesterHL(squareId)
 {
@@ -94,7 +94,7 @@ export function ChampAndMinoHL(squareId)
 		if (!localInfo.secondMove)
 		{
 			setHighlightTrue(regularMoves, "regular", team);
-			boostedMoves.forEach((targetSquares, sourceSquare) => {
+			boostedMoves.forEach((targetSquares) => {
 				setHighlightTrue(targetSquares, "boosted", team);
 			});
 		}

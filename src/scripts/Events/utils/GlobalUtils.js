@@ -45,17 +45,19 @@ export function shopAbility()
 		);
 }
 
-export function sendEndTurn()
+export async function sendEndTurn()
 {
-	requestToBack(null, null).then(
-		function(value) {if (value) 
-		{ 
-			clearHighlight();
-			if (MACRO.AUDIO)
-				new Audio("/src/assets/audios/endTurn.mp3").play();
-		}},
-		function(value) {if (!value) { console.log("Mossa non valida"); }}
-	);
+	let response;
+
+	response = await requestToBack(null, null);
+	if (response) 
+	{ 
+		clearHighlight();
+		if (MACRO.AUDIO)
+			new Audio("/src/assets/audios/endTurn.mp3").play();
+	}
+	else
+		console.log("Mossa non valida");
 }
 
 export function upgradeBastard(newType)

@@ -63,10 +63,10 @@ export async function globalEvents()
 		}
 	});
 
-	document.addEventListener("keydown", function(event)
+	document.addEventListener("keydown", async function(event)
 	{
 		if (event.code === "Space" && localInfo.secondTurn)
-			sendEndTurn();
+			await sendEndTurn();
 		if (event.code === "Enter" && localBoard.get(localInfo.clickedId)?.piece.team === localPlayers.values().find(p => p.isPlaying === true).team)
 			shopAbility();
 		if (event.code === "ShiftLeft" && localBoard.get(localInfo.clickedId)?.piece.isBoostedBool)

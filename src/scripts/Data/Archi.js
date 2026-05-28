@@ -81,7 +81,7 @@ export function initLocalPlayers()
 		if (wrong_type)	{ throw new Error(`[initLocalPlayers]: Player ${player} a wrong type!`); }
 
 		localPlayers.set(player, localMatchState[player]);
-	})
+	});
 
 	hasBoost(localPlayers.values().find(p => p.isPlaying === true));
 }
@@ -128,7 +128,7 @@ export function updateLocalBoard(changes)
 				Object.entries(newSquare.boostedTargetZones || {}).map(
 					([key, value]) => [key, new Set(Array.isArray(value) ? value : [])]
 				)
-			)
+			);
 			
 			const oldSquare = localBoard.get(squareKey);
 			oldSquare.piece = newSquare.piece;
@@ -152,7 +152,7 @@ export function updateLocalPlayers(changes)
 			throw new Error(`[updateLocalPlayers]: Player ${player} wrong type!`);
 
 		localPlayers.set(player, {...localPlayers.get(player), ...changes[player]});
-	})
+	});
 
 	hasBoost(localPlayers.values().find(p => p.isPlaying === true));
 }

@@ -11,7 +11,7 @@ const PIECES_ABILITY = Object.freeze ({
 	"Minotaurus" : moveMinoNChamp,
 	"Bastards" : moveBastard,
 	"": error,
-})
+});
 
 async function moveBastard(fromId, toId, flag)
 {
@@ -60,7 +60,7 @@ async function moveKing()
 	console.log("Va bene mavi, la smetto");
 }
 
-async function moveJesterNValkirya(fromId, toId, flag)
+async function moveJesterNValkirya(fromId, toId)
 {
 	const square = localBoard.get(fromId);
 	const boostedZones = square.boostedTargetZones.get(fromId);
@@ -124,7 +124,7 @@ async function moveMinoNChamp(fromId, toId, flag)
 
 function error()
 {
-	throw new Error("[PIECES_ABILITY]: Qualcuno ha chiamato qualcosa che non esiste eh")
+	throw new Error("[PIECES_ABILITY]: Qualcuno ha chiamato qualcosa che non esiste eh");
 }
 
 function boostHlOnClick()
@@ -157,4 +157,4 @@ function boostHlOnClick()
 	}
 }
 
-export { PIECES_ABILITY }
+export { PIECES_ABILITY };

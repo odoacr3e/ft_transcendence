@@ -21,7 +21,7 @@ export function checkEndTurn(validated)
 
 	players_list.forEach((player) => {
 		if (validated[player].isPlaying) { newCurP = validated[player]; };
-	})
+	});
 
 	if (curP.name === newCurP.name) { localInfo.secondTurn = true; }
 	else
@@ -90,5 +90,5 @@ export function checkUpgrade()
                 stopAutoUpdate = autoUpdate(fromEl, menuEl, updatePosition);
 			});
 		}
-	})
+	});
 }
