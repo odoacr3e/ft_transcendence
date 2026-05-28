@@ -2,10 +2,12 @@
 const { Square, ChessBoard} = require("../Classes/ChessBoard/chessBoard.js");
 const {eTeam} = require("../Macro/enums.js");
 const lib = require("../lib/lib.js");
-const {Match} = require("../Classes/Match/match.js");
+// const {Match} = require("../Classes/Match/match.js");
 const {CHESSBOARD_H, CHESSBOARD_W} = require("../Macro/macro.js");
 const enumNames = lib.Enums.enumNames;
 const cmd = require("./enumsTest.js").cmd;
+
+/** @typedef {import("../Classes/Match/match.js").Match} Match*/
 
 /**
  * @param {Match | null} match 

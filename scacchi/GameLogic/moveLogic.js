@@ -150,7 +150,6 @@ function updateChessboard(coords=[], result, match, boostBool)
 	if (to.piece && to.piece.isMovedBool == false)
 		to.piece.isMovedBool = true;
 	match.moves++;
-	match.history.finalBoard = boardStringify(match);
 	dangerUpdateMoved(match, coords, result);
 	return (true);
 }

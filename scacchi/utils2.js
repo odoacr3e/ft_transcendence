@@ -1,10 +1,11 @@
 // @ts-check
 const fs = require("fs");
 const {eEvents} = require("./Macro/enums.js");
-const {Match} = require("./Classes/Match/match.js");
+const {Match, HistoryEvent} = require("./Classes/Match/match.js");
 const { Piece } = require("./Classes/Pieces/pieces.js");
 const {move, boost, endTurn, init} = require("./handlers/game/Game.js");
 const { render } = require("./test/render.js");
+const { Result } = require("pg");
 
 
 /** @typedef {import ("./Classes/Match/match.js").History} History */
@@ -42,10 +43,26 @@ function historyRestore(match, path)
 			continue ;
 		if (result.status != 200)
 			throw (`${result.status}: ${result.msg}\n${JSON.stringify(event, null, 2)}`);
+		//NOTE - print di ogni risposta/richiesta
+		// printResponse(event, result);
 	}
 	match.historyCreateBool = false;
 	match.history.events = history.events;
 	match.history.moves = history.moves;
+}
+
+/**
+ * 
+ * @param {HistoryEvent} event 
+ * @param {import("./Classes/endPoint/result.js").Result} result 
+ */
+function printResponse(event, result)
+{
+	console.debug("\x1b[33m");
+	console.debug(JSON.stringify(event, null, 2));
+	console.debug("\x1b[0m");
+	console.debug(JSON.stringify(result.board, null, 2));
+	console.debug("*--------------------*\n");
 }
 
 module.exports = {historyRestore};

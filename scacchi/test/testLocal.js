@@ -19,7 +19,7 @@ function testerMain()
 	let	matchName;
 	let	matchPath;
 
-	//console.log = () => {};
+	console.log = () => {};
 	matchName = process.argv.at(2);
 	if (!matchName)
 		return (execAllTests());

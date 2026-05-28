@@ -73,6 +73,7 @@ function tryBoost(match, result, from)
 		if (tmp?.piece)
 			tmp.piece.isBoostedBool = false;
 		match.board.updates.add(from);
+		match.board.updates.add(match.currentPlayer.boostedPiece);
 	}
 	match.currentPlayer.boostedPiece = square.piece.pos;
 	match.history.UpdateBoost(square, from);

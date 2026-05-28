@@ -7,6 +7,7 @@ const {Square, initBoard, copyBoard, copyBoostedTargetZones, ChessBoard} = requi
 const {HISTORY_PATH, CHESSBOARD_W, CHESSBOARD_H} = require("../../Macro/macro.js");
 const {Result} = require("../endPoint/result.js");
 const {Player, Timer} = require("./player.js");
+const {boardStringify} = require("../../test/render.js");
 
 class Match
 {
@@ -132,6 +133,7 @@ class History
 			if (name.indexOf(".json") == -1)
 				name = name + ".json";
 		}
+		match.history.finalBoard = boardStringify(match);
 		history = JSON.stringify(this, null, 2);
 		if (!name)
 			console.log(history);
