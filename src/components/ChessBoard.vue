@@ -1,5 +1,5 @@
 <script setup>
-	import { DOMBoard, localInfo, localPlayers, IMG_PATHS }	from '@/scripts/Data/Variables';
+	import { DOMBoard, localInfo, localPlayers, IMG_PATHS, localBoard }	from '@/scripts/Data/Variables';
 	import { shopAbility,upgradeBastard }		from '@/scripts/Events/utils/GlobalUtils';
 	import { onMounted, computed, ref }			from 'vue';
 	import { onDragStart, onDrop }				from '@/scripts/Events/Movements';
@@ -12,7 +12,8 @@
         globalEvents();
     });
 
-	const currP = ref(localPlayers.values().find(p => p.isPlaying === true));
+	const currP = ref(localPlayers.values().find(p => p.isPlaying === true)),
+		dragOver = ref(null);
 </script>
 
 <template>
@@ -26,12 +27,14 @@
                     :id="square.id"
                     :class="[getSquareColor(square.id), 
 							'square',
+							// {'border-blue-600 border-4': (localInfo.clickedId === square.id || localInfo.lastClickedId === square.id) && localBoard.get(square.id).piece }
+							{'outline-4 outline-[#e2dac5c5] -outline-offset-4': dragOver === square.id},
 							{'selectedBstW': getSquareColor(square.id) == 'white' && (square.boostedHighlight && square.piece)},
 							{'selectedBstB': getSquareColor(square.id) == 'black' && (square.boostedHighlight && square.piece)},
 							{'selectedW': getSquareColor(square.id) == 'white' && (square.selected || square.highlight && square.piece)},
 							{'selectedB': getSquareColor(square.id) == 'black' && (square.selected || square.highlight && square.piece)}]"
-                    @drop="onDrop($event, square)"
-                    @dragover.prevent>
+                    @drop="onDrop($event, square); dragOver = null"
+                    @dragover.prevent="dragOver = square.id;">
 					<p v-if="square.id.charAt(1) == '1'" class="absolute ml-15 mt-13"
 						v-bind:class="{ 'text-[#1b0000]': getSquareColor(square.id) == 'white' && !square.selected, 
 										'text-white	': getSquareColor(square.id) == 'black' && !square.selected,
@@ -134,6 +137,7 @@
 
 	.square
 	{
+		border-collapse: collapse;
 		width: 75px;
 		height: 75px;
 		display: flex;

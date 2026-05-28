@@ -93,8 +93,6 @@ export function updateMatchState(nextRaw)
 {
 	const validated = validateReceivedMatch(nextRaw);
 
-	// console.log(`currPlayer: ${validated.currentPlayer}`);
-	
 	checkEndTurn(validated);
 
 	startLocalMatchState(validated);

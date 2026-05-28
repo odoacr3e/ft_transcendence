@@ -30,6 +30,8 @@ export function onDragStart(event, square)
 
   	localInfo.dragClone = event.target.cloneNode(true);
 	localInfo.dragClone.id = "floatingPiece";
+	localInfo.dragClone.style.top = -200 + "px";
+	localInfo.dragClone.style.left = -200 + 'px';
   	localInfo.dragClone.style.position = 'fixed';
   	localInfo.dragClone.style.pointerEvents = 'none';
   	localInfo.dragClone.style.zIndex = '13';
@@ -37,14 +39,16 @@ export function onDragStart(event, square)
   	localInfo.dragClone.style.height = event.target.offsetHeight + 'px';
   	document.body.appendChild(localInfo.dragClone);
 
+	//FIXME - DOBBIAMO ASSICURARCI CHE QUESTO NON ROMPI NULLA
+	localInfo.lastClickedId = event.target.parentNode.id;
+
   	setTimeout(() => { event.target.style.visibility = 'hidden'; }, 0);
 }
 
 export function onDrop(event, toSquare)
 {
 	event.preventDefault();
-	const	fromSquareId = event.dataTransfer.getData('fromSquareId'),
-			fromPiece = localBoard.get(fromSquareId).piece;
+	const	fromSquareId = event.dataTransfer.getData('fromSquareId');
 
 	if (localBoard.get(fromSquareId).useAbilityBool || localInfo.secondMove)
 	{			

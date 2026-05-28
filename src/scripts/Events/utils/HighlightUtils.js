@@ -61,7 +61,6 @@ export function highlightOnDrag(event)
 	 	
 		if (Piece.team != Player.team) { return; }
 
-		// non so perche' ma non funziona al 100%...
 		PIECES_HIGHLIGHT[Piece.type](clickedId);
 		if (localInfo.savedBoostedMap && localInfo.savedBoostedMap.has(clickedId))
 			localBoard.get(clickedId).boostedHighlight = true;

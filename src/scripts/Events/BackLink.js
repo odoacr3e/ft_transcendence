@@ -37,7 +37,7 @@ export async function requestToBack(fromSquare, toSquare)
 	else if (fromSquare == null && toSquare)
 		{type = "trans"; fromSquare = localInfo.goatId; localInfo.goatId = null; }
 	else if (fromSquare && toSquare && ((localInfo.secondMove && localInfo.secondTurn) || localBoard.get(fromSquare).useAbilityBool))
-		{type = "moveBoost";} //--> quel bastardo di ale mi ha fatto riscrivere sto type 8 volte perchè mi dimenticavo le maiuscole nonostante loro convertano le maiuscole in minuscole
+		{type = "moveBoost";}
 	else {type = "move"; }
 
 	try
