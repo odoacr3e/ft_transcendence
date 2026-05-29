@@ -21,7 +21,7 @@ const ResponseSuccess = (object) => {
 
 /**
  * 
- * @param {Match} match
+ * @param {Match | null} match
  * @param {*} result the base object from which the response json is made
  * @param {String | null} msg 
  * @param {Number | null} status 

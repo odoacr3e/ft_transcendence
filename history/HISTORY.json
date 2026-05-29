@@ -288,89 +288,9 @@
       "type": "endTurn",
       "useBoostBool": false,
       "counter": 35
-    },
-    {
-      "from": "g5",
-      "to": "g6",
-      "team": "white",
-      "type": "move",
-      "useBoostBool": false,
-      "counter": 36
-    },
-    {
-      "from": "",
-      "to": "",
-      "team": "white",
-      "type": "endTurn",
-      "useBoostBool": false,
-      "counter": 37
-    },
-    {
-      "from": "e7",
-      "to": "e6",
-      "team": "black",
-      "type": "move",
-      "useBoostBool": false,
-      "counter": 38
-    },
-    {
-      "from": "",
-      "to": "",
-      "team": "black",
-      "type": "endTurn",
-      "useBoostBool": false,
-      "counter": 39
-    },
-    {
-      "from": "g6",
-      "to": "g7",
-      "team": "white",
-      "type": "move",
-      "useBoostBool": false,
-      "counter": 40
-    },
-    {
-      "from": "",
-      "to": "",
-      "team": "white",
-      "type": "endTurn",
-      "useBoostBool": false,
-      "counter": 41
-    },
-    {
-      "from": "a7",
-      "to": "a6",
-      "team": "black",
-      "type": "move",
-      "useBoostBool": false,
-      "counter": 42
-    },
-    {
-      "from": "",
-      "to": "",
-      "team": "black",
-      "type": "endTurn",
-      "useBoostBool": false,
-      "counter": 43
-    },
-    {
-      "from": "g7",
-      "to": "g8",
-      "team": "white",
-      "type": "move",
-      "useBoostBool": false,
-      "counter": 44
-    },
-    {
-      "from": "",
-      "to": "",
-      "team": "white",
-      "type": "endTurn",
-      "useBoostBool": false,
-      "counter": 45
     }
   ],
-  "moves": 46,
+  "moves": 45,
   "victory": "",
   "finalBoard": "|M|J|V| | |V|B|M|\n| | | |C| | | |B|\n|B|K|B| |B| | | |\n| |B| |C| | | | |\n| | | |B| | | | |\n| | | | | | | | |\n|B|B|B| |B|B| |B|\n|M|J|V| |K|V|J|M|\n"
 }

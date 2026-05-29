@@ -49,7 +49,7 @@ function historyRestore(match, path)
 		if (result.status != 200)
 			throw (`${result.status}: ${result.msg}\n${JSON.stringify(event, null, 2)}`);
 		//NOTE - print di ogni risposta/richiesta
-		// printResponse(event, result);
+		// printResponse(match, event, result);
 		DEBUGCounter++;
 	}
 	match.historyCreateBool = false;
@@ -64,15 +64,17 @@ function historyRestore(match, path)
 
 /**
  * 
+ * @param {Match} match
  * @param {HistoryEvent} event 
  * @param {import("./Classes/endPoint/result.js").Result} result 
  */
-function printResponse(event, result)
+function printResponse(match, event, result)
 {
 	console.debug("\x1b[33m");
 	console.debug(JSON.stringify(event, null, 2));
 	console.debug("\x1b[0m");
 	console.debug(JSON.stringify(result.board, null, 2));
+	// console.log("data for g5:\n\n" + JSON.stringify(match.board.get("g5").targetZones, null, 2));
 	console.debug("*--------------------*\n");
 }
 

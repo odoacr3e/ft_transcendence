@@ -13,6 +13,7 @@ const {checkCastling, getPieces} = require("./Castling.js");
 const { Piece } = require("../Classes/Pieces/pieces.js");
 const { Cursor } = require("../Classes/Match/cursor.js");
 const { includesOneOf } = require("../utils/string.js");
+const {endTurn} = require("../handlers/game/endTurn.js");
 
 //FIXME - da mettere alcune funzioni in un utilis
 
@@ -414,7 +415,7 @@ function transfiguration(match, result, coord, newType)
 	square.piece = new Piece(newType, square.piece.pos, square.piece.team);
 	square.piece.isBoostedBool = isBoostedBool;
 	DangerUpdate(match, coord);
-	match.endTurn();
+	endTurn(match);
 	result.status = 200;
 	result.msg = "OK";
 	return (result);

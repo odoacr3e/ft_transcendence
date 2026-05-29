@@ -84,6 +84,7 @@ function gameHandler(req, res)
 	{
 		result = new Result();
 		result.Success();
+		// @ts-ignore
 		result.board = clientBoard(match, true, true);
 		result.youWin = match.victory != "";
 	}

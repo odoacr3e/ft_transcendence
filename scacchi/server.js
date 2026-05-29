@@ -27,6 +27,8 @@ app.use((err, req, res, next) =>
 	let	formattedResponse;
 
 	console.error(err);
+	if (typeof(err) == "object")
+		err = "unknown crash in chess engine";
 	formattedResponse = responseFormatter(null, null, err, 500);
 	res.status(500).json(formattedResponse);
 });

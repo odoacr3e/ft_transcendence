@@ -151,6 +151,8 @@ function print(key)
 	console.log(`useBoost: "${cmd.USE_BOOST}"`);
 	console.log(`dangerLightMode: "${cmd.TARGET_DANGER_SWITCH}"`);
 	console.log(`endTurn "${cmd.END_TURN}"`);
+	console.log(`transform "${cmd.TRANSFORM}"`);
+	console.log(`restoreHistory "${cmd.LOAD_HISTORY}"`);
 }
 
 function termInit()

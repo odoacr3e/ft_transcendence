@@ -9,7 +9,7 @@ const {bastardChecks} = require("./gameUtils.js");
 
 /**
  * 
- * @param {*} match
+ * @param {Match} match
  * @param {number} dx 
  * @param {number} dy
  * @param {boolean} clear
@@ -44,7 +44,7 @@ let movePiece = (match, dy, dx, clear=false) =>
 
 /**
  * 
- * @param {*} match 
+ * @param {Match} match 
  * @param {string | null} pos
  * @returns 
  */
@@ -57,10 +57,14 @@ let DangerUpdate = (match, pos=null) =>
 	usedBoard = match.board;
 	if (pos != null)
 		match.cursor.set(pos);
+	else
+		pos = match.cursor.square;
 	startPos = match.cursor.square;
 	piece = usedBoard.get(match.cursor.square)?.piece;
 	if (piece == null)
 		return (0);
+	match.board.get(pos).targetZones.clear();
+	match.board.get(pos).boostedTargetZones.clear();
 	for (let {dx, dy} of piece.moveArray)
 	{
 		if (!bastardChecks(match, dx, dy, piece))
@@ -83,6 +87,8 @@ let DangerUpdate = (match, pos=null) =>
 		match.board.updates.add(pos);
 	else
 		match.board.updates.add(match.cursor.square);
+	match.board.get(pos).targetZones.delete(pos);
+	match.board.get(pos).dangerZones.delete(pos);
 	return (1);
 }
 
@@ -100,7 +106,7 @@ function dangerDelPiece(match, pos=match.cursor.square, result=null)
 	for (const target of pieceSquare.targetZones)
 	{
 		match.board.get(target).dangerZones.delete(pos);
-		DangerUpdate(match, target);
+		//DangerUpdate(match, target);
 	}
 	if (result && result.specialMoves.CheckBastardMove())
 	{
@@ -124,7 +130,9 @@ function dangerDelPiece(match, pos=match.cursor.square, result=null)
 	for (const target of pieceSquare.dangerZones)
 	{
 		if (!result || result.specialMoves.CheckSniperMove() == 0)
+		{
 			DangerUpdate(match, target);
+		}
 		if (pos == null)
 			throw ("DEBUG throw dangerZones");
 		match.board.updates.add(target);
@@ -190,6 +198,7 @@ function dangerUpPiece(match, pos=match.cursor.square, result=null)
  */
 function dangerUpdateMoved(match, selected=[], result=null)
 {
+	return (dangerUpdateAll(match));
 	if (selected.length != 2)
 		throw ("dangerUpdateMoved must be called with two pieces: from, to");
 	dangerDelPiece(match, selected[0], result);
@@ -204,7 +213,7 @@ function dangerUpdateMoved(match, selected=[], result=null)
 function dangerUpdateAll(match)
 {
 	let	temp;
-	let usedBoard
+	let usedBoard;
 
 	temp = match.cursor.square;
 	usedBoard = match.board;
