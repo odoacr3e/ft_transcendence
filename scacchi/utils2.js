@@ -43,7 +43,10 @@ function historyRestore(match, path)
 		else if (event.type == eEvents.Boost)
 			result = boost(match, event.from);
 		else if (event.type == eEvents.EndTurn)
+		{
 			result = endTurn(match);
+			continue ;
+		}
 		else
 			continue ;//@ts-ignore
 		if (result.status != 200 && !event.error)

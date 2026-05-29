@@ -37,8 +37,10 @@ function move(match, from, to, boostBool=false)
 	// @ts-ignore
 	result.board = clientBoard(match);
 	secondMoveBool = checkSecondMove(match, to);
-	if ((match.moves >= MOVEMENT_MIN && !match.currentPlayer.nPoints && match.historyCreateBool == false) && !(secondMoveBool && boostBool) && 
+	if ((match.moves >= MOVEMENT_MIN && !match.currentPlayer.nPoints) && !(secondMoveBool && boostBool) && 
 	!(match.cursor.EdgeCheck(match.currentPlayer.team) && match.board.get(match.cursor.square)?.piece?.type == enumNames.BASTARDS))
+		endTurn(match);
+	else if (match.CheckOtherKingsDanger() == true)
 		endTurn(match);
 	return (result);
 }

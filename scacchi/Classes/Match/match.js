@@ -8,6 +8,8 @@ const {HISTORY_PATH, CHESSBOARD_W, CHESSBOARD_H} = require("../../Macro/macro.js
 const {Result} = require("../endPoint/result.js");
 const {Player, Timer} = require("./player.js");
 const {boardStringify} = require("../../test/render.js");
+const { isDangerous } = require("../../utils/gameUtils.js");
+const { match } = require("assert");
 
 class Match
 {
@@ -45,6 +47,23 @@ class Match
 	forceWhiteTurn()
 	{
 		this.currentPlayer = this.white;
+	}
+	CheckOtherKingsDanger()
+	{
+		/** @type {Player} */let	player;
+		/** @type {Square} */let	kingSquare;
+
+		//@ts-ignore
+		player = this[this.currentPlayer.next];
+		while (player.team != this.currentPlayer.team)
+		{
+			kingSquare = this.board.get(player.King);
+			if (isDangerous(this, kingSquare.dangerZones, player.team) == true)
+				return (true);
+			//@ts-ignore
+			player = this[player.next];
+		}
+		return (false);
 	}
 	/** @param {Result | null} result */
 	CheckMate(result=null)
