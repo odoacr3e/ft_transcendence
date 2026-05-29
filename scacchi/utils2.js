@@ -58,6 +58,7 @@ function historyRestore(match, path)
 		else
 			error(null, result, 0, null, false);
 		//NOTE - print di ogni risposta/richiesta
+		render(match);
 		// printResponse(match, event, result);
 	}
 	match.historyCreateBool = false;

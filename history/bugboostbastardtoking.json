@@ -127,6 +127,16 @@
       "team": "black",
       "type": "move",
       "useBoostBool": false,
+      "counter": 15,
+      "error": true,
+      "errorMessage": "gang gang bastard"
+    },
+    {
+      "from": "e8",
+      "to": "d7",
+      "team": "black",
+      "type": "move",
+      "useBoostBool": false,
       "counter": 15
     },
     {
@@ -154,7 +164,7 @@
       "counter": 18
     }
   ],
-  "moves": 19,
+  "moves": 18,
   "victory": "",
-  "finalBoard": "|M|J|V|C| |V|J|M|\n| |B|B| |B|V|B|B|\n|B| | |B| |B| | |\n| | | | | | | | |\n| | | |B| | | | |\n| | | | | | | | |\n|B|B|B| | |B|B|B|\n|M|J|V|C|K| |J|M|\n"
+  "finalBoard": "|M|J|V|C| |V|J|M|\n| |B|B|K|B|V|B|B|\n|B| | |B| |B| | |\n| | | | | | | | |\n| | | |B| | | | |\n| | | | | | | | |\n|B|B|B| | |B|B|B|\n|M|J|V|C|K| |J|M|\n"
 }

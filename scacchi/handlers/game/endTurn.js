@@ -1,11 +1,14 @@
 // @ts-check
 
 const {MOVEMENT_MIN, MOVEMENT_BONUS_POINT} = require("../../Macro/macro.js");
+const {enumNames} = require("../../Macro/enums.js");
 const {Match} = require("../../Classes/Match/match.js");
 const {error, Result, checkMateAlert} = require("./utils.js");
 const {CheckMateCheck} = require("../../GameLogic/checkMate.js");
 const {globals} = require("../../Classes/Match/globals.js");
 const {isDangerous} = require("../../utils/gameUtils.js");
+const {DangerUpdate} = require("../../utils/moveUtils.js");
+const {clientBoard} = require("../../handlers/game/utils.js");
 //FIXME - ale: puoi sempre cambiare turno anche se non hai mosso
 
 /**
@@ -48,6 +51,8 @@ function endTurn(match)
 	// match.timer = {timeout, start, time};
 	console.log(`Now it's ${match.currentPlayer.team} turn.`);
 	result.status = 200;
+	//@ts-ignore
+	result.board = clientBoard(match);
 	return (result);
 }
 
@@ -73,6 +78,12 @@ function updateTurn(match, result)
 	}
 	else
 		player.bonusPointCounter += 1;
+	if (match.currentPlayer.boostedPiece != "" && match.board.get(match.currentPlayer.boostedPiece).piece?.type == enumNames.BASTARDS)
+	{
+		console.log();
+		DangerUpdate(match, match.currentPlayer.boostedPiece);
+		match.board.updates.add(match.currentPlayer.boostedPiece);
+	}
 	match.history.UpdateEndTurn(match);
 	match.endTurn();
 	king = match.board.get(player.King);

@@ -62,6 +62,7 @@ function checkMove(coords=[], result, match, boostBool)
 	let	from;
 	let	to;
 	let	king;
+	let OtherBastards;
 
 	from = match.board.get(coords[0]);
 	to = match.board.get(coords[1]);
@@ -97,6 +98,80 @@ function checkMove(coords=[], result, match, boostBool)
 	{
 		result.specialMoves.SetKingDanger();
 		return (error(result, 403, "this would put your king in danger"));
+	}
+	if (vitaNera(match, coords, result) == false)
+		return (false);
+	return (true);
+}
+
+/**
+ * 
+ * @param {Match} match 
+ * @param {Array<string>} coords 
+ * @param {Result} result
+ */
+function vitaNera(match, coords, result)
+{
+	let	OtherBastards;
+
+	OtherBastards = match.GetOtherBoostedBastardCoords();
+	let	theKING = match.currentPlayer.King;
+	if (coords[0] == theKING)
+		theKING = coords[1];
+	if (OtherBastards != null)
+	{
+		for (const coords of OtherBastards)
+		{
+			let boosts = match.board.get(coords).boostedTargetZones.get(coords);
+
+			if (boosts == undefined)
+				continue ;
+			for (const squareCoord of boosts)
+			{
+				let	square = match.board.get(squareCoord);
+				if (!square.piece)
+					throw ("DEBUG error 1");
+				for (const moves of square.piece.moveArray)
+				{
+					match.cursor.Save();
+					match.cursor.set(squareCoord);
+					while (movePiece(match, moves.dy, moves.dx))
+					{
+						let piece;
+						let squareBastard = "";
+
+						piece = match.board.get(match.cursor.square).piece;
+						if (!piece)
+							continue ;
+						if (match.cursor.square == theKING)
+							return (error(result, 403, "boost bastard and his gang would threaten king"));
+						if (piece.isBoostedBool == true && piece.type == enumNames.BASTARDS)
+						{
+							squareBastard = match.cursor.square;
+							if (movePiece(match, moves.dy, moves.dx) == false)
+								break ;
+							if (match.cursor.square == theKING)
+								return (error(result, 403, "boost bastard and his gang would threaten king"));
+							if (match.board.get(squareBastard).targetZones.has(match.cursor.square) && 
+							match.board.get(squareBastard).targetZones.size <= 1)
+								break ;
+							squareBastard = match.cursor.square;
+							if (movePiece(match, moves.dy, moves.dx) == false)
+								break ;
+							if (match.cursor.square == theKING)
+								return (error(result, 403, "boost bastard and his gang would threaten king"));
+							if (match.board.get(squareBastard).targetZones.has(match.cursor.square) && 
+							match.board.get(squareBastard).targetZones.size <= 2)
+								break ;
+						}
+						else
+							break ;
+						match.cursor.Restore();
+					}
+					match.cursor.Restore();
+				}
+			}
+		}
 	}
 	return (true);
 }

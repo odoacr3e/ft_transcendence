@@ -8,7 +8,7 @@ const {bastardChecks} = require("./gameUtils.js");
 /**@typedef {import("../Classes/endPoint/result.js").Result} Result*/
 
 /**
- * 
+ * try to move the cursor to dx, dy. return true/false
  * @param {Match} match
  * @param {number} dx 
  * @param {number} dy
@@ -87,6 +87,8 @@ let DangerUpdate = (match, pos=null) =>
 		match.board.updates.add(pos);
 	else
 		match.board.updates.add(match.cursor.square);
+	// match.board.get(pos).targetZones.delete(pos);
+	// match.board.get(pos).dangerZones.delete(pos);
 	return (1);
 }
 

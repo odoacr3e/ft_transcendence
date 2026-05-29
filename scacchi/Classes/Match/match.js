@@ -2,7 +2,7 @@
 const fs = require("fs");
 
 const {Cursor} = require("./cursor.js");
-const {eTeam, eEvents} = require("../../Macro/enums.js");
+const {eTeam, eEvents, enumNames} = require("../../Macro/enums.js");
 const {Square, initBoard, copyBoard, copyBoostedTargetZones, ChessBoard} = require("../ChessBoard/chessBoard.js");
 const {HISTORY_PATH, CHESSBOARD_W, CHESSBOARD_H} = require("../../Macro/macro.js");
 const {Result} = require("../endPoint/result.js");
@@ -64,6 +64,31 @@ class Match
 			player = this[player.next];
 		}
 		return (false);
+	}
+	GetOtherBoostedBastardCoords()
+	{
+		/** @type {Player} */			let	player;
+		/** @type {Square | undefined} */let	pieceSquare;
+		/** @type {Array<string>} */let	arr = [];
+
+		//@ts-ignore
+		player = this[this.currentPlayer.next];
+		while (player.team != this.currentPlayer.team)
+		{
+			pieceSquare = this.board._data.get(player.boostedPiece);
+			if (pieceSquare?.piece?.type != enumNames.BASTARDS)
+			{
+				//@ts-ignore
+				player = this[player.next];
+				continue ;
+			}
+			arr.push(player.boostedPiece);
+			//@ts-ignore
+			player = this[player.next];
+		}
+		if (arr.length == 0)
+			return (null);
+		return (arr);
 	}
 	/** @param {Result | null} result */
 	CheckMate(result=null)

@@ -175,7 +175,8 @@
       "team": "white",
       "type": "endTurn",
       "useBoostBool": false,
-      "counter": 21
+      "counter": 21,
+      "error": false
     },
     {
       "from": "e8",
@@ -183,7 +184,7 @@
       "team": "black",
       "type": "move",
       "useBoostBool": false,
-      "counter": 22
+      "counter": 21
     },
     {
       "from": "",
@@ -191,7 +192,7 @@
       "team": "black",
       "type": "endTurn",
       "useBoostBool": false,
-      "counter": 23
+      "counter": 22
     },
     {
       "from": "g6",
@@ -199,7 +200,7 @@
       "team": "white",
       "type": "move",
       "useBoostBool": false,
-      "counter": 24
+      "counter": 23
     },
     {
       "from": "",
@@ -207,7 +208,7 @@
       "team": "white",
       "type": "endTurn",
       "useBoostBool": false,
-      "counter": 25
+      "counter": 24
     },
     {
       "from": "d8",
@@ -215,7 +216,7 @@
       "team": "black",
       "type": "move",
       "useBoostBool": false,
-      "counter": 26
+      "counter": 25
     },
     {
       "from": "",
@@ -223,7 +224,7 @@
       "team": "black",
       "type": "endTurn",
       "useBoostBool": false,
-      "counter": 27
+      "counter": 26
     },
     {
       "from": "g7",
@@ -231,7 +232,7 @@
       "team": "white",
       "type": "move",
       "useBoostBool": false,
-      "counter": 28
+      "counter": 27
     },
     {
       "from": "",
@@ -239,7 +240,7 @@
       "team": "white",
       "type": "endTurn",
       "useBoostBool": false,
-      "counter": 29
+      "counter": 28
     },
     {
       "from": "c7",
@@ -247,7 +248,7 @@
       "team": "black",
       "type": "move",
       "useBoostBool": false,
-      "counter": 30
+      "counter": 29
     },
     {
       "from": "",
@@ -255,7 +256,7 @@
       "team": "black",
       "type": "endTurn",
       "useBoostBool": false,
-      "counter": 31
+      "counter": 30
     },
     {
       "from": "g8",
@@ -263,7 +264,7 @@
       "team": "white",
       "type": "move",
       "useBoostBool": false,
-      "counter": 32
+      "counter": 31
     },
     {
       "from": "",
@@ -271,7 +272,7 @@
       "team": "white",
       "type": "endTurn",
       "useBoostBool": false,
-      "counter": 33
+      "counter": 32
     },
     {
       "from": "b7",
@@ -279,7 +280,7 @@
       "team": "black",
       "type": "move",
       "useBoostBool": false,
-      "counter": 34
+      "counter": 33
     },
     {
       "from": "",
@@ -287,7 +288,7 @@
       "team": "black",
       "type": "endTurn",
       "useBoostBool": false,
-      "counter": 35
+      "counter": 34
     },
     {
       "from": "g5",
@@ -295,7 +296,7 @@
       "team": "white",
       "type": "move",
       "useBoostBool": false,
-      "counter": 36
+      "counter": 35
     },
     {
       "from": "",
@@ -303,7 +304,7 @@
       "team": "white",
       "type": "endTurn",
       "useBoostBool": false,
-      "counter": 37
+      "counter": 36
     },
     {
       "from": "e7",
@@ -311,7 +312,7 @@
       "team": "black",
       "type": "move",
       "useBoostBool": false,
-      "counter": 38
+      "counter": 37
     },
     {
       "from": "",
@@ -319,7 +320,7 @@
       "team": "black",
       "type": "endTurn",
       "useBoostBool": false,
-      "counter": 39
+      "counter": 38
     },
     {
       "from": "g6",
@@ -327,7 +328,7 @@
       "team": "white",
       "type": "move",
       "useBoostBool": false,
-      "counter": 40
+      "counter": 39
     },
     {
       "from": "",
@@ -335,7 +336,7 @@
       "team": "white",
       "type": "endTurn",
       "useBoostBool": false,
-      "counter": 41
+      "counter": 40
     },
     {
       "from": "a7",
@@ -343,7 +344,7 @@
       "team": "black",
       "type": "move",
       "useBoostBool": false,
-      "counter": 42
+      "counter": 41
     },
     {
       "from": "",
@@ -351,7 +352,7 @@
       "team": "black",
       "type": "endTurn",
       "useBoostBool": false,
-      "counter": 43
+      "counter": 42
     },
     {
       "from": "g7",
@@ -359,10 +360,10 @@
       "team": "white",
       "type": "move",
       "useBoostBool": false,
-      "counter": 44
+      "counter": 43
     }
   ],
-  "moves": 45,
+  "moves": 44,
   "victory": "",
   "finalBoard": "|M|J|V| | |V|B|M|\n| | | |C| | | |B|\n|B|K|B| |B| | | |\n| |B| |C| | | | |\n| | | |B| | | | |\n| | | | | | | | |\n|B|B|B| |B|B| |B|\n|M|J|V| |K|V|J|M|\n"
 }
