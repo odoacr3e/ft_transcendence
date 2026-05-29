@@ -64,11 +64,11 @@ function execTest(matchPath)
 	let	boards;
 
 	match = globals.getDebugMatch();
-	history = JSON.parse(fs.readFileSync(matchPath, 'utf-8'));
-	if (history.seed == undefined || history.victory == undefined)
-		return (testerFail(MSG.INVALID_JSON));
 	try
 	{
+		history = JSON.parse(fs.readFileSync(matchPath, 'utf-8'));
+		if (history.seed == undefined || history.victory == undefined)
+			return (testerFail(MSG.INVALID_JSON));
 		historyRestore(match, matchPath);
 		board = boardStringify(match);
 	}
@@ -77,7 +77,7 @@ function execTest(matchPath)
 		if (typeof(err) == "string")
 			gameFail(err);
 		else
-			testerFail(MSG.INVALID_MSG);
+			testerFail(MSG.INVALID_MSG, err);
 		return ;
 	}
 	board = boardStringify(match);

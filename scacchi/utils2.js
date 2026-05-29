@@ -3,7 +3,7 @@ const fs = require("fs");
 const {eEvents} = require("./Macro/enums.js");
 const {Match, HistoryEvent} = require("./Classes/Match/match.js");
 const { Piece } = require("./Classes/Pieces/pieces.js");
-const {move, boost, endTurn, init} = require("./handlers/game/Game.js");
+const {move, boost, endTurn, init, error} = require("./handlers/game/Game.js");
 const { render } = require("./test/render.js");
 const { Result } = require("pg");
 
@@ -45,12 +45,17 @@ function historyRestore(match, path)
 		else if (event.type == eEvents.EndTurn)
 			result = endTurn(match);
 		else
-			continue ;
-		if (result.status != 200)
-			throw (`${result.status}: ${result.msg}\n${JSON.stringify(event, null, 2)}`);
+			continue ;//@ts-ignore
+		if (result.status != 200 && !event.error)
+			throw (`${result.status}: ${result.msg}\n${JSON.stringify(event, null, 2)}`);//@ts-ignore
+		else if (result.status == 200 && event.error == true)
+			throw (`${result.status}: \n${JSON.stringify(event, null, 2)}`);
+		else if (result.status == 200)
+			DEBUGCounter++;
+		else
+			error(null, result, 0, null, false);
 		//NOTE - print di ogni risposta/richiesta
 		// printResponse(match, event, result);
-		DEBUGCounter++;
 	}
 	match.historyCreateBool = false;
 	match.history.events = history.events;

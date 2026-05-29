@@ -34,7 +34,7 @@ const testerEnum =
 	INVALID_DIR: "Please give the tester only the file names",
 	INVALID_PATH: "The path $1 is not valid",
 	INVALID_JSON: "The test JSON is missing some core data",
-	INVALID_MSG: "Some of these message got broken",
+	INVALID_MSG: "Tester has crashed: $1",
 	//SECTION - programErrors: problems caused by alerusso, mbiagi or edraccan
 	WIN_WRONG: "No player should have won",
 	WIN_MISS: "The player $1 should have won",

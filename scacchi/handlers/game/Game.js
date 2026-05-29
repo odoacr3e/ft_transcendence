@@ -145,18 +145,21 @@ function gameInfo(req, res)
  * @param {*} result
  * @param {Number} status default: 0
  * @param {String | null} msg default: null
+ * @param {boolean} renderBool
  * @returns false
  */
-function error(res=null, result=null, status=0, msg=null)
+function error(res=null, result=null, status=0, msg=null, renderBool=true)
 {
 	if (!result)
 		result = responseFormatter(null, result, msg, status);
 	else
 		result = responseFormatter(result.match, result, msg, status);
-	console.clear();
+	if (renderBool == true)
+		console.clear();
 	console.log("\x1b[31mGame error\x1b[0m");
 	console.log(`status: ${result.log.status}\nmsg: ${result.log.msg}`);
-	render(DEBUG_MATCH);
+	if (renderBool == true)
+		render(DEBUG_MATCH);
 	if (!res)
 		return (false);
 	if (result.log.status != 0)
