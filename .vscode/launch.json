@@ -6,9 +6,13 @@
             "request": "launch",
             "name": "Launch Program",
             "skipFiles": ["<node_internals>/**"],
-            "program": "${workspaceFolder}/scacchi/test/term.js",
-            "console": "integratedTerminal", // Forza l'uso del terminale integrato
-            "internalConsoleOptions": "neverOpen"
+            // Assicurati che la cartella di lavoro di partenza sia quella corretta
+            "cwd": "${workspaceFolder}", 
+            "program": "${workspaceFolder}/test/term.js",
+            "console": "integratedTerminal",
+            "restart": true,
+            // Aiuta VS Code ad agganciarsi prima che il codice parta
+            "stopOnEntry": false 
         }
     ]
 }

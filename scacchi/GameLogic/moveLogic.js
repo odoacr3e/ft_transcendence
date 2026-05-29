@@ -75,6 +75,8 @@ function checkMove(coords=[], result, match, boostBool)
 		return (error(result, 403, "Square is empty"));
 	if (from.piece?.team != match.currentPlayer.team)
 		return (error(result, 403, `it's ${match.currentPlayer.team} turn`));
+	if (from.piece.type == enumNames.BASTARDS)
+		result.specialMoves.SetBastardMove();
 	if (to.piece)
 	{
 		if (to.piece.team == from.piece.team)
@@ -90,7 +92,7 @@ function checkMove(coords=[], result, match, boostBool)
 		return (error(result, 403, "destination not in piece targetZone"));
 	// if (isDangerous(match, king.dangerZones, king.piece.team) && !simulation(coords, match))
 	// 	return (error(result, 403, "Your king is in danger"));
-	if (!simulation(coords, match))
+	if (!simulation(coords, match, result))
 	{
 		result.specialMoves.SetKingDanger();
 		return (error(result, 403, "this would put your king in danger"));
@@ -330,9 +332,10 @@ function doubleBastardsCheck(match, result, coords)
  * 
  * @param {Array<String>} coords
  * @param {Match} match
+ * @param {Result | null} result
  * @returns 
  */
-function simulation(coords, match)
+function simulation(coords, match, result=null)
 {
 	let tmp;
 	let	from;
@@ -349,16 +352,16 @@ function simulation(coords, match)
 	from.piece = null;
 	if (coords[0] == match.currentPlayer.King)
 		king = to;
-	dangerUpdateMoved(match, coords);
+	dangerUpdateMoved(match, coords, result);
 	if (isDangerous(match, king.dangerZones, king.piece?.team))
 	{
 		copyBoard(tmp, match.board._data);
-		dangerUpdateMoved(match, coords);
+		dangerUpdateMoved(match, coords, result);
 		DangerUpdate(match, coords[0]);
 		return (false);
 	}
 	copyBoard(tmp, match.board._data);
-	dangerUpdateMoved(match, coords);
+	dangerUpdateMoved(match, coords, result);
 	DangerUpdate(match, coords[0]);
 	return (true);
 }

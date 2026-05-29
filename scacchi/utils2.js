@@ -10,6 +10,8 @@ const { Result } = require("pg");
 
 /** @typedef {import ("./Classes/Match/match.js").History} History */
 
+let	DEBUGCounter = 0;
+
 /** 
  * 
  * @param {Match} match
@@ -22,6 +24,7 @@ function historyRestore(match, path)
 	let	buffer;
 	let	result;
 
+	DEBUGCounter = 0;
 	if (path.endsWith(".json") == false)
 		path += ".json";
 	if (!path || !fs.existsSync(path))
@@ -29,6 +32,8 @@ function historyRestore(match, path)
 	buffer = fs.readFileSync(path, "utf-8");
 	history = JSON.parse(buffer);
 	match.Reset();
+	try
+	{
 	init(match, history.seed);
 	match.historyCreateBool = true;
 	for (const event of history.events)
@@ -45,10 +50,16 @@ function historyRestore(match, path)
 			throw (`${result.status}: ${result.msg}\n${JSON.stringify(event, null, 2)}`);
 		//NOTE - print di ogni risposta/richiesta
 		// printResponse(event, result);
+		DEBUGCounter++;
 	}
 	match.historyCreateBool = false;
 	match.history.events = history.events;
 	match.history.moves = history.moves;
+	}
+	catch(err)
+	{
+		throw (`Move ${DEBUGCounter}: ${err}`);
+	}
 }
 
 /**

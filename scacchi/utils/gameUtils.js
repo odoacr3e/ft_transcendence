@@ -16,10 +16,12 @@ let isDangerous = (match, setZones, team) =>
 	board = match.board;
 	if (setZones == undefined)
 		return false;
+	if (team == undefined)
+		throw ("isDangerous: team undefined");
 	for (let x of setZones)
 	{
-		if (team == undefined)
-			return (true);
+		if (!match.board.get(x).piece)
+			throw (`isDangerous: piece in ${x} undefined`);
 		if (match.board.get(x)?.piece?.team != team)
 			return (true);
 	}

@@ -24,7 +24,7 @@
     "pulldb": "npx prisma db pull && npx prisma generate",
     "make": "r='npm run';R='\\033[31m';G='\\033[32m';Y='\\033[33m';Q='\\033[0m'; echo ♔ $Y waiting... $Q;((echo ♖ $Y updating node modules... $Q >/dev/stderr;$r modules) && (echo ♗ $Y configurating prisma...>/dev/stderr;$r confprisma) && (echo ♘ $Y pulling from db... remember to get the .env from Slack $Q >/dev/stderr;$r pulldb)) >/dev/null && echo ♕ $G OK $Q || echo 𝖈𝖍𝖊𝖈𝖐𝖒𝖆𝖙𝖊! $R ERROR $Q",
     "gtest": "node test/testCursor.js && node test/testLocal.js $1 && echo '\n\\033[32mGAME OK!' || echo '\n\\033[31m' KO!; echo '\n\\033[0m'",
-	"term": "node test/term.js"
+    "term": "node test/term.js"
   },
   "keywords": [],
   "author": "",

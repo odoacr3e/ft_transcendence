@@ -60,7 +60,6 @@ const enumInitNames =
 	GHOUL: 'G'
 };
 
-
 const enumSpecialMoves =
 {
 	NONE: 0,
@@ -69,7 +68,16 @@ const enumSpecialMoves =
 	ENDGAME: 1 << 2,
 	CHECK: 1 << 3,
 	CHECKMATE: 1 << 4,
-	SNIPER: 1 << 5
+	SNIPER: 1 << 5,
+	ISBASTARD: 1 << 6,
 }
 
-module.exports = {eTeam, eEvents, enumNames, arrayNames, enumInitNames, enumValues, enumSpecialMoves};
+const kingMovements = 
+[
+	{dx:1, dy:1}, {dx:-1, dy:-1},//obliquo
+	{dx:-1, dy:1}, {dx:1, dy:-1},
+	{dx:0, dy:1}, {dx:0, dy:-1},//verticale
+	{dx:1, dy:0}, {dx:-1, dy:0},//orizzontale
+];
+
+module.exports = {eTeam, eEvents, enumNames, arrayNames, enumInitNames, enumValues, enumSpecialMoves, kingMovements};

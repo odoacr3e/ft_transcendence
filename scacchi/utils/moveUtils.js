@@ -1,5 +1,6 @@
 // @ts-check
 // const { Match } = require("../Classes/Match/match.js");
+const { enumInitNames, enumNames, kingMovements} = require("../Macro/enums.js");
 const Macro = require("../Macro/macro.js");
 const {bastardChecks} = require("./gameUtils.js");
 
@@ -99,7 +100,18 @@ function dangerDelPiece(match, pos=match.cursor.square, result=null)
 	for (const target of pieceSquare.targetZones)
 	{
 		match.board.get(target).dangerZones.delete(pos);
-		// DangerUpdate(match, target);
+		DangerUpdate(match, target);
+	}
+	if (result && result.specialMoves.CheckBastardMove())
+	{
+		match.cursor.Save();
+		for (const move of kingMovements)
+		{
+			movePiece(match, move.dy, move.dx);
+			match.board.get(match.cursor.square).dangerZones.delete(pos);	
+			match.cursor.Restore();
+		}
+		match.cursor.Restore();
 	}
 	for (const [key, set] of pieceSquare.boostedTargetZones)
 	{
@@ -155,7 +167,7 @@ function dangerUpPiece(match, pos=match.cursor.square, result=null)
 	{
 		if (!result || result.specialMoves.CheckSniperMove() == 0)
 		{
-			dangerDelPiece(match, target);
+			dangerDelPiece(match, target, result);
 			DangerUpdate(match, target);
 		}
 		if (pos == null)
@@ -180,8 +192,8 @@ function dangerUpdateMoved(match, selected=[], result=null)
 {
 	if (selected.length != 2)
 		throw ("dangerUpdateMoved must be called with two pieces: from, to");
-	dangerDelPiece(match, selected[0]);
-	dangerUpPiece(match, selected[1]);
+	dangerDelPiece(match, selected[0], result);
+	dangerUpPiece(match, selected[1], result);
 	DangerUpdate(match, selected[1]);
 }
 
