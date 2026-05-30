@@ -14,9 +14,10 @@ import {clientBoard} from "../../handlers/game/utils.js";
 /**
  * goes to the next turn
  * @param {Match} match
+ * @param {boolean} sendBoardBool
  * @returns {Result}
  */
-function endTurn(match)
+function endTurn(match, sendBoardBool=true)
 {
 	let	result;
 	let timeout;
@@ -51,8 +52,8 @@ function endTurn(match)
 	// match.timer = {timeout, start, time};
 	console.log(`Now it's ${match.currentPlayer.team} turn.`);
 	result.status = 200;
-	//@ts-ignore
-	result.board = clientBoard(match);
+	if (sendBoardBool)//@ts-ignore
+		result.board = clientBoard(match);
 	return (result);
 }
 

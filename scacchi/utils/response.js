@@ -108,40 +108,40 @@ function formatPlayer(match, result)
 		result.p4.isPlaying = true;
 }
 
-// /**
-//  * this function is used by JSON to recursively parse Objects
-//  * this should not be called
-//  * @param {*} key 
-//  * @param {*} val 
-//  */
-// function _jsonParser(key, val)
-// {
-// 	if (val instanceof Set)
-// 	{
-// 		return [...val];
-// 	}
-// 	else if (val instanceof Map) 
-// 	{
-// 		return Object.fromEntries(val);
-// 	}
-// 	else
-// 		return (val);
-// }
-
 /**
- * 
- * @param {string} key 
- * @param {object} val 
- * @returns 
+ * this function is used by JSON to recursively parse Objects
+ * this should not be called
+ * @param {*} key 
+ * @param {*} val 
  */
 function _jsonParser(key, val)
 {
 	if (val instanceof Set)
-		return ({ __type: "Set", data: [...val] });
-	if (val instanceof Map)
-		return ({ __type: "Map", data: [...val.entries()]});
-	return (val);
+	{
+		return [...val];
+	}
+	else if (val instanceof Map) 
+	{
+		return Object.fromEntries(val);
+	}
+	else
+		return (val);
 }
+
+// /**
+//  * 
+//  * @param {string} key 
+//  * @param {object} val 
+//  * @returns 
+//  */
+// function _jsonParser(key, val)
+// {
+// 	if (val instanceof Set)
+// 		return ({ __type: "Set", data: [...val] });
+// 	if (val instanceof Map)
+// 		return ({ __type: "Map", data: [...val.entries()]});
+// 	return (val);
+// }
 
 /**
  * 

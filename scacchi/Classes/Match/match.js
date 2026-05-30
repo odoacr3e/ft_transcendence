@@ -10,6 +10,7 @@ import {Player, Timer} from "./player.js";
 import {boardStringify} from "../../test/render.js";
 import { isDangerous } from "../../utils/gameUtils.js";
 import { match } from "assert";
+import { clientBoard } from "../../handlers/game/utils.js";
 
 class Match
 {
@@ -103,6 +104,8 @@ class Match
 			result.status = 200;
 			result.youWin = true;
 			result.specialMoves.SetCheckMate();
+			//@ts-ignore
+			result.board = clientBoard(this);
 		}
 		else
 			return (new Result());
@@ -230,6 +233,7 @@ class HistoryEvent
 function updateMoves(match, square, coords)
 {
 	let	record;
+	let	eName;
 
 	if (!this)
 		throw ("updateMoves must be called inside of History class");
@@ -239,8 +243,10 @@ function updateMoves(match, square, coords)
 		throw (`History: invalid square`);
 	if (!square.piece)
 		throw (`History: missing piece in square: ${square}`);
-	record = new HistoryEvent(this.moves, eEvents.Move, square.piece.team, square.piece.type, coords[0], coords[1], square.boostedTargetZones, square.piece.isBoostedBool);
-	record.useBoostBool = match.currentPlayer.useBoostBool;
+	eName = eEvents.Move;
+	if (match.currentPlayer.useBoostBool)
+		eName = eEvents.MoveBoost;
+	record = new HistoryEvent(this.moves, eName, square.piece.team, square.piece.type, coords[0], coords[1], square.boostedTargetZones, square.piece.isBoostedBool);
 	this.events.push(record);
 	this.moves += 1;
 }

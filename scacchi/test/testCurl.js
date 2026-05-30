@@ -6,6 +6,7 @@ import { exec, execSync } from "child_process";
 import { globals } from "../Classes/Match/globals.js";
 import { historyRestore } from "../utils/history.js";
 import {HISTORY_PATH} from "../Macro/macro.js";
+import {eEvents} from "../Macro/enums.js";
 import { colors as color } from "../utils/colors.js";
 import { testerEnum as MSG, curlCmd } from "./enumsTest.js";
 import {boardStringify} from "./render.js";
@@ -15,7 +16,8 @@ import {render} from "./render.js";
 
 /** @typedef {import ("../../history/HISTORY.json")} historyData */
 /** @typedef {import ("../Classes/ChessBoard/chessBoard.js").ChessBoard} ChessBoard */
-/** @typedef {{board: ChessBoard, log: {msg: string, status: ""}}} BackResponse*/
+/** @typedef {import ("../Classes/Match/match.js").HistoryEvent} HistoryEvent */
+/** @typedef {{board: ChessBoard, log: {msg: string, status: number}}} BackResponse*/
 
 const curlWaitTimeMs = 10; 
 let	currMatch = "";
@@ -27,13 +29,15 @@ let	currEvent = {};
 let	currSquare = "";
 let	fPiece = "";
 let	bPiece = "";
+let	colorON = color.bold;
+let	colorOFF = color.reset;
+let	rateSuccess = {success: 0, tests: 0};
 
 async function testerMain()
 {
 	let	matchName;
 	let	matchPath;
 
-	// console.log = () => {};
 	exec("npm run server", (err, stdout, stderr) =>{if (err){console.error(`${err} ${stderr}`)}});
 	await msleep(1000);
 	matchName = process.argv.at(2);
@@ -58,11 +62,14 @@ await testerMain();
 
 async function execAllTests()
 {
+	console.log = () => {};
 	for (const file of fs.readdirSync(HISTORY_PATH))
 	{
+		rateSuccess.tests++;
 		currMatch = file;
 		await execTest(`${HISTORY_PATH}${file}`);
 	}
+	console.debug(`Win rate: ${rateSuccess.success}/${rateSuccess.tests}`)
 	process.exit(errorFlag);
 }
 
@@ -86,12 +93,13 @@ async function execTest(matchPath)
 		if (history.seed == undefined || history.victory == undefined)
 			return (testerFail(MSG.INVALID_JSON));
 		match.Reset();
-		await executeEvents(match, history);
+		if (await executeEvents(match, history) == false)
+			return ;
 	}
 	catch(err)
 	{
 		if (typeof(err) == "string")
-			gameFail(err);
+			curlFail();
 		else//@ts-ignore
 			testerFail(MSG.INVALID_MSG, err);
 		return ;
@@ -156,6 +164,7 @@ async function executeEvents(match, history)
 function success()
 {
 	console.debug(`${currMatch}: ${MSG.RESULT_OK}`);
+	rateSuccess.success++;
 }
 
 /**
@@ -166,9 +175,9 @@ function success()
  */
 function testerFail(msg, p1="", p2="")
 {
-	console.debug(`${MSG.RESULT_ERROR}: riprova, ogni tanto si impalla`);
+	console.debug(`${MSG.RESULT_ERROR}: riprova, ogni tanto curl si impalla`);
 	//@ts-ignore
-	console.debug(`${jsonStr(p1)} => `);
+	console.debug(`${p1}`);
 	process.exit();
 	//fail(msg, p1, p2);
 }
@@ -190,10 +199,10 @@ function curlFail()
 {
 	errorFlag = 1;
 	console.debug(`${currMatch}: ${MSG.RESULT_FAIL}`);
-	console.debug(`currEvent: \n${jsonStr(currEvent)}`);
-	console.debug(`square: ${currSquare}: ${msgErr}`);
-	console.debug(`frontend, piece ${fPiece}: ${jsonStr(fData)}`);
-	console.debug(`backend, piece ${bPiece}: ${jsonStr(BData)}`);
+	console.debug(`${colorON}currEvent${colorOFF}: \n${jsonStr(currEvent)}`);
+	console.debug(`${colorON}square${colorOFF}: ${currSquare}: ${msgErr}`);
+	console.debug(`${colorON}frontend${colorOFF}, piece ${fPiece}: ${jsonStr(fData)}`);
+	console.debug(`${colorON}backend${colorOFF}, piece ${bPiece}: ${jsonStr(BData)}`);
 	return (false);
 }
 
@@ -265,15 +274,31 @@ async function curlSender(type, from="", to="")
 {
 	let	cmd;
 	let	resp;
+	/** @type {BackResponse} */
+	let	json;
 
 	await msleep(curlWaitTimeMs);
+	//@ts-ignore
+	if (currEvent.useBoostBool && type == eEvents.Move)
+		type = eEvents.MoveBoost;
 	cmd = curlCmd;
 	cmd = cmd.replace("$type", type);
 	cmd = cmd.replace("$from", from.toString());
 	cmd = cmd.replace("$to", to.toString());
 	resp = execSync(cmd).toString();
 	//@ts-ignore
-	return (jsonParser(resp));
+	json = jsonParser(resp);
+	if (json.log.status != 200)
+	{
+		if (json.log.msg == "Game Error: You need to move first")
+			return (json);
+		console.log(`ERROR(${json.log.status}) => ${json.log.msg}`);//@ts-ignore
+		if (currEvent.error)
+			return (json);
+		setError(json.log.msg);
+		throw ("");
+	}
+	return (json);
 }
 
 /**
@@ -313,6 +338,8 @@ function cmpBoard(board, other)
 		bPiece = Bsquare.piece?.type; 
 		if (!cmp(Fsquare.targetZones, Bsquare.targetZones, MSG.BOARD_TARGET))
 			return (false);
+		// if (key == "h1" && currEvent.counter == 9)
+		// 	console.log("WOW");
 		if (!cmp(Fsquare.boostedTargetZones, Bsquare.boostedTargetZones, MSG.BOARD_BOOST, true))
 			return (false);
 		if (Fsquare.piece && !Bsquare.piece)
@@ -335,35 +362,35 @@ function cmpBoard(board, other)
 
 /**
  * 
- * @param {Set<*> | Map<*, *>} fData
- * @param {Set<*> | Map<*, *>} bData 
+ * @param {Set<*> | Map<*, *>} fZone
+ * @param {Set<*> | Map<*, *>} bZone 
  * @param {string} errMsg
  * @param {boolean | null} recBool
  */
-function cmp(fData, bData, errMsg, recBool=false)
+function cmp(fZone, bZone, errMsg, recBool=false)
 {
 	let	s1;
 	let	s2;
 
 	//@ts-ignore
-	s1 = fData.size != undefined ? fData.size: fData.length;
+	s1 = fZone.size != undefined ? fZone.size: fZone.length;
 	//@ts-ignore
-	s2 = bData.size != undefined ? bData.size: bData.length;
+	s2 = bZone.size != undefined ? bZone.size: bZone.length;
 	if (s1 != s2)
-		return (setError(errMsg, fData, bData));
+		return (setError(errMsg, fZone, bZone));
 	if (recBool)
 	{
-		for (const [key, boostVal] of bData)
+		for (const [key, boostVal] of bZone)
 		{//@ts-ignore
-			if (cmp(fData.get(key), boostVal, errMsg) == false)
-				return (setError(errMsg, fData, bData));
+			if (cmp(fZone.get(key), boostVal, errMsg) == false)
+				return (setError(errMsg, fZone, bZone));
 			return (true);
 		}
 	}
-	for (const val of fData)
+	for (const val of fZone)
 	{
-		if (bData.has(val) == false)
-			return (setError(errMsg, fData, bData));
+		if (bZone.has(val) == false)
+			return (setError(errMsg, fZone, bZone));
 	}
 	return (true);
 }
@@ -387,6 +414,6 @@ function setError(msg, frontData=null, backData=null)
 {
 	msgErr =  msg;
 	fData = frontData;
-	fData = backData;
+	BData = backData;
 	return (false);
 }

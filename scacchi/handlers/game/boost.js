@@ -32,7 +32,7 @@ function boost(match, from)
 		if (CheckMateCheck(match, match[match.currentPlayer.next].King))
 			return (match.CheckMate(result));
 		else
-			endTurn(match);
+			endTurn(match, false);
 	}
 	if (prevBoost == "")
 		prevBoost = from;
