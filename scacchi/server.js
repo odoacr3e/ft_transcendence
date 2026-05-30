@@ -9,6 +9,7 @@ import { responseFormatter } from "./utils/response.js";
 // setup
 const PORT = 8080;
 let requests = 0;
+let conn;
 
 app.set('json spaces', 2);
 
@@ -39,8 +40,8 @@ app.use((err, req, res, next) =>
 app.use("/api", apiRouter);
 app.use("/auth", authRouter)
 
-app.listen(PORT, () => {
+conn = app.listen(PORT, () => {
   console.log("Server is listening on port " + PORT);
 });
 
-export {app};
+export {app, conn};

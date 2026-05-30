@@ -162,6 +162,8 @@ class History
 
 		if (fs.existsSync(HISTORY_PATH) == false)
 			fs.mkdirSync(HISTORY_PATH);
+		if (name && fs.existsSync(name) == true)
+			fs.rmSync(name);
 		for (const event of this.events)
 		{
 			// @ts-ignore

@@ -108,37 +108,70 @@ function formatPlayer(match, result)
 		result.p4.isPlaying = true;
 }
 
+// /**
+//  * this function is used by JSON to recursively parse Objects
+//  * this should not be called
+//  * @param {*} key 
+//  * @param {*} val 
+//  */
+// function _jsonParser(key, val)
+// {
+// 	if (val instanceof Set)
+// 	{
+// 		return [...val];
+// 	}
+// 	else if (val instanceof Map) 
+// 	{
+// 		return Object.fromEntries(val);
+// 	}
+// 	else
+// 		return (val);
+// }
+
 /**
- * this function is used by JSON to recursively parse Objects
- * this should not be called
- * @param {*} key 
- * @param {*} val 
+ * 
+ * @param {string} key 
+ * @param {object} val 
+ * @returns 
  */
 function _jsonParser(key, val)
 {
 	if (val instanceof Set)
-	{
-		return [...val];
-	}
-	else if (val instanceof Map) 
-	{
-		return Object.fromEntries(val);
-	}
-	else
-		return (val);
+		return ({ __type: "Set", data: [...val] });
+	if (val instanceof Map)
+		return ({ __type: "Map", data: [...val.entries()]});
+	return (val);
+}
+
+/**
+ * 
+ * @param {string} key 
+ * @param {*} val 
+ * @returns 
+ */
+function _jsonReviver(key, val)
+{
+	if (val && val.__type === "Set")
+		return (new Set(val.data));
+	if (val && val.__type === "Map")
+		return (new Map(val.data));
+	return val;
 }
 
 /**
  * JSON does not support Maps, Sets. This function manages this
  * it stringify and then parse because Express calls stringify natively
  * so we need to parse it again (the RAM is happy)
- * @param {object} data a javascript object
+ * @param {object | string} data a javascript object
  * @returns {object}
  * @example let dataForClient = jsonParser(data)
  */
 function jsonParser(data)
 {
-	return (JSON.parse(JSON.stringify(data, _jsonParser, 2)));
+	if (typeof(data) == "string")
+		return (JSON.parse(data, _jsonReviver));
+	else
+		return (JSON.parse(JSON.stringify(data, _jsonParser, 2)));
 }
 
 const jsonResponse = { ResponseError, ResponseSuccess };

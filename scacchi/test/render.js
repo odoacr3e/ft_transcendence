@@ -13,8 +13,9 @@ import { cmd } from "./enumsTest.js";
  * @param {Match | null} match 
  * @param {Array<String>} selected which positions are selected
  * @param {String} TargetDangerSwitch Valid value: "Target", "Danger", "None" 
+ * @param {boolean} silentBool  
  */
-function render(match=null, selected=[], TargetDangerSwitch="")
+function render(match=null, selected=[], TargetDangerSwitch="", silentBool=false)
 {
 	let buffer;
 	let	board;
@@ -31,7 +32,8 @@ function render(match=null, selected=[], TargetDangerSwitch="")
 	coords = getCoords(match);
 	match.cursor.set(coords.start);
 	buffer = "";
-	displayPlayerInfo(board, match);
+	if (silentBool == false)
+		displayPlayerInfo(board, match);
 	do
 	{
 		match.cursor.setCol(1);
@@ -39,8 +41,6 @@ function render(match=null, selected=[], TargetDangerSwitch="")
 		{
 			coords.curr = match.cursor.square;
 			square = board.get(coords.curr);
-			if (!square)
-				throw (`board position ${match.cursor.square} gives back null pointer`);
 			buffer += renderSquare(square, coords, selected, TargetDangerSwitch);
 		}
 		while (match.cursor.moveCol(+1))

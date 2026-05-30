@@ -6,13 +6,11 @@
             "request": "launch",
             "name": "Launch Program",
             "skipFiles": ["<node_internals>/**"],
-            // Assicurati che la cartella di lavoro di partenza sia quella corretta
-            "cwd": "${workspaceFolder}/scacchi", 
-            "program": "${workspaceFolder}/scacchi/test/term.js",
+            "cwd": "${workspaceFolder}/scacchi",
+            "program": "${workspaceFolder}/scacchi/test/testFrontend.js",
             "console": "integratedTerminal",
-            "restart": true,
-            // Aiuta VS Code ad agganciarsi prima che il codice parta
-            "stopOnEntry": false 
+            "localRoot": "${workspaceFolder}",
+            "remoteRoot": "/home/alerusso/ft_transcendence"
         }
     ]
 }

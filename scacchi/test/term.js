@@ -14,6 +14,7 @@ import readline from "node:readline";
 import * as server from "../server.js";
 import { makeTransfiguration } from "../handlers/game/transfiguration.js";
 import { cmd } from "./enumsTest.js";
+import { execSync } from "node:child_process";
 
 
 //SECTION - main: inizializza e fa primo render, mette terminale in ascolto
@@ -178,6 +179,7 @@ function termCleanup(key)
 {
 	const	buffer = Buffer.alloc(50);
 	let		bRead;
+
 	process.stdin.setRawMode(false);
 	while (key != "y" && key != "n")
 	{

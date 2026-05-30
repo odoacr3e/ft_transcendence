@@ -173,5 +173,3 @@ function putColor(str, i, col)
 {
 	return (str.slice(0, i) + `${col}${str.at(i)}${color.reset}` + str.slice(i + 1, str.length)); 
 }
-
-export {HISTORY_PATH, MSG, color, currMatch, boardStringify, fail, gameFail, highLightBoardDiff, putColor, testerFail, success};
