@@ -171,8 +171,6 @@ class History
 		{
 			// @ts-ignore
 			delete event.pieceBoosterTargetZones;
-			// @ts-ignore
-			delete event.movedPiece;
 			//@ts-ignore
 			delete event.isBoostedBool;
 		}

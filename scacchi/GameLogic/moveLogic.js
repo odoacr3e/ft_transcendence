@@ -206,8 +206,6 @@ function updateChessboard(coords=[], result, match, boostBool)
 			match[to.piece.team].boostedPiece = "";
 	}
 	match.history.UpdateMoves(match, from, coords);
-	if (coords.at(0) == match.currentPlayer.boostedPiece)
-		match.currentPlayer.boostedPiece = coords[1];
 	if (from.piece.type == enumNames.VALKIRYA && result.usedBoost == true && from.piece.isBoostedBool == true)
 	{
 		to.piece = null;
@@ -228,12 +226,44 @@ function updateChessboard(coords=[], result, match, boostBool)
 	}
 	if (to.piece && to.piece.isMovedBool == false)
 		to.piece.isMovedBool = true;
+	boostedPieceUpdates(match, coords);
 	match.moves++;
 	dangerUpdateMoved(match, coords, result);
 	return (true);
 }
 
 //SECTION - move utils
+
+/**
+ * 
+ * @param {Match} match 
+ * @param {Array<string>} coords 
+ */
+function boostedPieceUpdates(match, coords)
+{
+	let	boostPieceSquare;
+	let	boostPieceCoord;
+	let	diff;
+
+	if (coords.length != 2)
+		throw ("boostedPIeceUpdates: coords size error");
+	if (!match.currentPlayer.boostedPiece)
+		return ;
+	if (coords.at(0) == match.currentPlayer.boostedPiece)
+	{
+		match.currentPlayer.boostedPiece = coords[1];
+		return ;
+	}
+	boostPieceCoord = match.currentPlayer.boostedPiece;
+	boostPieceSquare = match.board.get(boostPieceCoord);
+	if (!boostPieceSquare.piece)
+		throw ("boostedPIeceUpdates: backend has lost track of boosted piece");
+	if (boostPieceSquare.piece.type != enumNames.BASTARDS)
+		return ;
+	diff = match.cursor.Diff(coords[1], boostPieceCoord);
+	if (Math.abs(diff.col) < 2 && Math.abs(diff.row) < 2)
+		DangerUpdate(match, boostPieceCoord);
+}
 
 /**
  * 
@@ -252,6 +282,8 @@ function moveCastling(match, from, to)
 	match.cursor.Save();
 	if (pieces == null)
 		throw ("moveCastling: we have lost our pieces coords, sorry");
+	match.board.updates.add(kpos);
+	match.board.updates.add(mpos);
 	match.cursor.set(pieces.king.pos);
 	for (let i = 0; movePiece(match, pieces.dir.diffCol, pieces.dir.diffRow); ++i)
 	{
@@ -283,8 +315,9 @@ function moveCastling(match, from, to)
 		match.currentPlayer.King = square1.piece.pos;
 	else
 		throw ("moveCastling: backend has lost the king");
+	match.board.updates.add(pieces.king.pos);
+	match.board.updates.add(pieces.mino.pos);
 	match.cursor.Restore();
-
 }
 
 /**
@@ -356,6 +389,7 @@ function doubleBastardsCheck(match, result, coords)
 	let from;
 	let to;
 	let	bastard;
+	let	bastardNewCoord;
 	let	bastardSquare;
 	let	other;
 	let last;
@@ -373,12 +407,14 @@ function doubleBastardsCheck(match, result, coords)
 	if (from.piece?.type == enumNames.BASTARDS && from.piece?.isBoostedBool == true)
 	{
 		bastard = coords[0];
+		bastardNewCoord = coords[1];
 		other = last.from;
 		bastardSquare = from;
 	}
 	else if (last.movedPiece == enumNames.BASTARDS && last.isBoostedBool)
 	{
 		bastard = last.from;
+		bastardNewCoord = last.to;
 		other = coords[0];
 		bastardSquare = match.board.get(match.history.Last().to);
 	}
@@ -398,6 +434,7 @@ function doubleBastardsCheck(match, result, coords)
 			bastardSquare.piece.isBoostedBool = false;
 			from.piece.isBoostedBool = false;
 			match.cursor.set(tmpCursor);
+			match.board.updates.add(bastardNewCoord);
 			return true;
 		}
 	}

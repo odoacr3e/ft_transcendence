@@ -34,36 +34,36 @@ function historyRestore(match, path)
 	match.Reset();
 	try
 	{
-	init(match, history.seed);
-	match.historyCreateBool = true;
-	for (const event of history.events)
-	{
-		if (event.type == eEvents.Move)
-			result = move(match, event.from, event.to, event.useBoostBool);
-		else if (event.type == eEvents.Boost)
-			result = boost(match, event.from);
-		else if (event.type == eEvents.EndTurn)
+		init(match, history.seed);
+		match.historyCreateBool = true;
+		for (const event of history.events)
 		{
-			result = endTurn(match);
-			continue ;
+			if (event.type == eEvents.Move)
+				result = move(match, event.from, event.to, event.useBoostBool);
+			else if (event.type == eEvents.Boost)
+				result = boost(match, event.from);
+			else if (event.type == eEvents.EndTurn)
+			{
+				result = endTurn(match);
+				continue ;
+			}
+			else
+				continue ;//@ts-ignore
+			if (result.status != 200 && !event.error)
+				throw (`${result.status}: ${result.msg}\n${JSON.stringify(event, null, 2)}`);//@ts-ignore
+			else if (result.status == 200 && event.error == true)
+				throw (`${result.status}: \n${JSON.stringify(event, null, 2)}`);
+			else if (result.status == 200)
+				DEBUGCounter++;
+			else
+				error(null, result, 0, null, false);
+			render(match);
+			//NOTE - print di ogni risposta/richiesta
+			// printResponse(match, event, result);
 		}
-		else
-			continue ;//@ts-ignore
-		if (result.status != 200 && !event.error)
-			throw (`${result.status}: ${result.msg}\n${JSON.stringify(event, null, 2)}`);//@ts-ignore
-		else if (result.status == 200 && event.error == true)
-			throw (`${result.status}: \n${JSON.stringify(event, null, 2)}`);
-		else if (result.status == 200)
-			DEBUGCounter++;
-		else
-			error(null, result, 0, null, false);
-		//NOTE - print di ogni risposta/richiesta
-		render(match);
-		// printResponse(match, event, result);
-	}
-	match.historyCreateBool = false;
-	match.history.events = history.events;
-	match.history.moves = history.moves;
+		match.historyCreateBool = false;
+		match.history.events = history.events;
+		match.history.moves = history.moves;
 	}
 	catch(err)
 	{

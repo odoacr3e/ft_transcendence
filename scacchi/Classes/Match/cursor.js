@@ -207,6 +207,27 @@ class Cursor
 		this.square = tmp;
 		return (newSquare);
 	}
+	/** @param {string} coord1 */
+	Diff(coord1, coord2=this.square)
+	{
+		let	cols;
+		let	rows;
+		let	tmp;
+
+		tmp = this.square;
+		cols = [0, 0];
+		rows = [0, 0];
+		coord1 = this.Normify(coord1);
+		coord2 = this.Normify(coord2);
+		this.set(coord1);
+		cols[0] = this.getCol();
+		rows[0] = this.getRow();
+		this.set(coord2);
+		cols[1] = this.getCol();
+		rows[1] = this.getRow();
+		this.square = tmp;
+		return ({col: cols[0] - cols[1], row: rows[0] - rows[1]});
+	}
 }
 
 

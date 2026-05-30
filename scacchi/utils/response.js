@@ -108,6 +108,7 @@ function formatPlayer(match, result)
 		result.p4.isPlaying = true;
 }
 
+//FIXME - con questa va il FRONTEND
 /**
  * this function is used by JSON to recursively parse Objects
  * this should not be called
@@ -128,6 +129,7 @@ function _jsonParser(key, val)
 		return (val);
 }
 
+//FIXME - con questa va testCurl.js
 // /**
 //  * 
 //  * @param {string} key 
@@ -151,9 +153,9 @@ function _jsonParser(key, val)
  */
 function _jsonReviver(key, val)
 {
-	if (val && val.__type === "Set")
+	if (val && val.__type == "Set")
 		return (new Set(val.data));
-	if (val && val.__type === "Map")
+	if (val && val.__type == "Map")
 		return (new Map(val.data));
 	return val;
 }
