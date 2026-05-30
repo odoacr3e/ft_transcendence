@@ -80,4 +80,4 @@ const kingMovements =
 	{dx:1, dy:0}, {dx:-1, dy:0},//orizzontale
 ];
 
-module.exports = {eTeam, eEvents, enumNames, arrayNames, enumInitNames, enumValues, enumSpecialMoves, kingMovements};
+export {eTeam, eEvents, enumNames, arrayNames, enumInitNames, enumValues, enumSpecialMoves, kingMovements};

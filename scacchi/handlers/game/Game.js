@@ -1,16 +1,16 @@
 // @ts-check
 
-const	{abort} = require("node:process");
-const	{responseFormatter} = require("../../utils/response");
-const { Result, clientBoard } = require("./utils.js");
-const	move = require("./move").move; 
-const	endTurn = require("./endTurn").endTurn; 
-const	boost = require("./boost").boost;
-const	init = require("./init").init;
-const	render = require("../../test/render.js").render;
-const	{makeTransfiguration} = require("./transfiguration.js");
+import {abort} from "node:process";
+import {responseFormatter} from "../../utils/response.js";
+import { Result, clientBoard } from "./utils.js";
+import { move } from "./move.js";
+import { endTurn } from "./endTurn.js";
+import { boost } from "./boost.js";
+import { init } from "./init.js";
+import { render } from "../../test/render.js";
+import {makeTransfiguration} from "./transfiguration.js";
 //FIXME - solo debug
-const	vault = require("../../Classes/Match/globals.js").globals;
+import { globals as vault } from "../../Classes/Match/globals.js";
 const DEBUG_MATCH = vault.getDebugMatch();
 
 //FIXME - ale: i controlli di gameChecks danno per scontato che:
@@ -167,4 +167,4 @@ function error(res=null, result=null, status=0, msg=null, renderBool=true)
 	res.json(result);
 }
 
-module.exports = {gameChecks, gameHandler, gameInfo, error, move, endTurn, boost, init};
+export {gameChecks, gameHandler, gameInfo, error, move, endTurn, boost, init};

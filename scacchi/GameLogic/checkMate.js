@@ -1,8 +1,9 @@
 // @ts-check
-const {preset} =			require("../lib/lib.js").Chess;
-const {enumNames} =			require("../Macro/enums.js");
-const {Match} = require("../Classes/Match/match.js");
-const {isDangerous} = require("../utils/gameUtils.js");
+import { Chess } from "../lib/lib.js";
+const {preset} = Chess;
+import {enumNames} from "../Macro/enums.js";
+import {Match} from "../Classes/Match/match.js";
+import {isDangerous} from "../utils/gameUtils.js";
 /**
  * 
  * @param {Match} match
@@ -206,4 +207,4 @@ function CheckMateCheck(match, kingSquareString)
 	return true;
 }
 
-module.exports = {CheckMateCheck, getDirection};
+export {CheckMateCheck, getDirection};

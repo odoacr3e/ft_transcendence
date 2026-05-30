@@ -1,10 +1,14 @@
 
-const lib = require("../lib/lib.js");
+import * as lib from "../lib/lib.js";
+import usersRouter from "./users.js";
+import gameRouter from "./game.js";
+import piecesRouter from "./pieces.js";
+import notificationsRouter from "./notifications.js";
 const router = lib.include.express.Router();
 
-router.use("/users", require("./users.js"));
-router.use("/game", require("./game.js"));
-router.use("/pieces", require("./pieces.js"));
-router.use("/notifications", require("./notifications.js"));
+router.use("/users", usersRouter);
+router.use("/game", gameRouter);
+router.use("/pieces", piecesRouter);
+router.use("/notifications", notificationsRouter);
 
-module.exports = router;
+export default router;

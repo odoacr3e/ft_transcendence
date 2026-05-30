@@ -1,11 +1,11 @@
 // @ts-check
-const {DangerUpdate} = require("../../utils/moveUtils.js");
-const {movementJester} = require("./movementJester.js");
-const {movementValkirya} = require("./movementValkirya.js");
-const {movementBastards} = require("./movementBastards.js");
-const {movementChampion} = require("./movementChampion.js");
-const {movementMinotaurus} = require("./movementMinotaurus.js");
-const {enumNames, enumValues} = require("../../Macro/enums.js");
+import {DangerUpdate} from "../../utils/moveUtils.js";
+import {movementJester} from "./movementJester.js";
+import {movementValkirya} from "./movementValkirya.js";
+import {movementBastards} from "./movementBastards.js";
+import {movementChampion} from "./movementChampion.js";
+import {movementMinotaurus} from "./movementMinotaurus.js";
+import {enumNames, enumValues} from "../../Macro/enums.js";
 
 const preset = {
 	King: {
@@ -136,4 +136,4 @@ class Preset
 	}
 }
 
-module.exports = {Preset};
+export {Preset, preset};

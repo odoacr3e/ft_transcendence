@@ -1,7 +1,7 @@
 
-const lib = require("../lib/lib");
-const piecesQuery = require("../query/piecesQuery.js");
-const { jsonResponse } = require("../utils/response.js");
+import * as lib from "../lib/lib.js";
+import * as piecesQuery from "../query/piecesQuery.js";
+import { jsonResponse } from "../utils/response.js";
 
 
 /**
@@ -43,4 +43,4 @@ const getPieceById = async (req, res) => {
 
 const getPiecesHandlers = { getAllPieces, getPieceById };
 
-module.exports = { getPiecesHandlers };
+export { getPiecesHandlers };

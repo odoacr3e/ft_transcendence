@@ -1,7 +1,9 @@
 
-const lib = require("./lib/lib.js");
+import * as lib from "./lib/lib.js";
+import apiRouter from "./routes/api.js";
+import authRouter from "./routes/auth.js";
 const app = lib.include.express();
-const { responseFormatter } = require("./utils/response.js");
+import { responseFormatter } from "./utils/response.js";
 // const cors = require('cors');
 
 // setup
@@ -34,11 +36,11 @@ app.use((err, req, res, next) =>
 });
 
 // routes
-app.use("/api", require("./routes/api.js"));
-app.use("/auth", require("./routes/auth.js"))
+app.use("/api", apiRouter);
+app.use("/auth", authRouter)
 
 app.listen(PORT, () => {
   console.log("Server is listening on port " + PORT);
 });
 
-module.exports = {app};
+export {app};

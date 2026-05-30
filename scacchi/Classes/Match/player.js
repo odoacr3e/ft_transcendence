@@ -1,7 +1,7 @@
 //@ts-check
 
-const {MATCHTIMER} = require("../../Macro/macro.js");
-const {eTeam, eEvents} = require("../../Macro/enums.js");
+import {MATCHTIMER} from "../../Macro/macro.js";
+import {eTeam, eEvents} from "../../Macro/enums.js";
 
 class Player
 {
@@ -75,4 +75,4 @@ class Timer
 	}
 }
 
-module.exports = {Player, Timer};
+export {Player, Timer};

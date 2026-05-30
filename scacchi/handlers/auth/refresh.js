@@ -1,10 +1,10 @@
 
-const lib = require("../../lib/lib.js");
+import * as lib from "../../lib/lib.js";
 const redis = lib.conn.redis;
 const crypto = lib.conn.crypto;
-const { createJwt } = require("../../utils/auth.js");
-const { colors } = require("../../utils/colors.js");
-const { jsonResponse } = require("../../utils/response.js");
+import { createJwt } from "../../utils/auth.js";
+import { colors } from "../../utils/colors.js";
+import { jsonResponse } from "../../utils/response.js";
 
 /** 
  * @typedef {{ "userId": Number, "used": Boolean }} token 
@@ -56,4 +56,4 @@ const refreshToken = async (req, res) => {
 	}
 }
 
-module.exports = { refreshToken };
+export { refreshToken };

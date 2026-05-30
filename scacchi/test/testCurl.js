@@ -1,9 +1,9 @@
 // @ts-check
 //SECTION - external libraries
-const fs = require("fs");
+import fs from "fs";
 //SECTION - backend cute stuff >3
-const globals = require("../Classes/Match/globals").globals;
-const TEST = require("./testLocal");
+import { globals } from "../Classes/Match/globals.js";
+import * as TEST from "./testLocal.js";
 
 /** @typedef {import ("../../history/HISTORY.json")} historyData */
 

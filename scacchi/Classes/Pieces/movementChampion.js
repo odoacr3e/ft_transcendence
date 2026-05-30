@@ -1,7 +1,7 @@
 // @ts-check
-const {berserkMode} = require("./berserkMode.js");
-const {movePiece} = require("../../utils/moveUtils.js");
-const {isDangerous} = require("../../utils/gameUtils.js");
+import {berserkMode} from "./berserkMode.js";
+import {movePiece} from "../../utils/moveUtils.js";
+import {isDangerous} from "../../utils/gameUtils.js";
 /**
  * 
  * @param {*} match 
@@ -34,4 +34,4 @@ let movementChampion = function (match)
 	return (1);
 }
 
-module.exports = {movementChampion};
+export {movementChampion};

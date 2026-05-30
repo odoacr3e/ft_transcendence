@@ -1,14 +1,14 @@
 // @ts-check
 
-const {MOVEMENT_MIN, MOVEMENT_BONUS_POINT} = require("../../Macro/macro.js");
-const {enumNames} = require("../../Macro/enums.js");
-const {Match} = require("../../Classes/Match/match.js");
-const {error, Result, checkMateAlert} = require("./utils.js");
-const {CheckMateCheck} = require("../../GameLogic/checkMate.js");
-const {globals} = require("../../Classes/Match/globals.js");
-const {isDangerous} = require("../../utils/gameUtils.js");
-const {DangerUpdate} = require("../../utils/moveUtils.js");
-const {clientBoard} = require("../../handlers/game/utils.js");
+import {MOVEMENT_MIN, MOVEMENT_BONUS_POINT} from "../../Macro/macro.js";
+import {enumNames} from "../../Macro/enums.js";
+import {Match} from "../../Classes/Match/match.js";
+import {error, Result, checkMateAlert} from "./utils.js";
+import {CheckMateCheck} from "../../GameLogic/checkMate.js";
+import {globals} from "../../Classes/Match/globals.js";
+import {isDangerous} from "../../utils/gameUtils.js";
+import {DangerUpdate} from "../../utils/moveUtils.js";
+import {clientBoard} from "../../handlers/game/utils.js";
 //FIXME - ale: puoi sempre cambiare turno anche se non hai mosso
 
 /**
@@ -101,4 +101,4 @@ function updateTurn(match, result)
 	return (true);
 }
 
-module.exports = {endTurn};
+export {endTurn};

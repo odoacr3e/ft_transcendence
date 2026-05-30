@@ -1,13 +1,13 @@
 // @ts-check
 //SECTION - external libraries
-const fs = require("fs");
+import fs from "fs";
 //SECTION - backend cute stuff >3
-const globals = require("../Classes/Match/globals").globals;
-const historyRestore = require("../utils2").historyRestore;
-const {HISTORY_PATH} = require("../Macro/macro");
-const color = require("../utils/colors").colors;
-const MSG = require("./enumsTest").testerEnum;
-const {boardStringify} = require("./render");
+import { globals } from "../Classes/Match/globals.js";
+import { historyRestore } from "../utils/history.js";
+import {HISTORY_PATH} from "../Macro/macro.js";
+import { colors as color } from "../utils/colors.js";
+import { testerEnum as MSG } from "./enumsTest.js";
+import {boardStringify} from "./render.js";
 
 /** @typedef {import ("../../history/HISTORY.json")} historyData */
 
@@ -174,4 +174,4 @@ function putColor(str, i, col)
 	return (str.slice(0, i) + `${col}${str.at(i)}${color.reset}` + str.slice(i + 1, str.length)); 
 }
 
-module.exports = {HISTORY_PATH, MSG, color, currMatch, boardStringify, fail, gameFail, highLightBoardDiff, putColor, testerFail, success};
+export {HISTORY_PATH, MSG, color, currMatch, boardStringify, fail, gameFail, highLightBoardDiff, putColor, testerFail, success};

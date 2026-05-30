@@ -1,15 +1,15 @@
 // @ts-check
-const fs = require("fs");
+import fs from "fs";
 
-const {Cursor} = require("./cursor.js");
-const {eTeam, eEvents, enumNames} = require("../../Macro/enums.js");
-const {Square, initBoard, copyBoard, copyBoostedTargetZones, ChessBoard} = require("../ChessBoard/chessBoard.js");
-const {HISTORY_PATH, CHESSBOARD_W, CHESSBOARD_H} = require("../../Macro/macro.js");
-const {Result} = require("../endPoint/result.js");
-const {Player, Timer} = require("./player.js");
-const {boardStringify} = require("../../test/render.js");
-const { isDangerous } = require("../../utils/gameUtils.js");
-const { match } = require("assert");
+import {Cursor} from "./cursor.js";
+import {eTeam, eEvents, enumNames} from "../../Macro/enums.js";
+import {Square, initBoard, copyBoard, copyBoostedTargetZones, ChessBoard} from "../ChessBoard/chessBoard.js";
+import {HISTORY_PATH, CHESSBOARD_W, CHESSBOARD_H} from "../../Macro/macro.js";
+import {Result} from "../endPoint/result.js";
+import {Player, Timer} from "./player.js";
+import {boardStringify} from "../../test/render.js";
+import { isDangerous } from "../../utils/gameUtils.js";
+import { match } from "assert";
 
 class Match
 {
@@ -288,4 +288,4 @@ function updateEndTurn(match)
 	this.moves += 1;
 }
 
-module.exports = {Match, History, HistoryEvent};
+export {Match, History, HistoryEvent};

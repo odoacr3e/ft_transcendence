@@ -1,8 +1,8 @@
 
-const lib = require("../lib/lib.js");
+import * as lib from "../lib/lib.js";
 const prisma = lib.conn.prisma;
-const { jsonResponse } = require("../utils/response.js");
-const { getNotify } = require("../query/notifiyQuery.js");
+import { jsonResponse } from "../utils/response.js";
+import { getNotify } from "../query/notifiyQuery.js";
 
 /**
  * @param {import('express').Request} req
@@ -64,4 +64,4 @@ const getNotificationById = async (req, res) => {
 };
 
 
-module.exports = { getNotifications, getNotificationById };
+export { getNotifications, getNotificationById };

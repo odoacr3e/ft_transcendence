@@ -1,7 +1,7 @@
 // @ts-check
 // const {Match} = require("../Match/match.js");
-const {movePiece} = require("../../utils/moveUtils.js");
-const {bastardChecks} = require("../../utils/gameUtils.js");
+import {movePiece} from "../../utils/moveUtils.js";
+import {bastardChecks} from "../../utils/gameUtils.js";
 /**
  * 
  * @param {*} match 
@@ -50,4 +50,4 @@ let movementBastards = function (match)
 	return (true);
 }
 
-module.exports = {movementBastards};
+export {movementBastards};

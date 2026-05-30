@@ -1,8 +1,8 @@
 // @ts-check
-const {eTeam} = require("../../Macro/enums.js");
+import {eTeam} from "../../Macro/enums.js";
 
 
-const {CHESSBOARD_H, CHESSBOARD_W} = require("../../Macro/macro.js");
+import {CHESSBOARD_H, CHESSBOARD_W} from "../../Macro/macro.js";
 
 /**
  * 
@@ -210,4 +210,4 @@ class Cursor
 }
 
 
-module.exports = {Cursor};
+export {Cursor};

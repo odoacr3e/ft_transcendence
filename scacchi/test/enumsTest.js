@@ -1,4 +1,4 @@
-const color = require("../utils/colors").colors;
+import { colors as color } from "../utils/colors.js";
 
 const cmd = 
 {
@@ -42,4 +42,4 @@ const testerEnum =
 	BOARD: "Board does not match\nCorrect:\n$1Wrong:\n$2"
 }
 
-module.exports = {cmd, testerEnum};
+export {cmd, testerEnum};

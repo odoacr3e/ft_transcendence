@@ -1,19 +1,20 @@
 // @ts-check
-const {eEvents, enumNames, arrayNames, enumSpecialMoves} = require("../Macro/enums.js");
-const {MOVEMENT_MAX, CHESSBOARD_H, CHESSBOARD_W} = require("../Macro/macro.js");
-const {copyBoard} = require("../lib/lib.js").Chess;
-const {movePiece, DangerUpdate, dangerUpdateAll, dangerUpdateMoved} =	require("../utils/moveUtils.js");
-const {isDangerous} = require("../utils/gameUtils.js");
-const {Match} = require("../Classes/Match/match.js");
-const {Preset} = require("../Classes/Pieces/preset.js");
-const {error, Result} = require("../handlers/game/utils.js");
-const {Square} = require("../Classes/ChessBoard/chessBoard.js");
-const {printSwap, boardStringify} = require("../test/render.js");
-const {checkCastling, getPieces} = require("./Castling.js");
-const { Piece } = require("../Classes/Pieces/pieces.js");
-const { Cursor } = require("../Classes/Match/cursor.js");
-const { includesOneOf } = require("../utils/string.js");
-const {endTurn} = require("../handlers/game/endTurn.js");
+import {eEvents, enumNames, arrayNames, enumSpecialMoves} from "../Macro/enums.js";
+import {MOVEMENT_MAX, CHESSBOARD_H, CHESSBOARD_W} from "../Macro/macro.js";
+import { Chess } from "../lib/lib.js";
+const {copyBoard} = Chess;
+import {movePiece, DangerUpdate, dangerUpdateAll, dangerUpdateMoved} from "../utils/moveUtils.js";
+import {isDangerous} from "../utils/gameUtils.js";
+import {Match} from "../Classes/Match/match.js";
+import {Preset} from "../Classes/Pieces/preset.js";
+import {error, Result} from "../handlers/game/utils.js";
+import {Square} from "../Classes/ChessBoard/chessBoard.js";
+import {printSwap, boardStringify} from "../test/render.js";
+import {checkCastling, getPieces} from "./Castling.js";
+import { Piece } from "../Classes/Pieces/pieces.js";
+import { Cursor } from "../Classes/Match/cursor.js";
+import { includesOneOf } from "../utils/string.js";
+import {endTurn} from "../handlers/game/endTurn.js";
 
 //FIXME - da mettere alcune funzioni in un utilis
 
@@ -496,4 +497,4 @@ function transfiguration(match, result, coord, newType)
 	return (result);
 }
 
-module.exports = { checkMove, updateChessboard, checkSecondMove, transfiguration};
+export { checkMove, updateChessboard, checkSecondMove, transfiguration};

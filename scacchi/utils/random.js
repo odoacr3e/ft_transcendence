@@ -1,7 +1,7 @@
 // @ts-check
 
-const {SEED} = require("../Macro/macro.js");
-const	seedrandom = require("seedrandom");
+import {SEED} from "../Macro/macro.js";
+import seedrandom from "seedrandom";
 
 /**
  * @param {number | null} seed
@@ -23,4 +23,4 @@ function initRng(seed=null)
 
 const rng = initRng(SEED);
 
-module.exports = {initRng, rng};
+export {initRng, rng};

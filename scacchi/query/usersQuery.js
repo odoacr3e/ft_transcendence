@@ -1,6 +1,6 @@
 
-const bcrypt = require("bcryptjs");
-const lib = require("../lib/lib.js");
+import bcrypt from "bcryptjs";
+import * as lib from "../lib/lib.js";
 const prisma = lib.conn.prisma;
 
 const getAllUsers = async () => {
@@ -221,4 +221,4 @@ const updateUserFieldsById = async (id, data) => {
 	});
 }
 
-module.exports = { getAllUsers, getUserById, findUserByUsername, getUserByUsername, getUserByEmail, createUser, deleteUserById, updateUserFieldsById };
+export { getAllUsers, getUserById, findUserByUsername, getUserByUsername, getUserByEmail, createUser, deleteUserById, updateUserFieldsById };

@@ -1,8 +1,8 @@
 
-const lib = require("../lib/lib.js");
+import * as lib from "../lib/lib.js";
 const router = lib.include.express.Router();
-const { getUsersHandler, deleteUserHandler, updateUserHandler } = require("../handlers/users.js");
-const { checkJwt } = require("../utils/auth.js");
+import { getUsersHandler, deleteUserHandler, updateUserHandler } from "../handlers/users.js";
+import { checkJwt } from "../utils/auth.js";
 
 // NOTE: route /api/users/
 router.get("/", /* checkJwt, */ getUsersHandler.getAllUsers);
@@ -13,4 +13,4 @@ router.delete("/:id", deleteUserHandler.deleteUserById);
 router.patch("/:id", updateUserHandler.updateUserById);
 
 
-module.exports = router; // esportato come funzione e non come oggetto
+export default router; // esportato come funzione e non come oggetto

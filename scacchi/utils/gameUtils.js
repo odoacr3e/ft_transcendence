@@ -1,7 +1,7 @@
 // @ts-check
 /** @typedef {import("../Classes/Match/match").Match} Match */
 
-const { enumNames } = require("../Macro/enums");
+import { enumNames } from "../Macro/enums.js";
 
 /**
  * 
@@ -93,4 +93,4 @@ function bastardChecks(match, dy, dx, piece)
 	return (true);
 }
 
-module.exports = {bastardChecks, isDangerous};
+export {bastardChecks, isDangerous};

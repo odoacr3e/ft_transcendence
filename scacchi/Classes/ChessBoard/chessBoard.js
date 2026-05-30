@@ -2,9 +2,9 @@
 /** @typedef {pieces.Piece} Piece */
 
 //SECTION import
-const {CHESSBOARD_H, CHESSBOARD_W} = require("../../Macro/macro.js");
-const { Cursor } = require("../Match/cursor.js");
-const pieces = require("../Pieces/pieces.js");
+import {CHESSBOARD_H, CHESSBOARD_W} from "../../Macro/macro.js";
+import { Cursor } from "../Match/cursor.js";
+import * as pieces from "../Pieces/pieces.js";
 
 //ANCHOR - Definition 
 
@@ -182,4 +182,4 @@ function copyBoostedTargetZones(src, dest=null)
 	return (dest);
 }
 
-module.exports = {ChessBoard, Square, initBoard, copyBoard, copyBoostedTargetZones};
+export {ChessBoard, Square, initBoard, copyBoard, copyBoostedTargetZones};

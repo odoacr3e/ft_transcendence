@@ -1,7 +1,7 @@
 
-const lib = require("../lib/lib.js");
+import * as lib from "../lib/lib.js";
 const router = lib.include.express.Router();
-const handlersNotify = require("../handlers/notifications.js");
+import * as handlersNotify from "../handlers/notifications.js";
 
 
 // NOTE: /api/notifications
@@ -10,4 +10,4 @@ router.get("/:id", handlersNotify.getNotificationById);
 
 // router.get("/user/:id")
 
-module.exports = router;
+export default router;

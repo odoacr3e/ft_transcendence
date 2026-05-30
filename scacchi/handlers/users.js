@@ -1,8 +1,8 @@
 
-const lib = require("../lib/lib");
-const usersQuery = require("../query/usersQuery");
-const { jsonResponse } = require("../utils/response.js");
-const { checkInputs } = require("../utils/users.js");
+import * as lib from "../lib/lib.js";
+import * as usersQuery from "../query/usersQuery.js";
+import { jsonResponse } from "../utils/response.js";
+import { checkInputs } from "../utils/users.js";
 
 /**
  * @param {import('express').Request} req
@@ -83,4 +83,4 @@ const getUsersHandler = { getAllUsers, getUserById };
 const deleteUserHandler = { deleteUserById };
 const updateUserHandler = { updateUserById };
 
-module.exports = { getUsersHandler, deleteUserHandler, updateUserHandler };
+export { getUsersHandler, deleteUserHandler, updateUserHandler };

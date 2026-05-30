@@ -38,4 +38,4 @@ const colors = {
 	dim:       "\x1b[2m",
 };
 
-module.exports = { colors }
+export { colors };

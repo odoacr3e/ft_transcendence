@@ -1,7 +1,7 @@
 
-const lib = require("../lib/lib.js");
-const jwt = require("jsonwebtoken");
-const { jsonResponse } = require("../utils/response.js");
+import * as lib from "../lib/lib.js";
+import jwt from "jsonwebtoken";
+import { jsonResponse } from "../utils/response.js";
 const redis = lib.conn.redis;
 const crypto = lib.conn.crypto;
 
@@ -54,4 +54,4 @@ const createJwt = async (req, res) => {
 	return ({"jwt": token, "refresh": refreshToken});
 }
 
-module.exports = { createJwt, checkJwt };
+export { createJwt, checkJwt };

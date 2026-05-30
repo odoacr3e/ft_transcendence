@@ -1,5 +1,5 @@
 // @ts-check
-const {CHESSBOARD_H, CHESSBOARD_W} = require("../../Macro/macro.js");
+import {CHESSBOARD_H, CHESSBOARD_W} from "../../Macro/macro.js";
 /**
  * 
  * @param {*} match 
@@ -43,4 +43,4 @@ let movementJester = function (match)
 	return (1);
 }
 
-module.exports = {movementJester};
+export {movementJester};

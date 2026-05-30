@@ -1,14 +1,14 @@
 // @ts-check
-const fs = require("fs");
-const {eEvents} = require("./Macro/enums.js");
-const {Match, HistoryEvent} = require("./Classes/Match/match.js");
-const { Piece } = require("./Classes/Pieces/pieces.js");
-const {move, boost, endTurn, init, error} = require("./handlers/game/Game.js");
-const { render } = require("./test/render.js");
-const { Result } = require("pg");
+import fs from "fs";
+import {eEvents} from "../Macro/enums.js";
+import {Match, HistoryEvent} from "../Classes/Match/match.js";
+import { Piece } from "../Classes/Pieces/pieces.js";
+import {move, boost, endTurn, init, error} from "../handlers/game/Game.js";
+import { render } from "../test/render.js";
+import { Result } from "pg";
 
 
-/** @typedef {import ("./Classes/Match/match.js").History} History */
+/** @typedef {import ("../Classes/Match/match.js").History} History */
 
 let	DEBUGCounter = 0;
 
@@ -75,7 +75,7 @@ function historyRestore(match, path)
  * 
  * @param {Match} match
  * @param {HistoryEvent} event 
- * @param {import("./Classes/endPoint/result.js").Result} result 
+ * @param {import("../Classes/endPoint/result.js").Result} result 
  */
 function printResponse(match, event, result)
 {
@@ -87,4 +87,4 @@ function printResponse(match, event, result)
 	console.debug("*--------------------*\n");
 }
 
-module.exports = {historyRestore};
+export {historyRestore};

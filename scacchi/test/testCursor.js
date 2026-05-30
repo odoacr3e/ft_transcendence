@@ -1,7 +1,7 @@
 //@ts-check
 
-const {Cursor} = require("../Classes/Match/cursor.js");
-const colors = require("../utils/colors.js").colors;
+import {Cursor} from "../Classes/Match/cursor.js";
+import { colors } from "../utils/colors.js";
 let cur = new Cursor;
 
 /*

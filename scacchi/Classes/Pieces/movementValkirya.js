@@ -1,5 +1,5 @@
 // @ts-check
-const {movePiece} = require("../../utils/moveUtils.js");
+import {movePiece} from "../../utils/moveUtils.js";
 
 /**
  * 
@@ -42,4 +42,4 @@ let movementValkirya = function (match)
 	return (1);
 }
 
-module.exports = {movementValkirya};
+export {movementValkirya};

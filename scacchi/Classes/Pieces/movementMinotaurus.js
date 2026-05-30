@@ -1,6 +1,6 @@
 // @ts-check
-const {berserkMode} = require("./berserkMode.js");
-const {movePiece} = require("../../utils/moveUtils.js");
+import {berserkMode} from "./berserkMode.js";
+import {movePiece} from "../../utils/moveUtils.js";
 /**
  * 
  * @param {*} match 
@@ -36,4 +36,4 @@ let movementMinotaurus = function (match)
 	return (1);
 }
 
-module.exports = {movementMinotaurus};
+export {movementMinotaurus};

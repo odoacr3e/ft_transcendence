@@ -48,4 +48,4 @@ function strCount(haystack, needle)
 	return (count);
 }
 
-module.exports = {includesOneOf, strCount};
+export {includesOneOf, strCount};

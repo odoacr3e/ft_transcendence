@@ -1,19 +1,19 @@
 // @ts-check
-const {HISTORY_FILE, HISTORY_PATH} = require("../Macro/macro.js");
-const {movePiece, dangerUpdateAll} =	require("../utils/moveUtils.js");
-const {includesOneOf} = require("../utils/string.js");
-const {historyRestore} = require("../utils2.js");
-const {error, move, boost, endTurn, init} = require("../handlers/game/Game.js");
-const {Result} = require("../handlers/game/utils.js");
-const {globals} = require("../Classes/Match/globals.js");
+import {HISTORY_FILE, HISTORY_PATH} from "../Macro/macro.js";
+import {movePiece, dangerUpdateAll} from "../utils/moveUtils.js";
+import {includesOneOf} from "../utils/string.js";
+import {historyRestore} from "../utils/history.js";
+import {error, move, boost, endTurn, init} from "../handlers/game/Game.js";
+import {Result} from "../handlers/game/utils.js";
+import {globals} from "../Classes/Match/globals.js";
 
-const lib =			require("../lib/lib.js");
-const {abort} = 	require("node:process");
-const {render} = 	require("./render.js");
-const readline = 	require('node:readline');
-const server = require("../server.js");
-const { makeTransfiguration } = require("../handlers/game/transfiguration.js");
-const cmd = require("./enumsTest.js").cmd;
+import * as lib from "../lib/lib.js";
+import {abort} from "node:process";
+import {render} from "./render.js";
+import readline from "node:readline";
+import * as server from "../server.js";
+import { makeTransfiguration } from "../handlers/game/transfiguration.js";
+import { cmd } from "./enumsTest.js";
 
 
 //SECTION - main: inizializza e fa primo render, mette terminale in ascolto

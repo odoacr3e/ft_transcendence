@@ -1,7 +1,7 @@
 // @ts-check
 
-const {Match} = require("./match.js");
-const {DEBUG} = require("../../Macro/macro.js");
+import {Match} from "./match.js";
+import {DEBUG} from "../../Macro/macro.js";
 
 const	TEST_MATCH = "0";
 
@@ -35,4 +35,4 @@ class Globals
 
 const	globals = new Globals();
 
-module.exports = {globals};
+export {globals};

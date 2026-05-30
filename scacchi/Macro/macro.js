@@ -1,5 +1,5 @@
 // @ts-check
-const { abort } = require("node:process");
+import { abort } from "node:process";
 
 //SECTION macro
 
@@ -60,4 +60,4 @@ function error(text)
 	abort();
 }
 
-module.exports = { macroReset, DEBUG, HISTORY_FILE, HISTORY_DEFAULT, HISTORY_PATH, CHESSBOARD_H, CHESSBOARD_W, MOVEMENT_MIN, MOVEMENT_MAX, MOVEMENT_BONUS_POINT, BOOSTED_MAX, HASH_SALT, SEED, MATCHTIMER}
+export { macroReset, DEBUG, HISTORY_FILE, HISTORY_DEFAULT, HISTORY_PATH, CHESSBOARD_H, CHESSBOARD_W, MOVEMENT_MIN, MOVEMENT_MAX, MOVEMENT_BONUS_POINT, BOOSTED_MAX, HASH_SALT, SEED, MATCHTIMER};

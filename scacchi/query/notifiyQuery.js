@@ -1,5 +1,5 @@
 
-const lib = require("../lib/lib.js");
+import * as lib from "../lib/lib.js";
 const prisma = lib.conn.prisma;
 
 const getAllNotifications = async () => {
@@ -63,4 +63,4 @@ const getNotificationById = async (id) => {
 
 const getNotify = { getAllNotifications, getFilteredNotifications, getNotificationById };
 
-module.exports = { getNotify };
+export { getNotify };

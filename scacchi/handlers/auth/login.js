@@ -1,10 +1,10 @@
 
-const lib = require("../../lib/lib.js");
-const bcrypt = require("bcryptjs");
-const { prisma } = require("../../lib/prisma.js");
-const { createJwt, checkJwt } = require("../../utils/auth.js");
-const { jsonResponse } = require("../../utils/response.js");
-const usersQuery = require("../../query/usersQuery.js");
+import * as lib from "../../lib/lib.js";
+import bcrypt from "bcryptjs";
+import { prisma } from "../../lib/prisma.js";
+import { createJwt, checkJwt } from "../../utils/auth.js";
+import { jsonResponse } from "../../utils/response.js";
+import * as usersQuery from "../../query/usersQuery.js";
 
 /**
  * @param {import('express').Request} req
@@ -52,4 +52,4 @@ const checkLogin = async (req, res) => {
 };
 
 
-module.exports = { checkLogin };
+export { checkLogin };

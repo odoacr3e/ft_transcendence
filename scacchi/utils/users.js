@@ -1,5 +1,5 @@
 
-const lib = require("../lib/lib.js")
+import * as lib from "../lib/lib.js";
 
 const regex = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
 
@@ -27,4 +27,4 @@ const checkInputs = (username, email, password) => {
 	return ("OK");
 }
 
-module.exports = { checkEmail, checkPassword, checkInputs }
+export { checkEmail, checkPassword, checkInputs };

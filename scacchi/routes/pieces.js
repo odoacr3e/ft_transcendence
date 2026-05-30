@@ -1,10 +1,10 @@
 
-const lib = require("../lib/lib.js");
+import * as lib from "../lib/lib.js";
 const router = lib.include.express.Router();
-const { getPiecesHandlers } = require("../handlers/pieces.js");
+import { getPiecesHandlers } from "../handlers/pieces.js";
 
 // NOTE: /api/pieces
 router.get("/", getPiecesHandlers.getAllPieces);
 router.get("/:id", getPiecesHandlers.getPieceById);
 
-module.exports = router;
+export default router;

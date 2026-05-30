@@ -1,39 +1,42 @@
-const http = require('http');
-const https = require('https');
-const url = require('url');
-const fs = require('fs');
-const path = require('path');
-const express = require('express');
+import http from "http";
+import https from "https";
+import url from "url";
+import fs from "fs";
+import path from "path";
+import express from "express";
 const app = express();
-const {preset} = require("../Classes/Pieces/pieces.js");
 
 // NOTE: connections
-const { prisma } = require("./prisma.js");
+import { prisma } from "./prisma.js";
 //const { redis } = require("./redis.js");
 const redis = {};
-const crypto = require('crypto');
+import crypto from "crypto";
 
 //SECTION - external inclusions
 const include = {http, https, url, fs, path, express, app};
 
 //SECTION - chess classes/objects
-const {Piece} = require("../Classes/Pieces/pieces.js");
-const {cursor} = require("../Classes/Match/cursor.js");
-const {includesOneOf} = require("../utils/string.js");
-const {board, Square, copyBoard} = require("../Classes/ChessBoard/chessBoard.js");
-const Chess = {Piece, board, copyBoard, cursor, Square};
+import {Piece} from "../Classes/Pieces/pieces.js";
+import {Preset, preset} from "../Classes/Pieces/preset.js";
+import {Cursor} from "../Classes/Match/cursor.js";
+import {includesOneOf} from "../utils/string.js";
+import {ChessBoard, Square, initBoard, copyBoard, copyBoostedTargetZones} from "../Classes/ChessBoard/chessBoard.js";
+const Chess = {Piece, Preset, preset, ChessBoard, initBoard, copyBoard, copyBoostedTargetZones, Cursor, Square};
 
 //SECTION - macro
-const Macro = require("../Macro/macro.js");
+import * as Macro from "../Macro/macro.js";
 
 //SECTION - Enums
-const Enums = require("../Macro/enums.js");
+import * as Enums from "../Macro/enums.js";
 
 //SECTION - utils function
-let utils = require("../utils/moveUtils.js");
-let {bastardChecks, isDangerous} = require("../utils/gameUtils.js");
+import * as utils from "../utils/moveUtils.js";
+import {bastardChecks, isDangerous} from "../utils/gameUtils.js";
 let gameUtils = {bastardChecks, isDangerous};
 
 const conn = { prisma, redis, crypto } 
 
-module.exports = { include, Chess, Macro, Enums, preset, utils, gameUtils, conn};
+const lib = { include, Chess, Macro, Enums, preset, utils, gameUtils, conn};
+
+export { include, Chess, Macro, Enums, preset, utils, gameUtils, conn};
+export default lib;

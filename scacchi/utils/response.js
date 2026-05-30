@@ -1,7 +1,7 @@
 // @ts-check
-const { Match } = require("../Classes/Match/match.js")
-const { Square } = require("../Classes/ChessBoard/chessBoard.js");
-const Result = require("../Classes/endPoint/result.js").Result;
+import { Match } from "../Classes/Match/match.js";
+import { Square } from "../Classes/ChessBoard/chessBoard.js";
+import { Result } from "../Classes/endPoint/result.js";
 
 /**
  * 
@@ -143,4 +143,4 @@ function jsonParser(data)
 
 const jsonResponse = { ResponseError, ResponseSuccess };
 
-module.exports = { jsonResponse, jsonParser, responseFormatter };
+export { jsonResponse, jsonParser, responseFormatter };

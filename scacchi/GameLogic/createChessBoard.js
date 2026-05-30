@@ -1,8 +1,10 @@
 //@ts-check
-const {Piece} = require("../lib/lib.js").Chess;
-const {eTeam, enumNames, enumInitNames} = require("../lib/lib.js").Enums;
-const {dangerUpdateAll} =	require("../utils/moveUtils.js");
-const {Match} = require("../Classes/Match/match.js");
+import { Chess } from "../lib/lib.js";
+const {Piece} = Chess;
+import { Enums } from "../lib/lib.js";
+const {eTeam, enumNames, enumInitNames} = Enums;
+import {dangerUpdateAll} from "../utils/moveUtils.js";
+import {Match} from "../Classes/Match/match.js";
 
 /**
  * 
@@ -252,4 +254,4 @@ function getTeamByCoord(match)
 		throw (`init: invalid number of player: ${match.playerNum}`);
 }
 
-module.exports = {initSavedBoard, initRandomBoard, initClassicBoard};
+export {initSavedBoard, initRandomBoard, initClassicBoard};

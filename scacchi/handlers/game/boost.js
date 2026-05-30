@@ -1,12 +1,12 @@
 // @ts-check
 
-const {dangerUpdateAll, DangerUpdate} =	require("../../utils/moveUtils.js");
-const {Match} = require("../../Classes/Match/match.js");
-const {error, paramCheck, Result, clientBoard} = require("./utils.js");
-const endTurn = require("./endTurn.js").endTurn;
-const {CheckMateCheck} = require("../../GameLogic/checkMate.js");
-const { BOOSTED_MAX, MOVEMENT_MIN } = require("../../Macro/macro.js");
-const { Square } = require("../../Classes/ChessBoard/chessBoard.js");
+import {dangerUpdateAll, DangerUpdate} from "../../utils/moveUtils.js";
+import {Match} from "../../Classes/Match/match.js";
+import {error, paramCheck, Result, clientBoard} from "./utils.js";
+import { endTurn } from "./endTurn.js";
+import {CheckMateCheck} from "../../GameLogic/checkMate.js";
+import { BOOSTED_MAX, MOVEMENT_MIN } from "../../Macro/macro.js";
+import { Square } from "../../Classes/ChessBoard/chessBoard.js";
 
 /**
  * 
@@ -82,4 +82,4 @@ function tryBoost(match, result, from)
 	return (true);
 }
 
-module.exports = {boost};
+export {boost};

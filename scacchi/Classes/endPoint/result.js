@@ -1,6 +1,6 @@
 //@ts-check
-const move = require("../../Macro/enums").enumSpecialMoves;
-const {copyBoard} = require("../ChessBoard/chessBoard.js")
+import { enumSpecialMoves as move } from "../../Macro/enums.js";
+import {copyBoard} from "../ChessBoard/chessBoard.js";
 
 /** @typedef {import('../../Classes/ChessBoard/chessBoard.js').Square} Square */
 /** @typedef {import('../../Classes/Match/match.js').Match} Match */
@@ -75,4 +75,4 @@ class Result
 	}
 }
 
-module.exports = {Result};
+export {Result};

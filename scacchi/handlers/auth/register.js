@@ -1,12 +1,12 @@
 
-const lib = require("../../lib/lib.js");
-const bcrypt = require("bcryptjs");
-const { prisma } = require("../../lib/prisma.js");
-const { createJwt } = require("../../utils/auth.js");
-const usersUtils = require("../../utils/users.js");
-const { colors } = require("../../utils/colors.js");
-const { jsonResponse } = require("../../utils/response.js");
-const usersQuery = require("../../query/usersQuery.js");
+import * as lib from "../../lib/lib.js";
+import bcrypt from "bcryptjs";
+import { prisma } from "../../lib/prisma.js";
+import { createJwt } from "../../utils/auth.js";
+import * as usersUtils from "../../utils/users.js";
+import { colors } from "../../utils/colors.js";
+import { jsonResponse } from "../../utils/response.js";
+import * as usersQuery from "../../query/usersQuery.js";
 
 /** 
  * autenticazione tramite middleware
@@ -84,4 +84,4 @@ const createUser = async (req, res) => {
 	}
 }
 
-module.exports = { createUser };
+export { createUser };

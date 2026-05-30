@@ -1,6 +1,6 @@
 
-const { prisma } = require("../lib/prisma.js");
-const lib = require("../lib/lib.js");
+import { prisma } from "../lib/prisma.js";
+import * as lib from "../lib/lib.js";
 
 const getAllPieces = async () => {
 	return await prisma.pieces.findMany({
@@ -77,4 +77,4 @@ const getPieceById = async (id) => {
 	});
 }
 
-module.exports = { getAllPieces, findPieceByName, getPieceById };
+export { getAllPieces, findPieceByName, getPieceById };

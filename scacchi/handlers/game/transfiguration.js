@@ -1,9 +1,9 @@
 //@ts-check
 
-const {paramCheck} = require("./utils");
-const {transfiguration} = require("../../GameLogic/moveLogic");
-const { Match } = require("../../Classes/Match/match");
-const { Result } = require("../../Classes/endPoint/result");
+import {paramCheck} from "./utils.js";
+import {transfiguration} from "../../GameLogic/moveLogic.js";
+import { Match } from "../../Classes/Match/match.js";
+import { Result } from "../../Classes/endPoint/result.js";
 
 /**
  * 
@@ -21,4 +21,4 @@ function makeTransfiguration(match, from, to)
 	return (transfiguration(match, result, from, to));
 }
 
-module.exports = {makeTransfiguration};
+export {makeTransfiguration};

@@ -1,11 +1,12 @@
 // @ts-check
-const {enumNames} = require("../Macro/enums.js");
-const {Square, Piece} = require("../lib/lib.js").Chess
-const {Match} = require("../Classes/Match/match.js");
-const {getDirection} = require("./checkMate.js");
-const {isDangerous} = require("../utils/gameUtils.js");
-const {movePiece} = require("../utils/moveUtils.js");
-const { Result } = require("../Classes/endPoint/result.js");
+import {enumNames} from "../Macro/enums.js";
+import { Chess } from "../lib/lib.js";
+const {Square, Piece} = Chess;
+import {Match} from "../Classes/Match/match.js";
+import {getDirection} from "./checkMate.js";
+import {isDangerous} from "../utils/gameUtils.js";
+import {movePiece} from "../utils/moveUtils.js";
+import { Result } from "../Classes/endPoint/result.js";
 
 /* 
 
@@ -122,4 +123,4 @@ function getPieces(match, from, to)
 	return (pieces);
 }
 
-module.exports = {checkCastling, getPieces};
+export {checkCastling, getPieces};

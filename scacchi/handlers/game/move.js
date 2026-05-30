@@ -1,12 +1,13 @@
 // @ts-check
-const {MOVEMENT_MIN} = require("../../Macro/macro.js");
-const {Square} = require("../../lib/lib.js").Chess;
-const {Match} = require("../../Classes/Match/match.js");
-const {paramCheck, Result, clientBoard} = require("./utils.js");
-const {endTurn} = require("./endTurn");
-const {CheckMateCheck} = require("../../GameLogic/checkMate.js");
-const {checkMove, updateChessboard, checkSecondMove} = require("../../GameLogic/moveLogic.js");
-const {enumNames} = require("../../Macro/enums.js")
+import {MOVEMENT_MIN} from "../../Macro/macro.js";
+import { Chess } from "../../lib/lib.js";
+const {Square} = Chess;
+import {Match} from "../../Classes/Match/match.js";
+import {paramCheck, Result, clientBoard} from "./utils.js";
+import {endTurn} from "./endTurn.js";
+import {CheckMateCheck} from "../../GameLogic/checkMate.js";
+import {checkMove, updateChessboard, checkSecondMove} from "../../GameLogic/moveLogic.js";
+import {enumNames} from "../../Macro/enums.js";
 
 /** @typedef {import('../../Classes/ChessBoard/chessBoard.js').Square} Square */
 
@@ -45,4 +46,4 @@ function move(match, from, to, boostBool=false)
 	return (result);
 }
 
-module.exports = {move};
+export {move};

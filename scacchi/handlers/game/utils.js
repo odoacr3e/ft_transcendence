@@ -1,10 +1,10 @@
 // @ts-check
 /** @typedef {import("../../Classes/Match/match.js").Match} Match*/
 
-const { assert } = require("node:console");
-const { Square, copyBoard } = require("../../Classes/ChessBoard/chessBoard");
-const {Result} = require("../../Classes/endPoint/result");
-const {jsonParser} = require("../../utils/response.js");
+import { assert } from "node:console";
+import { Square, copyBoard } from "../../Classes/ChessBoard/chessBoard.js";
+import {Result} from "../../Classes/endPoint/result.js";
+import {jsonParser} from "../../utils/response.js";
 
 /** @typedef {Map<String, Square>} Board */
 
@@ -170,4 +170,4 @@ function checkMateAlert(result, team="")
 	return (result);
 }
 
-module.exports = {Result, clientBoard, paramCheck, checkMateAlert, error};
+export {Result, clientBoard, paramCheck, checkMateAlert, error};

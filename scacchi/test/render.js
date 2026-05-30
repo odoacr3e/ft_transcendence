@@ -1,11 +1,11 @@
 // @ts-check
-const { Square, ChessBoard} = require("../Classes/ChessBoard/chessBoard.js");
-const {eTeam} = require("../Macro/enums.js");
-const lib = require("../lib/lib.js");
+import { Square, ChessBoard} from "../Classes/ChessBoard/chessBoard.js";
+import {eTeam} from "../Macro/enums.js";
+import * as lib from "../lib/lib.js";
 // const {Match} = require("../Classes/Match/match.js");
-const {CHESSBOARD_H, CHESSBOARD_W} = require("../Macro/macro.js");
+import {CHESSBOARD_H, CHESSBOARD_W} from "../Macro/macro.js";
 const enumNames = lib.Enums.enumNames;
-const cmd = require("./enumsTest.js").cmd;
+import { cmd } from "./enumsTest.js";
 
 /** @typedef {import("../Classes/Match/match.js").Match} Match*/
 
@@ -296,4 +296,4 @@ function boardStringify(match)
 	return (buffer);
 }
 
-module.exports = {render, printSwap, boardStringify};
+export {render, printSwap, boardStringify};

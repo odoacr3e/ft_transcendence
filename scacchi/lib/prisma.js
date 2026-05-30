@@ -1,7 +1,9 @@
 
-const { PrismaClient } = require('../generated/prisma');
-const { PrismaPg } = require('@prisma/adapter-pg')
-require('dotenv').config()
+import { PrismaClient } from "../generated/prisma/index.js";
+import { PrismaPg } from "@prisma/adapter-pg";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 /** @type { PrismaClient } */
 const prisma = global.prisma ?? new PrismaClient(
@@ -12,4 +14,4 @@ if (process.env.NODE_ENV !== 'production') {
   global.prisma = prisma
 }
 
-module.exports = { prisma }
+export { prisma };

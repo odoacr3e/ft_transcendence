@@ -1,6 +1,6 @@
 // @ts-check
-const {movePiece} = require("../../utils/moveUtils.js");
-const {enumNames} = require("../../Macro/enums.js");
+import {movePiece} from "../../utils/moveUtils.js";
+import {enumNames} from "../../Macro/enums.js";
 /**
  * 
  * @param {string} pos 
@@ -42,4 +42,4 @@ function berserkMode(pos, match)
 		match.board.get(pos)?.boostedTargetZones.delete(startPos);
 }
 
-module.exports = {berserkMode};
+export {berserkMode};

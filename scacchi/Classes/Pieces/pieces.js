@@ -1,5 +1,5 @@
 // @ts-check
-const {Preset} = require("./preset.js");
+import {Preset} from "./preset.js";
 
 //SECTION - Pezzo class
 //ANCHOR - Definition 
@@ -65,4 +65,4 @@ function copyPiece(other)
 	return (piece);
 }
 
-module.exports = {Piece, copyPiece};
+export {Piece, copyPiece};

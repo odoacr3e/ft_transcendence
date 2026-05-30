@@ -1,8 +1,8 @@
 // @ts-check
 // const { Match } = require("../Classes/Match/match.js");
-const { enumInitNames, enumNames, kingMovements} = require("../Macro/enums.js");
-const Macro = require("../Macro/macro.js");
-const {bastardChecks} = require("./gameUtils.js");
+import { enumInitNames, enumNames, kingMovements} from "../Macro/enums.js";
+import * as Macro from "../Macro/macro.js";
+import {bastardChecks} from "./gameUtils.js";
 
 /**@typedef {import("../Classes/Match/match.js").Match} Match*/
 /**@typedef {import("../Classes/endPoint/result.js").Result} Result*/
@@ -234,4 +234,4 @@ function dangerUpdateAll(match)
 	match.cursor.set(temp);
 }
 
-module.exports = {movePiece, DangerUpdate, dangerUpdateAll, dangerUpdateMoved};
+export {movePiece, DangerUpdate, dangerUpdateAll, dangerUpdateMoved};

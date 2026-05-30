@@ -1,10 +1,10 @@
 // @ts-check
-const {ChessBoard} = require("../../Classes/ChessBoard/chessBoard.js");
-const {Match} = require("../../Classes/Match/match.js");
-const {clientBoard, Result} = require("./utils.js");
-const {initRng} = require("../../utils/random");
-const { CHESSBOARD_W, CHESSBOARD_H } = require("../../Macro/macro.js");
-const creators = require("../../GameLogic/createChessBoard.js");
+import {ChessBoard} from "../../Classes/ChessBoard/chessBoard.js";
+import {Match} from "../../Classes/Match/match.js";
+import {clientBoard, Result} from "./utils.js";
+import {initRng} from "../../utils/random.js";
+import { CHESSBOARD_W, CHESSBOARD_H } from "../../Macro/macro.js";
+import * as creators from "../../GameLogic/createChessBoard.js";
 
 /**
  * The Map board is added to result to be sent to the client. Steps:
@@ -40,4 +40,4 @@ function init(match, seed=null, boardString=null)
 	return (result);
 }
 
-module.exports = {init};
+export {init};
