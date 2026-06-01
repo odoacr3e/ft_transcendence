@@ -42,8 +42,7 @@ export async function globalEvents()
 	ROOT_DIV.addEventListener("dragstart", function(event)
 	{
 		if ((localInfo.secondMove && localInfo.savedBoostedMap && 
-			localInfo.savedBoostedMap.has(event.target.parentNode.id)) || !localInfo.secondTurn ||
-			(localInfo.secondTurn && localInfo.secondMove))
+			localInfo.savedBoostedMap.has(event.target.parentNode.id)) || !localInfo.secondTurn)
 				highlightOnDrag(event);
 	});
 
@@ -53,9 +52,11 @@ export async function globalEvents()
 
 	ROOT_DIV.addEventListener("dragend", function(event) 
 	{
-		if (event.target.classList.contains("piece") && !localInfo.dropDone)
-			event.target.style.visibility = "visible";
-		if (localInfo.dropDone) { localInfo.dropDone = false; }
+		setTimeout(() => {
+			if (event.target.classList.contains("piece") && !localInfo.dropDone)
+				event.target.style.visibility = "visible";
+			if (localInfo.dropDone) { localInfo.dropDone = false; }
+		}, 30);
 
 		if (localInfo.dragClone) {
 			localInfo.dragClone.remove();

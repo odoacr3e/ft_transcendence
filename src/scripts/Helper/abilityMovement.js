@@ -1,7 +1,7 @@
-import { setHighlightTrue, clearHighlight }	from "../Events/utils/HighlightUtils.js";
-import { localInfo, localBoard }			from "../Data/Variables.js";
-import { PIECES_HIGHLIGHT } 				from "./piecesHighlights.js";
-import { sendToBackend }					from "../Events/BackLink.js";
+import { localInfo, localBoard, localPlayers }	from "../Data/Variables.js";
+import { setHighlightTrue, clearHighlight }		from "../Events/utils/HighlightUtils.js";
+import { PIECES_HIGHLIGHT } 					from "./piecesHighlights.js";
+import { sendToBackend }						from "../Events/BackLink.js";
 
 const PIECES_ABILITY = Object.freeze ({
 	"King" : moveKing,
@@ -132,10 +132,14 @@ function boostHlOnClick()
 	if (!localInfo.savedBoostedMap.has(localInfo.clickedId))
 	{
 		clearHighlight();
-		setHighlightTrue(localInfo.savedBoostedMap, "boosted", "both");
 		if (["Bastards","King"].includes(localInfo.usingAbility))
+		{
+			setHighlightTrue(localInfo.savedBoostedMap, "boosted", "both");
 			if (!localBoard.get(localInfo.lastClickedId)?.targetZones.has(localInfo.clickedId))
 				localInfo.lastClickedId = localInfo.clickedId;
+		}
+		else
+			setHighlightTrue(localInfo.savedBoostedMap, "boosted", localPlayers.values().find(p => p.isPlaying === true).team);
 		return;
 	}
 	if (localInfo.clickedId === localInfo.lastClickedId) 

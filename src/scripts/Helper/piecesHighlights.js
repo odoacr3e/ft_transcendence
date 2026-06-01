@@ -94,9 +94,10 @@ export function ChampAndMinoHL(squareId)
 		if (!localInfo.secondMove)
 		{
 			setHighlightTrue(regularMoves, "regular", team);
-			boostedMoves.forEach((targetSquares) => {
-				setHighlightTrue(targetSquares, "boosted", team);
-			});
+			// if (square.piece.type === "Minotaurus") //per le mosse boostate crazy del champ
+				boostedMoves.forEach((targetSquares) => {
+					setHighlightTrue(targetSquares, "boosted", team);
+				});
 		}
 		else
 			setHighlightTrue(localInfo.savedBoostedMap, "boosted", "both");

@@ -51,9 +51,7 @@ export function onDrop(event, toSquare)
 	const	fromSquareId = event.dataTransfer.getData('fromSquareId');
 
 	if (localBoard.get(fromSquareId).useAbilityBool || localInfo.secondMove)
-	{			
 		PIECES_ABILITY[localInfo.usingAbility](fromSquareId, toSquare.id, "").then ();
-	}
 	else if (fromSquareId !== toSquare.id && localBoard.get(toSquare.id).highlight)
 	{
 		localInfo.dropDone = true;
@@ -64,8 +62,7 @@ export function onDrop(event, toSquare)
 				localInfo.usingAbility = "";
 			 }
 			if (!value) { localInfo.dropDone = false; console.log("Mossa non valida"); }
-			},
-			function(value) {if (!value) { localInfo.dropDone = false; console.log("Mossa non valida"); }}
+			}
 		);
 	}
 }
