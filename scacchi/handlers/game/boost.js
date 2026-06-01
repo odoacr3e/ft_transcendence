@@ -76,7 +76,7 @@ function tryBoost(match, result, from)
 		match.board.updates.add(match.currentPlayer.boostedPiece);
 	}
 	match.currentPlayer.boostedPiece = square.piece.pos;
-	match.history.UpdateBoost(square, from);
+	match.history.UpdateBoost(match, square, from);
 	DangerUpdate(match, from);
 	match.boost += 1;
 	return (true);
