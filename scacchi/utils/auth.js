@@ -22,8 +22,7 @@ const checkJwt = async (req, res, next) => {
 	if (!token)
 		return res.status(401).json(jsonResponse.ResponseError("User not autorized"));
 	try {
-		req.utente = jwt.verify(token, process.env.JWT_SECRET);
-		console.log(req.utente);
+		req.user = jwt.verify(token, process.env.JWT_SECRET);
 		next();
 	} catch (error){
 		if (error.name == "TokenExpiredError")

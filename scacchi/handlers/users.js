@@ -31,7 +31,8 @@ const getAllUsers = async (req, res) => {
  */
 const getUserById = async (req, res) => {
 	try {
-		const user = await usersQuery.getUserById(req.params.id);
+		const { id_user } = req.user;
+		const user = await usersQuery.getUserById(id_user);
 		if (user)
 			return res.status(200).json(jsonResponse.ResponseSuccess({ "user": user }));
 		return res.status(404).json(jsonResponse.ResponseError("User not found"));
