@@ -66,7 +66,7 @@ class Match
 		}
 		return (false);
 	}
-	GetOtherBoostedBastardCoords()
+	GetOBoostedPieceCoords()
 	{
 		/** @type {Player} */			let	player;
 		/** @type {Square | undefined} */let	pieceSquare;
@@ -77,7 +77,7 @@ class Match
 		while (player.team != this.currentPlayer.team)
 		{
 			pieceSquare = this.board._data.get(player.boostedPiece);
-			if (pieceSquare?.piece?.type != enumNames.BASTARDS)
+			if (!pieceSquare?.piece?.type)
 			{
 				//@ts-ignore
 				player = this[player.next];

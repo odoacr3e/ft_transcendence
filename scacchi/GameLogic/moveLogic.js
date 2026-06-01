@@ -1,5 +1,5 @@
 // @ts-check
-import {eEvents, enumNames, arrayNames, enumSpecialMoves} from "../Macro/enums.js";
+import {eEvents, enumNames, arrayNames, enumSpecialMoves, eTeam} from "../Macro/enums.js";
 import {MOVEMENT_MAX, CHESSBOARD_H, CHESSBOARD_W} from "../Macro/macro.js";
 import { Chess } from "../lib/lib.js";
 const {copyBoard} = Chess;
@@ -110,71 +110,110 @@ function checkMove(coords=[], result, match, boostBool)
  * @param {Match} match 
  * @param {Array<string>} coords 
  * @param {Result} result
+ * @param {boolean} checkBool
  */
-function vitaNera(match, coords, result)
+function vitaNera(match, coords, result, checkBool=true)
 {
-	let	OtherBastards;
+	let	OtherPiece;
+	let	pieceData;
 
-	OtherBastards = match.GetOtherBoostedBastardCoords();
+	OtherPiece = match.GetOBoostedPieceCoords();
 	let	theKING = match.currentPlayer.King;
-	if (coords[0] == theKING)
+	if (coords.length && coords[0] == theKING)
 		theKING = coords[1];
-	if (OtherBastards != null)
+	if (OtherPiece == null)
+		return (true);
+	for (const coords of OtherPiece)
 	{
-		for (const coords of OtherBastards)
-		{
-			let boosts = match.board.get(coords).boostedTargetZones.get(coords);
-
-			if (boosts == undefined)
-				continue ;
-			for (const squareCoord of boosts)
-			{
-				let	square = match.board.get(squareCoord);
-				if (!square.piece)
-					throw ("DEBUG error 1");
-				for (const moves of square.piece.moveArray)
-				{
-					match.cursor.Save();
-					match.cursor.set(squareCoord);
-					while (movePiece(match, moves.dy, moves.dx))
-					{
-						let piece;
-						let squareBastard = "";
-
-						piece = match.board.get(match.cursor.square).piece;
-						if (!piece)
-							continue ;
-						if (match.cursor.square == theKING)
-							return (error(result, 403, "boost bastard and his gang would threaten king"));
-						if (piece.isBoostedBool == true && piece.type == enumNames.BASTARDS)
-						{
-							squareBastard = match.cursor.square;
-							if (movePiece(match, moves.dy, moves.dx) == false)
-								break ;
-							if (match.cursor.square == theKING)
-								return (error(result, 403, "boost bastard and his gang would threaten king"));
-							if (match.board.get(squareBastard).targetZones.has(match.cursor.square) && 
-							match.board.get(squareBastard).targetZones.size <= 1)
-								break ;
-							squareBastard = match.cursor.square;
-							if (movePiece(match, moves.dy, moves.dx) == false)
-								break ;
-							if (match.cursor.square == theKING)
-								return (error(result, 403, "boost bastard and his gang would threaten king"));
-							if (match.board.get(squareBastard).targetZones.has(match.cursor.square) && 
-							match.board.get(squareBastard).targetZones.size <= 2)
-								break ;
-						}
-						else
-							break ;
-						match.cursor.Restore();
-					}
-					match.cursor.Restore();
-				}
-			}
-		}
+		pieceData = match.board.get(coords).piece;
+		if (!pieceData)
+			throw ("vitaNera: cannot find boosted piece");
+		if (pieceData.type == enumNames.MINOTAURUS && checkBool == false)
+			boostMinoUpdates(match, coords);
+		else if (pieceData.type == enumNames.BASTARDS && checkBool == true)
+			boostBastardsUpdates(match, coords, theKING, result);
+		else
+			continue ;
 	}
 	return (true);
+}
+
+/**
+ * 
+ * @param {Match} match 
+ * @param {string} coords 
+ * @param {string} theKING
+ * @param {Result} result
+ * @returns 
+ */
+function boostBastardsUpdates(match, coords, theKING, result)
+{
+	let boosts = match.board.get(coords).boostedTargetZones.get(coords);
+	if (boosts == undefined)
+			return ;
+	for (const squareCoord of boosts)
+	{
+		let	square = match.board.get(squareCoord);
+		if (!square.piece)
+			throw ("DEBUG error 1");
+		for (const moves of square.piece.moveArray)
+		{
+			match.cursor.Save();
+			match.cursor.set(squareCoord);
+			while (movePiece(match, moves.dy, moves.dx))
+			{
+				let piece;
+				let squareBastard = "";
+				piece = match.board.get(match.cursor.square).piece;
+				if (!piece)
+					continue ;
+				if (match.cursor.square == theKING)
+					return (error(result, 403, "boost bastard and his gang would threaten king"));
+				if (piece.isBoostedBool == true && piece.type == enumNames.BASTARDS)
+				{
+					squareBastard = match.cursor.square;
+					if (movePiece(match, moves.dy, moves.dx) == false)
+						break ;
+					if (match.cursor.square == theKING)
+						return (error(result, 403, "boost bastard and his gang would threaten king"));
+					if (match.board.get(squareBastard).targetZones.has(match.cursor.square) && 
+					match.board.get(squareBastard).targetZones.size <= 1)
+						break ;
+					squareBastard = match.cursor.square;
+					if (movePiece(match, moves.dy, moves.dx) == false)
+						break ;
+					if (match.cursor.square == theKING)
+						return (error(result, 403, "boost bastard and his gang would threaten king"));
+					if (match.board.get(squareBastard).targetZones.has(match.cursor.square) && 
+					match.board.get(squareBastard).targetZones.size <= 2)
+						break ;
+				}
+				else
+					break ;
+				match.cursor.Restore();
+			}
+			match.cursor.Restore();
+		}
+	}
+}
+
+/**
+ * 
+ * @param {Match} match
+ * @param {string} coords
+ */
+function boostMinoUpdates(match, coords)
+{
+	for (const target of match.board.get(coords).targetZones)
+		match.board.get(target).dangerZones.delete(coords);
+	for (const [key, target] of match.board.get(coords).boostedTargetZones)
+	{
+		for (const second of target)
+		{
+			match.board.get(second).dangerZones.delete(coords);
+		}
+	}
+	DangerUpdate(match, coords);
 }
 
 /**
@@ -227,6 +266,7 @@ function updateChessboard(coords=[], result, match, boostBool)
 	if (to.piece && to.piece.isMovedBool == false)
 		to.piece.isMovedBool = true;
 	boostedPieceUpdates(match, coords);
+	vitaNera(match, [], result, false);
 	match.moves++;
 	dangerUpdateMoved(match, coords, result);
 	return (true);
