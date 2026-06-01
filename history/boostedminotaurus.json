@@ -13,7 +13,7 @@
       "from": "",
       "to": "",
       "team": "white",
-      "type": "endTurn",
+      "type": "endturn",
       "useBoostBool": false,
       "counter": 1
     },
@@ -29,7 +29,7 @@
       "from": "",
       "to": "",
       "team": "black",
-      "type": "endTurn",
+      "type": "endturn",
       "useBoostBool": false,
       "counter": 3
     },
@@ -45,7 +45,7 @@
       "from": "",
       "to": "",
       "team": "white",
-      "type": "endTurn",
+      "type": "endturn",
       "useBoostBool": false,
       "counter": 5
     },
@@ -61,7 +61,7 @@
       "from": "",
       "to": "",
       "team": "black",
-      "type": "endTurn",
+      "type": "endturn",
       "useBoostBool": false,
       "counter": 7
     },
@@ -85,7 +85,7 @@
       "from": "",
       "to": "",
       "team": "white",
-      "type": "endTurn",
+      "type": "endturn",
       "useBoostBool": false,
       "counter": 10
     },
@@ -101,7 +101,7 @@
       "from": "",
       "to": "",
       "team": "black",
-      "type": "endTurn",
+      "type": "endturn",
       "useBoostBool": false,
       "counter": 12
     },

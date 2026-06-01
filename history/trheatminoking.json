@@ -12,7 +12,7 @@
       "from": "",
       "to": "",
       "team": "white",
-      "type": "endTurn",
+      "type": "endturn",
       "useBoostBool": false
     },
     {
@@ -26,7 +26,7 @@
       "from": "",
       "to": "",
       "team": "black",
-      "type": "endTurn",
+      "type": "endturn",
       "useBoostBool": false
     },
     {
@@ -40,7 +40,7 @@
       "from": "",
       "to": "",
       "team": "white",
-      "type": "endTurn",
+      "type": "endturn",
       "useBoostBool": false
     },
     {
@@ -54,7 +54,7 @@
       "from": "",
       "to": "",
       "team": "black",
-      "type": "endTurn",
+      "type": "endturn",
       "useBoostBool": false
     },
     {
@@ -75,7 +75,7 @@
       "from": "",
       "to": "",
       "team": "white",
-      "type": "endTurn",
+      "type": "endturn",
       "useBoostBool": false
     },
     {
@@ -89,7 +89,7 @@
       "from": "",
       "to": "",
       "team": "black",
-      "type": "endTurn",
+      "type": "endturn",
       "useBoostBool": false
     },
     {
@@ -110,7 +110,7 @@
       "from": "",
       "to": "",
       "team": "white",
-      "type": "endTurn",
+      "type": "endturn",
       "useBoostBool": false
     },
     {
@@ -124,7 +124,7 @@
       "from": "",
       "to": "",
       "team": "black",
-      "type": "endTurn",
+      "type": "endturn",
       "useBoostBool": false
     },
     {
@@ -145,7 +145,7 @@
       "from": "",
       "to": "",
       "team": "white",
-      "type": "endTurn",
+      "type": "endturn",
       "useBoostBool": false
     },
     {

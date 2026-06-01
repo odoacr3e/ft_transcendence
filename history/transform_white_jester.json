@@ -13,7 +13,7 @@
       "from": "",
       "to": "",
       "team": "white",
-      "type": "endTurn",
+      "type": "endturn",
       "useBoostBool": false,
       "counter": 1
     },
@@ -29,7 +29,7 @@
       "from": "",
       "to": "",
       "team": "black",
-      "type": "endTurn",
+      "type": "endturn",
       "useBoostBool": false,
       "counter": 3
     },
@@ -45,7 +45,7 @@
       "from": "",
       "to": "",
       "team": "white",
-      "type": "endTurn",
+      "type": "endturn",
       "useBoostBool": false,
       "counter": 5
     },
@@ -61,7 +61,7 @@
       "from": "",
       "to": "",
       "team": "black",
-      "type": "endTurn",
+      "type": "endturn",
       "useBoostBool": false,
       "counter": 7
     },
@@ -77,7 +77,7 @@
       "from": "",
       "to": "",
       "team": "white",
-      "type": "endTurn",
+      "type": "endturn",
       "useBoostBool": false,
       "counter": 9
     },
@@ -93,7 +93,7 @@
       "from": "",
       "to": "",
       "team": "black",
-      "type": "endTurn",
+      "type": "endturn",
       "useBoostBool": false,
       "counter": 11
     },
@@ -109,7 +109,7 @@
       "from": "",
       "to": "",
       "team": "white",
-      "type": "endTurn",
+      "type": "endturn",
       "useBoostBool": false,
       "counter": 13
     },
@@ -125,7 +125,7 @@
       "from": "",
       "to": "",
       "team": "black",
-      "type": "endTurn",
+      "type": "endturn",
       "useBoostBool": false,
       "counter": 15
     },
@@ -141,7 +141,7 @@
       "from": "",
       "to": "",
       "team": "white",
-      "type": "endTurn",
+      "type": "endturn",
       "useBoostBool": false,
       "counter": 17
     },
@@ -157,7 +157,7 @@
       "from": "",
       "to": "",
       "team": "black",
-      "type": "endTurn",
+      "type": "endturn",
       "useBoostBool": false,
       "counter": 19
     },
@@ -173,7 +173,7 @@
       "from": "",
       "to": "",
       "team": "white",
-      "type": "endTurn",
+      "type": "endturn",
       "useBoostBool": false,
       "counter": 21,
 	  "error": false
@@ -190,7 +190,7 @@
       "from": "",
       "to": "",
       "team": "black",
-      "type": "endTurn",
+      "type": "endturn",
       "useBoostBool": false,
       "counter": 22
     },
@@ -206,7 +206,7 @@
       "from": "",
       "to": "",
       "team": "white",
-      "type": "endTurn",
+      "type": "endturn",
       "useBoostBool": false,
       "counter": 24
     },
@@ -222,7 +222,7 @@
       "from": "",
       "to": "",
       "team": "black",
-      "type": "endTurn",
+      "type": "endturn",
       "useBoostBool": false,
       "counter": 26
     },
@@ -238,7 +238,7 @@
       "from": "",
       "to": "",
       "team": "white",
-      "type": "endTurn",
+      "type": "endturn",
       "useBoostBool": false,
       "counter": 28
     },
@@ -254,7 +254,7 @@
       "from": "",
       "to": "",
       "team": "black",
-      "type": "endTurn",
+      "type": "endturn",
       "useBoostBool": false,
       "counter": 30
     },
@@ -270,7 +270,7 @@
       "from": "",
       "to": "",
       "team": "white",
-      "type": "endTurn",
+      "type": "endturn",
       "useBoostBool": false,
       "counter": 32
     },
@@ -286,7 +286,7 @@
       "from": "",
       "to": "",
       "team": "black",
-      "type": "endTurn",
+      "type": "endturn",
       "useBoostBool": false,
       "counter": 34
     },
@@ -302,7 +302,7 @@
       "from": "",
       "to": "",
       "team": "white",
-      "type": "endTurn",
+      "type": "endturn",
       "useBoostBool": false,
       "counter": 36
     },
@@ -318,7 +318,7 @@
       "from": "",
       "to": "",
       "team": "black",
-      "type": "endTurn",
+      "type": "endturn",
       "useBoostBool": false,
       "counter": 38
     },
@@ -334,7 +334,7 @@
       "from": "",
       "to": "",
       "team": "white",
-      "type": "endTurn",
+      "type": "endturn",
       "useBoostBool": false,
       "counter": 40
     },
@@ -350,7 +350,7 @@
       "from": "",
       "to": "",
       "team": "black",
-      "type": "endTurn",
+      "type": "endturn",
       "useBoostBool": false,
       "counter": 42
     },
@@ -366,7 +366,7 @@
       "from": "",
       "to": "",
       "team": "white",
-      "type": "endTurn",
+      "type": "endturn",
       "useBoostBool": false,
       "counter": 44
     }
