@@ -6,123 +6,157 @@
       "to": "h4",
       "team": "white",
       "type": "move",
-      "useBoostBool": false,
-      "counter": 0
+      "useBoostBool": false
     },
     {
       "from": "",
       "to": "",
       "team": "white",
       "type": "endturn",
-      "useBoostBool": false,
-      "counter": 1
+      "useBoostBool": false
     },
     {
       "from": "g7",
       "to": "g5",
       "team": "black",
       "type": "move",
-      "useBoostBool": false,
-      "counter": 2
+      "useBoostBool": false
     },
     {
       "from": "",
       "to": "",
       "team": "black",
       "type": "endturn",
-      "useBoostBool": false,
-      "counter": 3
+      "useBoostBool": false
     },
     {
       "from": "h4",
       "to": "g5",
       "team": "white",
       "type": "move",
-      "useBoostBool": false,
-      "counter": 4
+      "useBoostBool": false
     },
     {
       "from": "",
       "to": "",
       "team": "white",
       "type": "endturn",
-      "useBoostBool": false,
-      "counter": 5
+      "useBoostBool": false
     },
     {
       "from": "g8",
       "to": "f6",
       "team": "black",
       "type": "move",
-      "useBoostBool": false,
-      "counter": 6
+      "useBoostBool": false
     },
     {
       "from": "",
       "to": "",
       "team": "black",
       "type": "endturn",
-      "useBoostBool": false,
-      "counter": 7
+      "useBoostBool": false
     },
     {
       "from": "g5",
       "to": "f6",
       "team": "white",
       "type": "move",
-      "useBoostBool": false,
-      "counter": 8
+      "useBoostBool": false
     },
     {
       "from": "h1",
       "to": "",
       "team": "white",
       "type": "boost",
-      "useBoostBool": false,
-      "counter": 9
+      "useBoostBool": false
     },
     {
       "from": "",
       "to": "",
       "team": "white",
       "type": "endturn",
-      "useBoostBool": false,
-      "counter": 10
+      "useBoostBool": false
     },
     {
       "from": "e7",
       "to": "e6",
       "team": "black",
       "type": "move",
-      "useBoostBool": false,
-      "counter": 11
+      "useBoostBool": false
     },
     {
       "from": "",
       "to": "",
       "team": "black",
       "type": "endturn",
-      "useBoostBool": false,
-      "counter": 12
+      "useBoostBool": false
     },
     {
       "from": "h1",
       "to": "h7",
       "team": "white",
       "type": "move",
-      "useBoostBool": true,
-      "counter": 13
+      "useBoostBool": true
     },
     {
       "from": "h7",
       "to": "h8",
       "team": "white",
       "type": "move",
-      "useBoostBool": true,
-      "counter": 14
+      "useBoostBool": true
+    },
+    {
+      "from": "",
+      "to": "",
+      "team": "white",
+      "type": "endturn",
+      "useBoostBool": false
+    },
+    {
+      "from": "d7",
+      "to": "d6",
+      "team": "black",
+      "type": "move",
+      "useBoostBool": false
+    },
+    {
+      "from": "",
+      "to": "",
+      "team": "black",
+      "type": "endturn",
+      "useBoostBool": false
+    },
+    {
+      "from": "d2",
+      "to": "d3",
+      "team": "white",
+      "type": "move",
+      "useBoostBool": true
+    },
+    {
+      "from": "h8",
+      "to": "",
+      "team": "white",
+      "type": "boost",
+      "useBoostBool": false
+    },
+    {
+      "from": "",
+      "to": "",
+      "team": "white",
+      "type": "endturn",
+      "useBoostBool": false
+    },
+    {
+      "from": "e8",
+      "to": "d7",
+      "team": "black",
+      "type": "move",
+      "useBoostBool": false
     }
   ],
-  "moves": 15,
+  "moves": 24,
   "victory": "",
-  "finalBoard": "|M|J|V|C|K|V| |M|\n|B|B|B|B| |B| | |\n| | | | |B|B| | |\n| | | | | | | | |\n| | | | | | | | |\n| | | | | | | | |\n|B|B|B|B|B|B|B| |\n|M|J|V|C|K|V|J| |\n"
+  "finalBoard": "|M|J|V|C| |V| |+M|\n|B|B|B|K| |B| | |\n| | | |B|B|B| | |\n| | | | | | | | |\n| | | | | | | | |\n| | | |B| | | | |\n|B|B|B| |B|B|B| |\n|M|J|V|C|K|V|J| |\n"
 }

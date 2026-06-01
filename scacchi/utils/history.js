@@ -38,6 +38,8 @@ function historyRestore(match, path)
 		match.historyCreateBool = true;
 		for (const event of history.events)
 		{
+			if (DEBUGCounter == 4)
+				console.log("");
 			if (event.type == eEvents.Move)
 				result = move(match, event.from, event.to, event.useBoostBool);
 			else if (event.type == eEvents.Boost)
@@ -82,7 +84,7 @@ function printResponse(match, event, result)
 	console.debug("\x1b[33m");
 	console.debug(JSON.stringify(event, null, 2));
 	console.debug("\x1b[0m");
-	console.debug(JSON.stringify(result.board, null, 2));
+	//console.debug(JSON.stringify(result.board, null, 2));
 	// console.log("data for g5:\n\n" + JSON.stringify(match.board.get("g5").targetZones, null, 2));
 	console.debug("*--------------------*\n");
 }

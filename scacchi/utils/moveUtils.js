@@ -96,9 +96,10 @@ let DangerUpdate = (match, pos=null) =>
  * 
  * @param {Match} match
  * @param {string} pos
+ * @param {string} dest
  * @param {Result | null} result
  */
-function dangerDelPiece(match, pos=match.cursor.square, result=null)
+function dangerDelPiece(match, pos=match.cursor.square, dest, result=null)
 {
 	let	pieceSquare;
 
@@ -106,7 +107,8 @@ function dangerDelPiece(match, pos=match.cursor.square, result=null)
 	for (const target of pieceSquare.targetZones)
 	{
 		match.board.get(target).dangerZones.delete(pos);
-		DangerUpdate(match, target);
+		if (target != dest)
+			DangerUpdate(match, target);
 	}
 	if (result && result.specialMoves.CheckBastardMove())
 	{
@@ -188,7 +190,7 @@ function dangerUpPiece(match, pos=match.cursor.square, result=null)
 	{
 		if (!result || result.specialMoves.CheckSniperMove() == 0)
 		{
-			dangerDelPiece(match, target, result);
+			dangerDelPiece(match, target, pos, result);
 			DangerUpdate(match, target);
 		}
 		if (pos == null)
@@ -214,7 +216,7 @@ function dangerUpdateMoved(match, selected=[], result=null)
 	// return (dangerUpdateAll(match));
 	if (selected.length != 2)
 		throw ("dangerUpdateMoved must be called with two pieces: from, to");
-	dangerDelPiece(match, selected[0], result);
+	dangerDelPiece(match, selected[0], selected[1], result);
 	dangerUpPiece(match, selected[1], result);
 	DangerUpdate(match, selected[1]);
 }
