@@ -71,6 +71,7 @@ const enumSpecialMoves =
 	CHECKMATE: 1 << 4,
 	SNIPER: 1 << 5,
 	ISBASTARD: 1 << 6,
+	EATENBASTARD: 1 << 7,
 }
 
 const kingMovements = 

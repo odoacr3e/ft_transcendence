@@ -31,6 +31,8 @@ class bitMaskMoves
 	CheckSniperMove(){return (this._mask & move.SNIPER)};
 	SetBastardMove(){return (this._mask |= move.ISBASTARD)};
 	CheckBastardMove(){return (this._mask & move.ISBASTARD)};
+	SetEatenBastard(){return (this._mask |= move.EATENBASTARD)};
+	CheckEatenBastard(){return (this._mask & move.EATENBASTARD)};
 }
 
 //SECTION - class Result

@@ -80,6 +80,8 @@ function checkMove(coords=[], result, match, boostBool)
 		return (error(result, 403, `it's ${match.currentPlayer.team} turn`));
 	if (from.piece.type == enumNames.BASTARDS)
 		result.specialMoves.SetBastardMove();
+	if (to.piece?.type == enumNames.BASTARDS)
+		result.specialMoves.SetEatenBastard();
 	if (to.piece)
 	{
 		if (to.piece.team == from.piece.team)
@@ -131,7 +133,10 @@ function vitaNera(match, coords, result, checkBool=true)
 		if (pieceData.type == enumNames.MINOTAURUS && checkBool == false)
 			boostMinoUpdates(match, coords);
 		else if (pieceData.type == enumNames.BASTARDS && checkBool == true)
-			boostBastardsUpdates(match, coords, theKING, result);
+		{	
+			if (!boostBastardsUpdates(match, coords, theKING, result))
+				return (false);
+		}
 		else
 			continue ;
 	}
@@ -149,16 +154,16 @@ function vitaNera(match, coords, result, checkBool=true)
 function boostBastardsUpdates(match, coords, theKING, result)
 {
 	let boosts = match.board.get(coords).boostedTargetZones.get(coords);
-	if (boosts == undefined)
-			return ;
+	if (boosts == undefined || boosts.size == 0)
+			return (true);
 	for (const squareCoord of boosts)
 	{
 		let	square = match.board.get(squareCoord);
 		if (!square.piece)
 			throw ("DEBUG error 1");
+		match.cursor.Save();
 		for (const moves of square.piece.moveArray)
 		{
-			match.cursor.Save();
 			match.cursor.set(squareCoord);
 			while (movePiece(match, moves.dy, moves.dx))
 			{
@@ -166,7 +171,7 @@ function boostBastardsUpdates(match, coords, theKING, result)
 				let squareBastard = "";
 				piece = match.board.get(match.cursor.square).piece;
 				if (!piece)
-					continue ;
+					break ;
 				if (match.cursor.square == theKING)
 					return (error(result, 403, "boost bastard and his gang would threaten king"));
 				if (piece.isBoostedBool == true && piece.type == enumNames.BASTARDS)
@@ -194,7 +199,10 @@ function boostBastardsUpdates(match, coords, theKING, result)
 			}
 			match.cursor.Restore();
 		}
+		match.cursor.Restore();
 	}
+	match.cursor.Restore();
+	return (true);
 }
 
 /**
@@ -568,7 +576,7 @@ function transfiguration(match, result, coord, newType)
 	square.piece = new Piece(newType, square.piece.pos, square.piece.team);
 	square.piece.isBoostedBool = isBoostedBool;
 	DangerUpdate(match, coord);
-	endTurn(match);
+	endTurn(match, false);
 	result.status = 200;
 	result.msg = "OK";
 	return (result);

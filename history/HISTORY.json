@@ -2,8 +2,8 @@
   "seed": 0,
   "events": [
     {
-      "from": "h2",
-      "to": "h4",
+      "from": "e2",
+      "to": "e4",
       "movedPiece": "Bastards",
       "team": "white",
       "type": "move",
@@ -22,8 +22,8 @@
       "updates": {}
     },
     {
-      "from": "g7",
-      "to": "g5",
+      "from": "d7",
+      "to": "d5",
       "movedPiece": "Bastards",
       "team": "black",
       "type": "move",
@@ -42,8 +42,8 @@
       "updates": {}
     },
     {
-      "from": "h4",
-      "to": "g5",
+      "from": "e4",
+      "to": "d5",
       "movedPiece": "Bastards",
       "team": "white",
       "type": "move",
@@ -62,9 +62,9 @@
       "updates": {}
     },
     {
-      "from": "g8",
-      "to": "f6",
-      "movedPiece": "Jester",
+      "from": "g7",
+      "to": "g5",
+      "movedPiece": "Bastards",
       "team": "black",
       "type": "move",
       "useBoostBool": false,
@@ -82,8 +82,8 @@
       "updates": {}
     },
     {
-      "from": "g5",
-      "to": "f6",
+      "from": "h2",
+      "to": "h4",
       "movedPiece": "Bastards",
       "team": "white",
       "type": "move",
@@ -102,9 +102,9 @@
       "updates": {}
     },
     {
-      "from": "c7",
-      "to": "c6",
-      "movedPiece": "Bastards",
+      "from": "g8",
+      "to": "f6",
+      "movedPiece": "Jester",
       "team": "black",
       "type": "move",
       "useBoostBool": false,
@@ -122,8 +122,8 @@
       "updates": {}
     },
     {
-      "from": "a2",
-      "to": "a3",
+      "from": "h4",
+      "to": "g5",
       "movedPiece": "Bastards",
       "team": "white",
       "type": "move",
@@ -142,8 +142,8 @@
       "updates": {}
     },
     {
-      "from": "a7",
-      "to": "a6",
+      "from": "b7",
+      "to": "b5",
       "movedPiece": "Bastards",
       "team": "black",
       "type": "move",
@@ -162,8 +162,8 @@
       "updates": {}
     },
     {
-      "from": "a3",
-      "to": "a4",
+      "from": "g5",
+      "to": "f6",
       "movedPiece": "Bastards",
       "team": "white",
       "type": "move",
@@ -192,9 +192,9 @@
       "updates": {}
     },
     {
-      "from": "b7",
-      "to": "b6",
-      "movedPiece": "Bastards",
+      "from": "f8",
+      "to": "g7",
+      "movedPiece": "Valkirya",
       "team": "black",
       "type": "move",
       "useBoostBool": false,
@@ -210,29 +210,9 @@
       "useBoostBool": false,
       "counter": 20,
       "updates": {}
-    },
-    {
-      "from": "d2",
-      "to": "d3",
-      "movedPiece": "Bastards",
-      "team": "white",
-      "type": "move",
-      "useBoostBool": false,
-      "counter": 21,
-      "updates": {}
-    },
-    {
-      "from": "",
-      "to": "",
-      "movedPiece": "",
-      "team": "white",
-      "type": "endturn",
-      "useBoostBool": false,
-      "counter": 22,
-      "updates": {}
     }
   ],
-  "moves": 24,
+  "moves": 23,
   "victory": "",
-  "finalBoard": "|M|J|V|C|K| | |M|\n| | | |B|B|B|V|B|\n|B|B|B| | |B| | |\n| | | | | | | | |\n|B| | | | | | | |\n| | | |B| | | | |\n| |B|B| |B|B|B| |\n|M|J|V|C|K|V|J|+M|\n"
+  "finalBoard": "|M|J|V|C|K| | |M|\n|B| |B| |B|B|V| |\n| | | | | |B| | |\n| |B| |B| | | | |\n| | | | | | | | |\n| | | | | | | | |\n|B|B|B|B| |B|B| |\n|M|J|V|C|K|V|J| |\n"
 }

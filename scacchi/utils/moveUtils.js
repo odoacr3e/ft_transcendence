@@ -166,7 +166,7 @@ function dangerUpPiece(match, pos=match.cursor.square, result=null)
 		match.board.get(target).dangerZones.delete(pos);
 		// DangerUpdate(match, target);
 	}
-	if (result && result.specialMoves.CheckBastardMove())
+	if (result && (result.specialMoves.CheckBastardMove() || result.specialMoves.CheckEatenBastard()))
 	{
 		match.cursor.Save();
 		match.cursor.set(pos);
