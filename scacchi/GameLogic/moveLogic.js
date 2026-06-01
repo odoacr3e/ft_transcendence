@@ -7,7 +7,7 @@ import {movePiece, DangerUpdate, dangerUpdateAll, dangerUpdateMoved} from "../ut
 import {isDangerous} from "../utils/gameUtils.js";
 import {Match} from "../Classes/Match/match.js";
 import {Preset} from "../Classes/Pieces/preset.js";
-import {error, Result} from "../handlers/game/utils.js";
+import {clientBoard, error, Result} from "../handlers/game/utils.js";
 import {Square} from "../Classes/ChessBoard/chessBoard.js";
 import {printSwap, boardStringify} from "../test/render.js";
 import {checkCastling, getPieces} from "./Castling.js";
@@ -579,6 +579,8 @@ function transfiguration(match, result, coord, newType)
 	endTurn(match, false);
 	result.status = 200;
 	result.msg = "OK";
+	//@ts-ignore
+	result.board = clientBoard(match);
 	return (result);
 }
 

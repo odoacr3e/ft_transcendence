@@ -210,6 +210,26 @@
       "useBoostBool": false,
       "counter": 20,
       "updates": {}
+    },
+    {
+      "from": "h1",
+      "to": "h7",
+      "movedPiece": "Minotaurus",
+      "team": "white",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 21,
+      "updates": {}
+    },
+    {
+      "from": "h7",
+      "to": "h8",
+      "movedPiece": "Minotaurus",
+      "team": "white",
+      "type": "move",
+      "useBoostBool": true,
+      "counter": 22,
+      "updates": {}
     }
   ],
   "moves": 23,

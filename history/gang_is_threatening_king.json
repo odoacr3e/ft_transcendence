@@ -70,9 +70,19 @@
       "useBoostBool": false,
       "counter": 6,
       "updates": {}
+    },
+    {
+      "from": "d8",
+      "to": "d5",
+      "movedPiece": "Champion",
+      "team": "black",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 7,
+      "updates": {}
     }
   ],
-  "moves": 7,
+  "moves": 8,
   "victory": "",
   "finalBoard": "|M|J|V|C|K|V|J|M|\n|B|B|B| |B|B|B|B|\n| | | | | | | | |\n| | | |B| | | | |\n| | | | | | | | |\n| | | | | | | | |\n|B|+B|B|B| |B|B|B|\n|M|J|V|C|K|V|J|M|\n"
 }

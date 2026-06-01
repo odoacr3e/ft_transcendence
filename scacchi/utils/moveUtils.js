@@ -117,7 +117,7 @@ function dangerDelPiece(match, pos=match.cursor.square, dest, result=null)
 		for (const move of kingMovements)
 		{
 			movePiece(match, move.dy, move.dx);
-			match.board.get(match.cursor.square).dangerZones.delete(pos);	
+			match.board.get(match.cursor.square).dangerZones.delete(pos);
 			match.cursor.set(pos);
 		}
 		match.cursor.Restore();
@@ -204,6 +204,15 @@ function dangerUpPiece(match, pos=match.cursor.square, result=null)
 		throw ("DEBUG throw REMOVE");
 	match.board.updates.add(pos);
 }
+
+
+/*
+	pedone f2:	f4, f3, e3
+
+	preset pedoni: Set<> => coordinate nella map
+	
+	Map<coordinata, Set<>>
+*/
 
 /**
  * 
