@@ -87,8 +87,8 @@ let DangerUpdate = (match, pos=null) =>
 		match.board.updates.add(pos);
 	else
 		match.board.updates.add(match.cursor.square);
-	// match.board.get(pos).targetZones.delete(pos);
-	// match.board.get(pos).dangerZones.delete(pos);
+	match.board.get(pos).targetZones.delete(pos);
+	match.board.get(pos).dangerZones.delete(pos);
 	return (1);
 }
 
@@ -111,11 +111,12 @@ function dangerDelPiece(match, pos=match.cursor.square, result=null)
 	if (result && result.specialMoves.CheckBastardMove())
 	{
 		match.cursor.Save();
+		match.cursor.set(pos);
 		for (const move of kingMovements)
 		{
 			movePiece(match, move.dy, move.dx);
 			match.board.get(match.cursor.square).dangerZones.delete(pos);	
-			match.cursor.Restore();
+			match.cursor.set(pos);
 		}
 		match.cursor.Restore();
 	}
@@ -162,6 +163,18 @@ function dangerUpPiece(match, pos=match.cursor.square, result=null)
 	{
 		match.board.get(target).dangerZones.delete(pos);
 		// DangerUpdate(match, target);
+	}
+	if (result && result.specialMoves.CheckBastardMove())
+	{
+		match.cursor.Save();
+		match.cursor.set(pos);
+		for (const move of kingMovements)
+		{
+			movePiece(match, move.dy, move.dx);
+			match.board.get(match.cursor.square).dangerZones.delete(pos);	
+			match.cursor.set(pos);
+		}
+		match.cursor.Restore();
 	}
 	for (const [key, set] of pieceSquare.boostedTargetZones)
 	{
