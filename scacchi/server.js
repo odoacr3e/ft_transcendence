@@ -1,7 +1,7 @@
 
 import * as lib from "./lib/lib.js";
-import apiRouter from "./routes/api.js";
-import authRouter from "./routes/auth.js";
+import { apiRouter } from "./routes/api.js";
+import { authRouter } from "./routes/auth.js";
 const app = lib.include.express();
 import { responseFormatter } from "./utils/response.js";
 // const cors = require('cors');
