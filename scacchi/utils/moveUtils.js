@@ -213,7 +213,7 @@ function dangerUpPiece(match, pos=match.cursor.square, result=null)
  */
 function dangerUpdateMoved(match, selected=[], result=null)
 {
-	return (dangerUpdateAll(match));
+	// return (dangerUpdateAll(match));
 	if (selected.length != 2)
 		throw ("dangerUpdateMoved must be called with two pieces: from, to");
 	dangerDelPiece(match, selected[0], selected[1], result);
