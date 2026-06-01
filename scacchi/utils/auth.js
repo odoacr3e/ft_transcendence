@@ -2,8 +2,8 @@
 import * as lib from "../lib/lib.js";
 import jwt from "jsonwebtoken";
 import { jsonResponse } from "../utils/response.js";
-const redis = lib.conn.redis;
-const crypto = lib.conn.crypto;
+const { redis } = lib.conn;
+const { crypto } = lib.conn;
 
 /**
  * Jwt format
@@ -23,6 +23,7 @@ const checkJwt = async (req, res, next) => {
 		return res.status(401).json(jsonResponse.ResponseError("User not autorized"));
 	try {
 		req.utente = jwt.verify(token, process.env.JWT_SECRET);
+		console.log(req.utente);
 		next();
 	} catch (error){
 		if (error.name == "TokenExpiredError")

@@ -5,12 +5,11 @@ import { getUsersHandler, deleteUserHandler, updateUserHandler } from "../handle
 import { checkJwt } from "../utils/auth.js";
 
 // NOTE: route /api/users/
-router.get("/", /* checkJwt, */ getUsersHandler.getAllUsers);
+router.get("/", checkJwt, getUsersHandler.getAllUsers);
 router.get("/:id", getUsersHandler.getUserById);
 
 router.delete("/:id", deleteUserHandler.deleteUserById);
 
 router.patch("/:id", updateUserHandler.updateUserById);
-
 
 export default router; // esportato come funzione e non come oggetto

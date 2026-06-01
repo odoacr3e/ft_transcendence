@@ -8,8 +8,7 @@ const app = express();
 
 // NOTE: connections
 import { prisma } from "./prisma.js";
-//const { redis } = require("./redis.js");
-const redis = {};
+import { redis } from "./redis.js"
 import crypto from "crypto";
 
 //SECTION - external inclusions

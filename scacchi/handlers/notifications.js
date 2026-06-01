@@ -9,6 +9,9 @@ import { getNotify } from "../query/notifiyQuery.js";
  */
 function checkQueryParams(req) {
 	const filter = {};
+	const { id_user, id_sender } = req.body;
+	filter.id_sender = id_sender;
+	filter.id_user = id_user;
 	/** @type {String} key */
 	for (const [key, value] of Object.entries(req.query))
 	{
@@ -18,8 +21,6 @@ function checkQueryParams(req) {
 			filter['creation_date'] = {...filter['creation_date'], gte: new Date(String(value))};
 		else if (key === 'end_date')
 			filter['creation_date'] = {...filter['creation_date'], lte: new Date(String(value))};
-		else if (key.includes('id'))
-			filter[key] = Number(value);
 		else
 			filter[key] = value;
 	}
@@ -33,7 +34,8 @@ function checkQueryParams(req) {
 const getNotifications = async (req, res) => {
 	try {
 		let notif;
-		const filter = checkQueryParams(req);		
+		const filter = checkQueryParams(req);
+		console.log("filter:", filter);
 		if (Object.keys(filter).length > 0)
 			notif = await getNotify.getFilteredNotifications(filter);
 		else

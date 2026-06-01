@@ -1,8 +1,8 @@
 
 import * as lib from "../../lib/lib.js";
 import bcrypt from "bcryptjs";
-import { prisma } from "../../lib/prisma.js";
-import { createJwt, checkJwt } from "../../utils/auth.js";
+const { prisma } = lib.conn;
+import { createJwt } from "../../utils/auth.js";
 import { jsonResponse } from "../../utils/response.js";
 import * as usersQuery from "../../query/usersQuery.js";
 

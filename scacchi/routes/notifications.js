@@ -8,6 +8,4 @@ import * as handlersNotify from "../handlers/notifications.js";
 router.get("/", handlersNotify.getNotifications);
 router.get("/:id", handlersNotify.getNotificationById);
 
-// router.get("/user/:id")
-
 export default router;
