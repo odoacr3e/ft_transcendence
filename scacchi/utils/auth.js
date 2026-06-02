@@ -1,6 +1,7 @@
 
 import * as lib from "../lib/lib.js";
 import jwt from "jsonwebtoken";
+import ms from "ms";
 import { jsonResponse } from "../utils/response.js";
 const { redis } = lib.conn;
 const { crypto } = lib.conn;
@@ -41,6 +42,7 @@ const createJwt = async (req, res) => {
 		process.env.JWT_SECRET,
 		{ expiresIn: process.env.JWT_TTL }
 	);
+	const ttl = ms(process.env.REFRESH_TTL) / 1000;
 	const refreshToken = crypto.randomUUID();
 	await redis.set(
 		`refresh:${refreshToken}`,
@@ -48,7 +50,7 @@ const createJwt = async (req, res) => {
 			"userId": req.user.id_user,
 			"used": false
 		}),
-		'EX', 60 * 60 * 24 * 7 // 7 giorni in secondi
+		'EX', ttl
 	);
 	return ({"jwt": token, "refresh": refreshToken});
 }
