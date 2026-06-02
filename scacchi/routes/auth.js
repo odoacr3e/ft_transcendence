@@ -65,8 +65,6 @@ authRouter.post("/login", async (req, res) => {
 	}
 });
 
-
-
 /**
  * @param {import('express').Request} req
  * @param {import('express').Response} res
@@ -85,6 +83,7 @@ authRouter.post("/register", async (req, res) => {
 			return res.status(500).json(jsonResponse.ResponseError("Server error creating user"));
 		req.user = user;
 		const token = await createJwt(req, res);
+		printLog(`New user created with username ${user.username}`, colors.brightGreen)
 		return res.status(201).json(jsonResponse.ResponseSuccess({ "user": user, "token": token }));
 	} catch (error) {
 		console.log("Error: ", error);
