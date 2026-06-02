@@ -4,10 +4,11 @@ import * as usersQuery from "../query/usersQuery.js";
 import { checkInputs } from "../utils/users.js";
 import { checkJwt } from "../utils/auth.js";
 import { jsonResponse } from "../utils/response.js"
+import { printLog } from "../utils/log.js"
 export const usersRouter = lib.include.express.Router();
 
 // NOTE: route /api/users/
-usersRouter.get("/", /* checkJwt, */ async (req, res) => {
+usersRouter.get("/", checkJwt, async (req, res) => {
 	try {
 		const { username } = req.query;
 		const users = username ? await usersQuery.findUserByUsername(username) : await usersQuery.getAllUsers();
@@ -32,11 +33,14 @@ usersRouter.get("/:id", checkJwt, async (req, res) => {
 	}
 });
 
-usersRouter.delete("/:id", async (req, res) => {
+usersRouter.delete("/", checkJwt, async (req, res) => {
 	try {
-		const user = await usersQuery.deleteUserById(req.params.id);
+		const user = await usersQuery.deleteUserById(req.user.id_user);
 		if (user)
+		{
+
 			return res.status(204).send();
+		}
 		return res.status(404).json(jsonResponse.ResponseError("User not found"));
 	} catch (error) {
 		if (error.code === 'P2025')
@@ -46,13 +50,13 @@ usersRouter.delete("/:id", async (req, res) => {
 	}
 });
 
-usersRouter.patch("/:id", async (req, res) => {
+usersRouter.patch("/", checkJwt, async (req, res) => {
 	try {
 		const { username, email, password } = req.body;
 		const inputs = checkInputs(username, email, password);
 		if (inputs != "OK")
 			return res.status(400).json(jsonResponse.ResponseError(inputs));
-		const user = await usersQuery.updateUserFieldsById(req.params.id, req.body);
+		const user = await usersQuery.updateUserFieldsById(req.user.id_user, req.body);
 		delete(user.password);
 		if (user)
 			return res.status(200).json(jsonResponse.ResponseSuccess({ "user": user }));
