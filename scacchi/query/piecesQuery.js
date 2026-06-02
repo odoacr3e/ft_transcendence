@@ -1,6 +1,6 @@
 
-import { prisma } from "../lib/prisma.js";
 import * as lib from "../lib/lib.js";
+const { prisma } = lib.conn;
 
 const getAllPieces = async () => {
 	return await prisma.pieces.findMany({

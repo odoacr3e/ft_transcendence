@@ -1,6 +1,6 @@
 
 import * as lib from "../lib/lib.js";
-const prisma = lib.conn.prisma;
+const { prisma } = lib.conn;
 
 const getAllNotifications = async () => {
 	return await prisma.notifications.findMany({
