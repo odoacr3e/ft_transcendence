@@ -1,10 +1,10 @@
 
 import * as lib from "../lib/lib.js";
 import * as usersQuery from "../query/usersQuery.js";
-export const usersRouter = lib.include.express.Router();
 import { checkInputs } from "../utils/users.js";
 import { checkJwt } from "../utils/auth.js";
 import { jsonResponse } from "../utils/response.js"
+export const usersRouter = lib.include.express.Router();
 
 // NOTE: route /api/users/
 usersRouter.get("/", /* checkJwt, */ async (req, res) => {
@@ -22,8 +22,8 @@ usersRouter.get("/", /* checkJwt, */ async (req, res) => {
 
 usersRouter.get("/:id", checkJwt, async (req, res) => {
 	try {
-		const { id_user } = req.user;
-		const user = await usersQuery.getUserById(id_user);
+		const { id } = req.params;
+		const user = await usersQuery.getUserById(id);
 		if (user)
 			return res.status(200).json(jsonResponse.ResponseSuccess({ "user": user }));
 		return res.status(404).json(jsonResponse.ResponseError("User not found"));
