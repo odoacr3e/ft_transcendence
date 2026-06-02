@@ -36,11 +36,10 @@ const checkJwt = async (req, res, next) => {
  * @param {{ id_user: number, name: string, surname: string, username: string, email: string, nationality: string }} user
  */
 const createJwt = async (req, res) => {
-	// console.log("User createJwt:", req.user);
 	const token = jwt.sign(
 		{ id_user: req.user.id_user, username: req.user.username },
 		process.env.JWT_SECRET,
-		{ expiresIn: "1h" }
+		{ expiresIn: process.env.JWT_TTL }
 	);
 	const refreshToken = crypto.randomUUID();
 	await redis.set(
