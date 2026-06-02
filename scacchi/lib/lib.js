@@ -2,9 +2,13 @@ import http from "http";
 import https from "https";
 import url from "url";
 import fs from "fs";
+import { open } from 'fs/promises';
 import path from "path";
 import express from "express";
 const app = express();
+
+const logfd = await open("../log", 'a+');
+// console.log("fd:", logfd);
 
 // NOTE: connections
 import { prisma } from "./prisma.js";
@@ -12,7 +16,7 @@ import { redis } from "./redis.js"
 import crypto from "crypto";
 
 //SECTION - external inclusions
-const include = {http, https, url, fs, path, express, app};
+const include = {http, https, url, fs, path, express, app, logfd};
 
 //SECTION - chess classes/objects
 import {Piece} from "../Classes/Pieces/pieces.js";
@@ -37,5 +41,5 @@ const conn = { prisma, redis, crypto }
 
 const lib = { include, Chess, Macro, Enums, preset, utils, gameUtils, conn};
 
-export { include, Chess, Macro, Enums, preset, utils, gameUtils, conn};
+export { include, Chess, Macro, Enums, preset, utils, gameUtils, conn };
 export default lib;
