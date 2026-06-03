@@ -173,12 +173,12 @@
     },
     {
       "from": "h8",
-      "to": "",
+      "to": "Champion",
       "movedPiece": "Champion",
       "team": "white",
       "type": "trans",
       "useBoostBool": false,
-      "counter": 18,
+      "counter": 23,
       "updates": {}
     },
     {
@@ -188,7 +188,7 @@
       "team": "white",
       "type": "endturn",
       "useBoostBool": false,
-      "counter": 19,
+      "counter": 24,
       "updates": {}
     },
     {
@@ -198,7 +198,7 @@
       "team": "black",
       "type": "move",
       "useBoostBool": false,
-      "counter": 20,
+      "counter": 25,
       "updates": {}
     },
     {
@@ -208,7 +208,7 @@
       "team": "black",
       "type": "endturn",
       "useBoostBool": false,
-      "counter": 21,
+      "counter": 26,
       "updates": {}
     },
     {
@@ -218,11 +218,11 @@
       "team": "white",
       "type": "move",
       "useBoostBool": false,
-      "counter": 22,
+      "counter": 27,
       "updates": {}
     }
   ],
-  "moves": 23,
+  "moves": 28,
   "victory": "",
   "finalBoard": "|M|J|V|C|K|V| | |\n|B|B|B|B|B| | | |\n| | | | | |C| | |\n| | | | | |B| | |\n| | | | | | | | |\n| | | | | | | | |\n|B|B|B|B|B|B| |B|\n|M|J|V|C|K|V|J|M|\n"
 }

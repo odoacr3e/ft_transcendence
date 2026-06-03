@@ -297,6 +297,7 @@ function updateTransform(match, square, from, newType)
 	if (!square.piece)
 		throw (`History: missing piece in square: ${square}`);
 	record = new HistoryEvent(this.moves, eEvents.Transform, square.piece.team, match.board.updates, newType, from);
+	record.to = newType;
 	this.events.push(record);
 	this.moves += 1;
 }
