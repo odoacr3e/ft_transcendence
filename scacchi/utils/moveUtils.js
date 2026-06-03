@@ -159,11 +159,7 @@ function dangerDelPiece(match, pos=match.cursor.square, dest, result=null, updat
 	{
 		if (!result || result.specialMoves.CheckSniperMove() == 0)
 		{
-			if (target == "g2")
-				console.log("prima:", match.board.updates);
 			DangerUpdate(match, target, updateBool);
-			if (target == "g2")
-				console.log("dopo:", match.board.updates);
 		}
 		// if (pos == null)
 		// 	throw ("DEBUG throw dangerZones");

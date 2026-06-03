@@ -1,5 +1,6 @@
 // @ts-check
 import {HISTORY_FILE, HISTORY_PATH} from "../Macro/macro.js";
+import {eEvents} from "../Macro/enums.js";
 import {movePiece, dangerUpdateAll} from "../utils/moveUtils.js";
 import {includesOneOf} from "../utils/string.js";
 import {historyRestore} from "../utils/history.js";
@@ -16,6 +17,7 @@ import { makeTransfiguration } from "../handlers/game/transfiguration.js";
 import { cmd } from "./enumsTest.js";
 import { execSync } from "node:child_process";
 
+/** @typedef {import("../Classes/Match/match.js").Match} Match*/
 
 //SECTION - main: inizializza e fa primo render, mette terminale in ascolto
 function mainTerm()
@@ -80,12 +82,12 @@ process.stdin.on('keypress', (str, key) =>
 		case (cmd.END_TURN) :
 			result = endTurn(match);
 			if (result.status != 200)
-				return (error(null, result));
+				return (saveWrongMove(match, result, selected, eEvents.EndTurn));
 			break ;
 		case (cmd.BUY_BOOST) :
 			result = boost(match, match.cursor.square);
 			if (result.status != 200)
-				return (error(null, result));
+				return (saveWrongMove(match, result, selected, eEvents.Boost));
 			break ;
 		case (cmd.USE_BOOST) :
 			match.currentPlayer.useBoostBool = !match.currentPlayer.useBoostBool;
@@ -97,9 +99,11 @@ process.stdin.on('keypress', (str, key) =>
 			{
 				console.clear();
 				let	result = move(match, selected[0], selected[1], match.currentPlayer.useBoostBool);
+				if (result.status != 200 && match.currentPlayer.useBoostBool == true)
+					return (saveWrongMove(match, result, selected, eEvents.MoveBoost));
+				else if (result.status != 200)
+					return (saveWrongMove(match, result, selected, eEvents.Move));
 				selected = [];
-				if (result.status != 200)
-					return (error(null, result));
 			}
 			break ;
 		case (cmd.HELP):
@@ -109,7 +113,7 @@ process.stdin.on('keypress', (str, key) =>
 			let	newType = getline("insert new piece type");
 			result = makeTransfiguration(match, match.cursor.square, newType);
 			if (result.status != 200)
-				return (error(null, result));
+				return (saveWrongMove(match, result, selected, eEvents.Transform));
 			break ;
 		case (cmd.LOAD_HISTORY):
 		{
@@ -218,4 +222,28 @@ function getline(prompt)
 		return ("");
 	input = buffer.toString('utf8', 0, bRead).trim();
 	return (input);
+}
+
+/**
+ * 
+ * @param {Match} match
+ * @param {Result} result
+ * @param {Array<string>} selected
+ * @param {string} type
+ */
+function saveWrongMove(match, result, selected, type)
+{
+	console.log(selected);
+	if (type == eEvents.Move || type == eEvents.MoveBoost)
+		match.history.UpdateMoves(match, match.board.get(selected[0]), selected);
+	else if (type == eEvents.Boost)
+		match.history.UpdateBoost(match, match.board.get(selected[0]), selected[0]);
+	else if (type == eEvents.Transform)
+		match.history.UpdateTransform(match, match.board.get(selected[0]), selected[0], "Champion");
+	else if (type == eEvents.EndTurn)
+		match.history.UpdateEndTurn(match);
+	//@ts-ignore
+	match.history.Last().error = true;
+	selected = [];
+	error(null, result);
 }

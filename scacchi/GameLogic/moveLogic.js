@@ -391,8 +391,11 @@ function checkBooster(match, result, from, coords, boostBool) // FIXME - da aggi
 		pieceMultipleMoveBool = true;
 	else
 		pieceMultipleMoveBool = false;
-	if (pieceMultipleMoveBool == true && match.history.Last().type != eEvents.Move)
-		return (error(result, 500, "match History is messed up"));
+	if (pieceMultipleMoveBool == true)
+	{
+		if (!includesOneOf(match.history.Last().type, eEvents.Move, eEvents.MoveBoost))
+			return (error(result, 500, "match History is messed up"));
+	}
 	if (from.piece.type == enumNames.BASTARDS || match.history.Last().movedPiece == enumNames.BASTARDS)
 		return (doubleBastardsCheck(match, result, coords));
 	if (pieceMultipleMoveBool == false && match.moves > 0)

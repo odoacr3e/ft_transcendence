@@ -151,8 +151,14 @@ class History
 	}
 	Last()
 	{
-		if (this.events.length != 0)
-			return (this.events[this.events.length - 1]);
+		let	i;
+
+		i = 0;
+		while (this.events.length != i)
+		{
+			if (this.events[this.events.length - 1 - i].error == false)
+				return (this.events[this.events.length - 1 - i]);
+		}
 		return (new HistoryEvent(0, "Empty", "Empty"));
 	}
 	/** 
@@ -208,7 +214,7 @@ class HistoryEvent
 		if (!eventType)
 			throw ("History Event: invalid event type");
 		if (!team)
-			throw ("History Event: invalid team");
+			team = "???";
 		this.from = from;
 		this.to = to;
 		this.movedPiece = pieceType;
@@ -219,6 +225,7 @@ class HistoryEvent
 		this.useBoostBool = false;
 		this.counter = counter;
 		this.updates = updates;
+		this.error = false;
 		if (pieceBoosterZones)
 			this.pieceBoosterTargetZones = copyBoostedTargetZones(pieceBoosterZones);
 	}
@@ -242,12 +249,12 @@ function updateMoves(match, square, coords)
 		throw (`History: invalid move coords [${coords[0]}, ${coords[1]}]`);
 	if (!square)
 		throw (`History: invalid square`);
-	if (!square.piece)
-		throw (`History: missing piece in square: ${square}`);
+	// if (!square.piece)
+	// 	throw (`History: missing piece in square: ${square}`);
 	eName = eEvents.Move;
 	if (match.currentPlayer.useBoostBool)
 		eName = eEvents.MoveBoost;
-	record = new HistoryEvent(this.moves, eName, square.piece.team, match.board.updates, square.piece.type, coords[0], coords[1], square.boostedTargetZones, square.piece.isBoostedBool);
+	record = new HistoryEvent(this.moves, eName, square.piece?.team, match.board.updates, square.piece?.type, coords[0], coords[1], square.boostedTargetZones, square.piece?.isBoostedBool);
 	this.events.push(record);
 	this.moves += 1;
 }
@@ -269,9 +276,9 @@ function updateBoost(match, square, from)
 		throw (`History: invalid from coord`);
 	if (!square)
 		throw (`History: invalid square`);
-	if (!square.piece)
-		throw (`History: missing piece in square: ${square}`);
-	record = new HistoryEvent(this.moves, eEvents.Boost, square.piece.team, match.board.updates, square.piece.type, from);
+	// if (!square.piece)
+	// 	throw (`History: missing piece in square: ${square}`);
+	record = new HistoryEvent(this.moves, eEvents.Boost, square.piece?.team, match.board.updates, square.piece?.type, from);
 	this.events.push(record);
 	this.moves += 1;
 }
@@ -294,9 +301,9 @@ function updateTransform(match, square, from, newType)
 		throw (`History: invalid from coord`);
 	if (!square)
 		throw (`History: invalid square`);
-	if (!square.piece)
-		throw (`History: missing piece in square: ${square}`);
-	record = new HistoryEvent(this.moves, eEvents.Transform, square.piece.team, match.board.updates, newType, from);
+	// if (!square.piece)
+	// 	throw (`History: missing piece in square: ${square}`);
+	record = new HistoryEvent(this.moves, eEvents.Transform, square.piece?.team, match.board.updates, newType, from);
 	record.to = newType;
 	this.events.push(record);
 	this.moves += 1;
