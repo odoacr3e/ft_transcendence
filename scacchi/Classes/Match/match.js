@@ -158,6 +158,7 @@ class History
 		{
 			if (this.events[this.events.length - 1 - i].error == false)
 				return (this.events[this.events.length - 1 - i]);
+			++i;
 		}
 		return (new HistoryEvent(0, "Empty", "Empty"));
 	}
