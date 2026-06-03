@@ -70,7 +70,8 @@ function bastardChecks(match, dy, dx, piece)
 		return (false);
 	if (match.cursor.moveCol(dx) == false)
 		return (match.cursor.Restore(), false);
-	target = match.board.get(match.cursor.square)?.piece;
+	match.board.AddInfluence(startPos, match.cursor.square);
+	target = match.board.get(match.cursor.square).piece;
 	if (dx != 0 && dy != 0)//NOTE - bastards moves diagonally
 	{
 		match.board.get(match.cursor.square).dangerZones.add(startPos);
@@ -88,6 +89,7 @@ function bastardChecks(match, dy, dx, piece)
 	{
 		match.board.get(startPos).targetZones.add(match.cursor.square);
 		match.board.get(match.cursor.square).dangerZones.add(startPos);
+		match.board.AddInfluence(startPos, match.cursor.square);
 	}
 	match.cursor.Restore();
 	return (true);

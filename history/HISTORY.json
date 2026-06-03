@@ -2,8 +2,8 @@
   "seed": 0,
   "events": [
     {
-      "from": "e2",
-      "to": "e4",
+      "from": "g2",
+      "to": "g4",
       "movedPiece": "Bastards",
       "team": "white",
       "type": "move",
@@ -22,8 +22,8 @@
       "updates": {}
     },
     {
-      "from": "d7",
-      "to": "d5",
+      "from": "h7",
+      "to": "h5",
       "movedPiece": "Bastards",
       "team": "black",
       "type": "move",
@@ -42,8 +42,8 @@
       "updates": {}
     },
     {
-      "from": "e4",
-      "to": "d5",
+      "from": "g4",
+      "to": "h5",
       "movedPiece": "Bastards",
       "team": "white",
       "type": "move",
@@ -63,7 +63,7 @@
     },
     {
       "from": "g7",
-      "to": "g5",
+      "to": "g6",
       "movedPiece": "Bastards",
       "team": "black",
       "type": "move",
@@ -82,8 +82,8 @@
       "updates": {}
     },
     {
-      "from": "h2",
-      "to": "h4",
+      "from": "h5",
+      "to": "g6",
       "movedPiece": "Bastards",
       "team": "white",
       "type": "move",
@@ -102,9 +102,9 @@
       "updates": {}
     },
     {
-      "from": "g8",
+      "from": "f7",
       "to": "f6",
-      "movedPiece": "Jester",
+      "movedPiece": "Bastards",
       "team": "black",
       "type": "move",
       "useBoostBool": false,
@@ -122,8 +122,8 @@
       "updates": {}
     },
     {
-      "from": "h4",
-      "to": "g5",
+      "from": "g6",
+      "to": "g7",
       "movedPiece": "Bastards",
       "team": "white",
       "type": "move",
@@ -142,8 +142,8 @@
       "updates": {}
     },
     {
-      "from": "b7",
-      "to": "b5",
+      "from": "f6",
+      "to": "f5",
       "movedPiece": "Bastards",
       "team": "black",
       "type": "move",
@@ -162,8 +162,8 @@
       "updates": {}
     },
     {
-      "from": "g5",
-      "to": "f6",
+      "from": "g7",
+      "to": "h8",
       "movedPiece": "Bastards",
       "team": "white",
       "type": "move",
@@ -172,33 +172,33 @@
       "updates": {}
     },
     {
-      "from": "h1",
+      "from": "h8",
       "to": "",
-      "movedPiece": "Minotaurus",
+      "movedPiece": "Champion",
       "team": "white",
-      "type": "boost",
-      "useBoostBool": false,
-      "counter": 17,
-      "updates": {}
-    },
-    {
-      "from": "",
-      "to": "",
-      "movedPiece": "",
-      "team": "white",
-      "type": "endturn",
+      "type": "trans",
       "useBoostBool": false,
       "counter": 18,
       "updates": {}
     },
     {
-      "from": "f8",
-      "to": "g7",
-      "movedPiece": "Valkirya",
+      "from": "",
+      "to": "",
+      "movedPiece": "",
+      "team": "white",
+      "type": "endturn",
+      "useBoostBool": false,
+      "counter": 19,
+      "updates": {}
+    },
+    {
+      "from": "g8",
+      "to": "f6",
+      "movedPiece": "Jester",
       "team": "black",
       "type": "move",
       "useBoostBool": false,
-      "counter": 19,
+      "counter": 20,
       "updates": {}
     },
     {
@@ -208,31 +208,21 @@
       "team": "black",
       "type": "endturn",
       "useBoostBool": false,
-      "counter": 20,
-      "updates": {}
-    },
-    {
-      "from": "h1",
-      "to": "h7",
-      "movedPiece": "Minotaurus",
-      "team": "white",
-      "type": "move",
-      "useBoostBool": false,
       "counter": 21,
       "updates": {}
     },
     {
-      "from": "h7",
-      "to": "h8",
-      "movedPiece": "Minotaurus",
+      "from": "h8",
+      "to": "f6",
+      "movedPiece": "Champion",
       "team": "white",
       "type": "move",
-      "useBoostBool": true,
+      "useBoostBool": false,
       "counter": 22,
       "updates": {}
     }
   ],
   "moves": 23,
   "victory": "",
-  "finalBoard": "|M|J|V|C|K| | |M|\n|B| |B| |B|B|V| |\n| | | | | |B| | |\n| |B| |B| | | | |\n| | | | | | | | |\n| | | | | | | | |\n|B|B|B|B| |B|B| |\n|M|J|V|C|K|V|J| |\n"
+  "finalBoard": "|M|J|V|C|K|V| | |\n|B|B|B|B|B| | | |\n| | | | | |C| | |\n| | | | | |B| | |\n| | | | | | | | |\n| | | | | | | | |\n|B|B|B|B|B|B| |B|\n|M|J|V|C|K|V|J|M|\n"
 }

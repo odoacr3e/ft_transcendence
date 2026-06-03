@@ -64,6 +64,7 @@ let DangerUpdate = (match, pos=null) =>
 	if (piece == null)
 		return (0);
 	match.board.get(pos).targetZones.clear();
+	match.board.ResetInfluence(pos);
 	match.board.get(pos).boostedTargetZones.clear();
 	for (let {dx, dy} of piece.moveArray)
 	{
@@ -74,6 +75,7 @@ let DangerUpdate = (match, pos=null) =>
 		}
 		while (movePiece(match, dy, dx, false))
 		{
+			// match.board.AddInfluence(); FIXME - addInfluence per tutti? 
 			usedBoard.get(match.cursor.square).dangerZones.add(startPos);
 			usedBoard.get(startPos).targetZones.add(match.cursor.square);
 			if (piece.moveLongRangeDEBUG == false || usedBoard.get(match.cursor.square)?.piece != null)
@@ -90,6 +92,25 @@ let DangerUpdate = (match, pos=null) =>
 	match.board.get(pos).targetZones.delete(pos);
 	match.board.get(pos).dangerZones.delete(pos);
 	return (1);
+}
+
+/**
+ * 
+ * @param {Match} match
+ * @param {string} coord 
+ */
+function CheckInfluence(match, coord)
+{
+	let setInfluence;
+	let tmpInfluence;
+
+	setInfluence = match.board.influenceMap.get(coord);
+	if (!setInfluence)
+		throw (`dangerDelPiece: invalid coord ${coord}`);
+	tmpInfluence = new Set(setInfluence);
+	for (const influenceCoord of tmpInfluence)
+		DangerUpdate(match, influenceCoord);
+	match.board.ResetInfluence(coord);
 }
 
 /**
@@ -140,6 +161,7 @@ function dangerDelPiece(match, pos=match.cursor.square, dest, result=null)
 			throw ("DEBUG throw dangerZones");
 		match.board.updates.add(target);
 	}
+	CheckInfluence(match, pos);
 	pieceSquare.targetZones.clear();
 	pieceSquare.boostedTargetZones.clear();
 	// pieceSquare.ClearZones();
@@ -197,6 +219,7 @@ function dangerUpPiece(match, pos=match.cursor.square, result=null)
 			throw ("DEBUG throw dangerZones");
 		match.board.updates.add(target);
 	}
+	CheckInfluence(match, pos);
 	pieceSquare.targetZones.clear();
 	pieceSquare.boostedTargetZones.clear();
 	// pieceSquare.ClearZones();
@@ -204,15 +227,6 @@ function dangerUpPiece(match, pos=match.cursor.square, result=null)
 		throw ("DEBUG throw REMOVE");
 	match.board.updates.add(pos);
 }
-
-
-/*
-	pedone f2:	f4, f3, e3
-
-	preset pedoni: Set<> => coordinate nella map
-	
-	Map<coordinata, Set<>>
-*/
 
 /**
  * 

@@ -1,5 +1,6 @@
 // @ts-check
 /** @typedef {pieces.Piece} Piece */
+/** @typedef {Map<string, Set<string>>} InfluenceMap */
 
 //SECTION import
 import {CHESSBOARD_H, CHESSBOARD_W} from "../../Macro/macro.js";
@@ -22,7 +23,7 @@ class Square
 		/** @type {Set<string>} */				this.targetZones = new Set();
 		/** @type {Map<string, Set<string>>} */	this.boostedTargetZones = new Map();
 		/** @type {Set<string>} */				this.dangerZones = new Set();
-		// /** @type {boolean} */					this.isInvolved = false;
+		/** @type {Set<string>} */				this.influenceZones = new Set();
 
 		if (other == null)
 			return ;
@@ -35,6 +36,7 @@ class Square
 		this.targetZones = other.targetZones;
 		this.boostedTargetZones = other.boostedTargetZones;
 		this.dangerZones = other.dangerZones;
+		this.influenceZones = other.influenceZones;
 	}
 	//calls .clear on target, boostedTarget, danger zones 
 	ClearZones()
@@ -42,6 +44,7 @@ class Square
 		this.boostedTargetZones.clear();
 		this.dangerZones.clear();
 		this.targetZones.clear();
+		this.influenceZones.clear();
 	}
 }
 
@@ -64,6 +67,8 @@ class ChessBoard
 		this.updates.clear();
 		this.width = w;
 		this.heigth = h;
+		this.influenceMap = initInfluenceBoard(this._data);
+
 	}
 	//SECTION - custom function
 	//clear the map
@@ -99,6 +104,35 @@ class ChessBoard
 	values(){return (this._data.values());}
 	[Symbol.iterator](){return (this._data[Symbol.iterator]());}
 	//SECTION - custom function
+	/** @param {string} coord */
+	ResetInfluence(coord)
+	{
+		let	pieceSquare;
+		let	set;
+
+		pieceSquare = this.get(coord);
+		for (const menaceCoord of pieceSquare.influenceZones)
+		{
+			set = this.influenceMap.get(menaceCoord);
+			if (!set)
+				throw (`ResetInfluence in ${coord} for ${menaceCoord}`);
+			set.delete(coord);
+		}
+		pieceSquare.influenceZones.clear();
+	}
+	/**
+	 * 
+	 * @param {string} targetCoord
+	 * @param {string} influencedCoord
+	 */
+	AddInfluence(targetCoord, influencedCoord)
+	{
+		let SquareTarget;
+
+		SquareTarget = this.get(targetCoord);
+		SquareTarget.influenceZones.add(influencedCoord);
+		this.influenceMap.get(influencedCoord)?.add(targetCoord);
+	}
 };
 
 //ANCHOR - utils
@@ -112,8 +146,6 @@ class ChessBoard
  */
 function initBoard(maxWidth=CHESSBOARD_W, maxHeigth=CHESSBOARD_H, cursor=new Cursor())
 {
-	/** @type {string} */				let	row;
-	/** @type {number} */				let	col;
 	/** @type {string} */				let	squareId;
 	/** @type {Map<string, Square>} */	let	board;
 
@@ -133,6 +165,23 @@ function initBoard(maxWidth=CHESSBOARD_W, maxHeigth=CHESSBOARD_H, cursor=new Cur
 	while (cursor.moveRow(1))
 	cursor.Restore();
 	return (board);
+}
+
+/**
+ * 
+ * @param {Map<string, Square>} board
+ * @returns 
+ */
+function initInfluenceBoard(board)
+{
+	/** @type {InfluenceMap} */	let	influenceBoard;
+
+	influenceBoard = new Map();
+	for (const [key, value] of board)
+	{
+		influenceBoard.set(key, new Set());
+	}
+	return (influenceBoard);
 }
 
 /**
@@ -182,4 +231,4 @@ function copyBoostedTargetZones(src, dest=null)
 	return (dest);
 }
 
-export {ChessBoard, Square, initBoard, copyBoard, copyBoostedTargetZones};
+export {ChessBoard, Square, initBoard, initInfluenceBoard, copyBoard, copyBoostedTargetZones};

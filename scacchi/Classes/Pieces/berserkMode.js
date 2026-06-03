@@ -1,10 +1,13 @@
 // @ts-check
 import {movePiece} from "../../utils/moveUtils.js";
 import {enumNames} from "../../Macro/enums.js";
+
+/**@typedef {import("../Match/match.js").Match} Match*/
+
 /**
  * 
  * @param {string} pos 
- * @param {*} match 
+ * @param {Match} match 
  */
 function berserkMode(pos, match)
 {
@@ -15,7 +18,7 @@ function berserkMode(pos, match)
 	startPos = match.cursor.square;
 	piece = match.board.get(pos)?.piece;
 	if (piece?.moveArray == null)
-		throw ("entering in function berserkMode with a null piece :-("); //FIXME - errore grave, dare 500
+		throw ("entering in function berserkMode with a null piece :-(");
 	match.board.get(pos)?.boostedTargetZones.set(startPos, new Set());
 	for (let {dx, dy} of piece?.moveArray)
 	{
@@ -29,6 +32,8 @@ function berserkMode(pos, match)
 				targetSquare.dangerZones.add(pos);
 				match.board.get(pos)?.boostedTargetZones.get(startPos)?.add(match.cursor.square);
 			}
+			if (piece.type  == enumNames.MINOTAURUS)
+				match.board.AddInfluence(pos, match.cursor.square);
 			if (targetSquare.piece != null)
 			{
 				targetSquare.dangerZones.add(pos);
@@ -41,5 +46,16 @@ function berserkMode(pos, match)
 	if (match.board.get(pos)?.boostedTargetZones.get(startPos)?.size == 0)
 		match.board.get(pos)?.boostedTargetZones.delete(startPos);
 }
+
+/*
+	square => e2: e3, e4, d3, f3
+	board: key: e3, value: e2
+	board: key: e4, value: e2
+	board: key: d3, value: e2
+	board: key: f3, value: e2
+
+	board.influenceMap(from)
+	board.get(minotauroCoord) => square.influenceMap.forEach
+*/
 
 export {berserkMode};

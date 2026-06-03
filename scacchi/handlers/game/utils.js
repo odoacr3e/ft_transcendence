@@ -90,6 +90,8 @@ function modifyBoard(copiedBoard)
 		// @ts-ignore
 		delete (square).dangerZones;
 		// @ts-ignore
+		delete (square).influenceZones;
+		// @ts-ignore
 		if (!square.piece)
 			continue ;
 		square.piece.moveArray = [];

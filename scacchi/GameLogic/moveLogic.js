@@ -576,6 +576,7 @@ function transfiguration(match, result, coord, newType)
 	square.piece = new Piece(newType, square.piece.pos, square.piece.team);
 	square.piece.isBoostedBool = isBoostedBool;
 	DangerUpdate(match, coord);
+	match.history.UpdateTransform(match, square, coord, newType);
 	endTurn(match, false);
 	result.status = 200;
 	result.msg = "OK";

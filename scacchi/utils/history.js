@@ -6,6 +6,7 @@ import { Piece } from "../Classes/Pieces/pieces.js";
 import {move, boost, endTurn, init, error} from "../handlers/game/Game.js";
 import { render } from "../test/render.js";
 import { Result } from "pg";
+import { makeTransfiguration } from "../handlers/game/transfiguration.js";
 
 
 /** @typedef {import ("../Classes/Match/match.js").History} History */
@@ -42,8 +43,12 @@ function historyRestore(match, path)
 				console.log("");
 			if (event.type == eEvents.Move)
 				result = move(match, event.from, event.to, event.useBoostBool);
+			else if (event.type == eEvents.MoveBoost)
+				result = move(match, event.from, event.to, true);
 			else if (event.type == eEvents.Boost)
 				result = boost(match, event.from);
+			else if (event.type == eEvents.Transform)
+				result = makeTransfiguration(match, event.from, event.movedPiece);
 			else if (event.type == eEvents.EndTurn)
 			{
 				result = endTurn(match);

@@ -18,7 +18,8 @@ const eEvents =
 	Move: 'move',
 	MoveBoost: 'moveboost',
 	Boost: 'boost',
-	EndTurn: `endturn`
+	EndTurn: `endturn`,
+	Transform: 'trans'
 };
 
 /**

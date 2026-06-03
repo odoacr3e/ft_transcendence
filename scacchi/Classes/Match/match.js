@@ -147,6 +147,7 @@ class History
 		this.UpdateMoves = updateMoves;
 		this.UpdateBoost = updateBoost;
 		this.UpdateEndTurn = updateEndTurn;
+		this.UpdateTransform = updateTransform;
 	}
 	Last()
 	{
@@ -271,6 +272,31 @@ function updateBoost(match, square, from)
 	if (!square.piece)
 		throw (`History: missing piece in square: ${square}`);
 	record = new HistoryEvent(this.moves, eEvents.Boost, square.piece.team, match.board.updates, square.piece.type, from);
+	this.events.push(record);
+	this.moves += 1;
+}
+
+/**
+ * 
+ * @this {History}
+ * @param {Match} match
+ * @param {Square} square 
+ * @param {string} from 
+ * @param {string} newType
+ */
+function updateTransform(match, square, from, newType)
+{
+	let	record;
+
+	if (!this)
+		throw ("updateMoves must be called inside of History class");
+	if (!from)
+		throw (`History: invalid from coord`);
+	if (!square)
+		throw (`History: invalid square`);
+	if (!square.piece)
+		throw (`History: missing piece in square: ${square}`);
+	record = new HistoryEvent(this.moves, eEvents.Transform, square.piece.team, match.board.updates, newType, from);
 	this.events.push(record);
 	this.moves += 1;
 }
