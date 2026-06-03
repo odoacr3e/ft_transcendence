@@ -25,7 +25,6 @@ function mainTerm()
 	termInit();
 	match = globals.getDebugMatch();
 	init(match, lib.Macro.SEED);
-	dangerUpdateAll(match);
 	// match.cursor.Save();
 	// match.cursor.moveRow(1);
 	// match.cursor.moveCol(1);

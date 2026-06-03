@@ -133,6 +133,13 @@ class ChessBoard
 		SquareTarget.influenceZones.add(influencedCoord);
 		this.influenceMap.get(influencedCoord)?.add(targetCoord);
 	}
+	PrintInfluence()
+	{
+		console.log("influenceMap: => \n", this.influenceMap);
+		console.log("influenceSet: => \n");
+		this.forEach((v, k) => {console.log(k + ":", v.influenceZones);});
+		console.log("---------------------STOP\n\n");
+	}
 };
 
 //ANCHOR - utils

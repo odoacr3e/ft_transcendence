@@ -64,7 +64,7 @@ function copyOnlyBoardUpdates(match)
 	{
 		square = src.get(coord);
 		newBoard.set(coord, new Square(square));
-		addDangerZonesCoords(src._data, newBoard, square);
+		// addDangerZonesCoords(src._data, newBoard, square);
 	}
 	// //OLD
 	// from = src.get(selected[0]);
@@ -119,9 +119,9 @@ function addDangerZonesCoords(src, dest, square)
 	for (let dangerCoord of square.dangerZones)
 	{
 		dangerSquare = src.get(dangerCoord);
-		assert(dangerSquare, `Invalid DangerSquare: "${dangerCoord}"`);
-		if (!dangerSquare)
-			continue ;
+		// assert(dangerSquare, `Invalid DangerSquare: "${dangerCoord}"`);
+		// if (!dangerSquare)
+		// 	continue ;
 		dest.set(dangerCoord, new Square(dangerSquare));
 	}
 }

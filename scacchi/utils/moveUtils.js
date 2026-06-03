@@ -46,9 +46,10 @@ let movePiece = (match, dy, dx, clear=false) =>
  * 
  * @param {Match} match 
  * @param {string | null} pos
+ * @param {boolean} updBool
  * @returns 
  */
-let DangerUpdate = (match, pos=null) =>
+let DangerUpdate = (match, pos=null, updBool=true) =>
 {
 	let	usedBoard;
 	let	piece;
@@ -85,12 +86,14 @@ let DangerUpdate = (match, pos=null) =>
 	}
 	if (piece.isBoostedBool == true)
 		piece.moveFunction(match);
+	match.board.get(pos).targetZones.delete(pos);
+	match.board.get(pos).dangerZones.delete(pos);
+	if (updBool == false)
+		return (1);
 	if (pos != null)
 		match.board.updates.add(pos);
 	else
 		match.board.updates.add(match.cursor.square);
-	match.board.get(pos).targetZones.delete(pos);
-	match.board.get(pos).dangerZones.delete(pos);
 	return (1);
 }
 
@@ -119,8 +122,9 @@ function CheckInfluence(match, coord)
  * @param {string} pos
  * @param {string} dest
  * @param {Result | null} result
+ * @param {boolean} updateBool
  */
-function dangerDelPiece(match, pos=match.cursor.square, dest, result=null)
+function dangerDelPiece(match, pos=match.cursor.square, dest, result=null, updateBool=true)
 {
 	let	pieceSquare;
 
@@ -129,7 +133,7 @@ function dangerDelPiece(match, pos=match.cursor.square, dest, result=null)
 	{
 		match.board.get(target).dangerZones.delete(pos);
 		if (target != dest)
-			DangerUpdate(match, target);
+			DangerUpdate(match, target, updateBool);
 	}
 	if (result && result.specialMoves.CheckBastardMove())
 	{
@@ -155,11 +159,15 @@ function dangerDelPiece(match, pos=match.cursor.square, dest, result=null)
 	{
 		if (!result || result.specialMoves.CheckSniperMove() == 0)
 		{
-			DangerUpdate(match, target);
+			if (target == "g2")
+				console.log("prima:", match.board.updates);
+			DangerUpdate(match, target, updateBool);
+			if (target == "g2")
+				console.log("dopo:", match.board.updates);
 		}
-		if (pos == null)
-			throw ("DEBUG throw dangerZones");
-		match.board.updates.add(target);
+		// if (pos == null)
+		// 	throw ("DEBUG throw dangerZones");
+		// match.board.updates.add(target);
 	}
 	CheckInfluence(match, pos);
 	pieceSquare.targetZones.clear();
@@ -212,12 +220,12 @@ function dangerUpPiece(match, pos=match.cursor.square, result=null)
 	{
 		if (!result || result.specialMoves.CheckSniperMove() == 0)
 		{
-			dangerDelPiece(match, target, pos, result);
+			dangerDelPiece(match, target, pos, result, false);
 			DangerUpdate(match, target);
 		}
-		if (pos == null)
-			throw ("DEBUG throw dangerZones");
-		match.board.updates.add(target);
+		// if (pos == null)
+		// 	throw ("DEBUG throw dangerZones");
+		// match.board.updates.add(target);
 	}
 	CheckInfluence(match, pos);
 	pieceSquare.targetZones.clear();
@@ -246,7 +254,7 @@ function dangerUpdateMoved(match, selected=[], result=null)
 
 /**
  * 
- * @param {*} match 
+ * @param {Match} match 
  */
 function dangerUpdateAll(match)
 {
