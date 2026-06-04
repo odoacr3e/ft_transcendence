@@ -55,3 +55,12 @@ notifyRouter.get("/:id", async (req, res) => {
 		return res.status(500).json(jsonResponse.ResponseError("Server error retrieving notifications by id"));
 	}
 });
+
+notifyRouter.post("/", checkJwt, async (req, res) => {
+	try {
+		const { id_user } = req.user;
+		
+	} catch (error) {
+		
+	}
+});

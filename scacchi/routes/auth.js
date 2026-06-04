@@ -55,10 +55,11 @@ authRouter.post("/login", async (req, res) => {
 		}
 		delete(user.password);
 		req.user = user; // aggiungo lo user trovato all'oggetto request per averlo anche nel successivo middleware
-		const token = await createJwt(req, res);
+		await createJwt(req, res);
 		printLog(`User ${user.username} correctly logged in`, colors.brightGreen)
-		return res.status(200).json(jsonResponse.ResponseSuccess({ "user": user, "token": token }));
+		return res.status(200).json(jsonResponse.ResponseSuccess({ "user": user }));
 	} catch (error) {
+		console.log("Error: ", error);
 		printLog(`User couldn't complete login due server error: ${error.name}`, colors.brightYellow);
 		return res.status(500).json(jsonResponse.ResponseError("Server error checking for user"));
 	}
@@ -81,9 +82,9 @@ authRouter.post("/register", async (req, res) => {
 		if (!user)
 			return res.status(500).json(jsonResponse.ResponseError("Server error creating user"));
 		req.user = user;
-		const token = await createJwt(req, res);
+		await createJwt(req, res);
 		printLog(`New user created with username ${user.username}`, colors.brightGreen)
-		return res.status(201).json(jsonResponse.ResponseSuccess({ "user": user, "token": token }));
+		return res.status(201).json(jsonResponse.ResponseSuccess({ "user": user }));
 	} catch (error) {
 		printLog(`User couldn't correctly register due server error: ${error.name}`, colors.brightYellow);
 		return res.status(500).json(jsonResponse.ResponseError("Server error creating user"));
@@ -96,6 +97,7 @@ authRouter.post("/register", async (req, res) => {
  */
 authRouter.post("/refresh", async (req, res) => {
 	try {
+		// const { refresh_token } = req.cookies;
 		const { refresh, user } = req.body;
 		const refToken = await redis.get(`refresh:${refresh}`);
 		if (!refToken)
@@ -113,9 +115,9 @@ authRouter.post("/refresh", async (req, res) => {
 			JSON.stringify({ ...rawToken, used: true }),
 			'KEEPTTL'
 		);
-		const token = await createJwt(req, res);
+		await createJwt(req, res);
 		await redis.del(`refresh:${refresh}`);
-		return res.status(200).json(jsonResponse.ResponseSuccess({ "user": user, "token": token }));
+		return res.status(200).json(jsonResponse.ResponseSuccess({ "user": user }));
 	} catch (error) {
 		printLog(`User couldn't refresh token due server error: ${error.name}`, colors.brightYellow);
 		return res.status(403).json(jsonResponse.ResponseError("Server error refreshing token"));

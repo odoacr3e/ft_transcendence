@@ -6,6 +6,7 @@ import { responseFormatter } from "./utils/response.js";
 const app = lib.include.express();
 const server = lib.include.http.createServer(app);
 const sockio = new lib.include.SocketIO(server);
+import cookieParser from 'cookie-parser';
 
 // setup
 const PORT = 8080;
@@ -41,6 +42,8 @@ app.use((err, req, res, next) =>
 sockio.on('connection', (socket) => {
 	console.log("A new user connected");
 })
+
+app.use(cookieParser()); 
 
 // routes
 app.use("/api", apiRouter);

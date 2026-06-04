@@ -21,7 +21,9 @@ const { crypto } = lib.conn;
 // check jwt valido, altrimenti ritorno "token invalido"
 // se token scaduto -> sotto /refresh genero altro token di rinnovo + token jwt e invalido quello precedente
 const checkJwt = async (req, res, next) => {
-	const token = req.headers.authorization?.split(' ')[1];
+	console.log("Cookies: ", req.cookies);
+	const token = req.cookies?.jwt_token;
+	// const token = req.headers.authorization?.split(' ')[1];
 	if (!token)
 		return res.status(401).json(jsonResponse.ResponseError("User not autorized"));
 	try {
@@ -35,10 +37,11 @@ const checkJwt = async (req, res, next) => {
 };
 
 /**
- * @description async funztion, creazione JWT per login/registrazione utente
- * @param {{ id_user: number, name: string, surname: string, username: string, email: string, nationality: string }} user
+ * @param {import('express').Request}	req
+ * @param {import('express').Response}	res
  */
 const createJwt = async (req, res) => {
+	const isSecure = process.env.NODE_ENV === 'production';
 	const token = jwt.sign(
 		{ id_user: req.user.id_user, username: req.user.username },
 		process.env.JWT_SECRET,
@@ -54,7 +57,22 @@ const createJwt = async (req, res) => {
 		}),
 		'EX', ttl
 	);
-	return ({"jwt": token, "refresh": refreshToken});
+	// setting cookies for jwt
+	res.cookie('jwt_token', token, {
+		httpOnly: true,
+		secure: isSecure,
+		sameSite: 'strict',
+		maxAge: ms(process.env.JWT_TTL)
+	});
+	// setting cookies for refresh token
+	res.cookie('refresh_token', refreshToken, {
+		httpOnly: true,
+		secure: isSecure,
+		sameSite: 'strict',
+		maxAge: ms(process.env.REFRESH_TTL),
+		path: '/auth/refresh' // can be sent only to this route
+	});
+	// return ({"jwt": token, "refresh": refreshToken});
 }
 
 /** 
