@@ -1,7 +1,7 @@
 
 import * as lib from "../lib/lib.js";
 import { usersRouter } from "./users.js";
-import gameRouter from "./game.js";
+import { gameRouter } from "./game.js";
 import { piecesRouter } from "./pieces.js";
 import { notifyRouter } from "./notifications.js";
 export const apiRouter = lib.include.express.Router();

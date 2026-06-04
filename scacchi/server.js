@@ -2,9 +2,8 @@
 import * as lib from "./lib/lib.js";
 import { apiRouter } from "./routes/api.js";
 import { authRouter } from "./routes/auth.js";
-const app = lib.include.express();
 import { responseFormatter } from "./utils/response.js";
-// const cors = require('cors');
+const app = lib.include.express();
 
 // setup
 const PORT = 8080;
@@ -13,6 +12,7 @@ let conn;
 
 app.set('json spaces', 2);
 
+// NOTE: finche non ci sara un web server su frontend vengono usati questi header per comunicazione BE-FE
 app.use((req, res, next) => {
 	res.setHeader('Access-Control-Allow-Origin', '*');
 	res.setHeader('Access-Control-Allow-Methods', '*');
@@ -44,4 +44,4 @@ conn = app.listen(PORT, () => {
   console.log("Server is listening on port " + PORT);
 });
 
-export {app, conn};
+export {app};

@@ -10,6 +10,7 @@ export const usersRouter = lib.include.express.Router();
 
 // NOTE: route /api/users/
 
+
 // NOTE: solo user loggati, ricerca tutti gli utenti con query su username
 usersRouter.get("/", checkJwt, async (req, res) => {
 	try {
