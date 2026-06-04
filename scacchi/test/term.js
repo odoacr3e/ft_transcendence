@@ -95,7 +95,6 @@ process.stdin.on('keypress', (str, key) =>
 		case (cmd.MOVE) :
 			console.assert((selected.length < 2), "move array too large");
 			selected.push(match.cursor.square);
-			console.log(selected);
 			if (selected.length == 2)
 			{
 				console.clear();

@@ -501,33 +501,30 @@ function doubleBastardsCheck(match, result, coords)
  */
 function simulation(coords, match, result=null)
 {
-	let tmp;
+	let tmp = null;
 	let	from;
 	let	to;
 	let	king;
+	let	dangerBool;
 
-	tmp = copyBoard(match.board._data);
 	from = match.board.get(coords[0]);
 	to = match.board.get(coords[1]);
 	king = match.board.get(match.currentPlayer.King);
 	if (!from || !to || !king)
 		return (false); // FIXME error 500 : impossibile
+	if (to.piece)
+		tmp = to.piece.Copy();
 	to.piece = from.piece;
 	from.piece = null;
 	if (coords[0] == match.currentPlayer.King)
 		king = to;
 	dangerUpdateMoved(match, coords, result);
-	if (isDangerous(match, king.dangerZones, king.piece?.team))
-	{
-		copyBoard(tmp, match.board._data);
-		dangerUpdateMoved(match, coords, result);
-		DangerUpdate(match, coords[0]);
-		return (false);
-	}
-	copyBoard(tmp, match.board._data);
-	dangerUpdateMoved(match, coords, result);
+	dangerBool = isDangerous(match, king.dangerZones, king.piece?.team); 
+	from.piece = to.piece;
+	to.piece = tmp;
+	dangerUpdateMoved(match, [coords[1], coords[0]], result);
 	DangerUpdate(match, coords[0]);
-	return (true);
+	return (!dangerBool);
 }
 
 /**

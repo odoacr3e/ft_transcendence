@@ -32,7 +32,6 @@ class Square
 			this.piece = pieces.copyPiece(other.piece);
 		else
 			this.piece = null;
-		// this.piece = other.piece; Che monchi che siete raga!
 		this.targetZones = other.targetZones;
 		this.boostedTargetZones = other.boostedTargetZones;
 		this.dangerZones = other.dangerZones;

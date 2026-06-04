@@ -27,6 +27,15 @@ class Piece
 		/** @type {boolean} */							this.moveLongRangeDEBUG = preset.longRange;
 		/** @type {boolean} */							this.multipleMovesBool = preset.multipleMoves;
 	}
+	Copy()
+	{
+		let	other;
+
+		other = new Piece(this.type, this.pos, this.team);
+		other.isBoostedBool = this.isBoostedBool;
+		other.isMovedBool = this.isMovedBool;
+		return (other);
+	}
 }
 
 /**
