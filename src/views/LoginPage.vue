@@ -24,7 +24,7 @@
                     </div>
                     <div class="justify-self-center">
                         <RouterLink to="/register">
-                            <u><a class="text-[80%] text-[#882a2a] cursor-pointer">Registrati</a></u>
+                            <u><a class="text-[80%] text-[#882a2a] cursor-pointer hover:text-[#af3d3d] active:text-[#d1aaaa]">Registrati</a></u>
                         </RouterLink>
                     </div>
                 </div>

@@ -23,7 +23,7 @@
                     </div>
                     <div class="justify-self-center">
                         <RouterLink to="/log">
-                            <u><a class="text-[80%] text-[#882a2a] cursor-pointer">Accedi</a></u>
+                            <u><a class="text-[80%] text-[#882a2a] cursor-pointer hover:text-[#af3d3d] active:text-[#d1aaaa]">Accedi</a></u>
                         </RouterLink>
                     </div>
                 </div>
