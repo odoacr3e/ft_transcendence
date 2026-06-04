@@ -1,18 +1,13 @@
 <script setup>
     import { ref } from 'vue';
-    const prop = defineProps(['url']);
 
     const formData = ref({
-//      name: '',
-//      surname: '',
-//      email: '',
       username: '',
-      password: '',
-//      nationality: ''
+      password: ''
     });
 
    function submitForm() {
-      fetch(prop.url, {
+      fetch("http://localhost:8080/auth/login", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -27,7 +22,7 @@
         <form @submit.prevent="submitForm" method="post" enctype="application/json" class="text-white">
             <div class="form flex w-sm mb-5">
                 <img src="../assets/UserIcon.png" alt="" class="size-6" >
-                <input placeholder="Email o nome utente" size="35" class="pl-2 text-base" autofocus="true" type="text" v-model="formData.username"><br>
+                <input placeholder="Nome utente" size="35" class="pl-2 text-base" autofocus="true" type="text" v-model="formData.username"><br>
             </div>
             <div class="mb-4.5">
                 <div class="form flex w-sm mb-0.5">
