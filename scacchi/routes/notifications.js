@@ -1,7 +1,7 @@
 
 import * as lib from "../lib/lib.js";
 import { jsonResponse } from "../utils/response.js";
-import { getNotify } from "../query/notifiyQuery.js";
+import { getNotify, postNotify } from "../query/notifiyQuery.js";
 import { checkJwt } from "../utils/auth.js";
 const { prisma } = lib.conn.prisma;
 export const notifyRouter = lib.include.express.Router();
@@ -56,11 +56,24 @@ notifyRouter.get("/:id", async (req, res) => {
 	}
 });
 
+
 notifyRouter.post("/", checkJwt, async (req, res) => {
 	try {
-		const { id_user } = req.user;
-		
+		const data = {};
+		data.id_sender = req.user.id_user;
+		data.creation_date = new Date();
+		for (const [key, value] of Object.entries(req.body))
+		{
+			if (key === 'id_receiver')
+				data['id_user'] = Number(value);
+			else
+				data[key] = value;
+		}
+		console.log(data);
+		const notification = await postNotify.postNotification(data);
+		return res.status(200).json(jsonResponse.ResponseSuccess({"notification": notification}));
 	} catch (error) {
-		
+		console.log("Error: ", error);
+		return res.status(500).json(jsonResponse.ResponseError("Server error posting new notification"));
 	}
 });
