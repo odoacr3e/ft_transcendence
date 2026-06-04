@@ -82,12 +82,12 @@ process.stdin.on('keypress', (str, key) =>
 		case (cmd.END_TURN) :
 			result = endTurn(match);
 			if (result.status != 200)
-				return (saveWrongMove(match, result, selected, eEvents.EndTurn));
+				return (saveWrongMove(match, result, eEvents.EndTurn));
 			break ;
 		case (cmd.BUY_BOOST) :
 			result = boost(match, match.cursor.square);
 			if (result.status != 200)
-				return (saveWrongMove(match, result, selected, eEvents.Boost));
+				return (saveWrongMove(match, result, eEvents.Boost));
 			break ;
 		case (cmd.USE_BOOST) :
 			match.currentPlayer.useBoostBool = !match.currentPlayer.useBoostBool;
@@ -95,14 +95,15 @@ process.stdin.on('keypress', (str, key) =>
 		case (cmd.MOVE) :
 			console.assert((selected.length < 2), "move array too large");
 			selected.push(match.cursor.square);
+			console.log(selected);
 			if (selected.length == 2)
 			{
 				console.clear();
 				let	result = move(match, selected[0], selected[1], match.currentPlayer.useBoostBool);
 				if (result.status != 200 && match.currentPlayer.useBoostBool == true)
-					return (saveWrongMove(match, result, selected, eEvents.MoveBoost));
+					return (saveWrongMove(match, result, eEvents.MoveBoost));
 				else if (result.status != 200)
-					return (saveWrongMove(match, result, selected, eEvents.Move));
+					return (saveWrongMove(match, result, eEvents.Move));
 				selected = [];
 			}
 			break ;
@@ -113,7 +114,7 @@ process.stdin.on('keypress', (str, key) =>
 			let	newType = getline("insert new piece type");
 			result = makeTransfiguration(match, match.cursor.square, newType);
 			if (result.status != 200)
-				return (saveWrongMove(match, result, selected, eEvents.Transform));
+				return (saveWrongMove(match, result, eEvents.Transform));
 			break ;
 		case (cmd.LOAD_HISTORY):
 		{
@@ -228,12 +229,10 @@ function getline(prompt)
  * 
  * @param {Match} match
  * @param {Result} result
- * @param {Array<string>} selected
  * @param {string} type
  */
-function saveWrongMove(match, result, selected, type)
+function saveWrongMove(match, result, type)
 {
-	console.log(selected);
 	if (type == eEvents.Move || type == eEvents.MoveBoost)
 		match.history.UpdateMoves(match, match.board.get(selected[0]), selected);
 	else if (type == eEvents.Boost)

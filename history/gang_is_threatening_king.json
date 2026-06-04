@@ -78,11 +78,12 @@
       "team": "black",
       "type": "move",
       "useBoostBool": false,
-      "counter": 7,
-      "updates": {}
+      "counter": 8,
+      "updates": {},
+      "error": false
     }
   ],
-  "moves": 8,
+  "moves": 9,
   "victory": "",
-  "finalBoard": "|M|J|V|C|K|V|J|M|\n|B|B|B| |B|B|B|B|\n| | | | | | | | |\n| | | |B| | | | |\n| | | | | | | | |\n| | | | | | | | |\n|B|+B|B|B| |B|B|B|\n|M|J|V|C|K|V|J|M|\n"
+  "finalBoard": "|M|J|V| |K|V|J|M|\n|B|B|B| |B|B|B|B|\n| | | | | | | | |\n| | | |C| | | | |\n| | | | | | | | |\n| | | | | | | | |\n|B|+B|B|B| |B|B|B|\n|M|J|V|C|K|V|J|M|\n"
 }

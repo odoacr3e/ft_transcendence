@@ -195,7 +195,6 @@ function boostBastardsUpdates(match, coords, theKING, result)
 				}
 				else
 					break ;
-				match.cursor.Restore();
 			}
 			match.cursor.Restore();
 		}
