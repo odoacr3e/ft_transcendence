@@ -14,6 +14,7 @@ const PORT = 8080;
 let requests = 0;
 let conn;
 
+// NOTE: serve per parsing delle richieste da frontend
 app.use(cors({
 	origin: 'http://localhost:5173',
 	credentials: true
@@ -22,15 +23,14 @@ app.use(cors({
 app.set('json spaces', 2);
 
 // NOTE: finche non ci sara un web server su frontend vengono usati questi header per comunicazione BE-FE
-app.use((req, res, next) => {
-	res.setHeader('Access-Control-Allow-Origin', '*');
-	res.setHeader('Access-Control-Allow-Methods', '*');
-	res.setHeader('Access-Control-Allow-Headers', '*');
-	if (req.method === 'OPTIONS') return res.sendStatus(204);
-	next();
-});
+// app.use((req, res, next) => {
+// 	res.setHeader('Access-Control-Allow-Origin', '*');
+// 	res.setHeader('Access-Control-Allow-Methods', '*');
+// 	res.setHeader('Access-Control-Allow-Headers', '*');
+// 	if (req.method === 'OPTIONS') return res.sendStatus(204);
+// 	next();
+// });
 
-// app.use(cors());
 app.use(lib.include.express.json());
 
 // global error middleware

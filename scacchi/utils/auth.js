@@ -18,12 +18,10 @@ const { crypto } = lib.conn;
  * { expiresIn: "h/d/y" }
  */
 
-// check jwt valido, altrimenti ritorno "token invalido"
+// NOTE: check jwt valido, altrimenti ritorno "token invalido"
 // se token scaduto -> sotto /refresh genero altro token di rinnovo + token jwt e invalido quello precedente
 const checkJwt = async (req, res, next) => {
-	console.log("Cookies: ", req.cookies);
 	const token = req.cookies?.jwt_token;
-	// const token = req.headers.authorization?.split(' ')[1];
 	if (!token)
 		return res.status(401).json(jsonResponse.ResponseError("User not autorized"));
 	try {
@@ -37,8 +35,8 @@ const checkJwt = async (req, res, next) => {
 };
 
 /**
- * @param {import('express').Request}	req
- * @param {import('express').Response}	res
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
  */
 const createJwt = async (req, res) => {
 	const isSecure = process.env.NODE_ENV === 'production';
