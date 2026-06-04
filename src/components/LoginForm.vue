@@ -1,21 +1,40 @@
 <script setup>
     import { ref } from 'vue';
+    import { useRouter } from 'vue-router'
 
     const formData = ref({
       username: '',
       password: ''
     });
-    const visible = ref(false);
+    const   visible = ref(false),
+        router = useRouter();
 
-   function submitForm() {
-      fetch("http://localhost:8080/auth/login", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData.value)
-      })
-    }
+	async function submitForm() {
+		try
+		{
+			const response = await fetch("http://localhost:8080/auth/login", {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(formData.value),
+				credentials: "include"
+	  		});
+
+			if (!response.ok)
+				throw new Error(`Errore: ${response.status}`);
+
+			const match = await response.json();
+			console.log(match);
+
+			window.location.href = 'http://localhost:8080/api/users/me';
+			// router.replace('http://localhost:8080/api/users');
+			// router.push('/users');
+		}
+		catch (error) {
+	  		console.error('Login fallito:', error);
+		}
+	}
 
     function asset(path) {
         return new URL(path, import.meta.url).href;
@@ -42,7 +61,10 @@
                 </div>
                 <u><a class="justify-self-center text-[80%] text-[#882a2a] cursor-pointer hover:text-[#af3d3d] active:text-[#d1aaaa]">Password dimenticata?</a></u>
             </div>
-            <input class="cursor-pointer justify-self-center w-sm mt-1.5 p-3 text-base bg-[#882a2a] rounded-[7px] text-white hover:bg-linear-to-t from-[#882a2a] to-[#af3d3d]" type="submit" value="Accedi">
+            <input id="submit" class="cursor-pointer justify-self-center w-sm mt-1.5 p-3 text-base bg-[#882a2a] rounded-[7px] text-white hover:bg-linear-to-t from-[#882a2a] to-[#af3d3d]"
+                    v-bind:class="{'pointer-events-none grayscale': !formData.username || !formData.password,
+                        'pointer-events-auto grayscale-0 ': formData.username && formData.password }"        
+                    type="submit" value="Accedi">
         </form>
     </div>
 </template>
@@ -65,4 +87,7 @@
         outline: 0;
     }
 
+    #submit {
+        transition: filter 0.2s ease-in-out;
+    }
 </style>

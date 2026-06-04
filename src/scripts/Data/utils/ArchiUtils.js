@@ -27,6 +27,7 @@ export function checkEndTurn(validated)
 	else
 	{
 		localInfo.secondTurn = false;
+		localInfo.secondMove = false;
 		localInfo.savedBoostedMap = null;
 	}
 }
