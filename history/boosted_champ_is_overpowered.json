@@ -385,6 +385,28 @@
       "counter": 34,
       "updates": {},
       "error": true
+    },
+    {
+      "from": "e8",
+      "to": "e7",
+      "movedPiece": "King",
+      "team": "black",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 35,
+      "updates": {},
+      "error": true
+    },
+    {
+      "from": "g4",
+      "to": "f5",
+      "movedPiece": "King",
+      "team": "black",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 36,
+      "updates": {},
+      "error": false
     }
   ],
   "moves": 37,

@@ -494,6 +494,19 @@ function doubleBastardsCheck(match, result, coords)
 
 /**
  * 
+ * @param {Match} match 
+ * @param {Square} square
+ * @param {string} pos
+ */
+function RefreshChampion(match, square, pos)
+{
+	for (const zone of square.targetZones)
+		match.board.get(zone).dangerZones.delete(pos)
+	DangerUpdate(match, pos);
+}
+
+/**
+ * 
  * @param {Array<String>} coords
  * @param {Match} match
  * @param {Result | null} result
@@ -506,6 +519,7 @@ function simulation(coords, match, result=null)
 	let	to;
 	let	king;
 	let	dangerBool;
+	let boosted;
 
 	from = match.board.get(coords[0]);
 	to = match.board.get(coords[1]);
@@ -523,6 +537,14 @@ function simulation(coords, match, result=null)
 	from.piece = to.piece;
 	to.piece = tmp;
 	dangerUpdateMoved(match, [coords[1], coords[0]], result);
+	boosted = match.GetOBoostedPieceCoords();
+	if (!boosted)
+		return (!dangerBool);
+	for (const p of boosted)
+	{
+		if (match.board.get(p).piece?.type == enumNames.CHAMPION)
+			RefreshChampion(match, match.board.get(p), p);
+	}
 	// DangerUpdate(match, coords[0]);
 	return (!dangerBool);
 }
