@@ -59,7 +59,7 @@ authRouter.post("/login", async (req, res) => {
 		printLog(`User ${user.username} correctly logged in`, colors.brightGreen)
 		return res.status(200).json(jsonResponse.ResponseSuccess({ "user": user, "token": token }));
 	} catch (error) {
-		// printLog(`User ${user.username} couldn't complete login due server error: ${error.name}`, colors.brightYellow);
+		printLog(`User couldn't complete login due server error: ${error.name}`, colors.brightYellow);
 		return res.status(500).json(jsonResponse.ResponseError("Server error checking for user"));
 	}
 });
@@ -85,7 +85,7 @@ authRouter.post("/register", async (req, res) => {
 		printLog(`New user created with username ${user.username}`, colors.brightGreen)
 		return res.status(201).json(jsonResponse.ResponseSuccess({ "user": user, "token": token }));
 	} catch (error) {
-		printLog(`User ${user.username} couldn't correctly register due server error: ${error.name}`, colors.brightYellow);
+		printLog(`User couldn't correctly register due server error: ${error.name}`, colors.brightYellow);
 		return res.status(500).json(jsonResponse.ResponseError("Server error creating user"));
 	}
 });
@@ -117,7 +117,7 @@ authRouter.post("/refresh", async (req, res) => {
 		await redis.del(`refresh:${refresh}`);
 		return res.status(200).json(jsonResponse.ResponseSuccess({ "user": user, "token": token }));
 	} catch (error) {
-		printLog(`User ${user.username} couldn't refresh token due server error: ${error.name}`, colors.brightYellow);
+		printLog(`User couldn't refresh token due server error: ${error.name}`, colors.brightYellow);
 		return res.status(403).json(jsonResponse.ResponseError("Server error refreshing token"));
 	}
 });

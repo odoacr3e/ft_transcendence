@@ -4,6 +4,8 @@ import { apiRouter } from "./routes/api.js";
 import { authRouter } from "./routes/auth.js";
 import { responseFormatter } from "./utils/response.js";
 const app = lib.include.express();
+const server = lib.include.http.createServer(app);
+const sock = lib.include.socketIO(server);
 
 // setup
 const PORT = 8080;
