@@ -5,7 +5,7 @@ import { authRouter } from "./routes/auth.js";
 import { responseFormatter } from "./utils/response.js";
 const app = lib.include.express();
 const server = lib.include.http.createServer(app);
-const sock = lib.include.socketIO(server);
+const sockio = new lib.include.SocketIO(server);
 
 // setup
 const PORT = 8080;
@@ -38,6 +38,10 @@ app.use((err, req, res, next) =>
 	res.status(500).json(formattedResponse);
 });
 
+sockio.on('connection', (socket) => {
+	console.log("A new user connected");
+})
+
 // routes
 app.use("/api", apiRouter);
 app.use("/auth", authRouter)
@@ -46,4 +50,4 @@ conn = app.listen(PORT, () => {
   console.log("Server is listening on port " + PORT);
 });
 
-export {app};
+export {app, sockio};
