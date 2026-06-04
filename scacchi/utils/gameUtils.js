@@ -1,5 +1,6 @@
 // @ts-check
 /** @typedef {import("../Classes/Match/match").Match} Match */
+/** @typedef {import("../Classes/Pieces/pieces.js").Piece} Piece */
 
 import { enumNames } from "../Macro/enums.js";
 
@@ -81,18 +82,35 @@ function bastardChecks(match, dy, dx, piece)
 		return (true);
 	}
 	else if (target)//NOTE - bastards moves front
+	{
+		addLongBastardInfluence(match, dx, dy, startPos, piece);
 		return (match.cursor.Restore(), false);
-	match.cursor.Restore();
-	match.cursor.moveRow(dy + dy);
-	match.cursor.moveCol(dx + dx);
+	}
+	addLongBastardInfluence(match, dx, dy, startPos, piece);
 	if (!piece.isMovedBool && !match.board.get(match.cursor.square).piece)
 	{
 		match.board.get(startPos).targetZones.add(match.cursor.square);
 		match.board.get(match.cursor.square).dangerZones.add(startPos);
-		match.board.AddInfluence(startPos, match.cursor.square);
 	}
 	match.cursor.Restore();
 	return (true);
+}
+
+/**
+ * 
+ * @param {Match} match 
+ * @param {number} dx 
+ * @param {number} dy 
+ * @param {string} startPos 
+ * @param {Piece} piece
+ */
+function addLongBastardInfluence(match, dx, dy, startPos, piece)
+{
+	match.cursor.Restore();
+	match.cursor.moveRow(dy + dy);
+	match.cursor.moveCol(dx + dx);
+	if (!piece.isMovedBool)
+		match.board.AddInfluence(startPos, match.cursor.square);
 }
 
 export {bastardChecks, isDangerous};

@@ -2,32 +2,32 @@
   "seed": 0,
   "events": [
     {
-      "from": "f1",
-      "to": "d3",
-      "movedPiece": "Valkirya",
+      "from": "d2",
+      "to": "d4",
+      "movedPiece": "Bastards",
       "team": "white",
       "type": "move",
       "useBoostBool": false,
       "counter": 0,
       "updates": {},
-      "error": true
+      "error": false
     },
     {
-      "from": "e2",
-      "to": "e2",
-      "movedPiece": "Bastards",
+      "from": "",
+      "to": "",
+      "movedPiece": "",
       "team": "white",
-      "type": "move",
+      "type": "endturn",
       "useBoostBool": false,
       "counter": 1,
       "updates": {},
-      "error": true
+      "error": false
     },
     {
-      "from": "d2",
-      "to": "d4",
+      "from": "c7",
+      "to": "c5",
       "movedPiece": "Bastards",
-      "team": "white",
+      "team": "black",
       "type": "move",
       "useBoostBool": false,
       "counter": 2,
@@ -38,7 +38,7 @@
       "from": "",
       "to": "",
       "movedPiece": "",
-      "team": "white",
+      "team": "black",
       "type": "endturn",
       "useBoostBool": false,
       "counter": 3,
@@ -46,24 +46,35 @@
       "error": false
     },
     {
-      "from": "e7",
-      "to": "e7",
+      "from": "e2",
+      "to": "e3",
       "movedPiece": "Bastards",
-      "team": "black",
+      "team": "white",
       "type": "move",
       "useBoostBool": false,
       "counter": 4,
       "updates": {},
-      "error": true
+      "error": false
     },
     {
-      "from": "c7",
-      "to": "c5",
+      "from": "",
+      "to": "",
+      "movedPiece": "",
+      "team": "white",
+      "type": "endturn",
+      "useBoostBool": false,
+      "counter": 5,
+      "updates": {},
+      "error": false
+    },
+    {
+      "from": "h7",
+      "to": "h6",
       "movedPiece": "Bastards",
       "team": "black",
       "type": "move",
       "useBoostBool": false,
-      "counter": 5,
+      "counter": 6,
       "updates": {},
       "error": false
     },
@@ -74,25 +85,14 @@
       "team": "black",
       "type": "endturn",
       "useBoostBool": false,
-      "counter": 6,
+      "counter": 7,
       "updates": {},
       "error": false
     },
     {
-      "from": "d4",
-      "to": "d4",
-      "movedPiece": "Bastards",
-      "team": "white",
-      "type": "move",
-      "useBoostBool": false,
-      "counter": 7,
-      "updates": {},
-      "error": true
-    },
-    {
-      "from": "e2",
-      "to": "e3",
-      "movedPiece": "Bastards",
+      "from": "f1",
+      "to": "c4",
+      "movedPiece": "Valkirya",
       "team": "white",
       "type": "move",
       "useBoostBool": false,
@@ -112,8 +112,8 @@
       "error": false
     },
     {
-      "from": "h7",
-      "to": "h6",
+      "from": "h6",
+      "to": "h5",
       "movedPiece": "Bastards",
       "team": "black",
       "type": "move",
@@ -134,8 +134,8 @@
       "error": false
     },
     {
-      "from": "f1",
-      "to": "c4",
+      "from": "c4",
+      "to": "b5",
       "movedPiece": "Valkirya",
       "team": "white",
       "type": "move",
@@ -156,24 +156,13 @@
       "error": false
     },
     {
-      "from": "c4",
-      "to": "b5",
-      "movedPiece": "Valkirya",
-      "team": "white",
-      "type": "move",
-      "useBoostBool": false,
-      "counter": 14,
-      "updates": {},
-      "error": true
-    },
-    {
-      "from": "h6",
-      "to": "h5",
+      "from": "a7",
+      "to": "a6",
       "movedPiece": "Bastards",
       "team": "black",
       "type": "move",
       "useBoostBool": false,
-      "counter": 15,
+      "counter": 14,
       "updates": {},
       "error": false
     },
@@ -184,20 +173,31 @@
       "team": "black",
       "type": "endturn",
       "useBoostBool": false,
+      "counter": 15,
+      "updates": {},
+      "error": false
+    },
+    {
+      "from": "c2",
+      "to": "c4",
+      "movedPiece": "Bastards",
+      "team": "white",
+      "type": "move",
+      "useBoostBool": false,
       "counter": 16,
       "updates": {},
       "error": false
     },
     {
-      "from": "c4",
-      "to": "b5",
-      "movedPiece": "Valkirya",
+      "from": "f2",
+      "to": "f4",
+      "movedPiece": "Bastards",
       "team": "white",
       "type": "move",
       "useBoostBool": false,
       "counter": 17,
       "updates": {},
-      "error": false
+      "error": true
     },
     {
       "from": "",
@@ -212,7 +212,7 @@
     },
     {
       "from": "d7",
-      "to": "d6",
+      "to": "d5",
       "movedPiece": "Bastards",
       "team": "black",
       "type": "move",
@@ -224,5 +224,5 @@
   ],
   "moves": 20,
   "victory": "",
-  "finalBoard": "|M|J|V|C|K|V|J|M|\n|B|B| |B|B|B|B| |\n| | | | | | | | |\n| |V|B| | | | |B|\n| | | |B| | | | |\n| | | | |B| | | |\n|B|B|B| | |B|B|B|\n|M|J|V|C|K| |J|M|\n"
+  "finalBoard": "|M|J|V|C|K|V|J|M|\n| |B| |B|B|B|B| |\n|B| | | | | | | |\n| |V|B| | | | |B|\n| | |B|B| | | | |\n| | | | |B| | | |\n|B|B| | | |B|B|B|\n|M|J|V|C|K| |J|M|\n"
 }

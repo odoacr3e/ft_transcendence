@@ -85,9 +85,11 @@ process.stdin.on('keypress', (str, key) =>
 				return (saveWrongMove(match, result, eEvents.EndTurn));
 			break ;
 		case (cmd.BUY_BOOST) :
+			selected[0] = match.cursor.square;
 			result = boost(match, match.cursor.square);
 			if (result.status != 200)
 				return (saveWrongMove(match, result, eEvents.Boost));
+			selected = [];
 			break ;
 		case (cmd.USE_BOOST) :
 			match.currentPlayer.useBoostBool = !match.currentPlayer.useBoostBool;

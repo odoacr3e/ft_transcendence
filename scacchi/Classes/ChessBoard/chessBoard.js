@@ -88,7 +88,7 @@ class ChessBoard
 
 		val = this._data.get(key);
 		if (!val)
-			throw (`ChessBoard: invalid position ${key}`);
+			throw (`ChessBoard: invalid position ${key}, stack: ${console.trace()}`);
 		return (val);
 	}
 	/**
