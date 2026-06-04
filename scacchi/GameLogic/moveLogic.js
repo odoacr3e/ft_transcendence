@@ -523,7 +523,7 @@ function simulation(coords, match, result=null)
 	from.piece = to.piece;
 	to.piece = tmp;
 	dangerUpdateMoved(match, [coords[1], coords[0]], result);
-	DangerUpdate(match, coords[0]);
+	// DangerUpdate(match, coords[0]);
 	return (!dangerBool);
 }
 

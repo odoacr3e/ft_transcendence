@@ -127,6 +127,7 @@ function CheckInfluence(match, coord)
 function dangerDelPiece(match, pos=match.cursor.square, dest, result=null, updateBool=true)
 {
 	let	pieceSquare;
+	let tmp;
 
 	pieceSquare = match.board.get(pos);
 	for (const target of pieceSquare.targetZones)
@@ -155,7 +156,9 @@ function dangerDelPiece(match, pos=match.cursor.square, dest, result=null, updat
 			// DangerUpdate(match, target);
 		}
 	}
-	for (const target of pieceSquare.dangerZones)
+	tmp = new Set(pieceSquare.dangerZones);
+	pieceSquare.dangerZones.clear();
+	for (const target of tmp)
 	{
 		if (!result || result.specialMoves.CheckSniperMove() == 0)
 		{
