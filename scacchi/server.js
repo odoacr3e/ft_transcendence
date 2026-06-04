@@ -3,15 +3,21 @@ import * as lib from "./lib/lib.js";
 import { apiRouter } from "./routes/api.js";
 import { authRouter } from "./routes/auth.js";
 import { responseFormatter } from "./utils/response.js";
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
 const app = lib.include.express();
 const server = lib.include.http.createServer(app);
 const sockio = new lib.include.SocketIO(server);
-import cookieParser from 'cookie-parser';
 
 // setup
 const PORT = 8080;
 let requests = 0;
 let conn;
+
+app.use(cors({
+	origin: 'http://localhost:5173',
+	credentials: true
+}));
 
 app.set('json spaces', 2);
 
