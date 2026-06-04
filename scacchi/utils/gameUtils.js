@@ -22,7 +22,7 @@ let isDangerous = (match, setZones, team) =>
 	for (let x of setZones)
 	{
 		if (!match.board.get(x).piece)
-			throw new Error(`isDangerous: piece in ${x} undefined`);
+			return (false);
 		if (match.board.get(x)?.piece?.team != team)
 			return (true);
 	}

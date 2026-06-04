@@ -209,9 +209,42 @@
       "counter": 18,
       "updates": {},
       "error": false
+    },
+    {
+      "from": "e7",
+      "to": "e5",
+      "movedPiece": "Bastards",
+      "team": "black",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 19,
+      "updates": {},
+      "error": false
+    },
+    {
+      "from": "",
+      "to": "",
+      "movedPiece": "",
+      "team": "black",
+      "type": "endturn",
+      "useBoostBool": false,
+      "counter": 20,
+      "updates": {},
+      "error": false
+    },
+    {
+      "from": "d5",
+      "to": "d6",
+      "movedPiece": "Bastards",
+      "team": "white",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 21,
+      "updates": {},
+      "error": false
     }
   ],
-  "moves": 19,
+  "moves": 22,
   "victory": "",
-  "finalBoard": "|M|J|V|K| |V| |M|\n|B| | |J|B| |B|B|\n| | | | | | | | |\n| |B|B|B| |B| | |\n| | | | | | | | |\n| | | | | |+C| | |\n|B|B| |B| |B|B|B|\n|M|J|V| |K|V|J|M|\n"
+  "finalBoard": "|M|J|V| |K|V| |M|\n|B|B|B|J| |B|B|B|\n| | | |B| | | | |\n| | | | |B| | | |\n| | | | | | | | |\n| | | | | |+C| | |\n|B|B| |B| |B|B|B|\n|M|J|V| |K|V|J|M|\n"
 }

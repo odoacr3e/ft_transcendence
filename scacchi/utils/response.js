@@ -108,7 +108,7 @@ function formatPlayer(match, result)
 		result.p4.isPlaying = true;
 }
 
-//FIXME - con questa va il FRONTEND
+// FIXME - con questa va il FRONTEND
 /**
  * this function is used by JSON to recursively parse Objects
  * this should not be called
