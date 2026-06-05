@@ -12,7 +12,6 @@ const sockio = new lib.include.SocketIO(server);
 // setup
 const PORT = 8080;
 let requests = 0;
-let conn;
 
 // NOTE: serve per parsing delle richieste da frontend
 app.use(cors({
@@ -21,16 +20,6 @@ app.use(cors({
 }));
 
 app.set('json spaces', 2);
-
-// NOTE: finche non ci sara un web server su frontend vengono usati questi header per comunicazione BE-FE
-// app.use((req, res, next) => {
-// 	res.setHeader('Access-Control-Allow-Origin', '*');
-// 	res.setHeader('Access-Control-Allow-Methods', '*');
-// 	res.setHeader('Access-Control-Allow-Headers', '*');
-// 	if (req.method === 'OPTIONS') return res.sendStatus(204);
-// 	next();
-// });
-
 app.use(lib.include.express.json());
 
 // global error middleware
@@ -55,12 +44,18 @@ app.use(cookieParser());
 app.use("/api", apiRouter);
 app.use("/auth", authRouter)
 
-// tiriamo un'eccezione nel conn.on
-conn = app.listen(PORT, () => {
+
+const conn = app.listen(PORT, () => {
   console.log("Server is listening on port " + PORT);
 });
 
-conn.on('error', (err) => {
-  console.error("Listen error:", err);
+conn.on("error", (err) => {
+  if (err.code === "EADDRINUSE") {
+    console.error(`Porta ${PORT} già in uso`);
+  } else {
+    console.error("Errore server:", err);
+  }
+  process.exit(1);
 });
+
 export {app, sockio};
