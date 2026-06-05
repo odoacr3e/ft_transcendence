@@ -9,7 +9,7 @@ async function request(endpoint, options = {}) {
 		...options
 	});
 
-	if (res.status === 401)
+	if (res.status === 401 && res.body.message === "Token expired")
 	{
 		const refreshed = await tryRefresh();	// token scaduto, tenta il refresh
 		if (refreshed)

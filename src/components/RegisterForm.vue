@@ -325,7 +325,7 @@
 
 	div.form:hover {
 		border-color: #f1e8e8af;
-		animation: hover 0.4s ease-in-out ;
+		transition: border 0.25s ease-in-out;
 	}
 
 	input:focus {

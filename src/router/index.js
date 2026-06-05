@@ -34,17 +34,18 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to) => {
-  const auth = useAuthStore();
+	const auth = useAuthStore();
 
-  if (!auth.user) await auth.fetchMe()
+	if (!auth.user)
+		await auth.fetchMe();
 
-  // Route protetta — non loggato
-  if (to.meta.requiresAuth && !auth.isAuthenticated)
-    return ({ name: 'login' });
+	// Route protetta — non loggato
+	if (to.meta.requiresAuth && !auth.isAuthenticated)
+		return ({ name: 'login' });
 
-  // Utente loggato
-  if (to.meta.requiresGuest && auth.isAuthenticated)
-    return ({ name: 'home' });
+	// Utente loggato
+	if (to.meta.requiresGuest && auth.isAuthenticated)
+		return ({ name: 'home' });
 })
 
 export default router

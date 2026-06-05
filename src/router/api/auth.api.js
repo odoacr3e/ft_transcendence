@@ -13,5 +13,5 @@ export const authApi = {
 		const resp = await api.get('/api/users/me'); // ripristino sessione al mount
 		return (resp.data.user);
 	},
-	logout:		() => api.post('') //ancora da decidere la path
+	logout:		() => api.post('/auth/logout') //ancora da decidere la path
 }
