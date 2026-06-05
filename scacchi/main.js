@@ -44,9 +44,10 @@ app.use(cookieParser());
 app.use("/api", apiRouter);
 app.use("/auth", authRouter)
 
+const conn = app.listen(PORT);
 
-const conn = app.listen(PORT, () => {
-  console.log("Server is listening on port " + PORT);
+conn.on('listening', () => {
+	console.log("Server is listening on port " + PORT);
 });
 
 conn.on("error", (err) => {
