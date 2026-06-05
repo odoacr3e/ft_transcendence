@@ -123,8 +123,8 @@ class ChessBoard
 	}
 	/**
 	 * 
-	 * @param {string} targetCoord
-	 * @param {string} influencedCoord
+	 * @param {string} targetCoord piece
+	 * @param {string} influencedCoord influenced square
 	 */
 	AddInfluence(targetCoord, influencedCoord)
 	{

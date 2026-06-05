@@ -19,7 +19,7 @@ import {render} from "./render.js";
 /** @typedef {import ("../Classes/Match/match.js").HistoryEvent} HistoryEvent */
 /** @typedef {{board: ChessBoard, log: {msg: string, status: number}}} BackResponse*/
 
-const curlWaitTimeMs = 5; 
+const curlWaitTimeMs = 0; 
 let	currMatch = "";
 let	errorFlag = 0;
 let	fData = {};

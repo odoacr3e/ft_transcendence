@@ -21,6 +21,7 @@ let movementValkirya = function (match)
 		let maxTarget = 2; 
 		while (movePiece(match, dx, dy, false))
 		{
+			match.board.AddInfluence(startPos, match.cursor.square);
 			if (maxTarget != 1)
 			{
 				match.board.get(match.cursor.square)?.dangerZones.add(startPos);
