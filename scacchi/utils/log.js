@@ -1,10 +1,9 @@
 
-import * as lib from "../lib/lib.js";
+import { logfd } from "../lib/lib.js";
 import { colors, tag } from "./colors.js";
-const { logfd } = lib.include;
 
 const textColor = {
-	info: colors.brightWhite,
+	info: colors.blue,
 	ok:   colors.green,
 	db:   colors.magenta,
 	warn: colors.yellow,
@@ -25,17 +24,14 @@ export const log = {
   err:   (msg) => printLog(msg, 'err'),
 
   banner: (port) => {
-    // const line = colors.green('─'.repeat(40));
-    // console.log(`\n${line}`);
     console.log(colors.green(colors.bold('  ✓  Server in ascolto')));
-    console.log(colors.dim(`     http://localhost:${port}  •  NODE_ENV=${process.env.NODE_ENV}`));
-    // console.log(`${line}\n`);
+    console.log(colors.dim(`     http://localhost:${port}`));
   },
 
   header: (name, version) => {
     const sep = colors.dim('─'.repeat(60));
     console.log(`\n${sep}`);
-    console.log(colors.dim(`  ${name}  v${version}  •  NODE_ENV=${process.env.NODE_ENV}`));
+    console.log(colors.dim(`  ${name}  v${version}  •  NODE_ENV=${process.env.NODE_ENV || 'production'}`));
     console.log(`${sep}\n`);
   },
 };

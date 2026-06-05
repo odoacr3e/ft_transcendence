@@ -44,26 +44,31 @@ sockio.on('connection', (socket) => {
 
 app.use(cookieParser()); 
 
+log.info('Routes initilization...')
+
 // routes
 app.use("/api", apiRouter);
 app.use("/auth", authRouter)
 
+log.ok(`Routes loaded`);
+
 const conn = app.listen(PORT, () => {
-	log.banner(PORT)
+	
 	// (`Setting up server on port ${PORT}`);
 });
 
 conn.on('listening', () => {
+	log.banner(PORT)
 	// console.log(`-> ${colors.bgGreen}${colors.bold}Server is listening${colors.reset} on port ${PORT}\n`);
 });
 
 conn.on("error", (err) => {
-  if (err.code === "EADDRINUSE") {
-    console.error(`Porta ${PORT} già in uso`);
-  } else {
-    console.error("Errore server:", err);
-  }
-  process.exit(1);
+	if (err.code === "EADDRINUSE") {
+		log.err(`Server already in use on port ${PORT}`)
+	} else {
+		console.error("Errore server:", err);
+	}
+	process.exit(1);
 });
 
 export {app, sockio};
