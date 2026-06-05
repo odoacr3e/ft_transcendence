@@ -4,7 +4,7 @@ import * as usersQuery from "../query/usersQuery.js";
 import { checkInputs } from "../utils/users.js";
 import { checkJwt } from "../utils/auth.js";
 import { jsonResponse } from "../utils/response.js"
-import { printLog } from "../utils/log.js"
+import { log } from "../utils/log.js"
 import { colors } from "../utils/colors.js";
 export const usersRouter = lib.include.express.Router();
 
@@ -20,7 +20,7 @@ usersRouter.get("/", checkJwt, async (req, res) => {
 			return res.status(200).json(jsonResponse.ResponseSuccess({ "users": users }));
 		return res.status(404).json(jsonResponse.ResponseError("User not found"));
 	} catch (error) {
-		printLog(`User not found due to a server error: ${error.name}`, colors.brightRed);
+		// printLog(`User not found due to a server error: ${error.name}`, colors.brightRed);
 		return res.status(500).json(jsonResponse.ResponseError("Server error"));
 	}
 });
@@ -32,7 +32,7 @@ usersRouter.get("/me", checkJwt, async (req, res) => {
 			return res.status(200).json(jsonResponse.ResponseSuccess({ "user": user }));
 		return res.status(404).json(jsonResponse.ResponseError("User not found"));
 	} catch (error) {
-		printLog(`User not found due to a server error: ${error.name}`, colors.brightRed);
+		// printLog(`User not found due to a server error: ${error.name}`, colors.brightRed);
 		return res.status(500).json(jsonResponse.ResponseError("Server error"));
 	}
 });
@@ -46,7 +46,7 @@ usersRouter.get("/:id", checkJwt, async (req, res) => {
 			return res.status(200).json(jsonResponse.ResponseSuccess({ "user": user }));
 		return res.status(404).json(jsonResponse.ResponseError("User not found"));
 	} catch (error) {
-		printLog(`User not found due to a server error: ${error.name}`, colors.brightRed);
+		// printLog(`User not found due to a server error: ${error.name}`, colors.brightRed);
 		return res.status(500).json(jsonResponse.ResponseError("Server error"));
 	}
 });
@@ -57,14 +57,14 @@ usersRouter.delete("/", checkJwt, async (req, res) => {
 		const user = await usersQuery.deleteUserById(req.user.id_user);
 		if (user)
 		{
-			printLog(`User ${user.username} successfully deleted`, colors.brightYellow);
+			// printLog(`User ${user.username} successfully deleted`, colors.brightYellow);
 			return res.status(204).send();
 		}
 		return res.status(404).json(jsonResponse.ResponseError("User not found"));
 	} catch (error) {
 		if (error.code === 'P2025')
 			return res.status(404).json(jsonResponse.ResponseError("User not found"));
-		printLog(`User not found due to a server error: ${error.name}`, colors.brightRed);
+		// printLog(`User not found due to a server error: ${error.name}`, colors.brightRed);
 		return res.status(500).json(jsonResponse.ResponseError("Server error"));
 	}
 });
@@ -82,7 +82,7 @@ usersRouter.patch("/", checkJwt, async (req, res) => {
 			return res.status(200).json(jsonResponse.ResponseSuccess({ "user": user }));
 		return res.status(404).json(jsonResponse.ResponseError("User not found"));
 	} catch (error) {
-		printLog(`User not found due to a server error: ${error.name}`, colors.brightRed);
+		// printLog(`User not found due to a server error: ${error.name}`, colors.brightRed);
 		return res.status(500).json(jsonResponse.ResponseError("Server error"));
 	}
 });
