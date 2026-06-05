@@ -50,6 +50,7 @@ function checkCastling(match, result, to, from)
 {
 	let	pieces;
 	let	board;
+	let	currSquare;
 
 	board = match.board;
 	match.cursor.Save();
@@ -67,13 +68,19 @@ function checkCastling(match, result, to, from)
 	match.cursor.set(pieces.king.pos);
 	for (let i = 0; movePiece(match, pieces.dir.diffCol, pieces.dir.diffRow); ++i)
 	{
-		if (isDangerous(match, board.get(match.cursor.square)?.dangerZones, pieces.king.team))
+		currSquare = board.get(match.cursor.square);
+		if (isDangerous(match, currSquare.dangerZones, pieces.king.team))
 		{
 			match.cursor.Restore();
 			return false;
 		}
 		if (match.cursor.square == pieces.mino.pos || i == 1)
 			break;
+		if (currSquare.piece)
+		{
+			match.cursor.Restore();
+			return false;
+		}
 	}
 	match.cursor.Restore();
 	result.specialMoves.SetCastling();
@@ -110,16 +117,15 @@ function getPieces(match, from, to)
 		pieces.king = to.piece;
 		pieces.mino = from.piece;
 	}
-	else if (fromType == enumNames.KING || toType == enumNames.MINOTAURUS)
-		{
-			pieces.king = from.piece;
-			pieces.mino = to.piece;
-		}
+	else if (fromType == enumNames.KING && toType == enumNames.MINOTAURUS)
+	{
+		pieces.king = from.piece;
+		pieces.mino = to.piece;
+	}
 	else
 		return (null);
 	pieces.dir = getDirection(match, pieces.mino.pos, pieces.king.pos);
-	// @ts-ignore
-	pieces.kingDanger = board.get(pieces.king.pos)?.dangerZones;
+	pieces.kingDanger = board.get(pieces.king.pos).dangerZones;
 	return (pieces);
 }
 
