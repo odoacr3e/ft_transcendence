@@ -8,11 +8,12 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-	"g1": "cd ../../ ; ./setupTesting.sh run; cd -",
-	"g2": "clear;node --trace-uncaught src/scripts/testing/testerScript.js"
+    "g1": "cd ../../ ; ./setupTesting.sh run; cd -",
+    "g2": "clear;node --trace-uncaught src/scripts/testing/testerScript.js"
   },
   "dependencies": {
     "@floating-ui/vue": "^1.1.11",
+    "pinia": "^3.0.4",
     "vue": "^3.5.31",
     "vue-router": "^5.0.6"
   },
