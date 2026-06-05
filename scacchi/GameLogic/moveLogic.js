@@ -95,15 +95,13 @@ function checkMove(coords=[], result, match, boostBool)
 		return (false);
 	if (!from.targetZones.has(coords[1]))
 		return (error(result, 403, "destination not in piece targetZone"));
-	// if (isDangerous(match, king.dangerZones, king.piece.team) && !simulation(coords, match))
-	// 	return (error(result, 403, "Your king is in danger"));
 	if (!simulation(coords, match, result))
 	{
 		result.specialMoves.SetKingDanger();
 		return (error(result, 403, "this would put your king in danger"));
 	}
-	if (vitaNera(match, coords, result) == false)
-		return (false);
+	// if (checkDoubleMoveMate(match, coords, result) == false)
+	// 	return (false);
 	return (true);
 }
 
@@ -114,33 +112,33 @@ function checkMove(coords=[], result, match, boostBool)
  * @param {Result} result
  * @param {boolean} checkBool
  */
-function vitaNera(match, coords, result, checkBool=true)
+function checkDoubleMoveMate(match, coords, result, checkBool=true)
 {
 	let	OtherPiece;
 	let	pieceData;
 
 	OtherPiece = match.GetOBoostedPieceCoords();
 	let	theKING = match.currentPlayer.King;
-	if (coords.length && coords[0] == theKING)
+	if (coords.length >= 2 && coords[0] == theKING)
 		theKING = coords[1];
 	if (OtherPiece == null)
-		return (true);
+		return (false);
 	for (const coords of OtherPiece)
 	{
 		pieceData = match.board.get(coords).piece;
 		if (!pieceData)
-			throw ("vitaNera: cannot find boosted piece");
+			throw ("checkDoubleMoveMate: cannot find boosted piece");
 		if (pieceData.type == enumNames.MINOTAURUS && checkBool == false)
 			boostMinoUpdates(match, coords);
 		else if (pieceData.type == enumNames.BASTARDS && checkBool == true)
 		{	
 			if (!boostBastardsUpdates(match, coords, theKING, result))
-				return (false);
+				return (true);
 		}
 		else
 			continue ;
 	}
-	return (true);
+	return (false);
 }
 
 /**
@@ -170,11 +168,16 @@ function boostBastardsUpdates(match, coords, theKING, result)
 				let piece;
 				let squareBastard = "";
 				piece = match.board.get(match.cursor.square).piece;
-				if (!piece)
-					break ;
 				if (match.cursor.square == theKING)
 					return (error(result, 403, "boost bastard and his gang would threaten king"));
-				if (piece.isBoostedBool == true && piece.type == enumNames.BASTARDS)
+				if (!piece)
+				{
+					if (!square.piece.moveLongRangeDEBUG)
+						break ;
+					else
+						continue ;
+				}
+				if (piece.isBoostedBool == true && piece.type == enumNames.BASTARDS && piece.team == square.piece.team)
 				{
 					squareBastard = match.cursor.square;
 					if (movePiece(match, moves.dy, moves.dx) == false)
@@ -184,6 +187,16 @@ function boostBastardsUpdates(match, coords, theKING, result)
 					if (match.board.get(squareBastard).targetZones.has(match.cursor.square) && 
 					match.board.get(squareBastard).targetZones.size <= 1)
 						break ;
+					if (piece.isMovedBool)
+					{
+						if (!square.piece.moveLongRangeDEBUG)
+							break ;
+						else
+						{
+							match.cursor.square = squareBastard;
+							continue ;
+						}
+					}
 					squareBastard = match.cursor.square;
 					if (movePiece(match, moves.dy, moves.dx) == false)
 						break ;
@@ -273,7 +286,7 @@ function updateChessboard(coords=[], result, match, boostBool)
 	if (to.piece && to.piece.isMovedBool == false)
 		to.piece.isMovedBool = true;
 	boostedPieceUpdates(match, coords);
-	vitaNera(match, [], result, false);
+	checkDoubleMoveMate(match, [], result, false);
 	match.moves++;
 	dangerUpdateMoved(match, coords, result);
 	return (true);
@@ -454,6 +467,8 @@ function doubleBastardsCheck(match, result, coords)
 	tmpCursor = match.cursor.square;
 	if (!from || !to || !from.piece)
 		return (error(result, 500, "Something went wrong while searching for the position"));
+	if (last.to == coords[0])
+		return (error(result, 403, "Bastards can't move two times"));
 	if (from.piece?.type == enumNames.BASTARDS && from.piece?.isBoostedBool == true)
 	{
 		bastard = coords[0];
@@ -502,6 +517,12 @@ function RefreshChampion(match, square, pos)
 {
 	for (const zone of square.targetZones)
 		match.board.get(zone).dangerZones.delete(pos)
+	for (const [key, value] of square.boostedTargetZones)
+	{
+		for (const coord of value)
+			match.board.get(coord).dangerZones.delete(pos)
+		match.board.get(key).dangerZones.delete(pos)
+	}
 	DangerUpdate(match, pos);
 }
 
@@ -509,10 +530,10 @@ function RefreshChampion(match, square, pos)
  * 
  * @param {Array<String>} coords
  * @param {Match} match
- * @param {Result | null} result
+ * @param {Result} result
  * @returns 
  */
-function simulation(coords, match, result=null)
+function simulation(coords, match, result)
 {
 	let tmp = null;
 	let	from;
@@ -533,7 +554,9 @@ function simulation(coords, match, result=null)
 	if (coords[0] == match.currentPlayer.King)
 		king = to;
 	dangerUpdateMoved(match, coords, result);
-	dangerBool = isDangerous(match, king.dangerZones, king.piece?.team); 
+	dangerBool = isDangerous(match, king.dangerZones, king.piece?.team);
+	if (!dangerBool)
+		dangerBool = checkDoubleMoveMate(match, coords, result);
 	from.piece = to.piece;
 	to.piece = tmp;
 	dangerUpdateMoved(match, [coords[1], coords[0]], result);
@@ -542,7 +565,7 @@ function simulation(coords, match, result=null)
 		return (!dangerBool);
 	for (const p of boosted)
 	{
-		if (match.board.get(p).piece?.type == enumNames.CHAMPION)
+		if (match.board.get(p).piece?.type == enumNames.CHAMPION && match.board.updates.has(p))
 			RefreshChampion(match, match.board.get(p), p);
 	}
 	// DangerUpdate(match, coords[0]);

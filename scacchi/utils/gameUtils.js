@@ -90,7 +90,7 @@ function bastardChecks(match, dy, dx, piece)
 	if (!piece.isMovedBool && !match.board.get(match.cursor.square).piece)
 	{
 		match.board.get(startPos).targetZones.add(match.cursor.square);
-		match.board.get(match.cursor.square).dangerZones.add(startPos);
+		// match.board.get(match.cursor.square).dangerZones.add(startPos);
 	}
 	match.cursor.Restore();
 	return (true);

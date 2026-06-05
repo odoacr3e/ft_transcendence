@@ -4,6 +4,7 @@ const {preset} = Chess;
 import {enumNames} from "../Macro/enums.js";
 import {Match} from "../Classes/Match/match.js";
 import {isDangerous} from "../utils/gameUtils.js";
+import { movePiece } from "../utils/moveUtils.js";
 /**
  * 
  * @param {Match} match
@@ -130,7 +131,7 @@ function doubleSave(match, threat)
 			if (canEat(match, x, arr[1]))
 			{
 				match.cursor.set(x);
-				for (let [dx, dy] of preset.Champion.movement)
+				for (let {dx, dy} of preset.Champion.movement)
 				{
 					match.cursor.setCursor(match.cursor.getRow() + dx, match.cursor.getCol() + dy)
 					if (match.board.get(match.cursor.square)?.piece?.team != square1.piece?.team && match.board.get(match.cursor.square)?.targetZones.has(arr[1]))
@@ -143,9 +144,13 @@ function doubleSave(match, threat)
 		{
 			let startPos = x;
 			match.cursor.set(x);
-			for (let [dx, dy] of preset.Champion.movement)
+			for (let {dx, dy} of preset.Champion.movement)
 			{
-				match.cursor.setCursor(match.cursor.getRow() + dx, match.cursor.getCol() + dy)
+				if (!movePiece(match, dy, dx))
+				{
+					match.cursor.set(x);
+					continue ;
+				}
 				if (match.board.get(match.cursor.square)?.piece?.team != square1.piece?.team && match.board.get(match.cursor.square)?.targetZones.has(arr[1]) && (
 					match.board.get(match.cursor.square)?.piece?.type == enumNames.BASTARDS && match.board.get(match.cursor.square)?.piece?.isBoostedBool == true && canEat(match, match.cursor.square, arr[0])))
 					return true;

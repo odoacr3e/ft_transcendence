@@ -19,7 +19,7 @@ import {render} from "./render.js";
 /** @typedef {import ("../Classes/Match/match.js").HistoryEvent} HistoryEvent */
 /** @typedef {{board: ChessBoard, log: {msg: string, status: number}}} BackResponse*/
 
-const curlWaitTimeMs = 10; 
+const curlWaitTimeMs = 5; 
 let	currMatch = "";
 let	errorFlag = 0;
 let	fData = {};
@@ -285,7 +285,7 @@ async function curlSender(type, from="", to="")
 	cmd = cmd.replace("$type", type);
 	cmd = cmd.replace("$from", from.toString());
 	cmd = cmd.replace("$to", to.toString());
-	resp = execSync(cmd).toString();
+	resp = execSync(cmd, {maxBuffer: 1 << 28}).toString();
 	//@ts-ignore
 	json = jsonParser(resp);
 	if (json.log.status != 200)

@@ -28,7 +28,7 @@ let movementBastards = function (match)
 		}
 		while (movePiece(match, dy, dx, false))
 		{
-			usedBoard.get(match.cursor.square)?.dangerZones.add(startPos);
+			// usedBoard.get(match.cursor.square)?.dangerZones.add(startPos);
 			usedBoard.get(startPos)?.targetZones.add(match.cursor.square);
 			if (piece.moveLongRangeDEBUG == false || usedBoard.get(match.cursor.square)?.piece != null)
 			{

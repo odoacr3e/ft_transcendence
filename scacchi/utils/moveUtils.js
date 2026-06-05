@@ -77,7 +77,8 @@ let DangerUpdate = (match, pos=null, updBool=true) =>
 		while (movePiece(match, dy, dx, false))
 		{
 			// match.board.AddInfluence(); FIXME - addInfluence per tutti? 
-			usedBoard.get(match.cursor.square).dangerZones.add(startPos);
+			if (piece.type != enumNames.BASTARDS)
+				usedBoard.get(match.cursor.square).dangerZones.add(startPos);
 			usedBoard.get(startPos).targetZones.add(match.cursor.square);
 			if (piece.moveLongRangeDEBUG == false || usedBoard.get(match.cursor.square)?.piece != null)
 				break ;
@@ -162,7 +163,8 @@ function dangerDelPiece(match, pos=match.cursor.square, dest, result=null, updat
 	{
 		if (!result || result.specialMoves.CheckSniperMove() == 0)
 		{
-			DangerUpdate(match, target, updateBool);
+			if (target != dest)
+				DangerUpdate(match, target, updateBool);
 		}
 		// if (pos == null)
 		// 	throw ("DEBUG throw dangerZones");
