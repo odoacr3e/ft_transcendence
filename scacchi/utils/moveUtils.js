@@ -64,6 +64,13 @@ let DangerUpdate = (match, pos=null, updBool=true) =>
 	piece = usedBoard.get(match.cursor.square)?.piece;
 	if (piece == null)
 		return (0);
+	for (const target of match.board.get(pos).targetZones)
+		match.board.get(target).dangerZones.delete(startPos);
+	for (const [key, value] of match.board.get(pos).boostedTargetZones)
+	{
+		for (const target of value)
+			match.board.get(target).dangerZones.delete(startPos);
+	}
 	match.board.get(pos).targetZones.clear();
 	match.board.ResetInfluence(pos);
 	match.board.get(pos).boostedTargetZones.clear();
@@ -219,11 +226,11 @@ function dangerUpPiece(match, pos=match.cursor.square, result=null)
 	}
 	for (const target of tmpSet)
 	{
-		if (!result || result.specialMoves.CheckSniperMove() == 0)
-		{
-			dangerDelPiece(match, target, pos, result, false);
-			DangerUpdate(match, target);
-		}
+		// if (!result || result.specialMoves.CheckSniperMove() == 0)
+		// {
+			// dangerDelPiece(match, target, pos, result, false);
+		// }
+		DangerUpdate(match, target);
 		// if (pos == null)
 		// 	throw ("DEBUG throw dangerZones");
 		// match.board.updates.add(target);
