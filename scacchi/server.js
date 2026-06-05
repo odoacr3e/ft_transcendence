@@ -55,8 +55,12 @@ app.use(cookieParser());
 app.use("/api", apiRouter);
 app.use("/auth", authRouter)
 
+// tiriamo un'eccezione nel conn.on
 conn = app.listen(PORT, () => {
   console.log("Server is listening on port " + PORT);
 });
 
+conn.on('error', (err) => {
+  console.error("Listen error:", err);
+});
 export {app, sockio};

@@ -18,6 +18,12 @@ const { crypto } = lib.conn;
  * { expiresIn: "h/d/y" }
  */
 
+export const cookiesOpt = {
+	httpOnly: true,
+	secure: process.env.NODE_ENV === 'production',
+	sameSite: 'strict'
+}
+
 // NOTE: check jwt valido, altrimenti ritorno "token invalido"
 // se token scaduto -> sotto /refresh genero altro token di rinnovo + token jwt e invalido quello precedente
 const checkJwt = async (req, res, next) => {
@@ -25,7 +31,9 @@ const checkJwt = async (req, res, next) => {
 	if (!token)
 		return res.status(401).json(jsonResponse.ResponseError("User not autorized"));
 	try {
-		req.user = jwt.verify(token, process.env.JWT_SECRET);
+		if (await redis.get(`blacklist:${token}`))
+			return res.status(401).json(jsonResponse.ResponseError("Token blacklisted"));
+		req.user = jwt.verify(token, process.env.JWT_SECRET); 
 		next();
 	} catch (error){
 		if (error.name == "TokenExpiredError")
@@ -39,7 +47,6 @@ const checkJwt = async (req, res, next) => {
  * @param {import('express').Response} res
  */
 const createJwt = async (req, res) => {
-	const isSecure = process.env.NODE_ENV === 'production';
 	const token = jwt.sign(
 		{ id_user: req.user.id_user, username: req.user.username },
 		process.env.JWT_SECRET,
@@ -56,21 +63,9 @@ const createJwt = async (req, res) => {
 		'EX', ttl
 	);
 	// setting cookies for jwt
-	res.cookie('jwt_token', token, {
-		httpOnly: true,
-		secure: isSecure,
-		sameSite: 'strict',
-		maxAge: ms(process.env.JWT_TTL)
-	});
-	// setting cookies for refresh token
-	res.cookie('refresh_token', refreshToken, {
-		httpOnly: true,
-		secure: isSecure,
-		sameSite: 'strict',
-		maxAge: ms(process.env.REFRESH_TTL),
-		path: '/auth/refresh' // can be sent only to this route
-	});
-	// return ({"jwt": token, "refresh": refreshToken});
+	res.cookie('jwt_token', token, { ...cookiesOpt, maxAge: ms(process.env.JWT_TTL) });
+	// setting cookies for refresh token, path -> can be sent only to this route
+	res.cookie('refresh_token', refreshToken, { ...cookiesOpt, maxAge: ms(process.env.REFRESH_TTL),	path: '/auth/refresh' });
 }
 
 /** 

@@ -2,8 +2,8 @@
 import * as lib from "../lib/lib.js";
 import * as usersQuery from "../query/usersQuery.js";
 import bcrypt from "bcryptjs";
-import { createJwt, revokeTokenSessions, 
-	validateInputRegister, validateUser } from "../utils/auth.js";
+import { createJwt, checkJwt, revokeTokenSessions, 
+	validateInputRegister, validateUser, cookiesOpt } from "../utils/auth.js";
 import { jsonResponse } from "../utils/response.js";
 import { colors } from "../utils/colors.js";
 import { printLog } from "../utils/log.js";
@@ -91,14 +91,15 @@ authRouter.post("/register", async (req, res) => {
 	}
 });
 
+// NOTE: da controllare se mandare user come parametro finale o se recuperare solo id dal refresh token
 /**
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  */
 authRouter.post("/refresh", async (req, res) => {
 	try {
-		// const { refresh_token } = req.cookies;
-		const { refresh, user } = req.body;
+		const { refresh_token } = req.cookies;
+		const { user } = req.body;
 		const refToken = await redis.get(`refresh:${refresh}`);
 		if (!refToken)
 			return res.status(403).json(jsonResponse.ResponseError("Invalid or expired token"));
@@ -124,3 +125,23 @@ authRouter.post("/refresh", async (req, res) => {
 	}
 });
 
+authRouter.post("/logout", checkJwt, async (req, res) => {
+	try {
+		const refreshToken = req.cookies.refresh_token;
+		const jwtToken = req.cookies.jwt_token;
+		const { id_user } = req.user;
+		await redis.del(`refresh:${id_user}`);
+		// metto in blacklist il jwt per il tempo di vita residua
+		const now = Math.floor(Date.now() / 1000);
+		const ttlJwt = req.user.exp - now;
+		if (ttlJwt > 0)
+			await redis.set(`blacklist:${jwtToken}`, '1', 'EX', ttlJwt);
+		res.clearCookie('jwt_token', cookiesOpt);
+		res.clearCookie('refresh_token', { ...cookiesOpt, path: '/auth/refresh'});
+		return res.status(200).json(jsonResponse.ResponseSuccess({ "status": "ok" }));
+	} catch (error) {
+		console.log("Error: ", error);
+		// printLog(`User couldn't logout due server error: ${error.name}`, colors.brightYellow);
+		return res.status(403).json(jsonResponse.ResponseError("Server error logging out user"));
+	}
+});
