@@ -9,7 +9,12 @@ import cors from 'cors';
 import { log } from "./utils/log.js";
 const app = lib.include.express();
 const server = lib.include.http.createServer(app);
-const sockio = new lib.include.SocketIO(server);
+const sockio = new lib.include.SocketIO(server, {
+	cors: {
+	origin: "*", // per sviluppo, in produzione metti l'url preciso
+	methods: ["GET", "POST"]
+	}
+});
 
 // setup
 const PORT = 8080;
@@ -50,15 +55,15 @@ app.use("/auth", authRouter)
 
 log.ok(`Routes loaded`);
 
-const conn = app.listen(PORT, () => {
+const conn = server.listen(PORT, () => {
 	log.server(`Setting up server on port`, PORT);
 });
 
-conn.on('listening', () => {
+server.on('listening', () => {
 	log.banner(PORT)
 });
 
-conn.on("error", (err) => {
+server.on("error", (err) => {
 	if (err.code === "EADDRINUSE") {
 		log.err(`Server already in use on port ${PORT}`)
 	} else {

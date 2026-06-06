@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Notifiche</title>
+</head>
+<body>
+  <h2>Notifiche in tempo reale</h2>
+  <ul id="lista-notifiche"></ul>
+
+  <!-- importa il client Socket.IO dal tuo server -->
+  <script src="http://localhost:8080/socket.io/socket.io.js"></script>
+  <script>
+    const MY_USER_ID = 2; // l'id dell'utente loggato, mettilo dinamicamente
+
+    const socket = io('http://localhost:8080');
+
+    // ascolta l'evento specifico per questo utente
+    socket.on(`notification_${MY_USER_ID}`, (data) => {
+      const li = document.createElement('li');
+      li.textContent = data.messaggio;
+      document.getElementById('lista-notifiche').appendChild(li);
+    });
+  </script>
+</body>
+</html>

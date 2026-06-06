@@ -4,6 +4,7 @@ import { jsonResponse } from "../utils/response.js";
 import { getNotify, postNotify } from "../query/notifiyQuery.js";
 import { checkJwt } from "../utils/auth.js";
 import { log } from "../utils/log.js";
+import { sockio } from "../main.js";
 const { prisma } = lib.conn.prisma;
 export const notifyRouter = lib.include.express.Router();
 
@@ -83,6 +84,7 @@ notifyRouter.post("/", checkJwt, async (req, res) => {
 				data[key] = value;
 		}
 		await postNotify.postNotification(data);
+		sockio.emit(`notification_${req.body.id_receiver}`, {messaggio: "Nuova notifica"});
 		return res.status(204).send();
 	} catch (error) {
 		console.log("Error: ", error);
