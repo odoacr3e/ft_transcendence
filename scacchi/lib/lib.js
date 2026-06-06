@@ -8,7 +8,7 @@ import express from "express";
 import {Server as SocketIO} from "socket.io";
 
 const app = express();
-const logfd = await open("../log", 'a+');
+export const logfd = await open("../log", 'a+');
 // console.log("fd:", logfd);
 
 // NOTE: connections
@@ -17,7 +17,7 @@ import { redis } from "./redis.js"
 import crypto from "crypto";
 
 //SECTION - external inclusions
-const include = {http, https, url, fs, path, express, app, SocketIO, logfd};
+const include = {http, https, url, fs, path, express, app, SocketIO};
 
 //SECTION - chess classes/objects
 import {Piece} from "../Classes/Pieces/pieces.js";

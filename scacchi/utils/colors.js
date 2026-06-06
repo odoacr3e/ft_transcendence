@@ -35,6 +35,7 @@ export const tag = {
   info: chalk.bgBlue.white.bold(' INFO '),
   ok:   chalk.bgGreen.black.bold('  OK  '),
   db:   chalk.bgMagenta.white.bold('  DB  '),
+  server: chalk.bgCyan.white.bold(' SERV '),
   warn: chalk.bgYellow.black.bold(' WARN '),
-  err:  chalk.bgRed.white.bold('  ERR  '),
+  err:  chalk.bgRed.white.bold(' ERRO '),
 };

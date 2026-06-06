@@ -15,8 +15,6 @@ const sockio = new lib.include.SocketIO(server);
 const PORT = 8080;
 let requests = 0;
 
-log.header('ft_transcendence', '1.0.0');
-
 // NOTE: serve per parsing delle richieste da frontend
 app.use(cors({
 	origin: 'http://localhost:5173',
@@ -53,20 +51,18 @@ app.use("/auth", authRouter)
 log.ok(`Routes loaded`);
 
 const conn = app.listen(PORT, () => {
-	
-	// (`Setting up server on port ${PORT}`);
+	log.server(`Setting up server on port`, PORT);
 });
 
 conn.on('listening', () => {
 	log.banner(PORT)
-	// console.log(`-> ${colors.bgGreen}${colors.bold}Server is listening${colors.reset} on port ${PORT}\n`);
 });
 
 conn.on("error", (err) => {
 	if (err.code === "EADDRINUSE") {
 		log.err(`Server already in use on port ${PORT}`)
 	} else {
-		console.error("Errore server:", err);
+		log.err(`Server error: ${err}`)
 	}
 	process.exit(1);
 });

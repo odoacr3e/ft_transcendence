@@ -4,10 +4,11 @@ import { colors, tag } from "./colors.js";
 
 const textColor = {
 	info: colors.blue,
-	ok:   colors.green,
+	ok:   colors.green.bold,
 	db:   colors.magenta,
-	warn: colors.yellow,
-	err:  colors.red
+  server: colors.cyan,
+	warn: colors.yellow.bold,
+	err:  colors.red.bold
 };
 
 async function printLog(message, type = 'info') {
@@ -20,12 +21,13 @@ export const log = {
   info:  (msg) => printLog(msg, 'info'),
   ok:    (msg) => printLog(msg, 'ok'),
   db:    (msg) => printLog(msg, 'db'),
+  server: (msg, port) => printLog(msg + " " + colors.bold(port) + "...", 'server'),
   warn:  (msg) => printLog(msg, 'warn'),
   err:   (msg) => printLog(msg, 'err'),
 
   banner: (port) => {
-    console.log(colors.green(colors.bold('  ✓  Server in ascolto')));
-    console.log(colors.dim(`     http://localhost:${port}`));
+    console.log("\n" + colors.green(colors.bold('  ✓  Server in ascolto')));
+    console.log(colors.dim(`     http://localhost:${port}`) + '\n');
   },
 
   header: (name, version) => {
