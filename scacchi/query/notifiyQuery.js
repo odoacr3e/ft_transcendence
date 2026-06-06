@@ -92,7 +92,7 @@ const postNotification = async (data) => {
 const readNotifications = async (ids) => {
 	return await prisma.notifications.updateMany({
 		data: {
-			status: read
+			status: 'read'
 		},
 		where: {
 			id_notification: { in: ids }

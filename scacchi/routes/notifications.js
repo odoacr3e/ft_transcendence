@@ -82,8 +82,8 @@ notifyRouter.post("/", checkJwt, async (req, res) => {
 			else
 				data[key] = value;
 		}
-		const notification = await postNotify.postNotification(data);
-		return res.status(200).json(jsonResponse.ResponseSuccess({"notification": notification}));
+		await postNotify.postNotification(data);
+		return res.status(204).send();
 	} catch (error) {
 		console.log("Error: ", error);
 		return res.status(500).json(jsonResponse.ResponseError("Server error posting new notification"));
@@ -98,6 +98,8 @@ notifyRouter.patch("/", async (req, res) => {
 	try {
 		const { id_notifications } = req.body;
 		const notification = await postNotify.readNotifications(id_notifications);
+		log.ok("Notifications updated");
+		return res.status(204).send();
 	} catch (error) {
 		log.err(`Server error updating notifications: ${error.code}`);
 		return res.status(500).json(jsonResponse.ResponseError("Server error updating notifications"))
