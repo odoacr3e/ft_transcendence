@@ -3,6 +3,7 @@ import * as lib from "../lib/lib.js";
 import { jsonResponse } from "../utils/response.js";
 import { getNotify, postNotify } from "../query/notifiyQuery.js";
 import { checkJwt } from "../utils/auth.js";
+import { log } from "../utils/log.js";
 const { prisma } = lib.conn.prisma;
 export const notifyRouter = lib.include.express.Router();
 
@@ -31,6 +32,11 @@ function checkQueryParams(req) {
 }
 
 // NOTE: /api/notifications
+
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
 notifyRouter.get("/", checkJwt, async (req, res) => {
 	try {
 		const filter = checkQueryParams(req);
@@ -44,6 +50,10 @@ notifyRouter.get("/", checkJwt, async (req, res) => {
 	}
 });
 
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
 notifyRouter.get("/:id", async (req, res) => {
 	try {
 		const notif = await getNotify.getNotificationById(req.params.id);
@@ -56,7 +66,10 @@ notifyRouter.get("/:id", async (req, res) => {
 	}
 });
 
-
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
 notifyRouter.post("/", checkJwt, async (req, res) => {
 	try {
 		const data = {};
@@ -69,11 +82,24 @@ notifyRouter.post("/", checkJwt, async (req, res) => {
 			else
 				data[key] = value;
 		}
-		console.log(data);
 		const notification = await postNotify.postNotification(data);
 		return res.status(200).json(jsonResponse.ResponseSuccess({"notification": notification}));
 	} catch (error) {
 		console.log("Error: ", error);
 		return res.status(500).json(jsonResponse.ResponseError("Server error posting new notification"));
+	}
+});
+
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
+notifyRouter.patch("/", async (req, res) => {
+	try {
+		const { id_notifications } = req.body;
+		const notification = await postNotify.readNotifications(id_notifications);
+	} catch (error) {
+		log.err(`Server error updating notifications: ${error.code}`);
+		return res.status(500).json(jsonResponse.ResponseError("Server error updating notifications"))
 	}
 });

@@ -131,8 +131,7 @@ authRouter.post("/logout", checkJwt, async (req, res) => {
 		const jwtToken = req.cookies.jwt_token;
 		const { id_user } = req.user;
 		await redis.del(`refresh:${id_user}`);
-		// metto in blacklist il jwt per il tempo di vita residua
-		const now = Math.floor(Date.now() / 1000);
+		const now = Math.floor(Date.now() / 1000); // metto in blacklist il jwt per il tempo di vita residua
 		const ttlJwt = req.user.exp - now;
 		if (ttlJwt > 0)
 			await redis.set(`blacklist:${jwtToken}`, '1', 'EX', ttlJwt);

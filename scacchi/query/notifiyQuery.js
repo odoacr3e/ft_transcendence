@@ -85,7 +85,20 @@ const postNotification = async (data) => {
 	});
 }
 
-const getNotify = { getAllNotifications, getFilteredNotifications, getNotificationById };
-const postNotify = { postNotification };
+/**
+ * 
+ * @param {Array} ids 
+ */
+const readNotifications = async (ids) => {
+	return await prisma.notifications.updateMany({
+		data: {
+			status: read
+		},
+		where: {
+			id_notification: { in: ids }
+		}
+	});
+}
 
-export { getNotify , postNotify};
+export const getNotify = { getAllNotifications, getFilteredNotifications, getNotificationById };
+export const postNotify = { postNotification, readNotifications };
