@@ -11,8 +11,8 @@ const app = lib.include.express();
 const server = lib.include.http.createServer(app);
 const sockio = new lib.include.SocketIO(server, {
 	cors: {
-	origin: "*", // per sviluppo, in produzione metti l'url preciso
-	methods: ["GET", "POST"]
+		origin: "*", // per sviluppo, in produzione metti l'url preciso
+		methods: ["GET", "POST"]
 	}
 });
 
@@ -46,16 +46,17 @@ sockio.on('connection', (socket) => {
 })
 
 app.use(cookieParser()); 
+app.use(lib.include.express.static('public'));
 
-log.info('Routes initilization...')
 
 // routes
+log.info('Routes initilization...')
 app.use("/api", apiRouter);
 app.use("/auth", authRouter)
-
 log.ok(`Routes loaded`);
 
-const conn = server.listen(PORT, () => {
+// server confiuration wit web socket
+server.listen(PORT, () => {
 	log.server(`Setting up server on port`, PORT);
 });
 

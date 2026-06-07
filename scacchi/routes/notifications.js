@@ -75,6 +75,7 @@ notifyRouter.post("/", checkJwt, async (req, res) => {
 	try {
 		const data = {};
 		data.id_sender = req.user.id_user;
+		console.log("id_sender: ", data.id_sender);
 		data.creation_date = new Date();
 		for (const [key, value] of Object.entries(req.body))
 		{
@@ -83,8 +84,9 @@ notifyRouter.post("/", checkJwt, async (req, res) => {
 			else
 				data[key] = value;
 		}
-		await postNotify.postNotification(data);
-		sockio.emit(`notification_${req.body.id_receiver}`, {messaggio: "Nuova notifica"});
+		const notification = await postNotify.postNotification(data);
+		console.log("Id receiver: ", notification.id_user);
+		// sockio.emit(`notification_${notification.id_user}`, {title: notification.title, description: notification.description, sender: notification.users_notifications_id_senderTousers.username});
 		return res.status(204).send();
 	} catch (error) {
 		console.log("Error: ", error);
