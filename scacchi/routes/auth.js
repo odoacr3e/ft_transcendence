@@ -51,10 +51,9 @@ authRouter.post("/login", async (req, res) => {
 		if (!user || !(await bcrypt.compare(password, user.password)))
 		{
 			// printLog(`User ${user.username} failed to login`, 'warn');
-			return res.status(401).json(jsonResponse.ResponseError("Credenziali non valide"));
+			return res.status(401).json(jsonResponse.ResponseError("Invalid credentials"));
 		}
 		delete(user.password);
-		req.user = user; // aggiungo lo user trovato all'oggetto request per averlo anche nel successivo middleware
 		await createJwt(req, res);
 		// printLog(`User ${user.username} correctly logged in`, 'ok')
 		return res.status(200).json(jsonResponse.ResponseSuccess({ "user": user }));
@@ -79,8 +78,6 @@ authRouter.post("/register", async (req, res) => {
 			return res.status(409).json(jsonResponse.ResponseError("User already exists"));
 		const hashedPwd = await bcrypt.hash(password, parseInt(lib.Macro.HASH_SALT));
 		const user = await usersQuery.createUser(name, surname, username, hashedPwd, email, nationality);
-		if (!user)
-			return res.status(500).json(jsonResponse.ResponseError("Server error creating user"));
 		req.user = user;
 		await createJwt(req, res);
 		// printLog(`New user created with username ${user.username}`, colors.brightGreen)
@@ -137,7 +134,7 @@ authRouter.post("/logout", checkJwt, async (req, res) => {
 			await redis.set(`blacklist:${jwtToken}`, '1', 'EX', ttlJwt);
 		res.clearCookie('jwt_token', cookiesOpt);
 		res.clearCookie('refresh_token', { ...cookiesOpt, path: '/auth/refresh'});
-		return res.status(200).json(jsonResponse.ResponseSuccess({ "status": "ok" }));
+		return res.status(200).json(jsonResponse.ResponseSuccess({ logout: "ok" }));
 	} catch (error) {
 		console.log("Error: ", error);
 		// printLog(`User couldn't logout due server error: ${error.name}`, colors.brightYellow);
