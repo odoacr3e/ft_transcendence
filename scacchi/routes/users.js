@@ -18,7 +18,7 @@ usersRouter.get("/", checkJwt, async (req, res) => {
 		const users = username ? await usersQuery.findUserByUsername(username) : await usersQuery.getAllUsers();
 		if (users && users.length > 0)
 			return res.status(200).json(jsonResponse.ResponseSuccess({ "users": users }));
-		return res.status(404).json(jsonResponse.ResponseError("User not found"));
+		return res.status(404).json(jsonResponse.ResponseError("Users not found"));
 	} catch (error) {
 		// printLog(`User not found due to a server error: ${error.name}`, colors.brightRed);
 		return res.status(500).json(jsonResponse.ResponseError("Server error"));
