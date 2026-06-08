@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 PID_FRONTEND=""
 pwd="$(pwd)/Test"
 
@@ -91,4 +92,6 @@ cd "$pwd"
 
 if [[ $1 == "run" ]];then
 	wait "$PID_FRONTEND"
+else
+	./test run
 fi
