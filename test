@@ -2,6 +2,7 @@
 
 
 PID_FRONTEND=""
+pwdRoot="$(pwd)"
 pwd="$(pwd)/Test"
 
 first_set_up()
@@ -93,5 +94,6 @@ cd "$pwd"
 if [[ $1 == "run" ]];then
 	wait "$PID_FRONTEND"
 else
+	cd "$pwdRoot" || error "pwdRoot has been lost, wtf?"
 	./test run
 fi
