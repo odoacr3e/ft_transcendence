@@ -1,6 +1,6 @@
 // @ts-check
 // const { Match } = require("../Classes/Match/match.js");
-import { enumInitNames, enumNames, kingMovements} from "../Macro/enums.js";
+import { enumInitNames, enumNames, enumSpecialMoves, kingMovements} from "../Macro/enums.js";
 import * as Macro from "../Macro/macro.js";
 import {bastardChecks} from "./gameUtils.js";
 
@@ -54,6 +54,9 @@ let DangerUpdate = (match, pos=null, updBool=true) =>
 	let	usedBoard;
 	let	piece;
 	let	startPos;
+	let team;
+	let	kingCoord;
+	let	kingSquare;
 
 	usedBoard = match.board;
 	if (pos != null)
@@ -64,6 +67,9 @@ let DangerUpdate = (match, pos=null, updBool=true) =>
 	piece = usedBoard.get(match.cursor.square)?.piece;
 	if (piece == null)
 		return (0);
+	team = piece.team;
+	kingCoord = match[team].King;
+	kingSquare = match.board.get(kingCoord);
 	for (const target of match.board.get(pos).targetZones)
 		match.board.get(target).dangerZones.delete(startPos);
 	for (const [key, value] of match.board.get(pos).boostedTargetZones)
@@ -94,6 +100,25 @@ let DangerUpdate = (match, pos=null, updBool=true) =>
 	}
 	if (piece.isBoostedBool == true)
 		piece.moveFunction(match);
+	if (piece.type == enumNames.KING && !piece.isMovedBool)
+	{
+		for (const x of match[team].castlingArray)
+			kingSquare.targetZones.add(x);
+	}
+	else if (piece.type == enumNames.MINOTAURUS)
+	{
+		match[team].castlingArray.delete(startPos);
+		if (kingSquare.piece?.isMovedBool || piece.isMovedBool)
+			kingSquare.targetZones.delete(startPos);
+		else if (match.board.get(startPos).targetZones.has(kingCoord))
+		{
+			match.board.updates.add(kingCoord);
+			match[team].castlingArray.add(startPos);
+			kingSquare.targetZones.add(startPos);		
+		}
+		else
+			kingSquare.targetZones.delete(startPos);
+	}
 	match.board.get(pos).targetZones.delete(pos);
 	match.board.get(pos).dangerZones.delete(pos);
 	if (updBool == false)

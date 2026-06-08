@@ -375,8 +375,11 @@ function moveCastling(match, from, to)
 		match.currentPlayer.King = square1.piece.pos;
 	else
 		throw ("moveCastling: backend has lost the king");
-	match.board.updates.add(pieces.king.pos);
-	match.board.updates.add(pieces.mino.pos);
+	match.currentPlayer.castlingArray.clear();
+	pieces.king.isMovedBool = true;
+	pieces.mino.isMovedBool = true;
+	DangerUpdate(match, pieces.mino.pos);
+	DangerUpdate(match, pieces.king.pos);
 	match.cursor.Restore();
 }
 

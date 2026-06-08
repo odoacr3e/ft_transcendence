@@ -112,12 +112,7 @@ function getPieces(match, from, to)
 		return (null);
 	if ((to.piece?.team != from.piece?.team) && !to.piece?.isMovedBool && !to.piece?.isMovedBool)
 		return null;
-	if (fromType == enumNames.MINOTAURUS && toType == enumNames.KING)
-	{
-		pieces.king = to.piece;
-		pieces.mino = from.piece;
-	}
-	else if (fromType == enumNames.KING && toType == enumNames.MINOTAURUS)
+	if (fromType == enumNames.KING && toType == enumNames.MINOTAURUS)
 	{
 		pieces.king = from.piece;
 		pieces.mino = to.piece;

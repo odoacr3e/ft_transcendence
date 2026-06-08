@@ -19,6 +19,8 @@ class Player
 		this.nPieces = 0;
 		this.King = "";
 		this.boostedPiece = "";
+		/** @type {Set<string>} */
+		this.castlingArray = new Set();
 		this.time = new Timer(MATCHTIMER);
 		this.team = data.team;
 		this.next = data.next;
