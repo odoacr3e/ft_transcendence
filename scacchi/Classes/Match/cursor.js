@@ -61,7 +61,7 @@ function moveRow(dy)
 {
 	let tmp = this.getCol();
 
-	if ((tmp + dy) < CHESSBOARD_H + 1 && (tmp + dy) > 0)
+	if ((tmp + dy) < this._h + 1 && (tmp + dy) > 0)
 		this.setCol(this.getCol() + dy);
 	else
 		return (false);
@@ -77,7 +77,7 @@ function moveCol(dx)
 {
 	let tmp = this.getRow();
 
-	if ((tmp + dx) < CHESSBOARD_W + 1 && tmp + dx > 0)
+	if ((tmp + dx) < this._w + 1 && tmp + dx > 0)
 		this.setRow(tmp + dx);
 	else
 		return (false);
@@ -128,10 +128,17 @@ function set(pos)
 
 class Cursor
 {
-	constructor()
+	/**
+	 * 
+	 * @param {number} w width 
+	 * @param {number} h heigth
+	 */
+	constructor(w=CHESSBOARD_W, h=CHESSBOARD_H)
 	{
 		/** @type {string} */ this.square = "a1"; // the string position: a1, b2, c3...
-		this._save_pos = "a1"; 
+		this._save_pos = "a1";
+		this._w = w;
+		this._h = h;
 		this.getRow = getCol.bind(this);
 		this.getCol = getRow.bind(this);
 		this.setRow = setCol.bind(this);
@@ -164,7 +171,7 @@ class Cursor
 			}
 			case (eTeam.White): case (eTeam.Red):
 			{
-				return (this.getRow() == CHESSBOARD_H);
+				return (this.getRow() == this._h);
 			}
 			case (eTeam.Green):
 			{
@@ -172,17 +179,55 @@ class Cursor
 			}
 			case (eTeam.Blue):
 			{
-				return (this.getCol() == CHESSBOARD_W);
+				return (this.getCol() == this._w);
 			}
 			case (""):
 			{
 				let col = this.getCol();
 				let row = this.getRow();
-				return (col == 1 || row == CHESSBOARD_H || col == 1 || col == CHESSBOARD_W);
+				return (col == 1 || row == this._h || col == 1 || col == this._w);
 			}
 			default:
 				throw (`EdgeCheck: invalid team ${team}`);
 		}
+	}
+	/**
+	 * 
+	 * @param {boolean} isTop 
+	 * @param {boolean} isRight 
+	 */
+	GetCorner(isTop, isRight)
+	{
+		let	tmp;
+		let	cornerCoord;
+
+		tmp = this.square;
+		this.setRow(isTop? this._h: 1);
+		this.setCol(isRight? this._w: 1);
+		cornerCoord = this.square;
+		this.square = tmp;
+		return (cornerCoord);
+	}
+	/**
+	 * 
+	 * @param {number} colAlign -1 = left, +1 = right
+	 * @param {number} rowAlign -1 = bottom, +1 = top
+	 */
+	GetCenter(colAlign=0, rowAlign=0)
+	{
+		let	tmp;
+		let	cornerCoord;
+
+		tmp = this.square;
+		this.setRow(this._h / 2);
+		this.setCol(this._w / 2);
+		if (rowAlign != 0)
+			this.setRow(rowAlign > 0? this._h: 1);
+		if (colAlign != 0)
+			this.setCol(colAlign > 0? this._w: 1);
+		cornerCoord = this.square;
+		this.square = tmp;
+		return (cornerCoord);
 	}
 	/** @param {string} coord */
 	Normify(coord=this.square)

@@ -66,7 +66,7 @@ function renderSquare(square, coords, selected, TargetDangerSwitch)
 	buffer = "";
 	asciiArt = getAscii(square);
 	if (square.piece && square.piece.team)
-		buffer += `\x1b[48;5;${getSquareColor(square.piece.team)}m`;
+		buffer += `\x1b[${getSquareColor(square.piece.team)}m`;
 	if (coords.player == coords.curr)
 		buffer += `\x1b[32m[${asciiArt}]`;
 	else if (coords.curr == selected[0])
@@ -236,17 +236,17 @@ function getSquareColor(team)
 		case (null) :
 			return ("49");
 		case (eTeam.Black) :
-			return ("232");
-		case (eTeam.Blue) :
-			return ("44");
-		case (eTeam.Green) :
-			return ("42");
+			return ("40");
 		case (eTeam.Red) :
 			return ("41");
-		case (eTeam.White) :
-			return ("247");
+		case (eTeam.Green) :
+			return ("42");
 		case (eTeam.Yellow) :
 			return ("43");
+		case (eTeam.Blue) :
+			return ("44");
+		case (eTeam.White) :
+			return ("47");
 		default :
 			return ("49");
 	}

@@ -14,7 +14,7 @@ import { clientBoard } from "../../handlers/game/utils.js";
 
 class Match
 {
-	constructor()
+	constructor(w=CHESSBOARD_W, h=CHESSBOARD_H)
 	{
 		this.white = new Player(eTeam.White);
 		this.black = new Player(eTeam.Black);
@@ -22,8 +22,8 @@ class Match
 		this.blue = new Player(eTeam.Blue);
 		this.green = new Player(eTeam.Green);
 		this.yellow = new Player(eTeam.Yellow);
-		this.board = new ChessBoard(CHESSBOARD_W, CHESSBOARD_H);//FIXME - conf json?
-		this.cursor = new Cursor();
+		this.board = new ChessBoard(w, h);//FIXME - conf json?
+		this.cursor = new Cursor(w, h);
 		this.moves = 0;
 		this.boost = 0;
 		this.history = new History();
@@ -32,6 +32,9 @@ class Match
 		this.playerNum = 2;
 		this.victory = "";
 		/** @type {Timer | null} */ this.timer = null;
+
+		if (this.playerNum == 4)
+			this.currentPlayer = this.yellow;
 	}
 	endTurn()
 	{
@@ -48,6 +51,10 @@ class Match
 	forceWhiteTurn()
 	{
 		this.currentPlayer = this.white;
+	}
+	forceYellowTurn()
+	{
+		this.currentPlayer = this.yellow;
 	}
 	CheckOtherKingsDanger()
 	{
@@ -111,7 +118,7 @@ class Match
 			return (new Result());
 		return (result);
 	}
-	Reset()
+	Reset(w=CHESSBOARD_W, h=CHESSBOARD_H)
 	{
 		this.white = new Player(eTeam.White);
 		this.black = new Player(eTeam.Black);
@@ -119,13 +126,16 @@ class Match
 		this.blue = new Player(eTeam.Blue);
 		this.green = new Player(eTeam.Green);
 		this.yellow = new Player(eTeam.Yellow);
-		this.board = new ChessBoard(CHESSBOARD_W, CHESSBOARD_H);//FIXME
-		this.cursor = new Cursor();
+		this.board = new ChessBoard(w, h);
+		this.cursor = new Cursor(w, h);
 		this.moves = 0;
 		this.boost = 0;
 		this.history = new History();
 		this.currentPlayer = this.white;
 		this.victory = "";
+
+		if (this.playerNum == 4)
+			this.currentPlayer = this.yellow;
 	}
 	/** @param {string} name */
 	Log(name)

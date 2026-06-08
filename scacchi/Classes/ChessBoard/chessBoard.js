@@ -149,14 +149,16 @@ class ChessBoard
  * 
  * @param {number} maxWidth 
  * @param {number} maxHeigth 
- * @param {Cursor} cursor
+ * @param {Cursor | null} cursor
  * @returns 
  */
-function initBoard(maxWidth=CHESSBOARD_W, maxHeigth=CHESSBOARD_H, cursor=new Cursor())
+function initBoard(maxWidth=CHESSBOARD_W, maxHeigth=CHESSBOARD_H, cursor=null)
 {
 	/** @type {string} */				let	squareId;
 	/** @type {Map<string, Square>} */	let	board;
 
+	if (!cursor)
+		cursor = new Cursor(maxWidth, maxHeigth);
 	board = new Map();
 	cursor.Save();
 	cursor.set("a1");

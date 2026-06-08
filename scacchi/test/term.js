@@ -15,7 +15,6 @@ import readline from "node:readline";
 import * as server from "../main.js";
 import { makeTransfiguration } from "../handlers/game/transfiguration.js";
 import { cmd } from "./enumsTest.js";
-import { execSync } from "node:child_process";
 
 /** @typedef {import("../Classes/Match/match.js").Match} Match*/
 
@@ -26,12 +25,10 @@ function mainTerm()
 
 	termInit();
 	match = globals.getDebugMatch();
-	init(match, lib.Macro.SEED);
-	// match.cursor.Save();
-	// match.cursor.moveRow(1);
-	// match.cursor.moveCol(1);
-	// console.log("cursor:", match.cursor.Normify());
-	// match.cursor.Restore();
+	match.board.heigth = 10;
+	match.board.width = 10;
+	match.playerNum = 4;
+	init(match, 1);
 	render(match);
 	return (match);
 }

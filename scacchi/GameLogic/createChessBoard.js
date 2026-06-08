@@ -18,7 +18,6 @@ function initSavedBoard(match, boardStr)
 	let	indexSep;//|C|B... |= sep >> indexSep = 2
 	let	curr;
 
-	match.Reset();
 	match.cursor.Save();
 	rows = boardStr.split("\n");
 	rows.pop();
@@ -59,7 +58,6 @@ function initClassicBoard(match)
 	let	col;
 	let	color;
 
-	match.Reset();
 	color = true;
 	for (let [key, data] of match.board)
 	{
@@ -123,7 +121,6 @@ function initRandomBoard(match, rng)
 	let	rand;
 	let	blackPos;
 
-	match.Reset();
 	for (let [key, data] of match.board)
 	{
 		rand = rng(16);
@@ -153,15 +150,7 @@ function initRandomBoard(match, rng)
 		data.piece.team = match.currentPlayer.team;
 		match.endTurn();
 	}
-	match.board.get("a1").piece = new Piece(enumNames.KING, "a1", eTeam.White);
-	match.white.King = "a1";
-	match.cursor.setCursor(match.board.width, match.board.heigth);
-	match.cursor.setRow(match.board.heigth);
-	match.cursor.setCol(match.board.width);
-	blackPos = match.cursor.square;
-	match.board.get(blackPos).piece = new Piece(enumNames.KING, blackPos, eTeam.Black);
-	match.black.King = blackPos;
-	match.forceWhiteTurn();
+	setRandomKings(match);
 	dangerUpdateAll(match);
 }
 
@@ -252,6 +241,36 @@ function getTeamByCoord(match)
 	}
 	else
 		throw (`init: invalid number of player: ${match.playerNum}`);
+}
+
+/**
+ * 
+ * @param {Match} match
+ */
+function setRandomKings(match)
+{
+	if (match.playerNum == 2)
+	{
+		match.white.King = match.cursor.GetCenter(0, -1);
+		match.board.get(match.white.King).piece = new Piece(enumNames.KING, match.white.King, eTeam.White);
+		match.black.King = match.cursor.GetCenter(0, +1);
+		match.board.get(match.black.King).piece = new Piece(enumNames.KING, match.black.King, eTeam.Black);
+		match.forceWhiteTurn();
+	}
+	else if (match.playerNum == 4)
+	{
+		match.yellow.King = match.cursor.GetCenter(0, -1);
+		match.board.get(match.yellow.King).piece = new Piece(enumNames.KING, match.yellow.King, eTeam.Yellow);
+		match.red.King = match.cursor.GetCenter(0, +1);
+		match.board.get(match.red.King).piece = new Piece(enumNames.KING, match.red.King, eTeam.Red);
+		match.green.King = match.cursor.GetCenter(-1, 0);
+		match.board.get(match.green.King).piece = new Piece(enumNames.KING, match.green.King, eTeam.Green);
+		match.blue.King = match.cursor.GetCenter(+1, 0);
+		match.board.get(match.blue.King).piece = new Piece(enumNames.KING, match.blue.King, eTeam.Blue);
+		match.forceYellowTurn();
+	}
+	else//FIXME - handling corretto
+		throw ("init: match can be of 2 or 4 players. Not implemented.");
 }
 
 export {initSavedBoard, initRandomBoard, initClassicBoard};

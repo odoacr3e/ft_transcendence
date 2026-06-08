@@ -12,7 +12,7 @@ import * as creators from "../../GameLogic/createChessBoard.js";
  * 2) JSON does not support Map. So we convert the Map board to an Object
  * @param {Match} match
  * @param {number | null} seed seed to start
- * @param {string | null} boardString seed to start
+ * @param {string | null} boardString board to start
  * @returns 
  */
 function init(match, seed=null, boardString=null)
@@ -26,7 +26,7 @@ function init(match, seed=null, boardString=null)
 		seed = Math.floor(Math.random() * (1 << 30));
 	result = new Result();
 	rng = initRng(seed);
-	match.board = new ChessBoard(CHESSBOARD_W, CHESSBOARD_H);
+	match.Reset(match.board.width, match.board.heigth);
 	if (boardString != null)
 		creators.initSavedBoard(match, boardString);
 	else if (seed == 0)
