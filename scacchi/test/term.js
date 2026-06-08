@@ -25,9 +25,9 @@ function mainTerm()
 
 	termInit();
 	match = globals.getDebugMatch();
-	match.board.heigth = 10;
-	match.board.width = 10;
-	match.playerNum = 4;
+	// match.board.heigth = 10;
+	// match.board.width = 10;
+	// match.playerNum = 4;
 	init(match, 1);
 	render(match);
 	return (match);

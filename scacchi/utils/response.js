@@ -129,7 +129,7 @@ function _jsonParser(key, val)
 		return (val);
 }
 
-// FIXME - con questa va testCurl.js
+// FIXME - con questa va test/curlTest.js
 /**
  * 
  * @param {string} key 
