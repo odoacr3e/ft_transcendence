@@ -16,7 +16,7 @@ setupFrontend()
 	cd frontend
 	
 	if [[ $1 == "run" ]];then
-		npm run dev &
+		npx vite --host 0.0.0.0 &
 		PID_FRONTEND=$!
 	else
 		git pull || error "cannot pull frontend (try ncdu)!"
@@ -32,7 +32,7 @@ setupBackend()
 	if [[ $1 == "run" ]];then
 		cd scacchi
 		echo "run term..."
-		node test/term.js
+		node test/term.js 2> /dev/null
 	else
 		git pull || error "cannot pull backend"
 		cd scacchi
@@ -43,7 +43,7 @@ setupBackend()
 
 pulizia_etnica()
 {
-	kill "$PID_FRONTEND"
+	test "$PID_FRONTEND" != "" && kill "$PID_FRONTEND"
 	echo "Addio."
 	exit 0
 }
@@ -63,13 +63,21 @@ frontUrl="git@github.com:odoacr3e/ft_transcendence.git"
 mkdir -p "Test" && cd ./Test || error "cannot init"
 
 if [ ! -d "backend" ]; then
-	git clone -b backend $backUrl backend || error "cannot get backend"
+	if test "$USER" = "codespace";then
+		gh repo clone odoacr3e/ft_transcendence backend -- --branch backend
+	else
+		git clone -b backend $backUrl backend || error "cannot get backend"
+	fi
 else
 	echo "backend already exists!"
 fi
 
 if [ ! -d "frontend" ]; then
-	git clone -b frontend $frontUrl frontend || error "cannot get frontend"
+	if test "$USER" = "codespace";then
+		gh repo clone odoacr3e/ft_transcendence frontend -- --branch frontend
+	else
+		git clone -b frontend $frontUrl frontend || error "cannot get frontend"
+	fi
 else
 	echo "frontend already exists!"
 fi
@@ -83,9 +91,10 @@ fi
 trap pulizia_etnica SIGINT
 
 #3) setup frontend
-setupFrontend $1
 cd "$pwd"
+setupFrontend $1
 #4) setup backend
+cd "$pwd"
 setupBackend $1
 
 cd "$pwd"
