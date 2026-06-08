@@ -1,23 +1,9 @@
 <script setup>
     import LinkFooter from './LinkFooter.vue';
-    import { useAuthStore } from "../stores/auth.st";
-	import { useRouter }	from 'vue-router';
-
-    const router = useRouter();
-
-    async function submitForm() {
-        const authStore = useAuthStore();
-		await authStore.logout();
-		router.push('/log');
-	}
 </script>
     
 <template>
-    <div id="wrap"> 
-        <RouterLink to="/log" id="button">
-            <button class="cursor-pointer text-[#f1f5f7]"><b>Accedi</b></button>
-        </RouterLink>
-        <button @click="submitForm()" class="cursor-pointer text-[#f1f5f7]"><b>LOGOUT</b></button>
+    <div id="wrap">
         <div class="menu mt-40 relative flex place-items-center">
             <img class="absolute" src="../assets/sword2.png">
             <RouterLink to="/game">

@@ -1,19 +1,15 @@
 <script setup>
-  import MenuHeader from '../components/MenuHeader.vue'
-  import MainLogo from '../components/MainLogo.vue';
-  import { storeToRefs } from 'pinia';
-  import { useAuthStore } from "../stores/auth.st";
-  
-  const authStore = useAuthStore();
-  const { user } = storeToRefs(authStore);
+	import MenuHeader from '../components/MenuHeader.vue'
+	import MainLogo from '../components/MainLogo.vue';
+	import Header from '../components/Header.vue';
 </script>
 
 <template>
-  <MainLogo/>
-  <div v-if="user">
-    <h1 class="z-100 text-4xl text-white absolute">Hi {{user.username}}!</h1>
-  </div>
-  <MenuHeader/>
+	<!-- <MainLogo/> -->
+	<div class="min-h-15 flex flex-col">
+		<Header/>
+	</div>
+	<MenuHeader class="mt-14"/>
 </template>
 
 <style scoped>

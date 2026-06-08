@@ -72,7 +72,14 @@ export function KingAndBastardsHL(squareId)
 		setHighlightTrue(boostedMoves, "boosted", "both");
 	}
 	else if (regularMoves)
+	{
+		if (square.piece.type === "King") //highlight per l'arrocco
+				regularMoves.forEach((highlight) => {
+					if (localBoard.get(highlight).piece && localBoard.get(highlight).piece.type === "Minotaurus")
+						localBoard.get(highlight).highlight = true;
+				});
 		setHighlightTrue(regularMoves, "regular", team);
+	}
 	else
 		throw Error("[KingAndBastardsHL]: qualcosa è andato storto");
 }

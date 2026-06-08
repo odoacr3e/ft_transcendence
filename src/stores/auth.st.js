@@ -40,9 +40,9 @@ export const useAuthStore = defineStore('auth', {
 
 		async fetchMe() {
 			if (this.sessionChecked) { return; }
-			try { this.user = await authApi.me(); }
-			catch { this.user = null; }
-			finally { this.sessionChecked = true; }
+			try		{ this.user = await authApi.me(); }
+			catch	{ this.user = null; }
+			finally	{ this.sessionChecked = true; }
 		}
 	}
 })

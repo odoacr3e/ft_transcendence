@@ -1,12 +1,11 @@
 <script setup>
+    import Header from '../components/Header.vue';
     import LoginForm from '../components/LoginForm.vue';
 </script>
 
 <template>
     <div class="min-h-screen flex flex-col">
-         <RouterLink to="/" id="button">
-            <button class="cursor-pointer"><b>⬅ Home</b></button>
-        </RouterLink>
+        <Header/>
         <div id="wrap" class="grow">
             <div class="flex z-2 bg-[#181715] rounded-3xl">
                 <div class="p-6 bg-[#201e1c] rounded-l-3xl border-r border-[#4e4e4e8c]">
@@ -34,20 +33,6 @@
 </template>
 
 <style scoped>
-    #button {
-        display: flex;
-        position: relative;
-        justify-self: left;
-        z-index: 12;
-        padding: 8px;
-        width: 90px;
-        margin-left: 20px;
-        margin-top: 15px;
-        border-radius: 9px;
-        color: white;
-        background-color: #882a2a;
-    }
-
     #wrap {
         display: grid;
         grid-template-columns: max-content max-content;

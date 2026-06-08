@@ -60,7 +60,12 @@
 	}
 
 	div.form:focus-within {
-		border-color: #f1e8e8af;
+		border-color: #f1e8e870;
+	}
+
+	div.form:hover {
+		border-color: #f1e8e870;
+		transition: border 0.25s ease-in-out;
 	}
 
 	input:focus {
