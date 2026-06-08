@@ -1,0 +1,94 @@
+#!/bin/bash
+
+PID_FRONTEND=""
+pwd="$(pwd)/Test"
+
+first_set_up()
+{
+	git clone -b backend $backUrl backend || error "cannot get backend"
+	git clone -b frontend $frontUrl frontend || error "cannot get frontend"
+}
+
+setupFrontend()
+{
+	cd frontend
+	
+	if [[ $1 == "run" ]];then
+		npm run dev &
+		PID_FRONTEND=$!
+	else
+		git pull || error "cannot pull frontend (try ncdu)!"
+		npm install || error "frontend: npm failed"
+		echo "frontend settato, Sai qual'e' la differenza tra un cattivo e un super cattivo?" 
+	fi
+}
+
+setupBackend()
+{
+	cd backend
+	
+	if [[ $1 == "run" ]];then
+		cd scacchi
+		echo "run term..."
+		node test/term.js
+	else
+		git pull || error "cannot pull backend"
+		cd scacchi
+		npm install || error "backend: npm failed (try ncdu)"
+		npm run confprisma && npm run pulldb
+		echo "Backend settato, che burro!"
+	fi
+}
+
+pulizia_etnica()
+{
+	kill "$PID_FRONTEND"
+	echo "Addio."
+	exit 0
+}
+
+error()
+{
+	echo $1
+	exit 1
+}
+
+backUrl="git@github.com:odoacr3e/ft_transcendence.git"
+frontUrl="git@github.com:odoacr3e/ft_transcendence.git"
+
+#SECTION - main
+
+#1) crea cartella Test
+mkdir -p "Test" && cd ./Test || error "cannot init"
+
+if [ ! -d "backend" ]; then
+	git clone -b backend $backUrl backend || error "cannot get backend"
+else
+	echo "backend already exists!"
+fi
+
+if [ ! -d "frontend" ]; then
+	git clone -b frontend $frontUrl frontend || error "cannot get frontend"
+else
+	echo "frontend already exists!"
+fi
+
+#2) prendi cartella
+if [ ! -f ".env" ]; then
+	touch .env
+fi
+
+#SIGNAL HANDLER
+trap pulizia_etnica SIGINT
+
+#3) setup frontend
+setupFrontend $1
+cd "$pwd"
+#4) setup backend
+setupBackend $1
+
+cd "$pwd"
+
+if [[ $1 == "run" ]];then
+	wait "$PID_FRONTEND"
+fi
