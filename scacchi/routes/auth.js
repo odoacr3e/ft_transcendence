@@ -54,6 +54,7 @@ authRouter.post("/login", async (req, res) => {
 			return res.status(401).json(jsonResponse.ResponseError("Invalid credentials"));
 		}
 		delete(user.password);
+		req.user = user;
 		await createJwt(req, res);
 		// printLog(`User ${user.username} correctly logged in`, 'ok')
 		return res.status(200).json(jsonResponse.ResponseSuccess({ "user": user }));
