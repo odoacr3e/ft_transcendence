@@ -22,13 +22,16 @@ import { cmd } from "./enumsTest.js";
 function mainTerm()
 {
 	let	match;
+	let	seed;
 
 	termInit();
 	match = globals.getDebugMatch();
+	seed = lib.Macro.SEED;
 	// match.board.heigth = 10;
 	// match.board.width = 10;
 	// match.playerNum = 4;
-	init(match, 1);
+	// seed = 1;
+	init(match, seed);
 	render(match);
 	return (match);
 }

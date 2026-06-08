@@ -5,7 +5,6 @@ import {Match, HistoryEvent} from "../Classes/Match/match.js";
 import { Piece } from "../Classes/Pieces/pieces.js";
 import {move, boost, endTurn, init, error} from "../handlers/game/Game.js";
 import { render } from "../test/render.js";
-import { Result } from "pg";
 import { makeTransfiguration } from "../handlers/game/transfiguration.js";
 
 
