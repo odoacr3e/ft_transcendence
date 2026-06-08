@@ -1,7 +1,7 @@
 //@ts-check
 
 import {Cursor} from "../Classes/Match/cursor.js";
-import { colors } from "../test/colorsOld.js";
+import { colors } from "./colorsOld.js";
 let cur = new Cursor;
 
 /*

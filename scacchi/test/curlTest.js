@@ -7,7 +7,7 @@ import { globals } from "../Classes/Match/globals.js";
 import { historyRestore } from "../utils/history.js";
 import {HISTORY_PATH} from "../Macro/macro.js";
 import {eEvents} from "../Macro/enums.js";
-import { colors as color } from "../test/colorsOld.js";
+import { colors as color } from "./colorsOld.js";
 import { testerEnum as MSG, curlCmd } from "./enumsTest.js";
 import {boardStringify} from "./render.js";
 import { Match } from "../Classes/Match/match.js";
@@ -38,7 +38,7 @@ async function testerMain()
 	let	matchName;
 	let	matchPath;
 
-	exec("npm run server", (err, stdout, stderr) =>{if (err){console.error(`${err} ${stderr}`)}});
+	exec("npm run start", (err, stdout, stderr) =>{if (err){console.error(`${err} ${stderr}`)}});
 	await msleep(1000);
 	matchName = process.argv.at(2);
 	if (!matchName)

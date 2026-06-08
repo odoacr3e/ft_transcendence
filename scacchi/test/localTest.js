@@ -5,7 +5,7 @@ import fs from "fs";
 import { globals } from "../Classes/Match/globals.js";
 import { historyRestore } from "../utils/history.js";
 import {HISTORY_PATH} from "../Macro/macro.js";
-import { colors as color } from "../test/colorsOld.js";
+import { colors as color } from "./colorsOld.js";
 import { testerEnum as MSG } from "./enumsTest.js";
 import {boardStringify} from "./render.js";
 
