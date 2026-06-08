@@ -5,7 +5,7 @@ import fs from "fs";
 import { globals } from "../Classes/Match/globals.js";
 import { historyRestore } from "../utils/history.js";
 import {HISTORY_PATH} from "../Macro/macro.js";
-import { colors as color } from "../utils/colors.js";
+import { colors as color } from "../test/colorsOld.js";
 import { testerEnum as MSG } from "./enumsTest.js";
 import {boardStringify} from "./render.js";
 
@@ -19,6 +19,7 @@ function testerMain()
 	let	matchName;
 	let	matchPath;
 
+	console.debug = console.log;
 	console.log = () => {};
 	matchName = process.argv.at(2);
 	if (!matchName)

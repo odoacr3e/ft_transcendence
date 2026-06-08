@@ -7,7 +7,7 @@ import { globals } from "../Classes/Match/globals.js";
 import { historyRestore } from "../utils/history.js";
 import {HISTORY_PATH} from "../Macro/macro.js";
 import {eEvents} from "../Macro/enums.js";
-import { colors as color } from "../utils/colors.js";
+import { colors as color } from "../test/colorsOld.js";
 import { testerEnum as MSG, curlCmd } from "./enumsTest.js";
 import {boardStringify} from "./render.js";
 import { Match } from "../Classes/Match/match.js";

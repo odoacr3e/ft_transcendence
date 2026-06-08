@@ -12,7 +12,7 @@ import * as lib from "../lib/lib.js";
 import {abort} from "node:process";
 import {render} from "./render.js";
 import readline from "node:readline";
-import * as server from "../server.js";
+import * as server from "../main.js";
 import { makeTransfiguration } from "../handlers/game/transfiguration.js";
 import { cmd } from "./enumsTest.js";
 import { execSync } from "node:child_process";
