@@ -36,8 +36,7 @@ setupBackend()
 	else
 		git pull || error "cannot pull backend"
 		cd scacchi
-		npm install || error "backend: npm failed (try ncdu)"
-		npm run confprisma && npm run pulldb
+		npm run make
 		echo "Backend settato, che burro!"
 	fi
 }
@@ -95,5 +94,5 @@ if [[ $1 == "run" ]];then
 	wait "$PID_FRONTEND"
 else
 	cd "$pwdRoot" || error "pwdRoot has been lost, wtf?"
-	./test run
+	./play run
 fi
