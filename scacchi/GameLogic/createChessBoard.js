@@ -52,6 +52,88 @@ function initSavedBoard(match, boardStr)
  * 
  * @param {Match} match 
  */
+function initBoard4v4(match)
+{
+	let	row;
+	let	col;
+	let	color;
+	let team;
+	let diff;
+
+	color = true;
+	diff = (match.board.heigth - 8) / 2;//FIXME - funziona solo con W == H
+	for (let [key, data] of match.board)
+	{
+		data.piece = null;
+		data.boostedTargetZones.clear();
+		data.dangerZones.clear();
+		data.targetZones.clear();
+		color = !color;
+		match.cursor.set(key);
+		col = match.cursor.getCol();
+		row = match.cursor.getRow();
+		team = getTeamByCoord(match);
+		if ((row == 2 || row == match.board.heigth - 1) && (col > diff && col < match.board.width - diff + 1))
+			data.piece = new Piece(enumNames.BASTARDS, key, team);
+		else if (row == 1 || row == match.board.heigth)
+		{
+			switch (col)
+			{
+				case 1 + diff: case 8 + diff:
+					data.piece = new Piece(enumNames.MINOTAURUS, key, team);
+					break;
+				case 2 + diff: case 7 + diff:
+					data.piece = new Piece(enumNames.JESTER, key, team);
+					break ;
+				case 3 + diff: case 6 + diff:
+					data.piece = new Piece(enumNames.VALKIRYA, key, team);
+					break ;
+				case 4 + diff:
+					data.piece = new Piece(enumNames.CHAMPION, key, team);
+					break ;
+				case 5 + diff:
+					data.piece = new Piece(enumNames.KING, key, team);
+					match[team].King = match.cursor.square;
+					break;
+				default :
+					continue ;
+			}
+		}
+		else if ((col == 2 || col == match.board.width - 1) && (row > diff && row < match.board.heigth - diff + 1))
+			data.piece = new Piece(enumNames.BASTARDS, key, team);
+		else if (col == 1 || col == match.board.width)
+		{
+			switch (row) 
+			{
+				case 1 + diff: case 8 + diff:
+					data.piece = new Piece(enumNames.MINOTAURUS, key, team);
+					break;
+				case 2 + diff: case 7 + diff:
+					data.piece = new Piece(enumNames.JESTER, key, team);
+					break ;
+				case 3 + diff: case 6 + diff:
+					data.piece = new Piece(enumNames.VALKIRYA, key, team);
+					break ;
+				case 4 + diff:
+					data.piece = new Piece(enumNames.CHAMPION, key, team);
+					break ;
+				case 5 + diff:
+					data.piece = new Piece(enumNames.KING, key, team);
+					match[team].King = match.cursor.square;
+					break;
+				default :
+					continue ;
+			}
+		}
+	}
+	match.forceYellowTurn();
+	dangerUpdateAll(match);
+}
+
+/**
+ * 
+ * @param {Match} match 
+ */
 function initClassicBoard(match)
 {
 	let	row;
@@ -59,6 +141,8 @@ function initClassicBoard(match)
 	let	color;
 
 	color = true;
+	if (match.playerNum == 4)
+		return initBoard4v4(match);
 	for (let [key, data] of match.board)
 	{
 		data.piece = null;
@@ -221,7 +305,7 @@ function getTeamByCoord(match)
 
 	upper = (match.board.heigth / 2);
 	left = (match.board.width / 4);
-	right = match.board.width - left;
+	right = match.board.width - left + 1;
 	if (match.playerNum == 2)
 	{
 		if (match.cursor.getRow() <= upper)
@@ -230,7 +314,7 @@ function getTeamByCoord(match)
 	}
 	if (match.playerNum == 4)
 	{
-		if (match.cursor.getCol() <= left)
+		if (match.cursor.getCol() < left)
 			return (eTeam.Blue);
 		else if (match.cursor.getCol() > right)
 			return (eTeam.Green);

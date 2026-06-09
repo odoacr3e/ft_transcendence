@@ -27,10 +27,10 @@ function mainTerm()
 	termInit();
 	match = globals.getDebugMatch();
 	seed = lib.Macro.SEED;
-	// match.board.heigth = 10;
-	// match.board.width = 10;
-	// match.playerNum = 4;
-	// seed = 1;
+	match.board.heigth = 14;
+	match.board.width = 14;
+	match.playerNum = 4;
+	seed = 0;
 	init(match, seed);
 	render(match);
 	return (match);
@@ -108,14 +108,28 @@ process.stdin.on('keypress', (str, key) =>
 				selected = [];
 			}
 			break ;
-		case (cmd.HELP):
-			helpBool = !helpBool;
-			break ;
 		case (cmd.TRANSFORM):
-			let	newType = getline("insert new piece type");
 			result = makeTransfiguration(match, match.cursor.square, newType);
+			let	newType = getline("insert new piece type");
 			if (result.status != 200)
 				return (saveWrongMove(match, result, eEvents.Transform));
+			break ;
+		case (cmd.SQUARE_INFO):
+			let	squareCoord = undefined;
+			let	square = undefined;
+
+			while (square == undefined)
+			{
+				squareCoord = getline("insert VALID coord, empty for cursor...");
+				if (!squareCoord)
+					square = match.board.get(match.cursor.square);
+				else
+					square = match.board._data.get(squareCoord);
+			}
+			console.log(square);
+			break ;
+		case (cmd.HELP):
+			helpBool = !helpBool;
 			break ;
 		case (cmd.LOAD_HISTORY):
 		{
@@ -144,7 +158,7 @@ process.stdin.on('keypress', (str, key) =>
  */
 function print(key)
 {
-	console.log("row", match.cursor.getRow(), ", col", match.cursor.getCol(), ", cursor", match.cursor.square);
+	console.log("row", match.cursor.getRow(), ", col", match.cursor.getCol(), ", cursor", match.cursor.Normify());
 	if (TargetDangerSwitch != "None")
 		console.log(`Visualizing ${TargetDangerSwitch} zones`);
 	render(match, selected, TargetDangerSwitch);
@@ -158,6 +172,7 @@ function print(key)
 	console.log(`dangerLightMode: "${cmd.TARGET_DANGER_SWITCH}"`);
 	console.log(`endTurn "${cmd.END_TURN}"`);
 	console.log(`transform "${cmd.TRANSFORM}"`);
+	console.log(`square info "${cmd.SQUARE_INFO}"`);
 	console.log(`restoreHistory "${cmd.LOAD_HISTORY}"`);
 }
 

@@ -38,9 +38,9 @@ let isDangerous = (match, setZones, team) =>
 let bastardMove = // aggiornato movimenti
 {
 	white: new Set(["1|0", "1|1", "1|-1"]),
-	red: new Set(["1|0", "1|1", "1|-1"]),
+	yellow: new Set(["1|0", "1|1", "1|-1"]),
 	black: new Set(["-1|0", "-1|-1", "-1|1"]),
-	yellow: new Set(["-1|0", "-1|-1", "-1|1"]),
+	red: new Set(["-1|0", "-1|-1", "-1|1"]),
 	blue: new Set(["0|1", "-1|1", "1|1"]),
 	green: new Set(["0|-1", "-1|-1", "1|-1"])
 }

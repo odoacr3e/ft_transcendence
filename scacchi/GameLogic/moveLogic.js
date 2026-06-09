@@ -256,7 +256,7 @@ function updateChessboard(coords=[], result, match, boostBool)
 	}
 	if (coords[0] == match.currentPlayer.King)
 		match.currentPlayer.King = coords[1];
-	printSwap(coords, from, to);
+	printSwap(match, coords, from, to);
 	if (to.piece && to.piece.team != from.piece.team)
 	{
 		console.log(`player ${match.currentPlayer.team} + ${to.piece.price}💲`);

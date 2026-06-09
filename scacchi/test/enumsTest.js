@@ -18,6 +18,7 @@ const cmd =
 	TRANSFORM: "y",
 	MOVE: "space",
 	LOAD_HISTORY: "p",
+	SQUARE_INFO: "i",
 	HELP: "h"
 };
 

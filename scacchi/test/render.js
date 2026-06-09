@@ -66,7 +66,7 @@ function renderSquare(square, coords, selected, TargetDangerSwitch)
 	buffer = "";
 	asciiArt = getAscii(square);
 	if (square.piece && square.piece.team)
-		buffer += `\x1b[${getSquareColor(square.piece.team)}m`;
+		buffer += `\x1b[37;${getSquareColor(square.piece.team)}m`;
 	if (coords.player == coords.curr)
 		buffer += `\x1b[32m[${asciiArt}]`;
 	else if (coords.curr == selected[0])
@@ -78,7 +78,7 @@ function renderSquare(square, coords, selected, TargetDangerSwitch)
 	else if (square.piece?.isBoostedBool == true)
 		buffer += `\x1b[34m[${asciiArt}]`;
 	else
-		buffer += `[${asciiArt}]`;
+		buffer += `\x1b[37m[${asciiArt}]`;
 	buffer += "\x1b[0m";
 	return (buffer);
 }
@@ -150,14 +150,17 @@ function kingThreat(board, match)
 
 /**
  * 
+ * @param {Match} match
  * @param {Array<string>} coords 
  * @param {Square} from 
  * @param {Square} to 
  */
-function printSwap(coords, from, to)
+function printSwap(match, coords, from, to)
 {
 	let	fromType;
 	let	toType;
+	let fromString;
+	let toString;
 
 	fromType = from.piece?.type;
 	toType = to.piece?.type;
@@ -170,7 +173,13 @@ function printSwap(coords, from, to)
 	else
 		toType = `\x1b[33m${toType}\x1b[0m`;
 	console.log(`SWAP ${fromType} with ${toType}`);
-	console.log(`from ${coords[0]} to ${coords[1]}`);
+	match.cursor.Save();
+	match.cursor.set(coords[0]);
+	fromString = match.cursor.Normify();
+	match.cursor.set(coords[1]);
+	toString = match.cursor.Normify();
+	console.log(`from ${fromString} to ${toString}`);
+	match.cursor.Restore();
 }
 
 /**

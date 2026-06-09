@@ -61,6 +61,10 @@ class ChessBoard
 	 */
 	constructor(w, h)
 	{
+		if (w != h)
+			throw ("chessBoard: not implemented ;( => w != h");
+		if (w % 2 || h % 2)
+			throw ("chessBoard: not implemented ;( => w/h not even");
 		this._data = initBoard(w, h);
 		this.updates = new Set();
 		this.updates.clear();

@@ -1,5 +1,5 @@
 // @ts-check
-import {CHESSBOARD_H, CHESSBOARD_W} from "../../Macro/macro.js";
+
 /**
  * 
  * @param {*} match 
@@ -21,14 +21,14 @@ let movementJester = function (match)
 		let col = match.cursor.getCol();
 		row = row + dx;
 		col = col + dy;
-		if (row > CHESSBOARD_H || row <= 0 || col > CHESSBOARD_W || col <= 0)
+		if (row > match.board.heigth || row <= 0 || col > match.board.width || col <= 0)
 		{
-			row = row % CHESSBOARD_H;
-			col = col % CHESSBOARD_W;
-			if (row < 0) row += CHESSBOARD_H;
-			if (row == 0) row = CHESSBOARD_H;
-			if (col < 0) col += CHESSBOARD_W;
-			if (col == 0) col = CHESSBOARD_W;
+			row = row % match.board.heigth;
+			col = col % match.board.width;
+			if (row < 0) row += match.board.heigth;
+			if (row == 0) row = match.board.heigth;
+			if (col < 0) col += match.board.width;
+			if (col == 0) col = match.board.width;
 			match.cursor.setCursor(row, col);
 			match.board.get(startPos)?.boostedTargetZones.get(startPos)?.add(match.cursor.square);
 		}

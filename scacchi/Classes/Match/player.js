@@ -13,7 +13,7 @@ class Player
 		if (!data)
 			throw (`cannot find player ${color}`);
 		this.name = "";
-		this.nPoints = 0;
+		this.nPoints = 50;
 		this.bonusPointCounter = 0;
 		this.useBoostBool = false;
 		this.nPieces = 0;
@@ -42,22 +42,22 @@ const preset =
 	red: 
 	{
 		team: eTeam.Red,
-		next: eTeam.Blue,
+		next: eTeam.Green,
 	},
 	blue: 
 	{
 		team: eTeam.Blue,
-		next: eTeam.Yellow,
+		next: eTeam.Red,
 	},
 	green: 
 	{
 		team: eTeam.Green,
-		next: eTeam.Red,
+		next: eTeam.Yellow,
 	},
 	yellow: 
 	{
 		team: eTeam.Yellow,
-		next: eTeam.Green,
+		next: eTeam.Blue,
 	},
 }
 
