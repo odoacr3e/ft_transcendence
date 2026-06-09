@@ -7,7 +7,7 @@ const DEBUG = true;
 const HISTORY_PATH = "../history/";
 const HISTORY_FILE = "HISTORY.json";
 const HISTORY_DEFAULT = `${HISTORY_PATH}${HISTORY_FILE}`;
-const MATCHTIMER = 15 * 60 * 1000;
+const MATCHTIMER = 10 * 1000;
 
 const HASH_SALT = process.env.HASH_SALT;
 

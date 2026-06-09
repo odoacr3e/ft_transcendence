@@ -4,7 +4,7 @@ import {dangerUpdateAll, DangerUpdate} from "../../utils/moveUtils.js";
 import {Match} from "../../Classes/Match/match.js";
 import {error, paramCheck, Result, clientBoard} from "./utils.js";
 import { endTurn } from "./endTurn.js";
-import {CheckMateCheck} from "../../GameLogic/checkMate.js";
+import {checkMateCheckAll} from "../../GameLogic/checkMate.js";
 import { BOOSTED_MAX, MOVEMENT_MIN } from "../../Macro/macro.js";
 import { Square } from "../../Classes/ChessBoard/chessBoard.js";
 
@@ -28,11 +28,9 @@ function boost(match, from)
 	result.status = 200;
 	if (match.boost == BOOSTED_MAX)
 	{
-		// @ts-ignore
-		if (CheckMateCheck(match, match[match.currentPlayer.next].King))
-			return (match.CheckMate(result));
-		else
-			endTurn(match, false);
+		if (checkMateCheckAll(match, result) == true)
+			return (result);
+		endTurn(match, false);
 	}
 	if (prevBoost == "")
 		prevBoost = from;

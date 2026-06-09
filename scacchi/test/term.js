@@ -27,11 +27,14 @@ function mainTerm()
 	termInit();
 	match = globals.getDebugMatch();
 	seed = lib.Macro.SEED;
-	// match.board.heigth = 14;
-	// match.board.width = 14;
-	// match.playerNum = 4;
-	// seed = 0;
-	init(match, seed);
+	match.board.heigth = 14;
+	match.board.width = 14;
+	match.playerNum = 4;
+	seed = 0;
+	init(match, seed);	match.board.heigth = 14;
+	match.board.width = 14;
+	match.playerNum = 4;
+	seed = 0;
 	render(match);
 	return (match);
 }
@@ -57,6 +60,8 @@ process.stdin.on('keypress', (str, key) =>
 		termCleanup(key.name);
 	}
 	console.clear();
+	if (match.timer)
+		console.log(`Time left: "${match.timer.time - (Date.now() - match.timer.start)}"`);
 	switch (key.name)
 	{
 		case (cmd.UP) : case (cmd.W) :

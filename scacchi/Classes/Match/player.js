@@ -13,7 +13,7 @@ class Player
 		if (!data)
 			throw (`cannot find player ${color}`);
 		this.name = "";
-		this.nPoints = 50;
+		this.nPoints = 0;
 		this.bonusPointCounter = 0;
 		this.useBoostBool = false;
 		this.nPieces = 0;
@@ -21,7 +21,7 @@ class Player
 		this.boostedPiece = "";
 		/** @type {Set<string>} */
 		this.castlingArray = new Set();
-		this.time = new Timer(MATCHTIMER);
+		this.time = MATCHTIMER;
 		this.team = data.team;
 		this.next = data.next;
 	}
@@ -61,20 +61,4 @@ const preset =
 	},
 }
 
-/**
- * timeout = puntatore alla funzione setTimeout
- * start = tempo in cui inizia il countdown
- * time = tempo limite del coutdown
- */
-class Timer
-{
-	/** @param {number} time */
-	constructor(time)
-	{
-		this.timeout = ()=>{};
-		this.start = 0;
-		this.time = time;
-	}
-}
-
-export {Player, Timer};
+export {Player};

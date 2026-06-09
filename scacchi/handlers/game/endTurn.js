@@ -9,6 +9,7 @@ import {globals} from "../../Classes/Match/globals.js";
 import {isDangerous} from "../../utils/gameUtils.js";
 import {DangerUpdate} from "../../utils/moveUtils.js";
 import {clientBoard} from "../../handlers/game/utils.js";
+import { Timer } from "../../Classes/Match/match.js";
 //FIXME - ale: puoi sempre cambiare turno anche se non hai mosso
 
 /**
@@ -36,20 +37,23 @@ function endTurn(match, sendBoardBool=true)
 	// 	clearTimeout(match.timer.timeout);
 	// 	p.time = match.timer.time - (Date.now() - match.timer.start);
 	// }
-	// // console.log("time", match.currentPlayer.time);
+	// // console.log("time", );
 	// time = match.currentPlayer.time;
-	// timeout = setTimeout(() =>
+	// /** @param {string} matchId */
+	// timeout = setTimeout((matchId) =>
 	// {
 	// 	let result;
-	// 	let match = globals.matches.get("0");
+	// 	let match = globals.matches.get(matchId);
 	// 	result = new Result();
 	// 	result.status = 200;
 	// 	result.youWin = true;
 	// 	result.msg = `Player ${match?.currentPlayer.team} has lost!!!`
+	// 	console.log(match?.currentPlayer.team)
+	// 	// @ts-ignore
 	// 	return (match.CheckMate(result));
-	// }, time);
+	// }, time, "0");
 	// start = Date.now();
-	// match.timer = {timeout, start, time};
+	// match.timer = new Timer(time, start, timeout);
 	console.log(`Now it's ${match.currentPlayer.team} turn.`);
 	result.status = 200;
 	if (sendBoardBool)//@ts-ignore

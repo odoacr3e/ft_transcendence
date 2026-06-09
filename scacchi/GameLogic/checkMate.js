@@ -1,10 +1,12 @@
 // @ts-check
 import { Chess } from "../lib/lib.js";
+import {Result} from "../Classes/endPoint/result.js";
 const {preset} = Chess;
 import {enumNames} from "../Macro/enums.js";
 import {Match} from "../Classes/Match/match.js";
 import {isDangerous} from "../utils/gameUtils.js";
 import { movePiece } from "../utils/moveUtils.js";
+
 /**
  * 
  * @param {Match} match
@@ -212,4 +214,36 @@ function CheckMateCheck(match, kingSquareString)
 	return true;
 }
 
-export {CheckMateCheck, getDirection};
+/**
+ * 
+ * @param {Match} match 
+ * @param {Result | null} result
+ * @param {boolean} lostBool
+ */
+function checkMateCheckAll(match, result, lostBool=false)
+{
+	if (match.playerNum == 4)
+	{
+		let tmp = match.currentPlayer;
+
+		tmp = tmp.next;
+		while (tmp != match.currentPlayer)
+		{
+			// @ts-ignore
+			if (CheckMateCheck(match, match[match.currentPlayer.next].King))
+			{
+				if (lostBool == false)
+					return (match.CheckMate(result), true);
+				else
+					return (match.PlayerLost(result, tmp), true);
+			}
+			tmp = tmp.next;
+		}
+	}
+	// @ts-ignore
+	else if (CheckMateCheck(match, match[match.currentPlayer.next].King))
+		return (match.CheckMate(result), true);
+	return (false);
+}
+
+export {CheckMateCheck, checkMateCheckAll, getDirection};

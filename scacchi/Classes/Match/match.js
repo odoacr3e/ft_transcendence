@@ -6,7 +6,7 @@ import {eTeam, eEvents, enumNames} from "../../Macro/enums.js";
 import {Square, initBoard, copyBoard, copyBoostedTargetZones, ChessBoard} from "../ChessBoard/chessBoard.js";
 import {HISTORY_PATH, CHESSBOARD_W, CHESSBOARD_H} from "../../Macro/macro.js";
 import {Result} from "../endPoint/result.js";
-import {Player, Timer} from "./player.js";
+import {Player} from "./player.js";
 import {boardStringify} from "../../test/render.js";
 import { isDangerous } from "../../utils/gameUtils.js";
 import { match } from "assert";
@@ -118,6 +118,32 @@ class Match
 			return (new Result());
 		return (result);
 	}
+	/**
+	 * 
+	 * @param {Result} result 
+	 * @param {string} team 
+	 */
+	PlayerLost(result, team)
+	{
+		console.log("haaaaaiiiiii persoooooooooooooooooo!!!!!!!");
+		console.log("Premi un qualsiasi tasto per concludere...");
+		//FIXME - gestire cosa succede in base a quanti player restano
+		//FIXME - gestire salvataggio nella history
+		this.victory = this[team].next;
+		this.history.victory = this[team].next;
+		if (result != null)
+		{
+			result.msg = "you win!";
+			result.status = 200;
+			result.youWin = true;
+			result.specialMoves.SetCheckMate();
+			//@ts-ignore
+			result.board = clientBoard(this);
+		}
+		else
+			return (new Result());
+		return (result);	
+	}
 	Reset(w=CHESSBOARD_W, h=CHESSBOARD_H)
 	{
 		this.white = new Player(eTeam.White);
@@ -141,6 +167,24 @@ class Match
 	Log(name)
 	{
 		this.history.Log(this, name);
+	}
+}
+
+/**
+ * timeout = puntatore alla funzione setTimeout
+ * start = tempo in cui inizia il countdown
+ * time = tempo limite del coutdown
+ */
+class Timer
+{
+	/** @param {number} time */
+	/** @param {number} start */
+	/** @param {NodeJS.Timeout | null} timeout */
+	constructor(time=0, start=0, timeout= null)
+	{
+		this.timeout = timeout;
+		this.start = start;
+		this.time = time;
 	}
 }
 
@@ -342,4 +386,4 @@ function updateEndTurn(match)
 	this.moves += 1;
 }
 
-export {Match, History, HistoryEvent};
+export {Match, Timer, History, HistoryEvent};

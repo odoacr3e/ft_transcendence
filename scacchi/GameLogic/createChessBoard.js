@@ -60,6 +60,8 @@ function initBoard4v4(match)
 	let team;
 	let diff;
 
+	if (match.board.width < 14 || match.board.heigth < 14)
+		throw ("createChessboard: minimum is 14x14");
 	color = true;
 	diff = (match.board.heigth - 8) / 2;//FIXME - funziona solo con W == H
 	for (let [key, data] of match.board)
