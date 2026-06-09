@@ -27,10 +27,10 @@ function mainTerm()
 	termInit();
 	match = globals.getDebugMatch();
 	seed = lib.Macro.SEED;
-	match.board.heigth = 14;
-	match.board.width = 14;
-	match.playerNum = 4;
-	seed = 0;
+	// match.board.heigth = 14;
+	// match.board.width = 14;
+	// match.playerNum = 4;
+	// seed = 0;
 	init(match, seed);
 	render(match);
 	return (match);
