@@ -12,7 +12,6 @@ import * as lib from "../lib/lib.js";
 import {abort} from "node:process";
 import {render} from "./render.js";
 import readline from "node:readline";
-import * as server from "../main.js";
 import { makeTransfiguration } from "../handlers/game/transfiguration.js";
 import { cmd } from "./enumsTest.js";
 
@@ -41,6 +40,7 @@ function mainTerm()
 
 let match = mainTerm();
 let	helpBool = true;
+let	mutex = false;
 
 //SECTION - eventLoop: binda i tasti per fare cose
 
@@ -53,6 +53,7 @@ process.stdin.on('keypress', (str, key) =>
 	let	dx;
 	let	dy;
 
+	mutex = true;
 	dx = 0;
 	dy = 0;
 	if ((key.ctrl && key.name == "c") || match.victory)
@@ -60,8 +61,6 @@ process.stdin.on('keypress', (str, key) =>
 		termCleanup(key.name);
 	}
 	console.clear();
-	if (match.timer)
-		console.log(`Time left: "${match.timer.time - (Date.now() - match.timer.start)}"`);
 	switch (key.name)
 	{
 		case (cmd.UP) : case (cmd.W) :
@@ -152,6 +151,7 @@ process.stdin.on('keypress', (str, key) =>
 		console.log("lol no");
 	}
 	print(key.name);
+	mutex = false;
 });
 
 //SECTION - utils
@@ -266,4 +266,25 @@ function saveWrongMove(match, result, type)
 	match.history.Last().error = true;
 	selected = [];
 	error(null, result);
+	mutex = false;
+}
+
+/**
+ * 
+ * @param {string} id
+ */
+function showTimer(id)
+{
+	let	match;
+
+	match = globals.matches.get(id);
+	if (!match)
+	{
+		console.error("showTimer: match undefined");
+		return ;
+	}
+	if (mutex == true)
+		return ;
+	if (match.timer)
+		console.log(`Time left: "${match.timer.time - (Date.now() - match.timer.start)}"`);
 }

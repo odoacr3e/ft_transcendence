@@ -226,7 +226,7 @@ function checkMateCheckAll(match, result, lostBool=false)
 	{
 		let tmp = match.currentPlayer;
 
-		tmp = tmp.next;
+		tmp = match[tmp.next];
 		while (tmp != match.currentPlayer)
 		{
 			// @ts-ignore
@@ -237,7 +237,7 @@ function checkMateCheckAll(match, result, lostBool=false)
 				else
 					return (match.PlayerLost(result, tmp), true);
 			}
-			tmp = tmp.next;
+			tmp = match[tmp.next];
 		}
 	}
 	// @ts-ignore

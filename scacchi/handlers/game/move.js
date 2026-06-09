@@ -5,7 +5,7 @@ const {Square} = Chess;
 import {Match} from "../../Classes/Match/match.js";
 import {paramCheck, Result, clientBoard} from "./utils.js";
 import {endTurn} from "./endTurn.js";
-import {CheckMateCheck} from "../../GameLogic/checkMate.js";
+import {checkMateCheckAll} from "../../GameLogic/checkMate.js";
 import {checkMove, updateChessboard, checkSecondMove} from "../../GameLogic/moveLogic.js";
 import {enumNames} from "../../Macro/enums.js";
 
@@ -33,8 +33,8 @@ function move(match, from, to, boostBool=false)
 		return (result);
 	result.status = 200;
 	// @ts-ignore
-	if (CheckMateCheck(match, match[match.currentPlayer.next].King))
-		return (match.CheckMate(result));
+	if (checkMateCheckAll(match, result) == true)
+		return (result);
 	// @ts-ignore
 	result.board = clientBoard(match);
 	secondMoveBool = checkSecondMove(match, to);

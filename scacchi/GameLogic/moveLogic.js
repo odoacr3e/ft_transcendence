@@ -15,6 +15,7 @@ import { Piece } from "../Classes/Pieces/pieces.js";
 import { Cursor } from "../Classes/Match/cursor.js";
 import { includesOneOf } from "../utils/string.js";
 import {endTurn} from "../handlers/game/endTurn.js";
+import {checkMateCheckAll} from "./checkMate.js";
 
 //FIXME - da mettere alcune funzioni in un utilis
 
@@ -624,6 +625,8 @@ function transfiguration(match, result, coord, newType)
 	square.piece.isBoostedBool = isBoostedBool;
 	DangerUpdate(match, coord);
 	match.history.UpdateTransform(match, square, coord, newType);
+	if (checkMateCheckAll(match, result) == true)
+		return (result);
 	endTurn(match, false);
 	result.status = 200;
 	result.msg = "OK";
