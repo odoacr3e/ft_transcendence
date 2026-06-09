@@ -21,7 +21,7 @@
 
 <template>
 	<div class="grid grid-cols-2 z-10 w-lvw h-15 bg-[#201e1c] border-b border-[#181715e8]">
-		<RouterLink to="/" id="button">
+		<RouterLink to="/" id="button" class="w-fit">
 			<div class="flex justify-self-start">
 				<img src="../assets/CrownIcon.png" alt="" class="place-self-center size-15 ml-3">
 				<h1 class="text-white text-4xl place-self-center">ChessZ</h1>
@@ -39,15 +39,15 @@
 				<button class="flex cursor-pointer" @click="{bool = !bool;}">
 					<h2 class="text-white text-lg place-self-center mr-3">{{ user.username }}</h2>
 					<img :src="user.image ? asset(`${user.image}`) : asset('../assets/default.png')"
-						alt="" class="size-12 rounded-4xl border-2 border-[#882a2a] place-self-center">
+						alt="" class="size-12 rounded-full place-self-center">
 				</button>
 				<div class="mt-1.25 p-2 absolute pointer-events-auto bg-[#181715] origin-top align-bottom border border-[#181715e8] w-52.5 transition-all ease-out"
 					v-bind:class="{'scale-y-0 pointer-events-none border-0': !bool, 'scale-y-100 pointer-events-auto': bool}">
-					<button @click="submitForm()" class="cursor-pointer text-[#f1f5f7]">Logout</button>
-					<hr>
-					<RouterLink to="/log" id="button">
-						<p class="text-white">Accedi lol</p>
+					<RouterLink to="/me" id="button">
+						<p class="text-white">Profilo</p>
 					</RouterLink>
+					<hr>
+					<button @click="submitForm()" class="cursor-pointer text-[#f1f5f7]">Logout</button>
 				</div>
 			</div>
 		</div>
