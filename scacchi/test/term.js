@@ -29,9 +29,10 @@ function mainTerm()
 	termInit();
 	match = globals.getDebugMatch();
 	seed = lib.Macro.SEED;
-	match.board.width = 14;
-	match.board.heigth = 14;
-	match.playerNum = 4;
+	// match.board.width = 14;
+	// match.board.heigth = 14;
+	// match.playerNum = 4;
+	// match.settings.players.number = 4;
 	seed = 0;
 	init(match, seed);
 	render(match);
@@ -169,16 +170,17 @@ function print(key)
 	render(match, selected, TargetDangerSwitch);
 	console.log(`keypressed: ${key}`);
 	console.log(`Commands summary: ${cmd.HELP}`);
-	if (!helpBool)
-		return ;
-	console.log(`"move: "${cmd.MOVE}"`);
-	console.log(`buyBoost: "${cmd.BUY_BOOST}"`);
-	console.log(`useBoost: "${cmd.USE_BOOST}"`);
-	console.log(`dangerLightMode: "${cmd.TARGET_DANGER_SWITCH}"`);
-	console.log(`endTurn "${cmd.END_TURN}"`);
-	console.log(`transform "${cmd.TRANSFORM}"`);
-	console.log(`square info "${cmd.SQUARE_INFO}"`);
-	console.log(`restoreHistory "${cmd.LOAD_HISTORY}"`);
+	if (helpBool)
+	{
+		console.log(`"move: "${cmd.MOVE}"`);
+		console.log(`buyBoost: "${cmd.BUY_BOOST}"`);
+		console.log(`useBoost: "${cmd.USE_BOOST}"`);
+		console.log(`dangerLightMode: "${cmd.TARGET_DANGER_SWITCH}"`);
+		console.log(`endTurn "${cmd.END_TURN}"`);
+		console.log(`transform "${cmd.TRANSFORM}"`);
+		console.log(`square info "${cmd.SQUARE_INFO}"`);
+		console.log(`restoreHistory "${cmd.LOAD_HISTORY}"`);
+	}
 }
 
 function termInit()
@@ -269,6 +271,11 @@ function saveWrongMove(match, result, type)
 	mutex = false;
 }
 
+const timerInterval = setInterval(() => 
+{
+	showTimer("0");
+}, 1000);
+
 /**
  * 
  * @param {string} id
@@ -286,5 +293,5 @@ function showTimer(id)
 	if (mutex == true)
 		return ;
 	if (match.timer)
-		console.log(`Time left: "${match.timer.time - (Date.now() - match.timer.start)}"`);
+		process.stdout.write(`\r⏳ "${match.timer.time - (Date.now() - match.timer.start)}"`);
 }

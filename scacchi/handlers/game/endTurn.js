@@ -37,7 +37,7 @@ function endTurn(match, sendBoardBool=true)
 	// 	clearTimeout(match.timer.timeout);
 	// 	p.time = match.timer.time - (Date.now() - match.timer.start);
 	// }
-	// // console.log("time", );
+	// // console.log("time", p.time);
 	// time = match.currentPlayer.time;
 	// /** @param {string} matchId */
 	// timeout = setTimeout((matchId) =>
@@ -48,7 +48,6 @@ function endTurn(match, sendBoardBool=true)
 	// 	result.status = 200;
 	// 	result.youWin = true;
 	// 	result.msg = `Player ${match?.currentPlayer.team} has lost!!!`
-	// 	console.log(match?.currentPlayer.team)
 	// 	// @ts-ignore
 	// 	return (match.CheckMate(result));
 	// }, time, "0");

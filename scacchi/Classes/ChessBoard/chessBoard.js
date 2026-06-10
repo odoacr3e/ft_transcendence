@@ -55,11 +55,17 @@ class Square
 	/** @param {function} normifier */
 	NormifyZones(normifier)
 	{
+		let	tmp;
+
 		// @ts-ignore
 		this.targetZones = new Set([...this.targetZones].map(normifier));
-		// @ts-ignore
-		this.boostedTargetZones = new Map([...this.boostedTargetZones.entries()].map(([key, value]) => [normifier(key), value]));
-	
+		tmp = new Map();
+		for (let [k, v] of this.boostedTargetZones)
+		{
+			// @ts-ignore
+			v = new Set([...v].map(normifier));
+			this.boostedTargetZones.set(normifier(k), v);
+		}
 	}
 }
 

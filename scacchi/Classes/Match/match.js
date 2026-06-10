@@ -39,6 +39,8 @@ class Match
 		this.playerNum = 2;
 		this.victory = "";
 		this.settings = preset;
+		if (!this.settings)
+			this.settings = new MatchSettings();
 		/** @type {Timer | null} */ this.timer = null;
 
 		if (preset?.players.number == 4)

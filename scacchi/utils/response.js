@@ -86,26 +86,38 @@ function responseFormatter(match, result, msg, status)
  */
 function formatPlayer(match, result)
 {
-	result.p1 = match.white ? match.white : match.green;
-	result.p2 = match.black ? match.black : match.blue;
-	result.p3 = match.red;
-	result.p4 = match.yellow;
+	if (match.settings.players.number == 2)
+	{
+		result.p1 = match.white; 
+		result.p2 = match.black;
+	}
+	else if (match.settings.players.number == 4)
+	{
+		result.p1 = match.yellow; 
+		result.p2 = match.blue;
+		result.p3 = match.red;
+		result.p4 = match.green;
+		result.p3.name = "p3";
+		result.p4.name = "p4";
+		result.p3.isPlaying = false;
+		result.p4.isPlaying = false;
+	}
+	else
+		throw ("formatPlayer: bad player number");
 	result.p1.name = "p1";
 	result.p2.name = "p2";
-	result.p3.name = "p3";
-	result.p4.name = "p4";
 	result.p1.isPlaying = false;
 	result.p2.isPlaying = false;
-	result.p3.isPlaying = false;
-	result.p4.isPlaying = false;
-	if (match.currentPlayer === result.p1)
+	if (match.currentPlayer.team == result.p1.team)
 		result.p1.isPlaying = true;
-	if (match.currentPlayer === result.p2)
+	else if (match.currentPlayer.team == result.p2.team)
 		result.p2.isPlaying = true;
-	if (match.currentPlayer === result.p3)
+	else if (match.currentPlayer.team == result.p3?.team)
 		result.p3.isPlaying = true;
-	if (match.currentPlayer === result.p4)
+	else if (match.currentPlayer.team == result.p4?.team)
 		result.p4.isPlaying = true;
+	else
+		throw ("formatPlayer: backend forgot the turn order, sorry");
 }
 
 // FIXME - con questa va il FRONTEND

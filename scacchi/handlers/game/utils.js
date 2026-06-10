@@ -70,7 +70,7 @@ function copyOnlyBoardUpdates(match)
 	return (newBoard);
 }
 
-/** @typedef {{from: *, to: string | null, type: string}} RequestBody*/
+/** @typedef {{from: string | null, to: string | null, type: string}} RequestBody*/
 
 /**
  * 
@@ -79,12 +79,12 @@ function copyOnlyBoardUpdates(match)
  */
 function normifyRequest(cursor, body)
 {
-	// console.log("BEFORE:", body);
+	if (body.type == "init")
+		return body;
 	if (body.from && typeof(body.from) == "string")
 		body.from = cursor.Normify(body.from);
 	if (body.to && typeof(body.to) == "string" && body.to.length == 3)
 		body.to = cursor.Normify(body.to);
-	// console.log("AFTER:", body);
 	return (body);
 }
 
