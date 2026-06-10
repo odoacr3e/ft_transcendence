@@ -14,26 +14,34 @@ import { clientBoard } from "../../handlers/game/utils.js";
 
 class Match
 {
-	constructor(w=CHESSBOARD_W, h=CHESSBOARD_H)
+
+	/** @param {MatchSettings | null} preset*/
+	constructor(w=8, h=8, preset=null)
 	{
+		if (preset)//FIXME - da togliere
+		{
+			w = preset.board.width;
+			h = preset.board.heigth;
+		}
 		this.white = new Player(eTeam.White);
 		this.black = new Player(eTeam.Black);
 		this.red = new Player(eTeam.Red);
 		this.blue = new Player(eTeam.Blue);
 		this.green = new Player(eTeam.Green);
 		this.yellow = new Player(eTeam.Yellow);
-		this.board = new ChessBoard(w, h);//FIXME - conf json?
+		this.board = new ChessBoard(w, h);
 		this.cursor = new Cursor(w, h);
 		this.moves = 0;
 		this.boost = 0;
-		this.history = new History();
+		this.history = new History(preset);
 		this.historyCreateBool = false;
 		this.currentPlayer = this.white;
 		this.playerNum = 2;
 		this.victory = "";
+		this.settings = preset;
 		/** @type {Timer | null} */ this.timer = null;
 
-		if (this.playerNum == 4)
+		if (preset?.players.number == 4)
 			this.currentPlayer = this.yellow;
 	}
 	endTurn()
@@ -144,8 +152,14 @@ class Match
 			return (new Result());
 		return (result);	
 	}
-	Reset(w=CHESSBOARD_W, h=CHESSBOARD_H)
+	/** @param {MatchSettings | null} preset*/
+	Reset(w=CHESSBOARD_W, h=CHESSBOARD_H, preset=null)
 	{
+		if (preset)//FIXME - da togliere
+		{
+			w = preset.board.width;
+			h = preset.board.heigth;
+		}
 		this.white = new Player(eTeam.White);
 		this.black = new Player(eTeam.Black);
 		this.red = new Player(eTeam.Red);
@@ -156,11 +170,12 @@ class Match
 		this.cursor = new Cursor(w, h);
 		this.moves = 0;
 		this.boost = 0;
-		this.history = new History();
+		this.history = new History(preset);
 		this.currentPlayer = this.white;
 		this.victory = "";
-
-		if (this.playerNum == 4)
+		if (preset)
+			this.settings = structuredClone(preset);
+		if (this.settings?.players.number == 4)
 			this.currentPlayer = this.yellow;
 	}
 	/** @param {string} name */
@@ -191,12 +206,12 @@ class Timer
 class MatchSettings
 {
 	/** @param {MatchSettings | null} other */
-	constructor(other)
+	constructor(other=null)
 	{
 		this.board =
 		{
-			width: 8,
-			heigth: 8,
+			width: CHESSBOARD_W,
+			heigth: CHESSBOARD_H,
 			seed: 0,
 			start: ""
 		}
@@ -222,10 +237,19 @@ class MatchSettings
 	CopyConstructor(other)
 	{
 		if (other.board)
-			this.board = other.board;
+			this.board = structuredClone(other.board);
 		if (other.players)
-			this.players = other.players;
+			this.players = structuredClone(other.players);
 	}
 }
 
-export {Match, Timer, MatchSettings};
+const matchPresets =
+{
+	twoPlayer: new MatchSettings(),
+	fourPlayer: new MatchSettings(),
+}
+matchPresets.fourPlayer.board.width = 14;
+matchPresets.fourPlayer.board.heigth = 14;
+matchPresets.fourPlayer.players.number = 4;
+
+export {Match, Timer, MatchSettings, matchPresets};

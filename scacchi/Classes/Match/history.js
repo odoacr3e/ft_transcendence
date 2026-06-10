@@ -8,10 +8,12 @@ import {HISTORY_PATH, CHESSBOARD_W, CHESSBOARD_H} from "../../Macro/macro.js";
 import {boardStringify} from "../../test/render.js";
 
 /**@typedef {import("./match.js").Match} Match*/
+/**@typedef {import("./match.js").MatchSettings} MatchSettings*/
 /**@typedef {import("../ChessBoard/chessBoard.js").Square} Square*/
 
 export class History
 {
+	/** @param {MatchSettings | null} matchSettings*/
 	constructor(matchSettings=null)
 	{
 		this.seed = 0;
@@ -24,13 +26,7 @@ export class History
 		this.UpdateBoost = updateBoost;
 		this.UpdateEndTurn = updateEndTurn;
 		this.UpdateTransform = updateTransform;
-		this.settings =
-		{
-			w: 8,
-			h: 8,
-			nPlayers: 2,
-			startBoard: ""
-		}
+		this.matchSettings = matchSettings;
 	}
 	Last()
 	{

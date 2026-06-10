@@ -9,7 +9,7 @@ import { render } from "../test/render.js";
 import { makeTransfiguration } from "../handlers/game/transfiguration.js";
 
 
-/** @typedef {import ("../Classes/Match/match.js").History} History */
+/** @typedef {import ("../Classes/Match/history.js").History} History */
 
 let	DEBUGCounter = 0;
 
@@ -32,7 +32,7 @@ function historyRestore(match, path)
 		throw (`History, restore: path "${path}" invalid`);
 	buffer = fs.readFileSync(path, "utf-8");
 	history = JSON.parse(buffer);
-	match.Reset();
+	match.Reset(8, 8, history.matchSettings);
 	try
 	{
 		init(match, history.seed);

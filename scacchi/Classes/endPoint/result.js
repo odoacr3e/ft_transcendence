@@ -61,7 +61,7 @@ class Result
 		if (other.match)
 			this.match = other.match;
 		if (other.board)
-			this.board = copyBoard(other.board, this.board);
+			this.board = copyBoard(other.board, this.board, this.match);
 	}
 	Success(msg="OK")
 	{

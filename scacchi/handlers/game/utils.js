@@ -25,7 +25,7 @@ function clientBoard(match, copyAll=false, avoidReset=false)
 
 	src = match.board._data;
 	if (copyAll == true)
-		dest = copyBoard(src);
+		dest = copyBoard(src, null, match);
 	else
 	{
 		dest = copyOnlyBoardUpdates(match);
@@ -63,7 +63,7 @@ function copyOnlyBoardUpdates(match)
 	for (const coord of match.board.updates)
 	{
 		square = src.get(coord);
-		newBoard.set(coord, new Square(square));
+		newBoard.set(match.cursor.Normify(coord), new Square(square));
 		// addDangerZonesCoords(src._data, newBoard, square);
 	}
 	// //OLD
