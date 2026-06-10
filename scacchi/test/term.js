@@ -7,6 +7,9 @@ import {historyRestore} from "../utils/history.js";
 import {error, move, boost, endTurn, init} from "../handlers/game/Game.js";
 import {Result} from "../handlers/game/utils.js";
 import {globals} from "../Classes/Match/globals.js";
+//NOTE - non cancellare :)
+//		senza term.js non apre le porte
+import {app} from "../main.js"
 
 import * as lib from "../lib/lib.js";
 import {abort} from "node:process";
@@ -26,13 +29,7 @@ function mainTerm()
 	termInit();
 	match = globals.getDebugMatch();
 	seed = lib.Macro.SEED;
-	match.board.heigth = 14;
-	match.board.width = 14;
-	match.playerNum = 4;
-	seed = 0;
-	init(match, seed);	match.board.heigth = 14;
-	match.board.width = 14;
-	match.playerNum = 4;
+	init(match, seed);
 	seed = 0;
 	render(match);
 	return (match);

@@ -1,7 +1,8 @@
 // @ts-check
 import fs from "fs";
 import {eEvents} from "../Macro/enums.js";
-import {Match, HistoryEvent} from "../Classes/Match/match.js";
+import {Match} from "../Classes/Match/match.js";
+import {HistoryEvent} from "../Classes/Match/history.js";
 import { Piece } from "../Classes/Pieces/pieces.js";
 import {move, boost, endTurn, init, error} from "../handlers/game/Game.js";
 import { render } from "../test/render.js";
