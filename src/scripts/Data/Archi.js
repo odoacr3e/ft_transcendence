@@ -26,34 +26,33 @@ export function validateReceivedMatch(rawJson)
 	if (!rawJson || typeof rawJson !== "object" || Array.isArray(rawJson))
 		throw new Error("Payload non valido: root deve essere un oggetto.");
 
-	const has_p1 = Object.prototype.hasOwnProperty.call(rawJson, "p1");
-	const has_p2 = Object.prototype.hasOwnProperty.call(rawJson, "p2");
-	const has_p3 = Object.prototype.hasOwnProperty.call(rawJson, "p3");
-	const has_p4 = Object.prototype.hasOwnProperty.call(rawJson, "p4");
-	const has_board = Object.prototype.hasOwnProperty.call(rawJson, "board");
-
-	if (!has_p1 || !has_p2 || !has_p3 || !has_p4 || (!has_board && !localInfo.secondTurn))
-		throw new Error("[validateReceivedMatch]: Payload non valido: servono players e board.");
+	const	has_p1 = Object.prototype.hasOwnProperty.call(rawJson, "p1"),
+			has_p2 = Object.prototype.hasOwnProperty.call(rawJson, "p2"),
+			has_p3 = Object.prototype.hasOwnProperty.call(rawJson, "p3"),
+			has_p4 = Object.prototype.hasOwnProperty.call(rawJson, "p4"),
+			has_board = Object.prototype.hasOwnProperty.call(rawJson, "board");
 
 	if (has_board && (!rawJson.board || typeof rawJson.board !== "object" || Array.isArray(rawJson.board)))
 		throw new Error("[validateReceivedMatch]: Payload non valido: board deve essere un oggetto mappa.");
 
-	if (has_board)
-		return {
-			p1: rawJson.p1,
-			p2: rawJson.p2,
-			p3: rawJson.p3,
-			p4: rawJson.p4,
-			board: rawJson.board,
-		};
+	if (!has_p3 && !has_p4)
+	{
+		if ((!has_p1 || !has_p2 || (!has_board && !localInfo.secondTurn)))
+			throw new Error("[validateReceivedMatch]: 2 Players: Payload non valido: servono players e board.");
+		if (has_board)
+			return { p1: rawJson.p1, p2: rawJson.p2, p3: null, p4: null, board: rawJson.board };
+		else
+			return { p1: rawJson.p1, p2: rawJson.p2, p3: null, p4: null };
+	}
 	else
-		return {
-			p1: rawJson.p1,
-			p2: rawJson.p2,
-			p3: rawJson.p3,
-			p4: rawJson.p4
-		};
-
+	{
+		if (!has_p1 || !has_p2 || !has_p3 || !has_p4 || (!has_board && !localInfo.secondTurn))
+			throw new Error("[validateReceivedMatch]: Payload non valido: servono players e board.");
+		if (has_board)
+			return { p1: rawJson.p1, p2: rawJson.p2, p3: rawJson.p3, p4: rawJson.p4, board: rawJson.board };
+		else
+			return { p1: rawJson.p1, p2: rawJson.p2, p3: rawJson.p3, p4: rawJson.p4	};
+	}
 }
 
 // boost di pezzi

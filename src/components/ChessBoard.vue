@@ -76,14 +76,14 @@
 				</button>
 			</div>
         </div>
-		<div id="shop">
+		<!-- <div id="shop">
 			<img src="../assets/Frame1.png" alt="" class="shrink-0 size-35 absolute bottom-[80%] z-12">
 			<button class="side-button bg-amber-300 text-sm p-2.5 rounded-2xl cursor-pointer z-13 w-45"
 					@click="shopAbility()">
 					<b>Boost your Pieces!</b><br>
 					<p style="white-space: pre-line"><i>{{ localInfo.priceSelected }}</i></p>
 			</button>
-		</div>
+		</div> -->
     </div>
 </template>
 
@@ -114,6 +114,7 @@
 	{
 		display: grid;
 		grid-template-rows: repeat(8, 75px);
+		/* grid-template-rows: repeat(14, 56px); */
 		width: fit-content;
 		margin: auto;
 	}
@@ -133,6 +134,7 @@
 	{
 		display: grid;
 		grid-template-columns: repeat(8, 75px);
+		/* grid-template-rows: repeat(14, 56px); */
 	}
 
 	.square
@@ -140,6 +142,8 @@
 		border-collapse: collapse;
 		width: 75px;
 		height: 75px;
+		/* width: 56px;
+		height: 56px; */
 		display: flex;
 		align-items: center;
 		justify-content: center;

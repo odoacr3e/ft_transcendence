@@ -12,7 +12,9 @@
         </div>
         <div class="menu mt-5 relative flex place-items-center">
             <img class="absolute" src="../assets/sword2.png">
-            <b><h2 class="relative text-4xl my-3 ml-2 pl-25 z-0">Tornei</h2></b>
+            <RouterLink to="/4v4_game">
+                <b><h2 class="relative text-4xl my-3 ml-2 pl-25 z-0">Tornei</h2></b>
+            </RouterLink>
         </div>
         <div class="menu mt-5 relative flex place-items-center">
             <img class="absolute" src="../assets/sword2.png">

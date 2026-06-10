@@ -2,6 +2,7 @@
 	import { DOMPlayer, localBoard, localInfo, IMG_PATHS }	from '@/scripts/Data/Variables';
 	import { useAbility, sendEndTurn }			from '@/scripts/Events/utils/GlobalUtils';
 	import { computed }							from 'vue';
+	import	TimerClock							from "./TimerClock.vue"
 
 	const prop = defineProps({
   		p: Number
@@ -16,8 +17,6 @@
 		if (!localInfo.clickedId) { return null; }
 		return localBoard.get(localInfo.clickedId)?.piece ?? null;
 	});
-
-
 </script>
 
 <template>
@@ -29,7 +28,11 @@
 
 		<div class="shrink-0">
 			<b><h1 class="max-w-44 overflow-hidden text-ellipsis">{{ player.name }}</h1></b>
-			<h2>Points: {{ player.nPoints }}</h2>
+			<div class="flex">
+				<h2>Points: {{ player.nPoints }}</h2>
+				<p class="text-[#4e4e4e8c] mx-2">|</p>
+				<!-- <CapturedPieces/> -->
+			</div>
 		</div>
 		<div class="grow flex items-center justify-start gap-2 pr-2">
 			<button class="bg-amber-300 text-sm
@@ -47,8 +50,9 @@
 				<b>End Turn</b>
 			</button>
 		</div>
-		<img :src="IMG_PATHS[player.team + 'King']" alt="TeamKing" :draggable="false" class="size-18.75 shrink-0"
-			v-bind:class="{'drop-shadow-custom':playing }">
+		<!-- <img :src="IMG_PATHS[player.team + 'King']" alt="TeamKing" :draggable="false" class="size-18.75 shrink-0"
+			v-bind:class="{'drop-shadow-custom':playing }"> -->
+		<TimerClock :Millis="player.time" :Go="playing"/>
 	</div>
 </template>
 
@@ -58,7 +62,7 @@
 		flex-direction: row;
 		z-index: 10;
 		position: relative;
-		background-color: #e9dbdb34;
+		background-color: #2c2c2c;
 		align-self: center;
 		width: 600px;
 		user-select: none;

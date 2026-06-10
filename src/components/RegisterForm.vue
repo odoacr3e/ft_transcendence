@@ -16,8 +16,9 @@
 
 	async function submitForm() {
 		const auth = useAuthStore();
-		await auth.register(formData.value);
-		router.push('/');
+		const resp = await auth.register(formData.value);
+		if (!resp)
+			router.push('/me');
 	}
 
 	function asset(path) {

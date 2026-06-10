@@ -10,9 +10,9 @@ export function boardConverter()
         return [];
     }
 
+	// for (let rank = 14; rank >= 1; rank -= 1)
     for (let rank = 8; rank >= 1; rank -= 1)
 	{
-		
 		const row = [];
 		for (const file of FILES)
 			row.push(localBoard.get(`${file}${rank}`));

@@ -89,6 +89,7 @@ export function getRootDiv() {
 }
 
 export const FILES = ["a", "b", "c", "d", "e", "f", "g", "h"];
+// export const FILES = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n"];
 
 export let MACRO = Object ({
 	"AUDIO" : false,

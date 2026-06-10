@@ -22,6 +22,7 @@ export const useAuthStore = defineStore('auth', {
 			try			{ this.user = await authApi.login(credentials); }
 			catch (err) { this.error = err.message; }
 			finally		{ this.isLoading = false; }
+			return (this.error);
 		},
 
 		async register(credentials)
@@ -31,6 +32,7 @@ export const useAuthStore = defineStore('auth', {
 			try			{ this.user = await authApi.register(credentials); }
 			catch (err) { this.error = err.message; }
 			finally		{ this.isLoading = false; }
+			return (this.error);
 		},
 
 		async logout() {
