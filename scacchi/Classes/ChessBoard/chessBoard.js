@@ -4,7 +4,8 @@
 
 //SECTION import
 import {CHESSBOARD_H, CHESSBOARD_W} from "../../Macro/macro.js";
-import { Cursor } from "../Match/cursor.js";
+import { Cursor, coordNormify } from "../Match/cursor.js";
+import { Match } from "../Match/match.js";
 import * as pieces from "../Pieces/pieces.js";
 
 //ANCHOR - Definition 
@@ -14,9 +15,10 @@ class Square
 	/**
 	 * 
 	 * @param {Square | null} other 
+	 * @param {function | null} normifier 
 	 * @returns 
 	 */
-	constructor(other=null)
+	constructor(other=null, normifier=null)
 	{
         /** @type {string | undefined} */		this.color = undefined;
         /** @type {Piece | null | undefined} */ this.piece = null;
@@ -34,6 +36,11 @@ class Square
 			this.piece = null;
 		this.targetZones = other.targetZones;
 		this.boostedTargetZones = other.boostedTargetZones;
+		if (normifier)
+		{
+			this.NormifyZones(normifier);
+			return ;
+		}
 		this.dangerZones = other.dangerZones;
 		this.influenceZones = other.influenceZones;
 	}
@@ -44,6 +51,15 @@ class Square
 		this.dangerZones.clear();
 		this.targetZones.clear();
 		this.influenceZones.clear();
+	}
+	/** @param {function} normifier */
+	NormifyZones(normifier)
+	{
+		// @ts-ignore
+		this.targetZones = new Set([...this.targetZones].map(normifier));
+		// @ts-ignore
+		this.boostedTargetZones = new Map([...this.boostedTargetZones.entries()].map(([key, value]) => [normifier(key), value]));
+	
 	}
 }
 
@@ -214,8 +230,8 @@ function copyBoard(src, dest=null, match=null)
 	{
 		let	squareCopy;
 
-		squareCopy = new Square(val);
-		dest.set(match.cursor.Normify(key), squareCopy);
+		squareCopy = new Square(val, coordNormify);
+		dest.set(coordNormify(key), squareCopy);
 	}
 	return (dest);
 }

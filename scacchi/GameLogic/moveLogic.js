@@ -64,17 +64,16 @@ function checkMove(coords=[], result, match, boostBool)
 	let	from;
 	let	to;
 	let	king;
-	let OtherBastards;
 
-	from = match.board.get(coords[0]);
-	to = match.board.get(coords[1]);
+	from = match.board._data.get(coords[0]);
+	to = match.board._data.get(coords[1]);
 	king = match.board.get(match.currentPlayer.King);
 	if (king == null || king.piece == null)
 		return (error(result, 500, "backend has lost track of the king, lol"));
 	if ( match.moves > MOVEMENT_MAX)
 		return (error(result, 403, `The maximum amount of movements is ${MOVEMENT_MAX}`));
 	if (from == null || to == null)
-		return (error(result, 403, "invalid positions"));
+		return (error(result, 400, "invalid positions"));
 	if (from.piece == null)
 		return (error(result, 403, "Square is empty"));
 	if (from.piece?.team != match.currentPlayer.team)

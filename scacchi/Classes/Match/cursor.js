@@ -126,6 +126,29 @@ function set(pos)
 	this.square += pos.slice(1, pos.length);
 }
 
+/** @param {string} coord */
+function coordNormify(coord)
+{
+	let col;
+	let	row;
+	let newSquare;
+
+	row = coord.charCodeAt(1) - "0".charCodeAt(0);
+	col = coord.charCodeAt(0) - "a".charCodeAt(0) + 1;
+	if (coord.length > 2)
+	{
+		coord = coord.slice(1, coord.length);
+		col = String.fromCharCode(col + "a".charCodeAt(0) - 1);
+		newSquare = col + String.fromCharCode(Number(coord) + "0".charCodeAt(0));
+	}
+	else
+	{
+		col = String.fromCharCode(col + "a".charCodeAt(0) - 1);
+		newSquare = col + String(row);
+	}
+	return (newSquare);
+}
+
 class Cursor
 {
 	/**
@@ -232,25 +255,7 @@ class Cursor
 	/** @param {string} coord */
 	Normify(coord=this.square)
 	{
-		let tmp;
-		let col;
-		let newSquare;
-
-		tmp = this.square;
-		this.square = coord;
-		if (coord.length > 2)
-		{
-			coord = coord.slice(1, coord.length);
-			col = String.fromCharCode(this.getCol() + "a".charCodeAt(0) - 1);
-			newSquare = col + String.fromCharCode(Number(coord) + "0".charCodeAt(0));
-		}
-		else
-		{
-			col = String.fromCharCode(this.getCol() + "a".charCodeAt(0) - 1);
-			newSquare = col + String(this.getRow());
-		}
-		this.square = tmp;
-		return (newSquare);
+		return (coordNormify(coord));
 	}
 	/** @param {string} coord1 */
 	Diff(coord1, coord2=this.square)
@@ -275,5 +280,4 @@ class Cursor
 	}
 }
 
-
-export {Cursor};
+export {Cursor, coordNormify};

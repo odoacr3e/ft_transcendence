@@ -1,10 +1,12 @@
 // @ts-check
 /** @typedef {import("../../Classes/Match/match.js").Match} Match*/
+/** @typedef {import("../../Classes/Match/cursor.js").Cursor} Cursor*/
 
 import { assert } from "node:console";
 import { Square, copyBoard } from "../../Classes/ChessBoard/chessBoard.js";
 import {Result} from "../../Classes/endPoint/result.js";
 import {jsonParser} from "../../utils/response.js";
+import {coordNormify} from "../../Classes/Match/cursor.js";
 
 /** @typedef {Map<String, Square>} Board */
 
@@ -63,20 +65,27 @@ function copyOnlyBoardUpdates(match)
 	for (const coord of match.board.updates)
 	{
 		square = src.get(coord);
-		newBoard.set(match.cursor.Normify(coord), new Square(square));
-		// addDangerZonesCoords(src._data, newBoard, square);
+		newBoard.set(coordNormify(coord), new Square(square, coordNormify));
 	}
-	// //OLD
-	// from = src.get(selected[0]);
-	// to = src.get(selected[1]);
-	// assert(from && to, `invalid from "${selected[0]}" or to "${selected[1]}"`);
-	// if (!from || !to)
-	// 	return (newBoard);
-	// newBoard.set(selected[0], new Square(from));
-	// newBoard.set(selected[1], new Square(to));
-	// addDangerZonesCoords(src, newBoard, from);
-	// addDangerZonesCoords(src, newBoard, to);
 	return (newBoard);
+}
+
+/** @typedef {{from: *, to: string | null, type: string}} RequestBody*/
+
+/**
+ * 
+ * @param {Cursor} cursor 
+ * @param {RequestBody} body 
+ */
+function normifyRequest(cursor, body)
+{
+	// console.log("BEFORE:", body);
+	if (body.from && typeof(body.from) == "string")
+		body.from = cursor.Normify(body.from);
+	if (body.to && typeof(body.to) == "string" && body.to.length == 3)
+		body.to = cursor.Normify(body.to);
+	// console.log("AFTER:", body);
+	return (body);
 }
 
 /**
@@ -106,6 +115,7 @@ function modifyBoard(copiedBoard)
 	}
 }
 
+//FIXME - x di mbiagi
 /**
  * Adds all dangerZones of a square to the dest Board
  * @param {Board} src the source board 
@@ -172,4 +182,4 @@ function checkMateAlert(result, team="")
 	return (result);
 }
 
-export {Result, clientBoard, paramCheck, checkMateAlert, error};
+export {Result, clientBoard, paramCheck, checkMateAlert, error, normifyRequest};

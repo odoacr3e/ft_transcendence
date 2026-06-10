@@ -13,7 +13,7 @@ class Player
 		if (!data)
 			throw (`cannot find player ${color}`);
 		this.name = "";
-		this.nPoints = 0;
+		this.nPoints = 42;
 		this.bonusPointCounter = 0;
 		this.useBoostBool = false;
 		this.nPieces = 0;

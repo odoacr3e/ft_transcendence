@@ -1,8 +1,7 @@
 // @ts-check
 
-import {abort} from "node:process";
 import {responseFormatter} from "../../utils/response.js";
-import { Result, clientBoard } from "./utils.js";
+import { Result, clientBoard, normifyRequest } from "./utils.js";
 import { move } from "./move.js";
 import { endTurn } from "./endTurn.js";
 import { boost } from "./boost.js";
@@ -29,7 +28,6 @@ const DEBUG_MATCH = vault.getDebugMatch();
  */
 function gameChecks(req, res, next)
 {
-
 	if (!req || !req.body)
 		return (error(res, null, 400, "bad request format"));
 	if (!res || !res.status || !res.end || !next)
@@ -50,8 +48,7 @@ function gameChecks(req, res, next)
 	catch (err)
 	{
 		error(res, null, 500, "RAP (Backend) HAS DIED");
-		console.log("seed:", req.body.from, "err", err);
-		abort();
+		console.log("RAP (Backend) HAS DIED");
 	}
 }
 
@@ -62,25 +59,27 @@ function gameChecks(req, res, next)
  */
 function gameHandler(req, res)
 {
-	const	{ type, from, to } = req.body;
-	let		result;
-	let		match;
+	/**@type {{from: *, to: string, type: string}} */  let	body;
+	let	result;
+	let	match;
 
 	match = vault.getDebugMatch();
+	//@ts-ignore
+	body = normifyRequest(match.cursor, req.body);
 	console.clear();
-	if (type == "move")
-		result = move(match, from, to);
-	else if (type == "boost")
-		result = boost(match, from);
-	else if (type == "moveboost")
-		result = move(match, from, to, true);
-	else if (type == "endturn")
+	if (body.type == "move")
+		result = move(match, body.from, body.to);
+	else if (body.type == "boost")
+		result = boost(match, body.from);
+	else if (body.type == "moveboost")
+		result = move(match, body.from, body.to, true);
+	else if (body.type == "endturn")
 		result = endTurn(match);
-	else if (type == "init")
-		result = init(match, from, null);
-	else if (type == "trans")
-		result = makeTransfiguration(match, from, to);
-	else if (type == "reload")
+	else if (body.type == "init")
+		result = init(match, body.from, null);
+	else if (body.type == "trans")
+		result = makeTransfiguration(match, body.from, body.to);
+	else if (body.type == "reload")
 	{
 		result = new Result();
 		result.Success();
@@ -88,14 +87,14 @@ function gameHandler(req, res)
 		result.board = clientBoard(match, true, true);
 		result.youWin = match.victory != "";
 	}
-	else if (type == "history")
+	else if (body.type == "history")
 	{
 		result = new Result();
 		result.Success();//@ts-ignore
 		result.history = match.history;
 	}
 	else
-		return (error(res, null, 400, `invalid type ${type}`));
+		return (error(res, null, 400, `invalid type ${body.type}`));
 	if (!result || !result.status)
 		return (error(res, null, 500, "backend function failed for unknown reasons"));
 	if (result.status != 200)
