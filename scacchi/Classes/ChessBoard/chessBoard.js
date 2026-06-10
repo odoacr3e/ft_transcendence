@@ -35,7 +35,8 @@ class Square
 		else
 			this.piece = null;
 		this.targetZones = other.targetZones;
-		this.boostedTargetZones = other.boostedTargetZones;
+		for (const [key, value] of other.boostedTargetZones)
+			this.boostedTargetZones.set(key, value);
 		if (normifier)
 		{
 			this.NormifyZones(normifier);
