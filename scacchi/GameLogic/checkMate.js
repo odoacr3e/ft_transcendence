@@ -6,6 +6,7 @@ import {enumNames} from "../Macro/enums.js";
 import {Match} from "../Classes/Match/match.js";
 import {isDangerous} from "../utils/gameUtils.js";
 import { movePiece } from "../utils/moveUtils.js";
+import { Square } from "../Classes/ChessBoard/chessBoard.js";
 
 /**
  * 
@@ -166,29 +167,30 @@ function doubleSave(match, threat)
 /**
  * 
  * @param {Match} match
- * @param {string} kingSquareString
+ * @param {string} kingCoord
  */
-function CheckMateCheck(match, kingSquareString)
+function CheckMateCheck(match, kingCoord)
 {
 	let threat = new Set;
 	let kingSquare;
 	let enemySquare;
+	let enemyCoord;
 	let team;
 
-	kingSquare = match.board.get(kingSquareString);
+	kingSquare = match.board.get(kingCoord);
 	if (!kingSquare)
 		throw (`missing king for team `);
 	team = kingSquare.piece?.team;
 	if (!isDangerous(match, kingSquare.dangerZones, team))
 		return false;
-	for (let x of kingSquare.targetZones)
+	for (let x of kingSquare.targetZones)//king can dodge?
 	{
-		if (!isDangerous(match, match.board.get(x)?.dangerZones, team) && match.board.get(x)?.piece == null)
+		if (!isDangerous(match, match.board.get(x).dangerZones, team) && match.board.get(x).piece == null)
 			return false;
 	}
 	for (let x of kingSquare.dangerZones)
 	{
-		if (match.board.get(x)?.piece?.team != team)
+		if (match.board.get(x).piece?.team != team)
 		{
 			enemySquare = x;
 			threat.add(enemySquare);
@@ -200,16 +202,19 @@ function CheckMateCheck(match, kingSquareString)
 		return true;
 	if (!enemySquare) // ts-check stuff
 		return false;
-	let enemySet = match.board.get(enemySquare)?.dangerZones;
-	if (!enemySet) // ts-check stuff
-		return false;
-	if (enemySet.has(enemySquare) && enemySet.has(kingSquareString))
-		enemySet.delete(enemySquare);
-	if (isDangerous(match, enemySet, team) && enemySet.has(kingSquareString))
-		enemySet?.delete(kingSquareString);
-	if (isDangerous(match, enemySet, match.board.get(enemySquare)?.piece?.team))
-		return false;
-	if (!enemySquare || isStoppable(match, kingSquareString, enemySquare))
+	enemyCoord = enemySquare;
+	enemySquare = match.board.get(enemySquare);
+	let enemySet = enemySquare.dangerZones;
+	// if (!enemySet) // ts-check stuff
+	// 	return false;
+	// if (enemySet.has(enemySquare) && enemySet.has(kingCoord))
+	// 	enemySet.delete(enemySquare);
+	// if (isDangerous(match, enemySet, team) && enemySet.has(kingCoord))
+	// 	enemySet?.delete(kingCoord);
+	if (isDangerous(match, enemySet, enemySquare.piece?.team))
+		// return false;
+		return (cantMovePiece(match, enemyCoord, enemySquare, kingCoord));
+	if (isStoppable(match, kingCoord, enemyCoord))
 		return false;
 	return true;
 }
@@ -244,6 +249,131 @@ function checkMateCheckAll(match, result, lostBool=false)
 	else if (CheckMateCheck(match, match[match.currentPlayer.next].King))
 		return (match.CheckMate(result), true);
 	return (false);
+}
+
+/**
+ * if I eat the piece that is menacing the king, 
+ * a new king menace will arise?
+ * @param {Match} match 
+ * @param {string} enemyCoord 
+ * @param {Square} enemySquare 
+ * @param {string} kingCoord
+ */
+function cantMovePiece(match, enemyCoord, enemySquare, kingCoord)
+{
+	let	guardianSquare;
+	let	guardianPiece;
+	let	threatSquare;
+	let	threatPiece;
+	let	canReachKing;
+	let	ignoredSquares;
+
+	ignoredSquares = new Set(enemyCoord);
+	for (const kingGuardianCoord of enemySquare.dangerZones)
+	{
+		guardianSquare = match.board.get(kingGuardianCoord);
+		guardianPiece = guardianSquare.piece; 
+		if (!guardianPiece)
+			throw ("checkMate, cantMovePiece: guardian piece undefined");
+		//checking every guardian danger zone
+		for (const threatCoord of guardianSquare.dangerZones)
+		{
+			threatSquare = match.board.get(threatCoord);
+			threatPiece = threatSquare.piece;
+			if (!threatPiece)
+				throw ("checkMate, cantMovePiece: threat piece undefined");
+			if (threatPiece.team == guardianPiece.team)
+				continue ;
+			if (threatPiece.type == enumNames.JESTER)//it jumps over pieces anyway
+				continue ;
+			if (threatPiece.moveLongRangeDEBUG == false)//guardian not important 
+				continue ;
+			canReachKing = pathFinding(match, threatSquare, kingCoord, ignoredSquares, true);
+			if (canReachKing != null)
+				return (true);
+		}
+	}
+	return (false);
+}
+
+/**
+ * check if is possible to go from start to dest
+ * @param {Match} match 
+ * @param {Square | string} start 
+ * @param {Square | string} dest
+ * @param {Set<string>} ignoredCoords
+ * @param {boolean} considerBoostedBool 
+ */
+function pathFinding(match, start, dest, ignoredCoords=new Set, considerBoostedBool=false)
+{
+	let	startArray = new Set;
+	let	destCoord;
+	let	reverseMove = {dx: 0, dy: 0};
+	let	moveData;
+
+	//for optimization, the search will go from dest to start
+	//because you have one dest but multiple start (boosted zones)
+	if (typeof(start) == "string")
+		start = match.board.get(start);
+	if (typeof(dest) == "string")
+		dest = match.board.get(dest);
+	if (!start.piece || !dest.piece)
+		throw (`pathFinding: invalid start ${start.piece} /dest ${dest.piece}`);
+	startArray.add(start.piece.pos);
+	destCoord = dest.piece.pos;
+	if (considerBoostedBool == true)
+	{
+		for (const boostStart in start.boostedTargetZones)
+			startArray.add(boostStart);
+	}
+	//reverse movement from dest to start
+	for (const move of start.piece.moveArray)
+	{
+		reverseMove.dx = -move.dx;
+		reverseMove.dy = -move.dy;
+		//move simulation takes reverted input
+		moveData = moveSimulation(match, destCoord, startArray, reverseMove, ignoredCoords);
+		if (moveData)
+		{//if exist a path, swaps from with to
+			let	tmp = moveData.from;
+			moveData.to = tmp;
+			moveData.from = moveData.to;
+			return (moveData);
+		}
+	}
+	return (null);
+}
+
+/**
+ * 
+ * @param {Match} match 
+ * @param {string} start
+ * @param {Set<string>} destArray 
+ * @param {{dx: number, dy: number}} move
+ * @param {Set<string>} ignoredCoords 
+ */
+function moveSimulation(match, start, destArray, move, ignoredCoords=new Set)
+{
+	let	square;
+	let	moveData;
+
+	match.cursor.Save();
+	while (movePiece(match, move.dy, move.dx))
+	{
+		if (ignoredCoords.has(match.cursor.square))
+			continue ;
+		if (destArray.has(match.cursor.square))//trovato path valido
+		{
+			moveData = {from: start, to: match.cursor.square};
+			match.cursor.Restore();
+			return (moveData);
+		}
+		square = match.board.get(match.cursor.square);
+		if (square.piece)
+			break ;
+	}
+	match.cursor.Restore();
+	return (null);
 }
 
 export {CheckMateCheck, checkMateCheckAll, getDirection};
