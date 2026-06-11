@@ -248,7 +248,7 @@ class MatchSettings
 const matchPresets =
 {
 	twoPlayer: new MatchSettings(),
-	fourPlayer: new MatchSettings(),
+	fourPlayer: new MatchSettings()
 }
 matchPresets.fourPlayer.board.width = 14;
 matchPresets.fourPlayer.board.heigth = 14;

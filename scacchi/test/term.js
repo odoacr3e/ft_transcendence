@@ -1,6 +1,6 @@
 // @ts-check
 import {HISTORY_FILE, HISTORY_PATH} from "../Macro/macro.js";
-import {eEvents} from "../Macro/enums.js";
+import {eEvents, eTeam} from "../Macro/enums.js";
 import {movePiece, dangerUpdateAll} from "../utils/moveUtils.js";
 import {includesOneOf} from "../utils/string.js";
 import {historyRestore} from "../utils/history.js";
@@ -17,6 +17,7 @@ import {render} from "./render.js";
 import readline from "node:readline";
 import { makeTransfiguration } from "../handlers/game/transfiguration.js";
 import { cmd } from "./enumsTest.js";
+import { edoChampionBug } from "./savedMatches.js";
 
 /** @typedef {import("../Classes/Match/match.js").Match} Match*/
 
@@ -25,6 +26,7 @@ function mainTerm()
 {
 	let	match;
 	let	seed;
+	let	preset;
 
 	termInit();
 	match = globals.getDebugMatch();
@@ -35,6 +37,7 @@ function mainTerm()
 	// match.settings.players.number = 4;
 	seed = 0;
 	init(match, seed);
+	edoChampionBug(match);
 	render(match);
 	return (match);
 }
@@ -114,8 +117,8 @@ process.stdin.on('keypress', (str, key) =>
 			}
 			break ;
 		case (cmd.TRANSFORM):
-			result = makeTransfiguration(match, match.cursor.square, newType);
 			let	newType = getline("insert new piece type");
+			result = makeTransfiguration(match, match.cursor.square, newType);
 			if (result.status != 200)
 				return (saveWrongMove(match, result, eEvents.Transform));
 			break ;

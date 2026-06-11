@@ -311,8 +311,8 @@ function getTeamByCoord(match)
 	if (match.playerNum == 2)
 	{
 		if (match.cursor.getRow() <= upper)
-			return (eTeam.Black);
-		return (eTeam.White);
+			return (eTeam.White);
+		return (eTeam.Black);
 	}
 	if (match.playerNum == 4)
 	{
