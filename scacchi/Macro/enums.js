@@ -22,6 +22,12 @@ const eEvents =
 	Transform: 'trans'
 };
 
+const eMatchPresets =
+{
+	ClassicTwoPlayers: "8x8x2",
+	ClassicFourPlayers: "14x14x4"
+}
+
 /**
  * @enum {number}
  */
@@ -83,4 +89,4 @@ const kingMovements =
 	{dx:1, dy:0}, {dx:-1, dy:0},//orizzontale
 ];
 
-export {eTeam, eEvents, enumNames, arrayNames, enumInitNames, enumValues, enumSpecialMoves, kingMovements};
+export {eTeam, eEvents, eMatchPresets, enumNames, arrayNames, enumInitNames, enumValues, enumSpecialMoves, kingMovements};

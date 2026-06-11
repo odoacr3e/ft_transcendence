@@ -17,6 +17,7 @@ import {render} from "./render.js";
 import readline from "node:readline";
 import { makeTransfiguration } from "../handlers/game/transfiguration.js";
 import { cmd } from "./enumsTest.js";
+import { eMatchPresets } from "../Macro/enums.js";
 import { edoChampionBug } from "./savedMatches.js";
 
 /** @typedef {import("../Classes/Match/match.js").Match} Match*/
@@ -31,12 +32,8 @@ function mainTerm()
 	termInit();
 	match = globals.getDebugMatch();
 	seed = lib.Macro.SEED;
-	// match.board.width = 14;
-	// match.board.heigth = 14;
-	// match.playerNum = 4;
-	// match.settings.players.number = 4;
 	seed = 0;
-	init(match, seed);
+	init(match);
 	// edoChampionBug(match);
 	render(match);
 	return (match);
@@ -60,7 +57,7 @@ process.stdin.on('keypress', (str, key) =>
 	mutex = true;
 	dx = 0;
 	dy = 0;
-	if ((key.ctrl && key.name == "c") || match.victory)
+	if ((key.ctrl && key.name == "c"))// || match.victory)
 	{
 		termCleanup(key.name);
 	}

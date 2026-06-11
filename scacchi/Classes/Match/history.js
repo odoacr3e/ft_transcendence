@@ -2,7 +2,7 @@
 
 import fs from "fs";
 
-import {eTeam, eEvents, enumNames} from "../../Macro/enums.js";
+import {eTeam, eEvents, eMatchPresets} from "../../Macro/enums.js";
 import {copyBoostedTargetZones} from "../ChessBoard/chessBoard.js";
 import {HISTORY_PATH, CHESSBOARD_W, CHESSBOARD_H} from "../../Macro/macro.js";
 import {boardStringify} from "../../test/render.js";
@@ -16,9 +16,6 @@ export class History
 	/** @param {MatchSettings | null} matchSettings*/
 	constructor(matchSettings=null)
 	{
-		this.seed = 0;
-		/** @type {Array<HistoryEvent>} */
-		this.events = new Array();
 		this.moves = 0;
 		this.victory = "";
 		this.finalBoard = "";
@@ -26,7 +23,14 @@ export class History
 		this.UpdateBoost = updateBoost;
 		this.UpdateEndTurn = updateEndTurn;
 		this.UpdateTransform = updateTransform;
-		this.matchSettings = matchSettings;
+		if (!matchSettings)
+			this.matchSettings = null;
+		else if (matchSettings && matchSettings.presetType)
+			this.matchSettings = matchSettings.presetType;
+		else
+			this.matchSettings = matchSettings;
+		/** @type {Array<HistoryEvent>} */
+		this.events = new Array();
 	}
 	Last()
 	{

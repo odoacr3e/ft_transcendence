@@ -2,7 +2,7 @@
 import fs from "fs";
 
 import {Cursor} from "./cursor.js";
-import {eTeam, eEvents, enumNames} from "../../Macro/enums.js";
+import {eTeam, eMatchPresets} from "../../Macro/enums.js";
 import {Square, initBoard, copyBoard, copyBoostedTargetZones, ChessBoard} from "../ChessBoard/chessBoard.js";
 import {HISTORY_PATH, CHESSBOARD_W, CHESSBOARD_H} from "../../Macro/macro.js";
 import {Result} from "../endPoint/result.js";
@@ -15,35 +15,35 @@ import { clientBoard } from "../../handlers/game/utils.js";
 class Match
 {
 
-	/** @param {MatchSettings | null} preset*/
-	constructor(w=8, h=8, preset=null)
+	/** @param {MatchSettings | string | null} preset*/
+	constructor(preset=null)
 	{
-		if (preset)//FIXME - da togliere
-		{
-			w = preset.board.width;
-			h = preset.board.heigth;
-		}
+		let	w;
+		let	h;
+	
+		if (!preset && !this.settings)
+			this.settings = new MatchSettings(matchPresets.twoPlayer);
+		else
+			this.settings = new MatchSettings(preset);
 		this.white = new Player(eTeam.White);
 		this.black = new Player(eTeam.Black);
 		this.red = new Player(eTeam.Red);
 		this.blue = new Player(eTeam.Blue);
 		this.green = new Player(eTeam.Green);
 		this.yellow = new Player(eTeam.Yellow);
+		w = this.settings.board.width;
+		h = this.settings.board.heigth;
 		this.board = new ChessBoard(w, h);
 		this.cursor = new Cursor(w, h);
 		this.moves = 0;
 		this.boost = 0;
-		this.history = new History(preset);
+		this.history = new History(this.settings);
 		this.historyCreateBool = false;
 		this.currentPlayer = this.white;
-		this.playerNum = 2;
+		this.playerNum = this.settings.players.number;
 		this.victory = "";
-		this.settings = preset;
-		if (!this.settings)
-			this.settings = new MatchSettings();
 		/** @type {Timer | null} */ this.timer = null;
-
-		if (preset?.players.number == 4)
+		if (this.settings.players.number == 4)
 			this.currentPlayer = this.yellow;
 	}
 	endTurn()
@@ -139,7 +139,9 @@ class Match
 		console.log("Premi un qualsiasi tasto per concludere...");
 		//FIXME - gestire cosa succede in base a quanti player restano
 		//FIXME - gestire salvataggio nella history
+		//@ts-ignore
 		this.victory = this[team].next;
+		//@ts-ignore
 		this.history.victory = this[team].next;
 		if (result != null)
 		{
@@ -154,30 +156,33 @@ class Match
 			return (new Result());
 		return (result);	
 	}
-	/** @param {MatchSettings | null} preset*/
-	Reset(w=CHESSBOARD_W, h=CHESSBOARD_H, preset=null)
+	/** @param {MatchSettings | string | null} preset*/
+	Reset(preset=null)
 	{
-		if (preset)//FIXME - da togliere
-		{
-			w = preset.board.width;
-			h = preset.board.heigth;
-		}
+		let	w;
+		let	h;
+	
+		if (!preset && !this.settings)
+			this.settings = new MatchSettings(matchPresets.twoPlayer);
+		else
+			this.settings = new MatchSettings(preset);
 		this.white = new Player(eTeam.White);
 		this.black = new Player(eTeam.Black);
 		this.red = new Player(eTeam.Red);
 		this.blue = new Player(eTeam.Blue);
 		this.green = new Player(eTeam.Green);
 		this.yellow = new Player(eTeam.Yellow);
+		w = this.settings.board.width;
+		h = this.settings.board.heigth;
 		this.board = new ChessBoard(w, h);
 		this.cursor = new Cursor(w, h);
 		this.moves = 0;
 		this.boost = 0;
-		this.history = new History(preset);
+		this.history = new History(this.settings);
 		this.currentPlayer = this.white;
 		this.victory = "";
-		if (preset)
-			this.settings = structuredClone(preset);
-		if (this.settings?.players.number == 4)
+		this.playerNum = this.settings.players.number;
+		if (this.settings.players.number == 4)
 			this.currentPlayer = this.yellow;
 	}
 	/** @param {string} name */
@@ -207,9 +212,11 @@ class Timer
 
 class MatchSettings
 {
-	/** @param {MatchSettings | null} other */
+	/** @param {MatchSettings | string | null} other */
 	constructor(other=null)
 	{
+		if (typeof(other) == "string")
+			other = this.GetPresetByType(other);
 		this.board =
 		{
 			width: CHESSBOARD_W,
@@ -220,7 +227,7 @@ class MatchSettings
 		this.players =
 		{
 			number: 2,
-			startPoints: 42,
+			startPoints: 0,
 			teams:
 			{
 				white: "",
@@ -231,6 +238,8 @@ class MatchSettings
 				green: ""
 			}
 		}
+		/** @type {string | null} */
+		this.presetType = null;
 		if (!other)
 			return ;
 		this.CopyConstructor(other);
@@ -242,6 +251,20 @@ class MatchSettings
 			this.board = structuredClone(other.board);
 		if (other.players)
 			this.players = structuredClone(other.players);
+		this.presetType = other.presetType;
+	}
+	/** @param {string} matchPresetType */
+	GetPresetByType(matchPresetType)
+	{
+		switch (matchPresetType)
+		{
+			case (eMatchPresets.ClassicTwoPlayers):
+				return (new MatchSettings(matchPresets.twoPlayer));
+			case (eMatchPresets.ClassicFourPlayers):
+				return (new MatchSettings(matchPresets.fourPlayer));
+			default:
+				throw (`MatchSettings: invalid preset name ${matchPresetType}`);
+		}
 	}
 }
 
@@ -250,6 +273,8 @@ const matchPresets =
 	twoPlayer: new MatchSettings(),
 	fourPlayer: new MatchSettings()
 }
+matchPresets.twoPlayer.presetType = eMatchPresets.ClassicTwoPlayers;
+matchPresets.fourPlayer.presetType = eMatchPresets.ClassicFourPlayers;
 matchPresets.fourPlayer.board.width = 14;
 matchPresets.fourPlayer.board.heigth = 14;
 matchPresets.fourPlayer.players.number = 4;

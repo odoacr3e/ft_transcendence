@@ -32,10 +32,10 @@ function historyRestore(match, path)
 		throw (`History, restore: path "${path}" invalid`);
 	buffer = fs.readFileSync(path, "utf-8");
 	history = JSON.parse(buffer);
-	match.Reset(8, 8, history.matchSettings);
+	match.Reset(history.matchSettings);
 	try
 	{
-		init(match, history.seed);
+		init(match, match.settings);
 		match.historyCreateBool = true;
 		for (const event of history.events)
 		{

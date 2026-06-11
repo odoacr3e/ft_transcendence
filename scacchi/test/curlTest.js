@@ -16,7 +16,7 @@ import {render} from "./render.js";
 
 /** @typedef {import ("../../history/HISTORY.json")} historyData */
 /** @typedef {import ("../Classes/ChessBoard/chessBoard.js").ChessBoard} ChessBoard */
-/** @typedef {import ("../Classes/Match/match.js").HistoryEvent} HistoryEvent */
+/** @typedef {import ("../Classes/Match/history.js").HistoryEvent} HistoryEvent */
 /** @typedef {{board: ChessBoard, log: {msg: string, status: number}}} BackResponse*/
 
 const curlWaitTimeMs = 0; 
@@ -90,9 +90,9 @@ async function execTest(matchPath)
 	try
 	{
 		history = JSON.parse(fs.readFileSync(matchPath, 'utf-8'));
-		if (history.seed == undefined || history.victory == undefined)
+		if (history.victory == undefined)
 			return (testerFail(MSG.INVALID_JSON));
-		match.Reset();
+		match.Reset(history.matchSettings);
 		if (await executeEvents(match, history) == false)
 			return ;
 	}
@@ -132,7 +132,7 @@ async function executeEvents(match, history)
 
 	currEvent = {type: "init", from: "", to: "", counter: 0};
 	//@ts-ignore
-	res = await curlSender("init", history.seed);
+	res = await curlSender("init", history.matchSettings);
 	updateBoard(match.board, res);
 	backendBoard = await getBackBoard();
 	if (cmpBoard(match.board, backendBoard) == false)

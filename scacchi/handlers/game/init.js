@@ -5,35 +5,42 @@ import {clientBoard, Result} from "./utils.js";
 import {initRng} from "../../utils/random.js";
 import { CHESSBOARD_W, CHESSBOARD_H } from "../../Macro/macro.js";
 import * as creators from "../../GameLogic/createChessBoard.js";
+import { MatchSettings, matchPresets } from "../../Classes/Match/match.js";
 
 /**
  * The Map board is added to result to be sent to the client. Steps:
  * 1) the property board is added to the result object
  * 2) JSON does not support Map. So we convert the Map board to an Object
  * @param {Match} match
- * @param {number | null} seed seed to start
- * @param {string | null} boardString board to start
- * @returns 
+ * @param {MatchSettings | number | string | null} preset other types for compatibility
  */
-function init(match, seed=null, boardString=null)
+function init(match, preset=null)
 {
 	let	result;
 	let	rng;
+	let	seed;
 
-	if (boardString && boardString.indexOf("|") == -1)
-		boardString = null;
-	if (seed == null)
+	seed = null;
+	if (typeof(preset) == "number")
+	{
+		seed = preset;
+		preset = null;
+	}
+	else if (preset == null)
 		seed = Math.floor(Math.random() * (1 << 30));
 	result = new Result();
+	match.Reset(preset);
+	if (seed == null)
+		seed = match.settings.board.seed;
+	else
+		match.settings.board.seed = seed;
 	rng = initRng(seed);
-	match.Reset(match.board.width, match.board.heigth);
-	if (boardString != null)
-		creators.initSavedBoard(match, boardString);
+	if (match.settings.board.start)
+		creators.initSavedBoard(match);
 	else if (seed == 0)
 		creators.initClassicBoard(match);
 	else
 		creators.initRandomBoard(match, rng);
-	// @ts-ignore
 	result.status = 200;
 	// @ts-ignore
 	result.board = clientBoard(match, true);

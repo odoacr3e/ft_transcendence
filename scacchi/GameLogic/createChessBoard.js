@@ -9,15 +9,16 @@ import {Match} from "../Classes/Match/match.js";
 /**
  * 
  * @param {Match} match 
- * @param {string} boardStr 
  */
-function initSavedBoard(match, boardStr)
+function initSavedBoard(match)
 {
 	let	rows;
 	let	i;
 	let	indexSep;//|C|B... |= sep >> indexSep = 2
 	let	curr;
+	let	boardStr;
 
+	boardStr = match.settings.board.start;
 	match.cursor.Save();
 	rows = boardStr.split("\n");
 	rows.pop();
@@ -67,9 +68,6 @@ function initBoard4v4(match)
 	for (let [key, data] of match.board)
 	{
 		data.piece = null;
-		data.boostedTargetZones.clear();
-		data.dangerZones.clear();
-		data.targetZones.clear();
 		color = !color;
 		match.cursor.set(key);
 		col = match.cursor.getCol();
@@ -143,14 +141,11 @@ function initClassicBoard(match)
 	let	color;
 
 	color = true;
-	if (match.playerNum == 4)
+	if (match.settings.players.number == 4)
 		return initBoard4v4(match);
 	for (let [key, data] of match.board)
 	{
 		data.piece = null;
-		data.boostedTargetZones.clear();
-		data.dangerZones.clear();
-		data.targetZones.clear();
 		color = !color;
 		match.cursor.set(key);
 		col = match.cursor.getCol()

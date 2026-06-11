@@ -68,7 +68,7 @@ function execTest(matchPath)
 	try
 	{
 		history = JSON.parse(fs.readFileSync(matchPath, 'utf-8'));
-		if (history.seed == undefined || history.victory == undefined)
+		if (history.victory == undefined)
 			return (testerFail(MSG.INVALID_JSON));
 		historyRestore(match, matchPath);
 		board = boardStringify(match);
@@ -77,7 +77,7 @@ function execTest(matchPath)
 	{
 		if (typeof(err) == "string")
 			gameFail(err);
-		else
+		else//@ts-ignore
 			testerFail(MSG.INVALID_MSG, err);
 		return ;
 	}
