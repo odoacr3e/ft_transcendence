@@ -27,13 +27,12 @@ function mainTerm()
 {
 	let	match;
 	let	seed;
-	let	preset;
 
 	termInit();
 	match = globals.getDebugMatch();
 	seed = lib.Macro.SEED;
 	seed = 0;
-	init(match);
+	init(match, seed);
 	// edoChampionBug(match);
 	render(match);
 	return (match);
