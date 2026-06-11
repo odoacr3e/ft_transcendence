@@ -10,8 +10,7 @@ COPY backend/scacchi/package*.json ./
 RUN npm install
 
 COPY backend/scacchi/prisma ./prisma
-RUN npx prisma generate
 
 EXPOSE 8080
 
-CMD ["sh", "-c", "redis-server --daemonize yes && nodemon main.js"]
+CMD ["sh", "-c", "redis-server --daemonize yes && npx prima generate && nodemon main.js"]
