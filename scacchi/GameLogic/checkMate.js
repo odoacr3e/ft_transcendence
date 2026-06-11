@@ -266,11 +266,13 @@ function cantMovePiece(match, enemyCoord, enemySquare, kingCoord)
 	let	threatSquare;
 	let	threatPiece;
 	let	canReachKing;
-	let	ignoredSquares;
+	let	ignoredCoords;
 
-	ignoredSquares = new Set(enemyCoord);
+	ignoredCoords = new Set();
+	ignoredCoords.add(enemyCoord);
 	for (const kingGuardianCoord of enemySquare.dangerZones)
 	{
+		ignoredCoords.add(kingGuardianCoord);
 		guardianSquare = match.board.get(kingGuardianCoord);
 		guardianPiece = guardianSquare.piece; 
 		if (!guardianPiece)
@@ -288,10 +290,11 @@ function cantMovePiece(match, enemyCoord, enemySquare, kingCoord)
 				continue ;
 			if (threatPiece.moveLongRangeDEBUG == false)//guardian not important 
 				continue ;
-			canReachKing = pathFinding(match, threatSquare, kingCoord, ignoredSquares, true);
+			canReachKing = pathFinding(match, threatSquare, kingCoord, ignoredCoords, true);
 			if (canReachKing != null)
 				return (true);
 		}
+		ignoredCoords.delete(kingGuardianCoord);
 	}
 	return (false);
 }
@@ -358,6 +361,7 @@ function moveSimulation(match, start, destArray, move, ignoredCoords=new Set)
 	let	moveData;
 
 	match.cursor.Save();
+	match.cursor.set(start);
 	while (movePiece(match, move.dy, move.dx))
 	{
 		if (ignoredCoords.has(match.cursor.square))

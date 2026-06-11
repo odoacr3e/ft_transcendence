@@ -37,7 +37,7 @@ function mainTerm()
 	// match.settings.players.number = 4;
 	seed = 0;
 	init(match, seed);
-	edoChampionBug(match);
+	// edoChampionBug(match);
 	render(match);
 	return (match);
 }
