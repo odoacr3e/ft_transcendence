@@ -274,13 +274,15 @@ function dangerUpPiece(match, pos=match.cursor.square, result=null)
  * @param {Match} match 
  * @param {Array<string>} selected /* 0 = from, 1 = to
  * @param {Result | null} result
+ * @param {boolean} delBool
  */
-function dangerUpdateMoved(match, selected=[], result=null)
+function dangerUpdateMoved(match, selected=[], result=null, delBool=true)
 {
 	// return (dangerUpdateAll(match));
 	if (selected.length != 2)
 		throw ("dangerUpdateMoved must be called with two pieces: from, to");
-	dangerDelPiece(match, selected[0], selected[1], result);
+	if (delBool == true)
+		dangerDelPiece(match, selected[0], selected[1], result);
 	dangerUpPiece(match, selected[1], result);
 	DangerUpdate(match, selected[1]);
 }

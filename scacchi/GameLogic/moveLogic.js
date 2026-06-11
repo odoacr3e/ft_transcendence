@@ -538,7 +538,8 @@ function RefreshChampion(match, square, pos)
  */
 function simulation(coords, match, result)
 {
-	let tmp = null;
+	let tmpPiece = null;
+	let tmpSquare = null;
 	let	from;
 	let	to;
 	let	king;
@@ -549,9 +550,12 @@ function simulation(coords, match, result)
 	to = match.board.get(coords[1]);
 	king = match.board.get(match.currentPlayer.King);
 	if (!from || !to || !king)
-		return (false); // FIXME error 500 : impossibile
+		throw (`simulation: invalid from: ${from}/to: ${to}/king: ${king}`);
 	if (to.piece)
-		tmp = to.piece.Copy();
+	{
+		tmpSquare = to.Copy();
+		tmpPiece = tmpSquare.piece;
+	}
 	to.piece = from.piece;
 	from.piece = null;
 	if (coords[0] == match.currentPlayer.King)
@@ -561,8 +565,10 @@ function simulation(coords, match, result)
 	if (!dangerBool)
 		dangerBool = checkDoubleMoveMate(match, coords, result);
 	from.piece = to.piece;
-	to.piece = tmp;
+	to.piece = tmpPiece;
 	dangerUpdateMoved(match, [coords[1], coords[0]], result);
+	if (tmpSquare)
+		match.board.set(coords[1], tmpSquare);
 	boosted = match.GetOBoostedPieceCoords();
 	if (!boosted)
 		return (!dangerBool);
@@ -573,6 +579,87 @@ function simulation(coords, match, result)
 	}
 	// DangerUpdate(match, coords[0]);
 	return (!dangerBool);
+}
+
+/**
+ * check if is possible to go from start to dest
+ * @param {Match} match 
+ * @param {Square | string} start 
+ * @param {Square | string} dest
+ * @param {Set<string>} ignoredCoords
+ * @param {boolean} considerBoostedBool 
+ */
+export function pathFinding(match, start, dest, ignoredCoords=new Set, considerBoostedBool=false)
+{
+	let	startArray = new Set;
+	let	destCoord;
+	let	reverseMove = {dx: 0, dy: 0};
+	let	moveData;
+
+	//for optimization, the search will go from dest to start
+	//because you have one dest but multiple start (boosted zones)
+	if (typeof(start) == "string")
+		start = match.board.get(start);
+	if (typeof(dest) == "string")
+		dest = match.board.get(dest);
+	if (!start.piece || !dest.piece)
+		throw (`pathFinding: invalid start ${start.piece} /dest ${dest.piece}`);
+	startArray.add(start.piece.pos);
+	destCoord = dest.piece.pos;
+	if (considerBoostedBool == true)
+	{
+		for (const boostStart in start.boostedTargetZones)
+			startArray.add(boostStart);
+	}
+	//reverse movement from dest to start
+	for (const move of start.piece.moveArray)
+	{
+		reverseMove.dx = -move.dx;
+		reverseMove.dy = -move.dy;
+		//move simulation takes reverted input
+		moveData = moveSimulation(match, destCoord, startArray, reverseMove, ignoredCoords);
+		if (moveData)
+		{//if exist a path, swaps from with to
+			let	tmp = moveData.from;
+			moveData.to = tmp;
+			moveData.from = moveData.to;
+			return (moveData);
+		}
+	}
+	return (null);
+}
+
+/**
+ * 
+ * @param {Match} match 
+ * @param {string} start
+ * @param {Set<string>} destArray 
+ * @param {{dx: number, dy: number}} move
+ * @param {Set<string>} ignoredCoords 
+ */
+function moveSimulation(match, start, destArray, move, ignoredCoords=new Set)
+{
+	let	square;
+	let	moveData;
+
+	match.cursor.Save();
+	match.cursor.set(start);
+	while (movePiece(match, move.dy, move.dx))
+	{
+		if (ignoredCoords.has(match.cursor.square))
+			continue ;
+		if (destArray.has(match.cursor.square))//trovato path valido
+		{
+			moveData = {from: start, to: match.cursor.square};
+			match.cursor.Restore();
+			return (moveData);
+		}
+		square = match.board.get(match.cursor.square);
+		if (square.piece)
+			break ;
+	}
+	match.cursor.Restore();
+	return (null);
 }
 
 /**

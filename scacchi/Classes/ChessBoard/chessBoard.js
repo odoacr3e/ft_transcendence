@@ -68,6 +68,20 @@ class Square
 			this.boostedTargetZones.set(normifier(k), v);
 		}
 	}
+	Copy()
+	{
+		let	other;
+
+		other = new Square();
+		other.color = this.color;
+		if (this.piece)
+			other.piece = this.piece.Copy();
+		other.targetZones = structuredClone(this.targetZones);
+		other.dangerZones = structuredClone(this.dangerZones);
+		other.influenceZones = structuredClone(this.influenceZones);
+		other.boostedTargetZones = structuredClone(this.boostedTargetZones);
+		return (other);
+	}
 }
 
 //ANCHOR - Methods
