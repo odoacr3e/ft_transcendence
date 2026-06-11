@@ -19,7 +19,7 @@ friendsRouter.get('/', checkJwt, async (req, res) => {
 	try {
 		const friendships = await friendsQuery.getAllUserFriendships(req.user.id_user);
 		console.log(friendships);
-		return res.status(200).json(jsonResponse.ResponseSuccess({ friendships: friendships }));
+		return res.status(200).json(jsonResponse.ResponseSuccess({ friendship: friendships }));
 	} catch (error) {
 		console.log("Error: ", error);
 		return res.status(500).json(jsonResponse.ResponseError("Internal server error"));
@@ -29,9 +29,8 @@ friendsRouter.get('/', checkJwt, async (req, res) => {
 // TODO: implementare websocket per ricezione notifiche amicizia
 friendsRouter.post('/', checkJwt, async (req, res) => {
 	try {
-		const newFriendship = await friendsQuery.sendFriendship(req.user.id_user, req.body.id_friend);
-		console.log(newFriendship);
-		return res.status(200).json(jsonResponse.ResponseSuccess({ friendships: newFriendship }));
+		await friendsQuery.sendFriendship(req.user.id_user, req.body.id_friend);
+		return res.status(204).send();
 	} catch (error) {
 		console.log("Error: ", error);
 		return res.status(500).json(jsonResponse.ResponseError("Internal server error"));
@@ -48,3 +47,12 @@ friendsRouter.delete('/', checkJwt, async (req, res) => {
 	}
 })
 
+friendsRouter.patch('/', checkJwt, async (req, res) => {
+	try {
+		// da utilizzare query per change status della amicizia
+		// return res.status(200);
+	} catch (error) {
+		console.log("Error: ", error);
+		return res.status(500).json(jsonResponse.ResponseError("Internal server error"));
+	}
+})

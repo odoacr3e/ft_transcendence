@@ -6,8 +6,18 @@ const { prisma } = lib.conn;
 const getAllUserFriendships = async (id_user) => {
 	const friendList = await prisma.friendships.findMany({
 		select: {
-			id_user1: true,
-			id_user2: true,
+			users_friendships_id_user1Tousers: {
+				select: {
+					id_user: true,
+					username: true
+				}
+			},
+			users_friendships_id_user2Tousers: {
+				select: {
+					id_user: true,
+					username: true
+				}
+			},
 			friend_status: true
 		},
 		where: {
@@ -17,9 +27,11 @@ const getAllUserFriendships = async (id_user) => {
 			]
 		}
 	});
-	return friendList.map(friend => ({
-		id_friend: friend.id_user1 === id_user ? friend.id_user2 : friend.id_user1,
-		friend_status: friend.friend_status
+	return friendList.map(f => ({
+		friend: f.users_friendships_id_user1Tousers.id_user === id_user
+		? f.users_friendships_id_user2Tousers
+		: f.users_friendships_id_user1Tousers,
+		friend_status: f.friend_status
 	}))
 }
 
