@@ -91,13 +91,13 @@ function updateTurn(match, result)
 	match.history.UpdateEndTurn(match);
 	match.endTurn();
 	king = match.board.get(player.King);
-	if (CheckMateCheck(match, player.King) == true)
-	{
-		console.log("hai perso, sfigato, e vuoi pure muovere di nuovo?? Appenditi idiota!!!");
-		// @ts-ignore
-		match.CheckMate(result);
-		return (false);
-	}
+	// if (CheckMateCheck(match, player.King) == true)
+	// {
+	// 	console.log("hai perso, sfigato, e vuoi pure muovere di nuovo?? Appenditi idiota!!!");
+	// 	// @ts-ignore
+	// 	match.CheckMate(result);
+	// 	return (false);
+	// }
 	else if (isDangerous(match, king.dangerZones, king.piece?.team) == true)
 		result.specialMoves.SetKingDanger();
 	match.boost = 0;

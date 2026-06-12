@@ -208,8 +208,8 @@ function CheckMateCheck(match, kingCoord)
 	let enemySet = enemySquare.dangerZones;
 	if (!enemySet) // ts-check stuff
 		return false;
-	if (enemySet.has(enemySquare) && enemySet.has(kingCoord))
-		enemySet.delete(enemySquare);
+	if (enemySet.has(enemyCoord) && enemySet.has(kingCoord))
+		enemySet.delete(enemyCoord);
 	if (isDangerous(match, enemySet, team) && enemySet.has(kingCoord))
 		enemySet?.delete(kingCoord);
 	if (isDangerous(match, enemySet, enemySquare.piece?.team))
@@ -227,7 +227,7 @@ function CheckMateCheck(match, kingCoord)
  */
 function checkMateCheckAll(match, result, lostBool=false)
 {
-	if (match.playerNum == 4)
+	if (match.playerNum > 2)
 	{
 		let tmp = match.currentPlayer;
 

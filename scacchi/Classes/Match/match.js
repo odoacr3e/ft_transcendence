@@ -111,6 +111,10 @@ class Match
 	/** @param {Result | null} result */
 	CheckMate(result=null)
 	{
+		if (this.playerNum != 2)
+		{
+			
+		}
 		console.log("haaaaaiiiiii viiiiiiintoooooooooo!!!!!!!");
 		console.log("Premi un qualsiasi tasto per concludere...");
 		this.victory = this.currentPlayer.team;
@@ -135,19 +139,19 @@ class Match
 	 */
 	PlayerLost(result, team)
 	{
+		if (this.playerNum != 2)
+		{
+			while (this.currentPlayer.team != team)
+		}
 		console.log("haaaaaiiiiii persoooooooooooooooooo!!!!!!!");
-		console.log("Premi un qualsiasi tasto per concludere...");
+		// console.log("Premi un qualsiasi tasto per concludere...");
 		//FIXME - gestire cosa succede in base a quanti player restano
 		//FIXME - gestire salvataggio nella history
-		//@ts-ignore
-		this.victory = this[team].next;
-		//@ts-ignore
-		this.history.victory = this[team].next;
 		if (result != null)
 		{
-			result.msg = "you win!";
+			result.msg = "you lost!!!";
 			result.status = 200;
-			result.youWin = true;
+			result.youWin = false;
 			result.specialMoves.SetCheckMate();
 			//@ts-ignore
 			result.board = clientBoard(this);

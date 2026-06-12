@@ -93,6 +93,7 @@ async function execTest(matchPath)
 		history = JSON.parse(fs.readFileSync(matchPath, 'utf-8'));
 		if (history.victory == undefined)
 			return (testerFail(MSG.INVALID_JSON));
+		// @ts-ignore
 		match.Reset(history.matchSettings);
 		if (await executeEvents(match, history) == false)
 			return ;
