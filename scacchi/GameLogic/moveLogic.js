@@ -434,6 +434,7 @@ function checkBooster(match, result, from, coords, boostBool) // FIXME - da aggi
 		return (error(result, 403, `that piece can't do that move`));
 	from.targetZones.add(coords[1]);
 	if (from.piece.type != enumNames.VALKIRYA)
+	// if (from.piece.type == enumNames.VALKIRYA)
 	{
 		from.piece.isBoostedBool = false;
 		match.currentPlayer.boostedPiece = "";
@@ -556,6 +557,11 @@ function simulation(coords, match, result)
 		tmpSquare = to.Copy();
 		tmpPiece = tmpSquare.piece;
 	}
+	// if (result.specialMoves.CheckSniperMove() == 0)
+	// {
+		// to.piece = from.piece;
+		// from.piece = null;
+	// }
 	to.piece = from.piece;
 	from.piece = null;
 	if (coords[0] == match.currentPlayer.King)

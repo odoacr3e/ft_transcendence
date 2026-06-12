@@ -28,6 +28,8 @@ function init(match, preset=null)
 	}
 	else if (preset == null)
 		seed = Math.floor(Math.random() * (1 << 30));
+	if (preset == "")
+		preset = null;
 	result = new Result();
 	match.Reset(preset);
 	if (seed == null)

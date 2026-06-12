@@ -186,7 +186,7 @@ function CheckMateCheck(match, kingCoord)
 		return false;
 	for (let x of kingSquare.targetZones)//king can dodge?
 	{
-		if (!isDangerous(match, match.board.get(x).dangerZones, team) && match.board.get(x).piece == null)
+		if (!isDangerous(match, match.board.get(x).dangerZones, team) && match.board.get(x).piece?.team != kingSquare.piece?.team)
 			return false;
 	}
 	for (let x of kingSquare.dangerZones)
@@ -206,14 +206,13 @@ function CheckMateCheck(match, kingCoord)
 	enemyCoord = enemySquare;
 	enemySquare = match.board.get(enemySquare);
 	let enemySet = enemySquare.dangerZones;
-	// if (!enemySet) // ts-check stuff
-	// 	return false;
-	// if (enemySet.has(enemySquare) && enemySet.has(kingCoord))
-	// 	enemySet.delete(enemySquare);
-	// if (isDangerous(match, enemySet, team) && enemySet.has(kingCoord))
-	// 	enemySet?.delete(kingCoord);
+	if (!enemySet) // ts-check stuff
+		return false;
+	if (enemySet.has(enemySquare) && enemySet.has(kingCoord))
+		enemySet.delete(enemySquare);
+	if (isDangerous(match, enemySet, team) && enemySet.has(kingCoord))
+		enemySet?.delete(kingCoord);
 	if (isDangerous(match, enemySet, enemySquare.piece?.team))
-		// return false;
 		return (cantMovePiece(match, enemyCoord, enemySquare, kingCoord));
 	if (isStoppable(match, kingCoord, enemyCoord))
 		return false;

@@ -263,7 +263,7 @@ class MatchSettings
 			case (eMatchPresets.ClassicFourPlayers):
 				return (new MatchSettings(matchPresets.fourPlayer));
 			default:
-				throw (`MatchSettings: invalid preset name ${matchPresetType}`);
+				throw (`MatchSettings: invalid preset name "${matchPresetType}"`);
 		}
 	}
 }

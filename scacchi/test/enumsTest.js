@@ -54,5 +54,7 @@ const testerEnum =
 
 const curlCmd = 
 `curl -s -X POST -H "Content-Type: application/json" -d '{"type":"$type","from":"$from","to":"$to"}' http://localhost:8080/api/game/`;
+const curlCmdInit = 
+`curl -s -X POST -H "Content-Type: application/json" -d '{"type":"$type","from":$from,"to":"$to"}' http://localhost:8080/api/game/`;
 
-export {cmd, testerEnum, curlCmd};
+export {cmd, testerEnum, curlCmd, curlCmdInit};

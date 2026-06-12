@@ -8,7 +8,7 @@ import { historyRestore } from "../utils/history.js";
 import {HISTORY_PATH} from "../Macro/macro.js";
 import {eEvents} from "../Macro/enums.js";
 import { colors as color } from "./colorsOld.js";
-import { testerEnum as MSG, curlCmd } from "./enumsTest.js";
+import { testerEnum as MSG, curlCmd, curlCmdInit } from "./enumsTest.js";
 import {boardStringify} from "./render.js";
 import { Match } from "../Classes/Match/match.js";
 import {jsonParser} from "../utils/response.js";
@@ -129,10 +129,20 @@ async function executeEvents(match, history)
 	/** @type {BackResponse}*/
 	let	res;
 	let	backendBoard;
+	let	settings;
+	let	objectCmd = curlCmd;
 
 	currEvent = {type: "init", from: "", to: "", counter: 0};
+	settings = history.matchSettings;
+	if (typeof(history.matchSettings) == "object")
+	{
+		settings = JSON.stringify(history.matchSettings);
+		objectCmd = curlCmdInit;
+	}
+	else if (history.matchSettings == null)
+		settings = "0";
 	//@ts-ignore
-	res = await curlSender("init", history.matchSettings);
+	res = await curlSender("init", settings, "", objectCmd);
 	updateBoard(match.board, res);
 	backendBoard = await getBackBoard();
 	if (cmpBoard(match.board, backendBoard) == false)
@@ -214,6 +224,8 @@ function curlFail()
  */
 function fail(msg, p1, p2)
 {
+	if (!msg.replace)
+		console.error("fail error");
 	if (p1)
 		msg = msg.replace("$1", p1);
 	if (p2)
@@ -268,11 +280,11 @@ async function msleep(milliseconds)
  * @param {string} type 
  * @param {string | number} from 
  * @param {string | number} to 
+ * @param {string} cmd
  * @return {Promise<BackResponse>}
  */
-async function curlSender(type, from="", to="")
+async function curlSender(type, from="", to="", cmd=curlCmd)
 {
-	let	cmd;
 	let	resp;
 	/** @type {BackResponse} */
 	let	json;
@@ -281,7 +293,12 @@ async function curlSender(type, from="", to="")
 	//@ts-ignore
 	if (currEvent.useBoostBool && type == eEvents.Move)
 		type = eEvents.MoveBoost;
-	cmd = curlCmd;
+	if (!from)
+		from = "";
+	if (!to)
+		to = "";
+	if (!cmd.replace)
+		console.error("curlSender error");
 	cmd = cmd.replace("$type", type);
 	cmd = cmd.replace("$from", from.toString());
 	cmd = cmd.replace("$to", to.toString());

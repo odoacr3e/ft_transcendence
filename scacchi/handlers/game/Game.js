@@ -32,12 +32,12 @@ function gameChecks(req, res, next)
 		return (error(res, null, 400, "bad request format"));
 	if (!res || !res.status || !res.end || !next)
 		return (error(res, null, 500, "bad response object format"));
-	if (req.body.from && typeof(req.body.from) != "string")
+	if (!req.body.type)
+		return (error(res, null, 400, "json must have a string named `type`"));
+	if (req.body.from && typeof(req.body.from) != "string" && req.body.type != "init")
 		return (error(res, null, 400, "param `from` must be of type string"));
 	if (req.body.from && typeof(req.body.to) != "string")
 		return (error(res, null, 400, "param `to` must be of type string"));
-	if (!req.body.type)
-		return (error(res, null, 400, "json must have a string named `type`"));
 	if (typeof(req.body.type) != "string")
 		return (error(res, null, 400, "param `type` must be of type string"));
 	req.body.type = req.body.type.trim().toLowerCase();
