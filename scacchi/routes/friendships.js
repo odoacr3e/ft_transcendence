@@ -22,18 +22,19 @@ friendsRouter.get('/', checkJwt, async (req, res) => {
 		return res.status(200).json(jsonResponse.ResponseSuccess({ friendship: friendships }));
 	} catch (error) {
 		console.log("Error: ", error);
-		return res.status(500).json(jsonResponse.ResponseError("Internal server error"));
+		return res.status(500).json(jsonResponse.ResponseError("Server error retrieving user friendships"));
 	}
 });
 
 // TODO: implementare websocket per ricezione notifiche amicizia
 friendsRouter.post('/', checkJwt, async (req, res) => {
 	try {
-		await friendsQuery.sendFriendship(req.user.id_user, req.body.id_friend);
-		return res.status(204).send();
+		const newFriendship = await friendsQuery.sendFriendship(req.user.id_user, req.body.id_friend);
+		return res.status(200).json(jsonResponse.ResponseSuccess({ new_friend: newFriendship }));
 	} catch (error) {
-		console.log("Error: ", error);
-		return res.status(500).json(jsonResponse.ResponseError("Internal server error"));
+		if (error.code == 'P2002')
+			return res.status(409).json(jsonResponse.ResponseError("Friendship already exists or pending"));
+		return res.status(500).json(jsonResponse.ResponseError("Server error sending new friendships"));
 	}
 })
 
@@ -42,17 +43,19 @@ friendsRouter.delete('/', checkJwt, async (req, res) => {
 		await friendsQuery.removeFriendship(req.user.id_user, req.body.id_friend);
 		return res.status(204).send();
 	} catch (error) {
-		console.log("Error: ", error);
-		return res.status(500).json(jsonResponse.ResponseError("Internal server error"));
+		if (error.code == 'P2025')
+			return res.status(404).json(jsonResponse.ResponseError("Friendship not found"));
+		return res.status(500).json(jsonResponse.ResponseError("Server error deleting friendships"));
 	}
 })
 
 friendsRouter.patch('/', checkJwt, async (req, res) => {
 	try {
-		// da utilizzare query per change status della amicizia
-		// return res.status(200);
+		const updatedFriend = await friendsQuery.updateFriendship(req.user.id_user, req.body.id_friend);
+		return res.status(200).json(jsonResponse.ResponseSuccess({ updated_friendship: updatedFriend }));
 	} catch (error) {
-		console.log("Error: ", error);
+		if (error.code == 'P2025')
+			return res.status(409).json(jsonResponse.ResponseError("Friendship not found or already accepted"));
 		return res.status(500).json(jsonResponse.ResponseError("Internal server error"));
 	}
 })

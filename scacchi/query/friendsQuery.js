@@ -6,16 +6,29 @@ const { prisma } = lib.conn;
 const getAllUserFriendships = async (id_user) => {
 	const friendList = await prisma.friendships.findMany({
 		select: {
+			id_friendship: true,
 			users_friendships_id_user1Tousers: {
 				select: {
 					id_user: true,
-					username: true
+					name: true,
+					surname: true,
+					username: true,
+					nationality: true,
+					image: true,
+					points: true,
+					title: true
 				}
 			},
 			users_friendships_id_user2Tousers: {
 				select: {
 					id_user: true,
-					username: true
+					name: true,
+					surname: true,
+					username: true,
+					nationality: true,
+					image: true,
+					points: true,
+					title: true
 				}
 			},
 			friend_status: true
@@ -28,20 +41,56 @@ const getAllUserFriendships = async (id_user) => {
 		}
 	});
 	return friendList.map(f => ({
+		id_friendship: f.id_friendship,
 		friend: f.users_friendships_id_user1Tousers.id_user === id_user
 		? f.users_friendships_id_user2Tousers
 		: f.users_friendships_id_user1Tousers,
 		friend_status: f.friend_status
-	}))
+	}));
 }
 
 const sendFriendship = async (id_user, id_friend) => {
 	const data = { friend_status: "pending", id_user1: id_user, id_user2: id_friend };
 	if (id_user > id_friend)
 		data.id_user1 = id_friend, data.id_user2 = id_user;
-	return await prisma.friendships.create({
-		data: data
+	const newFriend = await prisma.friendships.createManyAndReturn({
+		data: data,
+		select: {
+			id_friendship: true,
+			users_friendships_id_user1Tousers: {
+				select: {
+					id_user: true,
+					name: true,
+					surname: true,
+					username: true,
+					nationality: true,
+					image: true,
+					points: true,
+					title: true
+				}
+			},
+			users_friendships_id_user2Tousers: {
+				select: {
+					id_user: true,
+					name: true,
+					surname: true,
+					username: true,
+					nationality: true,
+					image: true,
+					points: true,
+					title: true
+				}
+			},
+			friend_status: true
+		}
 	});
+	return newFriend.map(f => ({
+		id_friendship: f.id_friendship,
+		friend: f.users_friendships_id_user1Tousers.id_user === id_user
+		? f.users_friendships_id_user2Tousers
+		: f.users_friendships_id_user1Tousers,
+		friend_status: f.friend_status
+	}));
 }
 
 const removeFriendship = async (id_user, id_friend) => {
@@ -52,4 +101,15 @@ const removeFriendship = async (id_user, id_friend) => {
 	});
 }
 
-export const friendsQuery = { getAllUserFriendships, sendFriendship, removeFriendship };
+const updateFriendship = async (id_user, id_friend) => {
+	const [user1, user2] = id_user < id_friend ? [id_user, id_friend] : [id_friend, id_user]; 
+	const filter = { id_user1_id_user2: { id_user1: user1, id_user2: user2 }, friend_status: 'pending' };
+	return prisma.friendships.update({
+		data: {
+			friend_status: 'accepted'
+		},
+		where: filter
+	});
+}
+
+export const friendsQuery = { getAllUserFriendships, sendFriendship, removeFriendship, updateFriendship };
