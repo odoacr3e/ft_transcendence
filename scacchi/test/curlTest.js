@@ -13,6 +13,7 @@ import {boardStringify} from "./render.js";
 import { Match } from "../Classes/Match/match.js";
 import {jsonParser} from "../utils/response.js";
 import {render} from "./render.js";
+import { coordNormify } from "../Classes/Match/cursor.js";
 
 /** @typedef {import ("../../history/HISTORY.json")} historyData */
 /** @typedef {import ("../Classes/ChessBoard/chessBoard.js").ChessBoard} ChessBoard */
@@ -155,6 +156,10 @@ async function executeEvents(match, history)
 			render(match, [], "", true);
 		console.log(event);
 		currEvent = event;
+		if (event.from)
+			event.from = coordNormify(event.from);
+		if (event.to && event.type != "trans")
+			event.to = coordNormify(event.to);
 		res = await curlSender(event.type, event.from, event.to);
 		updateBoard(match.board, res);
 		backendBoard = await getBackBoard();
@@ -329,7 +334,7 @@ function updateBoard(board, updates)
 		return ;
 	for (const [key, square] of updates.board)
 	{
-		board.set(key, square);
+		board.set(coordNormify(key), square);
 	}
 }
 
@@ -350,13 +355,11 @@ function cmpBoard(board, other)
 	for (const [key, Bsquare] of other.board)
 	{
 		currSquare = key;
-		Fsquare = board.get(key);//@ts-ignore
+		Fsquare = board.get(coordNormify(key));//@ts-ignore
 		fPiece = Fsquare.piece?.type; //@ts-ignore
-		bPiece = Bsquare.piece?.type; 
+		bPiece = Bsquare.piece?.type;
 		if (!cmp(Fsquare.targetZones, Bsquare.targetZones, MSG.BOARD_TARGET))
 			return (false);
-		// if (key == "h1" && currEvent.counter == 9)
-		// 	console.log("WOW");
 		if (!cmp(Fsquare.boostedTargetZones, Bsquare.boostedTargetZones, MSG.BOARD_BOOST, true))
 			return (false);
 		if (Fsquare.piece && !Bsquare.piece)

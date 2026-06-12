@@ -215,6 +215,8 @@ class MatchSettings
 	/** @param {MatchSettings | string | null} other */
 	constructor(other=null)
 	{
+		if (other == "0")
+			other = null;
 		if (typeof(other) == "string")
 			other = this.GetPresetByType(other);
 		this.board =

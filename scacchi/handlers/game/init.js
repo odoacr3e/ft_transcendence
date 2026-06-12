@@ -39,7 +39,7 @@ function init(match, preset=null)
 	rng = initRng(seed);
 	if (match.settings.board.start)
 		creators.initSavedBoard(match);
-	else if (seed == 0)
+	else if (seed == 0 || preset == null)
 		creators.initClassicBoard(match);
 	else
 		creators.initRandomBoard(match, rng);
