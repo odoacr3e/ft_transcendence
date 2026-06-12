@@ -1,6 +1,7 @@
 <script setup>
     import Header from '../components/Header.vue';
     import TagTitle from '../components/TagTitle.vue';
+    import FriendList from '../components/FriendList.vue';
     import { useAuthStore } from "../stores/auth.st";
     import { storeToRefs } from 'pinia';
 	const authStore = useAuthStore();
@@ -34,6 +35,7 @@
                     <div class="w-[50%] m-2 p-2 h-[50vh] bg-[#201e1c] rounded-3xl border border-[#4e4e4e8c]">
                         <h2 class="text-white text-xl m-1">Lista di amici:</h2>
                         <hr class="w-full justify-self-start text-[#4e4e4e8c]">
+                        <FriendList/> <!-- WIP -->
                     </div>
                     <div class="w-full m-2 p-2 h-auto bg-[#201e1c] rounded-3xl border border-[#4e4e4e8c]">
                         <h2 class="text-white text-xl m-1">Cronologia delle partite:</h2>

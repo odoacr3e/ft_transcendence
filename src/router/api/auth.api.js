@@ -13,5 +13,9 @@ export const authApi = {
 		const resp = await api.get('/api/users/me'); // ripristino sessione al mount
 		return (resp.data.user);
 	},
-	logout:		() => api.post('/auth/logout') //ancora da decidere la path
+	friendlist:	async () => {
+		const resp = await api.get('/api/friends'); // lista di amici
+		return (resp.data.friendship);
+	},
+	logout:		() => api.post('/auth/logout')
 }

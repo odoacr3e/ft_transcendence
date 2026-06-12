@@ -45,7 +45,8 @@
                     @dragover.prevent="dragOver = square.id;">
 					<p	class="absolute"
 						v-if="(parseInt(square.id.substring(1)) === 1) || 
-						  	  (parseInt(square.id.substring(1)) === 4 && ['a', 'b', 'c', 'l', 'm', 'n'].includes(square.id.charAt(0)))"
+						  	  (style === '14x14x4' && parseInt(square.id.substring(1)) === 4 &&
+							  ['a', 'b', 'c', 'l', 'm', 'n'].includes(square.id.charAt(0)))"
 						v-bind:class="{ 'ml-15 mt-13' : style === '8x8x2',
 										'ml-10.25 mt-9 text-xs' : style === '14x14x4',
 										'text-[#1b0000]': getSquareColor(square.id) == 'white' && !square.selected, 
@@ -63,7 +64,8 @@
                         @dragstart="onDragStart($event, square)"/>
 					<p 	class="absolute" 
 					   	v-if="(square.id.charAt(0) == 'a') ||
-						 	  (square.id.charAt(0) == 'd' && (parseInt(square.id.substring(1)) < 4 || parseInt(square.id.substring(1)) > 11))"
+						 	  (style === '14x14x4' && square.id.charAt(0) == 'd' && 
+							  (parseInt(square.id.substring(1)) < 4 || parseInt(square.id.substring(1)) > 11))"
 						v-bind:class="{ 'mr-15 mb-13' : style === '8x8x2',
 										'mr-10.25 mb-9.5 text-xs' : style === '14x14x4',
 										'ml-1.5' : parseInt(square.id.substring(1)) > 9,
