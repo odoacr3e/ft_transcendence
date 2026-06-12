@@ -6,8 +6,15 @@
 	import { getSquareColor } 					from '@/scripts/Helper/RenderUtils';
 	import { globalEvents }						from '@/scripts/Events/Global';
 
-	const domBoardComputed = computed(() => DOMBoard());
+	const HIDDEN = new Set( ["a14", "b14", "c14", "a13", "b13", "c13", "a12", "b12", "c12",
+					 "l14", "m14", "n14", "l13", "m13", "n13", "l12", "m12", "n12",
+					 "a3", "b3", "c3", "a2", "b2", "c2", "a1", "b1", "c1",
+					 "l3", "m3", "n3", "l2", "m2", "n2", "l1", "m1", "n1"] );
 
+	const domBoardComputed = computed(() => DOMBoard());
+	const prop = defineProps({
+  	    	style: String
+	    });
     onMounted(() => {
         globalEvents();
     });
@@ -19,24 +26,29 @@
 <template>
     <div id="root">
 		<div v-if="localInfo.goatId" id="overlay" v-bind:class="{ 'opacity-60 pointer-events-auto':localInfo.goatId }"></div>
-        <div id="board" oncontextmenu="return false;">
-            <div v-for="row in domBoardComputed" :key="row[0]?.id" class="squareRow">
+        <div id="board" oncontextmenu="return false;" v-bind:class="{ 'boardTwo' : style === '8x8x2', 'boardFour' : style === '14x14x4'}">
+            <div v-for="row in domBoardComputed" :key="row[0]?.id" class="grid" v-bind:class="{ 'rowTwo' : style === '8x8x2', 'rowFour' : style === '14x14x4'}">
                 <div
                     v-for="square in row"
                     :key="square.id"
                     :id="square.id"
                     :class="[getSquareColor(square.id), 
 							'square',
-							// {'border-blue-600 border-4': (localInfo.clickedId === square.id || localInfo.lastClickedId === square.id) && localBoard.get(square.id).piece }
+							{ 'opacity-0 hidden': style === '14x14x4' && HIDDEN.has(square.id) },
 							{'outline-4 outline-[#e2dac5c5] -outline-offset-4': dragOver === square.id},
 							{'selectedBstW': getSquareColor(square.id) == 'white' && (square.boostedHighlight && square.piece)},
 							{'selectedBstB': getSquareColor(square.id) == 'black' && (square.boostedHighlight && square.piece)},
 							{'selectedW': getSquareColor(square.id) == 'white' && (square.selected || square.highlight && square.piece)},
 							{'selectedB': getSquareColor(square.id) == 'black' && (square.selected || square.highlight && square.piece)}]"
+					v-bind:class="{ 'w-18.75 h-18.75' : style === '8x8x2', 'w-13 h-13' : style === '14x14x4'}"
                     @drop="onDrop($event, square); dragOver = null"
                     @dragover.prevent="dragOver = square.id;">
-					<p v-if="square.id.charAt(1) == '1'" class="absolute ml-15 mt-13"
-						v-bind:class="{ 'text-[#1b0000]': getSquareColor(square.id) == 'white' && !square.selected, 
+					<p	class="absolute"
+						v-if="(parseInt(square.id.substring(1)) === 1) || 
+						  	  (parseInt(square.id.substring(1)) === 4 && ['a', 'b', 'c', 'l', 'm', 'n'].includes(square.id.charAt(0)))"
+						v-bind:class="{ 'ml-15 mt-13' : style === '8x8x2',
+										'ml-10.25 mt-9 text-xs' : style === '14x14x4',
+										'text-[#1b0000]': getSquareColor(square.id) == 'white' && !square.selected, 
 										'text-white	': getSquareColor(square.id) == 'black' && !square.selected,
 										'text-[#801a12]' : getSquareColor(square.id) == 'white' && square.selected,
 										'text-[#bb4232]' : getSquareColor(square.id) == 'black' && square.selected }">
@@ -49,15 +61,22 @@
                         :src="IMG_PATHS[square.piece.team + square.piece.type]"
                         :draggable="true"
                         @dragstart="onDragStart($event, square)"/>
-					<p v-if="square.id.charAt(0) == 'a'" class="absolute mr-15 mb-13"
-						v-bind:class="{ 'text-[#1b0000]':getSquareColor(square.id) == 'white' && !square.selected, 
+					<p 	class="absolute" 
+					   	v-if="(square.id.charAt(0) == 'a') ||
+						 	  (square.id.charAt(0) == 'd' && (parseInt(square.id.substring(1)) < 4 || parseInt(square.id.substring(1)) > 11))"
+						v-bind:class="{ 'mr-15 mb-13' : style === '8x8x2',
+										'mr-10.25 mb-9.5 text-xs' : style === '14x14x4',
+										'ml-1.5' : parseInt(square.id.substring(1)) > 9,
+										'text-[#1b0000]':getSquareColor(square.id) == 'white' && !square.selected, 
 										'text-white':getSquareColor(square.id) == 'black' && !square.selected,
 										'text-[#801a12]' : getSquareColor(square.id) == 'white' && square.selected,
 										'text-[#bb4232]' : getSquareColor(square.id) == 'black' && square.selected }">
-						<b>{{square.id.charAt(1)}}</b>
+						<b>{{square.id.substring(1)}}</b>
 					</p>
-                    <span v-if="square.highlight && !square.piece" class="highlight"></span>
-                    <span v-if="square.boostedHighlight && !square.piece" class="boostedHighlight"></span>
+                    <span v-if="square.highlight && !square.piece" class="highlight"
+						  v-bind:class="{'w-3.75 h-3.75': style === '8x8x2', 'w-2.5 h-2.5': style === '14x14x4'}"></span>
+                    <span v-if="square.boostedHighlight && !square.piece" class="boostedHighlight"
+						  v-bind:class="{'w-3.75 h-3.75': style === '8x8x2', 'w-2.5 h-2.5': style === '14x14x4'}"></span>
                 </div>
             </div>
 			<div v-if="localInfo.goatId" id="choseMenu" class="flex absolute pointer-events-none size-75 z-14 gap-0.5 p-1.5 
@@ -113,10 +132,16 @@
 	#board
 	{
 		display: grid;
-		grid-template-rows: repeat(8, 75px);
-		/* grid-template-rows: repeat(14, 56px); */
 		width: fit-content;
 		margin: auto;
+	}
+
+	.boardTwo {
+		grid-template-rows: repeat(8, 75px);
+	}
+
+	.boardFour {
+		grid-template-rows: repeat(14, 52px);
 	}
 
 	.piece
@@ -130,20 +155,17 @@
 		cursor: -webkit-grabbing;
 	}
 
-	.squareRow
-	{
-		display: grid;
+	.rowTwo {
 		grid-template-columns: repeat(8, 75px);
-		/* grid-template-rows: repeat(14, 56px); */
+	}
+
+	.rowFour {
+		grid-template-columns: repeat(14, 52px);
 	}
 
 	.square
 	{
 		border-collapse: collapse;
-		width: 75px;
-		height: 75px;
-		/* width: 56px;
-		height: 56px; */
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -160,8 +182,6 @@
 
 	.highlight
 	{
-		width: 15px;
-		height: 15px;
 		display: block;
 		margin: auto;
 		border-radius: 50%;
@@ -170,8 +190,6 @@
 
 	.boostedHighlight
 	{
-		width: 15px;
-		height: 15px;
 		display: block;
 		margin: auto;
 		border-radius: 50%;

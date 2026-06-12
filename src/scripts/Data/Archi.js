@@ -5,13 +5,13 @@ import { checkEndTurn, hasBoost, DEBUGSetVisible, checkUpgrade }	from "./utils/A
 
 //SECTION - INIT FUNCTIONS
 
-export async function loadReceivedMatch() 
+export async function loadReceivedMatch(style) 
 {
 	const response = await fetch("http://localhost:8080/api/game",
 	{
 		method: "POST",
 		headers: { "Content-Type": "application/json" },
-		body: JSON.stringify({ type: "init", from: "0", to: "0" }),
+		body: JSON.stringify({ type: "init", from: style, to: "0" })
 	});
 
 	if (!response.ok)
@@ -57,9 +57,9 @@ export function validateReceivedMatch(rawJson)
 
 // boost di pezzi
 
-export async function initLocalMatchState(seed = 0)
+export async function initLocalMatchState(style)
 {
-	const raw = await loadReceivedMatch(seed);
+	const raw = await loadReceivedMatch(style);
 	const validated = validateReceivedMatch(raw);
 	startLocalMatchState(validated);
 
@@ -71,6 +71,7 @@ export function initLocalPlayers()
 {
 	const players_list = ["p1", "p2", "p3", "p4"];
 
+	localPlayers.clear();
 	players_list.forEach((player) => {
 		const has = Object.prototype.hasOwnProperty.call(localMatchState, player);
 		const wrong_type = typeof localMatchState[player] !== "object";

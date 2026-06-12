@@ -90,8 +90,8 @@ export function getRootDiv() {
 	return document.getElementById("board");
 }
 
-export const FILES = ["a", "b", "c", "d", "e", "f", "g", "h"];
-// export const FILES = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n"];
+export const FILES_TWO = ["a", "b", "c", "d", "e", "f", "g", "h"];
+export const FILES_FOUR = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n"];
 
 export let MACRO = Object ({
 	"AUDIO" : false,
@@ -109,5 +109,29 @@ export const IMG_PATHS = Object.freeze ({
 	"blackJester" : new URL("../../assets/pieces/black/knight.png", import.meta.url).href,
 	"blackValkirya" : new URL("../../assets/pieces/black/bishop.png", import.meta.url).href,
 	"blackMinotaurus" : new URL("../../assets/pieces/black/rook.png", import.meta.url).href,
-	"blackBastards" : new URL("../../assets/pieces/black/pawn.png", import.meta.url).href
+	"blackBastards" : new URL("../../assets/pieces/black/pawn.png", import.meta.url).href,
+	"yellowKing" : new URL("../../assets/pieces/yellow/king.png", import.meta.url).href,
+	"yellowChampion" : new URL("../../assets/pieces/yellow/queen.png", import.meta.url).href,
+	"yellowJester" : new URL("../../assets/pieces/yellow/knight.png", import.meta.url).href,
+	"yellowValkirya" : new URL("../../assets/pieces/yellow/bishop.png", import.meta.url).href,
+	"yellowMinotaurus" : new URL("../../assets/pieces/yellow/rook.png", import.meta.url).href,
+	"yellowBastards" : new URL("../../assets/pieces/yellow/pawn.png", import.meta.url).href,
+	"blueKing" : new URL("../../assets/pieces/blue/king.png", import.meta.url).href,
+	"blueChampion" : new URL("../../assets/pieces/blue/queen.png", import.meta.url).href,
+	"blueJester" : new URL("../../assets/pieces/blue/knight.png", import.meta.url).href,
+	"blueValkirya" : new URL("../../assets/pieces/blue/bishop.png", import.meta.url).href,
+	"blueMinotaurus" : new URL("../../assets/pieces/blue/rook.png", import.meta.url).href,
+	"blueBastards" : new URL("../../assets/pieces/blue/pawn.png", import.meta.url).href,
+	"redKing" : new URL("../../assets/pieces/red/king.png", import.meta.url).href,
+	"redChampion" : new URL("../../assets/pieces/red/queen.png", import.meta.url).href,
+	"redJester" : new URL("../../assets/pieces/red/knight.png", import.meta.url).href,
+	"redValkirya" : new URL("../../assets/pieces/red/bishop.png", import.meta.url).href,
+	"redMinotaurus" : new URL("../../assets/pieces/red/rook.png", import.meta.url).href,
+	"redBastards" : new URL("../../assets/pieces/red/pawn.png", import.meta.url).href,
+	"greenKing" : new URL("../../assets/pieces/green/king.png", import.meta.url).href,
+	"greenChampion" : new URL("../../assets/pieces/green/queen.png", import.meta.url).href,
+	"greenJester" : new URL("../../assets/pieces/green/knight.png", import.meta.url).href,
+	"greenValkirya" : new URL("../../assets/pieces/green/bishop.png", import.meta.url).href,
+	"greenMinotaurus" : new URL("../../assets/pieces/green/rook.png", import.meta.url).href,
+	"greenBastards" : new URL("../../assets/pieces/green/pawn.png", import.meta.url).href
 });

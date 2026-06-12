@@ -6,10 +6,11 @@
   import Header                   from '../components/Header.vue';
 
   const ready = ref(false);
+  const style = ref("8x8x2");
 
   onMounted(async () => {
     try{
-      await initLocalMatchState();
+      await initLocalMatchState(style.value);
       ready.value = true;
     } catch (err) {
       console.log(`${err}`);
@@ -25,7 +26,7 @@
                 <div class="p-6 bg-[#201e1c] rounded-l-3xl border-r border-[#4e4e4e8c]">
                   <div v-if="ready">
                     <PlayerInfo :p="2"/>
-                    <ChessBoard/>
+                    <ChessBoard :style="style"/>
                     <PlayerInfo :p="1"/>
                   </div>
                 </div>

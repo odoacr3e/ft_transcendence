@@ -7,10 +7,11 @@ import ChessBoard from '@/components/ChessBoard.vue';
   import { onMounted, ref }       from 'vue';
 
   const ready = ref(false);
+  const style = ref("14x14x4");
 
   onMounted(async () => {
     try{
-      await initLocalMatchState();
+      await initLocalMatchState(style.value);
       ready.value = true;
     } catch (err) {
       console.log(`${err}`);
@@ -24,7 +25,7 @@ import ChessBoard from '@/components/ChessBoard.vue';
         <div id="wrap" class="grow">
             <div class="flex z-2 bg-[#181715] rounded-3xl">
                 <div class="p-6 bg-[#201e1c] rounded-l-3xl border-r border-[#4e4e4e8c]">
-                    <ChessBoard/>
+                    <ChessBoard :style="style"/>
                 </div>
                 <div class="p-10 flex-col mt-20 w-lg">
                     <img :draggable="false" src="../assets/CrownIcon.png" alt="" class="w-30 justify-self-center">
