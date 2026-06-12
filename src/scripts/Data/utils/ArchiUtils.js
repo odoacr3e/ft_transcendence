@@ -20,7 +20,7 @@ export function checkEndTurn(validated)
 	const	curP = localPlayers.values().find(p => p.isPlaying === true);
 
 	players_list.forEach((player) => {
-		if (validated[player].isPlaying) { newCurP = validated[player]; };
+		if (validated[player]?.isPlaying) { newCurP = validated[player]; };
 	});
 
 	if (curP.name === newCurP.name) { localInfo.secondTurn = true; }

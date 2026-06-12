@@ -3,6 +3,7 @@
 	import { useAbility, sendEndTurn }			from '@/scripts/Events/utils/GlobalUtils';
 	import { computed }							from 'vue';
 	import	TimerClock							from "./TimerClock.vue"
+	import	CapturedPieces						from "./CapturedPieces.vue"
 
 	const prop = defineProps({
   		p: Number
@@ -31,7 +32,7 @@
 			<div class="flex">
 				<h2>Points: {{ player.nPoints }}</h2>
 				<p class="text-[#4e4e4e8c] mx-2">|</p>
-				<!-- <CapturedPieces/> -->
+				<CapturedPieces :player="player"/>
 			</div>
 		</div>
 		<div class="grow flex items-center justify-start gap-2 pr-2">

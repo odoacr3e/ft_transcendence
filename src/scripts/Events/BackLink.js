@@ -29,6 +29,13 @@ export async function sendToBackend(fromId, toId, flag)
 export async function requestToBack(fromSquare, toSquare)
 {
 	let type;
+	const toPiece = (() => {
+			if (fromSquare && toSquare && localBoard.get(toSquare).piece &&
+				localBoard.get(toSquare).piece.team !== localBoard.get(fromSquare).piece.team)
+				return (localBoard.get(toSquare).piece);
+			else
+				return null;
+		})();
 
 	if (fromSquare === null && toSquare === null && localInfo.secondTurn)
 		{type = "endTurn"; fromSquare = ""; toSquare = ""; }
@@ -53,6 +60,8 @@ export async function requestToBack(fromSquare, toSquare)
 		const match = await response.json();
 
 		updateMatchState(match);
+		if (toPiece)
+			localInfo.capturedP[toPiece.team === "white" ? "black" : "white"][toPiece.type] += 1;
 		return true;
 	}
 	catch (err)

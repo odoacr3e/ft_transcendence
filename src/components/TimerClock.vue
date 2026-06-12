@@ -44,13 +44,8 @@
 	});
 
 	watch(() => props.Go, (val) => {
-		if (val)
-			if (!running) { running = true; countDownTimer(); }
-		else
-		{
-			running = false;
-			stopTimer();
-		}
+		if (val) { if (!running) { running = true; countDownTimer(); } }
+		else { if (running) { running = false; stopTimer(); }}
 	});
 
 	onMounted(() => {
