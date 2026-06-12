@@ -135,8 +135,8 @@ function gameFail(msg, p1="", p2="")
  */
 function fail(msg, p1, p2)
 {
-	if (!cmd.replace)
-		console.error("fail error");
+	// if (!cmd.replace)
+	// 	console.error("fail error");
 	if (p1)
 		msg = msg.replace("$1", p1);
 	if (p2)

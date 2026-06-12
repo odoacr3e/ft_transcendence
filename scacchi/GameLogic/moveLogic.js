@@ -16,6 +16,7 @@ import { Cursor } from "../Classes/Match/cursor.js";
 import { includesOneOf } from "../utils/string.js";
 import {endTurn} from "../handlers/game/endTurn.js";
 import {checkMateCheckAll} from "./checkMate.js";
+import { resourceUsage } from "node:process";
 
 //FIXME - da mettere alcune funzioni in un utilis
 
@@ -265,7 +266,7 @@ function updateChessboard(coords=[], result, match, boostBool)
 			match[to.piece.team].boostedPiece = "";
 	}
 	match.history.UpdateMoves(match, from, coords);
-	if (from.piece.type == enumNames.VALKIRYA && result.usedBoost == true && from.piece.isBoostedBool == true)
+	if (result.specialMoves.CheckSniperMove())
 	{
 		to.piece = null;
 		from.piece.isBoostedBool = false;
@@ -433,13 +434,10 @@ function checkBooster(match, result, from, coords, boostBool) // FIXME - da aggi
 	if (boostedTargetZones.has(coords[1]) == false)
 		return (error(result, 403, `that piece can't do that move`));
 	from.targetZones.add(coords[1]);
-	if (from.piece.type != enumNames.VALKIRYA)
-	// if (from.piece.type == enumNames.VALKIRYA)
-	{
-		from.piece.isBoostedBool = false;
-		match.currentPlayer.boostedPiece = "";
+	if (from.piece.type == enumNames.VALKIRYA)
 		result.specialMoves.SetSniperMove();
-	}
+	from.piece.isBoostedBool = false;
+	match.currentPlayer.boostedPiece = "";
 	result.usedBoost = true;
 	return (true);
 }
@@ -557,21 +555,26 @@ function simulation(coords, match, result)
 		tmpSquare = to.Copy();
 		tmpPiece = tmpSquare.piece;
 	}
-	// if (result.specialMoves.CheckSniperMove() == 0)
-	// {
-		// to.piece = from.piece;
-		// from.piece = null;
-	// }
-	to.piece = from.piece;
-	from.piece = null;
+	if (result.specialMoves.CheckSniperMove() == 0)
+	{
+		to.piece = from.piece;
+		from.piece = null;
+	}
+	else
+		to.piece = null;
 	if (coords[0] == match.currentPlayer.King)
 		king = to;
 	dangerUpdateMoved(match, coords, result);
 	dangerBool = isDangerous(match, king.dangerZones, king.piece?.team);
 	if (!dangerBool)
 		dangerBool = checkDoubleMoveMate(match, coords, result);
-	from.piece = to.piece;
-	to.piece = tmpPiece;
+	if (result.specialMoves.CheckSniperMove() == 0)
+	{
+		from.piece = to.piece;
+		to.piece = tmpPiece;
+	}
+	else
+		to.piece = tmpPiece;
 	dangerUpdateMoved(match, [coords[1], coords[0]], result);
 	if (tmpSquare)
 		match.board.set(coords[1], tmpSquare);

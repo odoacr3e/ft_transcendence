@@ -1189,28 +1189,6 @@
       "counter": 109,
       "updates": {},
       "error": false
-    },
-    {
-      "from": "d6",
-      "to": "c5",
-      "movedPiece": "Valkirya",
-      "team": "black",
-      "type": "moveboost",
-      "useBoostBool": false,
-      "counter": 110,
-      "updates": {},
-      "error": true
-    },
-    {
-      "from": "d6",
-      "to": "c5",
-      "movedPiece": "Valkirya",
-      "team": "black",
-      "type": "moveboost",
-      "useBoostBool": false,
-      "counter": 111,
-      "updates": {},
-      "error": true
     }
   ]
 }
