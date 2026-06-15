@@ -41,6 +41,7 @@ function mainTerm()
 let match = mainTerm();
 let	helpBool = true;
 let	mutex = false;
+let	newType = "";
 
 //SECTION - eventLoop: binda i tasti per fare cose
 
@@ -113,7 +114,7 @@ process.stdin.on('keypress', (str, key) =>
 			}
 			break ;
 		case (cmd.TRANSFORM):
-			let	newType = getline("insert new piece type");
+			newType = getline("insert new piece type");
 			result = makeTransfiguration(match, match.cursor.square, newType);
 			selected[0] = match.cursor.square;
 			if (result.status != 200)
@@ -262,7 +263,7 @@ function saveWrongMove(match, result, type)
 	else if (type == eEvents.Boost)
 		match.history.UpdateBoost(match, match.board.get(selected[0]), selected[0]);
 	else if (type == eEvents.Transform)
-		match.history.UpdateTransform(match, match.board.get(selected[0]), selected[0], "Champion");
+		match.history.UpdateTransform(match, match.board.get(selected[0]), selected[0], newType);
 	else if (type == eEvents.EndTurn)
 		match.history.UpdateEndTurn(match);
 	//@ts-ignore

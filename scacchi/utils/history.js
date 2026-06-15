@@ -39,7 +39,7 @@ function historyRestore(match, path)
 		match.historyCreateBool = true;
 		for (const event of history.events)
 		{
-			if (DEBUGCounter == 4)
+			if (DEBUGCounter == 41)
 				console.log("");
 			if (event.type == eEvents.Move)
 				result = move(match, event.from, event.to, event.useBoostBool);
@@ -48,7 +48,7 @@ function historyRestore(match, path)
 			else if (event.type == eEvents.Boost)
 				result = boost(match, event.from);
 			else if (event.type == eEvents.Transform)
-				result = makeTransfiguration(match, event.from, event.movedPiece);
+				result = makeTransfiguration(match, event.from, event.to);
 			else if (event.type == eEvents.EndTurn)
 			{
 				result = endTurn(match);
