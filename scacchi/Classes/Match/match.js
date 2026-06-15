@@ -141,7 +141,7 @@ class Match
 	{
 		if (this.playerNum != 2)
 		{
-			while (this.currentPlayer.team != team)
+			// while (this.currentPlayer.team != team)
 		}
 		console.log("haaaaaiiiiii persoooooooooooooooooo!!!!!!!");
 		// console.log("Premi un qualsiasi tasto per concludere...");

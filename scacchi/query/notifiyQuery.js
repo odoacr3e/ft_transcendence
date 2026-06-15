@@ -2,7 +2,7 @@
 import * as lib from "../lib/lib.js";
 const { prisma } = lib.conn;
 
-const getAllNotifications = async () => {
+const getAllNotifications = async (id) => {
 	return await prisma.notifications.findMany({
 		select: {
 			id_notification: true,
@@ -17,7 +17,8 @@ const getAllNotifications = async () => {
 					username: true
 				}
 			}
-		}
+		},
+		where: { id_user: id }
 	});
 }
 

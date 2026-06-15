@@ -1,8 +1,8 @@
 
-// import { diff } from "node:util";
 import * as lib from "../lib/lib.js";
 const { prisma } = lib.conn;
 
+// NOTE: ritorna tutte le amicizie di un utente cercando id utente tra id_user1/id_user2 e ritorna un oggetto contenente solo le info dell'utente amico
 const getAllUserFriendships = async (id_user) => {
 	const friendList = await prisma.friendships.findMany({
 		select: {
@@ -49,6 +49,7 @@ const getAllUserFriendships = async (id_user) => {
 	}));
 }
 
+// NOTE: ritorna la nuova amicizia di un utente cercando come un oggetto contenente solo le info dell'utente a cui e stata inviata la richiesta
 const sendFriendship = async (id_user, id_friend) => {
 	const data = { friend_status: "pending", id_user1: id_user, id_user2: id_friend };
 	if (id_user > id_friend)
@@ -101,6 +102,7 @@ const removeFriendship = async (id_user, id_friend) => {
 	});
 }
 
+// NOTE: aggiorna amicizia da 'pending' a 'accepted'
 const updateFriendship = async (id_user, id_friend) => {
 	const [user1, user2] = id_user < id_friend ? [id_user, id_friend] : [id_friend, id_user]; 
 	const filter = { id_user1_id_user2: { id_user1: user1, id_user2: user2 }, friend_status: 'pending' };

@@ -11,4 +11,4 @@ apiRouter.use("/users", usersRouter);
 apiRouter.use("/game", gameRouter);
 apiRouter.use("/pieces", piecesRouter);
 apiRouter.use("/notifications", notifyRouter);
-apiRouter.use("/friends", friendsRouter)
+apiRouter.use("/friends", friendsRouter);

@@ -98,8 +98,8 @@ function updateTurn(match, result)
 	// 	match.CheckMate(result);
 	// 	return (false);
 	// }
-	else if (isDangerous(match, king.dangerZones, king.piece?.team) == true)
-		result.specialMoves.SetKingDanger();
+	// else if (isDangerous(match, king.dangerZones, king.piece?.team) == true)
+	// 	result.specialMoves.SetKingDanger();
 	match.boost = 0;
 	match.moves = 0;
 	return (true);
