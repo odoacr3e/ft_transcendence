@@ -188,11 +188,11 @@ class Cursor
 	{
 		switch (team)
 		{
-			case (eTeam.Black): case (eTeam.Yellow):
+			case (eTeam.Black): case (eTeam.Red):
 			{
 				return (this.getRow() == 1);
 			}
-			case (eTeam.White): case (eTeam.Red):
+			case (eTeam.White): case (eTeam.Yellow):
 			{
 				return (this.getRow() == this._h);
 			}

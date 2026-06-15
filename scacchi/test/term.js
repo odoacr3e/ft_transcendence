@@ -115,8 +115,10 @@ process.stdin.on('keypress', (str, key) =>
 		case (cmd.TRANSFORM):
 			let	newType = getline("insert new piece type");
 			result = makeTransfiguration(match, match.cursor.square, newType);
+			selected[0] = match.cursor.square;
 			if (result.status != 200)
 				return (saveWrongMove(match, result, eEvents.Transform));
+			selected.pop();
 			break ;
 		case (cmd.SQUARE_INFO):
 			let	squareCoord = undefined;
