@@ -33,6 +33,8 @@ class bitMaskMoves
 	CheckBastardMove(){return (this._mask & move.ISBASTARD)};
 	SetEatenBastard(){return (this._mask |= move.EATENBASTARD)};
 	CheckEatenBastard(){return (this._mask & move.EATENBASTARD)};
+	SetChampionBoostUsed(){return (this._mask |= move.CHAMPIONBOOST)};
+	CheckChampionBoostUsed(){return (this._mask & move.CHAMPIONBOOST)};
 }
 
 //SECTION - class Result

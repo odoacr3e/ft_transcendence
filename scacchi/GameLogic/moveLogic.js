@@ -287,6 +287,8 @@ function updateChessboard(coords=[], result, match, boostBool)
 	if (to.piece && to.piece.isMovedBool == false)
 		to.piece.isMovedBool = true;
 	boostedPieceUpdates(match, coords);
+	if (result.specialMoves.CheckChampionBoostUsed())
+		updateAllChampions(match, result);
 	checkDoubleMoveMate(match, [], result, false);
 	match.moves++;
 	dangerUpdateMoved(match, coords, result);
@@ -294,6 +296,22 @@ function updateChessboard(coords=[], result, match, boostBool)
 }
 
 //SECTION - move utils
+
+/**
+ * 
+ * @param {Match} match
+ * @param {Result} result
+ */
+function updateAllChampions(match, result)
+{
+	let arr;
+
+	arr = match.GetOBoostedPieceCoords();
+	if (arr == null)
+		return ;
+	for (let x of arr)
+		DangerUpdate(match, x);
+}
 
 /**
  * 
@@ -436,6 +454,8 @@ function checkBooster(match, result, from, coords, boostBool) // FIXME - da aggi
 	from.targetZones.add(coords[1]);
 	if (from.piece.type == enumNames.VALKIRYA)
 		result.specialMoves.SetSniperMove();
+	else if (from.piece.type == enumNames.CHAMPION)
+		result.specialMoves.SetChampionBoostUsed();
 	from.piece.isBoostedBool = false;
 	match.currentPlayer.boostedPiece = "";
 	result.usedBoost = true;
@@ -579,6 +599,8 @@ function simulation(coords, match, result)
 	if (tmpSquare)
 		match.board.set(coords[1], tmpSquare);
 	boosted = match.GetOBoostedPieceCoords();
+	for (const coord of match.board.updates)
+		DangerUpdate(match, coord);
 	if (!boosted)
 		return (!dangerBool);
 	for (const p of boosted)
@@ -601,6 +623,7 @@ function simulation(coords, match, result)
 export function pathFinding(match, start, dest, ignoredCoords=new Set, considerBoostedBool=false)
 {
 	let	startArray = new Set;
+	let	startCoord;
 	let	destCoord;
 	let	reverseMove = {dx: 0, dy: 0};
 	let	moveData;
@@ -608,13 +631,22 @@ export function pathFinding(match, start, dest, ignoredCoords=new Set, considerB
 	//for optimization, the search will go from dest to start
 	//because you have one dest but multiple start (boosted zones)
 	if (typeof(start) == "string")
+	{
+		startCoord = start;
 		start = match.board.get(start);
+	}
+	else
+		startCoord = start.piece?.pos;
 	if (typeof(dest) == "string")
+	{
+		destCoord = dest;
 		dest = match.board.get(dest);
-	if (!start.piece || !dest.piece)
-		throw (`pathFinding: invalid start ${start.piece} /dest ${dest.piece}`);
-	startArray.add(start.piece.pos);
-	destCoord = dest.piece.pos;
+	}
+	else
+		destCoord = dest.piece?.pos;
+	if (!start.piece || !startCoord || !destCoord)
+		throw (`pathFinding: invalid parameters`);
+	startArray.add(startCoord);
 	if (considerBoostedBool == true)
 	{
 		for (const boostStart in start.boostedTargetZones)

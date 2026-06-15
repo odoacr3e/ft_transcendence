@@ -177,17 +177,34 @@ function CheckMateCheck(match, kingCoord)
 	let enemySquare;
 	let enemyCoord;
 	let team;
+	let	kingSetCoord;
 
 	kingSquare = match.board.get(kingCoord);
 	if (!kingSquare)
 		throw (`missing king for team `);
 	team = kingSquare.piece?.team;
+	kingSetCoord = new Set();
+	kingSetCoord.add(kingCoord);
 	if (!isDangerous(match, kingSquare.dangerZones, team))
 		return false;
 	for (let x of kingSquare.targetZones)//king can dodge?
 	{
-		if (!isDangerous(match, match.board.get(x).dangerZones, team) && match.board.get(x).piece?.team != kingSquare.piece?.team)
-			return false;
+		if (isDangerous(match, match.board.get(x).dangerZones, team) || match.board.get(x).piece?.team == kingSquare.piece?.team)
+			continue ;
+		let	failed = false;
+
+		for (const danger of kingSquare.dangerZones)
+		{
+			if (x == danger)
+				continue ;
+			if (pathFinding(match, danger, x, kingSetCoord, true) != null)
+			{
+				failed = true;
+				break ;
+			}
+		}
+		if (!failed)
+			return (false);
 	}
 	for (let x of kingSquare.dangerZones)
 	{

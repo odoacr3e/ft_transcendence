@@ -1,6 +1,6 @@
 {
   "moves": 24,
-  "victory": "green",
+  "victory": "",
   "finalBoard": "| | | | |J|V|C|K|V|+J|M| | | |\n| | | | |B|B|B|B|B|B|B| | | |\n| | | | | | | | | | | | | |M|\n|M|B| |B| | | | | | | |B| | |\n|J|B| | | | | | | | | | |B|J|\n|V|B| | | | | | | | | | |B|V|\n|K|B| | | | | | | | | | |B|K|\n|C|B| | | | | | | | | | |B|C|\n|V|B|M| | | | | | | | | |B|V|\n| | |B| | | | |J| | | | |B|J|\n| |B| |B| | | | | | |B| | |M|\n|M| | | | | | | | | | | | | |\n| | | | |B|B|B|B|B|B|B| | | |\n| | | |M|J|V|C|K|V| |M| | | |\n",
   "matchSettings": "14x14x4",
   "events": [

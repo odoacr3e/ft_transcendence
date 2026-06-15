@@ -13,6 +13,8 @@ let movementChampion = function (match)
 	let	piece;
 
 	startPos = match.cursor.square;
+	if (startPos == "a7")
+		console.log();
 	piece = match.board.get(match.cursor.square)?.piece;
 	if (piece == undefined)
 		return (0);
