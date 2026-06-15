@@ -28,7 +28,7 @@ function boost(match, from)
 	result.status = 200;
 	if (match.boost == BOOSTED_MAX)
 	{
-		if (checkMateCheckAll(match, result) == true)
+		if (checkMateCheckAll(match, result, true) == true)
 			return (result);
 		endTurn(match, false);
 	}

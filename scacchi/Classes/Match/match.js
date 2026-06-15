@@ -108,12 +108,25 @@ class Match
 			return (null);
 		return (arr);
 	}
-	/** @param {Result | null} result */
-	CheckMate(result=null)
+	/** 
+	 * 
+	 * @param {Result | null} result 
+	 * @param {Player} player
+	 * */
+	CheckMate(result=null, player)
 	{
-		if (this.playerNum != 2)
+		if (this.playerNum < 2)
+			throw ("CheckMate: player less than 2");
+		else if (this.playerNum != 2)
 		{
-			
+			this.DeletePlayer(player);
+			if (result != null)
+			{
+				result.status = 200;
+				result.board = clientBoard(this);
+				return (result);
+			}
+			return (new Result);
 		}
 		console.log("haaaaaiiiiii viiiiiiintoooooooooo!!!!!!!");
 		console.log("Premi un qualsiasi tasto per concludere...");
@@ -135,13 +148,15 @@ class Match
 	/**
 	 * 
 	 * @param {Result} result 
-	 * @param {string} team 
+	 * @param {Player} player 
 	 */
-	PlayerLost(result, team)
+	PlayerLost(result, player)
 	{
-		if (this.playerNum != 2)
+		if (this.playerNum < 2)
+			throw ("CheckMate: player less than 2");
+		else if (this.playerNum != 2)
 		{
-			// while (this.currentPlayer.team != team)
+			this.DeletePlayer(player);
 		}
 		console.log("haaaaaiiiiii persoooooooooooooooooo!!!!!!!");
 		// console.log("Premi un qualsiasi tasto per concludere...");
@@ -193,6 +208,33 @@ class Match
 	Log(name)
 	{
 		this.history.Log(this, name);
+	}
+	/** @param {Player} player */
+	DeletePlayer(player=this.currentPlayer)
+	{
+		if (!player)
+			throw (`Delete player: invalid player`);
+		//@ts-ignore
+		this[player.prev].next = player.next;
+		//@ts-ignore
+		this[player.next].prev = player.prev;
+		this.playerNum--;
+	}
+	/**
+	 * 
+	 * @param {function} func 
+	 */
+	ForEachTeam(func)
+	{
+		let	current;
+
+		current = this.currentPlayer.team;
+		do
+		{
+			func(arguments);
+			this.currentPlayer = this.currentPlayer.next;
+		}
+		while (this.currentPlayer.team != current)
 	}
 }
 

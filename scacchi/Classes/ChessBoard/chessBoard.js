@@ -36,7 +36,10 @@ class Square
 			this.piece = null;
 		this.targetZones = other.targetZones;
 		for (const [key, value] of other.boostedTargetZones)
-			this.boostedTargetZones.set(key, value);
+		{
+			let	normKey = normifier ? normifier(key) : key;
+			this.boostedTargetZones.set(normKey, value);
+		}
 		if (normifier)
 		{
 			this.NormifyZones(normifier);
@@ -65,7 +68,7 @@ class Square
 		{
 			// @ts-ignore
 			v = new Set([...v].map(normifier));
-			this.boostedTargetZones.set(normifier(k), v);
+			this.boostedTargetZones.set(k, v);
 		}
 	}
 	Copy()

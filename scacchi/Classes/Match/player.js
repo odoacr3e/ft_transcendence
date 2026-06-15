@@ -24,6 +24,7 @@ class Player
 		this.time = MATCHTIMER;
 		this.team = data.team;
 		this.next = data.next;
+		this.prev = data.prev;
 	}
 }
 
@@ -32,32 +33,38 @@ const preset =
 	white: 
 	{
 		team: eTeam.White,
-		next: eTeam.Black
+		next: eTeam.Black,
+		prev: eTeam.Black,
 	},
 	black: 
 	{
 		team: eTeam.Black,
 		next: eTeam.White,
+		prev: eTeam.White,
 	},
 	red: 
 	{
 		team: eTeam.Red,
 		next: eTeam.Green,
+		prev: eTeam.Blue,
 	},
 	blue: 
 	{
 		team: eTeam.Blue,
 		next: eTeam.Red,
+		prev: eTeam.Yellow,
 	},
 	green: 
 	{
 		team: eTeam.Green,
 		next: eTeam.Yellow,
+		prev: eTeam.Red,
 	},
 	yellow: 
 	{
 		team: eTeam.Yellow,
 		next: eTeam.Blue,
+		prev: eTeam.Green,
 	},
 }
 

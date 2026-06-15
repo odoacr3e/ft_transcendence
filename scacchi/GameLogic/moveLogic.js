@@ -720,7 +720,7 @@ function transfiguration(match, result, coord, newType)
 	square.piece.isBoostedBool = isBoostedBool;
 	DangerUpdate(match, coord);
 	match.history.UpdateTransform(match, square, coord, newType);
-	if (checkMateCheckAll(match, result) == true)
+	if (checkMateCheckAll(match, result, true) == true)
 		return (result);
 	endTurn(match, false);
 	result.status = 200;

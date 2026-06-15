@@ -44,12 +44,11 @@ function endTurn(match, sendBoardBool=true)
 	// {
 	// 	let result;
 	// 	let match = globals.matches.get(matchId);
+	// 	if (!match)
+	// 		throw ("Timer reset: bad matchId " + matchId);
 	// 	result = new Result();
-	// 	result.status = 200;
-	// 	result.youWin = true;
-	// 	result.msg = `Player ${match?.currentPlayer.team} has lost!!!`
 	// 	// @ts-ignore
-	// 	return (match.CheckMate(result));
+	// 	return (match.PlayerLost(result, match?.currentPlayer.team));
 	// }, time, "0");
 	// start = Date.now();
 	// match.timer = new Timer(time, start, timeout);

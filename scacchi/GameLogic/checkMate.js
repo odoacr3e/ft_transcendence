@@ -235,14 +235,12 @@ function checkMateCheckAll(match, result, lostBool=false)
 		while (tmp != match.currentPlayer)
 		{
 			// @ts-ignore
-			if (CheckMateCheck(match, match[match.currentPlayer.next].King))
+			if (CheckMateCheck(match, match[tmp.team].King))
 			{
-				if (lostBool == false)
-					return (match.CheckMate(result), true);
-				else
-					return (match.PlayerLost(result, tmp), true);
+				return (match.PlayerLost(result, tmp), true);
 			}
 			tmp = match[tmp.next];
+			lostBool = false;
 		}
 	}
 	// @ts-ignore
