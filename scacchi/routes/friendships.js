@@ -26,7 +26,10 @@ friendsRouter.get('/', checkJwt, async (req, res) => {
 	}
 });
 
-// TODO: implementare websocket per ricezione notifiche amicizia
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
 friendsRouter.post('/', checkJwt, async (req, res) => {
 	try {
 		const newFriendship = await friendsQuery.sendFriendship(req.user.id_user, req.body.id_friend);
@@ -38,6 +41,10 @@ friendsRouter.post('/', checkJwt, async (req, res) => {
 	}
 })
 
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
 friendsRouter.delete('/', checkJwt, async (req, res) => {
 	try {
 		await friendsQuery.removeFriendship(req.user.id_user, req.body.id_friend);
@@ -49,6 +56,10 @@ friendsRouter.delete('/', checkJwt, async (req, res) => {
 	}
 })
 
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
 friendsRouter.patch('/', checkJwt, async (req, res) => {
 	try {
 		const updatedFriend = await friendsQuery.updateFriendship(req.user.id_user, req.body.id_friend);
