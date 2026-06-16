@@ -23,7 +23,7 @@ let requests = 0;
 
 // NOTE: serve per parsing delle richieste da frontend
 app.use(cors({
-	origin: 'http://localhost:5173',
+	origin: 'http://frontend:5173',
 	credentials: true
 }));
 
