@@ -85,7 +85,7 @@ notifyRouter.post("/", checkJwt, async (req, res) => {
 				data[key] = value;
 		}
 		const notification = await postNotify.postNotification(data);
-		// sockio.emit(`notification_${notification.id_user}`, {title: notification.title, description: notification.description, sender: notification.users_notifications_id_senderTousers.username});
+		sockio.emit(`notification_${notification.id_user}`, { title: notification.title, description: notification.description, sender: notification.users_notifications_id_senderTousers.username });
 		return res.status(204).send();
 	} catch (error) {
 		console.log("Error: ", error);
