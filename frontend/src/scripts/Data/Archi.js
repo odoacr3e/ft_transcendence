@@ -7,7 +7,7 @@ import { checkEndTurn, hasBoost, DEBUGSetVisible, checkUpgrade }	from "./utils/A
 
 export async function loadReceivedMatch(style) 
 {
-	const response = await fetch("http://localhost:8080/api/game",
+	const response = await fetch("/api/game",
 	{
 		method: "POST",
 		headers: { "Content-Type": "application/json" },

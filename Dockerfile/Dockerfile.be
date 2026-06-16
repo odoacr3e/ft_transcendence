@@ -13,4 +13,4 @@ COPY backend/scacchi/prisma ./prisma
 
 EXPOSE 8080
 
-CMD ["sh", "-c", "redis-server --daemonize yes && npx prima generate && nodemon main.js"]
+CMD ["sh", "-c", "redis-server --daemonize yes ; npx prisma generate && nodemon main.js"]
