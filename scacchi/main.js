@@ -44,7 +44,6 @@ app.use((err, req, res, next) =>
 
 sockio.on('connection', (socket) => 
 {
-	socket
 	console.log("A new user connected");
 })
 
