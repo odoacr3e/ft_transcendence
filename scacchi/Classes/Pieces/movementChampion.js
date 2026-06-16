@@ -24,6 +24,7 @@ let movementChampion = function (match)
 		{
 			match.board.get(match.cursor.square)?.dangerZones.add(startPos);
 			match.board.get(startPos)?.targetZones.add(match.cursor.square);
+			match.board.AddInfluence(startPos, match.cursor.square);
 			if (!isDangerous(match, match.board.get(match.cursor.square).dangerZones, piece.team) && 
 			(match.board.get(match.cursor.square).piece == null || 
 			match.board.get(match.cursor.square).piece?.team != piece.team))

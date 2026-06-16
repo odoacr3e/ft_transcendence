@@ -91,7 +91,10 @@ let DangerUpdate = (match, pos=null, updBool=true) =>
 		{
 			// match.board.AddInfluence(); FIXME - addInfluence per tutti? 
 			if (piece.type != enumNames.BASTARDS)
+			{
+				match.board.AddInfluence(startPos, match.cursor.square);
 				usedBoard.get(match.cursor.square).dangerZones.add(startPos);
+			}
 			usedBoard.get(startPos).targetZones.add(match.cursor.square);
 			if (piece.moveLongRangeDEBUG == false || usedBoard.get(match.cursor.square)?.piece != null)
 				break ;

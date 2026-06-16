@@ -31,11 +31,13 @@ let movementJester = function (match)
 			if (col == 0) col = match.board.width;
 			match.cursor.setCursor(row, col);
 			match.board.get(startPos)?.boostedTargetZones.get(startPos)?.add(match.cursor.square);
+			match.board.AddInfluence(startPos, match.cursor.square);
 		}
 		else
 		{
 			match.cursor.setCursor(row, col);
 			match.board.get(startPos)?.targetZones.add(match.cursor.square);
+			match.board.AddInfluence(startPos, match.cursor.square);
 		}
 		match.board.get(match.cursor.square)?.dangerZones.add(startPos);
 		match.cursor.square = startPos;
