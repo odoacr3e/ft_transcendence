@@ -18,7 +18,6 @@ export const friendsRouter = lib.include.express.Router();
 friendsRouter.get('/', checkJwt, async (req, res) => {
 	try {
 		const friendships = await friendsQuery.getAllUserFriendships(req.user.id_user);
-		console.log(friendships);
 		return res.status(200).json(jsonResponse.ResponseSuccess({ friendship: friendships }));
 	} catch (error) {
 		console.log("Error: ", error);

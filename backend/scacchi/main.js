@@ -1,4 +1,4 @@
-
+//@ts-check
 import * as lib from "./lib/lib.js";
 import { apiRouter } from "./routes/api.js";
 import { authRouter } from "./routes/auth.js";
@@ -7,16 +7,7 @@ import { colors, tag } from "./utils/colors.js";
 import { log } from "./utils/log.js";
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-const app = lib.include.express();
-const server = lib.include.http.createServer(app);
-const sockio = new lib.include.SocketIO(server, {
-	cors: {
-		origin: "*", // per sviluppo, in produzione metti l'url preciso
-		methods: ["GET", "POST"],
-		credentials: true
-	},
-	connectionStateRecovery: {} // se il client si disconnette temporaneamente gli arrivano gli eventi alla riconnessione, senza vengono persi
-});
+import { app, server, sockio } from "./lib/lib.js";
 
 // setup
 const PORT = 8080;
@@ -43,12 +34,6 @@ app.use((err, req, res, next) =>
 	formattedResponse = responseFormatter(null, null, err, 500);
 	res.status(500).json(formattedResponse);
 });
-
-sockio.on('connection', (socket) => 
-{
-	sockio.emit("start_game", { messaggio: "si comincia uahu" });
-	console.log("A new user connected");
-})
 
 app.use(cookieParser()); 
 app.use(lib.include.express.static('public'));

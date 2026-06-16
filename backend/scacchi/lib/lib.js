@@ -1,3 +1,4 @@
+
 import http from "http";
 import https from "https";
 import url from "url";
@@ -7,7 +8,17 @@ import path from "path";
 import express from "express";
 import {Server as SocketIO} from "socket.io";
 
-const app = express();
+export const app = express();
+export const server = http.createServer(app);
+export const sockio = new SocketIO(server, {
+	cors: {
+		origin: "*", // per sviluppo, in produzione metti l'url preciso
+		methods: ["GET", "POST"],
+		credentials: true
+	},
+	connectionStateRecovery: {} // se il client si disconnette temporaneamente gli arrivano gli eventi alla riconnessione, senza vengono persi
+});
+
 export const logfd = await open("../log", 'a+');
 // console.log("fd:", logfd);
 

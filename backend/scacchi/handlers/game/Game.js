@@ -1,8 +1,6 @@
-// @ts-check
+// @ts-chec k
 
-import http from "http";
-import express from "express";
-import {Server as SocketIO} from "socket.io";
+import {sockio} from "../../lib/lib.js"
 import {responseFormatter} from "../../utils/response.js";
 import { Result, clientBoard, normifyRequest } from "./utils.js";
 import { move } from "./move.js";
@@ -14,17 +12,6 @@ import {makeTransfiguration} from "./transfiguration.js";
 //FIXME - solo debug
 import { globals as vault } from "../../Classes/Match/globals.js";
 const DEBUG_MATCH = vault.getDebugMatch();
-
-// const app1 = express();
-// const server1 = http.createServer(app1);
-// const sockio = new SocketIO(server1, {
-// 	cors: {
-// 		origin: "*", // per sviluppo, in produzione metti l'url preciso
-// 		methods: ["GET", "POST"],
-// 		credentials: true
-// 	},
-// 	connectionStateRecovery: {} // se il client si disconnette temporaneamente gli arrivano gli eventi alla riconnessione, senza vengono persi
-// });
 
 //FIXME - ale: i controlli di gameChecks danno per scontato che:
 //				1.	l'utente che manda le richieste sia un giocatore
@@ -66,6 +53,68 @@ function gameChecks(req, res, next)
 	}
 }
 
+sockio.on("connection", (socket) =>
+{
+	socket.on("game", (data) =>
+	{
+		let	result;
+
+		result = socketHandler(data);
+		socket.emit("game", result);
+	})
+});
+
+/**
+ * handler of game POST requests
+ * @param {*} data
+ */
+function socketHandler(data)
+{
+	/**@type {{from: *, to: string, type: string}} */  let	body;
+	let	result;
+	let	match;
+
+	match = vault.getDebugMatch();
+	//@ts-ignore
+	body = normifyRequest(match.cursor, data);
+	console.clear();
+	if (body.type == "move")
+		result = move(match, body.from, body.to);
+	else if (body.type == "boost")
+		result = boost(match, body.from);
+	else if (body.type == "moveboost")
+		result = move(match, body.from, body.to, true);
+	else if (body.type == "endturn")
+		result = endTurn(match);
+	else if (body.type == "init")
+		result = init(match, body.from, null);
+	else if (body.type == "trans")
+		result = makeTransfiguration(match, body.from, body.to);
+	else if (body.type == "reload")
+	{
+		result = new Result();
+		result.Success();
+		// @ts-ignore
+		result.board = clientBoard(match, true, true);
+		result.youWin = match.victory != "";
+	}
+	else if (body.type == "history")
+	{
+		result = new Result();
+		result.Success();//@ts-ignore
+		result.history = match.history;
+	}
+	else
+		return (error(null, null, 400, `invalid type ${body.type}`), result);
+	if (!result || !result.status)
+		return (error(null, null, 500, "backend function failed for unknown reasons"), result);
+	if (result.status != 200)
+		return (error(null, result), result);
+	result = responseFormatter(match, result, null, null);
+	render(match);
+	return (result);
+}
+
 /**
  * handler of game POST requests
  * @param {*} req 
@@ -78,11 +127,7 @@ function gameHandler(req, res)
 	let	match;
 
 	match = vault.getDebugMatch();
-	// if (!sockio || !sockio.on || !sockio.emit)
-	// 	return (res.status(400).json({msg: "non importato"}));
-	// sockio.on('connection' () => {
-	// 	sockio.emit("start_game", { messaggio: "si comincia uahu" });
-	// })
+	//@ts-ignore
 	body = normifyRequest(match.cursor, req.body);
 	console.clear();
 	if (body.type == "move")

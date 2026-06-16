@@ -10,34 +10,35 @@ let	socket = null;
 
 export async function loadReceivedMatch(style) 
 {
-	const response = await fetch("/api/game",
-	{
-		method: "POST",
-		headers: { "Content-Type": "application/json" },
-		body: JSON.stringify({ type: "init", from: style, to: "0" })
-	});
+	// const response = await fetch("/api/game",
+	// {
+	// 	method: "POST",
+	// 	headers: { "Content-Type": "application/json" },
+	// 	body: JSON.stringify({ type: "init", from: style, to: "0" })
+	// });
 
-		if (socket != null)
-			socket.disconnect();
-		socket = io('/', { withCredentials: true });
-		console.log(socket);
-		// 1. Verifica se si connette davvero
-		socket.on('connect', () => {
-			console.log("Id della connessione:", socket.id);
-		});
+		// if (socket != null)
+		// 	socket.disconnect();
+		// socket = io('/', { withCredentials: true });
+		// console.log(socket);
+		// // 1. Verifica se si connette davvero
+		// socket.on('connect', () => {
+		// 	console.log("Id della connessione:", socket.id);
+		// });
 
-		// 2. Cattura eventuali errori di connessione (CORS, porte chiuse, ecc.)
-		socket.on('connect_error', (error) => {
-			console.error("Errore di connessione al socket:", error.message);
-		});
+		// // 2. Cattura eventuali errori di connessione (CORS, porte chiuse, ecc.)
+		// socket.on('connect_error', (error) => {
+		// 	console.error("Errore di connessione al socket:", error.message);
+		// });
 
-		// 3. Il tuo listener del gioco
-		socket.on('start_game', (data) => {
-			console.log("Ricevuto dal server:", data.messaggio);
-		});
+		// // 3. Il tuo listener del gioco
+		// socket.on('game', (data) => {
+		// 	console.log("Ricevuto dal server:", data);
+		// 	return data;
+		// });
 	if (!response.ok)
 		throw new Error(`Impossibile caricare /match.json: ${response.status}`);
-	const match = await response.json();
+	// const match = await response.json();
 	// console.log(`responde: ${JSON.stringify(match)}`)
 	return match;
 }
@@ -80,12 +81,31 @@ export function validateReceivedMatch(rawJson)
 
 export async function initLocalMatchState(style)
 {
-	const raw = await loadReceivedMatch(style);
-	const validated = validateReceivedMatch(raw);
-	startLocalMatchState(validated);
+	if (socket != null)
+			socket.disconnect();
+		socket = io('/', { withCredentials: true });
+		console.log(socket);
+		// 1. Verifica se si connette davvero
+		socket.on('connect', () => {
+			console.log("Id della connessione:", socket.id);
+		});
 
-	initLocalBoard(localMatchState.board);
-	initLocalPlayers();
+		// 2. Cattura eventuali errori di connessione (CORS, porte chiuse, ecc.)
+		socket.on('connect_error', (error) => {
+			console.error("Errore di connessione al socket:", error.message);
+		});
+
+		socket.emit('game', ({ type: "init", from: style, to: "0" }));
+		//body: JSON.stringify({ type: "init", from: style, to: "0" })
+		// 3. Il tuo listener del gioco
+		socket.on('game', (data) => {
+			console.log("Ricevuto dal server:", data);
+			const raw = data;
+			const validated = validateReceivedMatch(raw);
+			startLocalMatchState(validated);
+			initLocalBoard(localMatchState.board);
+			initLocalPlayers();
+		});
 }
 
 export function initLocalPlayers()
