@@ -22,3 +22,7 @@ push_be:
 
 push_fe:
 	git subtree push --prefix=frontend origin frontend
+
+restore:
+	git restore backend
+	git restore frontend
