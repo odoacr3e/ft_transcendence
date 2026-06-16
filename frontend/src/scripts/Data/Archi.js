@@ -2,6 +2,9 @@ import { initLocalBoard, localMatchState, localBoard,
 			localPlayers, startLocalMatchState, 
 			localInfo}					from "./Variables.js";
 import { checkEndTurn, hasBoost, DEBUGSetVisible, checkUpgrade }	from "./utils/ArchiUtils.js";
+import { io } from 'socket.io-client'
+
+let	socket = null;
 
 //SECTION - INIT FUNCTIONS
 
@@ -14,6 +17,24 @@ export async function loadReceivedMatch(style)
 		body: JSON.stringify({ type: "init", from: style, to: "0" })
 	});
 
+		if (socket != null)
+			socket.disconnect();
+		socket = io('/', { withCredentials: true });
+		console.log(socket);
+		// 1. Verifica se si connette davvero
+		socket.on('connect', () => {
+			console.log("Id della connessione:", socket.id);
+		});
+
+		// 2. Cattura eventuali errori di connessione (CORS, porte chiuse, ecc.)
+		socket.on('connect_error', (error) => {
+			console.error("Errore di connessione al socket:", error.message);
+		});
+
+		// 3. Il tuo listener del gioco
+		socket.on('start_game', (data) => {
+			console.log("Ricevuto dal server:", data.messaggio);
+		});
 	if (!response.ok)
 		throw new Error(`Impossibile caricare /match.json: ${response.status}`);
 	const match = await response.json();

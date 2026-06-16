@@ -5,6 +5,8 @@ import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import tailwindcss from '@tailwindcss/vite'
 
+const URL = 'http://backend:8080';
+
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
@@ -15,13 +17,18 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://backend:8080',
+        target: URL,
         changeOrigin: true,
       },
       '/auth': {
-        target: 'http://backend:8080',
+        target: URL,
         changeOrigin: true,
-      }
+      },
+      '/socket.io': {
+        target: URL,
+        changeOrigin: true,
+        ws: true,
+    }
     },
   },
 //   server: {

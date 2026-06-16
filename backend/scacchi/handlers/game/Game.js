@@ -1,5 +1,8 @@
 // @ts-check
 
+import http from "http";
+import express from "express";
+import {Server as SocketIO} from "socket.io";
 import {responseFormatter} from "../../utils/response.js";
 import { Result, clientBoard, normifyRequest } from "./utils.js";
 import { move } from "./move.js";
@@ -11,6 +14,17 @@ import {makeTransfiguration} from "./transfiguration.js";
 //FIXME - solo debug
 import { globals as vault } from "../../Classes/Match/globals.js";
 const DEBUG_MATCH = vault.getDebugMatch();
+
+// const app1 = express();
+// const server1 = http.createServer(app1);
+// const sockio = new SocketIO(server1, {
+// 	cors: {
+// 		origin: "*", // per sviluppo, in produzione metti l'url preciso
+// 		methods: ["GET", "POST"],
+// 		credentials: true
+// 	},
+// 	connectionStateRecovery: {} // se il client si disconnette temporaneamente gli arrivano gli eventi alla riconnessione, senza vengono persi
+// });
 
 //FIXME - ale: i controlli di gameChecks danno per scontato che:
 //				1.	l'utente che manda le richieste sia un giocatore
@@ -64,7 +78,11 @@ function gameHandler(req, res)
 	let	match;
 
 	match = vault.getDebugMatch();
-	//@ts-ignore
+	// if (!sockio || !sockio.on || !sockio.emit)
+	// 	return (res.status(400).json({msg: "non importato"}));
+	// sockio.on('connection' () => {
+	// 	sockio.emit("start_game", { messaggio: "si comincia uahu" });
+	// })
 	body = normifyRequest(match.cursor, req.body);
 	console.clear();
 	if (body.type == "move")
