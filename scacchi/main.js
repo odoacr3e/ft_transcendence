@@ -12,18 +12,20 @@ const server = lib.include.http.createServer(app);
 const sockio = new lib.include.SocketIO(server, {
 	cors: {
 		origin: "*", // per sviluppo, in produzione metti l'url preciso
-		methods: ["GET", "POST"]
+		methods: ["GET", "POST"],
+		credentials: true
 	},
 	connectionStateRecovery: {} // se il client si disconnette temporaneamente gli arrivano gli eventi alla riconnessione, senza vengono persi
 });
 
 // setup
 const PORT = 8080;
+const URL = 'http://frontend:5173';
 let requests = 0;
 
 // NOTE: serve per parsing delle richieste da frontend
 app.use(cors({
-	origin: 'http://frontend:5173',
+	origin: URL,
 	credentials: true
 }));
 
@@ -44,6 +46,7 @@ app.use((err, req, res, next) =>
 
 sockio.on('connection', (socket) => 
 {
+	sockio.emit("start_game", { messaggio: "si comincia uahu" });
 	console.log("A new user connected");
 })
 
