@@ -185,6 +185,23 @@ class ChessBoard
 		this.forEach((v, k) => {console.log(k + ":", v.influenceZones);});
 		console.log("---------------------STOP\n\n");
 	}
+	/** @param {string} coord */
+	ResetTargets(coord)
+	{
+		let	square;
+
+		square = this.get(coord);
+		for (const [key, value] of square.boostedTargetZones)
+		{
+			for (const target of value)
+				this.get(target).dangerZones.delete(coord);
+		}
+		for (const target of square.targetZones)
+			this.get(target).dangerZones.delete(coord);
+		square.targetZones.clear();
+		this.ResetInfluence(coord);
+		square.boostedTargetZones.clear();
+	}
 };
 
 //ANCHOR - utils

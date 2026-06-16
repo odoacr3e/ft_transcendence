@@ -64,22 +64,13 @@ let DangerUpdate = (match, pos=null, updBool=true) =>
 	else
 		pos = match.cursor.square;
 	startPos = match.cursor.square;
+	match.board.ResetTargets(startPos);
 	piece = usedBoard.get(match.cursor.square)?.piece;
 	if (piece == null)
 		return (0);
 	team = piece.team;
 	kingCoord = match[team].King;
 	kingSquare = match.board.get(kingCoord);
-	for (const [key, value] of match.board.get(pos).boostedTargetZones)
-	{
-		for (const target of value)
-			match.board.get(target).dangerZones.delete(startPos);
-	}
-	for (const target of match.board.get(pos).targetZones)
-		match.board.get(target).dangerZones.delete(startPos);
-	match.board.get(pos).targetZones.clear();
-	match.board.ResetInfluence(pos);
-	match.board.get(pos).boostedTargetZones.clear();
 	for (let {dx, dy} of piece.moveArray)
 	{
 		if (!bastardChecks(match, dx, dy, piece))
