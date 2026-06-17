@@ -62,6 +62,7 @@ function copyOnlyBoardUpdates(match)
 
 	src = match.board;
 	newBoard = new Map();
+	console.log(`Board updates: ${match.board.updates.size}`);
 	for (const coord of match.board.updates)
 	{
 		square = src.get(coord);
