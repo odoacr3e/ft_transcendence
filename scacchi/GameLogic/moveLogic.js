@@ -613,11 +613,33 @@ function simulation(coords, match, result)
 }
 
 /**
+ * 
+ * @param {Array<String>} coords
+ * @param {Match} match
+ * @param {Result} result
+ * @returns 
+ */
+function simulationRefactor(coords, match, result)
+{
+	let	startSquare;
+	let	destSquare;
+	let	kingCoord;
+	let	kingSquare;
+
+	startSquare = match.board.get(coords[0]);
+	destSquare = match.board.get(coords[1]);
+	kingCoord = match.currentPlayer.King;
+	if (coords[0] == kingCoord)
+		kingCoord = coords[1];
+	return (true);
+}
+
+/**
  * check if is possible to go from start to dest
  * @param {Match} match 
  * @param {Square | string} start 
  * @param {Square | string} dest
- * @param {Set<string>} ignoredCoords
+ * @param {Set<string> | string} ignoredCoords
  * @param {boolean} considerBoostedBool 
  */
 export function pathFinding(match, start, dest, ignoredCoords=new Set, considerBoostedBool=false)
@@ -628,8 +650,7 @@ export function pathFinding(match, start, dest, ignoredCoords=new Set, considerB
 	let	reverseMove = {dx: 0, dy: 0};
 	let	moveData;
 
-	//for optimization, the search will go from dest to start
-	//because you have one dest but multiple start (boosted zones)
+	//finds data for start, dest and ignoredCoords
 	if (typeof(start) == "string")
 	{
 		startCoord = start;
@@ -644,8 +665,12 @@ export function pathFinding(match, start, dest, ignoredCoords=new Set, considerB
 	}
 	else
 		destCoord = dest.piece?.pos;
+	if (typeof(ignoredCoords) == "string")
+		ignoredCoords = new Set(ignoredCoords);
 	if (!start.piece || !startCoord || !destCoord)
 		throw (`pathFinding: invalid parameters`);
+	//for optimization, the search will go from dest to start
+	//because you have one dest but multiple start (boosted zones)
 	startArray.add(startCoord);
 	if (considerBoostedBool == true)
 	{
