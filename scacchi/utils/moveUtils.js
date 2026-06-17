@@ -127,20 +127,31 @@ let DangerUpdate = (match, pos=null, updBool=true) =>
 /**
  * 
  * @param {Match} match
- * @param {string} coord 
+ * @param {Array<string>} coords
  */
-function CheckInfluence(match, coord)
+function CheckInfluence(match, coords)
 {
 	let setInfluence;
-	let tmpInfluence;
+	let tmpInfluence = [];
+	let	i;
 
-	setInfluence = match.board.influenceMap.get(coord);
-	if (!setInfluence)
-		throw (`dangerDelPiece: invalid coord ${coord}`);
-	tmpInfluence = new Set(setInfluence);
-	for (const influenceCoord of tmpInfluence)
-		DangerUpdate(match, influenceCoord);
-	match.board.ResetInfluence(coord);
+	for (const coord of coords)
+	{
+		setInfluence = match.board.influenceMap.get(coord);
+		if (!setInfluence)
+			throw (`dangerDelPiece: invalid coord ${coord}`);
+		tmpInfluence.push(new Set(setInfluence));
+	}
+	i = 0;
+	for (const set of tmpInfluence)
+	{
+		for (const influenceCoord of set)
+		{
+			DangerUpdate(match, influenceCoord);
+			match.board.ResetInfluence(coords[i]);
+		}
+		++i;
+	}
 }
 
 /**
@@ -275,9 +286,12 @@ function dangerUpdateMoved(match, selected=[], result=null, delBool=true)
 	// return (dangerUpdateAll(match));
 	if (selected.length != 2)
 		throw ("dangerUpdateMoved must be called with two pieces: from, to");
-	if (delBool == true)
-		dangerDelPiece(match, selected[0], selected[1], result);
-	dangerUpPiece(match, selected[1], result);
+	// if (delBool == true)
+	// 	dangerDelPiece(match, selected[0], selected[1], result);
+	// dangerUpPiece(match, selected[1], result);
+	// DangerUpdate(match, selected[1]);
+	CheckInfluence(match, selected);
+	DangerUpdate(match, selected[0]);
 	DangerUpdate(match, selected[1]);
 }
 
