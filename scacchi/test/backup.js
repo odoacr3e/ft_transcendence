@@ -119,3 +119,19 @@ function dangerUpPiece(match, pos=match.cursor.square, result=null)
 		throw ("DEBUG throw REMOVE");
 	match.board.updates.add(pos);
 }
+
+//SECTION - checkMateCheck
+
+	for (let x of kingSquare.dangerZones)
+	{
+		if (match.board.get(x).piece?.team != team)
+		{
+			enemySquare = x;
+			threat.add(enemySquare);
+		}
+	}
+
+	if (enemySet.has(enemyCoord) && enemySet.has(kingCoord))
+		enemySet.delete(enemyCoord);
+	if (isDangerous(match, enemySet, team) && enemySet.has(kingCoord))
+		enemySet?.delete(kingCoord);	

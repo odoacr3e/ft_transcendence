@@ -12,6 +12,72 @@ import { pathFinding } from "./moveLogic.js";
 /**
  * 
  * @param {Match} match
+ * @param {string} kingCoord
+ */
+function CheckMateCheck(match, kingCoord)
+{
+	let threat = new Set;
+	let kingSquare;
+	let enemySquare;
+	let enemyCoord;
+	let team;
+
+	kingSquare = match.board.get(kingCoord);
+	if (!kingSquare || !kingSquare.piece)
+		throw (`missing king for team`);
+	team = kingSquare.piece.team;
+	if (!isDangerous(match, kingSquare.dangerZones, team))
+		return false;
+	if (canDodge(match, kingSquare) == true)
+		return false;
+	enemyCoord = findThreats(match, threat, kingSquare, team);
+	if (threat.size == 2 && doubleSave(match, threat))
+		return true;
+	if (threat.size >= 2)
+		return true;
+	if (!enemyCoord)
+		return false;
+	enemySquare = match.board.get(enemyCoord);
+	if (isDangerous(match, enemySquare.dangerZones, enemySquare.piece?.team))
+		return (cantMovePiece(match, enemyCoord, enemySquare, kingCoord));
+	if (isStoppable(match, kingCoord, enemyCoord))
+		return false;
+	return true;
+}
+
+/**
+ * 
+ * @param {Match} match 
+ * @param {Result | null} result
+ * @param {boolean} lostBool
+ */
+function checkMateCheckAll(match, result, lostBool=false)
+{
+	if (match.playerNum > 2)
+	{
+		let tmp = match.currentPlayer;
+
+		tmp = match[tmp.next];
+		while (tmp != match.currentPlayer)
+		{
+			// @ts-ignore
+			if (CheckMateCheck(match, match[tmp.team].King))
+			{
+				return (match.PlayerLost(result, tmp), true);
+			}
+			tmp = match[tmp.next];
+			lostBool = false;
+		}
+	}
+	// @ts-ignore
+	else if (CheckMateCheck(match, match[match.currentPlayer.next].King))
+		return (match.CheckMate(result), true);
+	return (false);
+}
+
+/**
+ * 
+ * @param {Match} match
  * @param {string} kingSquare 
  * @param {string} enemySquare 
  */
@@ -167,100 +233,63 @@ function doubleSave(match, threat)
 
 /**
  * 
- * @param {Match} match
- * @param {string} kingCoord
+ * @param {Match} match 
+ * @param {Square} square 
+ * @returns 
  */
-function CheckMateCheck(match, kingCoord)
+function canDodge(match, square)
 {
-	let threat = new Set;
-	let kingSquare;
-	let enemySquare;
-	let enemyCoord;
-	let team;
+	let	canDodgeBool;
+	let	coord;
+	let	newSquare;
+	let	piece;
 
-	kingSquare = match.board.get(kingCoord);
-	if (!kingSquare)
-		throw (`missing king for team `);
-	team = kingSquare.piece?.team;
-	if (!isDangerous(match, kingSquare.dangerZones, team))
-		return false;
-	for (let x of kingSquare.targetZones)//king can dodge?
+	piece = square.piece;
+	if (!piece)
+		throw (`canDodge: square ${square} has undefined piece`);
+	coord = piece.pos;
+	for (let newCoord of square.targetZones)//king can dodge?
 	{
-		if (isDangerous(match, match.board.get(x).dangerZones, team) || match.board.get(x).piece?.team == kingSquare.piece?.team)
+		newSquare = match.board.get(newCoord);
+		if (isDangerous(match, newSquare.dangerZones, piece.team) || newSquare.piece?.team == piece.team)
 			continue ;
-		let	failed = false;
-
-		for (const danger of kingSquare.dangerZones)
+		canDodgeBool = true;
+		for (const danger of square.dangerZones)
 		{
-			if (x == danger)
-				continue ;
-			if (pathFinding(match, danger, x, kingCoord, true) != null)
+			if (pathFinding(match, danger, newCoord, coord, true) != null)
 			{
-				failed = true;
+				canDodgeBool = false;
 				break ;
 			}
 		}
-		if (!failed)
-			return (false);
+		if (canDodgeBool == true)
+			return (true);
 	}
-	for (let x of kingSquare.dangerZones)
-	{
-		if (match.board.get(x).piece?.team != team)
-		{
-			enemySquare = x;
-			threat.add(enemySquare);
-		}
-	}
-	if (threat.size == 2 && doubleSave(match, threat))
-		return true;
-	if (threat.size >= 2)
-		return true;
-	if (!enemySquare) // ts-check stuff
-		return false;
-	enemyCoord = enemySquare;
-	enemySquare = match.board.get(enemySquare);
-	let enemySet = enemySquare.dangerZones;
-	if (!enemySet) // ts-check stuff
-		return false;
-	if (enemySet.has(enemyCoord) && enemySet.has(kingCoord))
-		enemySet.delete(enemyCoord);
-	if (isDangerous(match, enemySet, team) && enemySet.has(kingCoord))
-		enemySet?.delete(kingCoord);
-	if (isDangerous(match, enemySet, enemySquare.piece?.team))
-		return (cantMovePiece(match, enemyCoord, enemySquare, kingCoord));
-	if (isStoppable(match, kingCoord, enemyCoord))
-		return false;
-	return true;
+	return (false);
 }
 
 /**
  * 
  * @param {Match} match 
- * @param {Result | null} result
- * @param {boolean} lostBool
+ * @param {Set<string>} threat
+ * @param {Square} square 
+ * @param {string} team
+ * @returns 
  */
-function checkMateCheckAll(match, result, lostBool=false)
+function findThreats(match, threat, square, team)
 {
-	if (match.playerNum > 2)
-	{
-		let tmp = match.currentPlayer;
+	let	enemyCoord;
 
-		tmp = match[tmp.next];
-		while (tmp != match.currentPlayer)
+	enemyCoord = null;
+	for (let x of square.dangerZones)
+	{
+		if (match.board.get(x).piece?.team != team)
 		{
-			// @ts-ignore
-			if (CheckMateCheck(match, match[tmp.team].King))
-			{
-				return (match.PlayerLost(result, tmp), true);
-			}
-			tmp = match[tmp.next];
-			lostBool = false;
+			enemyCoord = x;
+			threat.add(enemyCoord);
 		}
 	}
-	// @ts-ignore
-	else if (CheckMateCheck(match, match[match.currentPlayer.next].King))
-		return (match.CheckMate(result), true);
-	return (false);
+	return (enemyCoord);
 }
 
 /**

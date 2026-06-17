@@ -20,7 +20,7 @@ import { coordNormify } from "../Classes/Match/cursor.js";
 /** @typedef {import ("../Classes/Match/history.js").HistoryEvent} HistoryEvent */
 /** @typedef {{board: ChessBoard, log: {msg: string, status: number}}} BackResponse*/
 
-const curlWaitTimeMs = 0; 
+const curlWaitTimeMs = 0;
 let	currMatch = "";
 let	errorFlag = 0;
 let	fData = {};

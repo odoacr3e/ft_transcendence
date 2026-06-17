@@ -638,7 +638,7 @@ function simulationRefactor(coords, match, result)
  * check if is possible to go from start to dest
  * @param {Match} match 
  * @param {Square | string} start 
- * @param {Square | string} dest
+ * @param {string} dest
  * @param {Set<string> | string} ignoredCoords
  * @param {boolean} considerBoostedBool 
  */
@@ -658,13 +658,7 @@ export function pathFinding(match, start, dest, ignoredCoords=new Set, considerB
 	}
 	else
 		startCoord = start.piece?.pos;
-	if (typeof(dest) == "string")
-	{
-		destCoord = dest;
-		dest = match.board.get(dest);
-	}
-	else
-		destCoord = dest.piece?.pos;
+	destCoord = dest;
 	if (typeof(ignoredCoords) == "string")
 		ignoredCoords = new Set(ignoredCoords);
 	if (!start.piece || !startCoord || !destCoord)
