@@ -56,6 +56,7 @@ function bastardChecks(match, dy, dx, piece)
 {
 	let	target;
 	let	startPos;
+	let	targetPos;
 
 	if (piece.type != enumNames.BASTARDS)
 		return true;
@@ -72,13 +73,15 @@ function bastardChecks(match, dy, dx, piece)
 	if (match.cursor.moveCol(dx) == false)
 		return (match.cursor.Restore(), false);
 	match.board.AddInfluence(startPos, match.cursor.square);
-	target = match.board.get(match.cursor.square).piece;
+	targetPos = match.cursor.square;
+	target = match.board.get(targetPos).piece;
 	if (dx != 0 && dy != 0)//NOTE - bastards moves diagonally
 	{
-		match.board.get(match.cursor.square).dangerZones.add(startPos);
+		match.board.get(targetPos).dangerZones.add(startPos);
 		match.cursor.Restore();
 		if (!target || target.team == piece.team)
 			return (false);
+		match.board.get(startPos).targetZones.add(targetPos);
 		return (true);
 	}
 	else if (target)//NOTE - bastards moves front
@@ -86,6 +89,7 @@ function bastardChecks(match, dy, dx, piece)
 		addLongBastardInfluence(match, dx, dy, startPos, piece);
 		return (match.cursor.Restore(), false);
 	}
+	match.board.get(startPos).targetZones.add(targetPos);
 	addLongBastardInfluence(match, dx, dy, startPos, piece);
 	if (!piece.isMovedBool && !match.board.get(match.cursor.square).piece)
 	{

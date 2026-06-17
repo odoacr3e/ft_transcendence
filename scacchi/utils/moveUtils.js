@@ -67,18 +67,15 @@ let DangerUpdate = (match, pos=null, updBool=true) =>
 		return (0);
 	for (let {dx, dy} of piece.moveArray)
 	{
-		if (!bastardChecks(match, dx, dy, piece))
+		if (piece.type == enumNames.BASTARDS)
 		{
-			match.board.get(match.cursor.square).dangerZones.add(startPos);
+			bastardChecks(match, dx, dy, piece);
 			continue ;
 		}
 		while (movePiece(match, dy, dx, false))
 		{ 
-			if (piece.type != enumNames.BASTARDS)
-			{
-				match.board.AddInfluence(startPos, match.cursor.square);
-				match.board.get(match.cursor.square).dangerZones.add(startPos);
-			}
+			match.board.AddInfluence(startPos, match.cursor.square);
+			match.board.get(match.cursor.square).dangerZones.add(startPos);
 			match.board.get(startPos).targetZones.add(match.cursor.square);
 			if (piece.moveLongRangeDEBUG == false || match.board.get(match.cursor.square)?.piece != null)
 				break ;
