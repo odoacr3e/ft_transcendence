@@ -5,7 +5,9 @@ import * as Macro from "../Macro/macro.js";
 import {bastardChecks} from "./gameUtils.js";
 
 /**@typedef {import("../Classes/Match/match.js").Match} Match*/
+/**@typedef {import("../Classes/Match/player.js").Player} Player*/
 /**@typedef {import("../Classes/endPoint/result.js").Result} Result*/
+/**@typedef {import("../Classes/Pieces/pieces.js").Piece} Piece*/
 
 /**
  * try to move the cursor to dx, dy. return true/false
@@ -51,68 +53,41 @@ let movePiece = (match, dy, dx, clear=false) =>
  */
 let DangerUpdate = (match, pos=null, updBool=true) =>
 {
-	let	usedBoard;
 	let	piece;
 	let	startPos;
-	let team;
-	let	kingCoord;
-	let	kingSquare;
 
-	usedBoard = match.board;
 	if (pos != null)
 		match.cursor.set(pos);
 	else
 		pos = match.cursor.square;
 	startPos = match.cursor.square;
 	match.board.ResetTargets(startPos);
-	piece = usedBoard.get(match.cursor.square)?.piece;
+	piece = match.board.get(match.cursor.square).piece;
 	if (piece == null)
 		return (0);
-	team = piece.team;
-	kingCoord = match[team].King;
-	kingSquare = match.board.get(kingCoord);
 	for (let {dx, dy} of piece.moveArray)
 	{
 		if (!bastardChecks(match, dx, dy, piece))
 		{
-			usedBoard.get(match.cursor.square).dangerZones.add(startPos);
+			match.board.get(match.cursor.square).dangerZones.add(startPos);
 			continue ;
 		}
 		while (movePiece(match, dy, dx, false))
-		{
-			// match.board.AddInfluence(); FIXME - addInfluence per tutti? 
+		{ 
 			if (piece.type != enumNames.BASTARDS)
 			{
 				match.board.AddInfluence(startPos, match.cursor.square);
-				usedBoard.get(match.cursor.square).dangerZones.add(startPos);
+				match.board.get(match.cursor.square).dangerZones.add(startPos);
 			}
-			usedBoard.get(startPos).targetZones.add(match.cursor.square);
-			if (piece.moveLongRangeDEBUG == false || usedBoard.get(match.cursor.square)?.piece != null)
+			match.board.get(startPos).targetZones.add(match.cursor.square);
+			if (piece.moveLongRangeDEBUG == false || match.board.get(match.cursor.square)?.piece != null)
 				break ;
 		}
 		match.cursor.square = startPos;
 	}
 	if (piece.isBoostedBool == true)
 		piece.moveFunction(match);
-	if (piece.type == enumNames.KING && !piece.isMovedBool)
-	{
-		for (const x of match[team].castlingArray)
-			kingSquare.targetZones.add(x);
-	}
-	else if (piece.type == enumNames.MINOTAURUS)
-	{
-		match[team].castlingArray.delete(startPos);
-		if (kingSquare.piece?.isMovedBool || piece.isMovedBool)
-			kingSquare.targetZones.delete(startPos);
-		else if (match.board.get(startPos).targetZones.has(kingCoord))
-		{
-			match.board.updates.add(kingCoord);
-			match[team].castlingArray.add(startPos);
-			kingSquare.targetZones.add(startPos);		
-		}
-		else
-			kingSquare.targetZones.delete(startPos);
-	}
+	castlingUpdate(match, startPos, piece);
 	match.board.get(pos).targetZones.delete(pos);
 	match.board.get(pos).dangerZones.delete(pos);
 	if (updBool == false)
@@ -122,6 +97,44 @@ let DangerUpdate = (match, pos=null, updBool=true) =>
 	else
 		match.board.updates.add(match.cursor.square);
 	return (1);
+}
+
+/**
+ * 
+ * @param {Match} match 
+ * @param {string} startPos 
+ * @param {Piece} piece 
+ */
+function castlingUpdate(match, startPos, piece)
+{
+	/** @type {Player} */
+	let player;
+	let	kingCoord;
+	let	kingSquare;
+
+	//@ts-ignore
+	player = match[piece.team];
+	kingCoord = player.King;
+	kingSquare = match.board.get(kingCoord);
+	if (piece.type == enumNames.KING && !piece.isMovedBool)
+	{
+		for (const x of player.castlingArray)
+			kingSquare.targetZones.add(x);
+	}
+	else if (piece.type == enumNames.MINOTAURUS)
+	{
+		player.castlingArray.delete(startPos);
+		if (kingSquare.piece?.isMovedBool || piece.isMovedBool)
+			kingSquare.targetZones.delete(startPos);
+		else if (match.board.get(startPos).targetZones.has(kingCoord))
+		{
+			match.board.updates.add(kingCoord);
+			player.castlingArray.add(startPos);
+			kingSquare.targetZones.add(startPos);		
+		}
+		else
+			kingSquare.targetZones.delete(startPos);
+	}
 }
 
 /**
@@ -167,126 +180,6 @@ function checkInfluenceSets(match, coords, influenceSets)
 		}
 		++i;
 	}
-}
-
-/**
- * 
- * @param {Match} match
- * @param {string} pos
- * @param {string} dest
- * @param {Result | null} result
- * @param {boolean} updateBool
- */
-function dangerDelPiece(match, pos=match.cursor.square, dest, result=null, updateBool=true)
-{
-	let	pieceSquare;
-	let tmp;
-
-	pieceSquare = match.board.get(pos);
-	for (const target of pieceSquare.targetZones)
-	{
-		match.board.get(target).dangerZones.delete(pos);
-		if (target != dest)
-			DangerUpdate(match, target, updateBool);
-	}
-	if (result && result.specialMoves.CheckBastardMove())
-	{
-		match.cursor.Save();
-		match.cursor.set(pos);
-		for (const move of kingMovements)
-		{
-			movePiece(match, move.dy, move.dx);
-			match.board.get(match.cursor.square).dangerZones.delete(pos);
-			match.cursor.set(pos);
-		}
-		match.cursor.Restore();
-	}
-	for (const [key, set] of pieceSquare.boostedTargetZones)
-	{
-		for (const target of set)
-		{
-			match.board.get(target).dangerZones.delete(pos);
-			// DangerUpdate(match, target);
-		}
-	}
-	tmp = new Set(pieceSquare.dangerZones);
-	pieceSquare.dangerZones.clear();
-	for (const target of tmp)
-	{
-		if (!result || result.specialMoves.CheckSniperMove() == 0)
-		{
-			if (target != dest)
-				DangerUpdate(match, target, updateBool);
-		}
-		// if (pos == null)
-		// 	throw ("DEBUG throw dangerZones");
-		// match.board.updates.add(target);
-	}
-	CheckInfluence(match, pos);
-	pieceSquare.targetZones.clear();
-	pieceSquare.boostedTargetZones.clear();
-	// pieceSquare.ClearZones();
-	if (pos == null)
-		throw ("DEBUG throw REMOVE");
-	match.board.updates.add(pos);
-}
-
-/**
- * 
- * @param {Match} match
- * @param {string} pos
- * @param {Result | null} result
- */
-function dangerUpPiece(match, pos=match.cursor.square, result=null)
-{
-	let	pieceSquare;
-	let tmpSet;
-
-	pieceSquare = match.board.get(pos);
-	tmpSet = new Set(pieceSquare.dangerZones);
-	for (const target of pieceSquare.targetZones)
-	{
-		match.board.get(target).dangerZones.delete(pos);
-		// DangerUpdate(match, target);
-	}
-	if (result && (result.specialMoves.CheckBastardMove() || result.specialMoves.CheckEatenBastard()))
-	{
-		match.cursor.Save();
-		match.cursor.set(pos);
-		for (const move of kingMovements)
-		{
-			movePiece(match, move.dy, move.dx);
-			match.board.get(match.cursor.square).dangerZones.delete(pos);	
-			match.cursor.set(pos);
-		}
-		match.cursor.Restore();
-	}
-	for (const [key, set] of pieceSquare.boostedTargetZones)
-	{
-		for (const target of set)
-		{
-			match.board.get(target).dangerZones.delete(pos);
-			// DangerUpdate(match, target);
-		}
-	}
-	for (const target of tmpSet)
-	{
-		// if (!result || result.specialMoves.CheckSniperMove() == 0)
-		// {
-			// dangerDelPiece(match, target, pos, result, false);
-		// }
-		DangerUpdate(match, target);
-		// if (pos == null)
-		// 	throw ("DEBUG throw dangerZones");
-		// match.board.updates.add(target);
-	}
-	CheckInfluence(match, pos);
-	pieceSquare.targetZones.clear();
-	pieceSquare.boostedTargetZones.clear();
-	// pieceSquare.ClearZones();
-	if (pos == null)
-		throw ("DEBUG throw REMOVE");
-	match.board.updates.add(pos);
 }
 
 /**
