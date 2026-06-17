@@ -132,23 +132,38 @@ let DangerUpdate = (match, pos=null, updBool=true) =>
 function CheckInfluence(match, coords)
 {
 	let setInfluence;
-	let tmpInfluence = [];
-	let	i;
+	let tmpInfluenceDanger = [];
+	let tmpInfluenceTarget = [];
 
 	for (const coord of coords)
 	{
 		setInfluence = match.board.influenceMap.get(coord);
 		if (!setInfluence)
 			throw (`dangerDelPiece: invalid coord ${coord}`);
-		tmpInfluence.push(new Set(setInfluence));
+		tmpInfluenceDanger.push(new Set(setInfluence));
+		tmpInfluenceTarget.push(new Set(match.board.get(coord).influenceZones));
 	}
+	checkInfluenceSets(match, coords, tmpInfluenceDanger);
+	// checkInfluenceSets(match, coords, tmpInfluenceTarget);
+}
+
+/**
+ * 
+ * @param {Match} match 
+ * @param {Array<string>} coords 
+ * @param {Array<Set<string>>} influenceSets the set for every coord
+ */
+function checkInfluenceSets(match, coords, influenceSets)
+{
+	let	i;
+
 	i = 0;
-	for (const set of tmpInfluence)
+	for (const set of influenceSets)
 	{
 		for (const influenceCoord of set)
 		{
 			DangerUpdate(match, influenceCoord);
-			match.board.ResetInfluence(coords[i]);
+			// match.board.ResetInfluence(coords[i]);
 		}
 		++i;
 	}

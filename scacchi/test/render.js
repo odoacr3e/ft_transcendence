@@ -41,7 +41,7 @@ function render(match=null, selected=[], TargetDangerSwitch="", silentBool=false
 		{
 			coords.curr = match.cursor.square;
 			square = board.get(coords.curr);
-			buffer += renderSquare(square, coords, selected, TargetDangerSwitch);
+			buffer += renderSquare(match, square, coords, selected, TargetDangerSwitch);
 		}
 		while (match.cursor.moveCol(+1))
 		buffer += "\n";
@@ -54,12 +54,13 @@ function render(match=null, selected=[], TargetDangerSwitch="", silentBool=false
 
 /**
  * 
+ * @param {Match} match
  * @param {Square} square 
  * @param {*} coords 
  * @param {Array<string>} selected
  * @param {string} TargetDangerSwitch 
  */
-function renderSquare(square, coords, selected, TargetDangerSwitch)
+function renderSquare(match, square, coords, selected, TargetDangerSwitch)
 {
 	let	asciiArt;
 	let	buffer;
@@ -75,6 +76,8 @@ function renderSquare(square, coords, selected, TargetDangerSwitch)
 	else if (TargetDangerSwitch == "Target" && coords.playerSquare.targetZones.has(coords.curr))
 		buffer += `\x1b[31m[${asciiArt}]`;
 	else if (TargetDangerSwitch == "Danger" && coords.playerSquare.dangerZones.has(coords.curr))
+		buffer += `\x1b[31m[${asciiArt}]`;
+	else if (TargetDangerSwitch == "Influence" && match.board.influenceMap.get(coords.player)?.has(coords.curr))
 		buffer += `\x1b[31m[${asciiArt}]`;
 	else if (square.piece?.isBoostedBool == true)
 		buffer += `\x1b[34m[${asciiArt}]`;

@@ -39,6 +39,7 @@ function historyRestore(match, path)
 		match.historyCreateBool = true;
 		for (const event of history.events)
 		{
+			console.log(`History: move number ${event.counter}`);
 			if (DEBUGCounter == 41)
 				console.log("");
 			if (event.type == eEvents.Move)

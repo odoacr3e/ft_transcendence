@@ -82,6 +82,8 @@ process.stdin.on('keypress', (str, key) =>
 			else if (TargetDangerSwitch == "Target")
 				TargetDangerSwitch = "Danger";
 			else if (TargetDangerSwitch == "Danger")
+				TargetDangerSwitch = "Influence";
+			else if (TargetDangerSwitch == "Influence")
 				TargetDangerSwitch = "None";
 			break ;
 		case (cmd.END_TURN) :

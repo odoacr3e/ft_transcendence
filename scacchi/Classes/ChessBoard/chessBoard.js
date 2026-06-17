@@ -196,7 +196,7 @@ class ChessBoard
 			for (const target of value)
 				this.get(target).dangerZones.delete(coord);
 		}
-		for (const target of square.targetZones)
+		for (const target of square.influenceZones)
 			this.get(target).dangerZones.delete(coord);
 		square.targetZones.clear();
 		this.ResetInfluence(coord);
