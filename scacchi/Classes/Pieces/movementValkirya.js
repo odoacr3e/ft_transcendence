@@ -1,5 +1,5 @@
 // @ts-check
-import {movePiece} from "../../utils/moveUtils.js";
+import {movePiece, setBoostedInfluence} from "../../utils/moveUtils.js";
 
 /**
  * 
@@ -37,6 +37,7 @@ let movementValkirya = function (match)
 				match.board.get(match.cursor.square)?.dangerZones.add(startPos);
 				match.board.get(startPos)?.boostedTargetZones.get(startPos)?.add(match.cursor.square);
 				match.board.AddInfluence(startPos, match.cursor.square);
+				setBoostedInfluence(match, piece, match.cursor.square, dx, dy);
 				break ;
 			}
 		}

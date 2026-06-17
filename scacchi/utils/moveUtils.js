@@ -65,6 +65,7 @@ let DangerUpdate = (match, pos=null, updBool=true) =>
 	piece = match.board.get(match.cursor.square).piece;
 	if (piece == null)
 		return (0);
+	piece.boostedInfluence.clear();
 	for (let {dx, dy} of piece.moveArray)
 	{
 		if (piece.type == enumNames.BASTARDS)
@@ -228,4 +229,31 @@ function dangerUpdateAll(match)
 	match.cursor.set(temp);
 }
 
-export {movePiece, DangerUpdate, dangerUpdateAll, dangerUpdateMoved};
+/**
+ * 
+ * @param {Match} match 
+ * @param {Piece} piece
+ * @param {string} stopCoord 
+ * @param {number} dx 
+ * @param {number} dy 
+ */
+function setBoostedInfluence(match, piece, stopCoord, dx, dy)
+{
+	let	influence;
+	let	square;
+
+	influence = new Set();
+	while (movePiece(match, dy, dx))
+	{
+		square = match.board.get(match.cursor.square);
+		if (square.piece)
+			break ;
+		influence.add(match.cursor.square);
+	}
+	if (piece.boostedInfluence.has(stopCoord) == false)
+		piece.boostedInfluence.set(stopCoord, [influence]);
+	else
+		piece.boostedInfluence.get(stopCoord)?.push(influence);
+}
+
+export {movePiece, DangerUpdate, dangerUpdateAll, dangerUpdateMoved, setBoostedInfluence};

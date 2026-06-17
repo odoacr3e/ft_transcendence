@@ -624,6 +624,9 @@ function simulation(coords, match, result)
 // 	let	kingCoord;
 // 	let	enemyCoord;
 // 	let	enemySquare;
+// 	let	boosted;
+// 	let	boostedPiece;
+// 	let	boostedPieceNewTargets;
 
 // 	team = match.currentPlayer.team;
 // 	kingCoord = match.currentPlayer.King;
@@ -636,78 +639,96 @@ function simulation(coords, match, result)
 // 		enemyCoord = coords[1];
 // 	else
 // 		enemyCoord = null;
-// 	if (checkKingDanger(match, coords[0], enemyCoord, kingCoord, team) == true)
+// 	if (checkKingDanger(match, coords[0], coords[0], kingCoord, team, coords[1]) == true)
 // 		return (false);
-// 	// if (checkKingDanger(match, kingCoord, coords[0], kingCoord, team) == true)
-// 	// 	return (false);
+// 	if (checkKingDanger(match, kingCoord, coords[0], kingCoord, team, coords[1]) == true)
+// 		return (false);
 // 	if (simulateBastardsDanger(match, coords, result) == true)
 // 		return (false);
+// 	boosted = match.GetOBoostedPieceCoords();
+// 	if (!boosted)
+// 		return (true);
+// 	for (const coord of boosted)
+// 	{
+// 		boostedPiece = match.board.get(coord).piece;
+// 		if (!boostedPiece)
+// 			throw (`simulation: missing piece in coord ${coord}`);
+// 		boostedPieceNewTargets = boostedPiece.boostedInfluence.get(coords[0]);
+// 		if (!boostedPieceNewTargets)
+// 			continue ;
+// 		for (const set of boostedPieceNewTargets)
+// 			if (set.has(kingCoord) == true)
+// 				return (false);
+// 	}
 // 	return (true);
 // }
 
-// /**
-//  * 
-//  * @param {Match} match 
-//  * @param {string} coord 
-//  * @param {string | null} dest 
-//  * @param {string} kingCoord 
-//  * @param {string} kingTeam
-//  */
-// function checkKingDanger(match, coord, dest, kingCoord, kingTeam)
-// {
-// 	let	square;
-// 	let	dangerSquare;
+/**
+ * 
+ * @param {Match} match 
+ * @param {string} coord 
+ * @param {string | null} dest 
+ * @param {string} kingCoord 
+ * @param {string} kingTeam
+ * @param {string | null} blocks
+ */
+function checkKingDanger(match, coord, dest, kingCoord, kingTeam, blocks)
+{
+	let	square;
+	let	dangerSquare;
 
-// 	square = match.board.get(coord);
-// 	for (const dangerCoord of square.dangerZones)
-// 	{
-// 		// if (dangerCoord == dest)
-// 		// 	continue ;
-// 		dangerSquare = match.board.get(dangerCoord);
-// 		if (dangerSquare.piece?.team == kingTeam)
-// 			continue ;
-// 		if (pathFinding(match, dangerSquare, kingCoord, dest, true) != null)
-// 			return (true);
-// 	}
-// 	return (false);
-// }
+	if (blocks == kingCoord)
+		blocks = null;
+	square = match.board.get(coord);
+	for (const dangerCoord of square.dangerZones)
+	{
+		// if (dangerCoord == dest)
+		// 	continue ;
+		dangerSquare = match.board.get(dangerCoord);
+		if (dangerSquare.piece?.team == kingTeam)
+			continue ;
+		if (pathFinding(match, dangerSquare, kingCoord, dest, true, blocks) != null)
+			return (true);
+	}
+	return (false);
+}
 
-// /**
-//  * 
-//  * @param {Match} match 
-//  * @param {Array<string>} coords 
-//  * @param {Result} result
-//  */
-// function simulateBastardsDanger(match, coords, result)
-// {
-// 	let	fromSquare;
-// 	let	toSquare;
-// 	let	tmpFromPiece;
-// 	let	tmpToPiece;
-// 	let	dangerBool;
+/**
+ * 
+ * @param {Match} match 
+ * @param {Array<string>} coords 
+ * @param {Result} result
+ */
+function simulateBastardsDanger(match, coords, result)
+{
+	let	fromSquare;
+	let	toSquare;
+	let	tmpFromPiece;
+	let	tmpToPiece;
+	let	dangerBool;
 
-// 	fromSquare = match.board.get(coords[0]);
-// 	toSquare = match.board.get(coords[1]);
-// 	tmpFromPiece = match.board.get(coords[0]).piece;
-// 	tmpToPiece = match.board.get(coords[1]).piece;
-// 	if (toSquare.piece)
-// 	{
-// 		toSquare.piece = fromSquare.piece;
-// 	}
-// 	if (result.specialMoves.CheckSniperMove() != 0)
-// 	{
-// 		toSquare.piece = null;
-// 	}
-// 	else
-// 	{
-// 		toSquare.piece = fromSquare.piece;
-// 		fromSquare.piece = null;
-// 	}
-// 	dangerBool = checkDoubleMoveMate(match, coords, result);
-// 	fromSquare.piece = tmpFromPiece;
-// 	toSquare.piece = tmpToPiece;
-// 	return (dangerBool);
-// }
+	fromSquare = match.board.get(coords[0]);
+	toSquare = match.board.get(coords[1]);
+	tmpFromPiece = match.board.get(coords[0]).piece;
+	tmpToPiece = match.board.get(coords[1]).piece;
+	if (toSquare.piece)
+	{
+		toSquare.piece = fromSquare.piece;
+	}
+	if (result.specialMoves.CheckSniperMove() != 0)
+	{
+		toSquare.piece = null;
+	}
+	else
+	{
+		toSquare.piece = fromSquare.piece;
+		fromSquare.piece = null;
+	}
+	dangerBool = checkDoubleMoveMate(match, coords, result);
+	fromSquare.piece = tmpFromPiece;
+	toSquare.piece = tmpToPiece;
+	return (dangerBool);
+}
 
 /**
  * check if is possible to go from start to dest
@@ -716,8 +737,9 @@ function simulation(coords, match, result)
  * @param {string} dest
  * @param {Set<string> | string | null} ignoredCoords
  * @param {boolean} considerBoostedBool 
+ * @param {Set<string> | string | null} blockCoords
  */
-export function pathFinding(match, start, dest, ignoredCoords=new Set, considerBoostedBool=false)
+export function pathFinding(match, start, dest, ignoredCoords=new Set, considerBoostedBool=false, blockCoords=new Set)
 {
 	let	startArray = new Set;
 	let	startCoord;
@@ -737,15 +759,23 @@ export function pathFinding(match, start, dest, ignoredCoords=new Set, considerB
 	if (!ignoredCoords)
 		ignoredCoords = new Set();
 	else if (typeof(ignoredCoords) == "string")
-		ignoredCoords = new Set(ignoredCoords);
-	if (!start.piece || !startCoord || !destCoord)
+		ignoredCoords = new Set().add(ignoredCoords);
+	if (!blockCoords)
+		blockCoords = new Set();
+	else if (typeof(blockCoords) == "string")
+		blockCoords = new Set().add(blockCoords);
+	if (!start.piece)
+		throw (`pathFinding: invalid piece`);
+	if (!startCoord || !destCoord)
 		throw (`pathFinding: invalid parameters`);
 	//for optimization, the search will go from dest to start
 	//because you have one dest but multiple start (boosted zones)
+	if (startCoord == destCoord)
+		return ({from: startCoord, to: destCoord});
 	startArray.add(startCoord);
 	if (considerBoostedBool == true)
 	{
-		for (const boostStart in start.boostedTargetZones)
+		for (const [boostStart] of start.boostedTargetZones)
 			startArray.add(boostStart);
 	}
 	//reverse movement from dest to start
@@ -754,12 +784,12 @@ export function pathFinding(match, start, dest, ignoredCoords=new Set, considerB
 		reverseMove.dx = -move.dx;
 		reverseMove.dy = -move.dy;
 		//move simulation takes reverted input
-		moveData = moveSimulation(match, destCoord, startArray, reverseMove, start.piece, ignoredCoords);
+		moveData = moveSimulation(match, destCoord, startArray, startCoord, reverseMove, start.piece, ignoredCoords, blockCoords);
 		if (moveData)
 		{//if exist a path, swaps from with to
 			let	tmp = moveData.from;
-			moveData.to = tmp;
 			moveData.from = moveData.to;
+			moveData.to = tmp;
 			return (moveData);
 		}
 	}
@@ -771,37 +801,70 @@ export function pathFinding(match, start, dest, ignoredCoords=new Set, considerB
  * @param {Match} match 
  * @param {string} start
  * @param {Set<string>} destArray 
+ * @param {String} destCoord
  * @param {{dx: number, dy: number}} move
  * @param {Piece} piece
  * @param {Set<string>} ignoredCoords 
+ * @param {Set<string>} blockCoords
  */
-function moveSimulation(match, start, destArray, move, piece, ignoredCoords=new Set)
+function moveSimulation(match, start, destArray, destCoord, move, piece, ignoredCoords=new Set, blockCoords=new Set)
 {
 	let	square;
 	let	moveData;
+	let	tmpCursor;
 
-	match.cursor.Save();
+	tmpCursor = match.cursor.square;
 	match.cursor.set(start);
 	while (movePiece(match, move.dy, move.dx))
 	{
+		if (blockCoords.has(match.cursor.square))
+		{
+			if (destArray.size == 1 || !secondMoveSimulation(match, destCoord, ignoredCoords, blockCoords)) 
+				break ;
+			moveData = {from: start, to: match.cursor.square};
+			match.cursor.set(tmpCursor);
+			return (moveData);
+		}
 		if (ignoredCoords.has(match.cursor.square))
 		{
 			if (piece.moveLongRangeDEBUG == false)
 				break ;
 			continue ;
 		}
-		if (destArray.has(match.cursor.square))//trovato path valido
+		if (destArray.has(match.cursor.square))//found valid path
 		{
+			if (destArray.size != 1 && !secondMoveSimulation(match, destCoord, ignoredCoords, blockCoords))
+				continue ;
 			moveData = {from: start, to: match.cursor.square};
-			match.cursor.Restore();
+			match.cursor.set(tmpCursor);
 			return (moveData);
 		}
 		square = match.board.get(match.cursor.square);
 		if (square.piece || piece.moveLongRangeDEBUG == false)
 			break ;
 	}
-	match.cursor.Restore();
+	match.cursor.set(tmpCursor);
 	return (null);
+}
+
+/**
+ * 
+ * @param {Match} match 
+ * @param {string} start
+ * @param {Set<string>} ignoredCoords 
+ * @param {Set<string>} blockCoords
+ */
+function secondMoveSimulation(match, start, ignoredCoords, blockCoords)
+{
+	let	currCursor;
+	let	path;
+
+	currCursor = match.cursor.square;
+	path = pathFinding(match, start, currCursor, ignoredCoords, false, blockCoords);
+	match.cursor.set(currCursor);
+	if (!path)
+		return (false);
+	return (true);
 }
 
 /**

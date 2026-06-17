@@ -1,5 +1,5 @@
 // @ts-check
-import {movePiece} from "../../utils/moveUtils.js";
+import {movePiece, setBoostedInfluence} from "../../utils/moveUtils.js";
 import {enumNames} from "../../Macro/enums.js";
 
 /**@typedef {import("../Match/match.js").Match} Match*/
@@ -32,12 +32,12 @@ function berserkMode(pos, match)
 				targetSquare.dangerZones.add(pos);
 				match.board.get(pos)?.boostedTargetZones.get(startPos)?.add(match.cursor.square);
 			}
-			//if (piece.type  == enumNames.MINOTAURUS)
 			match.board.AddInfluence(pos, match.cursor.square);
 			if (targetSquare.piece != null)
 			{
 				targetSquare.dangerZones.add(pos);
 				match.board.get(pos)?.boostedTargetZones.get(startPos)?.add(match.cursor.square);
+				setBoostedInfluence(match, piece, match.cursor.square, dx, dy);
 				break ;
 			}
 		}
