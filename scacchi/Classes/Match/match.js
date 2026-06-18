@@ -40,6 +40,7 @@ class Match
 		this.history = new History(this.settings);
 		this.historyCreateBool = false;
 		this.currentPlayer = this.white;
+		this.lastMenace = {from: "", mid: "", to: ""};
 		this.playerNum = this.settings.players.number;
 		this.victory = "";
 		/** @type {Timer | null} */ this.timer = null;

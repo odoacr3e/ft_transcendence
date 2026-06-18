@@ -256,7 +256,7 @@ function canDodge(match, square)
 		canDodgeBool = true;
 		for (const danger of square.dangerZones)
 		{
-			if (pathFinding(match, danger, newCoord, coord, true) != null)
+			if (pathFinding(match, danger, newCoord, coord) != null)
 			{
 				canDodgeBool = false;
 				break ;
@@ -307,13 +307,9 @@ function cantMovePiece(match, enemyCoord, enemySquare, kingCoord)
 	let	threatSquare;
 	let	threatPiece;
 	let	canReachKing;
-	let	ignoredCoords;
 
-	ignoredCoords = new Set();
-	ignoredCoords.add(enemyCoord);
 	for (const kingGuardianCoord of enemySquare.dangerZones)
 	{
-		ignoredCoords.add(kingGuardianCoord);
 		guardianSquare = match.board.get(kingGuardianCoord);
 		guardianPiece = guardianSquare.piece; 
 		if (!guardianPiece)
@@ -331,11 +327,10 @@ function cantMovePiece(match, enemyCoord, enemySquare, kingCoord)
 				continue ;
 			if (threatPiece.moveLongRangeDEBUG == false)//guardian not important 
 				continue ;
-			canReachKing = pathFinding(match, threatSquare, kingCoord, ignoredCoords, true);
+			canReachKing = pathFinding(match, threatCoord, kingCoord, kingGuardianCoord);
 			if (canReachKing != null)
 				return (true);
 		}
-		ignoredCoords.delete(kingGuardianCoord);
 	}
 	return (false);
 }
