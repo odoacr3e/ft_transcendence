@@ -60,6 +60,8 @@ let DangerUpdate = (match, pos=null, updBool=true) =>
 		match.cursor.set(pos);
 	else
 		pos = match.cursor.square;
+	if (updBool)
+		match.board.updates.add(pos);
 	startPos = match.cursor.square;
 	match.board.ResetTargets(startPos);
 	piece = match.board.get(match.cursor.square).piece;
@@ -88,12 +90,6 @@ let DangerUpdate = (match, pos=null, updBool=true) =>
 	castlingUpdate(match, startPos, piece);
 	match.board.get(pos).targetZones.delete(pos);
 	match.board.get(pos).dangerZones.delete(pos);
-	if (updBool == false)
-		return (1);
-	if (pos != null)
-		match.board.updates.add(pos);
-	else
-		match.board.updates.add(match.cursor.square);
 	return (1);
 }
 
