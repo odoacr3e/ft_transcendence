@@ -538,89 +538,6 @@ function doubleBastardsCheck(match, result, coords)
 
 /**
  * 
- * @param {Match} match 
- * @param {Square} square
- * @param {string} pos
- */
-function RefreshChampion(match, square, pos)
-{
-	for (const zone of square.targetZones)
-		match.board.get(zone).dangerZones.delete(pos)
-	for (const [key, value] of square.boostedTargetZones)
-	{
-		for (const coord of value)
-			match.board.get(coord).dangerZones.delete(pos)
-		match.board.get(key).dangerZones.delete(pos)
-	}
-	DangerUpdate(match, pos);
-}
-
-// /**
-//  * 
-//  * @param {Array<String>} coords
-//  * @param {Match} match
-//  * @param {Result} result
-//  * @returns 
-//  */
-// function simulation(coords, match, result)
-// {
-// 	let tmpPiece = null;
-// 	let tmpSquare = null;
-// 	let	from;
-// 	let	to;
-// 	let	king;
-// 	let	dangerBool;
-// 	let boosted;
-
-// 	from = match.board.get(coords[0]);
-// 	to = match.board.get(coords[1]);
-// 	king = match.board.get(match.currentPlayer.King);
-// 	if (!from || !to || !king)
-// 		throw (`simulation: invalid from: ${from}/to: ${to}/king: ${king}`);
-// 	if (to.piece)
-// 	{
-// 		tmpSquare = to.Copy();
-// 		tmpPiece = tmpSquare.piece;
-// 	}
-// 	if (result.specialMoves.CheckSniperMove() == 0)
-// 	{
-// 		to.piece = from.piece;
-// 		from.piece = null;
-// 	}
-// 	else
-// 		to.piece = null;
-// 	if (coords[0] == match.currentPlayer.King)
-// 		king = to;
-// 	dangerUpdateMoved(match, coords, result);
-// 	dangerBool = isDangerous(match, king.dangerZones, king.piece?.team);
-// 	if (!dangerBool)
-// 		dangerBool = checkDoubleMoveMate(match, coords, result);
-// 	if (result.specialMoves.CheckSniperMove() == 0)
-// 	{
-// 		from.piece = to.piece;
-// 		to.piece = tmpPiece;
-// 	}
-// 	else
-// 		to.piece = tmpPiece;
-// 	dangerUpdateMoved(match, [coords[1], coords[0]], result);
-// 	if (tmpSquare)
-// 		match.board.set(coords[1], tmpSquare);
-// 	boosted = match.GetOBoostedPieceCoords();
-// 	for (const coord of match.board.updates)
-// 		DangerUpdate(match, coord);
-// 	if (!boosted)
-// 		return (!dangerBool);
-// 	for (const p of boosted)
-// 	{
-// 		if (match.board.get(p).piece?.type == enumNames.CHAMPION && match.board.updates.has(p))
-// 			RefreshChampion(match, match.board.get(p), p);
-// 	}
-// 	// DangerUpdate(match, coords[0]);
-// 	return (!dangerBool);
-// }
-
-/**
- * 
  * @param {Array<String>} coords
  * @param {Match} match
  * @param {Result} result
@@ -798,6 +715,7 @@ function moveSimulation(match, start, destArray, destCoord, move, piece, ignored
 	let	square;
 	let	moveData;
 	let	tmpCursor;
+	let	tmpCursor2;
 	let	isBoostedValkirya;
 
 	isBoostedValkirya = (piece.type == enumNames.VALKIRYA && piece.isBoostedBool == true)? 1: 0;
@@ -807,7 +725,7 @@ function moveSimulation(match, start, destArray, destCoord, move, piece, ignored
 	{
 		if (blockCoord == match.cursor.square)
 		{
-			if (destArray.size == 1 || !secondMoveSimulation(match, piece, destCoord, ignoredCoord, blockCoord)) 
+			if (destArray.size == 1 || !secondMoveSimulation(match, destArray, piece, destCoord, ignoredCoord, blockCoord)) 
 				break ;
 			moveData = {from: destCoord, mid: match.cursor.square, to: start};
 			match.cursor.set(tmpCursor);
@@ -821,10 +739,11 @@ function moveSimulation(match, start, destArray, destCoord, move, piece, ignored
 		}
 		if (destArray.has(match.cursor.square))//found valid path
 		{
-			if (destArray.size != 1 && !secondMoveSimulation(match, piece, destCoord, ignoredCoord, blockCoord))
-				continue ;
+			tmpCursor2 = match.cursor.square;
+			if (destArray.size != 1 && !secondMoveSimulation(match, destArray, piece, destCoord, "", blockCoord))
+				break ;
 			//if dest has been reached in two moves, mid is set
-			moveData = {from: destCoord, mid: destCoord == tmpCursor ? "": tmpCursor, to: start};
+			moveData = {from: destCoord, mid: destCoord == tmpCursor2 ? "": tmpCursor2, to: start};
 			match.cursor.set(tmpCursor);
 			return (moveData);
 		}
@@ -839,16 +758,18 @@ function moveSimulation(match, start, destArray, destCoord, move, piece, ignored
 /**
  * 
  * @param {Match} match 
+ * @param {Set<string>} destArray 
  * @param {Piece} piece
  * @param {string} start
  * @param {string} ignoredCoord
  * @param {string} blockCoord
  */
-function secondMoveSimulation(match, piece, start, ignoredCoord, blockCoord)
+function secondMoveSimulation(match, destArray, piece, start, ignoredCoord, blockCoord)
 {
 	let	currCursor;
 	let	path;
 	let	eatenPiece;
+	let	block;
 
 	currCursor = match.cursor.square;
 	if (!blockCoord)
@@ -861,10 +782,13 @@ function secondMoveSimulation(match, piece, start, ignoredCoord, blockCoord)
 		if (path)
 			return (false);
 		//also considered from danger zones
-		path = checkPieceDanger(match, ignoredCoord, piece, currCursor, ignoredCoord);
-		match.cursor.set(currCursor);
-		if (path)
-			return (false);
+		if (ignoredCoord)
+		{
+			path = checkPieceDanger(match, ignoredCoord, piece, currCursor, ignoredCoord);
+			match.cursor.set(currCursor);
+			if (path)
+				return (false);
+		}
 	}//minotaurus needs to eat something
 	else if (piece.type == enumNames.MINOTAURUS && piece.isBoostedBool)
 	{
@@ -872,7 +796,8 @@ function secondMoveSimulation(match, piece, start, ignoredCoord, blockCoord)
 		if (currCursor != blockCoord && (!eatenPiece || piece.team == eatenPiece.team))
 			return (false);
 	}
-	path = pathFinding(match, start, currCursor, ignoredCoord, blockCoord, false);
+	block = destArray.size > 1? blockCoord : ""; 
+	path = pathFinding(match, start, currCursor, ignoredCoord, block, false);
 	match.cursor.set(currCursor);
 	if (!path)
 		return (false);
