@@ -39,7 +39,10 @@ function CheckMateCheck(match, kingCoord)
 		return false;
 	enemySquare = match.board.get(enemyCoord);
 	if (isDangerous(match, enemySquare.dangerZones, enemySquare.piece?.team))
-		return (cantMovePiece(match, enemyCoord, enemySquare, kingCoord));
+	{
+		if (cantMovePiece(match, enemyCoord, enemySquare, kingCoord) == false)
+			return (false);
+	}
 	if (isStoppable(match, kingCoord, enemyCoord))
 		return false;
 	return true;
@@ -321,6 +324,8 @@ function cantMovePiece(match, enemyCoord, enemySquare, kingCoord)
 			threatPiece = threatSquare.piece;
 			if (!threatPiece)
 				throw ("checkMate, cantMovePiece: threat piece undefined");
+			if (threatCoord == enemyCoord)
+				continue ;
 			if (threatPiece.team == guardianPiece.team)
 				continue ;
 			if (threatPiece.type == enumNames.JESTER)//it jumps over pieces anyway

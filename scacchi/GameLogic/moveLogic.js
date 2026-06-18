@@ -123,16 +123,18 @@ function checkDoubleMoveMate(match, coords, result, checkBool=true)
 		theKING = coords[1];
 	if (OtherPiece == null)
 		return (false);
-	for (const coords of OtherPiece)
+	for (const coord of OtherPiece)
 	{
-		pieceData = match.board.get(coords).piece;
+		if (coord == coords[1])
+			continue ;
+		pieceData = match.board.get(coord).piece;
 		if (!pieceData)
 			throw ("checkDoubleMoveMate: cannot find boosted piece");
 		if (pieceData.type == enumNames.MINOTAURUS && checkBool == false)
-			boostMinoUpdates(match, coords);
+			boostMinoUpdates(match, coord);
 		else if (pieceData.type == enumNames.BASTARDS && checkBool == true)
 		{	
-			if (!boostBastardsUpdates(match, coords, theKING, result))
+			if (!boostBastardsUpdates(match, coord, theKING, result))
 				return (true);
 		}
 		else
@@ -429,6 +431,10 @@ function checkBooster(match, result, from, coords, boostBool) // FIXME - da aggi
 		if (!includesOneOf(match.history.Last().type, eEvents.Move, eEvents.MoveBoost))
 			return (error(result, 500, "match History is messed up"));
 	}
+	if (boostBool && from.piece.type == enumNames.VALKIRYA)
+		result.specialMoves.SetSniperMove();
+	else if (boostBool && from.piece.type == enumNames.CHAMPION)
+		result.specialMoves.SetChampionBoostUsed();
 	if (from.piece.type == enumNames.BASTARDS || match.history.Last().movedPiece == enumNames.BASTARDS)
 		return (doubleBastardsCheck(match, result, coords));
 	if (pieceMultipleMoveBool == false && match.moves > 0)
@@ -451,10 +457,6 @@ function checkBooster(match, result, from, coords, boostBool) // FIXME - da aggi
 	if (boostedTargetZones.has(coords[1]) == false)
 		return (error(result, 403, `that piece can't do that move`));
 	from.targetZones.add(coords[1]);
-	if (from.piece.type == enumNames.VALKIRYA)
-		result.specialMoves.SetSniperMove();
-	else if (from.piece.type == enumNames.CHAMPION)
-		result.specialMoves.SetChampionBoostUsed();
 	from.piece.isBoostedBool = false;
 	match.currentPlayer.boostedPiece = "";
 	result.usedBoost = true;
@@ -681,7 +683,7 @@ function checkPieceDanger(match, checkDangerCoord, piece, pieceCoord, ignoreCoor
 	for (const dangerCoord of square.dangerZones)
 	{
 		dangerSquare = match.board.get(dangerCoord);
-		if (dangerSquare.piece?.team == piece.team)
+		if (dangerSquare.piece?.team == piece.team || dangerCoord == blockCoord)
 			continue ;
 		if (pathFinding(match, dangerCoord, pieceCoord, ignoreCoord, blockCoord) != null)
 			return (true);
