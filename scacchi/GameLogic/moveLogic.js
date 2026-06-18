@@ -134,7 +134,7 @@ function checkDoubleMoveMate(match, coords, result, checkBool=true)
 			boostMinoUpdates(match, coord);
 		else if (pieceData.type == enumNames.BASTARDS && checkBool == true)
 		{	
-			if (!boostBastardsUpdates(match, coord, theKING, result))
+			if (!boostBastardsUpdates(match, coord, theKING, coords[1], result))
 				return (true);
 		}
 		else
@@ -146,18 +146,21 @@ function checkDoubleMoveMate(match, coords, result, checkBool=true)
 /**
  * 
  * @param {Match} match 
- * @param {string} coords 
+ * @param {string} coord 
  * @param {string} theKING
+ * @param {string} lastEatenCoord
  * @param {Result} result
  * @returns 
  */
-function boostBastardsUpdates(match, coords, theKING, result)
+function boostBastardsUpdates(match, coord, theKING, lastEatenCoord, result)
 {
-	let boosts = match.board.get(coords).boostedTargetZones.get(coords);
+	let boosts = match.board.get(coord).boostedTargetZones.get(coord);
 	if (boosts == undefined || boosts.size == 0)
 			return (true);
 	for (const squareCoord of boosts)
 	{
+		if (squareCoord == lastEatenCoord)
+			continue ;
 		let	square = match.board.get(squareCoord);
 		if (!square.piece)
 			throw ("DEBUG error 1");
