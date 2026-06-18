@@ -6,6 +6,7 @@ import * as lib from "../lib/lib.js";
 import {CHESSBOARD_H, CHESSBOARD_W} from "../Macro/macro.js";
 const enumNames = lib.Enums.enumNames;
 import { cmd } from "./enumsTest.js";
+import { includesOneOf } from "../utils/string.js";
 
 /** @typedef {import("../Classes/Match/match.js").Match} Match*/
 
@@ -71,6 +72,8 @@ function renderSquare(match, square, coords, selected, TargetDangerSwitch)
 		buffer += `\x1b[37;${getSquareColor(square.piece.team)}m`;
 	if (coords.player == coords.curr)
 		buffer += `\x1b[32m[${asciiArt}]`;
+	else if (includesOneOf(coords.curr, match.lastMenace.from, match.lastMenace.mid, match.lastMenace.to))
+		buffer += `\x1b[31m[${asciiArt}]`;
 	else if (coords.curr == selected[0])
 		buffer += `\x1b[33m[${asciiArt}]`;
 	else if (TargetDangerSwitch == "Target" && coords.playerSquare.targetZones.has(coords.curr))

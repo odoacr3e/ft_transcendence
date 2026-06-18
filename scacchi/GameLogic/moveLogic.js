@@ -766,7 +766,10 @@ export function pathFinding(match, startCoord, destCoord, ignoredCoord="", block
 		//move simulation takes reverted input
 		moveData = moveSimulation(match, destCoord, startArray, startCoord, reverseMove, startSquare.piece, ignoredCoord, blockCoord);
 		if (moveData)
+		{
+			match.lastMenace = moveData;
 			return (moveData);
+		}
 	}
 	return (null);
 }
@@ -787,7 +790,9 @@ function moveSimulation(match, start, destArray, destCoord, move, piece, ignored
 	let	square;
 	let	moveData;
 	let	tmpCursor;
+	let	isBoostedValkirya;
 
+	isBoostedValkirya = (piece.type == enumNames.VALKIRYA && piece.isBoostedBool == true)? 1: 0;
 	tmpCursor = match.cursor.square;
 	match.cursor.set(start);
 	while (movePiece(match, move.dy, move.dx))
@@ -816,7 +821,7 @@ function moveSimulation(match, start, destArray, destCoord, move, piece, ignored
 			return (moveData);
 		}
 		square = match.board.get(match.cursor.square);
-		if (square.piece || piece.moveLongRangeDEBUG == false)
+		if ((square.piece || piece.moveLongRangeDEBUG == false) && !isBoostedValkirya--)
 			break ;
 	}
 	match.cursor.set(tmpCursor);
