@@ -42,6 +42,7 @@ function CheckMateCheck(match, kingCoord)
 	{
 		if (cantMovePiece(match, enemyCoord, enemySquare, kingCoord) == false)
 			return (false);
+		return (true);
 	}
 	if (isStoppable(match, kingCoord, enemyCoord))
 		return false;
