@@ -160,7 +160,7 @@
       "to": "f7",
       "team": "white",
       "type": "move",
-      "useBoostBool": true,
+      "useBoostBool": false,
       "counter": 18
     }
   ],

@@ -431,10 +431,13 @@ function checkBooster(match, result, from, coords, boostBool) // FIXME - da aggi
 		if (!includesOneOf(match.history.Last().type, eEvents.Move, eEvents.MoveBoost))
 			return (error(result, 500, "match History is messed up"));
 	}
-	if (boostBool && from.piece.type == enumNames.VALKIRYA)
-		result.specialMoves.SetSniperMove();
-	else if (boostBool && from.piece.type == enumNames.CHAMPION)
-		result.specialMoves.SetChampionBoostUsed();
+	if (boostBool && from.piece.isBoostedBool == true)
+	{
+		if (from.piece.type == enumNames.VALKIRYA)
+			result.specialMoves.SetSniperMove();
+		else if (from.piece.type == enumNames.CHAMPION)
+			result.specialMoves.SetChampionBoostUsed();
+	}
 	if (from.piece.type == enumNames.BASTARDS || match.history.Last().movedPiece == enumNames.BASTARDS)
 		return (doubleBastardsCheck(match, result, coords));
 	if (pieceMultipleMoveBool == false && match.moves > 0)
