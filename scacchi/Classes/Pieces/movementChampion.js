@@ -21,8 +21,8 @@ let movementChampion = function (match)
 	piece = match.board.get(match.cursor.square)?.piece;
 	if (piece == undefined)
 		return (0);
-	if (piece.pos != startPos)
-		throw (`movementChampion: mismatch: startPos ${startPos}, piece.pos ${piece.pos}`);
+	// if (piece.pos != startPos)
+	// 	throw (`movementChampion: mismatch: startPos ${startPos}, piece.pos ${piece.pos}`);
 	for (let {dx, dy} of piece.moveArray)
 	{
 		while (movePiece(match, dx, dy, false))

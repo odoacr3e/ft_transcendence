@@ -536,6 +536,27 @@ function doubleBastardsCheck(match, result, coords)
 	return (error(result, 403, "To use the bastard boost, the pieces must be near"));
 }
 
+//SECTION - gamelogic
+
+/**
+ * 
+ * @param {Match} match 
+ * @param {Square} square
+ * @param {string} pos
+ */
+function RefreshChampion(match, square, pos)
+{
+	for (const zone of square.targetZones)
+		match.board.get(zone).dangerZones.delete(pos)
+	for (const [key, value] of square.boostedTargetZones)
+	{
+		for (const coord of value)
+			match.board.get(coord).dangerZones.delete(pos)
+		match.board.get(key).dangerZones.delete(pos)
+	}
+	DangerUpdate(match, pos);
+}
+
 /**
  * 
  * @param {Array<String>} coords
@@ -545,45 +566,109 @@ function doubleBastardsCheck(match, result, coords)
  */
 function simulation(coords, match, result)
 {
-	let	team;
-	let	kingCoord;
-	let	kingPiece;
-	let	enemySquare;
-	let	boosted;
-	let	boostedPiece;
-	let	boostedPieceNewTargets;
+	let tmpPiece = null;
+	let tmpSquare = null;
+	let	from;
+	let	to;
+	let	king;
+	let	dangerBool;
+	let boosted;
 
-	team = match.currentPlayer.team;
-	kingCoord = match.currentPlayer.King;
-	kingPiece = match.board.get(kingCoord).piece;
-	if (coords[0] == kingCoord)
-		kingCoord = coords[1];
-	enemySquare = match.board.get(coords[1]);
-	if (!kingPiece)
-		throw (`simulation: lost ${match.currentPlayer.team} king piece`);
-	if (checkPieceDanger(match, coords[0], kingPiece, kingCoord, coords[0], coords[1]) == true)
-		return (false);
-	if (checkPieceDanger(match, kingCoord, kingPiece, kingCoord, coords[0], coords[1]) == true)
-		return (false);
-	if (simulateBastardsDanger(match, coords, result) == true)
-		return (false);
-	boosted = match.GetOBoostedPieceCoords();
-	if (!boosted)
-		return (true);
-	for (const coord of boosted)
+	from = match.board.get(coords[0]);
+	to = match.board.get(coords[1]);
+	king = match.board.get(match.currentPlayer.King);
+	if (!from || !to || !king)
+		throw (`simulation: invalid from: ${from}/to: ${to}/king: ${king}`);
+	if (to.piece)
 	{
-		boostedPiece = match.board.get(coord).piece;
-		if (!boostedPiece)
-			throw (`simulation: missing piece in coord ${coord}`);
-		boostedPieceNewTargets = boostedPiece.boostedInfluence.get(coords[0]);
-		if (!boostedPieceNewTargets)
-			continue ;
-		for (const set of boostedPieceNewTargets)
-			if (set.has(kingCoord) == true)
-				return (false);
+		tmpSquare = to.Copy();
+		tmpPiece = tmpSquare.piece;
 	}
-	return (true);
+	if (result.specialMoves.CheckSniperMove() == 0)
+	{
+		to.piece = from.piece;
+		from.piece = null;
+	}
+	else
+		to.piece = null;
+	if (coords[0] == match.currentPlayer.King)
+		king = to;
+	dangerUpdateMoved(match, coords, result);
+	dangerBool = isDangerous(match, king.dangerZones, king.piece?.team);
+	if (!dangerBool)
+		dangerBool = checkDoubleMoveMate(match, coords, result);
+	if (result.specialMoves.CheckSniperMove() == 0)
+	{
+		from.piece = to.piece;
+		to.piece = tmpPiece;
+	}
+	else
+		to.piece = tmpPiece;
+	dangerUpdateMoved(match, [coords[1], coords[0]], result);
+	if (tmpSquare)
+		match.board.set(coords[1], tmpSquare);
+	boosted = match.GetOBoostedPieceCoords();
+	for (const coord of match.board.updates)
+		DangerUpdate(match, coord);
+	if (!boosted)
+		return (!dangerBool);
+	for (const p of boosted)
+	{
+		if (match.board.get(p).piece?.type == enumNames.CHAMPION && match.board.updates.has(p))
+			RefreshChampion(match, match.board.get(p), p);
+	}
+	// DangerUpdate(match, coords[0]);
+	return (!dangerBool);
 }
+
+// /**
+//  * 
+//  * @param {Array<String>} coords
+//  * @param {Match} match
+//  * @param {Result} result
+//  * @returns 
+//  */
+// function simulation(coords, match, result)
+// {
+// 	let	team;
+// 	let	kingCoord;
+// 	let	kingPiece;
+// 	let	enemySquare;
+// 	let	boosted;
+// 	let	boostedPiece;
+// 	let	boostedPieceNewTargets;
+
+// 	team = match.currentPlayer.team;
+// 	kingCoord = match.currentPlayer.King;
+// 	kingPiece = match.board.get(kingCoord).piece;
+// 	if (coords[0] == kingCoord)
+// 		kingCoord = coords[1];
+// 	enemySquare = match.board.get(coords[1]);
+// 	if (!kingPiece)
+// 		throw (`simulation: lost ${match.currentPlayer.team} king piece`);
+// 	if (checkPieceDanger(match, coords[0], kingPiece, kingCoord, coords[0], coords[1]) == true)
+// 		return (false);
+// 	if (checkPieceDanger(match, kingCoord, kingPiece, kingCoord, coords[0], coords[1]) == true)
+// 		return (false);
+// 	if (simulateBastardsDanger(match, coords, result) == true)
+// 		return (false);
+// 	boosted = match.GetOBoostedPieceCoords();
+// 	if (!boosted)
+// 		return (true);
+// 	for (const coord of boosted)
+// 	{
+// 		boostedPiece = match.board.get(coord).piece;
+// 		if (!boostedPiece)
+// 			throw (`simulation: missing piece in coord ${coord}`);
+// 		boostedPieceNewTargets = boostedPiece.boostedInfluence.get(coords[0]);
+// 		if (!boostedPieceNewTargets)
+// 			continue ;
+// 		for (const set of boostedPieceNewTargets)
+// 			if (set.has(kingCoord) == true)
+// 				return (false);
+// 	}
+// 	return (true);
+// }
 
 /**
  * 
@@ -772,6 +857,8 @@ function secondMoveSimulation(match, destArray, piece, start, ignoredCoord, bloc
 	let	block;
 
 	currCursor = match.cursor.square;
+	if (currCursor == start)
+		return (true);
 	if (!blockCoord)
 		return (false);
 	//if that position is in danger for champion, stop

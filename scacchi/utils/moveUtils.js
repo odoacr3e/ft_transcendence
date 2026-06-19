@@ -186,13 +186,8 @@ function checkInfluenceSets(match, coords, influenceSets)
  */
 function dangerUpdateMoved(match, selected=[], result=null, delBool=true)
 {
-	// return (dangerUpdateAll(match));
 	if (selected.length != 2)
 		throw ("dangerUpdateMoved must be called with two pieces: from, to");
-	// if (delBool == true)
-	// 	dangerDelPiece(match, selected[0], selected[1], result);
-	// dangerUpPiece(match, selected[1], result);
-	// DangerUpdate(match, selected[1]);
 	CheckInfluence(match, selected);
 	DangerUpdate(match, selected[0]);
 	DangerUpdate(match, selected[1]);
