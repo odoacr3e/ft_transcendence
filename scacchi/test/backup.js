@@ -159,66 +159,66 @@ function RefreshChampion(match, square, pos)
 	DangerUpdate(match, pos);
 }
 
-// /**
-//  * 
-//  * @param {Array<String>} coords
-//  * @param {Match} match
-//  * @param {Result} result
-//  * @returns 
-//  */
-// function simulation(coords, match, result)
-// {
-// 	let tmpPiece = null;
-// 	let tmpSquare = null;
-// 	let	from;
-// 	let	to;
-// 	let	king;
-// 	let	dangerBool;
-// 	let boosted;
+/**
+ * 
+ * @param {Array<String>} coords
+ * @param {Match} match
+ * @param {Result} result
+ * @returns 
+ */
+function simulation(coords, match, result)
+{
+	let tmpPiece = null;
+	let tmpSquare = null;
+	let	from;
+	let	to;
+	let	king;
+	let	dangerBool;
+	let boosted;
 
-// 	from = match.board.get(coords[0]);
-// 	to = match.board.get(coords[1]);
-// 	king = match.board.get(match.currentPlayer.King);
-// 	if (!from || !to || !king)
-// 		throw (`simulation: invalid from: ${from}/to: ${to}/king: ${king}`);
-// 	if (to.piece)
-// 	{
-// 		tmpSquare = to.Copy();
-// 		tmpPiece = tmpSquare.piece;
-// 	}
-// 	if (result.specialMoves.CheckSniperMove() == 0)
-// 	{
-// 		to.piece = from.piece;
-// 		from.piece = null;
-// 	}
-// 	else
-// 		to.piece = null;
-// 	if (coords[0] == match.currentPlayer.King)
-// 		king = to;
-// 	dangerUpdateMoved(match, coords, result);
-// 	dangerBool = isDangerous(match, king.dangerZones, king.piece?.team);
-// 	if (!dangerBool)
-// 		dangerBool = checkDoubleMoveMate(match, coords, result);
-// 	if (result.specialMoves.CheckSniperMove() == 0)
-// 	{
-// 		from.piece = to.piece;
-// 		to.piece = tmpPiece;
-// 	}
-// 	else
-// 		to.piece = tmpPiece;
-// 	dangerUpdateMoved(match, [coords[1], coords[0]], result);
-// 	if (tmpSquare)
-// 		match.board.set(coords[1], tmpSquare);
-// 	boosted = match.GetOBoostedPieceCoords();
-// 	for (const coord of match.board.updates)
-// 		DangerUpdate(match, coord);
-// 	if (!boosted)
-// 		return (!dangerBool);
-// 	for (const p of boosted)
-// 	{
-// 		if (match.board.get(p).piece?.type == enumNames.CHAMPION && match.board.updates.has(p))
-// 			RefreshChampion(match, match.board.get(p), p);
-// 	}
-// 	// DangerUpdate(match, coords[0]);
-// 	return (!dangerBool);
-// }
+	from = match.board.get(coords[0]);
+	to = match.board.get(coords[1]);
+	king = match.board.get(match.currentPlayer.King);
+	if (!from || !to || !king)
+		throw (`simulation: invalid from: ${from}/to: ${to}/king: ${king}`);
+	if (to.piece)
+	{
+		tmpSquare = to.Copy();
+		tmpPiece = tmpSquare.piece;
+	}
+	if (result.specialMoves.CheckSniperMove() == 0)
+	{
+		to.piece = from.piece;
+		from.piece = null;
+	}
+	else
+		to.piece = null;
+	if (coords[0] == match.currentPlayer.King)
+		king = to;
+	dangerUpdateMoved(match, coords, result);
+	dangerBool = isDangerous(match, king.dangerZones, king.piece?.team);
+	if (!dangerBool)
+		dangerBool = checkDoubleMoveMate(match, coords, result);
+	if (result.specialMoves.CheckSniperMove() == 0)
+	{
+		from.piece = to.piece;
+		to.piece = tmpPiece;
+	}
+	else
+		to.piece = tmpPiece;
+	dangerUpdateMoved(match, [coords[1], coords[0]], result);
+	if (tmpSquare)
+		match.board.set(coords[1], tmpSquare);
+	boosted = match.GetOBoostedPieceCoords();
+	for (const coord of match.board.updates)
+		DangerUpdate(match, coord);
+	if (!boosted)
+		return (!dangerBool);
+	for (const p of boosted)
+	{
+		if (match.board.get(p).piece?.type == enumNames.CHAMPION && match.board.updates.has(p))
+			RefreshChampion(match, match.board.get(p), p);
+	}
+	// DangerUpdate(match, coords[0]);
+	return (!dangerBool);
+}

@@ -13,7 +13,7 @@ export const logfd = await open("../log", 'a+');
 
 // NOTE: connections
 import { prisma } from "./prisma.js";
-import { redis } from "./redis.js"
+// import { redis } from "./redis.js"
 import crypto from "crypto";
 
 //SECTION - external inclusions
@@ -38,7 +38,8 @@ import * as utils from "../utils/moveUtils.js";
 import {bastardChecks, isDangerous} from "../utils/gameUtils.js";
 let gameUtils = {bastardChecks, isDangerous};
 
-const conn = { prisma, redis, crypto } 
+// const conn = { prisma, redis, crypto } 
+const conn = { prisma, crypto } 
 
 const lib = { include, Chess, Macro, Enums, preset, utils, gameUtils, conn};
 
