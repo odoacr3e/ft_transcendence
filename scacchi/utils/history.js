@@ -40,8 +40,10 @@ function historyRestore(match, path)
 		for (const event of history.events)
 		{
 			console.log(`History: move number ${event.counter}`);
-			if (DEBUGCounter == 41)
+			if (DEBUGCounter == 12)
 				console.log("");
+			if (match.victory)
+				throw(`this move give invalid victory for ${match.victory}. \nevent: ${JSON.stringify(event)}`);
 			if (event.type == eEvents.Move)
 				result = move(match, event.from, event.to, event.useBoostBool);
 			else if (event.type == eEvents.MoveBoost)

@@ -222,3 +222,67 @@ function simulation(coords, match, result)
 	// DangerUpdate(match, coords[0]);
 	return (!dangerBool);
 }
+
+//NOTE - versione buggosa di Ale :-(
+//NOTE - per bro Marco: come fa a funzionare senza considerare le boosted?
+//NOTE - sei un pazzo fortissimo
+/**
+ * Checks if we can put a piece to protect the king from the danger
+ * @param {Match} match
+ * @param {string} kingSquare 
+ * @param {string} enemySquareString 
+ * @param {boolean} recBool
+ * @param {Square | null} enemySquare
+ * @returns {boolean} 
+ */
+function isStoppable(match, kingSquare, enemySquareString, recBool=true, enemySquare=null)
+{
+	let	square;
+	let	enemyPiece;
+	let	guardianPiece;
+
+	if (!enemySquare)
+		enemySquare = match.board.get(enemySquareString);
+	enemyPiece = enemySquare.piece;
+	if (!enemyPiece)
+		throw (`isStoppable: invalid piece in ${enemySquareString}`); 
+	if (enemyPiece?.type == enumNames.JESTER || 
+	enemyPiece?.type == enumNames.BASTARDS || 
+	(enemyPiece?.type == enumNames.VALKIRYA && 
+	enemyPiece?.isBoostedBool == true) ||
+	match.board.get(kingSquare)?.targetZones.has(enemySquareString))
+		return false;
+	let dir = getDirection(match, kingSquare, enemySquareString);
+	// match.cursor.setCursor(match.cursor.getRow() + dir.diffRow, match.cursor.getCol() + dir.diffCol);
+	if (!movePiece(match, dir.diffCol, dir.diffRow))
+		return true;
+	while (match.board.get(match.cursor.square).piece?.type != enumNames.KING)
+	{
+		square = match.board.get(match.cursor.square);
+		if (!square || !square.dangerZones)
+			continue ;
+		for (let x of square.dangerZones)
+		{
+			if (x == kingSquare)
+				continue ;
+			guardianPiece = match.board.get(x).piece;
+			if (!guardianPiece)
+				throw (`isStoppable: invalid guardian in ${enemySquareString}`);
+			if (guardianPiece.team != match.board.get(kingSquare).piece?.team)
+				continue ;
+			if (guardianPiece.type == enumNames.BASTARDS && match.cursor.IsOblique(x))
+				continue ;
+			// if (recBool == false)
+			// 	return true;
+			// if (enemyPiece.multipleMovesBool == false)
+			// 	return true;
+			// for (const [secondCoord] of enemySquare.boostedTargetZones)
+			// 	if (isStoppable(match, kingSquare, secondCoord, false, enemySquare) == false)
+			// 		return false;
+			return true;
+		}
+		if (!movePiece(match, dir.diffCol, dir.diffRow))
+			return true;
+	}
+	return false;
+}

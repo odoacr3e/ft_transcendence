@@ -7,7 +7,7 @@ import {Match} from "../Classes/Match/match.js";
 import {isDangerous} from "../utils/gameUtils.js";
 import { movePiece } from "../utils/moveUtils.js";
 import { Square } from "../Classes/ChessBoard/chessBoard.js";
-import { pathFinding } from "./moveLogic.js";
+import { checkPieceDanger, pathFinding } from "./moveLogic.js";
 
 /**
  * 
@@ -105,8 +105,10 @@ function getDirection(match, kingSquare, enemySquare)
 	return ({diffRow, diffCol});
 }
 
+//NOTE - per bro Marco: come fa a funzionare senza considerare le boosted?
+//NOTE - sei un pazzo fortissimo
 /**
- * Checks if a piece that is menacing the king can be eaten
+ * Checks if we can put a piece to protect the king from the danger
  * @param {Match} match
  * @param {string} kingSquare 
  * @param {string} enemySquareString 
@@ -114,31 +116,45 @@ function getDirection(match, kingSquare, enemySquare)
  */
 function isStoppable(match, kingSquare, enemySquareString)
 {
-	let	square;
 	let	enemySquare;
+	let	square;
+	let	enemyPiece;
+	let	guardianPiece;
 
 	enemySquare = match.board.get(enemySquareString);
-	if (!enemySquare)
-		throw ("given to isStoppable an invalid position");//FIXME - Ale: errore grave, dare 500
-	if (enemySquare.piece?.type == enumNames.JESTER || 
-	enemySquare.piece?.type == enumNames.BASTARDS || 
-	(enemySquare.piece?.type == enumNames.VALKIRYA && 
-	enemySquare.piece?.isBoostedBool == true) ||
+	enemyPiece = enemySquare.piece;
+	if (!enemyPiece)
+		throw (`isStoppable: invalid piece in ${enemySquareString}`); 
+	if (enemyPiece?.type == enumNames.JESTER || 
+	enemyPiece?.type == enumNames.BASTARDS || 
+	(enemyPiece?.type == enumNames.VALKIRYA && 
+	enemyPiece?.isBoostedBool == true) ||
 	match.board.get(kingSquare)?.targetZones.has(enemySquareString))
 		return false;
 	let dir = getDirection(match, kingSquare, enemySquareString);
-	match.cursor.setCursor(match.cursor.getRow() + dir.diffRow, match.cursor.getCol() + dir.diffCol);
-	while (match.board.get(match.cursor.square)?.piece?.type != enumNames.KING)
+	// match.cursor.setCursor(match.cursor.getRow() + dir.diffRow, match.cursor.getCol() + dir.diffCol);
+	if (!movePiece(match, dir.diffCol, dir.diffRow))
+		return true;
+	while (match.board.get(match.cursor.square).piece?.type != enumNames.KING)
 	{
 		square = match.board.get(match.cursor.square);
 		if (!square || !square.dangerZones)
 			continue ;
 		for (let x of square.dangerZones)
 		{
-			if (match.board.get(x)?.piece?.team == match.board.get(kingSquare)?.piece?.team)
-				return true;
+			if (x == kingSquare)
+				continue ;
+			guardianPiece = match.board.get(x).piece;
+			if (!guardianPiece)
+				throw (`isStoppable: invalid guardian in ${enemySquareString}`);
+			if (guardianPiece.team != match.board.get(kingSquare).piece?.team)
+				continue ;
+			if (guardianPiece.type == enumNames.BASTARDS && match.cursor.IsOblique(x))
+				continue ;
+			return true;
 		}
-		match.cursor.setCursor(match.cursor.getRow() + dir.diffRow, match.cursor.getCol() + dir.diffCol);
+		if (!movePiece(match, dir.diffCol, dir.diffRow))
+			return true;
 	}
 	return false;
 }
@@ -257,16 +273,18 @@ function canDodge(match, square)
 		newSquare = match.board.get(newCoord);
 		if (isDangerous(match, newSquare.dangerZones, piece.team) || newSquare.piece?.team == piece.team)
 			continue ;
-		canDodgeBool = true;
-		for (const danger of square.dangerZones)
-		{
-			if (pathFinding(match, danger, newCoord, coord) != null)
-			{
-				canDodgeBool = false;
-				break ;
-			}
-		}
-		if (canDodgeBool == true)
+		// canDodgeBool = true;
+		// for (const danger of square.dangerZones)
+		// {
+		// 	if (pathFinding(match, danger, newCoord, coord) != null)
+		// 	{
+		// 		canDodgeBool = false;
+		// 		break ;
+		// 	}
+		// }
+		// if (canDodgeBool == true)
+		// 	return (true);
+		if (checkPieceDanger(match, coord, piece, newCoord, coord, newCoord) == false)
 			return (true);
 	}
 	return (false);

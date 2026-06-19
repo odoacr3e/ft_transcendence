@@ -30,7 +30,7 @@ let movementChampion = function (match)
 			match.board.get(match.cursor.square)?.dangerZones.add(startPos);
 			match.board.get(startPos)?.targetZones.add(match.cursor.square);
 			match.board.AddInfluence(startPos, match.cursor.square);
-			if (champDangerCheck(match, piece) && 
+			if (!isDangerous(match, match.board.get(match.cursor.square).dangerZones, piece.team) && 
 			(match.board.get(match.cursor.square).piece == null || 
 			match.board.get(match.cursor.square).piece?.team != piece.team))
 				berserkMode(startPos, match);
@@ -42,35 +42,35 @@ let movementChampion = function (match)
 	return (1);
 }
 
-/**
- * 
- * @param {Match} match 
- * @param {Piece} piece 
- * @returns 
- */
-function champDangerCheck(match, piece)
-{
-	let	currSquare;
-	let	otherSquare;
+// /**
+//  * 
+//  * @param {Match} match 
+//  * @param {Piece} piece 
+//  * @returns 
+//  */
+// function champDangerCheck(match, piece)
+// {
+// 	let	currSquare;
+// 	let	otherSquare;
 
-	currSquare = match.board.get(match.cursor.square);
-	if (!isDangerous(match, currSquare.dangerZones, piece.team))
-		return (true);
-	//other boosted champions does not menace other champions
-	for (const otherCoord of currSquare.dangerZones)
-	{
-		if (otherCoord == piece.pos)
-			continue ;
-		otherSquare = match.board.get(otherCoord);
-		if (!otherSquare.piece)
-			throw (`movement Champion: danger zone ${otherCoord} of ${match.cursor.square} empty`);
-		if (otherSquare.piece.type != enumNames.CHAMPION)
-			return (false);
-		if (otherSquare.targetZones.has(match.cursor.square))
-			return (false);
-		match.board.AddInfluence(piece.pos, otherCoord);
-	}
-	return (true);
-}
+// 	currSquare = match.board.get(match.cursor.square);
+// 	if (!isDangerous(match, currSquare.dangerZones, piece.team))
+// 		return (true);
+// 	//other boosted champions does not menace other champions
+// 	for (const otherCoord of currSquare.dangerZones)
+// 	{
+// 		if (otherCoord == piece.pos)
+// 			continue ;
+// 		otherSquare = match.board.get(otherCoord);
+// 		if (!otherSquare.piece)
+// 			throw (`movement Champion: danger zone ${otherCoord} of ${match.cursor.square} empty`);
+// 		if (otherSquare.piece.type != enumNames.CHAMPION)
+// 			return (false);
+// 		if (otherSquare.targetZones.has(match.cursor.square))
+// 			return (false);
+// 		match.board.AddInfluence(piece.pos, otherCoord);
+// 	}
+// 	return (true);
+// }
 
 export {movementChampion};

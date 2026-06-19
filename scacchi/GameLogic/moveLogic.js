@@ -863,4 +863,4 @@ function transfiguration(match, result, coord, newType)
 	return (result);
 }
 
-export { checkMove, updateChessboard, checkSecondMove, transfiguration};
+export { checkMove, updateChessboard, checkSecondMove, checkPieceDanger, transfiguration};

@@ -135,7 +135,10 @@ function displayPlayerInfo(board, match)
 	col = getDotColor(match.currentPlayer.team);
 	console.log(`It's ${col} turn.`);
 	console.log(`points: ${player.nPoints}💲, bonus: ${player.bonusPointCounter}⚖️`);
-	console.log(match.currentPlayer.boostedPiece);
+	if (match.currentPlayer.boostedPiece)
+		console.log(`Boosted piece: ${match.currentPlayer.boostedPiece}`);
+	if (match.lastMenace.from)
+		console.log(`⚠️: ${match.lastMenace.from} => ${match.lastMenace.mid} => ${match.lastMenace.to}`);
 	if (match.currentPlayer.useBoostBool == true)
 		console.log(`Ready to use boost!`);
 	else
