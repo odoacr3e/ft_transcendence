@@ -155,10 +155,10 @@ class Match
 	{
 		if (this.playerNum < 2)
 			throw ("CheckMate: player less than 2");
-		else if (this.playerNum != 2)
-		{
+		// else if (this.playerNum != 2)
+		// {
 			this.DeletePlayer(player);
-		}
+		// }
 		console.log("haaaaaiiiiii persoooooooooooooooooo!!!!!!!");
 		// console.log("Premi un qualsiasi tasto per concludere...");
 		//FIXME - gestire cosa succede in base a quanti player restano
@@ -215,11 +215,13 @@ class Match
 	{
 		if (!player)
 			throw (`Delete player: invalid player`);
+		this.playerNum--;
+		if (!player.prev)
+			return ;
 		//@ts-ignore
 		this[player.prev].next = player.next;
 		//@ts-ignore
 		this[player.next].prev = player.prev;
-		this.playerNum--;
 	}
 	/**
 	 * 
@@ -236,6 +238,10 @@ class Match
 			this.currentPlayer = this.currentPlayer.next;
 		}
 		while (this.currentPlayer.team != current)
+	}
+	PlayerKingSquare()
+	{
+		return (this.board.get(this.currentPlayer.King));
 	}
 }
 
