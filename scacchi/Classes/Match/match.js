@@ -116,9 +116,7 @@ class Match
 	 * */
 	CheckMate(result=null, player)
 	{
-		if (this.playerNum < 2)
-			throw ("CheckMate: player less than 2");
-		else if (this.playerNum != 2)
+		if (this.playerNum > 2)
 		{
 			this.DeletePlayer(player);
 			if (result != null)
@@ -153,8 +151,8 @@ class Match
 	 */
 	PlayerLost(result, player)
 	{
-		if (this.playerNum < 2)
-			throw ("CheckMate: player less than 2");
+		// if (this.playerNum < 2)
+		// 	throw ("CheckMate: player less than 2");
 		// else if (this.playerNum != 2)
 		// {
 			this.DeletePlayer(player);
