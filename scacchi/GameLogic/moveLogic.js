@@ -16,6 +16,7 @@ import { Cursor } from "../Classes/Match/cursor.js";
 import { includesOneOf } from "../utils/string.js";
 import {endTurn} from "../handlers/game/endTurn.js";
 import {checkMateCheckAll} from "./checkMate.js";
+import {checkPieceDanger, pathFinding} from "./pathFinding.js";
 
 //FIXME - da mettere alcune funzioni in un utilis
 
@@ -536,27 +537,6 @@ function doubleBastardsCheck(match, result, coords)
 	return (error(result, 403, "To use the bastard boost, the pieces must be near"));
 }
 
-//SECTION - gamelogic
-
-/**
- * 
- * @param {Match} match 
- * @param {Square} square
- * @param {string} pos
- */
-function RefreshChampion(match, square, pos)
-{
-	for (const zone of square.targetZones)
-		match.board.get(zone).dangerZones.delete(pos)
-	for (const [key, value] of square.boostedTargetZones)
-	{
-		for (const coord of value)
-			match.board.get(coord).dangerZones.delete(pos)
-		match.board.get(key).dangerZones.delete(pos)
-	}
-	DangerUpdate(match, pos);
-}
-
 /**
  * 
  * @param {Array<String>} coords
@@ -566,137 +546,44 @@ function RefreshChampion(match, square, pos)
  */
 function simulation(coords, match, result)
 {
-	let tmpPiece = null;
-	let tmpSquare = null;
-	let	from;
-	let	to;
-	let	king;
-	let	dangerBool;
-	let boosted;
+	let	team;
+	let	kingCoord;
+	let	kingPiece;
+	let	enemySquare;
+	let	boosted;
+	let	boostedPiece;
+	let	boostedPieceNewTargets;
 
-	from = match.board.get(coords[0]);
-	to = match.board.get(coords[1]);
-	king = match.board.get(match.currentPlayer.King);
-	if (!from || !to || !king)
-		throw (`simulation: invalid from: ${from}/to: ${to}/king: ${king}`);
-	if (to.piece)
-	{
-		tmpSquare = to.Copy();
-		tmpPiece = tmpSquare.piece;
-	}
-	if (result.specialMoves.CheckSniperMove() == 0)
-	{
-		to.piece = from.piece;
-		from.piece = null;
-	}
-	else
-		to.piece = null;
-	if (coords[0] == match.currentPlayer.King)
-		king = to;
-	dangerUpdateMoved(match, coords, result);
-	dangerBool = isDangerous(match, king.dangerZones, king.piece?.team);
-	if (!dangerBool)
-		dangerBool = checkDoubleMoveMate(match, coords, result);
-	if (result.specialMoves.CheckSniperMove() == 0)
-	{
-		from.piece = to.piece;
-		to.piece = tmpPiece;
-	}
-	else
-		to.piece = tmpPiece;
-	dangerUpdateMoved(match, [coords[1], coords[0]], result);
-	if (tmpSquare)
-		match.board.set(coords[1], tmpSquare);
+	team = match.currentPlayer.team;
+	kingCoord = match.currentPlayer.King;
+	kingPiece = match.board.get(kingCoord).piece;
+	if (coords[0] == kingCoord)
+		kingCoord = coords[1];
+	enemySquare = match.board.get(coords[1]);
+	if (!kingPiece)
+		throw (`simulation: lost ${match.currentPlayer.team} king piece`);
+	if (checkPieceDanger(match, coords[0], kingPiece, kingCoord, coords[0], coords[1]) == true)
+		return (false);
+	if (checkPieceDanger(match, kingCoord, kingPiece, kingCoord, coords[0], coords[1]) == true)
+		return (false);
+	if (simulateBastardsDanger(match, coords, result) == true)
+		return (false);
 	boosted = match.GetOBoostedPieceCoords();
-	for (const coord of match.board.updates)
-		DangerUpdate(match, coord);
 	if (!boosted)
-		return (!dangerBool);
-	for (const p of boosted)
+		return (true);
+	for (const coord of boosted)
 	{
-		if (match.board.get(p).piece?.type == enumNames.CHAMPION && match.board.updates.has(p))
-			RefreshChampion(match, match.board.get(p), p);
-	}
-	// DangerUpdate(match, coords[0]);
-	return (!dangerBool);
-}
-
-// /**
-//  * 
-//  * @param {Array<String>} coords
-//  * @param {Match} match
-//  * @param {Result} result
-//  * @returns 
-//  */
-// function simulation(coords, match, result)
-// {
-// 	let	team;
-// 	let	kingCoord;
-// 	let	kingPiece;
-// 	let	enemySquare;
-// 	let	boosted;
-// 	let	boostedPiece;
-// 	let	boostedPieceNewTargets;
-
-// 	team = match.currentPlayer.team;
-// 	kingCoord = match.currentPlayer.King;
-// 	kingPiece = match.board.get(kingCoord).piece;
-// 	if (coords[0] == kingCoord)
-// 		kingCoord = coords[1];
-// 	enemySquare = match.board.get(coords[1]);
-// 	if (!kingPiece)
-// 		throw (`simulation: lost ${match.currentPlayer.team} king piece`);
-// 	if (checkPieceDanger(match, coords[0], kingPiece, kingCoord, coords[0], coords[1]) == true)
-// 		return (false);
-// 	if (checkPieceDanger(match, kingCoord, kingPiece, kingCoord, coords[0], coords[1]) == true)
-// 		return (false);
-// 	if (simulateBastardsDanger(match, coords, result) == true)
-// 		return (false);
-// 	boosted = match.GetOBoostedPieceCoords();
-// 	if (!boosted)
-// 		return (true);
-// 	for (const coord of boosted)
-// 	{
-// 		boostedPiece = match.board.get(coord).piece;
-// 		if (!boostedPiece)
-// 			throw (`simulation: missing piece in coord ${coord}`);
-// 		boostedPieceNewTargets = boostedPiece.boostedInfluence.get(coords[0]);
-// 		if (!boostedPieceNewTargets)
-// 			continue ;
-// 		for (const set of boostedPieceNewTargets)
-// 			if (set.has(kingCoord) == true)
-// 				return (false);
-// 	}
-// 	return (true);
-// }
-
-/**
- * 
- * @param {Match} match 
- * @param {string} checkDangerCoord 
- * @param {Piece} piece 
- * @param {string} pieceCoord
- * @param {string} ignoreCoord 
- * @param {string} blockCoord 
- * @returns 
- */
-function checkPieceDanger(match, checkDangerCoord, piece, pieceCoord, ignoreCoord, blockCoord="")
-{
-	let	square;
-	let	dangerSquare;
-
-	if (blockCoord == piece.pos)
-		blockCoord = "";
-	square = match.board.get(checkDangerCoord);
-	for (const dangerCoord of square.dangerZones)
-	{
-		dangerSquare = match.board.get(dangerCoord);
-		if (dangerSquare.piece?.team == piece.team || dangerCoord == blockCoord)
+		boostedPiece = match.board.get(coord).piece;
+		if (!boostedPiece)
+			throw (`simulation: missing piece in coord ${coord}`);
+		boostedPieceNewTargets = boostedPiece.boostedInfluence.get(coords[0]);
+		if (!boostedPieceNewTargets)
 			continue ;
-		if (pathFinding(match, dangerCoord, pieceCoord, ignoreCoord, blockCoord) != null)
-			return (true);
+		for (const set of boostedPieceNewTargets)
+			if (set.has(kingCoord) == true)
+				return (false);
 	}
-	return (false);
+	return (true);
 }
 
 /**
@@ -734,161 +621,6 @@ function simulateBastardsDanger(match, coords, result)
 	fromSquare.piece = tmpFromPiece;
 	toSquare.piece = tmpToPiece;
 	return (dangerBool);
-}
-
-/**
- * check if is possible to go from start to dest
- * @param {Match} match 
- * @param {string} startCoord
- * @param {string} destCoord
- * @param {string} ignoredCoord
- * @param {string} blockCoord
- * @param {boolean} considerBoostedBool 
- */
-export function pathFinding(match, startCoord, destCoord, ignoredCoord="", blockCoord="", considerBoostedBool=true)
-{
-	let	startArray = new Set;
-	let	startSquare;
-	let	reverseMove = {dx: 0, dy: 0};
-	let	moveData;
-
-	//finds data for start, dest and ignoredCoords
-	startSquare = match.board.get(startCoord);
-	if (!startCoord || !destCoord)
-		throw (`pathFinding: invalid parameters`);
-	if (!startSquare.piece)
-		throw (`pathFinding: invalid piece`);
-	//for optimization, the search will go from dest to start
-	//because you have one dest but multiple start (boosted zones)
-	if (startCoord == destCoord)
-		return ({from: startCoord, to: destCoord});
-	startArray.add(startCoord);
-	if (considerBoostedBool == true)
-	{
-		for (const [boostStart] of startSquare.boostedTargetZones)
-			startArray.add(boostStart);
-	}
-	//reverse movement from dest to start
-	for (const move of startSquare.piece.moveArray)
-	{
-		reverseMove.dx = -move.dx;
-		reverseMove.dy = -move.dy;
-		//move simulation takes reverted input
-		moveData = moveSimulation(match, destCoord, startArray, startCoord, reverseMove, startSquare.piece, ignoredCoord, blockCoord);
-		if (moveData)
-		{
-			match.lastMenace = moveData;
-			return (moveData);
-		}
-	}
-	return (null);
-}
-
-/**
- * 
- * @param {Match} match 
- * @param {string} start
- * @param {Set<string>} destArray 
- * @param {String} destCoord
- * @param {{dx: number, dy: number}} move
- * @param {Piece} piece
- * @param {string} ignoredCoord
- * @param {string} blockCoord
- */
-function moveSimulation(match, start, destArray, destCoord, move, piece, ignoredCoord, blockCoord)
-{
-	let	square;
-	let	moveData;
-	let	tmpCursor;
-	let	tmpCursor2;
-	let	isBoostedValkirya;
-
-	isBoostedValkirya = (piece.type == enumNames.VALKIRYA && piece.isBoostedBool == true)? 1: 0;
-	tmpCursor = match.cursor.square;
-	match.cursor.set(start);
-	while (movePiece(match, move.dy, move.dx))
-	{
-		if (blockCoord == match.cursor.square)
-		{
-			if (destArray.size == 1 || !secondMoveSimulation(match, destArray, piece, destCoord, ignoredCoord, blockCoord)) 
-				break ;
-			moveData = {from: destCoord, mid: match.cursor.square, to: start};
-			match.cursor.set(tmpCursor);
-			return (moveData);
-		}
-		if (ignoredCoord == match.cursor.square)
-		{
-			if (piece.moveLongRangeDEBUG == false)
-				break ;
-			continue ;
-		}
-		if (destArray.has(match.cursor.square))//found valid path
-		{
-			tmpCursor2 = match.cursor.square;
-			if (destArray.size != 1 && !secondMoveSimulation(match, destArray, piece, destCoord, "", blockCoord))
-				break ;
-			//if dest has been reached in two moves, mid is set
-			moveData = {from: destCoord, mid: destCoord == tmpCursor2 ? "": tmpCursor2, to: start};
-			match.cursor.set(tmpCursor);
-			return (moveData);
-		}
-		square = match.board.get(match.cursor.square);
-		if ((square.piece || piece.moveLongRangeDEBUG == false) && !isBoostedValkirya--)
-			break ;
-	}
-	match.cursor.set(tmpCursor);
-	return (null);
-}
-
-/**
- * 
- * @param {Match} match 
- * @param {Set<string>} destArray 
- * @param {Piece} piece
- * @param {string} start
- * @param {string} ignoredCoord
- * @param {string} blockCoord
- */
-function secondMoveSimulation(match, destArray, piece, start, ignoredCoord, blockCoord)
-{
-	let	currCursor;
-	let	path;
-	let	eatenPiece;
-	let	block;
-
-	currCursor = match.cursor.square;
-	if (currCursor == start)
-		return (true);
-	if (!blockCoord)
-		return (false);
-	//if that position is in danger for champion, stop
-	if (piece.type == enumNames.CHAMPION && piece.isBoostedBool)
-	{
-		path = checkPieceDanger(match, currCursor, piece, currCursor, ignoredCoord);
-		match.cursor.set(currCursor);
-		if (path)
-			return (false);
-		//also considered from danger zones
-		if (ignoredCoord)
-		{
-			path = checkPieceDanger(match, ignoredCoord, piece, currCursor, ignoredCoord);
-			match.cursor.set(currCursor);
-			if (path)
-				return (false);
-		}
-	}//minotaurus needs to eat something
-	else if (piece.type == enumNames.MINOTAURUS && piece.isBoostedBool)
-	{
-		eatenPiece = match.board.get(currCursor).piece;
-		if (currCursor != blockCoord && (!eatenPiece || piece.team == eatenPiece.team))
-			return (false);
-	}
-	block = destArray.size > 1? blockCoord : ""; 
-	path = pathFinding(match, start, currCursor, ignoredCoord, block, false);
-	match.cursor.set(currCursor);
-	if (!path)
-		return (false);
-	return (true);
 }
 
 /**
