@@ -16,7 +16,7 @@ setupFrontend()
 	cd frontend
 	
 	if [[ $1 == "run" ]];then
-		npx vite --host 0.0.0.0 &
+		npm run dev -- --host &
 		PID_FRONTEND=$!
 	else
 		git pull || error "cannot pull frontend (try ncdu)!"
