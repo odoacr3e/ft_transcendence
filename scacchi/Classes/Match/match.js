@@ -43,6 +43,7 @@ class Match
 		this.lastMenace = {from: "", mid: "", to: ""};
 		this.boostPriority = new Set;
 		this.playerNum = this.settings.players.number;
+		this.lastLost = "";
 		this.victory = "";
 		/** @type {Timer | null} */ this.timer = null;
 		if (this.settings.players.number == 4)
@@ -172,12 +173,8 @@ class Match
 	 */
 	PlayerLost(result, player)
 	{
-		// if (this.playerNum < 2)
-		// 	throw ("CheckMate: player less than 2");
-		// else if (this.playerNum != 2)
-		// {
-			this.DeletePlayer(player);
-		// }
+		this.lastLost = player.team;
+		this.DeletePlayer(player);
 		console.log("haaaaaiiiiii persoooooooooooooooooo!!!!!!!");
 		// console.log("Premi un qualsiasi tasto per concludere...");
 		//FIXME - gestire cosa succede in base a quanti player restano

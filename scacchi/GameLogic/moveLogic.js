@@ -603,6 +603,9 @@ function simulation(coords, match, result)
 		if (!boostedPiece)
 			throw (`simulation: missing piece in coord ${coord}`);
 		boostedPieceNewTargets = boostedPiece.boostedInfluence.get(coords[0]);
+		if (coord != coords[1] && boostedPiece.type == enumNames.CHAMPION)
+			if (pathFinding(match, coord, kingCoord, coords[0], coords[1], true))
+				return (false);
 		if (!boostedPieceNewTargets)
 			continue ;
 		for (const set of boostedPieceNewTargets)

@@ -80,7 +80,7 @@ export function pathFinding(match, startCoord, destCoord, ignoredCoord="", block
 		reverseMove.dx = -move.dx;
 		reverseMove.dy = -move.dy;
 		//move simulation takes reverted input
-		moveData = moveSimulation(match, destCoord, startArray, startCoord, reverseMove, startSquare.piece, ignoredCoord, blockCoord);
+		moveData = moveSimulation(match, destCoord, startArray, startCoord, reverseMove, startSquare.piece, ignoredCoord, blockCoord, considerBoostedBool);
 		if (moveData)
 		{
 			match.lastMenace = moveData;
@@ -100,8 +100,9 @@ export function pathFinding(match, startCoord, destCoord, ignoredCoord="", block
  * @param {Piece} piece
  * @param {string} ignoredCoord
  * @param {string} blockCoord
+ * @param {boolean} considerBoostedBool
  */
-function moveSimulation(match, start, destArray, destCoord, move, piece, ignoredCoord, blockCoord)
+function moveSimulation(match, start, destArray, destCoord, move, piece, ignoredCoord, blockCoord, considerBoostedBool)
 {
 	let	square;
 	let	moveData;
@@ -114,10 +115,12 @@ function moveSimulation(match, start, destArray, destCoord, move, piece, ignored
 	match.cursor.set(start);
 	while (movePiece(match, move.dy, move.dx))
 	{
+		if (match.cursor.square == "g:")
+			console.log("...");
 		//square that will be occupied
 		if (blockCoord == match.cursor.square)
 		{
-			if (destArray.size == 1 || !secondMoveSimulation(match, destArray, piece, destCoord, ignoredCoord, blockCoord)) 
+			if (destArray.size == 1 || !secondMoveSimulation(match, destArray, piece, destCoord, ignoredCoord, blockCoord, considerBoostedBool)) 
 				break ;
 			moveData = {from: destCoord, mid: match.cursor.square, to: start};
 			match.cursor.set(tmpCursor);
@@ -134,16 +137,19 @@ function moveSimulation(match, start, destArray, destCoord, move, piece, ignored
 		if (destArray.has(match.cursor.square))
 		{
 			tmpCursor2 = match.cursor.square;
-			if (destArray.size != 1 && !secondMoveSimulation(match, destArray, piece, destCoord, "", blockCoord))
-				//break ;
-				continue ;
+			if (destArray.size != 1 && !secondMoveSimulation(match, destArray, piece, destCoord, "", blockCoord, considerBoostedBool))
+			{
+				if (match.board.get(match.cursor.square).piece)
+					break ;
+				continue;
+			}
 			//if dest has been reached in two moves, mid is set
 			moveData = {from: destCoord, mid: destCoord == tmpCursor2 ? "": tmpCursor2, to: start};
 			match.cursor.set(tmpCursor);
 			return (moveData);
 		}
 		//check ignoredCoord old target zones only for boosted champions
-		moveData = boostChampNewBoost(match, destCoord, start, piece, ignoredCoord, blockCoord, tmpCursor);
+		moveData = boostChampNewBoost(match, destCoord, start, piece, ignoredCoord, blockCoord, considerBoostedBool, tmpCursor);
 		if (moveData)
 			return (moveData);
 		square = match.board.get(match.cursor.square);
@@ -162,8 +168,9 @@ function moveSimulation(match, start, destArray, destCoord, move, piece, ignored
  * @param {string} start
  * @param {string} ignoredCoord
  * @param {string} blockCoord
+ * @param {boolean} considerBoostedBool
  */
-function secondMoveSimulation(match, destArray, piece, start, ignoredCoord, blockCoord)
+function secondMoveSimulation(match, destArray, piece, start, ignoredCoord, blockCoord, considerBoostedBool)
 {
 	let	currCursor;
 	let	path;
@@ -173,7 +180,7 @@ function secondMoveSimulation(match, destArray, piece, start, ignoredCoord, bloc
 	currCursor = match.cursor.square;
 	if (currCursor == start)
 		return (true);
-	if (!blockCoord)
+	if (!blockCoord || !considerBoostedBool)
 		return (false);
 	//if that position is in danger for champion, stop
 	if (piece.type == enumNames.CHAMPION && piece.isBoostedBool)
@@ -186,6 +193,13 @@ function secondMoveSimulation(match, destArray, piece, start, ignoredCoord, bloc
 		if (ignoredCoord)
 		{
 			path = checkPieceDanger(match, ignoredCoord, piece, currCursor, ignoredCoord);
+			match.cursor.set(currCursor);
+			if (path)
+				return (false);
+		}
+		if (blockCoord && blockCoord != currCursor)
+		{
+			path = pathFinding(match, blockCoord, match.cursor.square, start, "", false);
 			match.cursor.set(currCursor);
 			if (path)
 				return (false);
@@ -212,18 +226,19 @@ function secondMoveSimulation(match, destArray, piece, start, ignoredCoord, bloc
  * @param {string} dest
  * @param {Piece} piece 
  * @param {string} ignoredCoord 
- * @param {string} blockCoord 
+ * @param {string} blockCoord
+ * @param {boolean} considerBoostedBool 
  * @param {string} tmpCursor
  * @returns {{from: string, mid: string, to: string} | null}
  */
-function boostChampNewBoost(match, start, dest, piece, ignoredCoord, blockCoord, tmpCursor)
+function boostChampNewBoost(match, start, dest, piece, ignoredCoord, blockCoord, considerBoostedBool, tmpCursor)
 {
 	let	currSquare;
 	let	dangerPiece;
 	let	tmpCursor2;
 	let	path;
 
-	if (!blockCoord)
+	if (!blockCoord || !considerBoostedBool)
 		return (null);
 	if (piece.type != enumNames.CHAMPION || piece.isBoostedBool == null)
 		return (null);
@@ -249,7 +264,7 @@ function boostChampNewBoost(match, start, dest, piece, ignoredCoord, blockCoord,
 	if (path)
 		return (null);
 	//if the menacing piece can end its movement, the path is found
-	path = pathFinding(match, start, match.cursor.square, ignoredCoord, "", false);
+	path = pathFinding(match, start, match.cursor.square, ignoredCoord, blockCoord, false);
 	match.cursor.square = tmpCursor2;
 	if (!path)
 		return (null);

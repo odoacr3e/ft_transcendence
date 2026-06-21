@@ -64,6 +64,8 @@ export class History
 			delete event.pieceBoosterTargetZones;
 			//@ts-ignore
 			delete event.isBoostedBool;
+			if (event.lastLost == null)//@ts-ignore
+				delete event.lastLost;
 		}
 		if (name)
 		{
@@ -110,6 +112,7 @@ export class HistoryEvent
 		this.counter = counter;
 		this.updates = updates;
 		this.error = false;
+		this.lastLost = null;
 		if (pieceBoosterZones)
 			this.pieceBoosterTargetZones = copyBoostedTargetZones(pieceBoosterZones);
 	}
@@ -139,6 +142,9 @@ function updateMoves(match, square, coords)
 	if (match.currentPlayer.useBoostBool)
 		eName = eEvents.MoveBoost;
 	record = new HistoryEvent(this.moves, eName, square.piece?.team, match.board.updates, square.piece?.type, coords[0], coords[1], square.boostedTargetZones, square.piece?.isBoostedBool);
+	if (match.lastLost)
+		record.lastLost = match.lastLost;
+	match.lastLost = "";
 	this.events.push(record);
 	this.moves += 1;
 }
@@ -163,6 +169,9 @@ function updateBoost(match, square, from)
 	// if (!square.piece)
 	// 	throw (`History: missing piece in square: ${square}`);
 	record = new HistoryEvent(this.moves, eEvents.Boost, square.piece?.team, match.board.updates, square.piece?.type, from);
+	if (match.lastLost)
+		record.lastLost = match.lastLost;
+	match.lastLost = "";
 	this.events.push(record);
 	this.moves += 1;
 }
@@ -189,6 +198,9 @@ function updateTransform(match, square, from, newType)
 	// 	throw (`History: missing piece in square: ${square}`);
 	record = new HistoryEvent(this.moves, eEvents.Transform, square.piece?.team, match.board.updates, newType, from);
 	record.to = newType;
+	if (match.lastLost)
+		record.lastLost = match.lastLost;
+	match.lastLost = "";
 	this.events.push(record);
 	this.moves += 1;
 }
@@ -211,6 +223,9 @@ function updateEndTurn(match)
 	if (!match.currentPlayer.team)
 		throw (`History: invalid currentPlayer team`);
 	record = new HistoryEvent(this.moves, eEvents.EndTurn, match.currentPlayer.team, match.board.updates);
+	if (match.lastLost)
+		record.lastLost = match.lastLost;
+	match.lastLost = "";
 	this.events.push(record);
 	this.moves += 1;
 }
