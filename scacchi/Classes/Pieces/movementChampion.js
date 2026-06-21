@@ -3,6 +3,7 @@ import {berserkMode} from "./berserkMode.js";
 import {movePiece} from "../../utils/moveUtils.js";
 import {isDangerous} from "../../utils/gameUtils.js";
 import { enumNames } from "../../Macro/enums.js";
+import { checkPieceDanger } from "../../GameLogic/pathFinding.js";
 
 /** @typedef {import("../Match/match.js").Match} Match*/
 /** @typedef {import("../Pieces/pieces.js").Piece} Piece*/
@@ -16,29 +17,35 @@ let movementChampion = function (match)
 {
 	let	startPos;
 	let	piece;
+	let	menaceFromStartBool;
 
 	startPos = match.cursor.square;
 	piece = match.board.get(match.cursor.square)?.piece;
 	if (piece == undefined)
 		return (0);
-	// if (piece.pos != startPos)
-	// 	throw (`movementChampion: mismatch: startPos ${startPos}, piece.pos ${piece.pos}`);
+	if (piece.pos != startPos)
+		throw (`movementChampion: mismatch: startPos ${startPos}, piece.pos ${piece.pos}`);
 	for (let {dx, dy} of piece.moveArray)
 	{
+		match.cursor.square = startPos;
+		if (movePiece(match, dx, dy) == false)
+			continue ;
+		menaceFromStartBool = checkPieceDanger(match, startPos, piece, match.cursor.square, startPos, match.cursor.square, true);
 		while (movePiece(match, dx, dy, false))
 		{
 			match.board.get(match.cursor.square)?.dangerZones.add(startPos);
 			match.board.get(startPos)?.targetZones.add(match.cursor.square);
 			match.board.AddInfluence(startPos, match.cursor.square);
-			if (!isDangerous(match, match.board.get(match.cursor.square).dangerZones, piece.team) && 
+			if (!menaceFromStartBool && 
+			!isDangerous(match, match.board.get(match.cursor.square).dangerZones, piece.team) && 
 			(match.board.get(match.cursor.square).piece == null || 
 			match.board.get(match.cursor.square).piece?.team != piece.team))
 				berserkMode(startPos, match);
 			if (match.board.get(match.cursor.square)?.piece != null)
 				break ;
 		}
-		match.cursor.square = startPos;
 	}
+	match.cursor.square = startPos;
 	return (1);
 }
 

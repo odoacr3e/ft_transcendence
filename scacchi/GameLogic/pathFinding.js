@@ -14,9 +14,10 @@ import {movePiece} from "../utils/moveUtils.js";
  * @param {string} pieceCoord
  * @param {string} ignoreCoord 
  * @param {string} blockCoord 
+ * @param {boolean} resetMenace
  * @returns 
  */
-export function checkPieceDanger(match, checkDangerCoord, piece, pieceCoord, ignoreCoord, blockCoord="")
+export function checkPieceDanger(match, checkDangerCoord, piece, pieceCoord, ignoreCoord, blockCoord="", resetMenace=false)
 {
 	let	square;
 	let	dangerSquare;
@@ -30,7 +31,11 @@ export function checkPieceDanger(match, checkDangerCoord, piece, pieceCoord, ign
 		if (dangerSquare.piece?.team == piece.team || dangerCoord == blockCoord)
 			continue ;
 		if (pathFinding(match, dangerCoord, pieceCoord, ignoreCoord, blockCoord) != null)
+		{
+			if (resetMenace)
+				match.lastMenace = {from: "", mid: "", to: ""};
 			return (true);
+		}
 	}
 	return (false);
 }
