@@ -17,6 +17,7 @@ let movementChampion = function (match)
 {
 	let	startPos;
 	let	piece;
+	let	otherSquare;
 	let	menaceFromStartBool;
 
 	startPos = match.cursor.square;
@@ -33,17 +34,18 @@ let movementChampion = function (match)
 		menaceFromStartBool = checkPieceDanger(match, startPos, piece, match.cursor.square, startPos, match.cursor.square, true);
 		do
 		{
-			if (match.board.get(match.cursor.square)?.piece != null)
+			otherSquare = match.board.get(match.cursor.square);
+			if (otherSquare.piece != null && otherSquare.piece.team != piece.team)
 				menaceFromStartBool = checkPieceDanger(match, startPos, piece, match.cursor.square, startPos, match.cursor.square, true);
-			match.board.get(match.cursor.square)?.dangerZones.add(startPos);
+			otherSquare.dangerZones.add(startPos);
 			match.board.get(startPos)?.targetZones.add(match.cursor.square);
 			match.board.AddInfluence(startPos, match.cursor.square);
 			if (!menaceFromStartBool && 
-			!isDangerous(match, match.board.get(match.cursor.square).dangerZones, piece.team) && 
-			(match.board.get(match.cursor.square).piece == null || 
-			match.board.get(match.cursor.square).piece?.team != piece.team))
+			!isDangerous(match, otherSquare.dangerZones, piece.team) && 
+			(otherSquare.piece == null || 
+			otherSquare.piece?.team != piece.team))
 				berserkMode(startPos, match);
-			if (match.board.get(match.cursor.square)?.piece != null)
+			if (otherSquare.piece != null)
 				break ;
 		}
 		while (movePiece(match, dx, dy, false))
