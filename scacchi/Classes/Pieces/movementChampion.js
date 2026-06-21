@@ -33,6 +33,8 @@ let movementChampion = function (match)
 		menaceFromStartBool = checkPieceDanger(match, startPos, piece, match.cursor.square, startPos, match.cursor.square, true);
 		do
 		{
+			if (match.board.get(match.cursor.square)?.piece != null)
+				menaceFromStartBool = checkPieceDanger(match, startPos, piece, match.cursor.square, startPos, match.cursor.square, true);
 			match.board.get(match.cursor.square)?.dangerZones.add(startPos);
 			match.board.get(startPos)?.targetZones.add(match.cursor.square);
 			match.board.AddInfluence(startPos, match.cursor.square);

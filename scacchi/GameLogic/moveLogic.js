@@ -118,7 +118,7 @@ function checkDoubleMoveMate(match, coords, result, checkBool=true)
 	let	OtherPiece;
 	let	pieceData;
 
-	OtherPiece = match.GetOBoostedPieceCoords();
+	OtherPiece = match.GetBoostedPieceCoords();
 	let	theKING = match.currentPlayer.King;
 	if (coords.length >= 2 && coords[0] == theKING)
 		theKING = coords[1];
@@ -287,35 +287,62 @@ function updateChessboard(coords=[], result, match, boostBool)
 		if (to.piece.isBoostedBool)
 			match.currentPlayer.boostedPiece = to.piece.pos;
 		else if (boostBool)
+		{
 			match.currentPlayer.boostedPiece = "";
+			match.boostPriority.delete(match.currentPlayer.team);
+		}
 	}
 	if (to.piece && to.piece.isMovedBool == false)
 		to.piece.isMovedBool = true;
-	boostedPieceUpdates(match, coords);
-	if (result.specialMoves.CheckChampionBoostUsed())
-		updateAllChampions(match, result);
 	checkDoubleMoveMate(match, [], result, false);
-	match.moves++;
 	dangerUpdateMoved(match, coords, result);
+	updateBoostedChampions(match);
+	match.moves++;
 	return (true);
 }
 
 //SECTION - move utils
 
 /**
- * 
+ * if they need an update, it is done in boost order
  * @param {Match} match
- * @param {Result} result
  */
-function updateAllChampions(match, result)
+function updateBoostedChampions(match)
 {
 	let arr;
+	let	piece;
+	let	needUpdateBool;
+	let	boostedChampsCoords;
 
-	arr = match.GetOBoostedPieceCoords();
-	if (arr == null)
+	arr = match.GetBoostedPieceCoords(true, true);
+	if (!arr)
 		return ;
-	for (let x of arr)
+	boostedChampsCoords = [];
+	//check if at least one boosted champion needs a refresh
+	needUpdateBool = false;
+	for (const x of arr)
+	{
+		piece = match.board.get(x).piece;
+		if (!piece)
+			throw (`updateBoostedChampions: piece in ${x} does not exist`);
+		if (piece.type != enumNames.CHAMPION || piece.isBoostedBool == false)
+			continue ;
+		boostedChampsCoords.push(x);
+		if (match.board.updates.has(x) == true)
+			needUpdateBool = true;
+	}
+	if (needUpdateBool == false)
+		return ;
+	//resets all one of them
+	for (const x of boostedChampsCoords)
+	{
 		DangerUpdate(match, x);
+	}
+	//recalculate them in boost order
+	for (const x of boostedChampsCoords)
+	{
+		DangerUpdate(match, x, false);
+	}
 }
 
 /**
@@ -409,7 +436,6 @@ function moveCastling(match, from, to)
 
 /**
  * 
- * FIXME - da aggiungere check per valchiria: vuole usare boost?
  * @param {Match} match
  * @param {Result} result 
  * @param {Square} from 
@@ -568,7 +594,7 @@ function simulation(coords, match, result)
 		return (false);
 	if (simulateBastardsDanger(match, coords, result) == true)
 		return (false);
-	boosted = match.GetOBoostedPieceCoords();
+	boosted = match.GetBoostedPieceCoords();
 	if (!boosted)
 		return (true);
 	for (const coord of boosted)
@@ -670,7 +696,7 @@ function transfiguration(match, result, coord, newType)
 	isBoostedBool = square.piece.isBoostedBool;
 	square.piece = new Piece(newType, square.piece.pos, square.piece.team);
 	square.piece.isBoostedBool = isBoostedBool;
-	DangerUpdate(match, coord);
+	DangerUpdate(match, coord, false);
 	match.history.UpdateTransform(match, square, coord, newType);
 	if (checkMateCheckAll(match, result, true) == true)
 		return (result);
@@ -682,4 +708,4 @@ function transfiguration(match, result, coord, newType)
 	return (result);
 }
 
-export { checkMove, updateChessboard, checkSecondMove, checkPieceDanger, transfiguration};
+export { checkMove, updateChessboard, checkSecondMove, transfiguration};

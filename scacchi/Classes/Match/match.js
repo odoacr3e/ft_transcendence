@@ -41,6 +41,7 @@ class Match
 		this.historyCreateBool = false;
 		this.currentPlayer = this.white;
 		this.lastMenace = {from: "", mid: "", to: ""};
+		this.boostPriority = new Set;
 		this.playerNum = this.settings.players.number;
 		this.victory = "";
 		/** @type {Timer | null} */ this.timer = null;
@@ -84,11 +85,12 @@ class Match
 		}
 		return (false);
 	}
-	GetOBoostedPieceCoords()
+	GetBoostedPieceCoords(considerCurrentPlayerBool=false, sortByPriorityBool=false)
 	{
 		/** @type {Player} */			let	player;
 		/** @type {Square | undefined} */let	pieceSquare;
 		/** @type {Array<string>} */let	arr = [];
+		/** @type {Array<string>} */let	arrPriority;
 
 		//@ts-ignore
 		player = this[this.currentPlayer.next];
@@ -105,8 +107,27 @@ class Match
 			//@ts-ignore
 			player = this[player.next];
 		}
+		if (considerCurrentPlayerBool && this.currentPlayer.boostedPiece)
+			arr.push(this.currentPlayer.boostedPiece);
 		if (arr.length == 0)
 			return (null);
+		if (sortByPriorityBool == false || arr.length == 1)
+			return (arr);
+		arrPriority = Array.from(this.boostPriority);
+		arr.sort((coord1, coord2) =>
+		{
+			let piece1;
+			let piece2;
+
+			piece1 = this.board.get(coord1).piece;
+			piece2 = this.board.get(coord2).piece;
+			if (!piece1)
+				throw(`match.GetBoostedPieceCoords: invalid piece in ${coord1}`);
+			if (!piece2)
+				throw(`match.GetBoostedPieceCoords: invalid piece in ${coord2}`);
+			//closure is used to remember the priority
+			return (arrPriority.indexOf(piece1.team) - arrPriority.indexOf(piece2.team));			
+		});
 		return (arr);
 	}
 	/** 

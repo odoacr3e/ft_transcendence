@@ -48,10 +48,10 @@ let movePiece = (match, dy, dx, clear=false) =>
  * 
  * @param {Match} match 
  * @param {string | null} pos
- * @param {boolean} updBool
+ * @param {boolean} ignoreBoostChampsBool
  * @returns 
  */
-let DangerUpdate = (match, pos=null, updBool=true) =>
+let DangerUpdate = (match, pos=null, ignoreBoostChampsBool=true) =>
 {
 	let	piece;
 	let	startPos;
@@ -60,8 +60,7 @@ let DangerUpdate = (match, pos=null, updBool=true) =>
 		match.cursor.set(pos);
 	else
 		pos = match.cursor.square;
-	if (updBool)
-		match.board.updates.add(pos);
+	match.board.updates.add(pos);
 	startPos = match.cursor.square;
 	match.board.ResetTargets(startPos);
 	piece = match.board.get(match.cursor.square).piece;
@@ -85,6 +84,10 @@ let DangerUpdate = (match, pos=null, updBool=true) =>
 		}
 		match.cursor.square = startPos;
 	}
+	match.board.get(pos).targetZones.delete(pos);
+	match.board.get(pos).dangerZones.delete(pos);
+	if (ignoreBoostChampsBool && piece.type == enumNames.CHAMPION && piece.isBoostedBool)
+		return ;
 	if (piece.isBoostedBool == true)
 		piece.moveFunction(match);
 	castlingUpdate(match, startPos, piece);

@@ -209,7 +209,7 @@ function simulation(coords, match, result)
 	dangerUpdateMoved(match, [coords[1], coords[0]], result);
 	if (tmpSquare)
 		match.board.set(coords[1], tmpSquare);
-	boosted = match.GetOBoostedPieceCoords();
+	boosted = match.GetBoostedPieceCoords();
 	for (const coord of match.board.updates)
 		DangerUpdate(match, coord);
 	if (!boosted)
