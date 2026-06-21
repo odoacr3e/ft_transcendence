@@ -57,8 +57,6 @@ function CheckMateCheck(match, kingCoord)
  */
 function checkMateCheckAll(match, result, lostBool=false)
 {
-	let	boostedPieceCoord;
-
 	if (match.playerNum > 2)
 	{
 		let tmp = match.currentPlayer;
@@ -78,12 +76,12 @@ function checkMateCheckAll(match, result, lostBool=false)
 	// @ts-ignore
 	else if (CheckMateCheck(match, match[match.currentPlayer.next].King))
 		return (match.CheckMate(result), true);
-	boostedPieceCoord = match.currentPlayer.boostedPiece;
+	//FIXME - solo per debug e trovare falsi positivi in simulation
 	if (isDangerous(match, match.PlayerKingSquare().dangerZones, match.currentPlayer.team))
 	{
 		match.PlayerLost(result, match.currentPlayer.team);
 		if (match.playerNum == 1)
-			match.CheckMate(result);
+			throw ("SIMULATION HA FALLITO!");
 	}
 	return (false);
 }

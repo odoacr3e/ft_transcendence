@@ -61,6 +61,8 @@ export function pathFinding(match, startCoord, destCoord, ignoredCoord="", block
 	if (!startCoord || !destCoord)
 		throw (`pathFinding: invalid parameters`);
 	if (!startSquare.piece)
+		startSquare = match.board.get(ignoredCoord);
+	if (!startSquare.piece)
 		throw (`pathFinding: invalid piece`);
 	//for optimization, the search will go from dest to start
 	//because you have one dest but multiple start (boosted zones)
@@ -112,7 +114,8 @@ function moveSimulation(match, start, destArray, destCoord, move, piece, ignored
 	match.cursor.set(start);
 	while (movePiece(match, move.dy, move.dx))
 	{
-		if (blockCoord == match.cursor.square)//square that will be occupied
+		//square that will be occupied
+		if (blockCoord == match.cursor.square)
 		{
 			if (destArray.size == 1 || !secondMoveSimulation(match, destArray, piece, destCoord, ignoredCoord, blockCoord)) 
 				break ;
@@ -120,13 +123,15 @@ function moveSimulation(match, start, destArray, destCoord, move, piece, ignored
 			match.cursor.set(tmpCursor);
 			return (moveData);
 		}
-		if (ignoredCoord == match.cursor.square)//square no longer occupied
+		//square no longer occupied
+		if (ignoredCoord == match.cursor.square)
 		{
 			if (piece.moveLongRangeDEBUG == false)
 				break ;
 			continue ;
 		}
-		if (destArray.has(match.cursor.square))//found valid path
+		//found valid path
+		if (destArray.has(match.cursor.square))
 		{
 			tmpCursor2 = match.cursor.square;
 			if (destArray.size != 1 && !secondMoveSimulation(match, destArray, piece, destCoord, "", blockCoord))
@@ -137,6 +142,10 @@ function moveSimulation(match, start, destArray, destCoord, move, piece, ignored
 			match.cursor.set(tmpCursor);
 			return (moveData);
 		}
+		//check ignoredCoord old target zones only for boosted champions
+		moveData = boostChampNewBoost(match, destCoord, start, piece, ignoredCoord, blockCoord, tmpCursor);
+		if (moveData)
+			return (moveData);
 		square = match.board.get(match.cursor.square);
 		if ((square.piece || piece.moveLongRangeDEBUG == false) && !isBoostedValkirya--)
 			break ;
@@ -194,4 +203,59 @@ function secondMoveSimulation(match, destArray, piece, start, ignoredCoord, bloc
 	if (!path)
 		return (false);
 	return (true);
+}
+
+/**
+ * this function consider ignoredSquare targets for boosted champs
+ * @param {Match} match 
+ * @param {string} start
+ * @param {string} dest
+ * @param {Piece} piece 
+ * @param {string} ignoredCoord 
+ * @param {string} blockCoord 
+ * @param {string} tmpCursor
+ * @returns {{from: string, mid: string, to: string} | null}
+ */
+function boostChampNewBoost(match, start, dest, piece, ignoredCoord, blockCoord, tmpCursor)
+{
+	let	currSquare;
+	let	dangerPiece;
+	let	tmpCursor2;
+	let	path;
+
+	if (!blockCoord)
+		return (null);
+	if (piece.type != enumNames.CHAMPION || piece.isBoostedBool == null)
+		return (null);
+	currSquare = match.board.get(match.cursor.square);
+	if (currSquare.dangerZones.has(ignoredCoord) == false)
+		return (null);
+	//checking if pieces different by ignored are menacing current position
+	for (const dangerCoord of currSquare.dangerZones)
+	{
+		if (dangerCoord == ignoredCoord)
+			continue ;
+		dangerPiece = match.board.get(dangerCoord).piece;
+		if (!dangerPiece)
+			throw (`boostChampsNewBoost: invalid piece in ${dangerCoord}`);
+		if (dangerPiece.team == piece.team)
+			continue ;
+		return (null);
+	}
+	tmpCursor2 = match.cursor.square;
+	//if the piece that has move can still menace from blockCoord, skip
+	path = pathFinding(match, blockCoord, match.cursor.square, start, "", false);
+	match.cursor.square = tmpCursor2;
+	if (path)
+		return (null);
+	//if the menacing piece can end its movement, the path is found
+	path = pathFinding(match, start, match.cursor.square, ignoredCoord, "", false);
+	match.cursor.square = tmpCursor2;
+	if (!path)
+		return (null);
+	//path is found
+	path.mid = path.to;
+	path.to = dest;
+	match.cursor.square = tmpCursor;
+	return (path);
 }

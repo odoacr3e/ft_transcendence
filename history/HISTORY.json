@@ -1,7 +1,7 @@
 {
-  "moves": 75,
+  "moves": 94,
   "victory": "",
-  "finalBoard": "| | | |M|J|V| |K|V| | | | | |\n| | | | |B|B| |B|B| |B| | | |\n| | | |B| | | | | | | | | | |\n| |B| | | | |B| | | | | |B|M|\n| | | | |C| | | |C| | | |B|J|\n| |B| | | | | | | | | | |B|V|\n| |B| | | | | | | | | | |B|K|\n|K| | |B| | | | | | |B| | | |\n|V|B| | | | | | | | | |B| |V|\n|J|B| | |C| | | |C| | | |B| |\n|M|B| | | | |B| | | | | | | |\n| | | | | | | | | | | | | | |\n| | | |B| |B| |B|B|B|B| | | |\n| | | | | |V| |K|V|J|M| | | |\n",
+  "finalBoard": "| | | |M|J|V| |K|V| | | | | |\n|C| | | |B|B| |B| | |B| | | |\n| | | |B| | | | |B| | | | | |\n| |B| | | | |B| | | | | |B|M|\n| | | | | | | | |+C| | | |B|J|\n| |B| | |+C| | | | | | | |B|V|\n| |B| | | | | | | | | | |B|K|\n|K| | |B| | | | | | |B| | | |\n|V|B| | | | | | | | | |B| |V|\n|J|B| | | | | | | | | |B| | |\n|M|B| | | | |B| | | | | | | |\n| | | | | | | | | | |B| | | |\n| | | |B| |B|K|B|B|B| | | | |\n| | | | | |V| | |V|J|M| | | |\n",
   "matchSettings": "14x14x4",
   "events": [
     {
@@ -826,6 +826,160 @@
       "type": "move",
       "useBoostBool": false,
       "counter": 74,
+      "updates": {},
+      "error": false
+    },
+    {
+      "from": "i:",
+      "to": "",
+      "movedPiece": "Champion",
+      "team": "green",
+      "type": "boost",
+      "useBoostBool": false,
+      "counter": 75,
+      "updates": {},
+      "error": false
+    },
+    {
+      "from": "",
+      "to": "",
+      "movedPiece": "",
+      "team": "green",
+      "type": "endturn",
+      "useBoostBool": false,
+      "counter": 76,
+      "updates": {},
+      "error": false
+    },
+    {
+      "from": "k2",
+      "to": "k3",
+      "movedPiece": "Bastards",
+      "team": "yellow",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 77,
+      "updates": {},
+      "error": false
+    },
+    {
+      "from": "i5",
+      "to": "",
+      "movedPiece": "Champion",
+      "team": "yellow",
+      "type": "boost",
+      "useBoostBool": false,
+      "counter": 78,
+      "updates": {},
+      "error": false
+    },
+    {
+      "from": "",
+      "to": "",
+      "movedPiece": "",
+      "team": "yellow",
+      "type": "endturn",
+      "useBoostBool": false,
+      "counter": 79,
+      "updates": {},
+      "error": false
+    },
+    {
+      "from": "e5",
+      "to": "i5",
+      "movedPiece": "Champion",
+      "team": "blue",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 80,
+      "updates": {},
+      "error": false
+    },
+    {
+      "from": "i5",
+      "to": "i:",
+      "movedPiece": "Champion",
+      "team": "blue",
+      "type": "moveboost",
+      "useBoostBool": false,
+      "counter": 81,
+      "updates": {},
+      "error": true
+    },
+    {
+      "from": "i5",
+      "to": "b<",
+      "movedPiece": "Champion",
+      "team": "blue",
+      "type": "moveboost",
+      "useBoostBool": false,
+      "counter": 82,
+      "updates": {},
+      "error": true
+    },
+    {
+      "from": "",
+      "to": "",
+      "movedPiece": "",
+      "team": "blue",
+      "type": "endturn",
+      "useBoostBool": false,
+      "counter": 83,
+      "updates": {},
+      "error": false
+    },
+    {
+      "from": "i=",
+      "to": "i<",
+      "movedPiece": "Bastards",
+      "team": "red",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 84,
+      "updates": {},
+      "error": false
+    },
+    {
+      "from": "e:",
+      "to": "",
+      "movedPiece": "Champion",
+      "team": "red",
+      "type": "boost",
+      "useBoostBool": false,
+      "counter": 85,
+      "updates": {},
+      "error": false
+    },
+    {
+      "from": "",
+      "to": "",
+      "movedPiece": "",
+      "team": "red",
+      "type": "endturn",
+      "useBoostBool": false,
+      "counter": 86,
+      "updates": {},
+      "error": false
+    },
+    {
+      "from": "m5",
+      "to": "l5",
+      "movedPiece": "Bastards",
+      "team": "green",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 87,
+      "updates": {},
+      "error": false
+    },
+    {
+      "from": "",
+      "to": "",
+      "movedPiece": "",
+      "team": "green",
+      "type": "endturn",
+      "useBoostBool": false,
+      "counter": 88,
       "updates": {},
       "error": false
     }

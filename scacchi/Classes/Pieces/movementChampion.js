@@ -29,14 +29,12 @@ let movementChampion = function (match)
 	for (let {dx, dy} of piece.moveArray)
 	{
 		match.cursor.square = startPos;
-		if (movePiece(match, dx, dy) == false)
-			continue ;
-		menaceFromStartBool = checkPieceDanger(match, startPos, piece, match.cursor.square, startPos, match.cursor.square, true);
-		do
+		menaceFromStartBool = true;
+		while (movePiece(match, dx, dy, false))
 		{
-			otherSquare = match.board.get(match.cursor.square);
-			if (otherSquare.piece != null && otherSquare.piece.team != piece.team)
+			if (menaceFromStartBool == true)
 				menaceFromStartBool = checkPieceDanger(match, startPos, piece, match.cursor.square, startPos, match.cursor.square, true);
+			otherSquare = match.board.get(match.cursor.square);
 			otherSquare.dangerZones.add(startPos);
 			match.board.get(startPos)?.targetZones.add(match.cursor.square);
 			match.board.AddInfluence(startPos, match.cursor.square);
@@ -48,7 +46,6 @@ let movementChampion = function (match)
 			if (otherSquare.piece != null)
 				break ;
 		}
-		while (movePiece(match, dx, dy, false))
 	}
 	match.cursor.square = startPos;
 	return (1);
