@@ -24,6 +24,7 @@ function historyRestore(match, path)
 	let	history;
 	let	buffer;
 	let	result;
+	let	playerNum;
 
 	DEBUGCounter = 0;
 	if (path.endsWith(".json") == false)
@@ -39,11 +40,10 @@ function historyRestore(match, path)
 		match.historyCreateBool = true;
 		for (const event of history.events)
 		{
+			playerNum = match.playerNum;
 			console.log(`History: move number ${event.counter}`);
 			if (DEBUGCounter == 12)
 				console.log("");
-			if (match.victory)
-				throw(`this move give invalid victory for ${match.victory}. \nevent: ${JSON.stringify(event)}`);
 			if (event.type == eEvents.Move)
 				result = move(match, event.from, event.to, event.useBoostBool);
 			else if (event.type == eEvents.MoveBoost)
@@ -67,6 +67,12 @@ function historyRestore(match, path)
 				DEBUGCounter++;
 			else
 				error(null, result, 0, null, false);
+			if (match.victory)
+				throw(`this move give invalid victory for ${match.victory}. \nevent: ${JSON.stringify(event)}`);
+			if (event.lastLost && playerNum == match.playerNum)
+				throw(`player ${event.lastLost} should have lost. \nevent: ${JSON.stringify(event)}`);
+			if (!event.lastLost && playerNum != match.playerNum)
+				throw(`Invalid loss for a player. \nevent: ${JSON.stringify(event)}`);
 			render(match);
 			//NOTE - print di ogni risposta/richiesta
 			// printResponse(match, event, result);

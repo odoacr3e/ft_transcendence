@@ -229,6 +229,8 @@ class Match
 	/** @param {Player} player */
 	DeletePlayer(player=this.currentPlayer)
 	{
+		let	boostedSquare;
+
 		if (!player)
 			throw (`Delete player: invalid player`);
 		this.playerNum--;
@@ -238,6 +240,13 @@ class Match
 		this[player.prev].next = player.next;
 		//@ts-ignore
 		this[player.next].prev = player.prev;
+		if (!player.boostedPiece)
+			return ;
+		this.boostPriority.delete(player.team);
+		boostedSquare = this.board.get(player.boostedPiece);
+		if (!boostedSquare.piece)
+			throw (`DeletePlayer: invalid boosted piece in ${player.boostedPiece}`);
+		boostedSquare.piece.isBoostedBool = false;
 	}
 	/**
 	 * 

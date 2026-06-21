@@ -137,7 +137,7 @@ function moveSimulation(match, start, destArray, destCoord, move, piece, ignored
 		if (destArray.has(match.cursor.square))
 		{
 			tmpCursor2 = match.cursor.square;
-			if (destArray.size != 1 && !secondMoveSimulation(match, destArray, piece, destCoord, "", blockCoord, considerBoostedBool))
+			if (destArray.size != 1 && !secondMoveSimulation(match, destArray, piece, destCoord, "", blockCoord, considerBoostedBool, ignoredCoord))
 			{
 				if (match.board.get(match.cursor.square).piece)
 					break ;
@@ -169,8 +169,9 @@ function moveSimulation(match, start, destArray, destCoord, move, piece, ignored
  * @param {string} ignoredCoord
  * @param {string} blockCoord
  * @param {boolean} considerBoostedBool
+ * @param {string} movedPieceCoord
  */
-function secondMoveSimulation(match, destArray, piece, start, ignoredCoord, blockCoord, considerBoostedBool)
+function secondMoveSimulation(match, destArray, piece, start, ignoredCoord, blockCoord, considerBoostedBool, movedPieceCoord=ignoredCoord)
 {
 	let	currCursor;
 	let	path;
@@ -199,7 +200,7 @@ function secondMoveSimulation(match, destArray, piece, start, ignoredCoord, bloc
 		}
 		if (blockCoord && blockCoord != currCursor)
 		{
-			path = pathFinding(match, blockCoord, match.cursor.square, start, "", false);
+			path = pathFinding(match, blockCoord, match.cursor.square, movedPieceCoord, "", false);
 			match.cursor.set(currCursor);
 			if (path)
 				return (false);
@@ -259,7 +260,7 @@ function boostChampNewBoost(match, start, dest, piece, ignoredCoord, blockCoord,
 	}
 	tmpCursor2 = match.cursor.square;
 	//if the piece that has move can still menace from blockCoord, skip
-	path = pathFinding(match, blockCoord, match.cursor.square, start, "", false);
+	path = pathFinding(match, blockCoord, match.cursor.square, ignoredCoord, "", false);
 	match.cursor.square = tmpCursor2;
 	if (path)
 		return (null);

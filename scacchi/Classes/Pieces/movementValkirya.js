@@ -26,7 +26,6 @@ let movementValkirya = function (match)
 			{
 				match.board.get(match.cursor.square)?.dangerZones.add(startPos);
 				match.board.get(startPos)?.targetZones.add(match.cursor.square);
-				match.board.AddInfluence(startPos, match.cursor.square);
 				if (match.board.get(match.cursor.square)?.piece)
 					match.board.get(startPos)?.boostedTargetZones.get(startPos)?.add(match.cursor.square);
 			}
@@ -36,7 +35,6 @@ let movementValkirya = function (match)
 			{
 				match.board.get(match.cursor.square)?.dangerZones.add(startPos);
 				match.board.get(startPos)?.boostedTargetZones.get(startPos)?.add(match.cursor.square);
-				match.board.AddInfluence(startPos, match.cursor.square);
 				setBoostedInfluence(match, piece, match.cursor.square, dx, dy);
 				break ;
 			}

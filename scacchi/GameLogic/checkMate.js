@@ -5,9 +5,10 @@ const {preset} = Chess;
 import {enumNames} from "../Macro/enums.js";
 import {Match} from "../Classes/Match/match.js";
 import {isDangerous} from "../utils/gameUtils.js";
-import { movePiece } from "../utils/moveUtils.js";
+import { DangerUpdate, movePiece } from "../utils/moveUtils.js";
 import { Square } from "../Classes/ChessBoard/chessBoard.js";
 import {checkPieceDanger, pathFinding} from "./pathFinding.js";
+import { updateBoostedChampions } from "./moveLogic.js";
 
 /**
  * 
@@ -67,7 +68,12 @@ function checkMateCheckAll(match, result, lostBool=false)
 			// @ts-ignore
 			if (CheckMateCheck(match, match[tmp.team].King))
 			{
-				return (match.PlayerLost(result, tmp), true);
+				match.PlayerLost(result, tmp);
+				if (tmp.boostedPiece)
+					DangerUpdate(match, tmp.boostedPiece);
+				updateBoostedChampions(match);
+				//return (true);
+				match.history.Last().lastLost = tmp.team;
 			}
 			tmp = match[tmp.next];
 			lostBool = false;
@@ -126,6 +132,7 @@ function isStoppable(match, kingSquare, enemySquareString)
 	let	enemySquare;
 	let	square;
 	let	enemyPiece;
+	let	guardianSquare;
 	let	guardianPiece;
 
 	enemySquare = match.board.get(enemySquareString);
@@ -151,12 +158,15 @@ function isStoppable(match, kingSquare, enemySquareString)
 		{
 			if (x == kingSquare)
 				continue ;
-			guardianPiece = match.board.get(x).piece;
+			guardianSquare = match.board.get(x);
+			guardianPiece = guardianSquare.piece;
 			if (!guardianPiece)
 				throw (`isStoppable: invalid guardian in ${enemySquareString}`);
 			if (guardianPiece.team != match.board.get(kingSquare).piece?.team)
 				continue ;
 			if (guardianPiece.type == enumNames.BASTARDS && match.cursor.IsOblique(x))
+				continue ;
+			if (guardianSquare.targetZones.has(match.cursor.square) == false)
 				continue ;
 			return true;
 		}
@@ -278,9 +288,10 @@ function canDodge(match, square)
 	for (let newCoord of square.targetZones)//king can dodge?
 	{
 		newSquare = match.board.get(newCoord);
-		if (isDangerous(match, newSquare.dangerZones, piece.team) || newSquare.piece?.team == piece.team)
+		if (/*isDangerous(match, newSquare.dangerZones, piece.team) || */newSquare.piece?.team == piece.team)
 			continue ;
-		if (checkPieceDanger(match, coord, piece, newCoord, coord, newCoord) == false)
+		if (checkPieceDanger(match, newCoord, piece, newCoord, coord, newCoord) == false &&
+		checkPieceDanger(match, coord, piece, newCoord, coord, newCoord) == false)
 			return (true);
 	}
 	return (false);
