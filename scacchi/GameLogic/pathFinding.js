@@ -125,7 +125,8 @@ function moveSimulation(match, start, destArray, destCoord, move, piece, ignored
 		{
 			tmpCursor2 = match.cursor.square;
 			if (destArray.size != 1 && !secondMoveSimulation(match, destArray, piece, destCoord, "", blockCoord))
-				break ;
+				//break ;
+				continue ;
 			//if dest has been reached in two moves, mid is set
 			moveData = {from: destCoord, mid: destCoord == tmpCursor2 ? "": tmpCursor2, to: start};
 			match.cursor.set(tmpCursor);
