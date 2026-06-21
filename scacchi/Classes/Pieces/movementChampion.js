@@ -31,7 +31,7 @@ let movementChampion = function (match)
 		if (movePiece(match, dx, dy) == false)
 			continue ;
 		menaceFromStartBool = checkPieceDanger(match, startPos, piece, match.cursor.square, startPos, match.cursor.square, true);
-		while (movePiece(match, dx, dy, false))
+		do
 		{
 			match.board.get(match.cursor.square)?.dangerZones.add(startPos);
 			match.board.get(startPos)?.targetZones.add(match.cursor.square);
@@ -44,6 +44,7 @@ let movementChampion = function (match)
 			if (match.board.get(match.cursor.square)?.piece != null)
 				break ;
 		}
+		while (movePiece(match, dx, dy, false))
 	}
 	match.cursor.square = startPos;
 	return (1);
