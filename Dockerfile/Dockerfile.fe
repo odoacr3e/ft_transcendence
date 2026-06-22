@@ -2,7 +2,7 @@ FROM node:24-alpine
 
 WORKDIR /app
 
-COPY frontend/package*.json ./
+COPY frontend_dir/package*.json ./
 RUN npm install
 
 EXPOSE 5173

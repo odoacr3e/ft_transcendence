@@ -6,10 +6,10 @@ WORKDIR /app
 
 RUN apk add redis
 
-COPY backend/scacchi/package*.json ./
+COPY backend_dir/scacchi/package*.json ./
 RUN npm install
 
-COPY backend/scacchi/prisma ./prisma
+COPY backend_dir/scacchi/prisma ./prisma
 
 EXPOSE 8080
 

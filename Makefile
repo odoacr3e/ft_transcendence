@@ -10,19 +10,19 @@ delete:
 	docker system prune -a
 
 pull:
-	git subtree pull --prefix=backend origin backend --squash
-	git subtree pull --prefix=frontend origin frontend --squash
+	git subtree pull --prefix=backend_dir origin backend --squash
+	git subtree pull --prefix=frontend_dir origin frontend --squash
 
 push:
-	git subtree push --prefix=backend origin backend
-	git subtree push --prefix=frontend origin frontend
+	git subtree push --prefix=backend_dir origin backend
+	git subtree push --prefix=frontend_dir origin frontend
 
 push_be:
-	git subtree push --prefix=backend origin backend
+	git subtree push --prefix=backend_dir origin backend
 
 push_fe:
-	git subtree push --prefix=frontend origin frontend
+	git subtree push --prefix=frontend_dir origin frontend
 
 restore:
-	git restore backend
-	git restore frontend
+	git restore backend_dir
+	git restore frontend_dir
