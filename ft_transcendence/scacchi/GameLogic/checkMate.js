@@ -7,7 +7,7 @@ import {Match} from "../Classes/Match/match.js";
 import {isDangerous} from "../utils/gameUtils.js";
 import { movePiece } from "../utils/moveUtils.js";
 import { Square } from "../Classes/ChessBoard/chessBoard.js";
-import { pathFinding } from "./moveLogic.js";
+import { pathFinding } from "./pathFinding.js";
 
 /**
  * 

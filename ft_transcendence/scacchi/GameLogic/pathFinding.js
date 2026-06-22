@@ -39,10 +39,10 @@ export function checkPieceDanger(match, checkDangerCoord, piece, pieceCoord, ign
  * @param {Match} match 
  * @param {Square | string} start 
  * @param {string} dest
- * @param {string} ignoredCoord
+ * @param {Set<string> | string} ignoredCoords
  * @param {boolean} considerBoostedBool 
  */
-export function pathFinding(match, start, dest, ignoredCoord="", considerBoostedBool=false)
+export function pathFinding(match, start, dest, ignoredCoords=new Set, considerBoostedBool=false)
 {
 	let	startArray = new Set;
 	let	startCoord;
@@ -50,7 +50,7 @@ export function pathFinding(match, start, dest, ignoredCoord="", considerBoosted
 	let	reverseMove = {dx: 0, dy: 0};
 	let	moveData;
 
-	//finds data for start, dest and ignoredCoord
+	//finds data for start, dest and ignoredCoords
 	if (typeof(start) == "string")
 	{
 		startCoord = start;
@@ -59,6 +59,8 @@ export function pathFinding(match, start, dest, ignoredCoord="", considerBoosted
 	else
 		startCoord = start.piece?.pos;
 	destCoord = dest;
+	if (typeof(ignoredCoords) == "string")
+		ignoredCoords = new Set(ignoredCoords);
 	if (!start.piece || !startCoord || !destCoord)
 		throw (`pathFinding: invalid parameters`);
 	//for optimization, the search will go from dest to start
@@ -75,7 +77,7 @@ export function pathFinding(match, start, dest, ignoredCoord="", considerBoosted
 		reverseMove.dx = -move.dx;
 		reverseMove.dy = -move.dy;
 		//move simulation takes reverted input
-		moveData = moveSimulation(match, destCoord, startArray, reverseMove, ignoredCoord);
+		moveData = moveSimulation(match, destCoord, startArray, reverseMove, ignoredCoords);
 		if (moveData)
 		{//if exist a path, swaps from with to
 			let	tmp = moveData.from;
@@ -93,9 +95,9 @@ export function pathFinding(match, start, dest, ignoredCoord="", considerBoosted
  * @param {string} start
  * @param {Set<string>} destArray 
  * @param {{dx: number, dy: number}} move
- * @param {string} ignoredCoord 
+ * @param {Set<string>} ignoredCoords 
  */
-function moveSimulation(match, start, destArray, move, ignoredCoord)
+function moveSimulation(match, start, destArray, move, ignoredCoords=new Set)
 {
 	let	square;
 	let	moveData;
@@ -104,7 +106,7 @@ function moveSimulation(match, start, destArray, move, ignoredCoord)
 	match.cursor.set(start);
 	while (movePiece(match, move.dy, move.dx))
 	{
-		if (ignoredCoord == match.cursor.square)
+		if (ignoredCoords.has(match.cursor.square))
 			continue ;
 		if (destArray.has(match.cursor.square))//trovato path valido
 		{
