@@ -168,10 +168,11 @@ function isStoppable(match, kingSquare, enemySquareString)
 				continue ;
 			if (guardianSquare.targetZones.has(match.cursor.square) == false)
 				continue ;
-			return true;
+			if (!pathFinding(match, enemySquareString, kingSquare, x))
+				continue ;
 		}
 		if (!movePiece(match, dir.diffCol, dir.diffRow))
-			return true;
+			return false;
 	}
 	return false;
 }

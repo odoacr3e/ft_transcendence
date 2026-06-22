@@ -115,8 +115,6 @@ function moveSimulation(match, start, destArray, destCoord, move, piece, ignored
 	match.cursor.set(start);
 	while (movePiece(match, move.dy, move.dx))
 	{
-		if (match.cursor.square == "g:")
-			console.log("...");
 		//square that will be occupied
 		if (blockCoord == match.cursor.square)
 		{
@@ -234,6 +232,29 @@ function secondMoveSimulation(match, destArray, piece, start, ignoredCoord, bloc
  */
 function boostChampNewBoost(match, start, dest, piece, ignoredCoord, blockCoord, considerBoostedBool, tmpCursor)
 {
+	let	path;
+
+	path = boostedChampIgnoreCheck(match, start, dest, piece, ignoredCoord, blockCoord, considerBoostedBool, tmpCursor);
+	if (path)
+		return (path);
+	path = boostedChampBlockedCheck(match, start, dest, piece, ignoredCoord, blockCoord, considerBoostedBool, tmpCursor);
+	return (path);
+}
+
+/**
+ * this function consider ignoredSquare targets for boosted champs
+ * @param {Match} match 
+ * @param {string} start
+ * @param {string} dest
+ * @param {Piece} piece 
+ * @param {string} ignoredCoord 
+ * @param {string} blockCoord
+ * @param {boolean} considerBoostedBool 
+ * @param {string} tmpCursor
+ * @returns {{from: string, mid: string, to: string} | null}
+ */
+function boostedChampIgnoreCheck(match, start, dest, piece, ignoredCoord, blockCoord, considerBoostedBool, tmpCursor)
+{
 	let	currSquare;
 	let	dangerPiece;
 	let	tmpCursor2;
@@ -241,7 +262,7 @@ function boostChampNewBoost(match, start, dest, piece, ignoredCoord, blockCoord,
 
 	if (!blockCoord || !considerBoostedBool)
 		return (null);
-	if (piece.type != enumNames.CHAMPION || piece.isBoostedBool == null)
+	if (piece.type != enumNames.CHAMPION || piece.isBoostedBool == false)
 		return (null);
 	currSquare = match.board.get(match.cursor.square);
 	if (currSquare.dangerZones.has(ignoredCoord) == false)
@@ -272,6 +293,71 @@ function boostChampNewBoost(match, start, dest, piece, ignoredCoord, blockCoord,
 	//path is found
 	path.mid = path.to;
 	path.to = dest;
+	match.cursor.square = tmpCursor;
+	return (path);
+}
+
+/**
+ * this function consider blockSquare danger for boosted champs
+ * @param {Match} match 
+ * @param {string} start
+ * @param {string} dest
+ * @param {Piece} piece 
+ * @param {string} ignoredCoord 
+ * @param {string} blockCoord
+ * @param {boolean} considerBoostedBool 
+ * @param {string} tmpCursor
+ * @returns {{from: string, mid: string, to: string} | null}
+ */
+function boostedChampBlockedCheck(match, start, dest, piece, ignoredCoord, blockCoord, considerBoostedBool, tmpCursor)
+{
+	let	currSquare;
+	let	blockSquare;
+	let	blockBool = false;
+	let	dangerPiece;
+	let	tmpCursor2;
+	let	path;
+
+	return null;
+	if (!blockCoord || !considerBoostedBool)
+		return (null);
+	if (piece.type != enumNames.CHAMPION || piece.isBoostedBool == false)
+		return (null);
+	tmpCursor2 = match.cursor.square;
+	currSquare = match.board.get(match.cursor.square);
+	blockSquare = match.board.get(blockCoord);
+	if (match.cursor.square == "a9")
+		console.log();
+	//checking if a danger is blocked by blockCoord
+	for (const dangerCoord of currSquare.dangerZones)
+	{
+		match.cursor.square = tmpCursor2;
+		if (dangerCoord == ignoredCoord)
+			continue ;
+		//blockCoord is blocking this danger
+		if (blockSquare.dangerZones.has(dangerCoord) && 
+		!pathFinding(match, dangerCoord, match.cursor.square, ignoredCoord, blockCoord, false))
+		{
+			blockBool = true;
+			continue ;
+		}
+		dangerPiece = match.board.get(dangerCoord).piece;
+		if (!dangerPiece)
+			throw (`boostChampsNewBoost: invalid piece in ${dangerCoord}`);
+		if (dangerPiece.team == piece.team)
+			continue ;
+		return (null);
+	}
+	match.cursor.square = tmpCursor2;
+	if (blockBool == false)
+		return (null);
+	tmpCursor2 = match.cursor.square;
+	//check if position can be reached
+	path = pathFinding(match, match.cursor.square, dest, ignoredCoord, "", false);
+	match.cursor.square = tmpCursor2;
+	if (!path)
+		return (null);
+	//path is found
 	match.cursor.square = tmpCursor;
 	return (path);
 }
