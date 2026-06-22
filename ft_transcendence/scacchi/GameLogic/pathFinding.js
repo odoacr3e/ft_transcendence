@@ -60,7 +60,7 @@ export function pathFinding(match, start, dest, ignoredCoords=new Set, considerB
 		startCoord = start.piece?.pos;
 	destCoord = dest;
 	if (typeof(ignoredCoords) == "string")
-		ignoredCoords = new Set(ignoredCoords);
+		ignoredCoords = new Set().add(ignoredCoords);
 	if (!start.piece || !startCoord || !destCoord)
 		throw (`pathFinding: invalid parameters`);
 	//for optimization, the search will go from dest to start

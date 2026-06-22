@@ -606,16 +606,8 @@ function simulation(coords, match, result)
 	if (tmpSquare)
 		match.board.set(coords[1], tmpSquare);
 	boosted = match.GetBoostedPieceCoords();
-	for (const coord of match.board.updates)
-		DangerUpdate(match, coord);
 	if (!boosted)
 		return (!dangerBool);
-	for (const p of boosted)
-	{
-		if (match.board.get(p).piece?.type == enumNames.CHAMPION && match.board.updates.has(p))
-			RefreshChampion(match, match.board.get(p), p);
-	}
-	// DangerUpdate(match, coords[0]);
 	return (!dangerBool);
 }
 
