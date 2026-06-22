@@ -587,7 +587,7 @@ function simulation(coords, match, result)
 	if (coords[0] == match.currentPlayer.King)
 		king = to;
 	dangerUpdateMoved(match, coords, result);
-	dangerBool = isDangerous(match, king.dangerZones, king.piece?.team);
+	dangerBool = isDangerous(match, king.dangerZones, king.piece?.team, true, match.currentPlayer.King);
 	if (!dangerBool)
 		dangerBool = checkDoubleMoveMate(match, coords, result);
 	if (result.specialMoves.CheckSniperMove() == 0)

@@ -168,7 +168,7 @@ process.stdin.on('keypress', (str, key) =>
  */
 function print(key)
 {
-	console.log("row", match.cursor.getRow(), ", col", match.cursor.getCol(), ", cursor", match.cursor.Normify());
+	console.log("row", match.cursor.getRow(), ", col", match.cursor.getCol(), ", cursor", match.cursor.Normify(), `(${match.cursor.square})`);
 	if (TargetDangerSwitch != "None")
 		console.log(`Visualizing ${TargetDangerSwitch} zones`);
 	render(match, selected, TargetDangerSwitch);

@@ -12,6 +12,7 @@ import { makeTransfiguration } from "../handlers/game/transfiguration.js";
 /** @typedef {import ("../Classes/Match/history.js").History} History */
 
 let	DEBUGCounter = 0;
+let	DEBUGEvent = "";
 
 /** 
  * 
@@ -40,6 +41,8 @@ function historyRestore(match, path)
 		match.historyCreateBool = true;
 		for (const event of history.events)
 		{
+			//@ts-ignore
+			DEBUGEvent = event;
 			playerNum = match.playerNum;
 			console.log(`History: move number ${event.counter}`);
 			if (DEBUGCounter == 12)
@@ -83,7 +86,8 @@ function historyRestore(match, path)
 	}
 	catch(err)
 	{
-		throw (`Move ${DEBUGCounter}: ${err}`);
+		DEBUGEvent = JSON.stringify(DEBUGEvent, null, 2);
+		throw (`Move ${DEBUGEvent}: ${err}`);
 	}
 }
 
