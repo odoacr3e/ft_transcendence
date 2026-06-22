@@ -8,6 +8,7 @@ import {isDangerous} from "../utils/gameUtils.js";
 import { movePiece } from "../utils/moveUtils.js";
 import { Square } from "../Classes/ChessBoard/chessBoard.js";
 import { checkPieceDanger, pathFinding } from "./pathFinding.js";
+import { simulation } from "./moveLogic.js";
 
 /**
  * 
@@ -265,6 +266,8 @@ function canDodge(match, square)
 			continue ;
 		if (!checkPieceDanger(match, coord, piece, newCoord, coord))
 			return (true);
+		// if (simulation([coord, newCoord], match) == true)
+		// 	return (true);
 	}
 	return (false);
 }

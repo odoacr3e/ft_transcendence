@@ -108,118 +108,6 @@ function checkMove(coords=[], result, match, boostBool)
 
 /**
  * 
- * @param {Match} match 
- * @param {Array<string>} coords 
- * @param {Result} result
- * @param {boolean} checkBool
- */
-function checkDoubleMoveMate(match, coords, result, checkBool=true)
-{
-	let	OtherPiece;
-	let	pieceData;
-
-	OtherPiece = match.GetBoostedPieceCoords();
-	let	theKING = match.currentPlayer.King;
-	if (coords.length >= 2 && coords[0] == theKING)
-		theKING = coords[1];
-	if (OtherPiece == null)
-		return (false);
-	for (const coords of OtherPiece)
-	{
-		pieceData = match.board.get(coords).piece;
-		if (!pieceData)
-			throw ("checkDoubleMoveMate: cannot find boosted piece");
-		if (pieceData.type == enumNames.MINOTAURUS && checkBool == false)
-			boostMinoUpdates(match, coords);
-		else if (pieceData.type == enumNames.BASTARDS && checkBool == true)
-		{	
-			if (!boostBastardsUpdates(match, coords, theKING, result))
-				return (true);
-		}
-		else
-			continue ;
-	}
-	return (false);
-}
-
-/**
- * 
- * @param {Match} match 
- * @param {string} coords 
- * @param {string} theKING
- * @param {Result} result
- * @returns 
- */
-function boostBastardsUpdates(match, coords, theKING, result)
-{
-	let boosts = match.board.get(coords).boostedTargetZones.get(coords);
-	if (boosts == undefined || boosts.size == 0)
-			return (true);
-	for (const squareCoord of boosts)
-	{
-		let	square = match.board.get(squareCoord);
-		if (!square.piece)
-			throw ("DEBUG error 1");
-		match.cursor.Save();
-		for (const moves of square.piece.moveArray)
-		{
-			match.cursor.set(squareCoord);
-			while (movePiece(match, moves.dy, moves.dx))
-			{
-				let piece;
-				let squareBastard = "";
-				piece = match.board.get(match.cursor.square).piece;
-				if (match.cursor.square == theKING)
-					return (error(result, 403, "boost bastard and his gang would threaten king"));
-				if (!piece)
-				{
-					if (!square.piece.moveLongRangeDEBUG)
-						break ;
-					else
-						continue ;
-				}
-				if (piece.isBoostedBool == true && piece.type == enumNames.BASTARDS && piece.team == square.piece.team)
-				{
-					squareBastard = match.cursor.square;
-					if (movePiece(match, moves.dy, moves.dx) == false)
-						break ;
-					if (match.cursor.square == theKING)
-						return (error(result, 403, "boost bastard and his gang would threaten king"));
-					if (match.board.get(squareBastard).targetZones.has(match.cursor.square) && 
-					match.board.get(squareBastard).targetZones.size <= 1)
-						break ;
-					if (piece.isMovedBool)
-					{
-						if (!square.piece.moveLongRangeDEBUG)
-							break ;
-						else
-						{
-							match.cursor.square = squareBastard;
-							continue ;
-						}
-					}
-					squareBastard = match.cursor.square;
-					if (movePiece(match, moves.dy, moves.dx) == false)
-						break ;
-					if (match.cursor.square == theKING)
-						return (error(result, 403, "boost bastard and his gang would threaten king"));
-					if (match.board.get(squareBastard).targetZones.has(match.cursor.square) && 
-					match.board.get(squareBastard).targetZones.size <= 2)
-						break ;
-				}
-				else
-					break ;
-			}
-			match.cursor.Restore();
-		}
-		match.cursor.Restore();
-	}
-	match.cursor.Restore();
-	return (true);
-}
-
-/**
- * 
  * @param {Match} match
  * @param {string} coords
  */
@@ -533,31 +421,12 @@ function doubleBastardsCheck(match, result, coords)
 
 /**
  * 
- * @param {Match} match 
- * @param {Square} square
- * @param {string} pos
- */
-function RefreshChampion(match, square, pos)
-{
-	for (const zone of square.targetZones)
-		match.board.get(zone).dangerZones.delete(pos)
-	for (const [key, value] of square.boostedTargetZones)
-	{
-		for (const coord of value)
-			match.board.get(coord).dangerZones.delete(pos)
-		match.board.get(key).dangerZones.delete(pos)
-	}
-	DangerUpdate(match, pos);
-}
-
-/**
- * 
  * @param {Array<String>} coords
  * @param {Match} match
- * @param {Result} result
+ * @param {Result | null} result
  * @returns 
  */
-function simulation(coords, match, result)
+export function simulation(coords, match, result=null)
 {
 	let tmpPiece = null;
 	let tmpSquare = null;
@@ -579,7 +448,7 @@ function simulation(coords, match, result)
 		tmpSquare = to.Copy();
 		tmpPiece = tmpSquare.piece;
 	}
-	if (result.specialMoves.CheckSniperMove() == 0)
+	if (result && result.specialMoves.CheckSniperMove() == 0)
 	{
 		to.piece = from.piece;
 		from.piece = null;
@@ -595,7 +464,7 @@ function simulation(coords, match, result)
 	dangerBool = isDangerous(match, king.dangerZones, king.piece?.team, true, kingCoord);
 	if (!dangerBool)
 		dangerBool = checkDoubleMoveMate(match, coords, result);
-	if (result.specialMoves.CheckSniperMove() == 0)
+	if (result && result.specialMoves.CheckSniperMove() == 0)
 	{
 		from.piece = to.piece;
 		to.piece = tmpPiece;
@@ -609,6 +478,129 @@ function simulation(coords, match, result)
 	if (!boosted)
 		return (!dangerBool);
 	return (!dangerBool);
+}
+
+/**
+ * 
+ * @param {Match} match 
+ * @param {Array<string>} coords 
+ * @param {Result | null} result
+ * @param {boolean} checkBool
+ */
+function checkDoubleMoveMate(match, coords, result=null, checkBool=true)
+{
+	let	OtherPiece;
+	let	pieceData;
+
+	OtherPiece = match.GetBoostedPieceCoords();
+	let	theKING = match.currentPlayer.King;
+	if (coords.length >= 2 && coords[0] == theKING)
+		theKING = coords[1];
+	if (OtherPiece == null)
+		return (false);
+	for (const coords of OtherPiece)
+	{
+		pieceData = match.board.get(coords).piece;
+		if (!pieceData)
+			throw ("checkDoubleMoveMate: cannot find boosted piece");
+		if (pieceData.type == enumNames.MINOTAURUS && checkBool == false)
+			boostMinoUpdates(match, coords);
+		else if (pieceData.type == enumNames.BASTARDS && checkBool == true)
+		{	
+			if (!boostBastardsUpdates(match, coords, theKING, result))
+				return (true);
+		}
+		else
+			continue ;
+	}
+	return (false);
+}
+
+/**
+ * 
+ * @param {Match} match 
+ * @param {string} coords 
+ * @param {string} theKING
+ * @param {Result | null} result
+ * @returns 
+ */
+function boostBastardsUpdates(match, coords, theKING, result)
+{
+	let boosts = match.board.get(coords).boostedTargetZones.get(coords);
+	if (boosts == undefined || boosts.size == 0)
+			return (true);
+	for (const squareCoord of boosts)
+	{
+		let	square = match.board.get(squareCoord);
+		if (!square.piece)
+			throw ("DEBUG error 1");
+		match.cursor.Save();
+		for (const moves of square.piece.moveArray)
+		{
+			match.cursor.set(squareCoord);
+			while (movePiece(match, moves.dy, moves.dx))
+			{
+				let piece;
+				let squareBastard = "";
+				piece = match.board.get(match.cursor.square).piece;
+				if (match.cursor.square == theKING)
+					return vitaNeraError(result);
+				if (!piece)
+				{
+					if (!square.piece.moveLongRangeDEBUG)
+						break ;
+					else
+						continue ;
+				}
+				if (piece.isBoostedBool == true && piece.type == enumNames.BASTARDS && piece.team == square.piece.team)
+				{
+					squareBastard = match.cursor.square;
+					if (movePiece(match, moves.dy, moves.dx) == false)
+						break ;
+					if (match.cursor.square == theKING)
+						return vitaNeraError(result);
+					if (match.board.get(squareBastard).targetZones.has(match.cursor.square) && 
+					match.board.get(squareBastard).targetZones.size <= 1)
+						break ;
+					if (piece.isMovedBool)
+					{
+						if (!square.piece.moveLongRangeDEBUG)
+							break ;
+						else
+						{
+							match.cursor.square = squareBastard;
+							continue ;
+						}
+					}
+					squareBastard = match.cursor.square;
+					if (movePiece(match, moves.dy, moves.dx) == false)
+						break ;
+					if (match.cursor.square == theKING)
+						return vitaNeraError(result);
+					if (match.board.get(squareBastard).targetZones.has(match.cursor.square) && 
+					match.board.get(squareBastard).targetZones.size <= 2)
+						break ;
+				}
+				else
+					break ;
+			}
+			match.cursor.Restore();
+		}
+		match.cursor.Restore();
+	}
+	match.cursor.Restore();
+	return (true);
+}
+
+/**
+ * 
+ * @param {Result | null} result 
+ */
+function vitaNeraError(result)
+{
+	if (result)
+		error(result, 403, "boost bastard and his gang would threaten king");
+	return (false);
 }
 
 /**
