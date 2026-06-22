@@ -7,7 +7,7 @@ import {Match} from "../Classes/Match/match.js";
 import {isDangerous} from "../utils/gameUtils.js";
 import { movePiece } from "../utils/moveUtils.js";
 import { Square } from "../Classes/ChessBoard/chessBoard.js";
-import { pathFinding } from "./pathFinding.js";
+import { checkPieceDanger, pathFinding } from "./pathFinding.js";
 
 /**
  * 
@@ -112,9 +112,12 @@ function isStoppable(match, kingSquare, enemySquareString)
 {
 	let	square;
 	let	enemySquare;
+	let	guardianPiece;
+	let	kingPiece;
 
 	enemySquare = match.board.get(enemySquareString);
-	if (!enemySquare)
+	kingPiece = match.board.get(kingSquare).piece;
+	if (!enemySquare || !kingPiece)
 		throw ("given to isStoppable an invalid position");//FIXME - Ale: errore grave, dare 500
 	if (enemySquare.piece?.type == enumNames.JESTER || 
 	enemySquare.piece?.type == enumNames.BASTARDS || 
@@ -131,8 +134,16 @@ function isStoppable(match, kingSquare, enemySquareString)
 			continue ;
 		for (let x of square.dangerZones)
 		{
-			if (match.board.get(x)?.piece?.team == match.board.get(kingSquare)?.piece?.team)
-				return true;
+			guardianPiece = match.board.get(x).piece;
+			if (!guardianPiece)
+				throw (`isStoppable: guardian of ${match.cursor.square} in ${x} missing`);
+			if (x == kingSquare)
+				continue ;
+			if (guardianPiece.type == enumNames.BASTARDS && match.cursor.IsOblique(x) == false)
+				continue ;
+			if (guardianPiece.team != kingPiece.team)
+				continue ;
+			return true;
 		}
 		match.cursor.setCursor(match.cursor.getRow() + dir.diffRow, match.cursor.getCol() + dir.diffCol);
 	}
@@ -253,16 +264,18 @@ function canDodge(match, square)
 		newSquare = match.board.get(newCoord);
 		if (isDangerous(match, newSquare.dangerZones, piece.team) || newSquare.piece?.team == piece.team)
 			continue ;
-		canDodgeBool = true;
-		for (const danger of square.dangerZones)
-		{
-			if (pathFinding(match, danger, newCoord, coord, true) != null)
-			{
-				canDodgeBool = false;
-				break ;
-			}
-		}
-		if (canDodgeBool == true)
+		// canDodgeBool = true;
+		// for (const danger of square.dangerZones)
+		// {
+		// 	if (pathFinding(match, danger, newCoord, coord, true) != null)
+		// 	{
+		// 		canDodgeBool = false;
+		// 		break ;
+		// 	}
+		// }
+		// if (canDodgeBool == true)
+		// 	return (true);
+		if (!checkPieceDanger(match, coord, piece, newCoord, coord))
 			return (true);
 	}
 	return (false);
