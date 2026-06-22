@@ -26,7 +26,6 @@ class Piece
 		/** @type {Array<{dx: number, dy:number}>} */	this.moveArray = preset.movement;
 		/** @type {boolean} */							this.moveLongRangeDEBUG = preset.longRange;
 		/** @type {boolean} */							this.multipleMovesBool = preset.multipleMoves;
-		/** @type {Map<string, Array<Set<string>>>} */	this.boostedInfluence = new Map();
 	}
 	Copy()
 	{
@@ -35,7 +34,6 @@ class Piece
 		other = new Piece(this.type, this.pos, this.team);
 		other.isBoostedBool = this.isBoostedBool;
 		other.isMovedBool = this.isMovedBool;
-		other.boostedInfluence = this.boostedInfluence;
 		return (other);
 	}
 }

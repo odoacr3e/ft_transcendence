@@ -25,7 +25,6 @@ function clientBoard(match, copyAll=false, avoidReset=false)
 	let	src;
 	let	dest;
 
-	match.lastMenace = {from: "", mid: "", to: ""};
 	src = match.board._data;
 	if (copyAll == true)
 		dest = copyBoard(src, null, match);

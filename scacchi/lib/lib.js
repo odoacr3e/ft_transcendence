@@ -38,8 +38,7 @@ import * as utils from "../utils/moveUtils.js";
 import {bastardChecks, isDangerous} from "../utils/gameUtils.js";
 let gameUtils = {bastardChecks, isDangerous};
 
-// const conn = { prisma, redis, crypto } 
-const conn = { prisma, crypto } 
+const conn = { prisma, /*redis,*/ crypto } 
 
 const lib = { include, Chess, Macro, Enums, preset, utils, gameUtils, conn};
 

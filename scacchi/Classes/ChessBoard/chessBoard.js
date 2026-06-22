@@ -111,7 +111,7 @@ class ChessBoard
 		this.width = w;
 		this.heigth = h;
 		this.influenceMap = initInfluenceBoard(this._data);
-		this.champsUpdates = new Set;
+
 	}
 	//SECTION - custom function
 	//clear the map

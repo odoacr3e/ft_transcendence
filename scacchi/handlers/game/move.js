@@ -33,6 +33,7 @@ function move(match, from, to, boostBool=false)
 	if (!updateChessboard([from, to], result, match, boostBool))
 		return (result);
 	result.status = 200;
+	// @ts-ignore
 	if (checkMateCheckAll(match, result, true) == true)
 		return (result);
 	// @ts-ignore

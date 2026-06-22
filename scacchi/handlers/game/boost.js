@@ -67,17 +67,15 @@ function tryBoost(match, result, from)
 	square.piece.isBoostedBool = true;
 	if (match.currentPlayer.boostedPiece)
 	{
-		match.boostPriority.delete(match.currentPlayer.team);
 		tmp = match.board.get(match.currentPlayer.boostedPiece);
 		if (tmp?.piece)
 			tmp.piece.isBoostedBool = false;
 		match.board.updates.add(from);
 		match.board.updates.add(match.currentPlayer.boostedPiece);
 	}
-	match.boostPriority.add(match.currentPlayer.team);
 	match.currentPlayer.boostedPiece = square.piece.pos;
 	match.history.UpdateBoost(match, square, from);
-	DangerUpdate(match, from, false);
+	DangerUpdate(match, from);
 	match.boost += 1;
 	return (true);
 }

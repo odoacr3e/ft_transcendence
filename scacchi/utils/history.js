@@ -67,8 +67,8 @@ function historyRestore(match, path)
 				DEBUGCounter++;
 			else
 				error(null, result, 0, null, false);
-			if (match.victory)
-				throw(`this move give invalid victory for ${match.victory}. \nevent: ${JSON.stringify(event)}`);
+			// if (match.victory)
+			// 	throw(`this move give invalid victory for ${match.victory}. \nevent: ${JSON.stringify(event)}`);
 			if (event.lastLost && playerNum == match.playerNum)
 				throw(`player ${event.lastLost} should have lost. \nevent: ${JSON.stringify(event)}`);
 			if (!event.lastLost && playerNum != match.playerNum)

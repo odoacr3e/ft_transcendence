@@ -48,10 +48,10 @@ let movePiece = (match, dy, dx, clear=false) =>
  * 
  * @param {Match} match 
  * @param {string | null} pos
- * @param {boolean} ignoreBoostChampsBool
+ * @param {boolean} updBool
  * @returns 
  */
-let DangerUpdate = (match, pos=null, ignoreBoostChampsBool=true) =>
+let DangerUpdate = (match, pos=null, updBool=true) =>
 {
 	let	piece;
 	let	startPos;
@@ -60,13 +60,11 @@ let DangerUpdate = (match, pos=null, ignoreBoostChampsBool=true) =>
 		match.cursor.set(pos);
 	else
 		pos = match.cursor.square;
-	match.board.updates.add(pos);
 	startPos = match.cursor.square;
 	match.board.ResetTargets(startPos);
 	piece = match.board.get(match.cursor.square).piece;
 	if (piece == null)
 		return (0);
-	piece.boostedInfluence.clear();
 	for (let {dx, dy} of piece.moveArray)
 	{
 		if (piece.type == enumNames.BASTARDS)
@@ -84,15 +82,17 @@ let DangerUpdate = (match, pos=null, ignoreBoostChampsBool=true) =>
 		}
 		match.cursor.square = startPos;
 	}
-	match.board.get(pos).targetZones.delete(pos);
-	match.board.get(pos).dangerZones.delete(pos);
-	if (ignoreBoostChampsBool && piece.type == enumNames.CHAMPION && piece.isBoostedBool)
-		return ;
 	if (piece.isBoostedBool == true)
 		piece.moveFunction(match);
 	castlingUpdate(match, startPos, piece);
 	match.board.get(pos).targetZones.delete(pos);
 	match.board.get(pos).dangerZones.delete(pos);
+	if (updBool == false)
+		return (1);
+	if (pos != null)
+		match.board.updates.add(pos);
+	else
+		match.board.updates.add(match.cursor.square);
 	return (1);
 }
 
@@ -120,7 +120,6 @@ function castlingUpdate(match, startPos, piece)
 	}
 	else if (piece.type == enumNames.MINOTAURUS)
 	{
-		match.board.updates.add(match.currentPlayer.King);
 		player.castlingArray.delete(startPos);
 		if (kingSquare.piece?.isMovedBool || piece.isMovedBool)
 			kingSquare.targetZones.delete(startPos);
@@ -189,8 +188,13 @@ function checkInfluenceSets(match, coords, influenceSets)
  */
 function dangerUpdateMoved(match, selected=[], result=null, delBool=true)
 {
+	// return (dangerUpdateAll(match));
 	if (selected.length != 2)
 		throw ("dangerUpdateMoved must be called with two pieces: from, to");
+	// if (delBool == true)
+	// 	dangerDelPiece(match, selected[0], selected[1], result);
+	// dangerUpPiece(match, selected[1], result);
+	// DangerUpdate(match, selected[1]);
 	CheckInfluence(match, selected);
 	DangerUpdate(match, selected[0]);
 	DangerUpdate(match, selected[1]);
@@ -224,31 +228,4 @@ function dangerUpdateAll(match)
 	match.cursor.set(temp);
 }
 
-/**
- * 
- * @param {Match} match 
- * @param {Piece} piece
- * @param {string} stopCoord 
- * @param {number} dx 
- * @param {number} dy 
- */
-function setBoostedInfluence(match, piece, stopCoord, dx, dy)
-{
-	let	influence;
-	let	square;
-
-	influence = new Set();
-	while (movePiece(match, dy, dx))
-	{
-		square = match.board.get(match.cursor.square);
-		if (square.piece)
-			break ;
-		influence.add(match.cursor.square);
-	}
-	if (piece.boostedInfluence.has(stopCoord) == false)
-		piece.boostedInfluence.set(stopCoord, [influence]);
-	else
-		piece.boostedInfluence.get(stopCoord)?.push(influence);
-}
-
-export {movePiece, DangerUpdate, dangerUpdateAll, dangerUpdateMoved, setBoostedInfluence};
+export {movePiece, DangerUpdate, dangerUpdateAll, dangerUpdateMoved};
