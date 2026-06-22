@@ -1,0 +1,50 @@
+{
+  "type": "module",
+  "dependencies": {
+    "@prisma/adapter-pg": "^7.8.0",
+    "@prisma/client": "^7.8.0",
+    "bcrypt": "^6.0.0",
+    "bcryptjs": "^3.0.3",
+    "chalk": "^5.6.2",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "ioredis": "^5.10.1",
+    "jsonwebtoken": "^9.0.3",
+    "node": "^26.2.0",
+    "nodemon": "^3.1.14",
+    "pg": "^8.21.0",
+    "redis": "^5.12.1",
+    "seedrandom": "^3.0.5",
+    "socket.io": "^4.8.3"
+  },
+  "name": "scacchiz",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "clear;node main.js",
+    "dev": "clear; ./node_modules/.bin/nodemon main.js",
+    "confprisma": "npm install prisma --save-dev; npm install @prisma/client; npm install @prisma/adapter-pg --save; npx prisma generate; npm i --save-dev @types/node",
+    "pulldb": "npx prisma db pull && npx prisma generate",
+    "make": "r='npm run';R='\\033[31m';G='\\033[32m';Y='\\033[33m';Q='\\033[0m'; echo ♔ $Y waiting... $Q;((echo ♖ $Y updating node modules... $Q >/dev/stderr;$r) && (echo ♗ $Y configurating prisma...>/dev/stderr;$r confprisma) && (echo ♘ $Y pulling from db... remember to get the .env from Slack $Q >/dev/stderr;$r pulldb)) >/dev/null && echo ♕ $G OK $Q || echo 𝖈𝖍𝖊𝖈𝖐𝖒𝖆𝖙𝖊! $R ERROR $Q",
+    "gtest": "node test/cursorTest.js && node test/localTest.js && node test/curlTest.js && echo '\n\\033[32mGAME OK!' || echo '\n\\033[31m' KO!; echo '\n\\033[0m'",
+    "term": "clear ; node --trace-uncaught test/term.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/ioredis": "^4.28.10",
+    "@types/node": "^25.9.4",
+    "@types/redis": "^4.0.10",
+    "prisma": "^7.8.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.3"
+  }
+}
