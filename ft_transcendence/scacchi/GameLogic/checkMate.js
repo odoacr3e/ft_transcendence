@@ -250,7 +250,6 @@ function doubleSave(match, threat)
  */
 function canDodge(match, square)
 {
-	let	canDodgeBool;
 	let	coord;
 	let	newSquare;
 	let	piece;
@@ -264,17 +263,6 @@ function canDodge(match, square)
 		newSquare = match.board.get(newCoord);
 		if (isDangerous(match, newSquare.dangerZones, piece.team) || newSquare.piece?.team == piece.team)
 			continue ;
-		// canDodgeBool = true;
-		// for (const danger of square.dangerZones)
-		// {
-		// 	if (pathFinding(match, danger, newCoord, coord, true) != null)
-		// 	{
-		// 		canDodgeBool = false;
-		// 		break ;
-		// 	}
-		// }
-		// if (canDodgeBool == true)
-		// 	return (true);
 		if (!checkPieceDanger(match, coord, piece, newCoord, coord))
 			return (true);
 	}

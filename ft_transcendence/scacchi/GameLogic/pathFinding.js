@@ -26,7 +26,7 @@ export function checkPieceDanger(match, checkDangerCoord, piece, pieceCoord, ign
 		dangerSquare = match.board.get(dangerCoord);
 		if (dangerSquare.piece?.team == piece.team)
 			continue ;
-		if (pathFinding(match, dangerCoord, pieceCoord, ignoreCoord) != null)
+		if (pathFinding(match, dangerCoord, pieceCoord, ignoreCoord, true) != null)
 		{
 			return (true);
 		}

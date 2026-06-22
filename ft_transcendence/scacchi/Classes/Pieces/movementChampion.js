@@ -3,6 +3,7 @@ import {berserkMode} from "./berserkMode.js";
 import {movePiece} from "../../utils/moveUtils.js";
 import {isDangerous} from "../../utils/gameUtils.js";
 import { checkPieceDanger } from "../../GameLogic/pathFinding.js";
+import { enumNames } from "../../Macro/enums.js";
 
 /** @typedef {import("../Match/match.js").Match} Match*/
 /** @typedef {import("../Pieces/pieces.js").Piece} Piece*/
@@ -40,7 +41,9 @@ let movementChampion = function (match)
 			if (!menaceFromStartBool && 
 			!isDangerous(match, otherSquare.dangerZones, piece.team) && 
 			(otherSquare.piece == null || 
-			otherSquare.piece?.team != piece.team))
+			otherSquare.piece?.team != piece.team) && 
+			(otherSquare.piece == null || 
+			otherSquare.piece.type != enumNames.KING))//NOTE - il re non deve estendere le boosted per checkmate
 				berserkMode(startPos, match);
 			if (otherSquare.piece != null)
 				break ;
