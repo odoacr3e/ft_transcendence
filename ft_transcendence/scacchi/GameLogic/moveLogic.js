@@ -564,11 +564,13 @@ function simulation(coords, match, result)
 	let	from;
 	let	to;
 	let	king;
+	let	kingCoord;
 	let	dangerBool;
 	let boosted;
 
 	from = match.board.get(coords[0]);
 	to = match.board.get(coords[1]);
+	kingCoord = match.currentPlayer.King;
 	king = match.board.get(match.currentPlayer.King);
 	if (!from || !to || !king)
 		throw (`simulation: invalid from: ${from}/to: ${to}/king: ${king}`);
@@ -585,9 +587,12 @@ function simulation(coords, match, result)
 	else
 		to.piece = null;
 	if (coords[0] == match.currentPlayer.King)
+	{
+		kingCoord = coords[1];
 		king = to;
+	}
 	dangerUpdateMoved(match, coords, result);
-	dangerBool = isDangerous(match, king.dangerZones, king.piece?.team, true, match.currentPlayer.King);
+	dangerBool = isDangerous(match, king.dangerZones, king.piece?.team, true, kingCoord);
 	if (!dangerBool)
 		dangerBool = checkDoubleMoveMate(match, coords, result);
 	if (result.specialMoves.CheckSniperMove() == 0)
