@@ -1432,7 +1432,8 @@
       "useBoostBool": false,
       "counter": 129,
       "updates": {},
-      "error": false
+      "error": false,
+	  "lastLost": "red"
     },
     {
       "from": "",
@@ -2026,7 +2027,8 @@
       "useBoostBool": false,
       "counter": 183,
       "updates": {},
-      "error": false
+      "error": false,
+	  "lastLost": "green"
     },
     {
       "from": "n8",
@@ -2382,7 +2384,7 @@
     },
     {
       "from": "b8",
-      "to": "a9",
+      "to": "b7",
       "movedPiece": "King",
       "team": "blue",
       "type": "move",

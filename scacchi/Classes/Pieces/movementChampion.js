@@ -32,6 +32,8 @@ let movementChampion = function (match)
 		menaceFromStartBool = true;
 		while (movePiece(match, dx, dy, false))
 		{
+			if (match.cursor.square == "h5")
+				console.log("h5");
 			if (menaceFromStartBool == true)
 				menaceFromStartBool = checkPieceDanger(match, startPos, piece, match.cursor.square, startPos);
 			otherSquare = match.board.get(match.cursor.square);

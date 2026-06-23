@@ -1,7 +1,7 @@
 {
-  "moves": 412,
+  "moves": 415,
   "victory": "blue",
-  "finalBoard": "| | | |M| |V|K| |V| | | | | |\n| | | | |B|B| |B| | |B| | | |\n| | | |B| |J| | |B| | | | | |\n| | | |B| | |B| | | | | |B|M|\n| | | | | | | | | | | |C|B|J|\n| | |B| | | | | | | | | |B|V|\n|K|B| | | | | | | | | | |B| |\n| | | |B| | | | | | |+M| | | |\n|V|B| |V| | | | | | | |B| | |\n|J|B| |+C| | | | | | | |B| | |\n|M|B| | | | |B| | | |B| | | |\n| | | |B| | | |B| | |J| | | |\n| | | | | |K| | |B|B| | | | |\n| | | | | |V| | | | | | | | |\n",
+  "finalBoard": "| | | |M| |V|K| |V| | | | | |\n| | | | |B|B| |B| | |B| | | |\n| | | |B| |J| | |B| | | | | |\n| | | |B| | |B| | | | | |B|M|\n| | | | | | | | | | | |C|B|J|\n| | |B| | | | | | | | | |B|V|\n| |B| | | | | | | | | | |B| |\n| |K| |B| | | | | | |B| | |M|\n|V|B| | | | | | | | | |B| | |\n|J|B| | | | | | | | | |B| | |\n|M|B| | | | |B| | | |B| | | |\n| | | |B| | | |B| | |J| | | |\n| | | | | | | |V|B|B| | | | |\n| | | |+C| |V| |K| | | | | | |\n",
   "matchSettings": "14x14x4",
   "events": [
     {
@@ -2141,14 +2141,26 @@
       "error": false
     },
     {
+      "from": "",
+      "to": "",
+      "movedPiece": "",
+      "team": "yellow",
+      "type": "endturn",
+      "useBoostBool": false,
+      "counter": 327,
+      "updates": {},
+      "error": false
+    },
+    {
       "from": "d2",
       "to": "d1",
       "movedPiece": "Champion",
       "team": "blue",
       "type": "move",
       "useBoostBool": false,
-      "counter": 327,
+      "counter": 414,
       "updates": {},
+      "error": false,
       "lastLost": "yellow"
     }
   ]

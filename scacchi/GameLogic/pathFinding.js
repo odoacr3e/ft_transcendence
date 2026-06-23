@@ -77,7 +77,7 @@ export function pathFinding(match, start, dest, ignoredCoords=new Set, considerB
 		reverseMove.dx = -move.dx;
 		reverseMove.dy = -move.dy;
 		//move simulation takes reverted input
-		moveData = moveSimulation(match, destCoord, startArray, reverseMove, ignoredCoords);
+		moveData = moveSimulation(match, start.piece, destCoord, startArray, reverseMove, ignoredCoords);
 		if (moveData)
 		{//if exist a path, swaps from with to
 			let	tmp = moveData.from;
@@ -92,12 +92,13 @@ export function pathFinding(match, start, dest, ignoredCoords=new Set, considerB
 /**
  * 
  * @param {Match} match 
+ * @param {Piece} startPiece
  * @param {string} start
  * @param {Set<string>} destArray 
  * @param {{dx: number, dy: number}} move
  * @param {Set<string>} ignoredCoords 
  */
-function moveSimulation(match, start, destArray, move, ignoredCoords=new Set)
+function moveSimulation(match, startPiece, start, destArray, move, ignoredCoords=new Set)
 {
 	let	square;
 	let	moveData;
@@ -107,7 +108,11 @@ function moveSimulation(match, start, destArray, move, ignoredCoords=new Set)
 	while (movePiece(match, move.dy, move.dx))
 	{
 		if (ignoredCoords.has(match.cursor.square))
+		{
+			if (!startPiece.moveLongRangeDEBUG)
+				break ;
 			continue ;
+		}
 		if (destArray.has(match.cursor.square))//trovato path valido
 		{
 			moveData = {from: start, to: match.cursor.square};
@@ -115,7 +120,7 @@ function moveSimulation(match, start, destArray, move, ignoredCoords=new Set)
 			return (moveData);
 		}
 		square = match.board.get(match.cursor.square);
-		if (square.piece)
+		if (square.piece || !startPiece.moveLongRangeDEBUG)
 			break ;
 	}
 	match.cursor.Restore();

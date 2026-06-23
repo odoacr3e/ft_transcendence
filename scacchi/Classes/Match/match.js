@@ -202,6 +202,7 @@ class Match
 		// console.log("Premi un qualsiasi tasto per concludere...");
 		//FIXME - gestire cosa succede in base a quanti player restano
 		//FIXME - gestire salvataggio nella history
+		this.history.Last().lastLost = player.team;
 		if (result != null)
 		{
 			result.msg = "you lost!!!";
