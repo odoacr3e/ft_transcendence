@@ -1,7 +1,7 @@
 {
-  "moves": 290,
-  "victory": "yellow",
-  "finalBoard": "| | | | | |M|C| |V|J|M| | | |\n| | | | |B|B|B|B|B|J|B| | | |\n| |J| | | | | | | | | | | | |\n| |B| | | | | | | | | |B| |M|\n| | |B| | | | | | | | | |B|J|\n| | |+C| | | | | | | | | |B|V|\n|M| | | | | | | | | | | | |C|\n| | | | | | | | | | | | |B|K|\n|V|B|K| | | | | | | | | | | |\n|J|B| | | | | |B| | | | |B|J|\n|M|B| | | | | | | | |B| | | |\n| | | | | | | | | | | | | |M|\n| | | | |B|B|B| |B|B|B| | | |\n| | | |C|J|V| |K| | |M| | | |\n",
+  "moves": 298,
+  "victory": "",
+  "finalBoard": "| | | | | |M|C| |V|J|M| | | |\n| | | | |B|B|B|B|B|J|B| | | |\n| |J| | | | | | | | | | | | |\n| |B| | | | | | | | | |B| |M|\n| | |B| | | | | | | | | |B|J|\n| | | | | | | | | | | | |B|V|\n| | |M| | | | | | | | | | |+C|\n| | | | | | | | | | | | |B|K|\n|V|B|K| | |+C| | | | | | | | |\n|J|B| | | | | |B| | | | |B|J|\n|M|B| | | | | | | | |B| | | |\n| | | | | | | | | | | | | |M|\n| | | | |B|B|B| |B|B|B| | | |\n| | | |C|J|V| |K| | |M| | | |\n",
   "matchSettings": "14x14x4",
   "events": [
     {
@@ -2488,10 +2488,64 @@
       "team": "yellow",
       "type": "move",
       "useBoostBool": false,
-      "counter": 289,
+      "counter": 290,
       "updates": {},
-      "error": false,
-      "lastLost": "blue"
+      "error": false
+    },
+    {
+      "from": "",
+      "to": "",
+      "movedPiece": "",
+      "team": "yellow",
+      "type": "endturn",
+      "useBoostBool": false,
+      "counter": 291,
+      "updates": {},
+      "error": false
+    },
+    {
+      "from": "a8",
+      "to": "c8",
+      "movedPiece": "Minotaurus",
+      "team": "blue",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 292,
+      "updates": {},
+      "error": false
+    },
+    {
+      "from": "",
+      "to": "",
+      "movedPiece": "",
+      "team": "blue",
+      "type": "endturn",
+      "useBoostBool": false,
+      "counter": 293,
+      "updates": {},
+      "error": false
+    },
+    {
+      "from": "c9",
+      "to": "f6",
+      "movedPiece": "Champion",
+      "team": "yellow",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 296,
+      "updates": {},
+      "error": false
+    },
+    {
+      "from": "f6",
+      "to": "c6",
+      "movedPiece": "Champion",
+      "team": "yellow",
+      "type": "moveboost",
+      "useBoostBool": false,
+      "counter": 297,
+      "updates": {},
+      "error": true
     }
   ]
 }
