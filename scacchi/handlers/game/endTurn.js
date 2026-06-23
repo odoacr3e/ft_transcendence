@@ -65,6 +65,8 @@ function updateTurn(match, result)
 	let	player;
 	let	king;
 
+	if (match.playerNum <= 1)
+		return (false);
 	player = match.currentPlayer;
 	if (match.moves < MOVEMENT_MIN)
 		return (error(result, 403, "You need to move first"));

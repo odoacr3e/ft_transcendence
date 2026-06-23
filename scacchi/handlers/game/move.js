@@ -33,16 +33,13 @@ function move(match, from, to, boostBool=false)
 	if (!updateChessboard([from, to], result, match, boostBool))
 		return (result);
 	result.status = 200;
-	if (checkMateCheckAll(match, result) == true)
-		return (result);
+	checkMateCheckAll(match, result);
 	// @ts-ignore
 	result.board = clientBoard(match);
 	secondMoveBool = checkSecondMove(match, to);
 	if ((match.moves >= MOVEMENT_MIN && !match.currentPlayer.nPoints) && !(secondMoveBool && boostBool) && 
 	!(match.cursor.EdgeCheck(match.currentPlayer.team) && match.board.get(match.cursor.square)?.piece?.type == enumNames.BASTARDS))
 		endTurn(match, false);
-	// else if (match.CheckOtherKingsDanger() == true)
-	// 	endTurn(match);
 	return (result);
 }
 

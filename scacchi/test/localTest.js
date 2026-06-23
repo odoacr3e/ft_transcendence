@@ -49,7 +49,7 @@ function execAllTests()
 		if (file.includes("todo"))
 		{
 			testerTodo();
-			break ;
+			continue ;
 		}
 		execTest(`${HISTORY_PATH}${file}`);
 	}

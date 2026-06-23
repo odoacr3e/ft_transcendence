@@ -183,7 +183,7 @@ class Match
 			result.youWin = true;
 			result.specialMoves.SetCheckMate();
 			//@ts-ignore
-			result.board = clientBoard(this);
+			// result.board = clientBoard(this);
 		}
 		else
 			return (new Result());
@@ -210,7 +210,7 @@ class Match
 			result.youWin = false;
 			result.specialMoves.SetCheckMate();
 			//@ts-ignore
-			result.board = clientBoard(this);
+			// result.board = clientBoard(this);
 		}
 		else
 			return (new Result());
@@ -238,6 +238,8 @@ class Match
 		if (!player.boostedPiece)
 			return ;
 		this.boostPriority.delete(player.team);
+		//FIXME - qui va chiamato DangerUpdate. Farlo pero significa introdurre doppie inclusioni
+		this.board.updates.add(player.boostedPiece);
 		boostedSquare = this.board.get(player.boostedPiece);
 		if (!boostedSquare.piece)
 			throw (`DeletePlayer: invalid boosted piece in ${player.boostedPiece}`);

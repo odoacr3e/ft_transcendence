@@ -68,6 +68,11 @@ async function execAllTests()
 	{
 		rateSuccess.tests++;
 		currMatch = file;
+		if (file.includes("todo"))
+		{
+			testerTodo();
+			continue ;
+		}
 		await execTest(`${HISTORY_PATH}${file}`);
 	}
 	console.debug(`Win rate: ${rateSuccess.success}/${rateSuccess.tests}`)
@@ -196,6 +201,14 @@ function testerFail(msg, p1="", p2="")
 	console.debug(`${p1}`);
 	process.exit();
 	//fail(msg, p1, p2);
+}
+
+/**
+ * called when a test is marked with todo
+ */
+function testerTodo()
+{
+	console.debug(`${currMatch}: ${MSG.RESULT_TODO}`);
 }
 
 /**

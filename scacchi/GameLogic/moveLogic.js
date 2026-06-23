@@ -16,7 +16,6 @@ import { Cursor } from "../Classes/Match/cursor.js";
 import { includesOneOf } from "../utils/string.js";
 import {endTurn} from "../handlers/game/endTurn.js";
 import {checkMateCheckAll} from "./checkMate.js";
-import { resourceUsage } from "node:process";
 
 //FIXME - da mettere alcune funzioni in un utilis
 
@@ -31,6 +30,8 @@ function checkSecondMove(match, to)
 	let piece;
 	let type;
 
+	if (match.playerNum <= 1)
+		return (false);
 	tmp = match.cursor.square;
 	match.cursor.set(to);
 	type = match.board.get(to)?.piece?.type;
@@ -652,8 +653,7 @@ function transfiguration(match, result, coord, newType)
 	square.piece.isBoostedBool = isBoostedBool;
 	DangerUpdate(match, coord);
 	match.history.UpdateTransform(match, square, coord, newType);
-	if (checkMateCheckAll(match, result, true) == true)
-		return (result);
+	checkMateCheckAll(match, result);
 	endTurn(match, false);
 	result.status = 200;
 	result.msg = "OK";

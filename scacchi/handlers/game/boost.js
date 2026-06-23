@@ -28,8 +28,7 @@ function boost(match, from)
 	result.status = 200;
 	if (match.boost == BOOSTED_MAX)
 	{
-		if (checkMateCheckAll(match, result, true) == true)
-			return (result);
+		checkMateCheckAll(match, result);
 		endTurn(match, false);
 	}
 	if (prevBoost == "")
@@ -71,9 +70,9 @@ function tryBoost(match, result, from)
 		tmp = match.board.get(match.currentPlayer.boostedPiece);
 		if (tmp?.piece)
 			tmp.piece.isBoostedBool = false;
-		match.board.updates.add(from);
-		match.board.updates.add(match.currentPlayer.boostedPiece);
+		DangerUpdate(match, match.currentPlayer.boostedPiece, false);
 	}
+	match.board.updates.add(from);
 	match.boostPriority.add(match.currentPlayer.team);
 	match.currentPlayer.boostedPiece = square.piece.pos;
 	match.history.UpdateBoost(match, square, from);
