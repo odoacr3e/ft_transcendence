@@ -15,7 +15,7 @@ import { simulation } from "./moveLogic.js";
  * @param {Match} match
  * @param {string} kingCoord
  */
-function CheckMateCheck(match, kingCoord)
+function CheckMateCheck(match, kingCoord=match.currentPlayer.King)
 {
 	let threat = new Set;
 	let kingSquare;
@@ -50,28 +50,23 @@ function CheckMateCheck(match, kingCoord)
  * 
  * @param {Match} match 
  * @param {Result | null} result
- * @param {boolean} lostBool
  */
-function checkMateCheckAll(match, result, lostBool=false)
+function checkMateCheckAll(match, result)
 {
-	if (match.playerNum > 2)
-	{
-		let tmp = match.currentPlayer;
+	let currTeam;
 
-		tmp = match[tmp.next];
-		while (tmp != match.currentPlayer)
+	currTeam = match.currentPlayer.team;
+	match.endTurn();
+	while (currTeam != match.currentPlayer.team)
+	{
+		if (CheckMateCheck(match))
 		{
-			// @ts-ignore
-			if (CheckMateCheck(match, match[tmp.team].King))
-			{
-				return (match.PlayerLost(result, tmp), true);
-			}
-			tmp = match[tmp.next];
-			lostBool = false;
+			match.PlayerLost(result);
 		}
+		match.endTurn();
 	}
 	// @ts-ignore
-	else if (CheckMateCheck(match, match[match.currentPlayer.next].King))
+	if (match.playerNum == 1)
 		return (match.CheckMate(result), true);
 	return (false);
 }
@@ -254,12 +249,14 @@ function canDodge(match, square)
 	let	coord;
 	let	newSquare;
 	let	piece;
+	let	kingTargets;
 
 	piece = square.piece;
 	if (!piece)
 		throw (`canDodge: square ${square} has undefined piece`);
 	coord = piece.pos;
-	for (let newCoord of square.targetZones)//king can dodge?
+	kingTargets = structuredClone(square.targetZones);
+	for (let newCoord of kingTargets)//king can dodge?
 	{
 		newSquare = match.board.get(newCoord);
 		if (isDangerous(match, newSquare.dangerZones, piece.team) || newSquare.piece?.team == piece.team)
@@ -344,4 +341,4 @@ function cantMovePiece(match, enemyCoord, enemySquare, kingCoord)
 	return (false);
 }
 
-export {CheckMateCheck, checkMateCheckAll, getDirection};
+export {checkMateCheckAll, getDirection};

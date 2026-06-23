@@ -4,13 +4,8 @@ import {MOVEMENT_MIN, MOVEMENT_BONUS_POINT} from "../../Macro/macro.js";
 import {enumNames} from "../../Macro/enums.js";
 import {Match} from "../../Classes/Match/match.js";
 import {error, Result, checkMateAlert} from "./utils.js";
-import {CheckMateCheck} from "../../GameLogic/checkMate.js";
-import {globals} from "../../Classes/Match/globals.js";
-import {isDangerous} from "../../utils/gameUtils.js";
 import {DangerUpdate} from "../../utils/moveUtils.js";
 import {clientBoard} from "../../handlers/game/utils.js";
-import { Timer } from "../../Classes/Match/match.js";
-//FIXME - ale: puoi sempre cambiare turno anche se non hai mosso
 
 /**
  * goes to the next turn
@@ -90,15 +85,6 @@ function updateTurn(match, result)
 	match.history.UpdateEndTurn(match);
 	match.endTurn();
 	king = match.board.get(player.King);
-	// if (CheckMateCheck(match, player.King) == true)
-	// {
-	// 	console.log("hai perso, sfigato, e vuoi pure muovere di nuovo?? Appenditi idiota!!!");
-	// 	// @ts-ignore
-	// 	match.CheckMate(result);
-	// 	return (false);
-	// }
-	// else if (isDangerous(match, king.dangerZones, king.piece?.team) == true)
-	// 	result.specialMoves.SetKingDanger();
 	match.boost = 0;
 	match.moves = 0;
 	return (true);

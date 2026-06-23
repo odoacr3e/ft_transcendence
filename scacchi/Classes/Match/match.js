@@ -138,17 +138,6 @@ class Match
 	 * */
 	CheckMate(result=null, player)
 	{
-		if (this.playerNum > 2)
-		{
-			this.DeletePlayer(player);
-			if (result != null)
-			{
-				result.status = 200;
-				result.board = clientBoard(this);
-				return (result);
-			}
-			return (new Result);
-		}
 		console.log("haaaaaiiiiii viiiiiiintoooooooooo!!!!!!!");
 		console.log("Premi un qualsiasi tasto per concludere...");
 		this.victory = this.currentPlayer.team;
@@ -168,10 +157,10 @@ class Match
 	}
 	/**
 	 * 
-	 * @param {Result} result 
+	 * @param {Result | null} result 
 	 * @param {Player} player 
 	 */
-	PlayerLost(result, player)
+	PlayerLost(result, player=this.currentPlayer)
 	{
 		this.lastLost = player.team;
 		this.DeletePlayer(player);
