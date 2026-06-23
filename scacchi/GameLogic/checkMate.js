@@ -302,6 +302,54 @@ function findThreats(match, threat, square, team)
 	return (enemyCoord);
 }
 
+// /**
+//  * if I eat the piece that is menacing the king, 
+//  * a new king menace will arise?
+//  * @param {Match} match 
+//  * @param {string} enemyCoord 
+//  * @param {Square} enemySquare 
+//  * @param {string} kingCoord
+//  */
+// function cantMovePiece(match, enemyCoord, enemySquare, kingCoord)
+// {
+// 	let	guardianSquare;
+// 	let	guardianPiece;
+// 	let	threatSquare;
+// 	let	threatPiece;
+// 	let	canReachKing;
+// 	let	ignoredCoords;
+
+// 	ignoredCoords = new Set();
+// 	ignoredCoords.add(enemyCoord);
+// 	for (const kingGuardianCoord of enemySquare.dangerZones)
+// 	{
+// 		ignoredCoords.add(kingGuardianCoord);
+// 		guardianSquare = match.board.get(kingGuardianCoord);
+// 		guardianPiece = guardianSquare.piece; 
+// 		if (!guardianPiece)
+// 			throw ("checkMate, cantMovePiece: guardian piece undefined");
+// 		//checking every guardian danger zone
+// 		for (const threatCoord of guardianSquare.dangerZones)
+// 		{
+// 			threatSquare = match.board.get(threatCoord);
+// 			threatPiece = threatSquare.piece;
+// 			if (!threatPiece)
+// 				throw ("checkMate, cantMovePiece: threat piece undefined");
+// 			if (threatPiece.team == guardianPiece.team)
+// 				continue ;
+// 			if (threatPiece.type == enumNames.JESTER)//it jumps over pieces anyway
+// 				continue ;
+// 			if (threatPiece.moveLongRangeDEBUG == false)//guardian not important 
+// 				continue ;
+// 			canReachKing = pathFinding(match, threatSquare, kingCoord, ignoredCoords, true);
+// 			if (canReachKing != null)
+// 				return (true);
+// 		}
+// 		ignoredCoords.delete(kingGuardianCoord);
+// 	}
+// 	return (false);
+// }
+
 /**
  * if I eat the piece that is menacing the king, 
  * a new king menace will arise?
@@ -316,7 +364,7 @@ function cantMovePiece(match, enemyCoord, enemySquare, kingCoord)
 	let	guardianPiece;
 	let	threatSquare;
 	let	threatPiece;
-	let	canReachKing;
+	let	canReachKing = null;
 	let	ignoredCoords;
 
 	ignoredCoords = new Set();
@@ -328,6 +376,8 @@ function cantMovePiece(match, enemyCoord, enemySquare, kingCoord)
 		guardianPiece = guardianSquare.piece; 
 		if (!guardianPiece)
 			throw ("checkMate, cantMovePiece: guardian piece undefined");
+		if (guardianPiece.team != match.currentPlayer.team)
+			continue ;
 		//checking every guardian danger zone
 		for (const threatCoord of guardianSquare.dangerZones)
 		{
@@ -343,11 +393,14 @@ function cantMovePiece(match, enemyCoord, enemySquare, kingCoord)
 				continue ;
 			canReachKing = pathFinding(match, threatSquare, kingCoord, ignoredCoords, true);
 			if (canReachKing != null)
-				return (true);
+				break ;
 		}
+		if (!canReachKing)
+			return (false);
+		canReachKing = null;
 		ignoredCoords.delete(kingGuardianCoord);
 	}
-	return (false);
+	return (true);
 }
 
 export {checkMateCheckAll, getDirection};
