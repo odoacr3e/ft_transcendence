@@ -91,8 +91,6 @@ function bastardChecks(match, dy, dx, piece)
 	if (!bastardMove[piece.team])
 		throw ("bastardChecks: unknown piece team")
 	// @ts-ignore
-	if (!bastardMove[piece.team].has(`${dy}|${dx}`))
-		return false;
 	match.cursor.Save();
 	startPos = match.cursor.square;
 	if (match.cursor.moveRow(dy) == false)
@@ -100,6 +98,8 @@ function bastardChecks(match, dy, dx, piece)
 	if (match.cursor.moveCol(dx) == false)
 		return (match.cursor.Restore(), false);
 	match.board.AddInfluence(startPos, match.cursor.square);
+	if (!bastardMove[piece.team].has(`${dy}|${dx}`))
+		return (match.cursor.Restore(), false);
 	targetPos = match.cursor.square;
 	target = match.board.get(targetPos).piece;
 	if (dx != 0 && dy != 0)//NOTE - bastards moves diagonally
