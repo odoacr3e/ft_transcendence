@@ -232,7 +232,7 @@ function updateBoostedChampions(match, coords)
 		if (match.board.updates.has(x) == true)
 			needUpdateBool = true;
 	}
-	if (needUpdateBool == false)
+	if (needUpdateBool == false && boostedChampsCoords.length < 2)
 		return ;
 	//resets all one of them
 	for (const x of boostedChampsCoords)

@@ -198,7 +198,7 @@ class Match
 	{
 		this.lastLost = player.team;
 		this.DeletePlayer(player);
-		console.log("haaaaaiiiiii persoooooooooooooooooo!!!!!!!");
+		console.log(player.team, ":haaaaaiiiiii persoooooooooooooooooo!!!!!!!");
 		// console.log("Premi un qualsiasi tasto per concludere...");
 		//FIXME - gestire cosa succede in base a quanti player restano
 		//FIXME - gestire salvataggio nella history
