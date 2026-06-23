@@ -118,7 +118,7 @@ function castlingUpdate(match, startPos, piece)
 		for (const x of player.castlingArray)
 			kingSquare.targetZones.add(x);
 	}
-	else if (piece.type == enumNames.MINOTAURUS)
+	else if (piece.type == enumNames.MINOTAURUS && !piece.isMovedBool)
 	{
 		player.castlingArray.delete(startPos);
 		if (kingSquare.piece?.isMovedBool || piece.isMovedBool)
