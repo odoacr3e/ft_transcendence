@@ -6,13 +6,16 @@ import { enumNames } from "../Macro/enums.js";
 
 /**
  * 
- * @param {*} match
+ * @param {Match} match
  * @param {Set<string> | undefined} setZones dangerZone to check
  * @param {string | undefined} team enumTeam to the piece to check
+ * @param {boolean} saveInfoBool
+ * @param {string} pieceCoord
  */
-let isDangerous = (match, setZones, team) =>
+let isDangerous = (match, setZones, team, saveInfoBool=false, pieceCoord=match.cursor.square) =>
 {
 	let	board;
+	let	dangerCoord = "";
 
 	board = match.board;
 	if (setZones == undefined)
@@ -24,9 +27,33 @@ let isDangerous = (match, setZones, team) =>
 		if (!match.board.get(x).piece)
 			return (false);
 		if (match.board.get(x)?.piece?.team != team)
-			return (true);
+		{
+			dangerCoord = x;
+			break ;
+		}
 	}
-	return false;
+	if (!dangerCoord)
+		return false;
+	if (!saveInfoBool)
+		return true;
+	let	dangerSquare;
+
+	dangerSquare = match.board.get(dangerCoord);
+	if (dangerSquare.targetZones.has(pieceCoord))
+		match.lastMenace = {from: dangerCoord, mid: "", to: pieceCoord};
+	else
+	{
+		for (const [midPos, boostTargets] of dangerSquare.boostedTargetZones)
+		{
+			if (boostTargets.has(pieceCoord) == false)
+				continue ;
+			match.lastMenace = {from: dangerCoord, mid: midPos, to: pieceCoord};
+			return true;
+		}
+		throw (`isDangerous, menace save: invalid targets`);
+	}
+	return true;
+
 }
 
 /*										dy/dx	dy/dx	dy/dx

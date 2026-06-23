@@ -123,9 +123,9 @@ class Match
 			piece1 = this.board.get(coord1).piece;
 			piece2 = this.board.get(coord2).piece;
 			if (!piece1)
-				throw(`match.GetBoostedPieceCoords: invalid piece in ${coord1}`);
+				return (-1);
 			if (!piece2)
-				throw(`match.GetBoostedPieceCoords: invalid piece in ${coord2}`);
+				return (1);
 			//closure is used to remember the priority
 			return (arrPriority.indexOf(piece1.team) - arrPriority.indexOf(piece2.team));			
 		});

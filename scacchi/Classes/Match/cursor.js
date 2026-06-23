@@ -278,6 +278,16 @@ class Cursor
 		this.square = tmp;
 		return ({col: cols[0] - cols[1], row: rows[0] - rows[1]});
 	}
+	/** @param {string} coord1 */
+	IsOblique(coord1, coord2=this.square)
+	{
+		let	diff;
+
+		diff = this.Diff(coord1, coord2);
+		if (diff.col && diff.row)//both exists (oblique)
+			return (true);
+		return (false);//one of them is zero (vertical/horyzontal)
+	}
 }
 
 export {Cursor, coordNormify};
