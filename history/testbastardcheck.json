@@ -1,0 +1,326 @@
+{
+  "seed": 0,
+  "events": [
+    {
+      "from": "e2",
+      "to": "e4",
+      "team": "white",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 0
+    },
+    {
+      "from": "",
+      "to": "",
+      "team": "white",
+      "type": "endturn",
+      "useBoostBool": false,
+      "counter": 1
+    },
+    {
+      "from": "f7",
+      "to": "f5",
+      "team": "black",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 2
+    },
+    {
+      "from": "",
+      "to": "",
+      "team": "black",
+      "type": "endturn",
+      "useBoostBool": false,
+      "counter": 3
+    },
+    {
+      "from": "f1",
+      "to": "b5",
+      "team": "white",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 4
+    },
+    {
+      "from": "",
+      "to": "",
+      "team": "white",
+      "type": "endturn",
+      "useBoostBool": false,
+      "counter": 5
+    },
+    {
+      "from": "e8",
+      "to": "f7",
+      "team": "black",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 6
+    },
+    {
+      "from": "",
+      "to": "",
+      "team": "black",
+      "type": "endturn",
+      "useBoostBool": false,
+      "counter": 7
+    },
+    {
+      "from": "g1",
+      "to": "h3",
+      "team": "white",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 8
+    },
+    {
+      "from": "",
+      "to": "",
+      "team": "white",
+      "type": "endturn",
+      "useBoostBool": false,
+      "counter": 9
+    },
+    {
+      "from": "f7",
+      "to": "e6",
+      "team": "black",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 10
+    },
+    {
+      "from": "",
+      "to": "",
+      "team": "black",
+      "type": "endturn",
+      "useBoostBool": false,
+      "counter": 11
+    },
+    {
+      "from": "e1",
+      "to": "h1",
+      "team": "white",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 12
+    },
+    {
+      "from": "",
+      "to": "",
+      "team": "white",
+      "type": "endturn",
+      "useBoostBool": false,
+      "counter": 13
+    },
+    {
+      "from": "d7",
+      "to": "d5",
+      "team": "black",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 14
+    },
+    {
+      "from": "",
+      "to": "",
+      "team": "black",
+      "type": "endturn",
+      "useBoostBool": false,
+      "counter": 15
+    },
+    {
+      "from": "f1",
+      "to": "e1",
+      "team": "white",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 16
+    },
+    {
+      "from": "e4",
+      "to": "",
+      "team": "white",
+      "type": "boost",
+      "useBoostBool": false,
+      "counter": 17
+    },
+    {
+      "from": "",
+      "to": "",
+      "team": "white",
+      "type": "endturn",
+      "useBoostBool": false,
+      "counter": 18
+    },
+    {
+      "from": "f5",
+      "to": "f4",
+      "team": "black",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 19
+    },
+    {
+      "from": "",
+      "to": "",
+      "team": "black",
+      "type": "endturn",
+      "useBoostBool": false,
+      "counter": 20
+    },
+    {
+      "from": "e1",
+      "to": "e3",
+      "team": "white",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 21
+    },
+    {
+      "from": "d8",
+      "to": "d7",
+      "team": "black",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 21,
+	  "error": true,
+	  "errorMessage": "rispetta la gang del pedone"
+    },
+    {
+      "from": "d8",
+      "to": "d6",
+      "team": "black",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 21,
+	  "error": true,
+	  "errorMessage": "rispetta la gang del pedone"
+    },
+    {
+      "from": "",
+      "to": "",
+      "team": "white",
+      "type": "endturn",
+      "useBoostBool": false,
+      "counter": 22
+    },
+    {
+      "from": "e6",
+      "to": "f6",
+      "team": "black",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 23
+    },
+    {
+      "from": "",
+      "to": "",
+      "team": "black",
+      "type": "endturn",
+      "useBoostBool": false,
+      "counter": 24
+    },
+    {
+      "from": "e3",
+      "to": "a3",
+      "team": "white",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 25
+    },
+    {
+      "from": "",
+      "to": "",
+      "team": "white",
+      "type": "endturn",
+      "useBoostBool": false,
+      "counter": 26
+    },
+    {
+      "from": "f6",
+      "to": "g6",
+      "team": "black",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 27
+    },
+    {
+      "from": "",
+      "to": "",
+      "team": "black",
+      "type": "endturn",
+      "useBoostBool": false,
+      "counter": 28
+    },
+    {
+      "from": "b5",
+      "to": "d3",
+      "team": "white",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 29
+    },
+    {
+      "from": "h7",
+      "to": "h6",
+      "team": "black",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 30,
+	  "error": true,
+	  "errorMessage": "rispetta la gang del pedone"
+    },
+    {
+      "from": "",
+      "to": "",
+      "team": "white",
+      "type": "endturn",
+      "useBoostBool": false,
+      "counter": 30
+    },
+    {
+      "from": "g6",
+      "to": "h6",
+      "team": "black",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 31
+    },
+    {
+      "from": "",
+      "to": "",
+      "team": "black",
+      "type": "endturn",
+      "useBoostBool": false,
+      "counter": 32
+    },
+    {
+      "from": "a3",
+      "to": "a6",
+      "team": "white",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 33
+    },
+    {
+      "from": "",
+      "to": "",
+      "team": "white",
+      "type": "endturn",
+      "useBoostBool": false,
+      "counter": 34
+    },
+    {
+      "from": "e7",
+      "to": "e6",
+      "team": "black",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 35
+    }
+  ],
+  "moves": 36,
+  "victory": "",
+  "finalBoard": "|M|J|V|C| |V|J|M|\n|B|B|B| | | |B|B|\n|M| | | |B| | |K|\n| | | |B| | | | |\n| | | | |+B|B| | |\n| | | |V| | | |J|\n|B|B|B|B| |B|B|B|\n|M|J|V|C| | |K| |\n"
+}
