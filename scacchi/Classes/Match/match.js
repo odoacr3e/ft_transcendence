@@ -49,6 +49,40 @@ class Match
 		if (this.settings.players.number == 4)
 			this.currentPlayer = this.yellow;
 	}
+	/** @param {MatchSettings | string | null} preset*/
+	Reset(preset=null)
+	{
+		let	w;
+		let	h;
+	
+		if (!preset && !this.settings)
+			this.settings = new MatchSettings(matchPresets.twoPlayer);
+		else
+			this.settings = new MatchSettings(preset);
+		this.white = new Player(eTeam.White);
+		this.black = new Player(eTeam.Black);
+		this.red = new Player(eTeam.Red);
+		this.blue = new Player(eTeam.Blue);
+		this.green = new Player(eTeam.Green);
+		this.yellow = new Player(eTeam.Yellow);
+		w = this.settings.board.width;
+		h = this.settings.board.heigth;
+		this.board = new ChessBoard(w, h);
+		this.cursor = new Cursor(w, h);
+		this.moves = 0;
+		this.boost = 0;
+		this.history = new History(this.settings);
+		this.historyCreateBool = false;
+		this.currentPlayer = this.white;
+		this.lastMenace = {from: "", mid: "", to: ""};
+		this.boostPriority = new Set;
+		this.playerNum = this.settings.players.number;
+		this.lastLost = "";
+		this.victory = "";
+		/** @type {Timer | null} */ this.timer = null;
+		if (this.settings.players.number == 4)
+			this.currentPlayer = this.yellow;
+	}
 	endTurn()
 	{
 		/** @type {String} */ let	next = this.currentPlayer.next;
@@ -180,35 +214,6 @@ class Match
 		else
 			return (new Result());
 		return (result);	
-	}
-	/** @param {MatchSettings | string | null} preset*/
-	Reset(preset=null)
-	{
-		let	w;
-		let	h;
-	
-		if (!preset && !this.settings)
-			this.settings = new MatchSettings(matchPresets.twoPlayer);
-		else
-			this.settings = new MatchSettings(preset);
-		this.white = new Player(eTeam.White);
-		this.black = new Player(eTeam.Black);
-		this.red = new Player(eTeam.Red);
-		this.blue = new Player(eTeam.Blue);
-		this.green = new Player(eTeam.Green);
-		this.yellow = new Player(eTeam.Yellow);
-		w = this.settings.board.width;
-		h = this.settings.board.heigth;
-		this.board = new ChessBoard(w, h);
-		this.cursor = new Cursor(w, h);
-		this.moves = 0;
-		this.boost = 0;
-		this.history = new History(this.settings);
-		this.currentPlayer = this.white;
-		this.victory = "";
-		this.playerNum = this.settings.players.number;
-		if (this.settings.players.number == 4)
-			this.currentPlayer = this.yellow;
 	}
 	/** @param {string} name */
 	Log(name)

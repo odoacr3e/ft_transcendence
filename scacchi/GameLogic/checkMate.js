@@ -107,7 +107,9 @@ function getDirection(match, kingSquare, enemySquare)
 function isStoppable(match, kingSquare, enemySquareString)
 {
 	let	square;
+	let	dir;
 	let	enemySquare;
+	let	guardianSquare;
 	let	guardianPiece;
 	let	kingPiece;
 
@@ -121,8 +123,9 @@ function isStoppable(match, kingSquare, enemySquareString)
 	enemySquare.piece?.isBoostedBool == true) ||
 	match.board.get(kingSquare)?.targetZones.has(enemySquareString))
 		return false;
-	let dir = getDirection(match, kingSquare, enemySquareString);
-	match.cursor.setCursor(match.cursor.getRow() + dir.diffRow, match.cursor.getCol() + dir.diffCol);
+	dir = getDirection(match, kingSquare, enemySquareString);
+	if (!movePiece(match, dir.diffCol, dir.diffRow))
+		return true;
 	while (match.board.get(match.cursor.square)?.piece?.type != enumNames.KING)
 	{
 		square = match.board.get(match.cursor.square);
@@ -130,7 +133,8 @@ function isStoppable(match, kingSquare, enemySquareString)
 			continue ;
 		for (let x of square.dangerZones)
 		{
-			guardianPiece = match.board.get(x).piece;
+			guardianSquare = match.board.get(x);
+			guardianPiece = guardianSquare.piece;
 			if (!guardianPiece)
 				throw (`isStoppable: guardian of ${match.cursor.square} in ${x} missing`);
 			if (x == kingSquare)
@@ -139,9 +143,14 @@ function isStoppable(match, kingSquare, enemySquareString)
 				continue ;
 			if (guardianPiece.team != kingPiece.team)
 				continue ;
+			//FIXME - CONTROLLO CHE IL DIFENSORE MANGI IN UNA MOSSA (implementare salvataggio due mosse?)
+			if (guardianSquare.targetZones.has(x) == false)
+				continue ;
 			return true;
 		}
-		match.cursor.setCursor(match.cursor.getRow() + dir.diffRow, match.cursor.getCol() + dir.diffCol);
+		if (!movePiece(match, dir.diffCol, dir.diffRow))
+			return true;//FIXME - stampella: non dovrebbe finire mai qui, eppure succede
+			//throw("isStoppable: getDirection failed");
 	}
 	return false;
 }
