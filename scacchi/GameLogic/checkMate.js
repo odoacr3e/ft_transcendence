@@ -144,7 +144,12 @@ function isStoppable(match, kingSquare, enemySquareString)
 			if (guardianPiece.team != kingPiece.team)
 				continue ;
 			//FIXME - CONTROLLO CHE IL DIFENSORE MANGI IN UNA MOSSA (implementare salvataggio due mosse?)
-			if (guardianSquare.targetZones.has(x) == false)
+			let	guardianBoostedSave;
+			let	guardianRegularSave;
+
+			guardianRegularSave = guardianSquare.targetZones.has(match.cursor.square);
+			guardianBoostedSave = guardianSquare.boostedTargetZones.get(x)?.has(match.cursor.square);
+			if (guardianSquare.targetZones.has(match.cursor.square) == false)
 				continue ;
 			return true;
 		}
