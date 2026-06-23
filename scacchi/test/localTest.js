@@ -46,6 +46,11 @@ function execAllTests()
 	for (const file of fs.readdirSync(HISTORY_PATH))
 	{
 		currMatch = file;
+		if (file.includes("todo"))
+		{
+			testerTodo();
+			break ;
+		}
 		execTest(`${HISTORY_PATH}${file}`);
 	}
 	process.exit(errorFlag);
@@ -112,6 +117,14 @@ function testerFail(msg, p1="", p2="")
 {
 	console.debug(`${currMatch}: ${MSG.RESULT_ERROR}`);
 	fail(msg, p1, p2);
+}
+
+/**
+ * called when a test is marked with todo
+ */
+function testerTodo()
+{
+	console.debug(`${currMatch}: ${MSG.RESULT_TODO}`);
 }
 
 /**

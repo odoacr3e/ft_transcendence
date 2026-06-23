@@ -268,10 +268,12 @@ function canDodge(match, square)
 	for (let newCoord of kingTargets)//king can dodge?
 	{
 		newSquare = match.board.get(newCoord);
-		if (isDangerous(match, newSquare.dangerZones, piece.team) || newSquare.piece?.team == piece.team)
+		if (newSquare.piece?.team == piece.team)
 			continue ;
-		if (checkPieceDanger(match, coord, piece, newCoord, coord))
-			continue ;
+		// if (isDangerous(match, newSquare.dangerZones, piece.team) || newSquare.piece?.team == piece.team)
+		// 	continue ;
+		// if (checkPieceDanger(match, coord, piece, newCoord, coord))
+		// 	continue ;
 		if (simulation([coord, newCoord], match) == true)
 			return (true);
 	}
