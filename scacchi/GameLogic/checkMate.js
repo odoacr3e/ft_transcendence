@@ -149,7 +149,7 @@ function isStoppable(match, kingSquare, enemySquareString)
 
 			guardianRegularSave = guardianSquare.targetZones.has(match.cursor.square);
 			guardianBoostedSave = guardianSquare.boostedTargetZones.get(x)?.has(match.cursor.square);
-			if (guardianSquare.targetZones.has(match.cursor.square) == false)
+			if (!guardianRegularSave && !guardianBoostedSave)
 				continue ;
 			return true;
 		}
