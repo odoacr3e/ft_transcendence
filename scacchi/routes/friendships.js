@@ -69,3 +69,18 @@ friendsRouter.patch('/', checkJwt, async (req, res) => {
 		return res.status(500).json(jsonResponse.ResponseError("Internal server error"));
 	}
 })
+
+
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
+friendsRouter.get('/:id', checkJwt, async (req, res) => {
+	try {
+		const userFriendships = await friendsQuery.getAllUserFriendships(req.params.id);
+		return res.status(200).json(jsonResponse.ResponseSuccess({ friendship: userFriendships }));
+	} catch (error) {
+		console.log("Error: ", error);
+		return res.status(500).json(jsonResponse.ResponseError("Server error retrieving another user's friendships"));
+	}
+});
