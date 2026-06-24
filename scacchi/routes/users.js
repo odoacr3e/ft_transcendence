@@ -37,6 +37,18 @@ usersRouter.get("/me", checkJwt, async (req, res) => {
 	}
 });
 
+usersRouter.get('/username/:username', checkJwt, async (req, res) => {
+	try {
+		const user = await usersQuery.getUserByUsername(req.params.username);
+		if (user)
+			return res.status(200).json(jsonResponse.ResponseSuccess({ "user": user }));
+		return res.status(404).json(jsonResponse.ResponseError("User not found"));
+	} catch (error) {
+		console.log("Error: ", error);
+		return res.status(500).json(jsonResponse.ResponseError("Server error"));
+	}
+})
+
 // NOTE: solo user loggati, ricerca per id
 usersRouter.get("/:id", checkJwt, async (req, res) => {
 	try {
