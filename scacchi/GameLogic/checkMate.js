@@ -41,13 +41,15 @@ function CheckMateCheck(match, kingCoord=match.currentPlayer.King)
 	if (!enemyCoord)
 		return false;
 	enemySquare = match.board.get(enemyCoord);
-	// stopBool = isStoppable(match, kingCoord, enemyCoord);
-	// canEatBool = true;
+	stopBool = isStoppable(match, kingCoord, enemyCoord);
+	canEatBool = true;
 	if (isDangerous(match, enemySquare.dangerZones, enemySquare.piece?.team))
-		return (cantMovePiece(match, enemyCoord, enemySquare, kingCoord));
-	if (isStoppable(match, kingCoord, enemyCoord))
-		return false;
-	return true;
+	{
+		if (cantMovePiece(match, enemyCoord, enemySquare, kingCoord))
+			return (true);
+		return (false);
+	}
+	return (!stopBool);
 }
 
 /**
