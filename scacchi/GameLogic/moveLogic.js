@@ -465,6 +465,8 @@ export function simulation(coords, match, result=null)
 	dangerBool = isDangerous(match, king.dangerZones, king.piece?.team, true, kingCoord);
 	if (!dangerBool)
 		dangerBool = checkDoubleMoveMate(match, coords, result);
+	if (dangerBool)
+		dangerBool = checkGuardians(match, coords, result);
 	if (!result || result.specialMoves.CheckSniperMove() == 0)
 	{
 		from.piece = to.piece;
@@ -479,6 +481,25 @@ export function simulation(coords, match, result=null)
 	if (!boosted)
 		return (!dangerBool);
 	return (!dangerBool);
+}
+
+/**
+ * the king is in danger, but a second move can save him?
+ * @param {Match} match 
+ * @param {Array<string>} coords 
+ * @param {Result} result 
+ */
+function checkGuardians(match, coords, result)
+{
+	for (let {coord, target} of match.currentPlayer.guardianPieces)
+	{
+		if (coord == coords[0])
+		{
+			match.currentPlayer.guardianPieces.clear();
+			return (false);
+		}
+	}
+	return (true);
 }
 
 /**

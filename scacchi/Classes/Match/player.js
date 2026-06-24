@@ -19,6 +19,8 @@ class Player
 		this.nPieces = 0;
 		this.King = "";
 		this.boostedPiece = "";
+		/** @type {Set<{coord: string, target: string}>} */
+		this.guardianPieces = new Set;
 		/** @type {Set<string>} */
 		this.castlingArray = new Set();
 		this.time = MATCHTIMER;

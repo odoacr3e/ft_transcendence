@@ -21,6 +21,8 @@ function CheckMateCheck(match, kingCoord=match.currentPlayer.King)
 	let kingSquare;
 	let enemySquare;
 	let enemyCoord;
+	let	stopBool;
+	let	canEatBool;
 	let team;
 
 	kingSquare = match.board.get(kingCoord);
@@ -39,6 +41,8 @@ function CheckMateCheck(match, kingCoord=match.currentPlayer.King)
 	if (!enemyCoord)
 		return false;
 	enemySquare = match.board.get(enemyCoord);
+	// stopBool = isStoppable(match, kingCoord, enemyCoord);
+	// canEatBool = true;
 	if (isDangerous(match, enemySquare.dangerZones, enemySquare.piece?.team))
 		return (cantMovePiece(match, enemyCoord, enemySquare, kingCoord));
 	if (isStoppable(match, kingCoord, enemyCoord))
@@ -112,11 +116,13 @@ function isStoppable(match, kingSquare, enemySquareString)
 	let	guardianSquare;
 	let	guardianPiece;
 	let	kingPiece;
+	let	normalSaveBool = false;
 
+	match.currentPlayer.guardianPieces.clear();
 	enemySquare = match.board.get(enemySquareString);
 	kingPiece = match.board.get(kingSquare).piece;
 	if (!enemySquare || !kingPiece)
-		throw ("given to isStoppable an invalid position");//FIXME - Ale: errore grave, dare 500
+		throw ("given to isStoppable an invalid position");
 	if (enemySquare.piece?.type == enumNames.JESTER || 
 	enemySquare.piece?.type == enumNames.BASTARDS || 
 	(enemySquare.piece?.type == enumNames.VALKIRYA && 
@@ -149,14 +155,18 @@ function isStoppable(match, kingSquare, enemySquareString)
 
 			guardianRegularSave = guardianSquare.targetZones.has(match.cursor.square);
 			guardianBoostedSave = guardianSquare.boostedTargetZones.get(x)?.has(match.cursor.square);
-			if (!guardianRegularSave && !guardianBoostedSave)
-				continue ;
-			return true;
+			if (guardianRegularSave)
+				normalSaveBool = true;
+				// return (match.currentPlayer.guardianPieces.clear(), true);
+			if (guardianBoostedSave)
+				match.currentPlayer.guardianPieces.add({coord: x, target: match.cursor.square});
 		}
 		if (!movePiece(match, dir.diffCol, dir.diffRow))
 			return true;//FIXME - stampella: non dovrebbe finire mai qui, eppure succede
-			//throw("isStoppable: getDirection failed");
+		//throw("isStoppable: getDirection failed");
 	}
+	if (normalSaveBool == true || match.currentPlayer.guardianPieces.size > 0)
+		return true;
 	return false;
 }
 
@@ -253,12 +263,12 @@ function doubleSave(match, threat)
 }
 
 /**
- * 
+ * can the king dodge?
  * @param {Match} match 
  * @param {Square} square 
  * @returns 
  */
-function canDodge(match, square)
+function canDodge(match, square) //FIXME - da aggiornare senza fare simulation
 {
 	let	coord;
 	let	newSquare;
@@ -275,10 +285,6 @@ function canDodge(match, square)
 		newSquare = match.board.get(newCoord);
 		if (newSquare.piece?.team == piece.team)
 			continue ;
-		// if (isDangerous(match, newSquare.dangerZones, piece.team) || newSquare.piece?.team == piece.team)
-		// 	continue ;
-		// if (checkPieceDanger(match, coord, piece, newCoord, coord))
-		// 	continue ;
 		if (simulation([coord, newCoord], match) == true)
 			return (true);
 	}
@@ -308,54 +314,6 @@ function findThreats(match, threat, square, team)
 	}
 	return (enemyCoord);
 }
-
-// /**
-//  * if I eat the piece that is menacing the king, 
-//  * a new king menace will arise?
-//  * @param {Match} match 
-//  * @param {string} enemyCoord 
-//  * @param {Square} enemySquare 
-//  * @param {string} kingCoord
-//  */
-// function cantMovePiece(match, enemyCoord, enemySquare, kingCoord)
-// {
-// 	let	guardianSquare;
-// 	let	guardianPiece;
-// 	let	threatSquare;
-// 	let	threatPiece;
-// 	let	canReachKing;
-// 	let	ignoredCoords;
-
-// 	ignoredCoords = new Set();
-// 	ignoredCoords.add(enemyCoord);
-// 	for (const kingGuardianCoord of enemySquare.dangerZones)
-// 	{
-// 		ignoredCoords.add(kingGuardianCoord);
-// 		guardianSquare = match.board.get(kingGuardianCoord);
-// 		guardianPiece = guardianSquare.piece; 
-// 		if (!guardianPiece)
-// 			throw ("checkMate, cantMovePiece: guardian piece undefined");
-// 		//checking every guardian danger zone
-// 		for (const threatCoord of guardianSquare.dangerZones)
-// 		{
-// 			threatSquare = match.board.get(threatCoord);
-// 			threatPiece = threatSquare.piece;
-// 			if (!threatPiece)
-// 				throw ("checkMate, cantMovePiece: threat piece undefined");
-// 			if (threatPiece.team == guardianPiece.team)
-// 				continue ;
-// 			if (threatPiece.type == enumNames.JESTER)//it jumps over pieces anyway
-// 				continue ;
-// 			if (threatPiece.moveLongRangeDEBUG == false)//guardian not important 
-// 				continue ;
-// 			canReachKing = pathFinding(match, threatSquare, kingCoord, ignoredCoords, true);
-// 			if (canReachKing != null)
-// 				return (true);
-// 		}
-// 		ignoredCoords.delete(kingGuardianCoord);
-// 	}
-// 	return (false);
-// }
 
 /**
  * if I eat the piece that is menacing the king, 
