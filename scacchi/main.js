@@ -84,4 +84,4 @@ server.on("error", (err) => {
 	process.exit(1);
 });
 
-export {app, sockio};
+export {app};

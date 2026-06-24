@@ -77,7 +77,7 @@ friendsRouter.patch('/', checkJwt, async (req, res) => {
  */
 friendsRouter.get('/:id', checkJwt, async (req, res) => {
 	try {
-		const userFriendships = await friendsQuery.getAllUserFriendships(req.params.id);
+		const userFriendships = await friendsQuery.getUserFriendsById(req.params.id);
 		return res.status(200).json(jsonResponse.ResponseSuccess({ friendship: userFriendships }));
 	} catch (error) {
 		console.log("Error: ", error);

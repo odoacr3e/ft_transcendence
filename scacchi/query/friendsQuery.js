@@ -35,14 +35,60 @@ const getAllUserFriendships = async (id_user) => {
 		},
 		where: {
 			OR: [
-				{ id_user1: id_user },
-				{ id_user2: id_user }
+				{ id_user1: Number(id_user) },
+				{ id_user2: Number(id_user) }
 			]
 		}
 	});
 	return friendList.map(f => ({
 		id_friendship: f.id_friendship,
-		friend: f.users_friendships_id_user1Tousers.id_user === id_user
+		friend: f.users_friendships_id_user1Tousers.id_user === Number(id_user)
+		? f.users_friendships_id_user2Tousers
+		: f.users_friendships_id_user1Tousers,
+		friend_status: f.friend_status
+	}));
+}
+
+const getUserFriendsById = async (id_user) => {
+	const friendList = await prisma.friendships.findMany({
+		select: {
+			id_friendship: true,
+			users_friendships_id_user1Tousers: {
+				select: {
+					id_user: true,
+					name: true,
+					surname: true,
+					username: true,
+					nationality: true,
+					image: true,
+					points: true,
+					title: true
+				}
+			},
+			users_friendships_id_user2Tousers: {
+				select: {
+					id_user: true,
+					name: true,
+					surname: true,
+					username: true,
+					nationality: true,
+					image: true,
+					points: true,
+					title: true
+				}
+			},
+			friend_status: true
+		},
+		where: {
+			OR: [
+				{ id_user1: Number(id_user) },
+				{ id_user2: Number(id_user) }
+			]
+		}
+	});
+	return friendList.map(f => ({
+		id_friendship: f.id_friendship,
+		friend: f.users_friendships_id_user1Tousers.id_user == id_user
 		? f.users_friendships_id_user2Tousers
 		: f.users_friendships_id_user1Tousers,
 		friend_status: f.friend_status
@@ -114,4 +160,4 @@ const updateFriendship = async (id_user, id_friend) => {
 	});
 }
 
-export const friendsQuery = { getAllUserFriendships, sendFriendship, removeFriendship, updateFriendship };
+export const friendsQuery = { getAllUserFriendships, getUserFriendsById, sendFriendship, removeFriendship, updateFriendship };
