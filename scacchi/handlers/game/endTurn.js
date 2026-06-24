@@ -6,6 +6,7 @@ import {Match} from "../../Classes/Match/match.js";
 import {error, Result, checkMateAlert} from "./utils.js";
 import {DangerUpdate} from "../../utils/moveUtils.js";
 import {clientBoard} from "../../handlers/game/utils.js";
+import { checkKingDanger } from "../../utils/gameUtils.js";
 
 /**
  * goes to the next turn
@@ -67,6 +68,8 @@ function updateTurn(match, result)
 
 	if (match.playerNum <= 1)
 		return (false);
+	if (checkKingDanger(match) == true)
+		return (error(result, 403, "Your king is in danger"));
 	player = match.currentPlayer;
 	if (match.moves < MOVEMENT_MIN)
 		return (error(result, 403, "You need to move first"));

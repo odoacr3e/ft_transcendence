@@ -7,6 +7,7 @@ import { endTurn } from "./endTurn.js";
 import {checkMateCheckAll} from "../../GameLogic/checkMate.js";
 import { BOOSTED_MAX, MOVEMENT_MIN } from "../../Macro/macro.js";
 import { Square } from "../../Classes/ChessBoard/chessBoard.js";
+import { checkKingDanger } from "../../utils/gameUtils.js";
 
 /**
  * 
@@ -53,6 +54,8 @@ function tryBoost(match, result, from)
 
 	if (match.boost >= BOOSTED_MAX || match.moves < MOVEMENT_MIN)
 		return (error(result, 403, "You can't boost now"));
+	if (checkKingDanger(match) == true)
+		return (error(result, 403, "Your king is in danger"));
 	square = match.board.get(from);
 	if (!square?.piece)
 		return (error(result, 403, "Nothing to be boosted in there man"));

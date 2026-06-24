@@ -144,4 +144,16 @@ function addLongBastardInfluence(match, dx, dy, startPos, piece)
 		match.board.AddInfluence(startPos, match.cursor.square);
 }
 
-export {bastardChecks, isDangerous};
+/**
+ * 
+ * @param {Match} match 
+ */
+function checkKingDanger(match)
+{
+	let	kingSquare;
+
+	kingSquare = match.board.get(match.currentPlayer.King);
+	return (isDangerous(match, kingSquare.dangerZones, match.currentPlayer.team));
+}
+
+export {bastardChecks, isDangerous, checkKingDanger};

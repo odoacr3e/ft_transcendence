@@ -329,7 +329,7 @@ async function curlSender(type, from="", to="", cmd=curlCmd)
 		if (json.log.msg == "Game Error: You need to move first")
 			return (json);
 		console.log(`ERROR(${json.log.status}) => ${json.log.msg}`);//@ts-ignore
-		if (currEvent.error)
+		if (currEvent.error || currEvent.type == "endturn")
 			return (json);
 		setError(json.log.msg);
 		throw ("");

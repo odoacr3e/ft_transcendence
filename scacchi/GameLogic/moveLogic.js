@@ -4,7 +4,7 @@ import {MOVEMENT_MAX, CHESSBOARD_H, CHESSBOARD_W} from "../Macro/macro.js";
 import { Chess } from "../lib/lib.js";
 const {copyBoard} = Chess;
 import {movePiece, DangerUpdate, dangerUpdateAll, dangerUpdateMoved} from "../utils/moveUtils.js";
-import {isDangerous} from "../utils/gameUtils.js";
+import {checkKingDanger, isDangerous} from "../utils/gameUtils.js";
 import {Match} from "../Classes/Match/match.js";
 import {Preset} from "../Classes/Pieces/preset.js";
 import {clientBoard, error, Result} from "../handlers/game/utils.js";
@@ -143,6 +143,11 @@ function updateChessboard(coords=[], result, match, boostBool)
 	if (!from || !to || !from.piece)
 	{
 		return (error(result, 500, "from | to bug in moveFunction"));
+	}
+	if (result.usedBoost == true)
+	{
+		from.piece.isBoostedBool = false;
+		match.currentPlayer.boostedPiece = "";
 	}
 	if (coords[0] == match.currentPlayer.King)
 		match.currentPlayer.King = coords[1];
@@ -328,7 +333,7 @@ function checkBooster(match, result, from, coords, boostBool) // FIXME - da aggi
 	if (from.piece.type == enumNames.BASTARDS || match.history.Last().movedPiece == enumNames.BASTARDS)
 		return (doubleBastardsCheck(match, result, coords));
 	if (pieceMultipleMoveBool == false && match.moves > 0)
-		return (error(result, 403, "Multiple moves not allowed there"));
+		return (error(result, 403, "Multiple moves not allowed there (tip: is it a moveBoost?"));
 	if (pieceMultipleMoveBool == false && from.targetZones.has(coords[1]))
 		return (true);
 	if (from.piece.isBoostedBool == false || boostBool == false)
@@ -347,8 +352,6 @@ function checkBooster(match, result, from, coords, boostBool) // FIXME - da aggi
 	if (boostedTargetZones.has(coords[1]) == false)
 		return (error(result, 403, `that piece can't do that move`));
 	from.targetZones.add(coords[1]);
-	from.piece.isBoostedBool = false;
-	match.currentPlayer.boostedPiece = "";
 	result.usedBoost = true;
 	return (true);
 }
@@ -465,8 +468,6 @@ export function simulation(coords, match, result=null)
 	dangerBool = isDangerous(match, king.dangerZones, king.piece?.team, true, kingCoord);
 	if (!dangerBool)
 		dangerBool = checkDoubleMoveMate(match, coords, result);
-	if (dangerBool)
-		dangerBool = checkGuardians(match, coords, result);
 	if (!result || result.specialMoves.CheckSniperMove() == 0)
 	{
 		from.piece = to.piece;
@@ -475,29 +476,37 @@ export function simulation(coords, match, result=null)
 	else
 		to.piece = tmpPiece;
 	dangerUpdateMoved(match, [coords[1], coords[0]], result);
+	if (dangerBool)
+		dangerBool = checkGuardiansDanger(match, coords);	
 	if (tmpSquare)
 		match.board.set(coords[1], tmpSquare);
-	boosted = match.GetBoostedPieceCoords();
-	if (!boosted)
-		return (!dangerBool);
 	return (!dangerBool);
 }
 
 /**
  * the king is in danger, but a second move can save him?
+ * it must be called in the original pieces state
  * @param {Match} match 
  * @param {Array<string>} coords 
- * @param {Result} result 
  */
-function checkGuardians(match, coords, result)
+function checkGuardiansDanger(match, coords)
 {
+	let	guardianSquare;
+	let	boostTargets;
+
 	for (let {coord, target} of match.currentPlayer.guardianPieces)
 	{
-		if (coord == coords[0])
-		{
-			match.currentPlayer.guardianPieces.clear();
-			return (false);
-		}
+		if (coord != coords[0])
+			continue ;
+		//we use piece destination
+		guardianSquare = match.board.get(coords[0]);
+		boostTargets = guardianSquare.boostedTargetZones.get(coords[1]);
+		if (!boostTargets)
+			continue ;
+		if (boostTargets.has(target) == false)
+			continue ;
+		match.currentPlayer.guardianPieces.clear();
+		return (false);	
 	}
 	return (true);
 }
@@ -636,6 +645,8 @@ function CheckTransfiguration(match, result, piece, newType)
 {
 	if (match.moves == 0)
 		return (error(result, 403, `you should move before transform`));
+	if (checkKingDanger(match) == true)
+		return (error(result, 403, "Your king is in danger"));
 	if (piece.type != enumNames.BASTARDS)
 		return (error(result, 403, `currently, boosting pieces different by
 		${enumNames.BASTARDS} is not allowed. However, this may be a cool idea.
