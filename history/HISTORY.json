@@ -452,39 +452,6 @@
       "counter": 42,
       "updates": {},
       "error": false
-    },
-    {
-      "from": "d7",
-      "to": "e6",
-      "movedPiece": "Champion",
-      "team": "black",
-      "type": "move",
-      "useBoostBool": false,
-      "counter": 43,
-      "updates": {},
-      "error": false
-    },
-    {
-      "from": "d1",
-      "to": "c2",
-      "movedPiece": "Champion",
-      "team": "white",
-      "type": "move",
-      "useBoostBool": false,
-      "counter": 44,
-      "updates": {},
-      "error": true
-    },
-    {
-      "from": "",
-      "to": "",
-      "movedPiece": "",
-      "team": "black",
-      "type": "endturn",
-      "useBoostBool": false,
-      "counter": 45,
-      "updates": {},
-      "error": false
     }
   ]
 }

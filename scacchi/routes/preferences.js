@@ -3,7 +3,6 @@ import * as lib from "../lib/lib.js";
 import { jsonResponse } from "../utils/response.js";
 import { checkJwt } from "../utils/auth.js";
 import { log } from "../utils/log.js";
-import {  } from "../query/preferencesQuery.js";
 import { response } from "express";
 const { prisma } = lib.conn;
 export const prefRouter = lib.include.express.Router();

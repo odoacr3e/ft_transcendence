@@ -150,7 +150,14 @@ function isStoppable(match, kingSquare, enemySquareString)
 			let	guardianRegularSave;
 
 			guardianRegularSave = guardianSquare.targetZones.has(match.cursor.square);
-			guardianBoostedSave = guardianSquare.boostedTargetZones.get(x)?.has(match.cursor.square);
+			for (let [key, val] of guardianSquare.boostedTargetZones)
+			{
+				if (val.has(match.cursor.square))
+				{
+					guardianBoostedSave = true;
+					break ;
+				}
+			}
 			if (guardianRegularSave)
 				normalSaveBool = true;
 				// return (match.currentPlayer.guardianPieces.clear(), true);
