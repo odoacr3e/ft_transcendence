@@ -22,7 +22,6 @@ function CheckMateCheck(match, kingCoord=match.currentPlayer.King)
 	let enemySquare;
 	let enemyCoord;
 	let	stopBool;
-	let	canEatBool;
 	let team;
 
 	kingSquare = match.board.get(kingCoord);
@@ -42,13 +41,8 @@ function CheckMateCheck(match, kingCoord=match.currentPlayer.King)
 		return false;
 	enemySquare = match.board.get(enemyCoord);
 	stopBool = isStoppable(match, kingCoord, enemyCoord);
-	canEatBool = true;
 	if (isDangerous(match, enemySquare.dangerZones, enemySquare.piece?.team))
-	{
-		if (cantMovePiece(match, enemyCoord, enemySquare, kingCoord))
-			return (true);
-		return (false);
-	}
+		return (cantMovePiece(match, enemyCoord, enemySquare, kingCoord));
 	return (!stopBool);
 }
 
