@@ -5,13 +5,13 @@ import { checkJwt } from "../utils/auth.js";
 import { log } from "../utils/log.js";
 import { response } from "express";
 const { prisma } = lib.conn;
-export const prefRouter = lib.include.express.Router();
+export const preferencesRouter = lib.include.express.Router();
 
 /**
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  */
-prefRouter.get('/', async (req, res) => {
+preferencesRouter.get('/', async (req, res) => {
 	try {
 		const preferences = await prisma.preferences.findMany();
 		return res.status(200).json(jsonResponse.ResponseSuccess(preferences));
@@ -21,7 +21,7 @@ prefRouter.get('/', async (req, res) => {
 	}
 });
 
-prefRouter.get('/:id', async (req, res) => {
+preferencesRouter.get('/:id', async (req, res) => {
 	try {
 		const preferences = await prisma.preferences.findUnique({ where: { id_preference: Number(req.params.id) } });
 		return res.status(200).json(jsonResponse.ResponseSuccess(preferences));

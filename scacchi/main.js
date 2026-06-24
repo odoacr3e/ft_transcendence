@@ -9,7 +9,10 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 const app = lib.include.express();
 const server = lib.include.http.createServer(app);
-const sockio = new lib.include.SocketIO(server, {
+
+export const userSocketMap = {};
+export const authorizedUserSocketMap = {};
+export const sockio = new lib.include.SocketIO(server, {
 	cors: {
 		origin: "*", // per sviluppo, in produzione metti l'url preciso
 		methods: ["GET", "POST"],
@@ -46,6 +49,9 @@ app.use((err, req, res, next) =>
 
 sockio.on('connection', (socket) => 
 {
+	socket.on("", ()=>{
+		// socket.emit...
+	})
 	sockio.emit("start_game", { messaggio: "si comincia uahu" });
 	console.log("A new user connected");
 })
