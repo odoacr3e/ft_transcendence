@@ -55,8 +55,8 @@ authRouter.post("/login", async (req, res) => {
 		}
 		delete(user.password);
 		req.user = user;
+		console.log(`User ${req.user.username} correctly logged in`, 'ok')
 		await createJwt(req, res);
-		// printLog(`User ${user.username} correctly logged in`, 'ok')
 		return res.status(200).json(jsonResponse.ResponseSuccess({ "user": user }));
 	} catch (error) {
 		console.log("Error: ", error);
