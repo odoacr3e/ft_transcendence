@@ -20,12 +20,12 @@ const sockio = new lib.include.SocketIO(server, {
 
 // setup
 const PORT = 8080;
-// const URL = 'http://localhost:5173';
+const URL = 'http://localhost:5173';
 let requests = 0;
 
 // NOTE: serve per parsing delle richieste da frontend
 app.use(cors({
-	origin: 'http://localhost:5173',
+	origin: URL,
 	credentials: true
 }));
 

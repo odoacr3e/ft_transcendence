@@ -3,9 +3,9 @@ import * as lib from "../lib/lib.js";
 import { jsonResponse } from "../utils/response.js";
 import { checkJwt } from "../utils/auth.js";
 import { log } from "../utils/log.js";
-import { prisma } from "../lib/prisma.js";
 import { friendsQuery } from "../query/friendsQuery.js";
 import { response } from "express";
+const { prisma } = lib.conn;
 export const friendsRouter = lib.include.express.Router();
 
 
@@ -18,7 +18,6 @@ export const friendsRouter = lib.include.express.Router();
 friendsRouter.get('/', checkJwt, async (req, res) => {
 	try {
 		const friendships = await friendsQuery.getAllUserFriendships(req.user.id_user);
-		console.log(friendships);
 		return res.status(200).json(jsonResponse.ResponseSuccess({ friendship: friendships }));
 	} catch (error) {
 		console.log("Error: ", error);
