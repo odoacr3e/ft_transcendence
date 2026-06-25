@@ -139,6 +139,24 @@ const getUserByEmail = async (email) => {
 		});
 }
 
+export const getLeaderboard = async () => {
+	return await prisma.users.findMany({
+		select: {
+				id_user: true,
+				username: true,
+				image: true,
+				nationality: true,
+				points: true,
+				title: true
+			},
+		orderBy: [
+			{ points: 'asc' }, 
+			{ name: 'asc' }
+		],
+		take: 10
+	});
+}
+
 /**
  * @description Asyncronous function for creating users with Prisma client
  * @param {String} name 

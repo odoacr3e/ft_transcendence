@@ -10,8 +10,11 @@ export const usersRouter = lib.include.express.Router();
 
 // NOTE: route /api/users/
 
-
-// NOTE: solo user loggati, ricerca tutti gli utenti con query su username
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * NOTE: solo user loggati, ricerca tutti gli utenti con query su username
+*/
 usersRouter.get("/", checkJwt, async (req, res) => {
 	try {
 		const { username } = req.query;
@@ -25,6 +28,11 @@ usersRouter.get("/", checkJwt, async (req, res) => {
 	}
 });
 
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * NOTE: solo user loggati, ricerca tutti gli utenti con query su username
+*/
 usersRouter.get("/me", checkJwt, async (req, res) => {
 	try {
 		const user = await usersQuery.getUserById(req.user.id_user);
@@ -37,6 +45,28 @@ usersRouter.get("/me", checkJwt, async (req, res) => {
 	}
 });
 
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * NOTE: solo user loggati, ricerca tutti gli utenti con query su username
+*/
+usersRouter.get('/leaderboard', async (req, res) => {
+	try {
+		const list = await usersQuery.getLeaderboard();
+		if (list)
+			return res.status(200).json(jsonResponse.ResponseSuccess({ "list": list }));
+		return res.status(400).json(jsonResponse.ResponseError("Not much users for leaderboard"));
+	} catch (error) {
+		console.log("Error: ", error);
+		return res.status(500).json(jsonResponse.ResponseError("Server error while retrieving leaderboard"));
+	}
+});
+
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * NOTE: solo user loggati, ricerca tutti gli utenti con query su username
+*/
 usersRouter.get('/username/:username', checkJwt, async (req, res) => {
 	try {
 		const user = await usersQuery.getUserByUsername(req.params.username);
@@ -49,7 +79,11 @@ usersRouter.get('/username/:username', checkJwt, async (req, res) => {
 	}
 })
 
-// NOTE: solo user loggati, ricerca per id
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * NOTE: solo user loggati, ricerca per id
+*/
 usersRouter.get("/:id", checkJwt, async (req, res) => {
 	try {
 		const { id } = req.params;
@@ -63,7 +97,11 @@ usersRouter.get("/:id", checkJwt, async (req, res) => {
 	}
 });
 
-// NOTE: solo user loggati, delete su utente richiedente
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * NOTE: solo user loggati, delete su utente richiedente
+*/
 usersRouter.delete("/", checkJwt, async (req, res) => {
 	try {
 		const user = await usersQuery.deleteUserById(req.user.id_user);
@@ -81,7 +119,11 @@ usersRouter.delete("/", checkJwt, async (req, res) => {
 	}
 });
 
-// NOTE: solo user loggati, patch su utente richiedente
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * NOTE: solo user loggati, patch su utente richiedente
+*/
 usersRouter.patch("/", checkJwt, async (req, res) => {
 	try {
 		const { username, email, password } = req.body;

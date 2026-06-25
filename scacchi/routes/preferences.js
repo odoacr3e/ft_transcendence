@@ -21,6 +21,10 @@ preferencesRouter.get('/', async (req, res) => {
 	}
 });
 
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
 preferencesRouter.get('/:id', async (req, res) => {
 	try {
 		const preferences = await prisma.preferences.findUnique({ where: { id_preference: Number(req.params.id) } });
