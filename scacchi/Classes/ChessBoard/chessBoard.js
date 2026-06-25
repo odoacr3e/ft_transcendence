@@ -21,6 +21,7 @@ class Square
 	constructor(other=null, normifier=null)
 	{
         /** @type {string | undefined} */		this.color = undefined;
+		/** @type {boolean} */					this.wallBool = false;
         /** @type {Piece | null | undefined} */ this.piece = null;
 		/** @type {Set<string>} */				this.targetZones = new Set();
 		/** @type {Map<string, Set<string>>} */	this.boostedTargetZones = new Map();
@@ -30,6 +31,7 @@ class Square
 		if (other == null)
 			return ;
 		this.color = other.color;
+		this.wallBool = other.wallBool;
 		if (other.piece != null)
 			this.piece = pieces.copyPiece(other.piece);
 		else
