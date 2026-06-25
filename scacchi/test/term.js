@@ -32,7 +32,7 @@ function mainTerm()
 	match = globals.getDebugMatch();
 	seed = lib.Macro.SEED;
 	seed = 0;
-	init(match, "14x14x4");
+	init(match, "14x14x4barrier");
 	match.cursor.square = match.currentPlayer.King;
 	// edoChampionBug(match);
 	render(match);

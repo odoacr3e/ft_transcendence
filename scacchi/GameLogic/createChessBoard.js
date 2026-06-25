@@ -52,18 +52,21 @@ function initSavedBoard(match)
 /**
  * 
  * @param {Match} match 
- * @param {boolean} wallBool 
  */
-function initBoard4v4(match, wallBool=false)
+function initBoard4v4(match)
 {
 	let	row;
 	let	col;
 	let	color;
 	let team;
 	let diff;
+	let	wallBool;
 
 	if (match.board.width < 14 || match.board.heigth < 14)
 		throw ("createChessboard: minimum is 14x14");
+	wallBool = false;
+	if (match.settings.board.corners == true)
+		wallBool = true;
 	color = true;
 	diff = (match.board.heigth - 8) / 2;//FIXME - funziona solo con W == H
 	for (let [key, data] of match.board)

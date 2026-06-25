@@ -25,7 +25,8 @@ const eEvents =
 const eMatchPresets =
 {
 	ClassicTwoPlayers: "8x8x2",
-	ClassicFourPlayers: "14x14x4"
+	ClassicFourPlayers: "14x14x4",
+	CornersFourPlayers: "14x14x4barrier"
 }
 
 /**

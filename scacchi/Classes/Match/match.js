@@ -305,7 +305,8 @@ class MatchSettings
 			width: CHESSBOARD_W,
 			heigth: CHESSBOARD_H,
 			seed: 0,
-			start: ""
+			start: "",
+			corners: false
 		}
 		this.players =
 		{
@@ -345,6 +346,8 @@ class MatchSettings
 				return (new MatchSettings(matchPresets.twoPlayer));
 			case (eMatchPresets.ClassicFourPlayers):
 				return (new MatchSettings(matchPresets.fourPlayer));
+			case (eMatchPresets.CornersFourPlayers):
+				return (new MatchSettings(matchPresets.fourPlayerWalls));
 			default:
 				throw (`MatchSettings: invalid preset name "${matchPresetType}"`);
 		}
@@ -354,12 +357,15 @@ class MatchSettings
 const matchPresets =
 {
 	twoPlayer: new MatchSettings(),
-	fourPlayer: new MatchSettings()
+	fourPlayer: new MatchSettings(),
+	fourPlayerWalls: new MatchSettings()
 }
 matchPresets.twoPlayer.presetType = eMatchPresets.ClassicTwoPlayers;
 matchPresets.fourPlayer.presetType = eMatchPresets.ClassicFourPlayers;
 matchPresets.fourPlayer.board.width = 14;
 matchPresets.fourPlayer.board.heigth = 14;
 matchPresets.fourPlayer.players.number = 4;
+matchPresets.fourPlayerWalls = structuredClone(matchPresets.fourPlayer);
+matchPresets.fourPlayerWalls.board.corners = true;
 
 export {Match, Timer, MatchSettings, matchPresets};
