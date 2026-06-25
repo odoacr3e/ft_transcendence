@@ -52,8 +52,9 @@ function initSavedBoard(match)
 /**
  * 
  * @param {Match} match 
+ * @param {boolean} wallBool 
  */
-function initBoard4v4(match)
+function initBoard4v4(match, wallBool=false)
 {
 	let	row;
 	let	col;
@@ -73,7 +74,9 @@ function initBoard4v4(match)
 		col = match.cursor.getCol();
 		row = match.cursor.getRow();
 		team = getTeamByCoord(match);
-		if ((row == 2 || row == match.board.heigth - 1) && (col > diff && col < match.board.width - diff + 1))
+		if (wallBool && (row <= diff || row > 8 + diff) && (col <= diff || col > 8 + diff))
+			data.wallBool = true;
+		else if ((row == 2 || row == match.board.heigth - 1) && (col > diff && col < match.board.width - diff + 1))
 			data.piece = new Piece(enumNames.BASTARDS, key, team);
 		else if (row == 1 || row == match.board.heigth)
 		{
@@ -103,8 +106,7 @@ function initBoard4v4(match)
 			data.piece = new Piece(enumNames.BASTARDS, key, team);
 		else if (col == 1 || col == match.board.width)
 		{
-			// if (row < diff)
-			switch (row) 
+			switch (row)
 			{
 				case 1 + diff: case 8 + diff:
 					data.piece = new Piece(enumNames.MINOTAURUS, key, team);
@@ -190,7 +192,6 @@ function initClassicBoard(match)
 	}
 	match.black.King = "e8";
 	match.white.King = "e1";
-	// match.board.get("d4").wallBool = true;
 	dangerUpdateAll(match);
 }
 
