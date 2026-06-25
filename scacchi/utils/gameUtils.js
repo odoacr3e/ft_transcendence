@@ -97,6 +97,8 @@ function bastardChecks(match, dy, dx, piece)
 		return (false);
 	if (match.cursor.moveCol(dx) == false)
 		return (match.cursor.Restore(), false);
+	if (match.board.get(match.cursor.square).wallBool == true)
+		return (match.cursor.Restore(), false);
 	match.board.AddInfluence(startPos, match.cursor.square);
 	if (!bastardMove[piece.team].has(`${dy}|${dx}`))
 		return (match.cursor.Restore(), false);
@@ -118,6 +120,8 @@ function bastardChecks(match, dy, dx, piece)
 	}
 	match.board.get(startPos).targetZones.add(targetPos);
 	addLongBastardInfluence(match, dx, dy, startPos, piece);
+	if (match.board.get(match.cursor.square).wallBool == true)
+		return (match.cursor.Restore(), false);
 	if (!piece.isMovedBool && !match.board.get(match.cursor.square).piece)
 	{
 		match.board.get(startPos).targetZones.add(match.cursor.square);

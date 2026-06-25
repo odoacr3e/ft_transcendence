@@ -103,6 +103,7 @@ function initBoard4v4(match)
 			data.piece = new Piece(enumNames.BASTARDS, key, team);
 		else if (col == 1 || col == match.board.width)
 		{
+			// if (row < diff)
 			switch (row) 
 			{
 				case 1 + diff: case 8 + diff:
@@ -189,6 +190,7 @@ function initClassicBoard(match)
 	}
 	match.black.King = "e8";
 	match.white.King = "e1";
+	// match.board.get("d4").wallBool = true;
 	dangerUpdateAll(match);
 }
 

@@ -70,7 +70,9 @@ function renderSquare(match, square, coords, selected, TargetDangerSwitch)
 	asciiArt = getAscii(square);
 	if (square.piece && square.piece.team)
 		buffer += `\x1b[37;${getSquareColor(square.piece.team)}m`;
-	if (coords.player == coords.curr)
+	if (square.wallBool == true)
+		buffer += "[X]";
+	else if (coords.player == coords.curr)
 		buffer += `\x1b[32m[${asciiArt}]`;
 	else if (includesOneOf(coords.curr, match.lastMenace.from, match.lastMenace.mid, match.lastMenace.to))
 		buffer += `\x1b[31m[${asciiArt}]`;
