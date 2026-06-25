@@ -74,6 +74,8 @@ export class History
 				name = name + ".json";
 		}
 		match.history.finalBoard = boardStringify(match);
+		if (match.settings.presetType)
+			match.history.matchSettings = match.settings.presetType;
 		history = JSON.stringify(this, null, 2);
 		if (!name)
 			return (history);

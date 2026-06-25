@@ -3,17 +3,23 @@
 import {MATCHTIMER} from "../../Macro/macro.js";
 import {eTeam, eEvents} from "../../Macro/enums.js";
 
+/** @typedef {import("./match.js").MatchSettings} MatchSettings*/
+
 class Player
 {
-	/** @param {string} color */
-	constructor(color)
+	/** 
+	 * 
+	 * @param {string} color 
+	 * @param {MatchSettings} settings 
+	*/
+	constructor(color, settings)
 	{
 		//@ts-ignore
 		let	data = preset[color];
 		if (!data)
 			throw (`cannot find player ${color}`);
 		this.name = "";
-		this.nPoints = 0;
+		this.nPoints = settings.players.startPoints;
 		this.bonusPointCounter = 0;
 		this.useBoostBool = false;
 		this.nPieces = 0;

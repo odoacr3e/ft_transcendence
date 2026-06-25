@@ -46,6 +46,7 @@ let DangerUpdate = (match, pos=null, ignoreBoostChampsBool=true) =>
 	let	piece;
 	let	startPos;
 
+	match.cursor.Save();
 	if (pos != null)
 		match.cursor.set(pos);
 	else
@@ -55,8 +56,7 @@ let DangerUpdate = (match, pos=null, ignoreBoostChampsBool=true) =>
 	match.board.ResetTargets(startPos);
 	piece = match.board.get(match.cursor.square).piece;
 	if (piece == null)
-		return (0);
-	//piece.boostedInfluence.clear();
+		return (match.cursor.Restore());
 	for (let {dx, dy} of piece.moveArray)
 	{
 		if (piece.type == enumNames.BASTARDS)
@@ -69,21 +69,22 @@ let DangerUpdate = (match, pos=null, ignoreBoostChampsBool=true) =>
 			match.board.AddInfluence(startPos, match.cursor.square);
 			match.board.get(match.cursor.square).dangerZones.add(startPos);
 			match.board.get(startPos).targetZones.add(match.cursor.square);
-			if (piece.moveLongRangeDEBUG == false || match.board.get(match.cursor.square)?.piece != null)
+			if (piece.moveLongRangeDEBUG == false || match.board.get(match.cursor.square)?.piece != null || match.board.get(match.cursor.square)?.wallBool)
 				break ;
 		}
 		match.cursor.square = startPos;
 	}
+	match.cursor.set(pos);
 	match.board.get(pos).targetZones.delete(pos);
 	match.board.get(pos).dangerZones.delete(pos);
 	if (ignoreBoostChampsBool && piece.type == enumNames.CHAMPION && piece.isBoostedBool)
-		return ;
+		return (match.cursor.Restore());
 	if (piece.isBoostedBool == true)
 		piece.moveFunction(match);
 	castlingUpdate(match, startPos, piece);
 	match.board.get(pos).targetZones.delete(pos);
 	match.board.get(pos).dangerZones.delete(pos);
-	return (1);
+	return (match.cursor.Restore());
 }
 
 /**

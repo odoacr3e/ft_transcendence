@@ -25,12 +25,12 @@ class Match
 			this.settings = new MatchSettings(matchPresets.twoPlayer);
 		else
 			this.settings = new MatchSettings(preset);
-		this.white = new Player(eTeam.White);
-		this.black = new Player(eTeam.Black);
-		this.red = new Player(eTeam.Red);
-		this.blue = new Player(eTeam.Blue);
-		this.green = new Player(eTeam.Green);
-		this.yellow = new Player(eTeam.Yellow);
+		this.white = new Player(eTeam.White, this.settings);
+		this.black = new Player(eTeam.Black, this.settings);
+		this.red = new Player(eTeam.Red, this.settings);
+		this.blue = new Player(eTeam.Blue, this.settings);
+		this.green = new Player(eTeam.Green, this.settings);
+		this.yellow = new Player(eTeam.Yellow, this.settings);
 		w = this.settings.board.width;
 		h = this.settings.board.heigth;
 		this.board = new ChessBoard(w, h);
@@ -62,12 +62,12 @@ class Match
 			this.settings = new MatchSettings(matchPresets.twoPlayer);
 		else
 			this.settings = new MatchSettings(preset);
-		this.white = new Player(eTeam.White);
-		this.black = new Player(eTeam.Black);
-		this.red = new Player(eTeam.Red);
-		this.blue = new Player(eTeam.Blue);
-		this.green = new Player(eTeam.Green);
-		this.yellow = new Player(eTeam.Yellow);
+		this.white = new Player(eTeam.White, this.settings);
+		this.black = new Player(eTeam.Black, this.settings);
+		this.red = new Player(eTeam.Red, this.settings);
+		this.blue = new Player(eTeam.Blue, this.settings);
+		this.green = new Player(eTeam.Green, this.settings);
+		this.yellow = new Player(eTeam.Yellow, this.settings);
 		w = this.settings.board.width;
 		h = this.settings.board.heigth;
 		this.board = new ChessBoard(w, h);
@@ -367,5 +367,6 @@ matchPresets.fourPlayer.board.heigth = 14;
 matchPresets.fourPlayer.players.number = 4;
 matchPresets.fourPlayerWalls = structuredClone(matchPresets.fourPlayer);
 matchPresets.fourPlayerWalls.board.corners = true;
+matchPresets.fourPlayerWalls.presetType = eMatchPresets.CornersFourPlayers;
 
 export {Match, Timer, MatchSettings, matchPresets};
