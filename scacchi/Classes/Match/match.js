@@ -48,6 +48,9 @@ class Match
 		/** @type {Timer | null} */ this.timer = null;
 		if (this.settings.players.number == 4)
 			this.currentPlayer = this.yellow;
+		this.start_date = new Date().toISOString();
+		/** @type {Number|null}*/this.tournament_id = null;
+		/** @type {String|null}*/this.tournament_round = null;
 	}
 	/** @param {MatchSettings | string | null} preset*/
 	Reset(preset=null)
@@ -82,6 +85,9 @@ class Match
 		/** @type {Timer | null} */ this.timer = null;
 		if (this.settings.players.number == 4)
 			this.currentPlayer = this.yellow;
+		this.start_date = new Date().toISOString();
+		this.tournament_id = null;
+		this.tournament_round = null;
 	}
 	endTurn()
 	{
@@ -217,9 +223,9 @@ class Match
 		return (result);	
 	}
 	/** @param {string} name */
-	Log(name)
+	Log(name="")
 	{
-		this.history.Log(this, name);
+		return (this.history.Log(this, name));
 	}
 	/** @param {Player} player */
 	DeletePlayer(player=this.currentPlayer)

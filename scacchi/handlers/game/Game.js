@@ -13,6 +13,7 @@ import { render } from "../../test/render.js";
 import {makeTransfiguration} from "./transfiguration.js";
 //FIXME - solo debug
 import { globals as vault } from "../../Classes/Match/globals.js";
+import { matchQuery } from "../../query/gameQuery.js";
 const DEBUG_MATCH = vault.getDebugMatch();
 
 // const app1 = express();
@@ -71,7 +72,7 @@ function gameChecks(req, res, next)
  * @param {*} req 
  * @param {*} res 
  */
-function gameHandler(req, res)
+async function gameHandler(req, res)
 {
 	/**@type {{from: *, to: string, type: string}} */  let	body;
 	let	result;
@@ -119,6 +120,13 @@ function gameHandler(req, res)
 		return (error(res, result));
 	result = responseFormatter(match, result, null, null);
 	render(match);
+	if (match.playerNum <= 1)
+		try {
+			console.log("1 E MORTO");
+			await matchQuery.createMatch(match);
+		} catch (error) {
+			console.log("Error: ", error);
+		}
 	res.status(200).json(result);
 }
 

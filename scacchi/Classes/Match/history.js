@@ -50,7 +50,7 @@ export class History
 	 * @param {Match} match 
 	 * @param {string} name 
 	 * */
-	Log(match, name)
+	Log(match, name="")
 	{
 		let	history;
 
@@ -76,7 +76,7 @@ export class History
 		match.history.finalBoard = boardStringify(match);
 		history = JSON.stringify(this, null, 2);
 		if (!name)
-			console.log(history);
+			return (history);
 		else
 			fs.writeFileSync(name, history);
 	}
