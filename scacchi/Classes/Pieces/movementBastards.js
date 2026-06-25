@@ -29,7 +29,7 @@ let movementBastards = function (match)
 			usedBoard.get(match.cursor.square)?.dangerZones.add(startPos);
 			continue ;
 		}
-		while (movePiece(match, dy, dx, false))
+		while (movePiece(match, dy, dx))
 		{
 			// usedBoard.get(match.cursor.square)?.dangerZones.add(startPos);
 			usedBoard.get(startPos)?.targetZones.add(match.cursor.square);
@@ -40,11 +40,11 @@ let movementBastards = function (match)
 				match.cursor.set(startPos);
 				for (let {dx, dy} of piece.moveArray)
 				{
-					movePiece(match, dy, dx, false);
-					if (match.board.get(match.cursor.square).piece && match.board.get(match.cursor.square).piece.team == piece.team)
+					movePiece(match, dy, dx);
+					if (match.board.get(match.cursor.square).piece && match.board.get(match.cursor.square).piece?.team == piece.team)
 					{
 						match.board.AddInfluence(startPos, match.cursor.square);
-						match.board.get(startPos)?.boostedTargetZones.get(startPos).add(match.cursor.square);
+						match.board.get(startPos)?.boostedTargetZones.get(startPos)?.add(match.cursor.square);
 					}
 					match.cursor.set(startPos);
 				}

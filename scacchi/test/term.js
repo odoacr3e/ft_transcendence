@@ -151,7 +151,7 @@ process.stdin.on('keypress', (str, key) =>
 			break ;
 		}
 	}
-	if (includesOneOf(key.name, cmd.MOVEMENTS) && !movePiece(match, dx, dy, false))
+	if (includesOneOf(key.name, cmd.MOVEMENTS) && !movePiece(match, dx, dy))
 	{
 		console.log("lol no");
 	}

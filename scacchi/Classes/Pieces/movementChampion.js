@@ -30,7 +30,7 @@ let movementChampion = function (match)
 	{
 		match.cursor.square = startPos;
 		menaceFromStartBool = true;
-		while (movePiece(match, dx, dy, false))
+		while (movePiece(match, dx, dy))
 		{
 			if (match.cursor.square == "h5")
 				console.log("h5");

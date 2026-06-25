@@ -14,33 +14,23 @@ import {bastardChecks} from "./gameUtils.js";
  * @param {Match} match
  * @param {number} dx 
  * @param {number} dy
- * @param {boolean} clear
  */
-let movePiece = (match, dy, dx, clear=false) =>
+let movePiece = (match, dy, dx) =>
 {
 	let newRow = match.cursor.getRow() + dx;
 	let newCol = match.cursor.getCol() + dy;
+	let	oldCursor = match.cursor.square;
 
 	if (newRow < 1 || newRow > match.board.heigth)
 		return false;
 	else if (newCol <= 0 || newCol > match.board.width)
 		return false;
-
-	if (clear == true)
-	{
-		let currentSquare = match.board.get(match.cursor.square);
-		let zones = currentSquare?.targetZones;
-
-		if (zones != null)
-		{
-			for (let zone of zones)
-			{
-				match.board.get(zone)?.dangerZones.delete(match.cursor.square);
-			}
-			zones.clear();
-		}
-	}
 	match.cursor.setCursor(newRow, newCol);
+	if (match.board.get(match.cursor.square).wallBool == true)
+	{
+		match.cursor.set(oldCursor);
+		return false;
+	}
 	return true;
 }
 
@@ -74,7 +64,7 @@ let DangerUpdate = (match, pos=null, ignoreBoostChampsBool=true) =>
 			bastardChecks(match, dx, dy, piece);
 			continue ;
 		}
-		while (movePiece(match, dy, dx, false))
+		while (movePiece(match, dy, dx))
 		{ 
 			match.board.AddInfluence(startPos, match.cursor.square);
 			match.board.get(match.cursor.square).dangerZones.add(startPos);

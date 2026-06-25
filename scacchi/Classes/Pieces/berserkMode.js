@@ -22,7 +22,7 @@ function berserkMode(pos, match)
 	match.board.get(pos)?.boostedTargetZones.set(startPos, new Set());
 	for (let {dx, dy} of piece?.moveArray)
 	{
-		while (movePiece(match, dx, dy, false))
+		while (movePiece(match, dx, dy))
 		{
 			targetSquare = match.board.get(match.cursor.square);
 			if (!targetSquare)

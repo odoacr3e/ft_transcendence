@@ -19,7 +19,7 @@ let movementValkirya = function (match)
 	for (let {dx, dy} of piece.moveArray)
 	{
 		let maxTarget = 2; 
-		while (movePiece(match, dx, dy, false))
+		while (movePiece(match, dx, dy))
 		{
 			match.board.AddInfluence(startPos, match.cursor.square);
 			if (maxTarget != 1)

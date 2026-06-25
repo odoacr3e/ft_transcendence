@@ -18,7 +18,7 @@ let movementMinotaurus = function (match)
 		return (0);
 	for (let {dx, dy} of piece.moveArray)
 	{
-		while (movePiece(match, dx, dy, false))
+		while (movePiece(match, dx, dy))
 		{
 			otherPiece = match.board.get(match.cursor.square)?.piece;
 			match.board.get(match.cursor.square)?.dangerZones.add(startPos);
