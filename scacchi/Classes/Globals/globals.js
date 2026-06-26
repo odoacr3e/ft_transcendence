@@ -1,7 +1,9 @@
 // @ts-check
 
-import {Match} from "./match.js";
+import {Match} from "../Chess/match.js";
 import {DEBUG} from "../../Macro/macro.js";
+
+/** @typedef {{socket: *, allowedBool: boolean}} Socket */
 
 const	TEST_MATCH = "0";
 
@@ -13,14 +15,16 @@ class Globals
 {
 	constructor()
 	{
-		/** @type {Map<string, Match>} */	
+		/** @type {Map<string, Match>} */
 		this.matches = new Map();
+		/** @type {Map<string, Socket>} */
+		this.clientMap = new Map();
 
 		if (DEBUG)
 			this.matches.set(TEST_MATCH, new Match());
 	}
 
-	getDebugMatch() 
+	getDebugMatch()
 	{
 		let	debugMatch;
 

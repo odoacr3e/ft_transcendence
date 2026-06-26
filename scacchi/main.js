@@ -5,10 +5,12 @@ import { authRouter } from "./routes/auth.js";
 import { responseFormatter } from "./utils/response.js";
 import { colors, tag } from "./utils/colors.js";
 import { log } from "./utils/log.js";
+import { redis } from lib.conn;
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 const app = lib.include.express();
 const server = lib.include.http.createServer(app);
+
 
 // id_client -> Object {socket, bool (allowed/not allowed)}
 export const userSocketMap = {};
@@ -22,6 +24,20 @@ export const sockio = new lib.include.SocketIO(server, {
 	},
 	connectionStateRecovery: {} // se il client si disconnette temporaneamente gli arrivano gli eventi alla riconnessione, senza vengono persi
 });
+
+// middleware aunteticazione websocket
+sockio.engine.use(async (req, res, next) => {
+	const firstConn = req._query.sid === undefined;
+	if (!firstConn)
+		return next();
+	const token = req.cookies?.jwt_token;
+	if (!token)
+		return next(new Error("User not authorized"));
+	if (await redis.get(`blacklist:${token}`))
+		return res.status(401).json(jsonResponse.ResponseError("User not autorized"));
+	req.user = jwt.verify(token, process.env.JWT_SECRET);
+	next();
+})
 
 // setup
 const PORT = 8080;
@@ -51,9 +67,10 @@ app.use((err, req, res, next) =>
 
 sockio.on('connection', (socket) => 
 {
-	socket.on("", ()=>{
-		// socket.emit...
-	})
+	// socket.handshake.auth
+	// socket.on("", ()=>{
+	// 	// socket.emit...
+	// })
 	sockio.emit("start_game", { messaggio: "si comincia uahu" });
 	console.log("A new user connected");
 })
