@@ -14,6 +14,7 @@ import {makeTransfiguration} from "./transfiguration.js";
 //FIXME - solo debug
 import { globals as vault } from "../../Classes/Match/globals.js";
 import { matchQuery } from "../../query/gameQuery.js";
+import { Match } from "../../Classes/Match/match.js";
 const DEBUG_MATCH = vault.getDebugMatch();
 
 // const app1 = express();
@@ -72,19 +73,33 @@ function gameChecks(req, res, next)
  * @param {*} req 
  * @param {*} res 
  */
-async function gameHandler(req, res)
+async function gameHttpHandler(req, res)
 {
-	/**@type {{from: *, to: string, type: string}} */  let	body;
-	let	result;
+	let	body;
 	let	match;
+	let	result;
 
 	match = vault.getDebugMatch();
+	body = normifyRequest(match.cursor, req.body);
+	result = await gameHandler(match, body);
+	res.status(result.log.status).json(result);
+}
+
+/**
+ * handler of game POST requests
+ * @param {import("../../Classes/Match/match.js").Match} match
+ * @param {import("./utils.js").RequestBody} body
+ */
+async function gameHandler(match, body)
+{
+	let	result;
+
+	result = new Result();
 	// if (!sockio || !sockio.on || !sockio.emit)
 	// 	return (res.status(400).json({msg: "non importato"}));
 	// sockio.on('connection' () => {
 	// 	sockio.emit("start_game", { messaggio: "si comincia uahu" });
 	// })
-	body = normifyRequest(match.cursor, req.body);
 	console.clear();
 	if (body.type == "move")
 		result = move(match, body.from, body.to);
@@ -95,12 +110,11 @@ async function gameHandler(req, res)
 	else if (body.type == "endturn")
 		result = endTurn(match);
 	else if (body.type == "init")
-		result = init(match, body.from, null);
+		result = init(match, body.from);
 	else if (body.type == "trans")
 		result = makeTransfiguration(match, body.from, body.to);
 	else if (body.type == "reload")
 	{
-		result = new Result();
 		result.Success();
 		// @ts-ignore
 		result.board = clientBoard(match, true, true);
@@ -108,26 +122,34 @@ async function gameHandler(req, res)
 	}
 	else if (body.type == "history")
 	{
-		result = new Result();
 		result.Success();//@ts-ignore
 		result.history = match.history;
 	}
 	else
-		return (error(res, null, 400, `invalid type ${body.type}`));
+	{
+		error(null, result, 400, `invalid type ${body.type}`);
+		return (result);
+	}
 	if (!result || !result.status)
-		return (error(res, null, 500, "backend function failed for unknown reasons"));
+		return (error(null, result, 500, "backend function failed for unknown reasons"), result);
 	if (result.status != 200)
-		return (error(res, result));
+		return (error(null, result), result);
 	result = responseFormatter(match, result, null, null);
 	render(match);
 	if (match.playerNum <= 1)
-		try {
-			console.log("1 E MORTO");
+	{
+		try 
+		{
+			console.log("Salvataggio partita nel database...");
 			await matchQuery.createMatch(match);
-		} catch (error) {
+			console.log("Successo!");
+		}
+		catch (error)
+		{
 			console.log("Error: ", error);
 		}
-	res.status(200).json(result);
+	}
+	return (result);
 }
 
 /**
@@ -186,10 +208,11 @@ function error(res=null, result=null, status=0, msg=null, renderBool=true)
 	if (renderBool == true)
 		render(DEBUG_MATCH);
 	if (!res)
-		return (false);
+		return (result);
 	if (result.log.status != 0)
 		res.status(result.log.status);
 	res.json(result);
+	return (result);
 }
 
-export {gameChecks, gameHandler, gameInfo, error, move, endTurn, boost, init};
+export {gameChecks, gameHttpHandler, gameInfo, error, move, endTurn, boost, init};

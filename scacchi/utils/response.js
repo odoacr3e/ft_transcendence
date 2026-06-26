@@ -25,7 +25,7 @@ const ResponseSuccess = (object) => {
  * @param {*} result the base object from which the response json is made
  * @param {String | null} msg 
  * @param {Number | null} status 
- * @returns {{}}
+ * @returns {Result}
  * format frontend response as an object.
  * ? means the field is optional.
  * ```ts
@@ -133,7 +133,7 @@ function _jsonParser(key, val)
 	{
 		return [...val];
 	}
-	else if (val instanceof Map) 
+	else if (val instanceof Map)
 	{
 		return Object.fromEntries(val);
 	}
