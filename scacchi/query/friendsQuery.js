@@ -77,6 +77,12 @@ const getUserFriendsById = async (id_user) => {
 					title: true
 				}
 			},
+			users_friendships_senderTousers: {
+				select: {
+					id_user: true,
+					username: true
+				}
+			},
 			friend_status: true
 		},
 		where: {
@@ -91,7 +97,8 @@ const getUserFriendsById = async (id_user) => {
 		friend: f.users_friendships_id_user1Tousers.id_user == id_user
 		? f.users_friendships_id_user2Tousers
 		: f.users_friendships_id_user1Tousers,
-		friend_status: f.friend_status
+		friend_status: f.friend_status,
+		sender: f.users_friendships_senderTousers
 	}));
 }
 
