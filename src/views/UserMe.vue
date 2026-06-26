@@ -2,12 +2,13 @@
     import Header from '../components/Header.vue';
     import TagTitle from '../components/TagTitle.vue';
     import FriendList from '../components/FriendList.vue';
+    import FriendRequest from '../components/FriendRequest.vue';
     import { ref, onMounted }   from 'vue';
     import { useAuthStore }     from "../stores/auth.st";
     import { storeToRefs }      from 'pinia';
     import { authApi }          from '../router/api/auth.api';
 
-	const friends = ref(null);
+	const friends = ref(null), fReq = ref([]);
     const authStore = useAuthStore();
 	const { user } = storeToRefs(authStore);
 
@@ -17,6 +18,11 @@
 
     onMounted(async () => {
         friends.value = await authApi.friendlist();
+
+        friends.value.forEach(friendship => {
+            if (friendship.friend_status === "pending")
+                fReq.value.push(friendship);
+        });
     });
 </script>
 
@@ -24,7 +30,7 @@
     <div class="min-h-screen flex flex-col">
         <Header class="z-11"/>
         <div id="wrap" class="grow">
-            <div class="flex-row z-2 bg-[#181715] rounded-3xl w-[80vh] h-[80vh]">
+            <div class="flex-row z-2 bg-[#181715] rounded-3xl w-[100vh] h-[80vh]">
                 <div class="flex p-2 m-4 bg-[#201e1c] rounded-3xl border border-[#4e4e4e8c]">
                     <img :src="user.image ? asset(`${user.image}`) : asset('../assets/default.png')"
                             alt="" class="size-35 rounded-full place-self-start m-5">
@@ -40,10 +46,17 @@
                     </div>
                 </div>
                 <div class="flex m-4">
-                    <div class="w-[60%] m-2 p-2 h-[50vh] bg-[#201e1c] rounded-3xl border border-[#4e4e4e8c]">
-                        <h2 class="text-white text-xl m-1">Lista di amici</h2>
-                        <hr class="w-full justify-self-start text-[#4e4e4e8c]">
-                        <FriendList v-if="friends" :friendlist="friends" :remove-f="true"/> <!-- WIP -->
+                    <div class=" m-2 w-[100%]">
+                        <div class="w-full p-2 mb-2 h-[35vh] bg-[#201e1c] rounded-3xl border border-[#4e4e4e8c]">
+                            <h2 class="text-white text-xl m-1">Lista di amici</h2>
+                            <hr class="w-full justify-self-start text-[#4e4e4e8c]">
+                            <FriendList v-if="friends" :friendlist="friends" :remove-f="true"/>
+                        </div>
+                        <div class="w-full p-2 h-[15vh] bg-[#201e1c] rounded-3xl border border-[#4e4e4e8c]">
+                            <h2 class="text-white text-xl m-1">Richieste d'amicizia</h2>
+                            <hr class="w-full justify-self-start text-[#4e4e4e8c]">
+                            <FriendRequest :friendReq="fReq" :user="user"/>
+                        </div>
                     </div>
                     <div class="w-full m-2 p-2 h-auto bg-[#201e1c] rounded-3xl border border-[#4e4e4e8c]">
                         <h2 class="text-white text-xl m-1">Cronologia delle partite</h2>
