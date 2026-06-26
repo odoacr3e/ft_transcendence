@@ -9,7 +9,6 @@ import {Result} from "../handlers/game/utils.js";
 import {globals} from "../Classes/Globals/globals.js";
 //NOTE - non cancellare :)
 //		senza term.js non apre le porte
-import {app} from "../main.js"
 
 import * as lib from "../lib/lib.js";
 import {abort} from "node:process";
