@@ -18,7 +18,10 @@ const getAllNotifications = async (id) => {
 				}
 			}
 		},
-		where: { id_user: id }
+		where: { id_user: id },
+		orderBy: {
+			id_notification: 'desc'
+		}
 	});
 }
 

@@ -72,12 +72,12 @@ app.use((err, req, res, next) =>
 sockio.on('connection', (socket) => 
 {
 	// socket.handshake.auth
+	console.log("A new user connected");
 	globals.clientMap.set(1, {allowedBool: true, socket: socket});
 	// socket.on("", ()=>{
 	// 	// socket.emit...
 	// })
 	sockio.emit("start_game", { messaggio: "si comincia uahu" });
-	console.log("A new user connected");
 })
 
 app.use(cookieParser()); 

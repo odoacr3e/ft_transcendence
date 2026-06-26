@@ -83,10 +83,12 @@ notifyRouter.post("/", checkJwt, async (req, res) => {
 			else
 				data[key] = value;
 		}
-		// const notification = await postNotify.postNotification(data);
-		const senderSock = req.app.get('clientMap').get(data.id_sender);
-		console.log(senderSock);
-		//sockio.emit(`notification_${notification.id_user}`, { title: notification.title, description: notification.description, sender: notification.users_notifications_id_senderTousers.username });
+		const notification = await postNotify.postNotification(data);
+		// /** @type {{socket: *, allowedBool: boolean}} */
+		const destSock = req.app.get('clientMap').get(data.id_user); // prendo il socket di riferimento all'id dello user
+		console.log(destSock);
+		if (destSock)
+			destSock.socket.emit(`notification`, { title: notification.title, description: notification.description, sender: notification.users_notifications_id_senderTousers.username });
 		return res.status(204).send();
 	} catch (error) {
 		console.log("Error: ", error);
