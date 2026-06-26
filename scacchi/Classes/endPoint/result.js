@@ -1,9 +1,9 @@
 //@ts-check
 import { enumSpecialMoves as move } from "../../Macro/enums.js";
-import {copyBoard} from "../Match/chessBoard.js";
+import {copyBoard} from "../Chess/chessBoard.js";
 
-/** @typedef {import('../../Classes/Match/chessBoard.js').Square} Square */
-/** @typedef {import('../../Classes/Match/match.js').Match} Match */
+/** @typedef {import('../Chess/chessBoard.js').Square} Square */
+/** @typedef {import('../Chess/match.js').Match} Match */
 /** @typedef {Map<String, Square>} Board */
 
 //SECTION - contents

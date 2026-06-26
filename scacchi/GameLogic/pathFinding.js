@@ -2,9 +2,9 @@
 
 import {movePiece, DangerUpdate, dangerUpdateAll, dangerUpdateMoved} from "../utils/moveUtils.js";
 
-/** @typedef {import("../Classes/Match/match.js").Match} Match*/
-/** @typedef {import("../Classes/Match/Pieces/pieces.js").Piece} Piece*/
-/** @typedef {import("../Classes/Match/chessBoard.js").Square} Square*/
+/** @typedef {import("../Classes/Chess/match.js").Match} Match*/
+/** @typedef {import("../Classes/Chess/Pieces/pieces.js").Piece} Piece*/
+/** @typedef {import("../Classes/Chess/chessBoard.js").Square} Square*/
 
 /**
  * 

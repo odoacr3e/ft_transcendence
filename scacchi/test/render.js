@@ -1,14 +1,14 @@
 // @ts-check
-import { Square, ChessBoard} from "../Classes/Match/chessBoard.js";
+import { Square, ChessBoard} from "../Classes/Chess/chessBoard.js";
 import {eTeam} from "../Macro/enums.js";
 import * as lib from "../lib/lib.js";
-// const {Match} = require("../Classes/Match/match.js");
+// const {Match} = require("../Classes/Chess/match.js");
 import {CHESSBOARD_H, CHESSBOARD_W} from "../Macro/macro.js";
 const enumNames = lib.Enums.enumNames;
 import { cmd } from "./enumsTest.js";
 import { includesOneOf } from "../utils/string.js";
 
-/** @typedef {import("../Classes/Match/match.js").Match} Match*/
+/** @typedef {import("../Classes/Chess/match.js").Match} Match*/
 
 /**
  * @param {Match | null} match 

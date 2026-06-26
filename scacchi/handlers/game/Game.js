@@ -12,9 +12,9 @@ import { init } from "./init.js";
 import { render } from "../../test/render.js";
 import {makeTransfiguration} from "./transfiguration.js";
 //FIXME - solo debug
-import { globals as vault } from "../../Classes/Match/globals.js";
+import { globals as vault } from "../../Classes/Chess/globals.js";
 import { matchQuery } from "../../query/gameQuery.js";
-import { Match } from "../../Classes/Match/match.js";
+import { Match } from "../../Classes/Chess/match.js";
 const DEBUG_MATCH = vault.getDebugMatch();
 
 // const app1 = express();
@@ -79,7 +79,7 @@ async function gameHttpHandler(req, res)
 
 /**
  * handler of game POST requests
- * @param {import("../../Classes/Match/match.js").Match} match
+ * @param {import("../../Classes/Chess/match.js").Match} match
  * @param {import("./utils.js").RequestBody} body
  */
 async function gameHandler(match, body)

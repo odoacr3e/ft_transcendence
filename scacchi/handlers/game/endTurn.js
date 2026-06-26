@@ -2,7 +2,7 @@
 
 import {MOVEMENT_MIN, MOVEMENT_BONUS_POINT} from "../../Macro/macro.js";
 import {enumNames} from "../../Macro/enums.js";
-import {Match} from "../../Classes/Match/match.js";
+import {Match} from "../../Classes/Chess/match.js";
 import {error, Result, checkMateAlert} from "./utils.js";
 import {DangerUpdate} from "../../utils/moveUtils.js";
 import {clientBoard} from "../../handlers/game/utils.js";

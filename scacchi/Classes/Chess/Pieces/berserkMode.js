@@ -2,7 +2,7 @@
 import {movePiece} from "../../../utils/moveUtils.js";
 import {enumNames} from "../../../Macro/enums.js";
 
-/**@typedef {import("../../Match/match.js").Match} Match*/
+/**@typedef {import("../match.js").Match} Match*/
 
 /**
  * 

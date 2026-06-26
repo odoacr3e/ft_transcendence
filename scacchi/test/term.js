@@ -6,7 +6,7 @@ import {includesOneOf} from "../utils/string.js";
 import {historyRestore} from "../utils/history.js";
 import {error, move, boost, endTurn, init} from "../handlers/game/Game.js";
 import {Result} from "../handlers/game/utils.js";
-import {globals} from "../Classes/Match/globals.js";
+import {globals} from "../Classes/Chess/globals.js";
 //NOTE - non cancellare :)
 //		senza term.js non apre le porte
 import {app} from "../main.js"
@@ -20,7 +20,7 @@ import { cmd } from "./enumsTest.js";
 import { eMatchPresets } from "../Macro/enums.js";
 import { edoChampionBug } from "./savedMatches.js";
 
-/** @typedef {import("../Classes/Match/match.js").Match} Match*/
+/** @typedef {import("../Classes/Chess/match.js").Match} Match*/
 
 //SECTION - main: inizializza e fa primo render, mette terminale in ascolto
 function mainTerm()

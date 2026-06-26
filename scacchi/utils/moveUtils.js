@@ -1,11 +1,11 @@
 // @ts-check
-// const { Match } = require("../Classes/Match/match.js");
+// const { Match } = require("../Classes/Chess/match.js");
 import { enumInitNames, enumNames, enumSpecialMoves, kingMovements} from "../Macro/enums.js";
 import * as Macro from "../Macro/macro.js";
 import {bastardChecks} from "./gameUtils.js";
 
-/**@typedef {import("../Classes/Match/match.js").Match} Match*/
-/**@typedef {import("../Classes/Match/player.js").Player} Player*/
+/**@typedef {import("../Classes/Chess/match.js").Match} Match*/
+/**@typedef {import("../Classes/Chess/player.js").Player} Player*/
 /**@typedef {import("../Classes/endPoint/result.js").Result} Result*/
 /**@typedef {import("../Classes/Pieces/pieces.js").Piece} Piece*/
 

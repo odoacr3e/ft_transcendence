@@ -1,7 +1,7 @@
 // @ts-check
 
 import {dangerUpdateAll, DangerUpdate} from "../../utils/moveUtils.js";
-import {Match} from "../../Classes/Match/match.js";
+import {Match} from "../../Classes/Chess/match.js";
 import {error, paramCheck, Result, clientBoard} from "./utils.js";
 import { endTurn } from "./endTurn.js";
 import {checkMateCheckAll} from "../../GameLogic/checkMate.js";

@@ -5,8 +5,8 @@ import {isDangerous} from "../../../utils/gameUtils.js";
 import { checkPieceDanger } from "../../../GameLogic/pathFinding.js";
 import { enumNames } from "../../../Macro/enums.js";
 
-/** @typedef {import("../../Match/match.js").Match} Match*/
-/** @typedef {import("../Pieces/pieces.js").Piece} Piece*/
+/** @typedef {import("../match.js").Match} Match*/
+/** @typedef {import("./pieces.js").Piece} Piece*/
 
 /**
  * 

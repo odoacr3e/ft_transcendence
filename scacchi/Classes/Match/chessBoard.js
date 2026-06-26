@@ -4,9 +4,9 @@
 
 //SECTION import
 import {CHESSBOARD_H, CHESSBOARD_W} from "../../Macro/macro.js";
-import { Cursor, coordNormify } from "../Match/cursor.js";
-import { Match } from "../Match/match.js";
-import * as pieces from "../Match/Pieces/pieces.js";
+import { Cursor, coordNormify } from "./cursor.js";
+import { Match } from "./match.js";
+import * as pieces from "./Pieces/pieces.js";
 
 //ANCHOR - Definition 
 

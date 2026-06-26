@@ -2,7 +2,7 @@
 import {MOVEMENT_MIN} from "../../Macro/macro.js";
 import { Chess } from "../../lib/lib.js";
 const {Square} = Chess;
-import {Match} from "../../Classes/Match/match.js";
+import {Match} from "../../Classes/Chess/match.js";
 import {paramCheck, Result, clientBoard} from "./utils.js";
 import {endTurn} from "./endTurn.js";
 import {checkMateCheckAll} from "../../GameLogic/checkMate.js";
@@ -10,7 +10,7 @@ import {checkMove, updateChessboard, checkSecondMove} from "../../GameLogic/move
 import {enumNames} from "../../Macro/enums.js";
 import { DangerUpdate } from "../../utils/moveUtils.js";
 
-/** @typedef {import('../../Classes/Match/chessBoard.js').Square} Square */
+/** @typedef {import('../../Classes/Chess/chessBoard.js').Square} Square */
 
 /**
  * 

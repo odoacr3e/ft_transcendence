@@ -1,9 +1,9 @@
 // @ts-check
-// const {Match} = require("../Match/match.js");
+// const {Match} = require("../Chess/match.js");
 import {movePiece} from "../../../utils/moveUtils.js";
 import {bastardChecks} from "../../../utils/gameUtils.js";
 
-/** @typedef {import("../../Match/match.js").Match} Match*/
+/** @typedef {import("../match.js").Match} Match*/
 
 /**
  * 

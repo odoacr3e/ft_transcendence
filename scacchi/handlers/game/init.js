@@ -1,10 +1,10 @@
 // @ts-check
-import {Match} from "../../Classes/Match/match.js";
+import {Match} from "../../Classes/Chess/match.js";
 import {clientBoard, Result} from "./utils.js";
 import {initRng} from "../../utils/random.js";
 import { CHESSBOARD_W, CHESSBOARD_H } from "../../Macro/macro.js";
 import * as creators from "../../GameLogic/createChessBoard.js";
-import { MatchSettings, matchPresets } from "../../Classes/Match/match.js";
+import { MatchSettings, matchPresets } from "../../Classes/Chess/match.js";
 
 /**
  * The Map board is added to result to be sent to the client. Steps:

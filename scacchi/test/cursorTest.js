@@ -1,6 +1,6 @@
 //@ts-check
 
-import {Cursor} from "../Classes/Match/cursor.js";
+import {Cursor} from "../Classes/Chess/cursor.js";
 import { colors } from "./colorsOld.js";
 let cur = new Cursor;
 

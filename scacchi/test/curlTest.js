@@ -3,21 +3,21 @@
 import fs from "fs";
 import { exec, execSync } from "child_process";
 //SECTION - backend cute stuff >3
-import { globals } from "../Classes/Match/globals.js";
+import { globals } from "../Classes/Chess/globals.js";
 import { historyRestore } from "../utils/history.js";
 import {HISTORY_PATH} from "../Macro/macro.js";
 import {eEvents} from "../Macro/enums.js";
 import { colors as color } from "./colorsOld.js";
 import { testerEnum as MSG, curlCmd, curlCmdInit } from "./enumsTest.js";
 import {boardStringify} from "./render.js";
-import { Match } from "../Classes/Match/match.js";
+import { Match } from "../Classes/Chess/match.js";
 import {jsonParser} from "../utils/response.js";
 import {render} from "./render.js";
-import { coordNormify } from "../Classes/Match/cursor.js";
+import { coordNormify } from "../Classes/Chess/cursor.js";
 
 /** @typedef {import ("../../history/HISTORY.json")} historyData */
 /** @typedef {import ("../Classes/ChessBoard/chessBoard.js").ChessBoard} ChessBoard */
-/** @typedef {import ("../Classes/Match/history.js").HistoryEvent} HistoryEvent */
+/** @typedef {import ("../Classes/Chess/history.js").HistoryEvent} HistoryEvent */
 /** @typedef {{board: ChessBoard, log: {msg: string, status: number}}} BackResponse*/
 
 const curlWaitTimeMs = 0;

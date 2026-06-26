@@ -4,7 +4,7 @@ const {Piece} = Chess;
 import { Enums } from "../lib/lib.js";
 const {eTeam, enumNames, enumInitNames} = Enums;
 import {dangerUpdateAll} from "../utils/moveUtils.js";
-import {Match} from "../Classes/Match/match.js";
+import {Match} from "../Classes/Chess/match.js";
 
 /**
  * 

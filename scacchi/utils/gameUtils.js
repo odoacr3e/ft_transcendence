@@ -1,6 +1,6 @@
 // @ts-check
-/** @typedef {import("../Classes/Match/match").Match} Match */
-/** @typedef {import("../Classes/Match/Pieces/pieces.js").Piece} Piece */
+/** @typedef {import("../Classes/Chess/match.js").Match} Match */
+/** @typedef {import("../Classes/Chess/Pieces/pieces.js").Piece} Piece */
 
 import { enumNames } from "../Macro/enums.js";
 

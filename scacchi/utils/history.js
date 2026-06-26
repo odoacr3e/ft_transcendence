@@ -1,14 +1,14 @@
 // @ts-check
 import fs from "fs";
 import {eEvents} from "../Macro/enums.js";
-import {Match} from "../Classes/Match/match.js";
-import {HistoryEvent} from "../Classes/Match/history.js";
+import {Match} from "../Classes/Chess/match.js";
+import {HistoryEvent} from "../Classes/Chess/history.js";
 import {move, boost, endTurn, init, error} from "../handlers/game/Game.js";
 import { render } from "../test/render.js";
 import { makeTransfiguration } from "../handlers/game/transfiguration.js";
 
 
-/** @typedef {import ("../Classes/Match/history.js").History} History */
+/** @typedef {import ("../Classes/Chess/history.js").History} History */
 
 let	DEBUGCounter = 0;
 let	DEBUGEvent = "";
