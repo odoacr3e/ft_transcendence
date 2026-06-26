@@ -188,11 +188,39 @@ function initClassicBoard(match)
 			else if (row == 7 || row == 8)
 				data.piece.team = eTeam.Black;
 		}
+		// if (row == 1 && col == 1)
+		// {
+		// 	data.piece = new Piece(enumNames.KING, key);
+		// 	data.piece.team = eTeam.White;
+		// }
+		// else if (row == 8 && col == 8)
+		// {
+		// 	data.piece = new Piece(enumNames.KING, key);
+		// 	data.piece.team = eTeam.Black;
+		// }
+		// else if (row == 5 && col == 5)
+		// {
+		// 	data.piece = new Piece(enumNames.VALKIRYA, key);
+		// 	data.piece.team = eTeam.Black;
+		// }
+		// else if (row == 4 && col == 4)
+		// {
+		// 	data.piece = new Piece(enumNames.BASTARDS, key);
+		// 	data.piece.team = eTeam.Black;
+		// 	data.piece.isBoostedBool = true;
+		// }
+		// else if (row == 2 && col == 2)
+		// {
+		// 	data.piece = new Piece(enumNames.BASTARDS, key);
+		// 	data.piece.team = eTeam.White;
+		// }
 		if (color == true)
 			data.color == eTeam.White;
 		else
 			data.color == eTeam.Black;
 	}
+	// match.black.King = "h8";
+	// match.white.King = "a1";
 	match.black.King = "e8";
 	match.white.King = "e1";
 	dangerUpdateAll(match);
