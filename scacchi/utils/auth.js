@@ -2,7 +2,7 @@
 import * as lib from "../lib/lib.js";
 import * as usersUtils from "./users.js"
 import * as usersQuery from "../query/usersQuery.js"
-const { jwt } = lib.include;
+const { jwt } = lib.auth;
 import ms from "ms";
 import { jsonResponse } from "../utils/response.js";
 const { redis } = lib.conn;

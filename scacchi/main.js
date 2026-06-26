@@ -8,10 +8,10 @@ import { log } from "./utils/log.js";
 import { globals } from "./Classes/Globals/globals.js";
 
 const { ALLOWED_URL, PORT } = lib;
-const { redis } = lib.conn;
 const { cors } = lib.auth;
-const {cookieParser, app } = lib.include;
-export const server = lib.include.http.createServer(app);
+const {cookieParser, app, server } = lib.include;
+import "./websocket.js";
+
 
 // NOTE: serve per parsing delle richieste da frontend
 app.use(cors({

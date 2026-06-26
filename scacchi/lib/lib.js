@@ -14,6 +14,7 @@ import cookieParser from 'cookie-parser';
 
 // SECTION: vars
 const app = express();
+const server = http.createServer(app);
 export const logfd = await open("../log", 'a+');
 export const PORT = process.env.PORT || 8080;
 export const ALLOWED_URL = process.env.ALLOWED_URL?.split(',') ?? ['http://localhost:5173'];
@@ -24,7 +25,7 @@ import { redis } from "./redis.js"
 import crypto from "crypto";
 
 // SECTION - external inclusions
-const include = {http, https, url, fs, path, express, SocketIO, app, parse, cookieParser};
+const include = {http, https, url, fs, path, express, SocketIO, app, server, parse, cookieParser};
 
 // SECTION - chess classes/objects
 import {Piece} from "../Classes/Chess/Pieces/pieces.js";
