@@ -97,7 +97,7 @@ const getUserFriendsById = async (id_user) => {
 
 // NOTE: ritorna la nuova amicizia di un utente cercando come un oggetto contenente solo le info dell'utente a cui e stata inviata la richiesta
 const sendFriendship = async (id_user, id_friend) => {
-	const data = { friend_status: "pending", id_user1: id_user, id_user2: id_friend };
+	const data = { friend_status: "pending", id_user1: id_user, id_user2: id_friend, sender: id_user };
 	if (id_user > id_friend)
 		data.id_user1 = id_friend, data.id_user2 = id_user;
 	const newFriend = await prisma.friendships.createManyAndReturn({
@@ -128,6 +128,12 @@ const sendFriendship = async (id_user, id_friend) => {
 					title: true
 				}
 			},
+			users_friendships_senderTousers: {
+				select: {
+					id_user: true,
+					username: true
+				}
+			},
 			friend_status: true
 		}
 	});
@@ -136,7 +142,8 @@ const sendFriendship = async (id_user, id_friend) => {
 		friend: f.users_friendships_id_user1Tousers.id_user === id_user
 		? f.users_friendships_id_user2Tousers
 		: f.users_friendships_id_user1Tousers,
-		friend_status: f.friend_status
+		friend_status: f.friend_status,
+		sender: f.users_friendships_senderTousers
 	}));
 }
 

@@ -20,8 +20,10 @@ model friendships {
   id_user1                          Int
   id_user2                          Int
   friend_status                     friendships_status
+  sender                            Int
   users_friendships_id_user1Tousers users              @relation("friendships_id_user1Tousers", fields: [id_user1], references: [id_user], onDelete: Cascade, map: "fk_id_friend1")
   users_friendships_id_user2Tousers users              @relation("friendships_id_user2Tousers", fields: [id_user2], references: [id_user], onDelete: Cascade, map: "fk_id_friend2")
+  users_friendships_senderTousers   users              @relation("friendships_senderTousers", fields: [sender], references: [id_user], onDelete: Cascade)
 
   @@unique([id_user1, id_user2], map: "unique_user_pair")
 }
@@ -94,6 +96,7 @@ model users {
   id_preference                                Int                  @default(1)
   friendships_friendships_id_user1Tousers      friendships[]        @relation("friendships_id_user1Tousers")
   friendships_friendships_id_user2Tousers      friendships[]        @relation("friendships_id_user2Tousers")
+  friendships_friendships_senderTousers        friendships[]        @relation("friendships_senderTousers")
   notifications                                notifications[]
   notifications_notifications_id_senderTousers notifications[]      @relation("notifications_id_senderTousers")
   tournament_players                           tournament_players[]

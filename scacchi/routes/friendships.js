@@ -50,6 +50,7 @@ friendsRouter.post('/', checkJwt, async (req, res) => {
 	} catch (error) {
 		if (error.code == 'P2002')
 			return res.status(409).json(jsonResponse.ResponseError("Friendship already exists or pending"));
+		console.log("Error: ", error);
 		return res.status(500).json(jsonResponse.ResponseError("Server error sending new friendships"));
 	}
 })

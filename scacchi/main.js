@@ -8,6 +8,7 @@ import { log } from "./utils/log.js";
 const { redis } = lib.conn;
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
+import { globals } from "./Classes/Globals/globals.js";
 const app = lib.include.express();
 const server = lib.include.http.createServer(app);
 
@@ -53,6 +54,7 @@ app.use(cors({
 }));
 
 app.set('json spaces', 2);
+app.set('clientMap', globals.clientMap);
 app.use(lib.include.express.json());
 
 // global error middleware
@@ -70,6 +72,7 @@ app.use((err, req, res, next) =>
 sockio.on('connection', (socket) => 
 {
 	// socket.handshake.auth
+	globals.clientMap.set(1, {allowedBool: true, socket: socket});
 	// socket.on("", ()=>{
 	// 	// socket.emit...
 	// })
