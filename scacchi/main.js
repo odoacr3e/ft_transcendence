@@ -10,7 +10,9 @@ import cors from 'cors';
 const app = lib.include.express();
 const server = lib.include.http.createServer(app);
 
+// id_client -> Object {socket, bool (allowed/not allowed)}
 export const userSocketMap = {};
+// dentro userSocketMap
 export const authorizedUserSocketMap = {};
 export const sockio = new lib.include.SocketIO(server, {
 	cors: {
