@@ -44,7 +44,7 @@ export const sockio = new lib.include.SocketIO(server, {
 
 // setup
 const PORT = 8080;
-const URL = 'http://localhost:8080';
+const URL = ['http://localhost:8080', 'http://localhost:5173'];
 let requests = 0;
 
 // NOTE: serve per parsing delle richieste da frontend
