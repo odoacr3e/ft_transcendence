@@ -2,7 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore }	from '@/stores/auth.st'
 import Home from '../views/Home.vue'
 import Game from '../views/Game.vue'
-import User from '../views/User.vue'
+import UserMe from '../views/UserMe.vue'
+import UserOther from '../views/UserOther.vue'
 import GameFour from '../views/GameFour.vue'
 import LoginPage from '../views/LoginPage.vue'
 import RegisterPage from '../views/RegisterPage.vue'
@@ -11,32 +12,38 @@ const routes = [
 	{
 		path: '/',
 		name: 'home',
-		component: Home,
+		component: Home
 	},
 	{
 		path: '/game',
 		name: 'game',
-		component: Game,
+		component: Game
 	},
 	{
 		path: '/4v4_game',
 		name: 'GameFour',
-		component: GameFour,
+		component: GameFour
 	},
 	{
 		path: '/log',
 		name: 'log',
-		component: LoginPage,
+		component: LoginPage
 	},
 	{
 		path: '/register',
 		name: 'register',
-		component: RegisterPage,
+		component: RegisterPage
 	},
 	{
 		path: `/me`,
-		name: 'userpage',
-		component: User,
+		name: 'me_page',
+		component: UserMe
+	},
+	{
+		path: '/:username?',
+		name: 'user_page',
+		component: UserOther,
+		props: (route) => ({ username: String(route.params.username) })
 	}
 ];
 

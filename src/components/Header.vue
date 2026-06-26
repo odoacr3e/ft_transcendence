@@ -1,12 +1,16 @@
 <script setup>
-	import { storeToRefs } from 'pinia';
+	import { ref, onMounted }   from 'vue';
 	import { useAuthStore } from "../stores/auth.st";
+	import { storeToRefs } from 'pinia';
 	import { useRouter }	from 'vue-router';
-	import { ref } from 'vue';
+	import { api } from '../router/api/client';
+
 	const authStore = useAuthStore();
 	const { user } = storeToRefs(authStore);
 	const	bool = ref(false),
-			router = useRouter();
+			router = useRouter(),
+			db = ref([]),
+			searchUser = ref("");
 
 	function asset(path) {
 		return new URL(path, import.meta.url).href;
@@ -17,16 +21,51 @@
 		await authStore.logout();
 		router.push('/log');
 	}
+
+	function goToUser() {
+		const username = searchUser.value.trim();
+		if (!username) { return; }
+		searchUser.value = "";
+		if (db.value.find(x => x.username === username))
+			router.push(`/${encodeURIComponent(username)}`);
+		else
+			router.push(`/?username=${username}`); //il push va fatto ad una pagina intermedia dove avviene un fetch con questa querry
+	}
+
+	onMounted(async () => {
+		db.value = (await api.get("/api/users")).data.users;
+    });
+
 </script>
 
 <template>
-	<div class="grid grid-cols-2 z-10 w-lvw h-15 bg-[#201e1c] border-b border-[#181715e8]">
+	<datalist id="users">
+		<!-- idk e' l'unico modo che ho trovato per far in modo che dopo il click sull'option questo non ricompaia -->
+		<RouterLink to="/">
+			<option v-for="user in db" :value="user.username"></option>
+		</RouterLink>
+	</datalist>
+
+	<div class="grid grid-cols-3 z-11 w-lvw h-15 bg-[#201e1c] border-b border-[#181715e8] justify-center">
 		<RouterLink to="/" id="button" class="w-fit">
 			<div class="flex justify-self-start">
 				<img src="../assets/CrownIcon.png" alt="" class="place-self-center size-15 ml-3">
 				<h1 class="text-white text-4xl place-self-center">ChessZ</h1>
 			</div>
 		</RouterLink>
+
+
+		<div class="flex bg-[#302d2a] w-[150%] justify-self-center rounded-4xl h-11 self-center content-center border border-[#4e4e4e8c]">
+			<img src="../assets/search.png" alt="" class="size-7 self-center ml-3">
+			<form @submit.prevent="goToUser">
+				<input v-model="searchUser" type="search" name="searchBar" id="searchBar" placeholder="Cerca" autocomplete="off"
+					class="justify-self-center rounded-4xl h-10 w-235 pl-3 text-white"
+					:list="searchUser ? 'users' : null">
+			</form>
+		</div>
+
+
+
 		<div class="flex justify-self-end place-self-center mr-1" v-if="user">
 			<div class="place-self-center relative">
 				<div v-if="false">
@@ -36,7 +75,7 @@
 				<img src="../assets/bell.png" alt="" class="mr-3 size-9 place-self-center">
 			</div>
 			<div>
-				<button class="flex cursor-pointer" @click="{bool = !bool;}">
+				<button class="flex cursor-pointer" @click="bool = !bool">
 					<h2 class="text-white text-lg place-self-center mr-3">{{ user.username }}</h2>
 					<img :src="user.image ? asset(`${user.image}`) : asset('../assets/default.png')"
 						alt="" class="size-12 rounded-full place-self-center">
@@ -63,5 +102,18 @@
 <style scoped>
 	h1 {
 		font-family: "Copperplate", Times;
+	}
+
+	input:focus {
+		outline: 0;
+	}
+
+	input[type="search"]::-webkit-search-cancel-button {
+	    -webkit-appearance: none;
+	    cursor: pointer;
+	    background-image: url(" ### Inline SVG of Choice ### ");
+	}
+	input::-webkit-calendar-picker-indicator {
+		display: none !important;
 	}
 </style>

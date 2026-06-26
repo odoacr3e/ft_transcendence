@@ -2,14 +2,22 @@
     import Header from '../components/Header.vue';
     import TagTitle from '../components/TagTitle.vue';
     import FriendList from '../components/FriendList.vue';
-    import { useAuthStore } from "../stores/auth.st";
-    import { storeToRefs } from 'pinia';
-	const authStore = useAuthStore();
+    import { ref, onMounted }   from 'vue';
+    import { useAuthStore }     from "../stores/auth.st";
+    import { storeToRefs }      from 'pinia';
+    import { authApi }          from '../router/api/auth.api';
+
+	const friends = ref(null);
+    const authStore = useAuthStore();
 	const { user } = storeToRefs(authStore);
 
     function asset(path) {
 		return new URL(path, import.meta.url).href;
 	}
+
+    onMounted(async () => {
+        friends.value = await authApi.friendlist();
+    });
 </script>
 
 <template>
@@ -32,13 +40,13 @@
                     </div>
                 </div>
                 <div class="flex m-4">
-                    <div class="w-[50%] m-2 p-2 h-[50vh] bg-[#201e1c] rounded-3xl border border-[#4e4e4e8c]">
-                        <h2 class="text-white text-xl m-1">Lista di amici:</h2>
+                    <div class="w-[60%] m-2 p-2 h-[50vh] bg-[#201e1c] rounded-3xl border border-[#4e4e4e8c]">
+                        <h2 class="text-white text-xl m-1">Lista di amici</h2>
                         <hr class="w-full justify-self-start text-[#4e4e4e8c]">
-                        <FriendList/> <!-- WIP -->
+                        <FriendList v-if="friends" :friendlist="friends" :remove-f="true"/> <!-- WIP -->
                     </div>
                     <div class="w-full m-2 p-2 h-auto bg-[#201e1c] rounded-3xl border border-[#4e4e4e8c]">
-                        <h2 class="text-white text-xl m-1">Cronologia delle partite:</h2>
+                        <h2 class="text-white text-xl m-1">Cronologia delle partite</h2>
                         <hr class="w-full justify-self-start text-[#4e4e4e8c]">
                     </div>
                 </div>

@@ -56,7 +56,7 @@ export class AuthError extends Error {}
 
 export const api = {
 		get:	(endpoint)			=> request(endpoint),
-		post:	(endpoint, body)	=> request(endpoint, { method: 'POST', body: JSON.stringify(body) }),
-		put:	(endpoint, body)	=> request(endpoint, { method: 'PUT',  body: JSON.stringify(body) }),
-		delete:	(endpoint)			=> request(endpoint, { method: 'DELETE' })
+		post:	(endpoint, body)	=> request(endpoint, { method: 'POST',	 body: JSON.stringify(body) }),
+		put:	(endpoint, body)	=> request(endpoint, { method: 'PUT',	 body: JSON.stringify(body) }),
+		delete:	(endpoint, body)	=> request(endpoint, { method: 'DELETE', body: JSON.stringify(body) })
 }
