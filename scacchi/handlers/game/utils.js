@@ -2,8 +2,7 @@
 /** @typedef {import("../../Classes/Match/match.js").Match} Match*/
 /** @typedef {import("../../Classes/Match/cursor.js").Cursor} Cursor*/
 
-import { assert } from "node:console";
-import { Square, copyBoard } from "../../Classes/ChessBoard/chessBoard.js";
+import { Square, copyBoard } from "../../Classes/Match/chessBoard.js";
 import {Result} from "../../Classes/endPoint/result.js";
 import {jsonParser} from "../../utils/response.js";
 import {coordNormify} from "../../Classes/Match/cursor.js";

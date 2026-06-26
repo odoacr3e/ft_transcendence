@@ -17,7 +17,7 @@ class Globals
 		this.matches = new Map();
 
 		if (DEBUG)
-			this. matches.set(TEST_MATCH, new Match());
+			this.matches.set(TEST_MATCH, new Match());
 	}
 
 	getDebugMatch() 

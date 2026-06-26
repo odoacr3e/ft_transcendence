@@ -1,6 +1,6 @@
 // @ts-check
 
-/**@typedef {import("../Match/match.js").Match} Match*/
+/**@typedef {import("../../Match/match.js").Match} Match*/
 
 /**
  * 

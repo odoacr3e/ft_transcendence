@@ -1,11 +1,10 @@
 // @ts-check
-import {DangerUpdate} from "../../utils/moveUtils.js";
 import {movementJester} from "./movementJester.js";
 import {movementValkirya} from "./movementValkirya.js";
 import {movementBastards} from "./movementBastards.js";
 import {movementChampion} from "./movementChampion.js";
 import {movementMinotaurus} from "./movementMinotaurus.js";
-import {enumNames, enumValues} from "../../Macro/enums.js";
+import {enumNames, enumValues} from "../../../Macro/enums.js";
 
 const preset = {
 	King: {

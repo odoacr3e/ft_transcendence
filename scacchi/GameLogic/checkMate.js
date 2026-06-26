@@ -6,7 +6,7 @@ import {enumNames} from "../Macro/enums.js";
 import {Match} from "../Classes/Match/match.js";
 import {isDangerous} from "../utils/gameUtils.js";
 import { movePiece } from "../utils/moveUtils.js";
-import { Square } from "../Classes/ChessBoard/chessBoard.js";
+import { Square } from "../Classes/Match/chessBoard.js";
 import { checkPieceDanger, pathFinding } from "./pathFinding.js";
 import { simulation } from "./moveLogic.js";
 

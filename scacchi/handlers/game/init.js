@@ -1,5 +1,4 @@
 // @ts-check
-import {ChessBoard} from "../../Classes/ChessBoard/chessBoard.js";
 import {Match} from "../../Classes/Match/match.js";
 import {clientBoard, Result} from "./utils.js";
 import {initRng} from "../../utils/random.js";

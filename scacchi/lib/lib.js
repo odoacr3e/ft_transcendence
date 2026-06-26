@@ -20,11 +20,11 @@ import crypto from "crypto";
 const include = {http, https, url, fs, path, express, app, SocketIO};
 
 //SECTION - chess classes/objects
-import {Piece} from "../Classes/Pieces/pieces.js";
-import {Preset, preset} from "../Classes/Pieces/preset.js";
+import {Piece} from "../Classes/Match/Pieces/pieces.js";
+import {Preset, preset} from "../Classes/Match/Pieces/preset.js";
 import {Cursor} from "../Classes/Match/cursor.js";
 import {includesOneOf} from "../utils/string.js";
-import {ChessBoard, Square, initBoard, copyBoard, copyBoostedTargetZones} from "../Classes/ChessBoard/chessBoard.js";
+import {ChessBoard, Square, initBoard, copyBoard, copyBoostedTargetZones} from "../Classes/Match/chessBoard.js";
 const Chess = {Piece, Preset, preset, ChessBoard, initBoard, copyBoard, copyBoostedTargetZones, Cursor, Square};
 
 //SECTION - macro

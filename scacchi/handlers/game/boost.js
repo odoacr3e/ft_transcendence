@@ -6,7 +6,6 @@ import {error, paramCheck, Result, clientBoard} from "./utils.js";
 import { endTurn } from "./endTurn.js";
 import {checkMateCheckAll} from "../../GameLogic/checkMate.js";
 import { BOOSTED_MAX, MOVEMENT_MIN } from "../../Macro/macro.js";
-import { Square } from "../../Classes/ChessBoard/chessBoard.js";
 import { checkKingDanger } from "../../utils/gameUtils.js";
 
 /**

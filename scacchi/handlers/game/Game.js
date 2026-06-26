@@ -57,15 +57,7 @@ function gameChecks(req, res, next)
 	if (typeof(req.body.type) != "string")
 		return (error(res, null, 400, "param `type` must be of type string"));
 	req.body.type = req.body.type.trim().toLowerCase();
-	try
-	{
-		next();
-	}
-	catch (err)
-	{
-		error(res, null, 500, "RAP (Backend) HAS DIED");
-		console.log("RAP (Backend) HAS DIED");
-	}
+	next();
 }
 
 /**

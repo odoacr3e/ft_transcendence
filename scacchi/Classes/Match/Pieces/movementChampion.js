@@ -1,11 +1,11 @@
 // @ts-check
 import {berserkMode} from "./berserkMode.js";
-import {movePiece} from "../../utils/moveUtils.js";
-import {isDangerous} from "../../utils/gameUtils.js";
-import { checkPieceDanger } from "../../GameLogic/pathFinding.js";
-import { enumNames } from "../../Macro/enums.js";
+import {movePiece} from "../../../utils/moveUtils.js";
+import {isDangerous} from "../../../utils/gameUtils.js";
+import { checkPieceDanger } from "../../../GameLogic/pathFinding.js";
+import { enumNames } from "../../../Macro/enums.js";
 
-/** @typedef {import("../Match/match.js").Match} Match*/
+/** @typedef {import("../../Match/match.js").Match} Match*/
 /** @typedef {import("../Pieces/pieces.js").Piece} Piece*/
 
 /**

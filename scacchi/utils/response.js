@@ -1,6 +1,5 @@
 // @ts-check
 import { Match } from "../Classes/Match/match.js";
-import { Square } from "../Classes/ChessBoard/chessBoard.js";
 import { Result } from "../Classes/endPoint/result.js";
 
 /**

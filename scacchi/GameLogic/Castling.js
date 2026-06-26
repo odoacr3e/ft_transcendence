@@ -25,8 +25,8 @@ test/ -> Fatto
 	render
 */
 
-/** @typedef {import('../Classes/Pieces/pieces.js').Piece} Piece */
-/** @typedef {import('../Classes/ChessBoard/chessBoard.js').Square} Square */
+/** @typedef {import('../Classes/Match/Pieces/pieces.js').Piece} Piece */
+/** @typedef {import('../Classes/Match/chessBoard.js').Square} Square */
 
 /**@typedef {{"king": Piece, "mino": Piece, "dir": { diffRow: number; diffCol: number; }, "kingDanger": Set<string>}} pieces */
 /* 

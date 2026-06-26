@@ -1,6 +1,6 @@
 // @ts-check
 import {berserkMode} from "./berserkMode.js";
-import {movePiece} from "../../utils/moveUtils.js";
+import {movePiece} from "../../../utils/moveUtils.js";
 /**
  * 
  * @param {*} match 

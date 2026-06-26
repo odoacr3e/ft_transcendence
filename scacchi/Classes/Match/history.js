@@ -3,13 +3,13 @@
 import fs from "fs";
 
 import {eTeam, eEvents, eMatchPresets} from "../../Macro/enums.js";
-import {copyBoostedTargetZones} from "../ChessBoard/chessBoard.js";
+import {copyBoostedTargetZones} from "./chessBoard.js";
 import {HISTORY_PATH, CHESSBOARD_W, CHESSBOARD_H} from "../../Macro/macro.js";
 import {boardStringify} from "../../test/render.js";
 
 /**@typedef {import("./match.js").Match} Match*/
 /**@typedef {import("./match.js").MatchSettings} MatchSettings*/
-/**@typedef {import("../ChessBoard/chessBoard.js").Square} Square*/
+/**@typedef {import("./chessBoard.js").Square} Square*/
 
 export class History
 {

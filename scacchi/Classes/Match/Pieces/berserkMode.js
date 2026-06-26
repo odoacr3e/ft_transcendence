@@ -1,8 +1,8 @@
 // @ts-check
-import {movePiece} from "../../utils/moveUtils.js";
-import {enumNames} from "../../Macro/enums.js";
+import {movePiece} from "../../../utils/moveUtils.js";
+import {enumNames} from "../../../Macro/enums.js";
 
-/**@typedef {import("../Match/match.js").Match} Match*/
+/**@typedef {import("../../Match/match.js").Match} Match*/
 
 /**
  * 

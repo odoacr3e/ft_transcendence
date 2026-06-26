@@ -3,7 +3,7 @@ import fs from "fs";
 
 import {Cursor} from "./cursor.js";
 import {eTeam, eMatchPresets} from "../../Macro/enums.js";
-import {Square, initBoard, copyBoard, copyBoostedTargetZones, ChessBoard} from "../ChessBoard/chessBoard.js";
+import {Square, initBoard, copyBoard, copyBoostedTargetZones, ChessBoard} from "./chessBoard.js";
 import {HISTORY_PATH, CHESSBOARD_W, CHESSBOARD_H} from "../../Macro/macro.js";
 import {Result} from "../endPoint/result.js";
 import {Player} from "./player.js";

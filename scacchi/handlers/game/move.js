@@ -10,7 +10,7 @@ import {checkMove, updateChessboard, checkSecondMove} from "../../GameLogic/move
 import {enumNames} from "../../Macro/enums.js";
 import { DangerUpdate } from "../../utils/moveUtils.js";
 
-/** @typedef {import('../../Classes/ChessBoard/chessBoard.js').Square} Square */
+/** @typedef {import('../../Classes/Match/chessBoard.js').Square} Square */
 
 /**
  * 

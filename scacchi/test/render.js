@@ -1,5 +1,5 @@
 // @ts-check
-import { Square, ChessBoard} from "../Classes/ChessBoard/chessBoard.js";
+import { Square, ChessBoard} from "../Classes/Match/chessBoard.js";
 import {eTeam} from "../Macro/enums.js";
 import * as lib from "../lib/lib.js";
 // const {Match} = require("../Classes/Match/match.js");
