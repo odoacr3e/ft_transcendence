@@ -6,6 +6,7 @@ import { open } from 'fs/promises';
 import path from "path";
 import express from "express";
 import {Server as SocketIO} from "socket.io";
+import jwt from "jsonwebtoken";
 
 const app = express();
 export const logfd = await open("../log", 'a+');
@@ -17,7 +18,7 @@ import { redis } from "./redis.js"
 import crypto from "crypto";
 
 //SECTION - external inclusions
-const include = {http, https, url, fs, path, express, app, SocketIO};
+const include = {http, https, url, fs, path, express, app, SocketIO, jwt};
 
 //SECTION - chess classes/objects
 import {Piece} from "../Classes/Chess/Pieces/pieces.js";
