@@ -3,7 +3,7 @@
 import fs from "fs";
 import { exec, execSync } from "child_process";
 //SECTION - backend cute stuff >3
-import { globals } from "../Classes/Chess/globals.js";
+import { globals } from "../Classes/Globals/globals.js";
 import { historyRestore } from "../utils/history.js";
 import {HISTORY_PATH} from "../Macro/macro.js";
 import {eEvents} from "../Macro/enums.js";
@@ -16,7 +16,7 @@ import {render} from "./render.js";
 import { coordNormify } from "../Classes/Chess/cursor.js";
 
 /** @typedef {import ("../../history/HISTORY.json")} historyData */
-/** @typedef {import ("../Classes/ChessBoard/chessBoard.js").ChessBoard} ChessBoard */
+/** @typedef {import ("../Classes/Chess/chessBoard.js").ChessBoard} ChessBoard */
 /** @typedef {import ("../Classes/Chess/history.js").HistoryEvent} HistoryEvent */
 /** @typedef {{board: ChessBoard, log: {msg: string, status: number}}} BackResponse*/
 

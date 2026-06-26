@@ -1,4 +1,4 @@
-// @ts-check
+//@ts-check
 import {HISTORY_FILE, HISTORY_PATH} from "../Macro/macro.js";
 import {eEvents, eTeam} from "../Macro/enums.js";
 import {movePiece, dangerUpdateAll} from "../utils/moveUtils.js";
@@ -6,7 +6,7 @@ import {includesOneOf} from "../utils/string.js";
 import {historyRestore} from "../utils/history.js";
 import {error, move, boost, endTurn, init} from "../handlers/game/Game.js";
 import {Result} from "../handlers/game/utils.js";
-import {globals} from "../Classes/Chess/globals.js";
+import {globals} from "../Classes/Globals/globals.js";
 //NOTE - non cancellare :)
 //		senza term.js non apre le porte
 import {app} from "../main.js"

@@ -2,7 +2,7 @@
 //SECTION - external libraries
 import fs from "fs";
 //SECTION - backend cute stuff >3
-import { globals } from "../Classes/Chess/globals.js";
+import { globals } from "../Classes/Globals/globals.js";
 import { historyRestore } from "../utils/history.js";
 import {HISTORY_PATH} from "../Macro/macro.js";
 import { colors as color } from "./colorsOld.js";
