@@ -8,7 +8,7 @@ export const piecesRouter = lib.include.express.Router();
 piecesRouter.get("/", async (req, res) => {
 	try {
 		const { name } = req.query;
-		const pieces = name ? await piecesQuery.findPieceByName(name) : pieces = await piecesQuery.getAllPieces();
+		const pieces = name ? await piecesQuery.findPieceByName(name) : await piecesQuery.getAllPieces();
 		if (pieces && pieces.length > 0)
 			return res.status(200).json(jsonResponse.ResponseSuccess({ "pieces": pieces }));
 		return res.status(404).json(jsonResponse.ResponseError("Pieces not found"));

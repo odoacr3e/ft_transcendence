@@ -70,9 +70,6 @@ const getPieceById = async (id) => {
 					description: true
 				}
 			}
-		},
-		orderBy: {
-			id_piece: 'asc'
 		}
 	});
 }
