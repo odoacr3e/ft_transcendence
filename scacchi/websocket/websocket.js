@@ -1,14 +1,13 @@
 
-import * as lib from "./lib/lib.js"
+import * as lib from "../lib/lib.js"
 const { ALLOWED_URL } = lib;
 const { jwt } = lib.auth;
 const { redis } = lib.conn;
 const { parse, app, server } = lib.include;
-import { globals } from "./Classes/Globals/globals.js";
+import { globals } from "../Classes/Globals/globals.js";
+import { announceMeOnline } from "./onlineStatus.js";
 
-
-// MAP: id_client -> Object {socket, bool (allowed/not allowed)}
-const userSocketMap = {};
+const clientMap = globals.clientMap;
 
 const sockio = new lib.include.SocketIO(server, {
 	cors: {
@@ -24,24 +23,15 @@ const sockio = new lib.include.SocketIO(server, {
 // middleware aunteticazione websocket
 sockio.engine.use(async (req, res, next) => {
 	const firstConn = req._query.sid === undefined;
-	console.log("QUI FORSE?")
 	if (!firstConn)
 		return next();
-	console.log("QUI?")
 	const cookies = parse(req.headers.cookie || "");
 	const token = cookies.jwt_token;
 	if (!token)
-	{
-		console.log("1")
 		return next(new Error("User not authorized"));
-	}
 	if (await redis.get(`blacklist:${token}`))
-	{
-		console.log("2")
 		return next(new Error("User not authorized"));
-	}
 	try {
-		console.log("3")
 		req.user = jwt.verify(token, process.env.JWT_SECRET);
 	} catch (error) {
 		console.log("error: ", error);
@@ -50,10 +40,27 @@ sockio.engine.use(async (req, res, next) => {
 	next();
 });
 
-sockio.on('connection', (socket) => 
+sockio.on('connection', async (socket) => 
 {
 	const user = socket.request.user;
 	console.log("A new user connected with id ", user.id_user);
-	globals.clientMap.set(user.id_user, {allowedBool: true, socket: socket});
-	sockio.emit("start_game", { messaggio: "si comincia uahu" });
+	clientMap.set(user.id_user, {allowedBool: true, socket: socket});
+	let friendsId = [];
+	try {
+		friendsId = await announceMeOnline(sockio, user, clientMap, friendsId);
+	} catch (error) {
+		console.error("Server error loading friends:", error);
+	}
+
+	socket.on('disconnect', async () => {
+		console.log(`User with id ${user.id_user} disconnected`)
+		clientMap.delete(user.id_user);
+		for (const id of friendsId)
+		{
+			const friendSock = clientMap.get(id);
+			if (friendSock)
+				sockio.to(friendSock.socket.id).emit('friend:offline', { userId: user.id_user });
+		}
+	})
+	// sockio.emit("start_game", { messaggio: "si comincia uahu" });
 });

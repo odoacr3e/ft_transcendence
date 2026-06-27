@@ -10,7 +10,7 @@ import { globals } from "./Classes/Globals/globals.js";
 const { ALLOWED_URL, PORT } = lib;
 const { cors } = lib.auth;
 const {cookieParser, app, server } = lib.include;
-import "./websocket.js";
+import "./websocket/websocket.js";
 
 
 // NOTE: serve per parsing delle richieste da frontend
