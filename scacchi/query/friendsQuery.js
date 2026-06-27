@@ -173,7 +173,7 @@ const removeFriendship = async (id_user, id_friend) => {
 const updateFriendship = async (id_user, id_friend) => {
 	const [user1, user2] = id_user < id_friend ? [id_user, id_friend] : [id_friend, id_user]; 
 	const filter = { id_user1_id_user2: { id_user1: user1, id_user2: user2 }, friend_status: 'pending' };
-	return prisma.friendships.update({
+	return await prisma.friendships.update({
 		data: {
 			friend_status: 'accepted'
 		},

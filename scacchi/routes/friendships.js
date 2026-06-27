@@ -28,6 +28,7 @@ friendsRouter.get('/', checkJwt, async (req, res) => {
 /**
  * @param {import('express').Request} req
  * @param {import('express').Response} res
+ * NOTE: riprende le amicizie di un utente preso tramite id
  */
 friendsRouter.get('/:id', checkJwt, async (req, res) => {
 	try {
@@ -81,6 +82,6 @@ friendsRouter.patch('/', checkJwt, async (req, res) => {
 	} catch (error) {
 		if (error.code == 'P2025')
 			return res.status(409).json(jsonResponse.ResponseError("Friendship not found or already accepted"));
-		return res.status(500).json(jsonResponse.ResponseError("Internal server error"));
+		return res.status(500).json(jsonResponse.ResponseError("Server error updating friendship"));
 	}
 })

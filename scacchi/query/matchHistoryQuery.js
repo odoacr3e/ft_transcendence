@@ -5,6 +5,7 @@ const { prisma } = lib.conn;
 const getAllUserMatches = async (id_user) => {
 	const userMatches = await prisma.users_matches.findMany({
 		select: {
+			id_usermatch: true,
 			outcome: true,
 			team: true,
 			matches: {
@@ -34,6 +35,7 @@ const getAllUserMatches = async (id_user) => {
 		}
 	});
 	return userMatches.map(um => ({
+		id_usermatch: um.id_usermatch,
 		player: um.users.username,
 		opponent: um.matches.users_matches[0]?.users.username ?? null,
 		result: um.outcome,
