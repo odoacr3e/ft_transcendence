@@ -188,39 +188,11 @@ function initClassicBoard(match)
 			else if (row == 7 || row == 8)
 				data.piece.team = eTeam.Black;
 		}
-		// if (row == 1 && col == 1)
-		// {
-		// 	data.piece = new Piece(enumNames.KING, key);
-		// 	data.piece.team = eTeam.White;
-		// }
-		// else if (row == 8 && col == 8)
-		// {
-		// 	data.piece = new Piece(enumNames.KING, key);
-		// 	data.piece.team = eTeam.Black;
-		// }
-		// else if (row == 5 && col == 5)
-		// {
-		// 	data.piece = new Piece(enumNames.VALKIRYA, key);
-		// 	data.piece.team = eTeam.Black;
-		// }
-		// else if (row == 4 && col == 4)
-		// {
-		// 	data.piece = new Piece(enumNames.BASTARDS, key);
-		// 	data.piece.team = eTeam.Black;
-		// 	data.piece.isBoostedBool = true;
-		// }
-		// else if (row == 2 && col == 2)
-		// {
-		// 	data.piece = new Piece(enumNames.BASTARDS, key);
-		// 	data.piece.team = eTeam.White;
-		// }
 		if (color == true)
 			data.color == eTeam.White;
 		else
 			data.color == eTeam.Black;
 	}
-	// match.black.King = "h8";
-	// match.white.King = "a1";
 	match.black.King = "e8";
 	match.white.King = "e1";
 	dangerUpdateAll(match);
@@ -281,6 +253,7 @@ function assignPieceByType(match, curr)
 	let	pos;
 	let	team;
 	let	square;
+	let	isBoostedBool = false;
 
 	if (!curr || curr == " ")
 		return ;
@@ -290,7 +263,10 @@ function assignPieceByType(match, curr)
 	if (!square)
 		throw ("init: invalid coord");
 	if (curr.at(0) == "+")
+	{
+		isBoostedBool = true;
 		curr = curr.slice(1);
+	}
 	switch (curr)
 	{
 		case (enumInitNames.BASTARDS) :
@@ -321,6 +297,11 @@ function assignPieceByType(match, curr)
 			break ;
 		default:
 			throw ("init: unrecognized piece");
+	}
+	square.piece.isBoostedBool = isBoostedBool;
+	if (isBoostedBool)
+	{//@ts-ignore
+		match[team].boostedPiece = pos;
 	}
 }
 

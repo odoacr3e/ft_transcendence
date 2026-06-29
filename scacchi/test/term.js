@@ -15,7 +15,7 @@ import {oggettoVuotoPerFarFunzionareTermjsNONCANCELLARE} from "../main.js";
 
 import * as lib from "../lib/lib.js";
 import {abort} from "node:process";
-import {render} from "./render.js";
+import {render, boardStringify} from "./render.js";
 import readline from "node:readline";
 import { makeTransfiguration } from "../handlers/game/transfiguration.js";
 import { cmd } from "./enumsTest.js";
@@ -35,6 +35,7 @@ function mainTerm()
 	seed = lib.Macro.SEED;
 	seed = 0;
 	init(match);
+	// console.log(boardStringify(match));
 	match.cursor.square = match.currentPlayer.King;
 	// edoChampionBug(match);
 	render(match);

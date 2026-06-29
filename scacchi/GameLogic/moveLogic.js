@@ -523,7 +523,8 @@ function checkDoubleMoveMate(match, coords, result=null, checkBool=true)
 	let	pieceData;
 
 	OtherPiece = match.GetBoostedPieceCoords();
-	let	theKING = match.currentPlayer.King;
+	let	theKING = match.
+	currentPlayer.King;
 	if (coords.length >= 2 && coords[0] == theKING)
 		theKING = coords[1];
 	if (OtherPiece == null)
