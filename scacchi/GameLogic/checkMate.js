@@ -5,7 +5,7 @@ const {preset} = Chess;
 import {enumNames} from "../Macro/enums.js";
 import {Match} from "../Classes/Chess/match.js";
 import {isDangerous} from "../utils/gameUtils.js";
-import { movePiece } from "../utils/moveUtils.js";
+import { movePiece, DangerUpdate } from "../utils/moveUtils.js";
 import { Square } from "../Classes/Chess/chessBoard.js";
 import { checkPieceDanger, pathFinding } from "./pathFinding.js";
 import { simulation } from "./moveLogic.js";
@@ -275,21 +275,36 @@ function canDodge(match, square) //FIXME - da aggiornare senza fare simulation
 {
 	let	coord;
 	let	newSquare;
+	let	safeSet = new Set();
 	let	piece;
+	// let	row;
+	// let	col;
+	// let	diffRow;
+	// let	diffCol;
 	let	kingTargets;
 
 	piece = square.piece;
 	if (!piece)
 		throw (`canDodge: square ${square} has undefined piece`);
+	match.cursor.Save();
 	coord = piece.pos;
+	// match.cursor.set(coord);
+	// row = match.cursor.getRow();
+	// col = match.cursor.getCol();
 	kingTargets = structuredClone(square.targetZones);
 	for (let newCoord of kingTargets)//king can dodge?
 	{
 		newSquare = match.board.get(newCoord);
-		if (newSquare.piece?.team == piece.team)
-			continue ;
-		if (simulation([coord, newCoord], match) == true)
-			return (true);
+		if (!isDangerous(match, newSquare.dangerZones, piece.team) && (!newSquare.piece || newSquare.piece?.team != square.piece?.team))
+			safeSet.add(newCoord);
+	}
+	for (let x of safeSet)
+	{
+		if (simulation([coord, x], match) == true)
+			return (match.cursor.Restore(), true);
+		// match.cursor.set(x);
+		// diffRow = row - match.cursor.getRow();
+		// diffCol = col - match.cursor.getCol();
 	}
 	return (false);
 }

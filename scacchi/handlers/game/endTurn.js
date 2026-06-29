@@ -44,7 +44,13 @@ function endTurn(match, sendBoardBool=true)
 	// 		throw ("Timer reset: bad matchId " + matchId);
 	// 	result = new Result();
 	// 	// @ts-ignore
-	// 	return (match.PlayerLost(result, match?.currentPlayer.team));
+	// 	result = match.PlayerLost(result, match?.currentPlayer.team);
+	// 	if (match.coordToUpdate)
+	// 	{
+	// 		DangerUpdate(match, match.coordToUpdate);
+	// 		match.coordToUpdate = "";
+	// 	}
+	// 	return (result);
 	// }, time, "0");
 	// start = Date.now();
 	// match.timer = new Timer(time, start, timeout);

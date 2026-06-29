@@ -3,7 +3,7 @@ import http from "http";
 import https from "https";
 import url from "url";
 import fs from "fs";
-import { open } from 'fs/promises';
+import { openSync } from 'fs';
 import path from "path";
 import express from "express";
 import {Server as SocketIO} from "socket.io";
@@ -15,8 +15,9 @@ import cookieParser from 'cookie-parser';
 // SECTION: vars
 const app = express();
 const server = http.createServer(app);
-export const logfd = await open("../log", 'a+');
+export const logfd = openSync("../log", 'a+');
 export const PORT = process.env.PORT || 8080;
+console.log(`port is ${PORT}`);
 export const ALLOWED_URL = process.env.ALLOWED_URL?.split(',') ?? ['http://localhost:5173'];
 
 // SECTION: connections

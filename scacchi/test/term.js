@@ -7,8 +7,11 @@ import {historyRestore} from "../utils/history.js";
 import {error, move, boost, endTurn, init} from "../handlers/game/Game.js";
 import {Result} from "../handlers/game/utils.js";
 import {globals} from "../Classes/Globals/globals.js";
-//NOTE - non cancellare :)
+
+//NOTE - NON CANCELLARE!!!
 //		senza term.js non apre le porte
+import {oggettoVuotoPerFarFunzionareTermjsNONCANCELLARE} from "../main.js";
+//NOTE - NON CANCELLARE!!!
 
 import * as lib from "../lib/lib.js";
 import {abort} from "node:process";

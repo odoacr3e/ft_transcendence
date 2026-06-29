@@ -39,8 +39,8 @@ async function testerMain()
 	let	matchName;
 	let	matchPath;
 
-	exec("npm run start", (err, stdout, stderr) =>{if (err){console.error(`${err} ${stderr}`)}});
-	await msleep(1000);
+	// exec("npm run start", (err, stdout, stderr) =>{if (err){console.error(`${err} ${stderr}`)}});
+	// await msleep(1000);
 	matchName = process.argv.at(2);
 	if (!matchName)
 		return (await execAllTests());

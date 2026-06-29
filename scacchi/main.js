@@ -10,16 +10,14 @@ import { globals } from "./Classes/Globals/globals.js";
 const { ALLOWED_URL, PORT } = lib;
 const { cors } = lib.auth;
 const {cookieParser, app, server } = lib.include;
-import "./websocket/websocket.js";
-
 
 // NOTE: serve per parsing delle richieste da frontend
 app.use(cors({
 	origin: ALLOWED_URL,
-	credentials: true
+	credentials: true,
 }));
 
-app.use(cookieParser()); 
+app.use(cookieParser());
 app.use(lib.include.express.static('public'));
 app.use(lib.include.express.json());
 app.set('json spaces', 2);
@@ -38,9 +36,9 @@ app.use((err, req, res, next) =>
 });
 
 // routes
-log.info('Routes initilization...')
+log.info('Routes initilization...');
 app.use("/api", apiRouter);
-app.use("/auth", authRouter)
+app.use("/auth", authRouter);
 log.ok(`Routes loaded`);
 
 // server confiuration wit web socket
@@ -60,3 +58,9 @@ server.on("error", (err) => {
 	}
 	process.exit(1);
 });
+
+
+//NOTE - DO NOT TOUCH!!!
+const oggettoVuotoPerFarFunzionareTermjsNONCANCELLARE = 42;
+export {oggettoVuotoPerFarFunzionareTermjsNONCANCELLARE};
+//NOTE - NON CANCELLARE!!!

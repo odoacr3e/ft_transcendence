@@ -9,6 +9,7 @@ import {Result} from "../endPoint/result.js";
 import {Player} from "./player.js";
 import {boardStringify} from "../../test/render.js";
 import { isDangerous } from "../../utils/gameUtils.js";
+import { DangerUpdate } from "../../utils/moveUtils.js";
 import { History } from "./history.js";
 import { clientBoard } from "../../handlers/game/utils.js";
 
@@ -245,11 +246,11 @@ class Match
 			return ;
 		this.boostPriority.delete(player.team);
 		//FIXME - qui va chiamato DangerUpdate. Farlo pero significa introdurre doppie inclusioni
-		this.board.updates.add(player.boostedPiece);
 		boostedSquare = this.board.get(player.boostedPiece);
 		if (!boostedSquare.piece)
 			throw (`DeletePlayer: invalid boosted piece in ${player.boostedPiece}`);
 		boostedSquare.piece.isBoostedBool = false;
+		DangerUpdate(this, player.boostedPiece);
 	}
 	/**
 	 * 
