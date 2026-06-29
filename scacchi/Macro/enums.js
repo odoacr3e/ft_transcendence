@@ -26,7 +26,8 @@ const eMatchPresets =
 {
 	ClassicTwoPlayers: "8x8x2",
 	ClassicFourPlayers: "14x14x4",
-	CornersFourPlayers: "14x14x4barrier"
+	ClassicFreeForAll: "1v1v1v1",
+	CornersFourPlayers: "14x14x4barrier",
 }
 
 /**
@@ -56,6 +57,14 @@ const enumNames = {
 };
 
 const arrayNames = Object.values(enumNames);
+
+const enumConnection = 
+{
+	PRIVATE: 'private',
+	FRIENDLY: 'friendly',
+	RANKED: 'ranked',
+	ARENA: 'arena'
+};
 
 const enumInitNames = 
 {
@@ -91,4 +100,4 @@ const kingMovements =
 	{dx:1, dy:0}, {dx:-1, dy:0},//orizzontale
 ];
 
-export {eTeam, eEvents, eMatchPresets, enumNames, arrayNames, enumInitNames, enumValues, enumSpecialMoves, kingMovements};
+export {eTeam, eEvents, eMatchPresets, enumNames, arrayNames, enumInitNames, enumValues, enumSpecialMoves, kingMovements, enumConnection};

@@ -12,6 +12,7 @@ import { isDangerous } from "../../utils/gameUtils.js";
 import { DangerUpdate } from "../../utils/moveUtils.js";
 import { History } from "./history.js";
 import { clientBoard } from "../../handlers/game/utils.js";
+import { MATCHTIMER } from "../../Macro/macro.js"; 
 
 class Match
 {
@@ -301,6 +302,7 @@ class MatchSettings
 			other = null;
 		if (typeof(other) == "string")
 			other = this.GetPresetByType(other);
+		this.timer = MATCHTIMER;
 		this.board =
 		{
 			width: CHESSBOARD_W,
@@ -337,6 +339,7 @@ class MatchSettings
 		if (other.players)
 			this.players = structuredClone(other.players);
 		this.presetType = other.presetType;
+		this.timer = other.timer;
 	}
 	/** @param {string} matchPresetType */
 	GetPresetByType(matchPresetType)
@@ -346,6 +349,8 @@ class MatchSettings
 			case (eMatchPresets.ClassicTwoPlayers):
 				return (new MatchSettings(matchPresets.twoPlayer));
 			case (eMatchPresets.ClassicFourPlayers):
+				return (new MatchSettings(matchPresets.fourPlayer));
+			case (eMatchPresets.ClassicFreeForAll):
 				return (new MatchSettings(matchPresets.fourPlayer));
 			case (eMatchPresets.CornersFourPlayers):
 				return (new MatchSettings(matchPresets.fourPlayerWalls));

@@ -20,6 +20,12 @@ class Globals
 		this.matches = new Map();
 		/** @type {Map<string, Socket>} */
 		this.clientMap = new Map();
+		/** @type {Set<string>} */
+		this.rankedQueue = new Set();
+		/** @type {Set<string>} */
+		this.friendlyQueue = new Set();
+		/** @type {Set<string>} */
+		this.arenaQueue = new Set();
 		if (DEBUG)
 			this.matches.set(TEST_MATCH, new Match());
 	}

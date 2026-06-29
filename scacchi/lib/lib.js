@@ -21,7 +21,7 @@ export const ALLOWED_URL = process.env.ALLOWED_URL?.split(',') ?? ['http://local
 
 // SECTION: connections
 import { prisma } from "./prisma.js";
-import { redis } from "./redis.js"
+import { redis } from "./redis.js";
 import crypto from "crypto";
 
 // SECTION - external inclusions

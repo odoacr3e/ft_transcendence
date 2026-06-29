@@ -6,6 +6,7 @@ const { redis } = lib.conn;
 const { parse, app, server } = lib.include;
 import { globals } from "../Classes/Globals/globals.js";
 import { announceMeOnline } from "./onlineStatus.js";
+import {enumConnection, eMatchPresets} from "../Macro/enums.js";
 
 const clientMap = globals.clientMap;
 
@@ -51,7 +52,20 @@ sockio.on('connection', async (socket) =>
 	} catch (error) {
 		console.error("Server error loading friends:", error);
 	}
-	
+
+	socket.on('init', async(/** @type {matchMakingOpt}*/options) => 
+	{
+		if (!options || !options.roomType || !options.matchType)
+		{
+			socket.emit('error', {log: {status: 403, msg: `bad options parameter: ${options}. expected: ${matchMakingOpt}`}});
+			return ;
+		}
+		if (includesOneOf(options.roomType, enumConnection.FRIENDLY, enumConnection.RANKED, enumConnection.ARENA))
+			MatchMaking(sockio, socket, user, clientMap, options);
+		else
+			throw ("stanze non implementate");
+	})
+
 	socket.on('disconnect', async () => {
 		console.log(`User with id ${user.id_user} disconnected`)
 		clientMap.delete(user.id_user);
@@ -61,6 +75,5 @@ sockio.on('connection', async (socket) =>
 			if (friendSock)
 				sockio.to(friendSock.socket.id).emit('friend:offline', { userId: user.id_user });
 		}
-	});
-	// sockio.emit("start_game", { messaggio: "si comincia uahu" });
+	})
 });

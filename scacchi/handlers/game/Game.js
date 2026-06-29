@@ -73,7 +73,14 @@ async function gameHttpHandler(req, res)
 
 	match = vault.getDebugMatch();
 	body = normifyRequest(match.cursor, req.body);
-	result = await gameHandler(match, body);
+	if (body.type == "init")
+	{
+		result = init(match, body.from);
+		responseFormatter(match, result, null, null);
+		render(match);
+	}
+	else
+		result = await gameHandler(match, body);
 	res.status(result.log.status).json(result);
 }
 
@@ -101,8 +108,6 @@ async function gameHandler(match, body)
 		result = move(match, body.from, body.to, true);
 	else if (body.type == "endturn")
 		result = endTurn(match);
-	else if (body.type == "init")
-		result = init(match, body.from);
 	else if (body.type == "trans")
 		result = makeTransfiguration(match, body.from, body.to);
 	else if (body.type == "reload")
