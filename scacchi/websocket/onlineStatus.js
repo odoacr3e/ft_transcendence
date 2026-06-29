@@ -3,20 +3,6 @@ import * as lib from "../lib/lib.js"
 const { prisma } = lib.conn;
 
 /**
- * utente A si connette
- * → JWT decode → id_user = A
- * → SELECT amici di A dal DB
- * → per ogni amico X in lista:
- * 		se X è in clientMap (cioè è online):
- * 			socket di X riceve "friend:online" { userId: A }
- * 			socket di A riceve "friend:online" { userId: X }  ← così A sa chi è già online
- * → al disconnect:
- * 		per ogni amico X in lista:
- * 			se X è in clientMap:
- * 				socket di X riceve "friend:offline" { userId: A }
- */
-
-/**
  * @param {import("socket.io").Server} sockio
  * @param {Map<number, string>} clientMap
  */

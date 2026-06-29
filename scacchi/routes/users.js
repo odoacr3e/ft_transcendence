@@ -1,7 +1,8 @@
 
 import * as lib from "../lib/lib.js";
 import * as usersQuery from "../query/usersQuery.js";
-import { checkInputs } from "../utils/users.js";
+import bcrypt from "bcryptjs"
+import { checkInputs, checkEmail, checkPassword, checkUsername } from "../utils/users.js";
 import { checkJwt } from "../utils/auth.js";
 import { jsonResponse } from "../utils/response.js"
 import { log } from "../utils/log.js"
@@ -126,17 +127,40 @@ usersRouter.delete("/", checkJwt, async (req, res) => {
 */
 usersRouter.patch("/", checkJwt, async (req, res) => {
 	try {
-		const { username, email, password } = req.body;
-		const inputs = checkInputs(username, email, password);
-		if (inputs != "OK")
-			return res.status(400).json(jsonResponse.ResponseError(inputs));
+		const { username } = req.body;
+		if (!username)
+			return res.status(400).json(jsonResponse.ResponseError("Username parameter not found"));			
+		if (!checkUsername(username))
+			return res.status(400).json(jsonResponse.ResponseError("Invalid username format"));
 		const user = await usersQuery.updateUserFieldsById(req.user.id_user, req.body);
 		delete(user.password);
 		if (user)
 			return res.status(200).json(jsonResponse.ResponseSuccess({ "user": user }));
 		return res.status(404).json(jsonResponse.ResponseError("User not found"));
 	} catch (error) {
+		if (error.code = 'P2002')
+			return res.status(404).json(jsonResponse.ResponseError("Username already taken"));
 		// printLog(`User not found due to a server error: ${error.name}`, colors.brightRed);
-		return res.status(500).json(jsonResponse.ResponseError("Server error"));
+		return res.status(500).json(jsonResponse.ResponseError("Server error changing user params"));
+	}
+});
+
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * NOTE: reset e cambio password per utente loggato
+*/
+usersRouter.patch('/updatePassword', checkJwt, async (req, res) => {
+	try {
+		const { password } = req.body;
+		if (!checkPassword(password))
+			return res.status(400).json(jsonResponse.ResponseError("Invalid password format"));
+		const user = await usersQuery.updateUserPassword(req.user.id_user, await bcrypt.hash(password, parseInt(lib.Macro.HASH_SALT)))
+		if (user)
+			return res.status(204).send();
+		return res.status(404).json(jsonResponse.ResponseError("User not found"));
+	} catch (error) {
+		console.log("Error: ", error);
+		return res.status(500).json(jsonResponse.ResponseError("Server error changing user password"));
 	}
 });

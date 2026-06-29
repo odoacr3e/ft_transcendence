@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import * as lib from "../lib/lib.js";
 const { prisma } = lib.conn;
 
-const getAllUsers = async () => {
+export const getAllUsers = async () => {
 	return await prisma.users.findMany({
 		select: {
 			id_user: true,
@@ -27,7 +27,7 @@ const getAllUsers = async () => {
 	});
 }
 
-const getUserById = async (id) => {
+export const getUserById = async (id) => {
 	return await prisma.users.findUnique({
 		select: {
 			id_user: true,
@@ -55,7 +55,7 @@ const getUserById = async (id) => {
 
 // NOTE: cerca un utente che contiene come username lo username passato
 // e possibile passare anche solo una parte dello username -> passando 'Mario' trovera 'Mariorossi' 'supermario' oppure 'robomarione'
-const findUserByUsername = async (username) => {
+export const findUserByUsername = async (username) => {
 	return await prisma.users.findMany({
 		select: {
 			id_user: true,
@@ -87,7 +87,7 @@ const findUserByUsername = async (username) => {
 	});
 }
 
-const getUserByUsername = async (username) => {
+export const getUserByUsername = async (username) => {
 	return await prisma.users.findUnique({
 			select: {
 				id_user: true,
@@ -113,7 +113,7 @@ const getUserByUsername = async (username) => {
 		});
 }
 
-const getUserByEmail = async (email) => {
+export const getUserByEmail = async (email) => {
 	return await prisma.users.findUnique({
 			select: {
 				id_user: true,
@@ -166,7 +166,7 @@ export const getLeaderboard = async () => {
  * @param {String} email
  * @param {String} nationality 
  */
-const createUser = async (name, surname, username, password, email, nationality) => {
+export const createUser = async (name, surname, username, password, email, nationality) => {
 	return await prisma.users.create({
 		data: {
 			name: name,
@@ -197,14 +197,14 @@ const createUser = async (name, surname, username, password, email, nationality)
 	});
 }
 
-const deleteUserById = async (id) => {
+export const deleteUserById = async (id) => {
 	return await prisma.users.delete({
 		where: { id_user: Number(id) }
 	});
 }
 
-const updateUserFieldsById = async (id, data) => {
-	const fields = ['name', 'surname', 'username', 'email', 'nationality', 'image', 'password', 'preferences'];
+export const updateUserFieldsById = async (id, data) => {
+	const fields = ['name', 'surname', 'username', 'nationality', 'image', 'preferences'];
 	const updates = {};
 	for (const f of fields)
 	{
@@ -212,8 +212,6 @@ const updateUserFieldsById = async (id, data) => {
 			updates[f] = data[f];
 		if (data.preferences && f === 'preferences')
 			updates.preferences = { connect: { id_preference: Number(data[f]) }};
-		if (data.password && f === 'password')
-			updates.password = await bcrypt.hash(updates.password, parseInt(lib.Macro.HASH_SALT));
 	}
 	return await prisma.users.update({
 		where: { id_user: Number(id) },
@@ -239,4 +237,27 @@ const updateUserFieldsById = async (id, data) => {
 	});
 }
 
-export { getAllUsers, getUserById, findUserByUsername, getUserByUsername, getUserByEmail, createUser, deleteUserById, updateUserFieldsById };
+export const updateUserPassword = async (id_user, password) => {
+	return await prisma.users.update({
+		where: {id_user: Number(id_user)},
+		data: { password: password },
+		select: {
+			id_user: true,
+			name: true,
+			surname: true,
+			username: true,
+			email: true,
+			image: true,
+			nationality: true,
+			points: true,
+			title: true,
+			preferences: {
+				select: {
+					name: true,
+					description: true,
+					colors: true,
+				}
+			}
+		}
+	});
+}
