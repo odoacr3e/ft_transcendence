@@ -3,7 +3,8 @@
 import {Match} from "../Chess/match.js";
 import {DEBUG} from "../../Macro/macro.js";
 
-/** @typedef {{socket: *, allowedBool: boolean}} Socket */
+/** @typedef {import("../Chess/player.js").Player} Player*/
+/** @typedef {{socket: *, allowedBool: boolean, matchData?: Player}} Socket */
 
 const	TEST_MATCH = "0";
 
@@ -19,7 +20,6 @@ class Globals
 		this.matches = new Map();
 		/** @type {Map<string, Socket>} */
 		this.clientMap = new Map();
-
 		if (DEBUG)
 			this.matches.set(TEST_MATCH, new Match());
 	}

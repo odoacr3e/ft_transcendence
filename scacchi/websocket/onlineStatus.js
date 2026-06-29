@@ -30,7 +30,7 @@ export async function announceMeOnline(sockio, user, clientMap, friendsId) {
 			friend_status: 'accepted'
 		}
 	});
-	friendsId = friends.map(f => { 
+	friendsId = friends.map(f => {
 		return f.id_user1 == user.id_user ? f.id_user2 : f.id_user1
 	});
 	for (const id of friendsId)
