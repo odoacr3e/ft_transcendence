@@ -51,7 +51,7 @@ sockio.on('connection', async (socket) =>
 	} catch (error) {
 		console.error("Server error loading friends:", error);
 	}
-
+	
 	socket.on('disconnect', async () => {
 		console.log(`User with id ${user.id_user} disconnected`)
 		clientMap.delete(user.id_user);
@@ -61,6 +61,6 @@ sockio.on('connection', async (socket) =>
 			if (friendSock)
 				sockio.to(friendSock.socket.id).emit('friend:offline', { userId: user.id_user });
 		}
-	})
+	});
 	// sockio.emit("start_game", { messaggio: "si comincia uahu" });
 });

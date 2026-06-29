@@ -6,10 +6,11 @@ import { responseFormatter } from "./utils/response.js";
 import { colors, tag } from "./utils/colors.js";
 import { log } from "./utils/log.js";
 import { globals } from "./Classes/Globals/globals.js";
+import "./websocket/websocket.js"
 
 const { ALLOWED_URL, PORT } = lib;
 const { cors } = lib.auth;
-const {cookieParser, app, server } = lib.include;
+const { cookieParser, app, server } = lib.include;
 
 // NOTE: serve per parsing delle richieste da frontend
 app.use(cors({
