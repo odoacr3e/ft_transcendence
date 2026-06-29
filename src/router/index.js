@@ -4,6 +4,7 @@ import Home from '../views/Home.vue'
 import Game from '../views/Game.vue'
 import UserMe from '../views/UserMe.vue'
 import UserOther from '../views/UserOther.vue'
+import UsersList from '../views/UsersList.vue'
 import GameFour from '../views/GameFour.vue'
 import LoginPage from '../views/LoginPage.vue'
 import RegisterPage from '../views/RegisterPage.vue'
@@ -38,6 +39,12 @@ const routes = [
 		path: `/me`,
 		name: 'me_page',
 		component: UserMe
+	},
+	{
+		path: '/users/:query?',
+		name: 'users_list',
+		component: UsersList,
+		props: (route) => ({ query: route.params.query ? String(route.params.query) : '' })
 	},
 	{
 		path: '/:username?',

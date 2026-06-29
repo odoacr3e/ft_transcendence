@@ -26,7 +26,7 @@
 		if (db.value.find(x => x.username === username))
 			router.push(`/${encodeURIComponent(username)}`);
 		else
-			router.push(`/?username=${username}`); //il push va fatto ad una pagina intermedia dove avviene un fetch con questa querry
+			router.push(`/users/${encodeURIComponent(username)}`);
 	}
 
 	onMounted(async () => {
@@ -63,7 +63,7 @@
 
 
 
-		<div class="flex justify-self-end place-self-center mr-1" v-if="user">
+		<div class="flex justify-self-end place-self-center" v-if="user">
 			<div class="place-self-center relative">
 				<div v-if="false">
 					<span class="absolute inline-flex ml-5.5 h-3 w-3 animate-ping rounded-full bg-[#c41c1c] opacity-75"></span>
@@ -71,13 +71,13 @@
 				</div>
 				<img src="../assets/bell.png" alt="" class="mr-3 size-9 place-self-center">
 			</div>
-			<div>
-				<button class="flex cursor-pointer" @click="bool = !bool">
+			<div class="relative w-fit">
+				<button class="flex cursor-pointer mr-1" @click="bool = !bool">
 					<h2 class="text-white text-lg place-self-center mr-3">{{ user.username }}</h2>
 					<img :src="user.image ? asset(`${user.image}`) : asset('../assets/default.png')"
 						alt="" class="size-12 rounded-full place-self-center">
 				</button>
-				<div class="mt-1.25 p-2 absolute pointer-events-auto bg-[#181715] origin-top align-bottom border border-[#181715e8] w-52.5 transition-all ease-out"
+				<div class="mt-1.25 p-2 absolute right-0 pointer-events-auto bg-[#181715] origin-top align-bottom border border-[#181715e8] min-w-full transition-all ease-out"
 					v-bind:class="{'scale-y-0 pointer-events-none border-0': !bool, 'scale-y-100 pointer-events-auto': bool}">
 					<RouterLink to="/me" id="button">
 						<p class="text-white">Profilo</p>

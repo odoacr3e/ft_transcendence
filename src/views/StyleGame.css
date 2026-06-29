@@ -8,3 +8,18 @@
 @theme {
   		--drop-shadow-custom: 0 0 2px rgba(211, 209, 209, 0.549); 
 	}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/*Removing the horizontal scrollbar*/
+::-webkit-scrollbar:horizontal {
+  display: none;
+}
+
+/*Giving the thumb a gradient*/
+::-webkit-scrollbar-thumb {
+  background: #8686868c;
+  border-radius: 20px;
+}

@@ -18,8 +18,8 @@
                 <div class="flex my-2 ml-2">
                     <img class="size-13 rounded-full" :src="besties.friend.image ? asset(`${besties.friend.image}`) : asset('../assets/default.png')"/>
                     <span class="rounded-full size-3 absolute ml-9.5 mt-9.5"
-                        v-bind:class="{ 'bg-green-500' : true,
-                                        'bg-red-500' : false }"></span>
+                        v-bind:class="{ 'bg-green-500' : false,
+                                        'bg-red-500' : true }"></span>
                     <div class="mx-2">
                         <p class="text-white">{{ besties.friend.username }}</p>
                         <div class="flex items-center gap-1">
