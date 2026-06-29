@@ -1,6 +1,7 @@
 <script setup>
 	import { useAuthStore }	from "../stores/auth.st";
 	import { useRouter }	from 'vue-router';
+	import { asset }		from '../scripts/Helper/CompUtils';
 	import { ref }			from 'vue';
 
 	const formData = ref({
@@ -14,10 +15,6 @@
 		const auth = useAuthStore();
 		const resp = await auth.login(formData.value);
 		if (!resp)	{ router.push('/me'); }
-	}
-
-	function asset(path) {
-		return new URL(path, import.meta.url).href;
 	}
 
 	function show() { visible.value = !visible.value; }

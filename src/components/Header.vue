@@ -1,9 +1,10 @@
 <script setup>
-	import { ref, onMounted }   from 'vue';
-	import { useAuthStore } from "../stores/auth.st";
-	import { storeToRefs } from 'pinia';
-	import { useRouter }	from 'vue-router';
-	import { api } from '../router/api/client';
+	import { ref, onMounted }	from 'vue';
+	import { useAuthStore }		from "../stores/auth.st";
+	import { storeToRefs }		from 'pinia';
+	import { useRouter }		from 'vue-router';
+	import { asset }			from '../scripts/Helper/CompUtils';
+	import { api }				from '../router/api/client';
 
 	const authStore = useAuthStore();
 	const { user } = storeToRefs(authStore);
@@ -11,10 +12,6 @@
 			router = useRouter(),
 			db = ref([]),
 			searchUser = ref("");
-
-	function asset(path) {
-		return new URL(path, import.meta.url).href;
-	}
 
 	async function submitForm() {
         const authStore = useAuthStore();

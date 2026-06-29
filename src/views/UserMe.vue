@@ -7,14 +7,11 @@
     import { useAuthStore }     from "../stores/auth.st";
     import { storeToRefs }      from 'pinia';
     import { authApi }          from '../router/api/auth.api';
+    import { asset }            from '../scripts/Helper/CompUtils';
 
 	const friends = ref(null), fReq = ref([]);
     const authStore = useAuthStore();
 	const { user } = storeToRefs(authStore);
-
-    function asset(path) {
-		return new URL(path, import.meta.url).href;
-	}
 
     onMounted(async () => {
         friends.value = await authApi.friendlist();
@@ -46,7 +43,7 @@
                     </div>
                 </div>
                 <div class="flex m-4">
-                    <div class=" m-2 w-[100%]">
+                    <div class=" m-2 w-full">
                         <div class="w-full p-2 mb-2 h-[35vh] bg-[#201e1c] rounded-3xl border border-[#4e4e4e8c]">
                             <h2 class="text-white text-xl m-1">Lista di amici</h2>
                             <hr class="w-full justify-self-start text-[#4e4e4e8c]">

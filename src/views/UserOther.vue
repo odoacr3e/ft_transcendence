@@ -3,10 +3,11 @@
     import TagTitle from '../components/TagTitle.vue';
     import FriendList from '../components/FriendList.vue';
     import FriendButton from '../components/FriendButton.vue';
-    import { useAuthStore }     from "../stores/auth.st";
-    import { storeToRefs }      from 'pinia';
+    import { useAuthStore } from "../stores/auth.st";
+    import { storeToRefs }  from 'pinia';
     import { ref, watch }   from 'vue';
-    import { api } from '../router/api/client'
+    import { asset }        from '../scripts/Helper/CompUtils';
+    import { api }          from '../router/api/client';
 
     const authStore = useAuthStore();
 	const { user } = storeToRefs(authStore);
@@ -14,10 +15,6 @@
   	    	username: String
 	    });
 	const friends = ref(null), otherUser = ref(null);
-
-    function asset(path) {
-		return new URL(path, import.meta.url).href;
-	}
 
     async function loadUserData(username) {
         if (!username) {
