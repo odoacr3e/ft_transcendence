@@ -44,7 +44,7 @@ sockio.on('connection', async (socket) =>
 {
 	const user = socket.request.user;
 	console.log("A new user connected with id ", user.id_user);
-	clientMap.set(user.id_user, {allowedBool: true, socket: socket});
+	clientMap.set(user.id_user, {allowedBool: true, socket: socket, matchData: null});
 	let friendsId = [];
 	try {
 		friendsId = await announceMeOnline(sockio, user, clientMap, friendsId);

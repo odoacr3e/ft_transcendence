@@ -17,7 +17,6 @@ const app = express();
 const server = http.createServer(app);
 export const logfd = openSync("../log", 'a+');
 export const PORT = process.env.PORT || 8080;
-console.log(`port is ${PORT}`);
 export const ALLOWED_URL = process.env.ALLOWED_URL?.split(',') ?? ['http://localhost:5173'];
 
 // SECTION: connections

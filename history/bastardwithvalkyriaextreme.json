@@ -1,7 +1,7 @@
 {
   "moves": 0,
   "victory": "",
-  "finalBoard": "| | | | | | | |K|\n| | | | | | | | |\n| | | | | | | | |\n| | | | |V| | | |\n| | | |+B| | | | |\n| | | | | | | | |\n| |B| | | | | | |\n|K| | | | | | | |\n",
+  "finalBoard": "| | | | | | | |K|\n| | | | | | | | |\n| | | | | |V| | |\n| | | | |+B| | | |\n| | | | | | | | |\n| | | | | | | | |\n| |B| | | | | | |\n|K| | | | | | | |\n",
   "matchSettings": {
     "board": {
       "width": 8,
@@ -24,5 +24,17 @@
     },
     "presetType": null
   },
-  "events": []
+  "events": [
+    {
+      "from": "b2",
+      "to": "b3",
+      "movedPiece": "Bastards",
+      "team": "white",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 0,
+      "updates": {},
+      "error": true
+    }
+  ]
 }
