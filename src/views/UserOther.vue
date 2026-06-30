@@ -1,5 +1,6 @@
 <script setup>
     import Header from '../components/Header.vue';
+    import statusOnline from '../components/statusOnline.vue';
     import TagTitle from '../components/TagTitle.vue';
     import FriendList from '../components/FriendList.vue';
     import FriendButton from '../components/FriendButton.vue';
@@ -45,6 +46,7 @@
                 <div class="flex p-2 m-4 bg-[#201e1c] rounded-3xl border border-[#4e4e4e8c]">
                     <img :src="otherUser.image ? asset(`${otherUser.image}`) : asset('../assets/default.png')"
                             alt="" class="size-35 rounded-full place-self-start m-5">
+                    <statusOnline :user_id="otherUser.id_user" class="size-6 ml-31 mt-31"/>
                     <div>
                         <div class="w-150 grid grid-cols-2 items-center mt-5">
                             <h2 class="text-white text-3xl">{{ otherUser.username }}</h2>
@@ -59,7 +61,9 @@
                     <div class="w-[60%] m-2 p-2 h-[50vh] bg-[#201e1c] rounded-3xl border border-[#4e4e4e8c]">
                         <h2 class="text-white text-xl m-1">Lista di amici</h2>
                         <hr class="w-full justify-self-start text-[#4e4e4e8c]">
-                        <FriendList v-if="friends" :friendlist="friends" :remove-f="false"/>
+                        <div v-if="friends" class="my-2" :class="friends.length > 6 ? 'max-h-[29vh] overflow-y-auto' : ''">
+                            <FriendList :friendlist="friends" :remove-f="false"/>
+                        </div>
                     </div>
                     <div class="w-full m-2 p-2 h-auto bg-[#201e1c] rounded-3xl border border-[#4e4e4e8c]">
                         <h2 class="text-white text-xl m-1">Cronologia delle partite</h2>
