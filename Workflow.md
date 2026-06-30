@@ -83,7 +83,7 @@ boardConverter()
 			-> DOMBoard computed si ricalcola
 			-> boardConverter() esegue
 			-> ChessBoard.vue re-renderizza
-//TODO - (▫ = da fare, ✓ = completato)
+//TODO SCACCHIERA - (▫ = da fare, ✓ = completato)
 	✓	movimento al click
 	✓	highlight e selected corretti al 100%
 	✓	refactoring funzione che gestisce gli events
@@ -126,3 +126,14 @@ boardConverter()
 		attesa che il giocatore schiacci end turn oppure boosti un pezzo
 	▫	Il pulsante use ability rimane interagibile e cliccabile anche se il pezzo si è appena
 		moso senza voler utilizzare l'abilità
+
+//TODO FRONTEND - 
+	▫	websocket per lo stato online
+	▫	websocket per le notifiche
+	▫	reset della password
+	▫	pagina della leaderboard
+	▫	history dei match
+	▫	history delle mosse durante la partita (?)
+	▫	info dei profili per le partitre a 4
+	▫	re-design della home
+	▫	websocket per la partita
