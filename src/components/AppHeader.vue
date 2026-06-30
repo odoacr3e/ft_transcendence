@@ -39,7 +39,7 @@
 	<datalist id="users">
 		<!-- idk e' l'unico modo che ho trovato per far in modo che dopo il click sull'option questo non ricompaia -->
 		<RouterLink to="/">
-			<option v-for="user in db" :value="user.username"></option>
+			<option v-for="user in db" :key="user.username" :value="user.username"></option> <!-- la key va messa per permettere a vue di indicizzare i contenuti così da midificare il DOM solo per le cose che sono cambiate --> 
 		</RouterLink>
 	</datalist>
 

@@ -1,11 +1,11 @@
 <script setup>
-    import Header from '../components/Header.vue';
+    import AppHeader from '../components/AppHeader.vue';
     import LoginForm from '../components/LoginForm.vue';
 </script>
 
 <template>
     <div class="min-h-screen flex flex-col">
-        <Header/>
+        <AppHeader/>
         <div id="wrap" class="grow">
             <div class="flex z-2 bg-[#181715] rounded-3xl">
                 <div class="p-6 bg-[#201e1c] rounded-l-3xl border-r border-[#4e4e4e8c]">

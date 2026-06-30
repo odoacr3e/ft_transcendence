@@ -1,5 +1,5 @@
 <script setup>
-    import Header from '../components/Header.vue';
+    import AppHeader from '../components/AppHeader.vue';
     import TagTitle from '../components/TagTitle.vue';
     import FriendList from '../components/FriendList.vue';
     import FriendRequest from '../components/FriendRequest.vue';
@@ -25,7 +25,7 @@
 
 <template>
     <div class="min-h-screen flex flex-col">
-        <Header class="z-11"/>
+        <AppHeader class="z-11"/>
         <div id="wrap" class="grow">
             <div class="flex-row z-2 bg-[#181715] rounded-3xl w-[100vh] h-[80vh]">
                 <div class="flex p-2 m-4 bg-[#201e1c] rounded-3xl border border-[#4e4e4e8c]">

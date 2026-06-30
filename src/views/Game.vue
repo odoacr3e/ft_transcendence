@@ -3,7 +3,7 @@
   import { onMounted, ref }       from 'vue';
   import ChessBoard               from '../components/ChessBoard.vue';
   import PlayerInfo               from '../components/PlayerInfo.vue';
-  import Header                   from '../components/Header.vue';
+  import AppHeader                   from '../components/AppHeader.vue';
 
   const ready = ref(false);
   const style = ref("8x8x2");
@@ -20,7 +20,7 @@
 
 <template>
   <div class="min-h-screen flex flex-col">
-        <Header class="z-11"/>
+        <AppHeader class="z-11"/>
         <div id="wrap" class="grow">
             <div class="flex z-2 bg-[#181715] rounded-3xl">
                 <div class="p-6 bg-[#201e1c] rounded-l-3xl border-r border-[#4e4e4e8c]">

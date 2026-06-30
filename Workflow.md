@@ -122,18 +122,18 @@ boardConverter()
 		dello stesso colore del pedone appena mosso lancia eccezione
 	▫	quando finisci l'esecuzione di una mossa boostata di un pedone e al turno dopo vuoi muovere
 		lo stesso pedone manda eccezione (ma penso sia dovuto al backend)
-	▫	Gli highlits vengono displayati anche se la mossa è già stata fatta e si è semplicemente in
-		attesa che il giocatore schiacci end turn oppure boosti un pezzo
 	▫	Il pulsante use ability rimane interagibile e cliccabile anche se il pezzo si è appena
-		moso senza voler utilizzare l'abilità
+		mosso senza voler utilizzare l'abilità
 
 //TODO FRONTEND - 
 	▫	websocket per lo stato online
 	▫	websocket per le notifiche
+	▫	refactor pagina di gioco, vanno integrate le opzioni 
+		di gioco (creare una room, giocare partite preset, partite custom)
 	▫	reset della password
 	▫	pagina della leaderboard
 	▫	history dei match
 	▫	history delle mosse durante la partita (?)
 	▫	info dei profili per le partitre a 4
 	▫	re-design della home
-	▫	websocket per la partita
+	▫	websocket per la partita --> in attesa di sviluppo backend

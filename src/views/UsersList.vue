@@ -1,5 +1,5 @@
 <script setup>
-    import Header from '../components/Header.vue';
+    import AppHeader from '../components/AppHeader.vue';
     import TagTitle from '../components/TagTitle.vue';
     import { ref, onMounted, watch }	from 'vue';
     import { api }				from '../router/api/client';
@@ -31,7 +31,7 @@
 
 <template>
 	<div class="min-h-screen flex flex-col">
-        <Header/>
+        <AppHeader/>
         <div id="wrap" class="grow">
             <div class="flex flex-col z-2 bg-[#201e1c] rounded-3xl mt-10">
                 <h2 class="text-white text-2xl mx-7.5 mt-7.5" v-if="query.length > 11">
