@@ -9,6 +9,7 @@ import { announceMeOnline } from "./onlineStatus.js";
 import {enumConnection, eMatchPresets} from "../Macro/enums.js";
 import { includesOneOf } from "../utils/string.js";
 import { MatchMaking } from "./MatchMaking/MatchMaking.js";
+import { DEBUG_WEBSOCKETS } from "../Macro/macro.js";
 
 const clientMap = globals.clientMap;
 
@@ -29,6 +30,10 @@ sockio.engine.use(async (req, res, next) => {
 	const firstConn = req._query.sid === undefined;
 	if (!firstConn)
 		return next();
+	//NOTE - questa macro (settata di default a false, abilitata da .env)
+	//			permette di avere user fasulli per testare il matchmaking
+	if (DEBUG_WEBSOCKETS == true)
+		return (next());
 	const cookies = parse(req.headers.cookie || "");
 	const token = cookies.jwt_token;
 	if (!token)
@@ -46,7 +51,12 @@ sockio.engine.use(async (req, res, next) => {
 
 sockio.on('connection', async (socket) => 
 {
-	const user = socket.request.user;
+	let user; 
+
+	if (DEBUG_WEBSOCKETS == false)
+		user = socket.request.user;
+	else
+		user = socket.handshake.auth;
 	console.log("A new user connected with id ", user.id_user);
 	clientMap.set(user.id_user, {allowedBool: true, socket: socket, matchData: null});
 	let friendsId = [];

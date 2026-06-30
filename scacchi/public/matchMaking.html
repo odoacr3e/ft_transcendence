@@ -3,88 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chess Matchmaking & Friends</title>
+    <title>Chess Matchmaking - Multi Client Test</title>
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
     <style>
         :root {
-            --bg-color: #302e2b; /*尊 Grigio scuro Chess.com */
+            --bg-color: #302e2b; /* Grigio scuro Chess.com */
             --card-bg: #262522;
             --accent-green: #81b64c;
             --accent-green-hover: #a3d16c;
             --text-color: #ffffff;
             --text-muted: #bababa;
             --border-color: #403e3b;
-            --danger-color: #ff4d4d;
+            --table-light: #dad8d6;
+            --table-dark: #769656; /* Colore verde scuro tipico delle scacchiere */
         }
 
         body {
             margin: 0;
-            padding: 0;
+            padding: 2rem;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
             min-height: 100vh;
+            box-sizing: border-box;
         }
 
-        .container {
+        .dashboard {
             background-color: var(--card-bg);
-            padding: 2.5rem;
+            padding: 2rem;
             border-radius: 12px;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
             width: 100%;
-            max-width: 450px;
+            max-width: 950px;
             border: 1px solid var(--border-color);
+            margin-bottom: 2rem;
         }
 
         h2 {
-            text-align: center;
             margin-top: 0;
             margin-bottom: 1.5rem;
             font-size: 1.8rem;
-            letter-spacing: 0.5px;
             color: #fff;
+            text-align: center;
         }
 
-        .status-container {
+        .config-row {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+            gap: 1.5rem;
             margin-bottom: 1.5rem;
-            font-size: 0.9rem;
-            color: var(--text-muted);
-        }
-
-        .status-dot {
-            width: 10px;
-            height: 10px;
-            background-color: var(--danger-color);
-            border-radius: 50%;
-            transition: background-color 0.3s ease;
-        }
-
-        .status-dot.connected {
-            background-color: var(--accent-green);
-            box-shadow: 0 0 8px var(--accent-green);
+            flex-wrap: wrap;
         }
 
         .form-group {
-            margin-bottom: 1.5rem;
+            flex: 1;
+            min-width: 200px;
         }
 
         label {
             display: block;
             margin-bottom: 0.5rem;
             color: var(--text-muted);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
-        input[type="text"], input[type="password"], select {
+        select {
             width: 100%;
             padding: 0.8rem;
             background-color: var(--bg-color);
@@ -93,255 +80,262 @@
             color: white;
             font-size: 1rem;
             outline: none;
+            cursor: pointer;
             box-sizing: border-box;
-            transition: border-color 0.2s ease;
         }
 
-        input:focus, select:focus {
+        select:focus {
             border-color: var(--accent-green);
         }
 
-        button {
-            width: 100%;
-            padding: 1rem;
+        .btn-main {
             background-color: var(--accent-green);
             color: white;
             border: none;
             border-radius: 6px;
+            padding: 1rem 2rem;
             font-size: 1.1rem;
             font-weight: bold;
             cursor: pointer;
-            transition: background-color 0.2s ease, transform 0.1s ease;
+            transition: background-color 0.2s, transform 0.1s;
             box-shadow: 0 4px 0px #5b8433;
-            margin-top: 1rem;
+            display: block;
+            margin: 0 auto;
         }
 
-        button:hover {
-            background-color: var(--accent-green-hover);
+        .btn-main:hover { background-color: var(--accent-green-hover); }
+        .btn-main:active { transform: translateY(2px); box-shadow: 0 2px 0px #5b8433; }
+
+        /* Stile Tabella */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            margin-top: 1.5rem;
         }
 
-        button:active {
-            transform: translateY(2px);
-            box-shadow: 0 2px 0px #5b8433;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            color: #333; /* Testo scuro per contrasto sulle celle chiare/verdi */
+            border-radius: 8px;
+            overflow: hidden;
         }
 
-        button:disabled {
-            background-color: #555;
-            box-shadow: none;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .feedback {
-            color: var(--danger-color);
-            font-size: 0.9rem;
-            margin-top: 0.5rem;
-            text-align: center;
-        }
-
-        .friends-section {
-            margin-top: 2rem;
-            border-top: 1px solid var(--border-color);
-            padding-top: 1.5rem;
-        }
-
-        .friends-section h3 {
-            font-size: 1.1rem;
+        th {
+            background-color: #1a1917;
             color: var(--text-muted);
-            margin-bottom: 1rem;
+            padding: 1rem;
+            font-size: 0.9rem;
             text-transform: uppercase;
         }
 
-        #friends-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            max-height: 150px;
-            overflow-y: auto;
+        /* Effetto scacchiera alternato sulle righe */
+        tr:nth-child(even) { background-color: var(--table-light); }
+        tr:nth-child(odd) { background-color: #b5c3a7; } /* Un verde chiaro che si sposa con la scacchiera */
+
+        td {
+            padding: 0.75rem 1rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+            vertical-align: middle;
         }
 
-        #friends-list li {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 0.5rem 0;
-            border-bottom: 1px solid #333;
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: white;
+            background-color: #ff4d4d;
         }
 
-        .friend-dot {
-            width: 8px;
-            height: 8px;
-            background-color: #555;
-            border-radius: 50%;
-            transition: background-color 0.3s;
-        }
+        .status-badge.connected { background-color: var(--accent-green); }
 
-        .friend-dot.online {
-            background-color: var(--accent-green);
-            box-shadow: 0 0 6px var(--accent-green);
+        .btn-action {
+            background-color: #312e2b;
+            color: white;
+            border: 1px solid var(--border-color);
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: background-color 0.2s;
+        }
+        .btn-action:hover { background-color: #45413d; }
+
+        .match-id-cell {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            color: #1a1917;
         }
     </style>
 </head>
 <body>
 
-    <div class="container" id="login-section">
-        <h2>♟️ Chess Login</h2>
-        <div class="form-group">
-            <label for="username">Username</label>
-            <input type="text" id="username" value="Investigatopo12">
-        </div>
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" id="password" value="Formaggio123%">
-        </div>
-        <button id="btnLogin" onclick="login()">Accedi</button>
-        <div id="login-feedback" class="feedback"></div>
-    </div>
-
-    <div class="container" id="main-section" style="display: none;">
-        <h2>♟️ Chess Matchmaking</h2>
+    <div class="dashboard">
+        <h2>♟️ Chess Matchmaking Test Bench</h2>
         
-        <div class="status-container">
-            <div id="statusDot" class="status-dot"></div>
-            <span id="statusText">Connessione in corso...</span>
-        </div>
-
-        <form id="matchForm">
+        <div class="config-row">
             <div class="form-group">
-                <label for="matchType">Modalità di Gioco</label>
+                <label for="matchType">Modalità di Gioco (per init)</label>
                 <select id="matchType">
                     <option value="1v1">1 vs 1 (Classico)</option>
-                    <option value="2v2">2 vs 2 (Bughouse / quadriglia)</option>
-                    <option value="1v1v1v1">4 Giocatori (Tutti contro tutti)</option>
+                    <option value="2v2">2 vs 2 (Bughouse)</option>
+                    <option value="1v1v1v1">4 Giocatori</option>
                 </select>
             </div>
 
             <div class="form-group">
-                <label for="roomType">Tipo di Stanza</label>
+                <label for="roomType">Tipo di Stanza (per init)</label>
                 <select id="roomType">
                     <option value="friendly">Amichevole</option>
-                    <option value="ranked">Classificata (Ranked)</option>
-                    <option value="private">Privata (Con codice)</option>
-                    <option value="arena">Torneo Arena</option>
+                    <option value="ranked">Classificata</option>
+                    <option value="private">Privata</option>
+                    <option value="arena">Arena</option>
                 </select>
             </div>
+        </div>
 
-            <button type="submit" id="btnInvia" disabled>Inizia Partita</button>
-        </form>
+        <button class="btn-main" onclick="creaNuovoClient()">➕ Aggiungi Client Fasullo</button>
 
-        <div class="friends-section">
-            <h3>Amici Online</h3>
-            <ul id="friends-list"></ul>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Stato</th>
+                        <th>Username</th>
+                        <th>Anagrafica</th>
+                        <th>ELO</th>
+                        <th>ID Utente (id_user)</th>
+                        <th>ID Match</th>
+                        <th>Azione</th>
+                    </tr>
+                </thead>
+                <tbody id="clients-table-body">
+                    </tbody>
+            </table>
         </div>
     </div>
 
     <script>
-        let socket = null;
+        // Array globale per tenere traccia dei client simulati in questa pagina
+        const clientSimulati = [];
 
-        const statusDot = document.getElementById('statusDot');
-        const statusText = document.getElementById('statusText');
-        const btnInvia = document.getElementById('btnInvia');
-        const matchForm = document.getElementById('matchForm');
+        // Liste di nomi per la generazione casuale dei client finti
+        const nomi = ["Mario", "Luigi", "Anna", "Elena", "Giovanni", "Sofia", "Rodolfo", "Beatrice"];
+        const cognomi = ["Rossi", "Ferrari", "Bianchi", "Russo", "Esposito", "Gallo", "Topo", "Formaggio"];
+        const usernamePrefix = ["King", "GrandMaster", "Pawn", "Knight", "Rook", "CheckMate", "Investiga"];
 
-        // Effettua il login automatico appena la pagina è pronta
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('btnLogin').click();
-        });
+        function generaDatiCasuali() {
+            const nome = nomi[Math.floor(Math.random() * nomi.length)];
+            const cognome = cognomi[Math.floor(Math.random() * cognomi.length)];
+            const username = usernamePrefix[Math.floor(Math.random() * usernamePrefix.length)] + Math.floor(Math.random() * 100);
+            const id_user = (Math.floor(Math.random() * 10000)).toString();
+            const elo = Math.floor(Math.random() * (2200 - 800 + 1)) + 800; // ELO tra 800 e 2200
 
-        async function login() {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const feedback = document.getElementById('login-feedback');
+            return {
+                id_user: id_user,
+                name: nome,
+                surname: cognome,
+                username: username,
+                elo: elo
+            };
+        }
 
-            if (!username || !password) {
-                feedback.textContent = 'Compila username e password.';
-                return;
-            }
+        function creaNuovoClient() {
+            const datiUtente = generaDatiCasuali();
 
-            const res = await fetch('http://localhost:8080/auth/login', {
-                method: 'POST',
-                credentials: 'include',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password })
+            // --- CONNESSIONE WEBSOCKET INDIVIDUALE ---
+            // Passiamo l'intero JSON dei dati utente nell'oggetto 'auth' dell'handshake
+            const socket = io("http://localhost:8080", {
+                auth: datiUtente,
+                forceNew: true, // Importante: forza la creazione di una connessione isolata
+                transports: ['websocket', 'polling']
             });
 
-            if (!res.ok) {
-                feedback.textContent = 'Login fallito. Controlla le credenziali.';
-                return;
-            }
+            // Struttura dati interna del client da salvare nell'array della pagina
+            const clientObj = {
+                dati: datiUtente,
+                socket: socket,
+                matchId: "In attesa..."
+            };
 
-            const meRes = await fetch('http://localhost:8080/api/users/me', {
-                credentials: 'include'
-            });
-            const me = await meRes.json();
+            clientSimulati.push(clientObj);
+
+            // Generiamo la riga della tabella associata a questo client
+            const tbody = document.getElementById('clients-table-body');
+            const tr = document.createElement('tr');
+            tr.id = `row-${datiUtente.id_user}`;
             
-            document.getElementById('login-section').style.display = 'none';
-            document.getElementById('main-section').style.display = 'block';
+            tr.innerHTML = `
+                <td><span id="badge-${datiUtente.id_user}" class="status-badge">Connecting</span></td>
+                <td><strong>${datiUtente.username}</strong></td>
+                <td>${datiUtente.name} ${datiUtente.surname}</td>
+                <td>🎯 ${datiUtente.elo}</td>
+                <td style="font-size:0.8rem; color:#555;">${datiUtente.id_user}</td>
+                <td id="match-cell-${datiUtente.id_user}" class="match-id-cell">Nessuno</td>
+                <td>
+                    <button class="btn-action" onclick="avviaMatchmaking('${datiUtente.id_user}')">Inizia</button>
+                </td>
+            `;
+            tbody.appendChild(tr);
 
-            const friends = await fetch('http://localhost:8080/api/friends', {
-                credentials: 'include'
-            });
-            const friendsData = await friends.json();
-            const friendsList = document.getElementById('friends-list');
-
-            if (friendsData && friendsData.data && friendsData.data.friendship) {
-                for (const f of friendsData.data.friendship) {
-                    const friend = f.friend;
-                    console.log("Amico caricato:", friend);
-
-                    const li = document.createElement('li');
-                    li.id = `friend-${friend.id_user}`;
-                    li.innerHTML = `
-                        <span class="friend-dot" id="dot-${friend.id_user}"></span>
-                        <span>${friend.username}</span>
-                    `;
-                    friendsList.appendChild(li);
-                }
-            }
-
-            // Inizializzazione WebSocket
-            socket = io("http://localhost:8080", {
-                withCredentials: true
-            });
-
+            // Eventi del socket per aggiornare l'interfaccia grafica dei singoli elementi
             socket.on('connect', () => {
-                statusDot.classList.add('connected');
-                statusText.innerText = "Connesso come " + username;
-                btnInvia.disabled = false;
-                console.log("Utente connesso al WebSocket: ", socket.id);
+                const badge = document.getElementById(`badge-${datiUtente.id_user}`);
+                if (badge) {
+                    badge.innerText = "Connected";
+                    badge.classList.add('connected');
+                }
+                console.log(`Socket connesso per ${datiUtente.username} (ID: ${socket.id})`);
             });
 
             socket.on('disconnect', () => {
-                statusDot.classList.remove('connected');
-                statusText.innerText = "Disconnesso";
-                btnInvia.disabled = true;
+                const badge = document.getElementById(`badge-${datiUtente.id_user}`);
+                if (badge) {
+                    badge.innerText = "Disconnected";
+                    badge.classList.remove('connected');
+                }
             });
 
-            socket.on('friend:online', ({ userId }) => {
-                const dot = document.getElementById(`dot-${userId}`);
-                if (dot) dot.classList.add('online');
+            // Ascolto di eventuali risposte di errore o di assegnazione match dal server
+            socket.on('match:assigned', (data) => {
+                // Esempio ipotetico: quando il server assegna il match, aggiorna la cella
+                const matchCell = document.getElementById(`match-cell-${datiUtente.id_user}`);
+                if (matchCell && data && data.matchId) {
+                    matchCell.innerText = data.matchId;
+                    clientObj.matchId = data.matchId;
+                }
             });
 
-            socket.on('friend:offline', ({ userId }) => {
-                const dot = document.getElementById(`dot-${userId}`);
-                if (dot) dot.classList.remove('online');
+            socket.on('error', (err) => {
+                console.error(`Errore sul client ${datiUtente.username}:`, err);
             });
         }
 
-        matchForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            if (!socket) return;
+        // Funzione attivata dal tasto "Inizia" sulla riga del client specifico
+        function avviaMatchmaking(idUser) {
+            // Trova il client corretto nel nostro array di socket
+            const client = clientSimulati.find(c => c.dati.id_user === idUser);
 
-            const payload = {
-                matchType: document.getElementById('matchType').value,
-                roomType: document.getElementById('roomType').value,
-                MatchSettings: null
-            };
+            if (client && client.socket.connected) {
+                const payload = {
+                    matchType: document.getElementById('matchType').value,
+                    roomType: document.getElementById('roomType').value,
+                    MatchSettings: null
+                };
 
-            socket.emit("init", payload);
-            console.log("Oggetto 'init' inviato:", payload);
-            alert("Richiesta di matchmaking inviata!");
-        });
+                // Inviamo l'emit 'init' attraverso IL SOCKET DI QUEL SPECIFICO UTENTE
+                client.socket.emit("init", payload);
+                console.log(`Emit 'init' inviato da ${client.dati.username}:`, payload);
+                
+                document.getElementById(`match-cell-${idUser}`).innerText = "In coda...";
+            } else {
+                alert("Impossibile avviare: il client non è connesso.");
+            }
+        }
     </script>
 </body>
 </html>

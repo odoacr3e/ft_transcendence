@@ -4,6 +4,8 @@ import { abort } from "node:process";
 //SECTION macro
 
 const DEBUG = true;
+//@ts-ignore
+/** @type {boolean} */const DEBUG_WEBSOCKETS = process.env.DEBUG_WEBSOCKETS == "true" ? true : false;
 const HISTORY_PATH = "../history/";
 const HISTORY_FILE = "HISTORY.json";
 const HISTORY_DEFAULT = `${HISTORY_PATH}${HISTORY_FILE}`;
@@ -60,4 +62,4 @@ function error(text)
 	abort();
 }
 
-export { macroReset, DEBUG, HISTORY_FILE, HISTORY_DEFAULT, HISTORY_PATH, CHESSBOARD_H, CHESSBOARD_W, MOVEMENT_MIN, MOVEMENT_MAX, MOVEMENT_BONUS_POINT, BOOSTED_MAX, HASH_SALT, SEED, MATCHTIMER};
+export { macroReset, DEBUG, DEBUG_WEBSOCKETS, HISTORY_FILE, HISTORY_DEFAULT, HISTORY_PATH, CHESSBOARD_H, CHESSBOARD_W, MOVEMENT_MIN, MOVEMENT_MAX, MOVEMENT_BONUS_POINT, BOOSTED_MAX, HASH_SALT, SEED, MATCHTIMER};
