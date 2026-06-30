@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess Matchmaking & Friends</title>
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <style>
+        :root {
+            --bg-color: #302e2b; /* Grigio scuro Chess.com */
+            --card-bg: #262522;
+            --accent-green: #81b64c;
+            --accent-green-hover: #a3d16c;
+            --text-color: #ffffff;
+            --text-muted: #bababa;
+            --border-color: #403e3b;
+            --danger-color: #ff4d4d;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 450px;
+            border: 1px solid var(--border-color);
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            letter-spacing: 0.5px;
+            color: #fff;
+        }
+
+        .status-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            background-color: var(--danger-color);
+            border-radius: 50%;
+            transition: background-color 0.3s ease;
+        }
+
+        .status-dot.connected {
+            background-color: var(--accent-green);
+            box-shadow: 0 0 8px var(--accent-green);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input[type="text"], input[type="password"], select {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: var(--bg-color);
+            border: 2px solid var(--border-color);
+            border-radius: 6px;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            box-sizing: border-box;
+            transition: border-color 0.2s ease;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--accent-green);
+        }
+
+        button {
+            width: 100%;
+            padding: 1rem;
+            background-color: var(--accent-green);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            box-shadow: 0 4px 0px #5b8433;
+            margin-top: 1rem;
+        }
+
+        button:hover {
+            background-color: var(--accent-green-hover);
+        }
+
+        button:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0px #5b8433;
+        }
+
+        button:disabled {
+            background-color: #555;
+            box-shadow: none;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .feedback {
+            color: var(--danger-color);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            text-align: center;
+        }
+
+        /* Sezione Amici */
+        .friends-section {
+            margin-top: 2rem;
+            border-top: 1px solid var(--border-color);
+            padding-top: 1.5rem;
+        }
+
+        .friends-section h3 {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        #friends-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        #friends-list li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #333;
+        }
+
+        .friend-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #555;
+            border-radius: 50%;
+            transition: background-color 0.3s;
+        }
+
+        .friend-dot.online {
+            background-color: var(--accent-green);
+            box-shadow: 0 0 6px var(--accent-green);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="login-section">
+        <h2>♟️ Chess Login</h2>
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" placeholder="Inserisci username">
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Inserisci password">
+        </div>
+        <button onclick="login()">Accedi</button>
+        <div id="login-feedback" class="feedback"></div>
+    </div>
+
+    <div class="container" id="main-section" style="display: none;">
+        <h2>♟️ Chess Matchmaking</h2>
+        
+        <div class="status-container">
+            <div id="statusDot" class="status-dot"></div>
+            <span id="statusText">Connessione in corso...</span>
+        </div>
+
+        <form id="matchForm">
+            <div class="form-group">
+                <label for="matchType">Modalità di Gioco</label>
+                <select id="matchType">
+                    <option value="1v1">1 vs 1 (Classico)</option>
+                    <option value="2v2">2 vs 2 (Bughouse / quadriglia)</option>
+                    <option value="1v1v1v1">4 Giocatori (Tutti contro tutti)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="roomType">Tipo di Stanza</label>
+                <select id="roomType">
+                    <option value="friendly">Amichevole</option>
+                    <option value="ranked">Classificata (Ranked)</option>
+                    <option value="private">Privata (Con codice)</option>
+                    <option value="arena">Torneo Arena</option>
+                </select>
+            </div>
+
+            <button type="submit" id="btnInvia" disabled>Inizia Partita</button>
+        </form>
+
+        <div class="friends-section">
+            <h3>Amici Online</h3>
+            <ul id="friends-list"></ul>
+        </div>
+    </div>
+
+    <script>
+        let socket = null;
+
+        const statusDot = document.getElementById('statusDot');
+        const statusText = document.getElementById('statusText');
+        const btnInvia = document.getElementById('btnInvia');
+        const matchForm = document.getElementById('matchForm');
+
+        async function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const feedback = document.getElementById('login-feedback');
+
+            if (!username || !password) {
+                feedback.textContent = 'Compila username e password.';
+                return;
+            }
+
+            // Richiesta di Login al backend
+            const res = await fetch('http://localhost:8080/auth/login', {
+                method: 'POST',
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+
+            if (!res.ok) {
+                feedback.textContent = 'Login fallito. Controlla le credenziali.';
+                return;
+            }
+
+            // Recupero info utente loggato
+            const meRes = await fetch('http://localhost:8080/api/users/me', {
+                credentials: 'include'
+            });
+            const me = await meRes.json();
+            
+            // Switch delle schermate grafica
+            document.getElementById('login-section').style.display = 'none';
+            document.getElementById('main-section').style.display = 'block';
+
+            // Caricamento lista amici
+            const friends = await fetch('http://localhost:8080/api/friends', {
+                credentials: 'include'
+            });
+            const friendsData = await friends.json();
+            const friendsList = document.getElementById('friends-list');
+
+            for (const f of friendsData.data.friendship) {
+                const friend = f.friend;
+                console.log("Amico caricato:", friend);
+
+                const li = document.createElement('li');
+                li.id = `friend-${friend.id_user}`;
+                li.innerHTML = `
+                    <span class="friend-dot" id="dot-${friend.id_user}"></span>
+                    <span>${friend.username}</span>
+                `;
+                friendsList.appendChild(li);
+            }
+
+            // --- INIZIALIZZAZIONE WEBSOCKET DOPO IL LOGIN SUCCESSFUL ---
+            // Puntiamo esplicitamente a :8080 per far funzionare i cookie cross-origin
+            socket = io("http://localhost:8080", {
+                withCredentials: true // Forza l'invio dei cookie JWT all'handshake websocket
+            });
+
+            socket.on('connect', () => {
+                statusDot.classList.add('connected');
+                statusText.innerText = "Connesso come " + username;
+                btnInvia.disabled = false;
+                console.log("Utente connesso al WebSocket: ", socket.id);
+            });
+
+            socket.on('disconnect', () => {
+                statusDot.classList.remove('connected');
+                statusText.innerText = "Disconnesso";
+                btnInvia.disabled = true;
+            });
+
+            // Ascolta gli eventi di presenza real-time degli amici
+            socket.on('friend:online', ({ userId }) => {
+                const dot = document.getElementById(`dot-${userId}`);
+                if (dot) dot.classList.add('online');
+            });
+
+            socket.on('friend:offline', ({ userId }) => {
+                const dot = document.getElementById(`dot-${userId}`);
+                if (dot) dot.classList.remove('online');
+            });
+        }
+
+        // Gestione invio form Matchmaking
+        matchForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            if (!socket) return;
+
+            const payload = {
+                matchType: document.getElementById('matchType').value,
+                roomType: document.getElementById('roomType').value,
+                MatchSettings: null
+            };
+
+            socket.emit("init", payload);
+            console.log("Oggetto 'init' inviato:", payload);
+            alert("Richiesta di matchmaking inviata!");
+        });
+    </script>
+</body>
+</html>

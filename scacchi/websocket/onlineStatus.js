@@ -27,6 +27,7 @@ export async function announceMeOnline(sockio, user, clientMap, friendsId) {
 			sockio.to(friendSocket.socket.id).emit('friend:online', { userId: user.id_user }); // comunico all'amico (id) online che sono online
 			clientMap.get(user.id_user).socket.emit('friend:online', { userId: id }); // comunico a me stesso che quell'amico e online, altrimenti lo vedrei solo alla sua riconnessione
 		}
+		clientMap.get(user.id_user).socket.emit('friend:online', { userId: user.id_user }); // comunico a me stesso che sono online
 	}
 	return friendsId;
 }

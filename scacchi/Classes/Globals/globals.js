@@ -1,6 +1,7 @@
 // @ts-check
 
 import {Match} from "../Chess/match.js";
+import {Queue} from "./Queue.js";
 import {DEBUG} from "../../Macro/macro.js";
 import { enumConnection } from "../../Macro/enums.js";
 
@@ -21,12 +22,12 @@ class Globals
 		this.matches = new Map();
 		/** @type {Map<string, Socket>} */
 		this.clientMap = new Map();
-		/** @type {Set<string>} */
-		this.rankedQueue = new Set();
-		/** @type {Set<string>} */
-		this.friendlyQueue = new Set();
-		/** @type {Set<string>} */
-		this.arenaQueue = new Set();
+		/** @type {Queue} */
+		this.rankedQueue = new Queue(enumConnection.RANKED);
+		/** @type {Queue} */
+		this.friendlyQueue = new Queue(enumConnection.FRIENDLY);
+		/** @type {Queue} */
+		this.arenaQueue = new Queue(enumConnection.ARENA);
 		/** @type {Map<string, NodeJS.Timeout>} */
 		this.timers = new Map();
 		if (DEBUG)

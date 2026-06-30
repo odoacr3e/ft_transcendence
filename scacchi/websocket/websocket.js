@@ -10,6 +10,7 @@ import {enumConnection, eMatchPresets} from "../Macro/enums.js";
 
 const clientMap = globals.clientMap;
 
+console.log("URL: ", ALLOWED_URL);
 const sockio = new lib.include.SocketIO(server, {
 	cors: {
 		origin: ALLOWED_URL,
