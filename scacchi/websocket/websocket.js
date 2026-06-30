@@ -61,7 +61,7 @@ sockio.on('connection', async (socket) =>
 			return ;
 		}
 		if (includesOneOf(options.roomType, enumConnection.FRIENDLY, enumConnection.RANKED, enumConnection.ARENA))
-			MatchMaking(sockio, socket, user, clientMap, options);
+			MatchMaking(sockio, user.id_user, clientMap, options);
 		else
 			throw ("stanze non implementate");
 	})
@@ -69,7 +69,7 @@ sockio.on('connection', async (socket) =>
 	socket.on('disconnect', async () => {
 		console.log(`User with id ${user.id_user} disconnected`)
 		clientMap.delete(user.id_user);
-		for (const id of friendsId)
+		for (const id of friendsId) // da mettere dentro setTimeout
 		{
 			const friendSock = clientMap.get(id);
 			if (friendSock)

@@ -2,6 +2,7 @@
 
 import {Match} from "../Chess/match.js";
 import {DEBUG} from "../../Macro/macro.js";
+import { enumConnection } from "../../Macro/enums.js";
 
 /** @typedef {import("../Chess/player.js").Player} Player*/
 /** @typedef {{socket: *, allowedBool: boolean, matchData?: Player}} Socket */
@@ -26,10 +27,11 @@ class Globals
 		this.friendlyQueue = new Set();
 		/** @type {Set<string>} */
 		this.arenaQueue = new Set();
+		/** @type {Map<string, NodeJS.Timeout>} */
+		this.timers = new Map();
 		if (DEBUG)
 			this.matches.set(TEST_MATCH, new Match());
 	}
-
 	getDebugMatch()
 	{
 		let	debugMatch;
@@ -40,6 +42,23 @@ class Globals
 		if (!debugMatch)
 			throw ("No debug match in Globals!");
 		return (debugMatch);
+	}
+	/** @param {string} roomType */
+	GetQueue(roomType)
+	{
+		switch (roomType)
+		{
+			case (enumConnection.RANKED):
+				return (this.rankedQueue);
+			case (enumConnection.FRIENDLY):
+				return (this.friendlyQueue);
+			case (enumConnection.ARENA):
+				return (this.arenaQueue);
+			case (enumConnection.PRIVATE):
+				throw (`GetQueue: roomType ${roomType} invalid for matchmaking`);
+			default:
+				throw (`GetQueue: roomType ${roomType} invalid`);
+		}
 	}
 }
 
