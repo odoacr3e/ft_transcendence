@@ -7,7 +7,7 @@
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
     <style>
         :root {
-            --bg-color: #302e2b; /* Grigio scuro Chess.com */
+            --bg-color: #302e2b; /*尊 Grigio scuro Chess.com */
             --card-bg: #262522;
             --accent-green: #81b64c;
             --accent-green-hover: #a3d16c;
@@ -139,7 +139,6 @@
             text-align: center;
         }
 
-        /* Sezione Amici */
         .friends-section {
             margin-top: 2rem;
             border-top: 1px solid var(--border-color);
@@ -189,13 +188,13 @@
         <h2>♟️ Chess Login</h2>
         <div class="form-group">
             <label for="username">Username</label>
-            <input type="text" id="username" placeholder="Inserisci username">
+            <input type="text" id="username" value="Investigatopo12">
         </div>
         <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" id="password" placeholder="Inserisci password">
+            <input type="password" id="password" value="Formaggio123%">
         </div>
-        <button onclick="login()">Accedi</button>
+        <button id="btnLogin" onclick="login()">Accedi</button>
         <div id="login-feedback" class="feedback"></div>
     </div>
 
@@ -244,6 +243,11 @@
         const btnInvia = document.getElementById('btnInvia');
         const matchForm = document.getElementById('matchForm');
 
+        // Effettua il login automatico appena la pagina è pronta
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('btnLogin').click();
+        });
+
         async function login() {
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
@@ -254,7 +258,6 @@
                 return;
             }
 
-            // Richiesta di Login al backend
             const res = await fetch('http://localhost:8080/auth/login', {
                 method: 'POST',
                 credentials: 'include',
@@ -267,40 +270,38 @@
                 return;
             }
 
-            // Recupero info utente loggato
             const meRes = await fetch('http://localhost:8080/api/users/me', {
                 credentials: 'include'
             });
             const me = await meRes.json();
             
-            // Switch delle schermate grafica
             document.getElementById('login-section').style.display = 'none';
             document.getElementById('main-section').style.display = 'block';
 
-            // Caricamento lista amici
             const friends = await fetch('http://localhost:8080/api/friends', {
                 credentials: 'include'
             });
             const friendsData = await friends.json();
             const friendsList = document.getElementById('friends-list');
 
-            for (const f of friendsData.data.friendship) {
-                const friend = f.friend;
-                console.log("Amico caricato:", friend);
+            if (friendsData && friendsData.data && friendsData.data.friendship) {
+                for (const f of friendsData.data.friendship) {
+                    const friend = f.friend;
+                    console.log("Amico caricato:", friend);
 
-                const li = document.createElement('li');
-                li.id = `friend-${friend.id_user}`;
-                li.innerHTML = `
-                    <span class="friend-dot" id="dot-${friend.id_user}"></span>
-                    <span>${friend.username}</span>
-                `;
-                friendsList.appendChild(li);
+                    const li = document.createElement('li');
+                    li.id = `friend-${friend.id_user}`;
+                    li.innerHTML = `
+                        <span class="friend-dot" id="dot-${friend.id_user}"></span>
+                        <span>${friend.username}</span>
+                    `;
+                    friendsList.appendChild(li);
+                }
             }
 
-            // --- INIZIALIZZAZIONE WEBSOCKET DOPO IL LOGIN SUCCESSFUL ---
-            // Puntiamo esplicitamente a :8080 per far funzionare i cookie cross-origin
+            // Inizializzazione WebSocket
             socket = io("http://localhost:8080", {
-                withCredentials: true // Forza l'invio dei cookie JWT all'handshake websocket
+                withCredentials: true
             });
 
             socket.on('connect', () => {
@@ -316,7 +317,6 @@
                 btnInvia.disabled = true;
             });
 
-            // Ascolta gli eventi di presenza real-time degli amici
             socket.on('friend:online', ({ userId }) => {
                 const dot = document.getElementById(`dot-${userId}`);
                 if (dot) dot.classList.add('online');
@@ -328,10 +328,8 @@
             });
         }
 
-        // Gestione invio form Matchmaking
         matchForm.addEventListener('submit', (e) => {
             e.preventDefault();
-
             if (!socket) return;
 
             const payload = {
