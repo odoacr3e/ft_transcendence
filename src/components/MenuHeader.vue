@@ -6,7 +6,7 @@
     <div id="wrap">
         <div class="menu mt-40 relative flex place-items-center">
             <img class="absolute" src="../assets/sword2.png">
-            <RouterLink to="/game">
+            <RouterLink to="/playpage">
                 <b><h2 class="relative text-4xl my-3 ml-2 pl-25 z-0">Gioca</h2></b>
             </RouterLink>
         </div>

@@ -1,0 +1,113 @@
+<script setup>
+  import { initLocalMatchState }  from '../scripts/Data/Archi';
+  import { onMounted, ref, computed, watch } from 'vue';
+  import ChessBoard               from '../components/ChessBoard.vue';
+  import PlayerInfo               from '../components/PlayerInfo.vue';
+  import AppHeader                   from '../components/AppHeader.vue';
+
+  const ready = ref(false);
+  const style = ref("8x8x2");
+
+  const matchType = ref(null);
+  const players   = ref(null);
+  const time      = ref(null);
+
+  const canPlay = computed(() => {
+    if (!matchType.value || !players.value) return false;
+    if (matchType.value === 'PRIVATE') return time.value !== null;
+    return true;
+  });
+
+  watch(matchType, (val) => { if (val !== 'PRIVATE') time.value = null; });
+
+  onMounted(async () => {
+    try{
+      await initLocalMatchState(style.value);
+      ready.value = true;
+    } catch (err) {
+      console.log(`${err}`);
+    }
+  })
+</script>
+
+<template>
+  <div class="min-h-screen flex flex-col">
+        <AppHeader class="z-11"/>
+        <div id="wrap" class="grow">
+            <div class="flex z-2 bg-[#181715] rounded-3xl">
+                <div class="p-6 bg-[#201e1c] rounded-l-3xl border-r border-[#4e4e4e8c]"></div>
+                <div class="px-1 pb-16 flex flex-col items-center w-[40vw]">
+    				<img :draggable="false" src="../assets/CrownIcon.png" alt="" class="w-30">
+    				<h1 class="text-[200%] mb-1 text-white justify-self-center whitespace-nowrap">Choose your fate</h1>
+					
+                	<div class="mb-5 -mt- flex flex-row gap-4">
+                		<span class="border-b border-[#4e4e4e8c] h-4 w-40"></span>
+                		<p class="text-[80%] text-zinc-300 mt-1"></p>
+                		<span class="border-b border-[#4e4e4e8c] h-4 w-40"></span>
+                	</div>
+					<div class="translate-y-9 pl-20 w-full"> <!-- Pos -->
+						<div class="flex flex-col gap-10"> <!-- Layout -->
+							<div class="flex flex-row items-center">
+							    <div class="w-20 shrink-0 flex items-center">
+							        <img src="../assets/chessboard.png" class="w-18 -ml-4 -translate-y-4">
+							    </div>
+								<div class="flex flex-row gap-4 flex-1 justify-center pr-30">
+									<div @click="matchType = matchType === 'PRIVATE'  ? null : 'PRIVATE'"  :class="matchType === 'PRIVATE'  ? 'border-yellow-400' : 'border-[#4e4e4e8c]'" class="border rounded-lg py-2 text-white text-sm cursor-pointer hover:bg-[#2e2c2a] w-24 text-center">PRIVATE</div>
+									<div @click="matchType = matchType === 'FRIENDLY' ? null : 'FRIENDLY'" :class="matchType === 'FRIENDLY' ? 'border-yellow-400' : 'border-[#4e4e4e8c]'" class="border rounded-lg py-2 text-white text-sm cursor-pointer hover:bg-[#2e2c2a] w-24 text-center">FRIENDLY</div>
+									<div @click="matchType = matchType === 'RANKED'   ? null : 'RANKED'"   :class="matchType === 'RANKED'   ? 'border-yellow-400' : 'border-[#4e4e4e8c]'" class="border rounded-lg py-2 text-white text-sm cursor-pointer hover:bg-[#2e2c2a] w-24 text-center">RANKED</div>
+								</div>
+							</div>
+							<div class="flex flex-row items-center">
+							    <div class="w-20 shrink-0 flex items-center">
+							        <img src="../assets/people.png" class="w-18 translate-y-1">
+							    </div>
+								<div class="flex flex-row gap-4 flex-1 justify-center pr-30">
+									<div @click="players = players === '1v1'     ? null : '1v1'"     :class="players === '1v1'     ? 'border-yellow-400' : 'border-[#4e4e4e8c]'" class="border rounded-lg py-2 text-white text-sm cursor-pointer hover:bg-[#2e2c2a] w-24 text-center">1v1</div>
+									<div @click="players = players === '2v2'     ? null : '2v2'"     :class="players === '2v2'     ? 'border-yellow-400' : 'border-[#4e4e4e8c]'" class="border rounded-lg py-2 text-white text-sm cursor-pointer hover:bg-[#2e2c2a] w-24 text-center">2v2</div>
+									<div @click="players = players === '1v1v1v1' ? null : '1v1v1v1'" :class="players === '1v1v1v1' ? 'border-yellow-400' : 'border-[#4e4e4e8c]'" class="border rounded-lg py-2 text-white text-sm cursor-pointer hover:bg-[#2e2c2a] w-24 text-center">1v1v1v1</div>
+								</div>
+							</div>
+							<div class="flex flex-row items-center">
+							    <div class="w-20 shrink-0 flex items-center">
+							        <img src="../assets/clock.png" class="w-18">
+							    </div>
+								<div class="flex flex-row gap-4 flex-1 justify-center pr-30">
+									<div @click="matchType === 'PRIVATE' && (time = time === '15 min' ? null : '15 min')" :class="matchType === 'PRIVATE' ? (time === '15 min' ? 'border-yellow-400' : 'border-[#4e4e4e8c]') : 'border-[#4e4e4e8c] opacity-30 cursor-not-allowed'" class="border rounded-lg py-2 text-white text-sm w-24 text-center transition-opacity">15 min</div>
+									<div @click="matchType === 'PRIVATE' && (time = time === '10 min' ? null : '10 min')" :class="matchType === 'PRIVATE' ? (time === '10 min' ? 'border-yellow-400' : 'border-[#4e4e4e8c]') : 'border-[#4e4e4e8c] opacity-30 cursor-not-allowed'" class="border rounded-lg py-2 text-white text-sm w-24 text-center transition-opacity">10 min</div>
+									<div @click="matchType === 'PRIVATE' && (time = time === 'CUSTOM'  ? null : 'CUSTOM')"  :class="matchType === 'PRIVATE' ? (time === 'CUSTOM'  ? 'border-yellow-400' : 'border-[#4e4e4e8c]') : 'border-[#4e4e4e8c] opacity-30 cursor-not-allowed'" class="border rounded-lg py-2 text-white text-sm w-24 text-center transition-opacity">CUSTOM</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="flex justify-center mt-30 -pb-15">
+               			<button
+								:disabled="!canPlay"
+								:class="canPlay ? 'bg-yellow-400 shadow-yellow-400/30 hover:bg-yellow-300 hover:shadow-yellow-300/50 active:scale-95 cursor-pointer' : 'bg-zinc-600 shadow-zinc-600/30 cursor-not-allowed opacity-50'"
+								class="px-16 py-4 text-2xl font-bold tracking-widest text-black rounded-2xl shadow-lg transition-all duration-150">
+                    		PLAY
+               			</button>
+            		</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<style scoped>
+  #wrap {
+        display: grid;
+        grid-template-columns: max-content max-content;
+        position: relative;
+        justify-content: center;
+        justify-items: center;
+        align-items: center;
+        z-index: 10;
+        font-size: 110%;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        user-select: none;
+    }
+
+    h1, h4 {
+        font-family: "Copperplate", Times;
+    }
+</style>

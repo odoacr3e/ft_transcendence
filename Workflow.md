@@ -128,8 +128,7 @@ boardConverter()
 //TODO FRONTEND - 
 	▫	websocket per lo stato online
 	▫	websocket per le notifiche
-	▫	refactor pagina di gioco, vanno integrate le opzioni 
-		di gioco (creare una room, giocare partite preset, partite custom)
+	▫	refactor pagina di gioco, pulsanti con tipi di partite, creazione stanze, sfida amici
 	▫	reset della password
 	▫	pagina della leaderboard
 	▫	history dei match
