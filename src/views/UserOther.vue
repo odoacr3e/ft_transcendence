@@ -2,6 +2,7 @@
     import AppHeader from '../components/AppHeader.vue';
     import TagTitle from '../components/TagTitle.vue';
     import FriendList from '../components/FriendList.vue';
+    import statusOnline from '../components/statusOnline.vue';
     import FriendButton from '../components/FriendButton.vue';
     import { useAuthStore } from "../stores/auth.st";
     import { storeToRefs }  from 'pinia';
