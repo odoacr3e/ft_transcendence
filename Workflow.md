@@ -128,7 +128,7 @@ boardConverter()
 //TODO FRONTEND - 
 	▫	websocket per lo stato online
 	▫	websocket per le notifiche
-	▫	refactor pagina di gioco, pulsanti con tipi di partite, creazione stanze, sfida amici
+	▫	refactor pagina di gioco, pulsanti con tipi di partite, creazione stanze, sfida amici [LEO]
 	▫	reset della password
 	▫	pagina della leaderboard
 	▫	history dei match

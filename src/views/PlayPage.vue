@@ -72,9 +72,9 @@
 							        <img src="../assets/clock.png" class="w-18">
 							    </div>
 								<div class="flex flex-row gap-4 flex-1 justify-center pr-30">
-									<div @click="matchType === 'PRIVATE' && (time = time === '15 min' ? null : '15 min')" :class="matchType === 'PRIVATE' ? (time === '15 min' ? 'border-yellow-400' : 'border-[#4e4e4e8c]') : 'border-[#4e4e4e8c] opacity-30 cursor-not-allowed'" class="border rounded-lg py-2 text-white text-sm w-24 text-center transition-opacity">15 min</div>
-									<div @click="matchType === 'PRIVATE' && (time = time === '10 min' ? null : '10 min')" :class="matchType === 'PRIVATE' ? (time === '10 min' ? 'border-yellow-400' : 'border-[#4e4e4e8c]') : 'border-[#4e4e4e8c] opacity-30 cursor-not-allowed'" class="border rounded-lg py-2 text-white text-sm w-24 text-center transition-opacity">10 min</div>
-									<div @click="matchType === 'PRIVATE' && (time = time === 'CUSTOM'  ? null : 'CUSTOM')"  :class="matchType === 'PRIVATE' ? (time === 'CUSTOM'  ? 'border-yellow-400' : 'border-[#4e4e4e8c]') : 'border-[#4e4e4e8c] opacity-30 cursor-not-allowed'" class="border rounded-lg py-2 text-white text-sm w-24 text-center transition-opacity">CUSTOM</div>
+									<div @click="matchType === 'PRIVATE' && (time = time === '15 min' ? null : '15 min')" :class="matchType === 'PRIVATE' ? (time === '15 min' ? 'border-yellow-400 cursor-pointer' : 'border-[#4e4e4e8c] cursor-pointer') : 'border-[#4e4e4e8c] opacity-30 cursor-not-allowed'" class="border rounded-lg py-2 text-white text-sm w-24 text-center transition-opacity hover:bg-[#2e2c2a]">15 min</div>
+									<div @click="matchType === 'PRIVATE' && (time = time === '10 min' ? null : '10 min')" :class="matchType === 'PRIVATE' ? (time === '10 min' ? 'border-yellow-400 cursor-pointer' : 'border-[#4e4e4e8c] cursor-pointer') : 'border-[#4e4e4e8c] opacity-30 cursor-not-allowed'" class="border rounded-lg py-2 text-white text-sm w-24 text-center transition-opacity hover:bg-[#2e2c2a]">10 min</div>
+									<div @click="matchType === 'PRIVATE' && (time = time === 'CUSTOM'  ? null : 'CUSTOM')"  :class="matchType === 'PRIVATE' ? (time === 'CUSTOM'  ? 'border-yellow-400 cursor-pointer' : 'border-[#4e4e4e8c] cursor-pointer') : 'border-[#4e4e4e8c] opacity-30 cursor-not-allowed'" class="border rounded-lg py-2 text-white text-sm w-24 text-center transition-opacity hover:bg-[#2e2c2a]">CUSTOM</div>
 								</div>
 							</div>
 						</div>
