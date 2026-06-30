@@ -7,6 +7,7 @@ import { createJwt, checkJwt, revokeTokenSessions,
 import { jsonResponse } from "../utils/response.js";
 import { colors } from "../utils/colors.js";
 import { log } from "../utils/log.js";
+import { sendEmail } from "../lib/emailSender.js";
 const { fs, logfd } = lib.include;
 const { prisma } = lib.conn;
 const { redis } = lib.conn;
@@ -79,11 +80,17 @@ authRouter.post("/register", async (req, res) => {
 			return res.status(409).json(jsonResponse.ResponseError("User already exists"));
 		const hashedPwd = await bcrypt.hash(password, parseInt(lib.Macro.HASH_SALT));
 		const user = await usersQuery.createUser(name, surname, username, hashedPwd, email, nationality);
+		// await sendEmail({
+		// 	to: user.email,
+		// 	subject: "Nuovo account creato",
+		// 	body: `<h2>Ciao ${user.username}!</h2><p>Il tuo acoount e' stato creato</p>`
+		// })
 		req.user = user;
 		await createJwt(req, res);
 		// printLog(`New user created with username ${user.username}`, colors.brightGreen)
 		return res.status(201).json(jsonResponse.ResponseSuccess({ "user": user }));
 	} catch (error) {
+		console.log("Error: ", error);
 		// printLog(`User couldn't correctly register due server error: ${error.name}`, colors.brightYellow);
 		return res.status(500).json(jsonResponse.ResponseError("Server error creating user"));
 	}
@@ -101,7 +108,7 @@ authRouter.post("/refresh", async (req, res) => {
 		const refToken = await redis.get(`refresh:${refresh}`);
 		if (!refToken)
 			return res.status(403).json(jsonResponse.ResponseError("Invalid or expired token"));
-		/** @type {token} raw */
+		/** @type {token} rawToken */
 		const rawToken = JSON.parse(refToken);
 		if (rawToken.used == true)
 		{

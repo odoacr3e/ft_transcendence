@@ -23,6 +23,7 @@ export const ALLOWED_URL = process.env.ALLOWED_URL?.split(',') ?? ['http://local
 import { prisma } from "./prisma.js";
 import { redis } from "./redis.js";
 import crypto from "crypto";
+import { sendEmail } from "./emailSender.js"
 
 // SECTION - external inclusions
 const include = {http, https, url, fs, path, express, SocketIO, app, server, parse, cookieParser};
@@ -46,7 +47,7 @@ import * as utils from "../utils/moveUtils.js";
 import {bastardChecks, isDangerous} from "../utils/gameUtils.js";
 let gameUtils = {bastardChecks, isDangerous};
 
-const conn = { prisma, redis, crypto }
+const conn = { prisma, redis, crypto, sendEmail }
 const auth = { jwt, cors };
 
 const lib = { include, Chess, Macro, Enums, preset, utils, gameUtils, conn};
