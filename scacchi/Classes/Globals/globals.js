@@ -32,6 +32,7 @@ class Globals
 		this.timers = new Map();
 		if (DEBUG)
 			this.matches.set(TEST_MATCH, new Match());
+		this.lastMatchId = "0";
 	}
 	getDebugMatch()
 	{

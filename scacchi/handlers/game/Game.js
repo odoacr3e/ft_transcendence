@@ -71,7 +71,9 @@ async function gameHttpHandler(req, res)
 	let	match;
 	let	result;
 
-	match = vault.getDebugMatch();
+	match = vault.matches.get(vault.lastMatchId);
+	if (!match)
+		throw (`httpHandler: ${vault.lastMatchId} does not exist`);
 	body = normifyRequest(match.cursor, req.body);
 	if (body.type == "init")
 	{

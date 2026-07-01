@@ -74,7 +74,7 @@ sockio.on('connection', async (socket) =>
 			return ;
 		}
 		if (includesOneOf(options.roomType, enumConnection.FRIENDLY, enumConnection.RANKED, enumConnection.ARENA))
-			MatchMaking(sockio, user.id_user, clientMap, options);
+			MatchMaking(sockio, user, clientMap, options);
 		else
 			throw ("stanze non implementate");
 	})

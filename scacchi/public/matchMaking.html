@@ -207,7 +207,7 @@
                         <th>Stato</th>
                         <th>Username</th>
                         <th>Anagrafica</th>
-                        <th>ELO</th>
+                        <th>points</th>
                         <th>ID Utente (id_user)</th>
                         <th>ID Match</th>
                         <th>Azione</th>
@@ -224,9 +224,9 @@
         const clientSimulati = [];
 
         // Liste di nomi per la generazione casuale dei client finti
-        const nomi = ["Mario", "Luigi", "Anna", "Elena", "Giovanni", "Sofia", "Rodolfo", "Beatrice"];
-        const cognomi = ["Rossi", "Ferrari", "Bianchi", "Russo", "Esposito", "Gallo", "Topo", "Formaggio"];
-        const usernamePrefix = ["King", "GrandMaster", "Pawn", "Knight", "Rook", "CheckMate", "Investiga"];
+        const nomi = ["Mavi", "Leonardo", "Marco", "Eren", "Edoardo", "Sofia", "Rodolfo", "Alessandro", "Francesco", "Glumbi", "Pirtolo"];
+        const cognomi = ["Fanelli", "Biagi", "Cerbai", "Parolisi", "Russo", "Raccanello", "Gallo", "Topo", "Formaggio", "Tersillo", "Sgrolla", "Bianghi"];
+        const usernamePrefix = ["King", "GrandMaster", "Pawn", "Knight", "Rook", "CheckMate", "Investigatopo", "Bro", "Yorlo", "Calcio di pinirlone"];
         const ids = [50, 55, 57, 60, 2, 3, 61, 62, 63, 64, 65, 66, 67, 1];
 
         function generaDatiCasuali() {
@@ -234,14 +234,14 @@
             const cognome = cognomi[Math.floor(Math.random() * cognomi.length)];
             const username = usernamePrefix[Math.floor(Math.random() * usernamePrefix.length)] + Math.floor(Math.random() * 100);
             const id_user = ids[(Math.floor(Math.random() * 13))];
-            const elo = Math.floor(Math.random() * (2200 - 800 + 1)) + 800; // ELO tra 800 e 2200
+            const points = Math.floor(Math.random() * (2200 - 800 + 1)) + 800; // points tra 800 e 2200
 
             return {
                 id_user: id_user,
                 name: nome,
                 surname: cognome,
                 username: username,
-                elo: elo
+                points: points
             };
         }
 
@@ -274,7 +274,7 @@
                 <td><span id="badge-${datiUtente.id_user}" class="status-badge">Connecting</span></td>
                 <td><strong>${datiUtente.username}</strong></td>
                 <td>${datiUtente.name} ${datiUtente.surname}</td>
-                <td>🎯 ${datiUtente.elo}</td>
+                <td>🎯 ${datiUtente.points}</td>
                 <td style="font-size:0.8rem; color:#555;">${datiUtente.id_user}</td>
                 <td id="match-cell-${datiUtente.id_user}" class="match-id-cell">Nessuno</td>
                 <td>
