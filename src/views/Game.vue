@@ -1,21 +1,21 @@
 <script setup>
-  import { initLocalMatchState }  from '../scripts/Data/Archi';
-  import { onMounted, ref }       from 'vue';
-  import ChessBoard               from '../components/ChessBoard.vue';
-  import PlayerInfo               from '../components/PlayerInfo.vue';
-  import AppHeader                from '../components/AppHeader.vue';
+	import { initLocalMatchState }  from '../scripts/Data/Archi';
+	import { onMounted, ref }       from 'vue';
+	import ChessBoard               from '../components/ChessBoard.vue';
+	import PlayerInfo               from '../components/PlayerInfo.vue';
+	import AppHeader                from '../components/AppHeader.vue';
 
-  const ready = ref(false);
-  const style = ref("8x8x2");
+	const ready = ref(false);
+	const style = ref("1v1");
 
-  onMounted(async () => {
-    try{
-      await initLocalMatchState(style.value);
-      ready.value = true;
-    } catch (err) {
-      console.log(`${err}`);
-    }
-  })
+	onMounted(async () => {
+		try{
+		  await initLocalMatchState(style.value);
+		  ready.value = true;
+		} catch (err) {
+		  console.log(`${err}`);
+		}
+	})
 </script>
 
 <template>
