@@ -349,11 +349,11 @@ class MatchSettings
 			case (eMatchPresets.ClassicTwoPlayers):
 				return (new MatchSettings(matchPresets.twoPlayer));
 			case (eMatchPresets.ClassicFourPlayers):
-				return (new MatchSettings(matchPresets.fourPlayer));
-			case (eMatchPresets.ClassicFreeForAll):
-				return (new MatchSettings(matchPresets.fourPlayer));
-			case (eMatchPresets.CornersFourPlayers):
 				return (new MatchSettings(matchPresets.fourPlayerWalls));
+			case (eMatchPresets.ClassicFreeForAll):
+				return (new MatchSettings(matchPresets.fourPlayerWalls));
+			case (eMatchPresets.NoCornersFourPlayers):
+				return (new MatchSettings(matchPresets.fourPlayer));
 			default:
 				throw (`MatchSettings: invalid preset name "${matchPresetType}"`);
 		}
@@ -373,6 +373,6 @@ matchPresets.fourPlayer.board.heigth = 14;
 matchPresets.fourPlayer.players.number = 4;
 matchPresets.fourPlayerWalls = structuredClone(matchPresets.fourPlayer);
 matchPresets.fourPlayerWalls.board.corners = true;
-matchPresets.fourPlayerWalls.presetType = eMatchPresets.CornersFourPlayers;
+matchPresets.fourPlayerWalls.presetType = eMatchPresets.NoCornersFourPlayers;
 
 export {Match, Timer, MatchSettings, matchPresets};

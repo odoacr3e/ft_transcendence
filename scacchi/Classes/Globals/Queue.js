@@ -9,7 +9,7 @@ import { matchMakingOpt } from "../endPoint/matchInit.js";
 const fourPresets = [
 	eMatchPresets.ClassicFourPlayers,
 	eMatchPresets.ClassicFreeForAll,
-	eMatchPresets.CornersFourPlayers];
+	eMatchPresets.NoCornersFourPlayers];
 
 /**
  * @extends {Map<string, QueueNode>}
@@ -29,6 +29,7 @@ export class Queue extends Map
 	AddNode(userId, options)
 	{
 		this.set(userId, new QueueNode(options));
+		this.get(userId)?.userSet.add(userId);
 	}
 	/** @param {string} userId */
 	DelNode(userId)
@@ -54,6 +55,13 @@ export class Queue extends Map
 			throw (`Queue, MergeNode: toNode ${toNode} does not exist`);
 		this.set(fromId, toNode);
 	}
+	// /** @param {string} userId */
+	// Find(userId)
+	// {
+	// 	let options;
+
+	// 	this.get(userId);
+	// }
 }
 
 class QueueNode
@@ -67,7 +75,7 @@ class QueueNode
 		/** @type {MatchSettings | null}*/	this.matchOptions = options.matchSettings;
 		/** @type {string} */				this.matchType = options.matchType;
 		/** @type {number} */				this.minPlayers = 2;
-		/** @type {number} */				this.currPlayers = 0;
+		/** @type {number} */				this.currPlayers = 1;
 
 		if (includesOneOf(this.matchType, fourPresets))
 			this.minPlayers = 4;

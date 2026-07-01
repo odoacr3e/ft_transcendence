@@ -24,11 +24,11 @@ const eEvents =
 
 const eMatchPresets =
 {
-	ClassicTwoPlayers: "8x8x2",
-	ClassicFourPlayers: "14x14x4",
+	ClassicTwoPlayers: "1v1",
+	ClassicFourPlayers: "2v2", //TODO - da implementare
 	ClassicFreeForAll: "1v1v1v1",
-	CornersFourPlayers: "14x14x4barrier",
-}
+	NoCornersFourPlayers: "14x14x4",
+};
 
 /**
  * @enum {number}

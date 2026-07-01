@@ -24,5 +24,6 @@ export function MatchMaking(sockio, userId, clientMap, options)
 		throw (`user id ${userId} does not exist`);
 	queue = globals.GetQueue(options.roomType);
 	queue.AddNode(userId, options);
-	console.log(`userId ${userId} added to queue ${queue.roomType}`);
+	console.log(`user in queue ${options.roomType}:`);
+	console.log(queue);
 }

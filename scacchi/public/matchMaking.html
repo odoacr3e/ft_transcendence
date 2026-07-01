@@ -227,12 +227,13 @@
         const nomi = ["Mario", "Luigi", "Anna", "Elena", "Giovanni", "Sofia", "Rodolfo", "Beatrice"];
         const cognomi = ["Rossi", "Ferrari", "Bianchi", "Russo", "Esposito", "Gallo", "Topo", "Formaggio"];
         const usernamePrefix = ["King", "GrandMaster", "Pawn", "Knight", "Rook", "CheckMate", "Investiga"];
+        const ids = [50, 55, 57, 60, 2, 3, 61, 62, 63, 64, 65, 66, 67, 1];
 
         function generaDatiCasuali() {
             const nome = nomi[Math.floor(Math.random() * nomi.length)];
             const cognome = cognomi[Math.floor(Math.random() * cognomi.length)];
             const username = usernamePrefix[Math.floor(Math.random() * usernamePrefix.length)] + Math.floor(Math.random() * 100);
-            const id_user = (Math.floor(Math.random() * 10000)).toString();
+            const id_user = ids[(Math.floor(Math.random() * 13))];
             const elo = Math.floor(Math.random() * (2200 - 800 + 1)) + 800; // ELO tra 800 e 2200
 
             return {
@@ -318,6 +319,7 @@
         // Funzione attivata dal tasto "Inizia" sulla riga del client specifico
         function avviaMatchmaking(idUser) {
             // Trova il client corretto nel nostro array di socket
+            idUser = Number(idUser);
             const client = clientSimulati.find(c => c.dati.id_user === idUser);
 
             if (client && client.socket.connected) {
