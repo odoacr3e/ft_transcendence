@@ -13,7 +13,6 @@ import { DEBUG_WEBSOCKETS } from "../Macro/macro.js";
 
 const clientMap = globals.clientMap;
 
-console.log("URL: ", ALLOWED_URL);
 const sockio = new lib.include.SocketIO(server, {
 	cors: {
 		origin: ALLOWED_URL,
