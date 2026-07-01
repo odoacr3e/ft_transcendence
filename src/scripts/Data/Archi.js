@@ -1,7 +1,7 @@
 import { initLocalBoard, localMatchState, localBoard,  
 			localPlayers, startLocalMatchState, 
-			localInfo}					from "./Variables.js";
-import { checkEndTurn, hasBoost, DEBUGSetVisible, checkUpgrade }	from "./utils/ArchiUtils.js";
+			localInfo}															from "./Variables.js";
+import { checkEndTurn, hasBoost, DEBUGSetVisible, checkUpgrade, _jsonReviver }	from "./utils/ArchiUtils.js";
 
 //SECTION - INIT FUNCTIONS
 
@@ -17,6 +17,7 @@ export async function loadReceivedMatch(style)
 	if (!response.ok)
 		throw new Error(`Impossibile caricare /match.json: ${response.status}`);
 	const match = await response.json();
+	// const match = await JSON.parse(response.body, _jsonReviver);
 	// console.log(`responde: ${JSON.stringify(match)}`)
 	return match;
 }

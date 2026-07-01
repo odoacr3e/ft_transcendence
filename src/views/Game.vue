@@ -3,7 +3,7 @@
   import { onMounted, ref }       from 'vue';
   import ChessBoard               from '../components/ChessBoard.vue';
   import PlayerInfo               from '../components/PlayerInfo.vue';
-  import AppHeader                   from '../components/AppHeader.vue';
+  import AppHeader                from '../components/AppHeader.vue';
 
   const ready = ref(false);
   const style = ref("8x8x2");

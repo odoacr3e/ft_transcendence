@@ -70,8 +70,8 @@ export function initLocalBoard(boardData)
 				
 				const boostedTargetZones = new Map(
 				  Object.entries(squareData.boostedTargetZones || {}).map(([key, value]) => {
-				    // console.log(`key: ${key}, value: ${value}`);
-				    return [key, new Set(Array.isArray(value) ? value : [])];
+					// console.log(`key: ${key}, value: ${value}`);
+					return [key, new Set(Array.isArray(value) ? value : [])];
 				  })
 				);
 
@@ -135,3 +135,22 @@ export const IMG_PATHS = Object.freeze ({
 	"greenMinotaurus" : new URL("../../assets/pieces/green/rook.png", import.meta.url).href,
 	"greenBastards" : new URL("../../assets/pieces/green/pawn.png", import.meta.url).href
 });
+
+export class matchMakingOpt
+{
+	/**
+	* //FIXME - controllare parametri di cosa ci viene dato
+	* @param {matchMakingOpt} options
+	*/
+	constructor(options)
+	{
+		/** @type {string} */				this.matchType = "1v1";
+		/** @type {string} */				this.roomType = "friendly";
+		/** @type {MatchSettings | null} */	this.matchSettings = null;
+		if (!options)
+			return ;
+		this.matchType = options.matchType;
+		this.roomType = options.roomType;
+		this.matchSettings = options.matchSettings;
+	}
+}

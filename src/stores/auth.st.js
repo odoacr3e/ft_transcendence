@@ -13,13 +13,15 @@ export const useAuthStore = defineStore('auth', {
 		socket: shallowRef(null)
 	}),
 
-	getters: {
+	getters: 
+	{
 		isAuthenticated: (state) => !!state.user,
 		username: (state) => state.user?.username ?? 'Guest',
 		isUserOnline: (state) => (userId) => state.usersOnline.has(userId)
 	},
 
-	actions: {
+	actions: 
+	{
 		async login(credentials)
 		{
 			this.isLoading = true;
@@ -46,14 +48,16 @@ export const useAuthStore = defineStore('auth', {
 			return (this.error);
 		},
 
-		async logout() {
+		async logout() 
+		{
 			await authApi.logout();
 			this.disconnectSocket();
 			this.user = null;
 			this.usersOnline.clear();
 		},
 
-		async fetchMe() {
+		async fetchMe() 
+		{
 			if (this.sessionChecked) { return; }
 			try {
 				this.user = await authApi.me();
@@ -63,7 +67,8 @@ export const useAuthStore = defineStore('auth', {
 			finally	{ this.sessionChecked = true; }
 		},
 
-		connectSocket() {
+		connectSocket() 
+		{
 			if (this.socket) { return; }
 
 			this.socket = io('http://localhost:8080', {
@@ -79,7 +84,8 @@ export const useAuthStore = defineStore('auth', {
 			});
 		},
 
-		disconnectSocket() {
+		disconnectSocket() 
+		{
 			if (this.socket) {
 				this.socket.disconnect();
 				this.socket = null;

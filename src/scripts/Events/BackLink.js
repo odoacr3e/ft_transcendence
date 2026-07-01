@@ -3,6 +3,7 @@ import { updateMatchState }			from "@/scripts/Data/Archi";
 import { clearHighlight }			from "@/scripts/Events/utils/HighlightUtils.js";
 import { getTarget }				from "./utils/MovementUtils.js";
 import { MACRO } 					from "@/scripts/Data/Variables";
+// import { _jsonReviver }				from "../Data/utils/ArchiUtils.js";
 
 export async function sendToBackend(fromId, toId, flag)
 {
@@ -57,8 +58,9 @@ export async function requestToBack(fromSquare, toSquare)
 
 		if (!response.ok) throw new Error(`Impossibile caricare /move.json: ${response.status}`);
 
+		// const match = await JSON.parse(response.body, _jsonReviver);
 		const match = await response.json();
-
+		
 		updateMatchState(match);
 		if (toPiece)
 			localInfo.capturedP[toPiece.team === "white" ? "black" : "white"][toPiece.type] += 1;
