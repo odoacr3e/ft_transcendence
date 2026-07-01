@@ -14,6 +14,8 @@ import { History } from "./history.js";
 import { clientBoard } from "../../handlers/game/utils.js";
 import { MATCHTIMER } from "../../Macro/macro.js"; 
 
+/** @typedef {import("../Globals/Queue.js").QueueNode} QueueNode*/
+
 class Match
 {
 
@@ -53,6 +55,8 @@ class Match
 		this.start_date = new Date().toISOString();
 		/** @type {Number|null}*/this.tournament_id = null;
 		/** @type {String|null}*/this.tournament_round = null;
+
+		this.cursor.square = this.currentPlayer.King;
 	}
 	/** @param {MatchSettings | string | null} preset*/
 	Reset(preset=null)
@@ -90,6 +94,8 @@ class Match
 		this.start_date = new Date().toISOString();
 		this.tournament_id = null;
 		this.tournament_round = null;
+
+		this.cursor.square = this.currentPlayer.King;
 	}
 	endTurn()
 	{
@@ -272,6 +278,20 @@ class Match
 	PlayerKingSquare()
 	{
 		return (this.board.get(this.currentPlayer.King));
+	}
+	/** @param {QueueNode} queueNode */
+	CreateId(queueNode)
+	{
+		let userNames = "";
+		let date;
+		let result;
+
+		for (let x of queueNode.userSet)
+			userNames += x;
+		date = Date.now().toString();
+		result = date + userNames;
+		console.log(`MatchId: ${result}`);
+		return result;
 	}
 }
 

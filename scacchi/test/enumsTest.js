@@ -19,6 +19,7 @@ const cmd =
 	MOVE: "space",
 	LOAD_HISTORY: "p",
 	SQUARE_INFO: "i",
+	GOTO_KING: "k",
 	HELP: "h"
 };
 

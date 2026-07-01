@@ -57,7 +57,9 @@ process.stdin.on('keypress', (str, key) =>
 	/** @type {Result}*/let	result;
 	let	dx;
 	let	dy;
+	let mutex;
 
+	match = globals.GetLastMatch();
 	mutex = true;
 	dx = 0;
 	dy = 0;
@@ -79,6 +81,9 @@ process.stdin.on('keypress', (str, key) =>
 			break ;
 		case (cmd.RIGHT) : case (cmd.D) :
 			dx += 1;
+			break ;
+		case (cmd.GOTO_KING) :
+			match.cursor.square = match.currentPlayer.King;
 			break ;
 		case (cmd.TARGET_DANGER_SWITCH) :
 			if (TargetDangerSwitch == "None")
@@ -188,6 +193,7 @@ function print(key)
 		console.log(`transform "${cmd.TRANSFORM}"`);
 		console.log(`square info "${cmd.SQUARE_INFO}"`);
 		console.log(`restoreHistory "${cmd.LOAD_HISTORY}"`);
+		console.log(`gotoKing "${cmd.GOTO_KING}"`);
 	}
 }
 

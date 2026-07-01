@@ -34,17 +34,6 @@ class Globals
 			this.matches.set(TEST_MATCH, new Match());
 		this.lastMatchId = "0";
 	}
-	getDebugMatch()
-	{
-		let	debugMatch;
-
-		if (!DEBUG)
-			throw ("Please turn DEBUG on to use this function");
-		debugMatch = this.matches.get(TEST_MATCH);
-		if (!debugMatch)
-			throw ("No debug match in Globals!");
-		return (debugMatch);
-	}
 	/** @param {string} roomType */
 	GetQueue(roomType)
 	{
@@ -61,6 +50,26 @@ class Globals
 			default:
 				throw (`GetQueue: roomType ${roomType} invalid`);
 		}
+	}
+	GetLastMatch()
+	{
+		let	match;
+
+		match = this.matches.get(this.lastMatchId);
+		if (!match)
+			throw (`GetLastMatch: ${this.lastMatchId} does not exist`);
+		return (match);
+	}
+	getDebugMatch()
+	{
+		let	debugMatch;
+
+		if (!DEBUG)
+			throw ("Please turn DEBUG on to use this function");
+		debugMatch = this.matches.get(TEST_MATCH);
+		if (!debugMatch)
+			throw ("No debug match in Globals!");
+		return (debugMatch);
 	}
 }
 

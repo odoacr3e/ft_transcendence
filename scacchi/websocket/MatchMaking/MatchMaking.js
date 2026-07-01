@@ -79,6 +79,8 @@ export function createMatch(queueNode)
 	preset = queueNode.matchOptions? queueNode.matchOptions: queueNode.matchType;
 	match = new Match(preset);
 	result = init(match, preset);
+	globals.lastMatchId = match.CreateId(queueNode);
+	globals.matches.set(globals.lastMatchId, match);
 	render(match);
 	console.log("CREAZIONE MATCH: ♟️");
 	console.log(queueNode);

@@ -4,7 +4,6 @@ import { includesOneOf } from "../../utils/string.js";
 import { eMatchPresets } from "../../Macro/enums.js";
 import { matchMakingOpt } from "../endPoint/matchInit.js";
 import { enumConnection } from "../../Macro/enums.js";
-import { use } from "react";
 import { globals } from "./globals.js";
 
 /** @typedef {import("../Chess/match.js").MatchSettings} MatchSettings*/
