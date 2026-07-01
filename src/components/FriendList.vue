@@ -18,7 +18,7 @@
             <RouterLink :to="{ name: 'user_page', params: { username: besties.friend.username } }">
                 <div class="flex my-2 ml-2 relative">
                     <img class="size-13 rounded-full" :src="besties.friend.image ? asset(`${besties.friend.image}`) : asset('../assets/default.png')"/>
-                    <statusOnline :user_id="besties.friend.id_user"/>
+                    <statusOnline :user_id="besties.friend.id_user" v-if="removeF"/>
                     <div class="mx-2">
                         <p class="text-white">{{ besties.friend.username }}</p>
                         <div class="flex items-center gap-1">

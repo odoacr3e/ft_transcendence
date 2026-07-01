@@ -25,7 +25,7 @@
         }
 
         otherUser.value = (await api.get(`/api/users/username/${username}`)).data.user;
-        friends.value = (await api.get(`/api/friends/${otherUser.value.id_user}`)).data.friendship; // api/friends/:id
+        friends.value = (await api.get(`/api/friends/${otherUser.value.id_user}`)).data.friendship;
     }
 
     watch(
@@ -46,7 +46,8 @@
                 <div class="flex p-2 m-4 bg-[#201e1c] rounded-3xl border border-[#4e4e4e8c]">
                     <img :src="otherUser.image ? asset(`${otherUser.image}`) : asset('../assets/default.png')"
                             alt="" class="size-35 rounded-full place-self-start m-5">
-                    <statusOnline :user_id="otherUser.id_user" class="size-6 ml-31 mt-31"/>
+                    <statusOnline v-if="user.id_user === otherUser.id_user || friends?.find((frie) => frie.friend.id_user === user.id_user && frie.friend_status !== 'pending')"
+                        :user_id="otherUser.id_user" class="size-6 ml-31 mt-31"/>
                     <div>
                         <div class="w-150 grid grid-cols-2 items-center mt-5">
                             <h2 class="text-white text-3xl">{{ otherUser.username }}</h2>

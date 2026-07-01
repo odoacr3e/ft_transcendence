@@ -17,7 +17,7 @@
         friends.value = await authApi.friendlist();
 
         friends.value.forEach(friendship => {
-            if (friendship.friend_status === "pending")
+            if (friendship.friend_status === "pending" && friendship.sender.username !== user.value.username)
                 fReq.value.push(friendship);
         });
     });
@@ -52,7 +52,8 @@
                             </div>
                         </div>
                         <div class="w-full p-2 h-[15vh] bg-[#201e1c] rounded-3xl border border-[#4e4e4e8c]">
-                            <h2 class="text-white text-xl m-1">Richieste d'amicizia</h2>
+                            <h2 class="text-white text-xl m-1">Richieste d'amicizia 
+                                <span v-if="fReq.length > 0" class="text-xs absolute rounded-full px-1.25 bg-[#c41c1c]">{{ fReq.length }}</span></h2>
                             <hr class="w-full justify-self-start text-[#4e4e4e8c]">
                             <FriendRequest :friendReq="fReq" :user="user"/>
                         </div>

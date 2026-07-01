@@ -1,41 +1,43 @@
 <script setup>
-    import statusOnline from './statusOnline.vue';
     import { asset, acceptRequest, rejectRequest } from '../scripts/Helper/CompUtils';
     import { computed, ref } from 'vue';
     const prop = defineProps({
   	    	friendReq: Array,
             user: Object
 	    });
-    const men_index = ref(0);
-    const reqFriendlist = computed(() => prop.friendReq.filter((b) => b.friend_status === 'pending' && b.sender.username !== prop.user.username));
-    const currentRequest = computed(() => reqFriendlist.value[men_index.value] ?? null);
+    let     men_index = ref(0);
+    const   currentRequest = computed(() => prop.friendReq[men_index.value] ?? null);
 
     const goPrev = () => {
-        if (men_index.value > 0) {
+        if (men_index.value > 0)
             men_index.value--;
-        }
+        else
+            men_index.value = prop.friendReq.length - 1;
     };
 
     const goNext = () => {
-        if (men_index.value < reqFriendlist.value.length - 1) {
+        if (men_index.value < prop.friendReq.length - 1)
             men_index.value++;
-        }
+        else
+            men_index.value = 0;
     };
 </script>
 
 <template>
     <div class="my-2 w-90 mx-5">
-        <div class="grid grid-flow-col justify-between">
-            <button @click="goPrev"
-                :disabled="!currentRequest || men_index === 0"
-                class="justify-self-start text-zinc-300 self-center"><</button>
+        <div v-if="currentRequest" class="grid grid-flow-col">
+            <button @click="goPrev" v-bind:class="{'hidden' : friendReq.length <= 1, 'inline' : friendReq.length > 1 }"
+                :disabled="!currentRequest"
+                class="justify-self-start text-zinc-300 self-center cursor-pointer"><</button>
 
-                <div v-if="currentRequest" class="flex my-2">
+                <div class="flex my-2 justify-self-center">
                     <RouterLink :to="{ name: 'user_page', params: { username: currentRequest.friend.username } }" class="flex">
                         <img class="size-13 rounded-full" :src="currentRequest.friend.image ? asset(`${currentRequest.friend.image}`) : asset('../assets/default.png')"/>
-                        <statusOnline :user_id="currentRequest.friend.id_user"/>
                         <div class="mx-2">
-                            <p class="text-white">{{ currentRequest.friend.username }}</p>
+                            <p class="text-white" v-if="currentRequest.friend.username.length > 12">
+                                {{ currentRequest.friend.username.slice(0, 11) + "..." }}</p>
+                            <p class="text-white" v-if="currentRequest.friend.username.length <= 12">
+                                {{ currentRequest.friend.username }}</p>
                             <p class="text-zinc-300">Punti: {{ currentRequest.friend.points }}</p>
                         </div>
                     </RouterLink>
@@ -49,9 +51,12 @@
                     </div>
                 </div>
 
-            <button @click="goNext"
-                :disabled="!currentRequest || men_index >= reqFriendlist.length - 1"
-                class="justify-self-end text-zinc-300 self-center">></button>
+            <button @click="goNext" v-bind:class="{'hidden' : friendReq.length <= 1, 'inline' : friendReq.length > 1 }"
+                :disabled="!currentRequest"
+                class="justify-self-end text-zinc-300 self-center cursor-pointer">></button>
+        </div>
+        <div v-if="!currentRequest" class="flex justify-center">
+            <p class="text-white self-center mt-5">Nessuna richiesta in attesa</p>
         </div>
     </div>
 </template>
