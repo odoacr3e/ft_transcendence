@@ -17,5 +17,9 @@ export const authApi = {
 		const resp = await api.get('/api/friends'); // lista di amici
 		return (resp.data.friendship);
 	},
+	matchlist: async () => {
+		const resp = await api.get('/api/matchesHistory'); // lista degli incontri
+		return (resp.data.matches);
+	},
 	logout:		() => api.post('/auth/logout')
 }

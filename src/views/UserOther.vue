@@ -4,6 +4,7 @@
     import FriendList from '../components/FriendList.vue';
     import statusOnline from '../components/statusOnline.vue';
     import FriendButton from '../components/FriendButton.vue';
+    import MatchHistory from '../components/MatchHistory.vue';
     import { useAuthStore } from "../stores/auth.st";
     import { storeToRefs }  from 'pinia';
     import { ref, watch }   from 'vue';
@@ -15,17 +16,19 @@
     const prop = defineProps({
   	    	username: String
 	    });
-	const friends = ref(null), otherUser = ref(null);
+	const friends = ref(null), matches = ref(null), otherUser = ref(null);
 
     async function loadUserData(username) {
         if (!username) {
             otherUser.value = null;
             friends.value = null;
+            matches.value = null;
             return;
         }
 
         otherUser.value = (await api.get(`/api/users/username/${username}`)).data.user;
         friends.value = (await api.get(`/api/friends/${otherUser.value.id_user}`)).data.friendship;
+        matches.value = (await api.get(`/api/matchesHistory/user/${otherUser.value.id_user}`)).data.matches;
     }
 
     watch(
@@ -69,6 +72,9 @@
                     <div class="w-full m-2 p-2 h-auto bg-[#201e1c] rounded-3xl border border-[#4e4e4e8c]">
                         <h2 class="text-white text-xl m-1">Cronologia delle partite</h2>
                         <hr class="w-full justify-self-start text-[#4e4e4e8c]">
+                        <div v-if="matches" :class="matches.length > 6 ? 'max-h-[50vh] overflow-y-auto' : ''">
+                            <MatchHistory :matches="matches"/>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -16,11 +16,14 @@
 <template>
         <div v-for="(besties, index) in visibleFriendlist" :key="besties.friend.id_user">
             <RouterLink :to="{ name: 'user_page', params: { username: besties.friend.username } }">
-                <div class="flex my-2 ml-2 relative">
+                <div class="flex my-3 ml-2 relative">
                     <img class="size-13 rounded-full" :src="besties.friend.image ? asset(`${besties.friend.image}`) : asset('../assets/default.png')"/>
                     <statusOnline :user_id="besties.friend.id_user" v-if="removeF"/>
                     <div class="mx-2">
-                        <p class="text-white">{{ besties.friend.username }}</p>
+                        <p class="text-white" v-if="besties.friend.username.length <= 15">
+                            {{ besties.friend.username }}</p>
+                        <p class="text-white" v-if="besties.friend.username.length > 15">
+                            {{ besties.friend.username.slice(0, 14) + "..." }}</p>
                         <div class="flex items-center gap-1">
                             <TagTitle :title="besties.friend.title" class="mt-1"/>
                             <p class="text-[#4e4e4e8c]">|</p>

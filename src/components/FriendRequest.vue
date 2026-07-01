@@ -43,11 +43,15 @@
                     </RouterLink>
                     <div class="ml-7 self-center">
                         <button @click="acceptRequest(currentRequest.friend.id_user)"
-                            class="p-1.25 px-2 cursor-pointer justify-self-end-safe rounded-l-md inset-ring 
-                                bg-green-400/10 text-green-500 inset-ring-green-500/20">V</button>
+                            class="p-1.25 cursor-pointer justify-self-end-safe rounded-l-md inset-ring 
+                                bg-green-400/10 text-green-500 inset-ring-green-500/20">
+                            <img class="size-7" src="../assets/check.png" alt="">
+                        </button>
                         <button @click="rejectRequest(currentRequest.friend.id_user)"
-                            class="p-1.25 px-2 cursor-pointer justify-self-end-safe rounded-r-md inset-ring 
-                                bg-red-400/10 text-red-500 inset-ring-red-500/20">X</button>
+                            class="p-1.25 cursor-pointer justify-self-end-safe rounded-r-md inset-ring 
+                                bg-red-400/10 text-red-500 inset-ring-red-500/20">
+                            <img class="size-7" src="../assets/cross.png" alt="">    
+                        </button>
                     </div>
                 </div>
 
