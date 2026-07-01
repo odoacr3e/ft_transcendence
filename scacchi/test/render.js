@@ -113,11 +113,13 @@ function getCoords(match)
 	coords.start = "a" + String.fromCharCode(match.board.heigth + "0".charCodeAt(0));
 	endCol = String.fromCharCode(match.board.width - "a".charCodeAt(0) - 1);
 	coords.end = `${endCol}1`;
-	coords.player = match.cursor.square;
-	// @ts-ignore
-	coords.playerSquare = match.board.get(coords.player);
+	coords.player = match.cursor.square;//@ts-ignore
+	coords.playerSquare = match.board._data.get(coords.player);
 	if (!coords.playerSquare)
-		throw ("Render, getCoords: invalid cursor");
+	{
+		coords.playerSquare = new Square();
+		// throw ("Render, getCoords: invalid cursor");
+	}
 	return (coords);
 }
 

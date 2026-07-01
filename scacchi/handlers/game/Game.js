@@ -80,6 +80,7 @@ async function gameHttpHandler(req, res)
 		result = init(match, body.from);
 		responseFormatter(match, result, null, null);
 		render(match);
+		vault.matches.set("0", match);
 	}
 	else
 		result = await gameHandler(match, body);

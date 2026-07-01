@@ -57,7 +57,6 @@ process.stdin.on('keypress', (str, key) =>
 	/** @type {Result}*/let	result;
 	let	dx;
 	let	dy;
-	let mutex;
 
 	match = globals.GetLastMatch();
 	mutex = true;
