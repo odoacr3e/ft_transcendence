@@ -126,12 +126,16 @@ boardConverter()
 		mosso senza voler utilizzare l'abilità
 
 //TODO FRONTEND - 
-	▫	websocket per lo stato online
-	▫	websocket per le notifiche
+	✓	websocket per lo stato online
+	✓	history dei match
 	▫	refactor pagina di gioco, pulsanti con tipi di partite, creazione stanze, sfida amici [LEO]
-	▫	reset della password
+	▫	reazione del frontend agli errori (es. al login) [MAVI]
+	▫	redirection alla pagina login se si prova ad accedere a pagine protette
+	▫	dettagli info sui match
+	▫	pagina di modifica delle info utente
+	▫	reset della password (sia dal login page che dalla pagina utente loggato)
+	▫	websocket per le notifiche
 	▫	pagina della leaderboard
-	▫	history dei match
 	▫	history delle mosse durante la partita (?)
 	▫	info dei profili per le partitre a 4
 	▫	re-design della home

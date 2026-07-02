@@ -50,8 +50,6 @@
 				<h1 class="text-white text-4xl place-self-center">ChessZ</h1>
 			</div>
 		</RouterLink>
-
-
 		<div class="flex bg-[#302d2a] w-[150%] justify-self-center rounded-4xl h-11 self-center content-center border border-[#4e4e4e8c]">
 			<img src="../assets/search.png" alt="" class="size-7 self-center ml-3">
 			<form @submit.prevent="goToUser">
@@ -60,9 +58,6 @@
 					:list="searchUser ? 'users' : null">
 			</form>
 		</div>
-
-
-
 		<div class="flex justify-self-end place-self-center" v-if="user">
 			<div class="place-self-center relative">
 				<div v-if="false">
