@@ -5,9 +5,11 @@ import { eMatchPresets } from "../../Macro/enums.js";
 import { matchMakingOpt } from "../endPoint/matchInit.js";
 import { enumConnection } from "../../Macro/enums.js";
 import { globals } from "./globals.js";
+import { findMatch } from "../../websocket/MatchMaking/MatchMaking.js";
 
 /** @typedef {import("../Chess/match.js").MatchSettings} MatchSettings*/
 /** @typedef {{id_user: string, points: number}} dbUser*/
+/** @typedef {{from: number, to: number, avg: number}} EloRange*/
 
 const fourPresets = [
 	eMatchPresets.ClassicFourPlayers,
@@ -40,11 +42,32 @@ export class Queue extends Map
 	DelNode(id_user)
 	{
 		let	node;
+		let	tmpArray;
+		let	isLeader = false;
+		let	newLeaderId;
 
 		node = this.get(id_user);
 		if (node)
+		{
+			tmpArray = Array.from(node.userSet);
+			isLeader = node.userSet.size > 1 && tmpArray.indexOf(id_user) == 0;
+			newLeaderId = tmpArray[1];
 			node.userSet.delete(id_user);
+		}
 		this.delete(id_user);
+		//NOTE - if it was not the leader socket, its ok to just remove it
+		if (isLeader == false || !node)
+			return ;
+		//NOTE - even the second is reconnecting, lol
+		//if it disconnects: it will call delNode
+		//if it reconnects: it will call matchMaking
+		if (globals.clientMap.get(id_user)?.reconnectBool == true)
+			return ;
+		//NOTE - else, the newLeader will search new playmates
+		clearTimeout(globals.timers.get(id_user));
+		globals.timers.set(id_user, setTimeout(() => {
+			findMatch(this, {id_user: id_user, points: node.eloRange.avg});
+		}, 5000));
 	}
 	/**
 	 * @param {string} fromId 
@@ -99,10 +122,11 @@ export class QueueNode
 	*/
 	constructor(options)
 	{
-		/** @type {Set<string>} */ 			this.userSet = new Set();
-		/** @type {MatchSettings | null}*/	this.matchOptions = options.matchSettings ? options.matchSettings:null;
-		/** @type {string} */				this.matchType = options.matchType;
-		/** @type {number} */				this.minPlayers = 2;
+		/** @type {Set<string>} */ 					this.userSet = new Set();
+		/** @type {EloRange} */						this.eloRange = {from: 0, to: 2200, avg: 1100};
+		/** @type {MatchSettings | null}*/			this.matchOptions = options.matchSettings ? options.matchSettings:null;
+		/** @type {string} */						this.matchType = options.matchType;
+		/** @type {number} */						this.minPlayers = 2;
 
 		if (includesOneOf(this.matchType, fourPresets))
 			this.minPlayers = 4;

@@ -9,7 +9,7 @@ import { announceMeOnline } from "./onlineStatus.js";
 import {enumConnection, eMatchPresets} from "../Macro/enums.js";
 import { includesOneOf } from "../utils/string.js";
 import { MatchMaking } from "./MatchMaking/MatchMaking.js";
-import { DEBUG_WEBSOCKETS } from "../Macro/macro.js";
+import { DEBUG_WEBSOCKETS, SOCKET_RECONNECT_TIMER } from "../Macro/macro.js";
 
 const clientMap = globals.clientMap;
 
@@ -56,6 +56,7 @@ sockio.on('connection', async (socket) =>
 		user = socket.request.user;
 	else
 		user = socket.handshake.auth;
+	clearTimeout(globals.timers.get(user.id_user));
 	console.log("A new user connected with id ", user.id_user);
 	clientMap.set(user.id_user, {allowedBool: true, socket: socket, matchData: null});
 	let friendsId = [];
@@ -79,18 +80,19 @@ sockio.on('connection', async (socket) =>
 	})
 
 	socket.on('disconnect', async () => {
-		console.log(`User with id ${user.id_user} disconnected`)
-		clientMap.delete(user.id_user);
-		for (const id of friendsId) // da mettere dentro setTimeout
+		clearTimeout(globals.timers.get(user.id_user));
+		globals.clientMap.get(user.id_user).reconnectBool = true;
+		//NOTE - after SOCKET_RECONNECT_TIMER, user is considered disconnected
+		globals.timers.set(user.id_user, setTimeout(() =>
 		{
-			const friendSock = clientMap.get(id);
-			if (friendSock)
-				sockio.to(friendSock.socket.id).emit('friend:offline', { userId: user.id_user });
-		}
+			console.log(`User with id ${user.id_user} disconnected`)
+			clientMap.delete(user.id_user);
+			for (const id of friendsId)
+			{
+				const friendSock = clientMap.get(id);
+				if (friendSock)
+					sockio.to(friendSock.socket.id).emit('friend:offline', { userId: user.id_user });
+			}
+		}, SOCKET_RECONNECT_TIMER));
 	})
 });
-
-function socketDisconnection()
-{
-	
-}

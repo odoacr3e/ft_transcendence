@@ -1,6 +1,5 @@
 //@ts-check
 import { globals } from "../../Classes/Globals/globals.js";
-import { Queue } from "../../Classes/Globals/Queue.js";
 import { enumConnection } from "../../Macro/enums.js";
 import { Match } from "../../Classes/Chess/match.js";
 import { init } from "../../handlers/game/init.js";
@@ -11,6 +10,7 @@ import { getUserById } from "../../query/usersQuery.js";
 /** @typedef {{socket: *, allowedBool: boolean, matchData?: Player}} Socket */
 /** @typedef {import("../../Classes/endPoint/matchInit.js").matchMakingOpt} MatchMakingOpt*/
 /** @typedef {{id_user: string, points: number}} dbUser*/
+/** @typedef {import("../../Classes/Globals/Queue.js").Queue} Queue*/
 /** @typedef {import("../../Classes/Globals/Queue.js").QueueNode} QueueNode*/
 
 /**
@@ -149,16 +149,17 @@ async function bindPlayersToMatch(match, queueNode)
 		match.endTurn();
 	}
 	while (startTeam != match.currentPlayer.team)
-	i = 0;
 	//this makes the queries asynchronous from the matchMaker
 	Promise.all(promises).then(
 	(dbData) =>
 	{
-	do
-	{
-		match.currentPlayer.dbTable = dbData[i];
-		match.endTurn();
-	}
-	while (startTeam != match.currentPlayer.team)
+		i = 0;
+		do
+		{
+			match.currentPlayer.dbTable = dbData[i];
+			++i;
+			match.endTurn();
+		}
+		while (startTeam != match.currentPlayer.team)
 	}).catch((err)=>{console.log(err);});
 }
