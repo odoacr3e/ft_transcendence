@@ -65,6 +65,7 @@ class Globals
 		queueNodeArray.push(this.rankedQueue.get(userId));
 		queueNodeArray.push(this.friendlyQueue.get(userId));
 		queueNodeArray.push(this.arenaQueue.get(userId));
+		console.log(this.friendlyQueue);
 		if (queueNodeArray[0])
 			queue = this.rankedQueue;
 		else if (queueNodeArray[1])

@@ -148,6 +148,7 @@ async function bindPlayersToMatch(match, queueNode)
 		user = globals.clientMap.get(userId);
 		if (!user)
 			throw ("bindPlayerToMatch: userId " + userArray[i] + " has left");
+		user.state = enumSocketState.PLAYING;
 		match.currentPlayer.matchId = match.id;
 		match.currentPlayer.socket = user.socket;
 		match.currentPlayer.id = userId;

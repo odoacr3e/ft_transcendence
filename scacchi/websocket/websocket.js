@@ -62,8 +62,8 @@ sockio.on('connection', async (socket) =>
 	globals.ClearTimer(user.id_user);
 	console.log("A new user connected with id ", user.id_user);
 	socketData = clientMap.get(user.id_user);
-	if (socketData?.state == enumSocketState.MATCHMAKING)
-		return (MatchMaking(sockio, user, clientMap));
+	if (socketData?.reconnectBool == true)
+		return (handleReconnect(sockio, user, socketData));
 	clientMap.set(user.id_user, {allowedBool: true, socket: socket, matchData: null});
 	let friendsId = [];
 	try {
@@ -105,3 +105,16 @@ sockio.on('connection', async (socket) =>
 		}, SOCKET_RECONNECT_TIMER));
 	})
 });
+
+/**
+ * 
+ * @param {*} sockio 
+ * @param {*} dbUser 
+ * @param {Socket} socketData 
+ */
+function handleReconnect(sockio, dbUser, socketData)
+{
+	socketData.reconnectBool = false;
+	if (socketData.state == enumSocketState.MATCHMAKING)
+		return (MatchMaking(sockio, dbUser, clientMap));
+}
