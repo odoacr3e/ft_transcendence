@@ -4,6 +4,12 @@ import {MATCHTIMER} from "../../Macro/macro.js";
 import {eTeam, eEvents} from "../../Macro/enums.js";
 
 /** @typedef {import("./match.js").MatchSettings} MatchSettings*/
+/**
+ *  @typedef {{
+ * id_user: number; name: string; surname: string; username: string; email: string; nationality: string; image: Uint8Array<ArrayBuffer> | null; points: number; title: string; preferences: *}
+ * } dbUser
+ * 
+*/
 
 class Player
 {
@@ -14,10 +20,19 @@ class Player
 	*/
 	constructor(color, settings)
 	{
+		//SECTION - preset data
 		//@ts-ignore
 		let	data = preset[color];
 		if (!data)
 			throw (`cannot find player ${color}`);
+		//SECTION - user data
+		/** @type {dbUser | null} */
+		this.dbTable = null;
+		/** @type {* | null} */
+		this.socket = null;
+		this.matchId = "0";
+		this.id = "0";
+		//SECTION - gameData
 		this.nPoints = settings.players.startPoints;
 		this.bonusPointCounter = 0;
 		this.useBoostBool = false;

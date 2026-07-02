@@ -53,6 +53,7 @@ class Match
 		if (this.settings.players.number == 4)
 			this.currentPlayer = this.yellow;
 		this.start_date = new Date().toISOString();
+		this.id = "0";
 		/** @type {Number|null}*/this.tournament_id = null;
 		/** @type {String|null}*/this.tournament_round = null;
 
@@ -92,6 +93,7 @@ class Match
 		if (this.settings.players.number == 4)
 			this.currentPlayer = this.yellow;
 		this.start_date = new Date().toISOString();
+		this.id = "0";
 		this.tournament_id = null;
 		this.tournament_round = null;
 
@@ -284,14 +286,15 @@ class Match
 	{
 		let userNames = "";
 		let date;
-		let result;
+		let id;
 
 		for (let x of queueNode.userSet)
 			userNames += x;
 		date = Date.now().toString();
-		result = date + userNames;
-		console.log(`MatchId: ${result}`);
-		return result;
+		id = date + userNames;
+		console.log(`MatchId: ${id}`);
+		this.id = id;
+		return id;
 	}
 }
 

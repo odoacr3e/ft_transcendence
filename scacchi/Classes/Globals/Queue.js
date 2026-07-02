@@ -76,7 +76,7 @@ export class Queue extends Map
 				continue ;
 			if (userOption.matchType != value.matchType)//match diverso
 				continue ;
-			if (value.userSet.size == value.minPlayers)//controlli il numero di player nel match
+			if (value.userSet.size == value.minPlayers)//match gia pieno
 				continue ;
 			// if (this.roomType == enumConnection.RANKED)//TODO - 	controlli vari per la ranked
 			// {

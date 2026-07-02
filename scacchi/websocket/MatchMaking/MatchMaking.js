@@ -5,6 +5,7 @@ import { enumConnection } from "../../Macro/enums.js";
 import { Match } from "../../Classes/Chess/match.js";
 import { init } from "../../handlers/game/init.js";
 import { render } from "../../test/render.js";
+import { getUserById } from "../../query/usersQuery.js";
 
 /** @typedef {import("../../Classes/Chess/player.js").Player} Player*/
 /** @typedef {{socket: *, allowedBool: boolean, matchData?: Player}} Socket */
@@ -19,7 +20,7 @@ import { render } from "../../test/render.js";
  * @param {Map<string, Socket>} clientMap 
  * @param {MatchMakingOpt} options
  */
-export function MatchMaking(sockio, user, clientMap, options)
+export async function MatchMaking(sockio, user, clientMap, options)
 {
 	let queue;
 	let	socketData;
@@ -30,8 +31,7 @@ export function MatchMaking(sockio, user, clientMap, options)
 		throw (`user id ${user.id_user} does not exist`);
 	queue = globals.GetQueue(options.roomType);
 	queue.AddNode(user, options);
-	if (findMatch(queue, user) == true)
-		return ;
+	findMatch(queue, user);
 	console.log(`user in queue ${options.roomType}:`);
 	console.log(queue);
 }
@@ -42,7 +42,7 @@ export function MatchMaking(sockio, user, clientMap, options)
  * @param {dbUser} user 
  * @returns 
  */
-export function findMatch(queue, user)
+export async function findMatch(queue, user)
 {
 	let findBool = false;
 	let	queueNode;
@@ -69,18 +69,21 @@ export function findMatch(queue, user)
  * 
  * @param {QueueNode} queueNode
  */
-export function createMatch(queueNode)
+export async function createMatch(queueNode)
 {
 	let	match;
 	let	result;
 	let	socket;
 	let	preset;
 
+	if (await validateMatch(queueNode) == false)
+		return (false);
 	preset = queueNode.matchOptions? queueNode.matchOptions: queueNode.matchType;
 	match = new Match(preset);
 	result = init(match, preset);
 	globals.lastMatchId = match.CreateId(queueNode);
 	globals.matches.set(globals.lastMatchId, match);
+	await bindPlayersToMatch(match, queueNode);
 	render(match);
 	console.log("CREAZIONE MATCH: ♟️");
 	console.log(queueNode);
@@ -92,4 +95,70 @@ export function createMatch(queueNode)
 		socket.socket.emit("datiInizialiPOISIVEDECHENOMEDAREEH", result);
 	}
 	return (true);
+}
+
+/**
+ * check that all players are properly connected
+ * @param {QueueNode} queueNode
+ */
+function validateMatch(queueNode)
+{
+	let	socket;
+
+	for (const id_user of queueNode.userSet)
+	{
+		socket = globals.clientMap.get(id_user);
+		if (socket?.reconnectBool == true)
+			return (false);
+	}
+	return (true);
+}
+
+/**
+ * check that all players are properly connected
+ * @param {Match} match
+ * @param {QueueNode} queueNode
+ */
+async function bindPlayersToMatch(match, queueNode)
+{
+	let	i;
+	let	userArray;
+	let	user;
+	let	userId;
+	let	startTeam;
+	let	promises = [];
+
+	i = 0;
+	userArray = Array.from(queueNode.userSet)
+	startTeam = match.currentPlayer.team;
+	do
+	{
+		userId = userArray[i];
+		user = globals.clientMap.get(userId);
+		if (!user)
+			throw ("bindPlayerToMatch: userId " + userArray[i] + " has left");
+		match.currentPlayer.matchId = match.id;
+		match.currentPlayer.socket = user.socket;
+		match.currentPlayer.id = userId;
+		promises.push(getUserById(userId));
+		user.matchData = match.currentPlayer;
+		globals.arenaQueue.DelNode(userId);
+		globals.friendlyQueue.DelNode(userId);
+		globals.rankedQueue.DelNode(userId);
+		++i;
+		match.endTurn();
+	}
+	while (startTeam != match.currentPlayer.team)
+	i = 0;
+	//this makes the queries asynchronous from the matchMaker
+	Promise.all(promises).then(
+	(dbData) =>
+	{
+	do
+	{
+		match.currentPlayer.dbTable = dbData[i];
+		match.endTurn();
+	}
+	while (startTeam != match.currentPlayer.team)
+	}).catch((err)=>{console.log(err);});
 }
