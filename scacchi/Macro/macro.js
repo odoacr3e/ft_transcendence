@@ -1,15 +1,20 @@
 // @ts-check
 import { abort } from "node:process";
 
-//SECTION macro
 
+//SECTION debug
 const DEBUG = true;
 //@ts-ignore
 /** @type {boolean} */const DEBUG_WEBSOCKETS = process.env.DEBUG_WEBSOCKETS == "true" ? true : false;
+
+//SECTION - history
 const HISTORY_PATH = "../history/";
 const HISTORY_FILE = "HISTORY.json";
 const HISTORY_DEFAULT = `${HISTORY_PATH}${HISTORY_FILE}`;
+
+//SECTION - timers
 const MATCHTIMER = 15 * 60 * 1000;
+const SOCKET_RECONNECT_TIMER = 3 * 1 * 1000;//3 seconds
 
 const HASH_SALT = process.env.HASH_SALT;
 

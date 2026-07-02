@@ -6,7 +6,7 @@ import {DEBUG} from "../../Macro/macro.js";
 import { enumConnection } from "../../Macro/enums.js";
 
 /** @typedef {import("../Chess/player.js").Player} Player*/
-/** @typedef {{socket: *, allowedBool: boolean, matchData?: Player}} Socket */
+/** @typedef {{socket: *, allowedBool: boolean, reconnectBool?: boolean, matchData?: Player}} Socket */
 
 const	TEST_MATCH = "0";
 

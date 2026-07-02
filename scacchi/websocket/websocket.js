@@ -89,3 +89,8 @@ sockio.on('connection', async (socket) =>
 		}
 	})
 });
+
+function socketDisconnection()
+{
+	
+}

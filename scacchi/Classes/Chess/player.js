@@ -18,7 +18,6 @@ class Player
 		let	data = preset[color];
 		if (!data)
 			throw (`cannot find player ${color}`);
-		this.name = "";
 		this.nPoints = settings.players.startPoints;
 		this.bonusPointCounter = 0;
 		this.useBoostBool = false;
