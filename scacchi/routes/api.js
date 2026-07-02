@@ -7,6 +7,7 @@ import { notifyRouter } from "./notifications.js";
 import { friendsRouter } from "./friendships.js";
 import { preferencesRouter } from "./preferences.js";
 import { matchHistoryRouter } from "./matchHistory.js";
+import { tournamentsRouter } from "./tournaments.js";
 export const apiRouter = lib.include.express.Router();
 
 apiRouter.use("/users", usersRouter);
@@ -16,3 +17,4 @@ apiRouter.use("/notifications", notifyRouter);
 apiRouter.use("/friends", friendsRouter);
 apiRouter.use("/preferences", preferencesRouter);
 apiRouter.use('/matchesHistory', matchHistoryRouter);
+apiRouter.use('/tournaments', tournamentsRouter);
