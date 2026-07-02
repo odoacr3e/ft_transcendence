@@ -156,10 +156,6 @@ async function executeEvents(match, history)
 		return (curlFail());
 	for (const event of history.events)
 	{
-		// if (event.from && event.to)
-		// 	render(match, [event.from, event.to], "", true);
-		// else
-		// 	render(match, [], "", true);
 		console.log(event);
 		currEvent = event;
 		if (event.from)
@@ -172,7 +168,6 @@ async function executeEvents(match, history)
 		if (cmpBoard(match.board, backendBoard) == false)
 			return (curlFail());
 	}
-	// render(match, [], "", true);
 	currEvent = {type: "lastCheck"};
 	if (cmpBoard(match.board, backendBoard) == false)
 		return (curlFail());

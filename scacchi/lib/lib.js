@@ -25,6 +25,12 @@ import { redis } from "./redis.js";
 import crypto from "crypto";
 import { sendEmail } from "./emailSender.js"
 
+redis.on("error", (stream) =>
+{
+	if (process.env.IGNORE_REDIS != "true")
+		console.error(stream);
+});
+
 // SECTION - external inclusions
 const include = {http, https, url, fs, path, express, SocketIO, app, server, parse, cookieParser};
 

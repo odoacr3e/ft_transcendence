@@ -119,7 +119,6 @@ function set(pos)
 	let	square;
 
 	square = pos.at(0);
-	console.assert(square != undefined, `cursor.set: square in ${pos} does not exist`);
 	if (!square)
 		return ;
 	this.square = square;

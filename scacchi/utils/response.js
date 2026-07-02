@@ -126,6 +126,7 @@ function formatPlayer(match, result)
  * @param {*} key 
  * @param {*} val 
  */
+/*
 function _jsonParser(key, val)
 {
 	if (val instanceof Set)
@@ -138,7 +139,7 @@ function _jsonParser(key, val)
 	}
 	else
 		return (val);
-}
+}*/
 
 // FIXME - con questa va test/curlTest.js
 /**
@@ -147,14 +148,14 @@ function _jsonParser(key, val)
  * @param {object} val 
  * @returns 
  */
-// function _jsonParser(key, val)
-// {
-// 	if (val instanceof Set)
-// 		return ({ __type: "Set", data: [...val] });
-// 	if (val instanceof Map)
-// 		return ({ __type: "Map", data: [...val.entries()]});
-// 	return (val);
-// }
+ function _jsonParser(key, val)
+ {
+ 	if (val instanceof Set)
+ 		return ({ __type: "Set", data: [...val] });
+ 	if (val instanceof Map)
+ 		return ({ __type: "Map", data: [...val.entries()]});
+ 	return (val);
+ }
 
 /**
  * 
