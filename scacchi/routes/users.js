@@ -150,16 +150,35 @@ usersRouter.patch("/", checkJwt, async (req, res) => {
  * @param {import('express').Response} res
  * NOTE: reset e cambio password per utente loggato
 */
-usersRouter.patch('/updatePassword', checkJwt, async (req, res) => {
+usersRouter.patch('/updatePassword', async (req, res) => {
 	try {
-		const { password } = req.body;
+		const { username, password } = req.body;
 		if (!checkPassword(password))
 			return res.status(400).json(jsonResponse.ResponseError("Invalid password format"));
-		const user = await usersQuery.updateUserPassword(req.user.id_user, await bcrypt.hash(password, parseInt(lib.Macro.HASH_SALT)))
+		const user = await usersQuery.updateUserPasswordByUsername(username, await bcrypt.hash(password, parseInt(lib.Macro.HASH_SALT)))
 		if (user)
 			return res.status(204).send();
 		return res.status(404).json(jsonResponse.ResponseError("User not found"));
 	} catch (error) {
+		if (error.code == 'P2025')
+			return res.status(409).json(jsonResponse.ResponseError("User not found"));
+		log.err("Server error changing password");
+		return res.status(500).json(jsonResponse.ResponseError("Server error changing user password"));
+	}
+});
+
+usersRouter.patch('/loggedUpdatePassword', checkJwt, async (req, res) => {
+	try {
+		const { password } = req.body;
+		if (!checkPassword(password))
+			return res.status(400).json(jsonResponse.ResponseError("Invalid password format"));
+		const user = await usersQuery.updateUserPasswordById(req.user.id_user, await bcrypt.hash(password, parseInt(lib.Macro.HASH_SALT)))
+		if (user)
+			return res.status(204).send();
+		return res.status(404).json(jsonResponse.ResponseError("User not found"));
+	} catch (error) {
+		if (error.code == 'P2025')
+			return res.status(409).json(jsonResponse.ResponseError("User not found"));
 		console.log("Error: ", error);
 		return res.status(500).json(jsonResponse.ResponseError("Server error changing user password"));
 	}
