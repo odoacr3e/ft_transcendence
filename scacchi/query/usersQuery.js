@@ -237,9 +237,34 @@ export const updateUserFieldsById = async (id, data) => {
 	});
 }
 
-export const updateUserPassword = async (id_user, password) => {
+export const updateUserPasswordByUsername = async (username, password) => {
 	return await prisma.users.update({
-		where: {id_user: Number(id_user)},
+		where: {username: username},
+		data: { password: password },
+		select: {
+			id_user: true,
+			name: true,
+			surname: true,
+			username: true,
+			email: true,
+			image: true,
+			nationality: true,
+			points: true,
+			title: true,
+			preferences: {
+				select: {
+					name: true,
+					description: true,
+					colors: true,
+				}
+			}
+		}
+	});
+}
+
+export const updateUserPasswordById = async (id_user, password) => {
+	return await prisma.users.update({
+		where: {id_user: id_user},
 		data: { password: password },
 		select: {
 			id_user: true,
