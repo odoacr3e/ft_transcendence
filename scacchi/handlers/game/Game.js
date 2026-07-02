@@ -12,21 +12,11 @@ import { init } from "./init.js";
 import { render } from "../../test/render.js";
 import {makeTransfiguration} from "./transfiguration.js";
 //FIXME - solo debug
-import { globals as vault } from "../../Classes/Globals/globals.js";
+import { globals } from "../../Classes/Globals/globals.js";
 import { matchQuery } from "../../query/gameQuery.js";
-import { Match } from "../../Classes/Chess/match.js";
-const DEBUG_MATCH = vault.getDebugMatch();
+import { Match, MatchSettings } from "../../Classes/Chess/match.js";
 
-// const app1 = express();
-// const server1 = http.createServer(app1);
-// const sockio = new SocketIO(server1, {
-// 	cors: {
-// 		origin: "*", // per sviluppo, in produzione metti l'url preciso
-// 		methods: ["GET", "POST"],
-// 		credentials: true
-// 	},
-// 	connectionStateRecovery: {} // se il client si disconnette temporaneamente gli arrivano gli eventi alla riconnessione, senza vengono persi
-// });
+const DEBUG_MATCH = globals.getDebugMatch();
 
 //FIXME - ale: i controlli di gameChecks danno per scontato che:
 //				1.	l'utente che manda le richieste sia un giocatore
@@ -60,6 +50,7 @@ function gameChecks(req, res, next)
 	next();
 }
 
+//FIXME - attualmente funziona solo con il match di debug
 /**
  * handler of game POST requests
  * @param {*} req 
@@ -71,20 +62,49 @@ async function gameHttpHandler(req, res)
 	let	match;
 	let	result;
 
-	match = vault.GetLastMatch();
+	match = globals.getDebugMatch();
 	if (!match)
-		throw (`httpHandler: ${vault.lastMatchId} does not exist`);
+		return (res.status(401).json({log: {status: 401, msg: "DEBUG IS FALSE"}}));
 	body = normifyRequest(match.cursor, req.body);
 	if (body.type == "init")
 	{
 		result = init(match, body.from);
 		responseFormatter(match, result, null, null);
 		render(match);
-		vault.matches.set("0", match);
+		globals.matches.set("0", match);
 	}
 	else
 		result = await gameHandler(match, body);
 	res.status(result.log.status).json(result);
+}
+
+/**
+ * 
+ * @param {{from: *, to: *, type: string}} req 
+ * @param {string} id_user 
+ * @param {import("../../Classes/Globals/globals.js").Socket} socketData 
+ */
+async function gameWebSocketHandler(req, id_user, socketData)
+{
+	let	match;
+	let	matchId;
+	let	result;
+
+	matchId = socketData.matchData?.matchId;
+	if (!matchId)
+		return (socketError(socketData.socket, null, 401, "Socket: you are not a player."));
+	match = globals.matches.get(matchId);
+	if (!match)
+		return (socketError(socketData.socket, null, 403, "Socket: invalid match id " + matchId));
+	if (match.currentPlayer.team != socketData.matchData?.team)
+		return (socketError(socketData.socket, null, 401, "Socket: it's not your turn, dirty greedy cheeta"));
+	if (!req.type)
+		return (socketError(socketData.socket, null, 403, "Socket: missing param type in request"));
+	result = await gameHandler(match, req);
+	if (result.log.status != 200)
+		return (socketError(socketData.socket, result));
+	//FIXME - fare una stanza dove si mettono giocatori e spettatori
+	socketData.socket.emit(req.type, result);
 }
 
 /**
@@ -97,11 +117,6 @@ async function gameHandler(match, body)
 	let	result;
 
 	result = new Result();
-	// if (!sockio || !sockio.on || !sockio.emit)
-	// 	return (res.status(400).json({msg: "non importato"}));
-	// sockio.on('connection' () => {
-	// 	sockio.emit("start_game", { messaggio: "si comincia uahu" });
-	// })
 	console.clear();
 	if (body.type == "move")
 		result = move(match, body.from, body.to);
@@ -153,40 +168,6 @@ async function gameHandler(match, body)
 }
 
 /**
- * handler of game GET requests
- * @param {*} req 
- * @param {*} res 
- */
-function gameInfo(req, res)
-{
-	const	{type, from, to} = req?.body;
-	let		result;
-	let		match;
-
-	if (!res || !res.status || !res.end || !req)
-		return (error(res, null, 500, "bad response object format"));
-	if (!req.body || !req.body.type)
-		return (error(res, null, 400, "json must have a string named `type`"));
-	match = vault.getDebugMatch();
-	result = new Result();
-	if (type == "reload")
-	{
-		result.Success();//@ts-ignore
-		result.board = clientBoard(match.board, true, true);
-		result.youWin = match.victory != "";
-	}
-	else if (type == "history")
-	{
-		result.Success();//@ts-ignore
-		result.history = match.history;
-	}
-	else
-		return (error(res, null, 400, `invalid type ${type}`));
-	result = responseFormatter(match, result, null, null);
-	res.status(200).json(result);
-}
-
-/**
  * prints the error in console and return a valid json
  * @param {Response | null} res default: null
  * @param {*} result
@@ -215,4 +196,29 @@ function error(res=null, result=null, status=0, msg=null, renderBool=true)
 	return (result);
 }
 
-export {gameChecks, gameHttpHandler, gameInfo, error, move, endTurn, boost, init};
+/**
+ * 
+ * @param {*} socket
+ * @param {Result | null} result 
+ * @param {number} status 
+ * @param {string | null} msg 
+ * @param {Match | null} match 
+ * @param {boolean} renderBool 
+ */
+function socketError(socket=null, result=null, status=0, msg=null, match=null, renderBool=false)
+{
+	if (!result)
+		result = responseFormatter(null, result, msg, status);
+	else
+		result = responseFormatter(result.match, result, msg, status);
+	if (renderBool == true)
+		console.clear();
+	console.log("\x1b[31mGame error\x1b[0m");
+	console.log(`status: ${result.log.status}\nmsg: ${result.log.msg}`);
+	if (renderBool == true)
+		render(DEBUG_MATCH);
+	if (socket)
+		socket.emit("gameError", result);
+}
+
+export {gameChecks, gameHttpHandler, error, move, endTurn, boost, init};

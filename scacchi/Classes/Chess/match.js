@@ -13,6 +13,7 @@ import { DangerUpdate } from "../../utils/moveUtils.js";
 import { History } from "./history.js";
 import { clientBoard } from "../../handlers/game/utils.js";
 import { MATCHTIMER } from "../../Macro/macro.js"; 
+import { globals } from "../Globals/globals.js";
 
 /** @typedef {import("../Globals/Queue.js").QueueNode} QueueNode*/
 
@@ -184,14 +185,14 @@ class Match
 	/** 
 	 * 
 	 * @param {Result | null} result 
-	 * @param {Player} player
 	 * */
-	CheckMate(result=null, player)
+	CheckMate(result=null)
 	{
 		console.log("haaaaaiiiiii viiiiiiintoooooooooo!!!!!!!");
-		console.log("Premi un qualsiasi tasto per concludere...");
 		this.victory = this.currentPlayer.team;
 		this.history.victory = this.victory;
+		if (this.id != "0")
+			globals.matches.delete(this.id);
 		if (result != null)
 		{
 			result.msg = "you win!";

@@ -93,6 +93,11 @@ async function execTest(matchPath)
 	let	boards;
 
 	match = globals.getDebugMatch();
+	if (!match)
+	{
+		testerFail(MSG.INVALID_MSG, "you need to set up DEBUG to true to use curlTester");
+		process.exit();
+	}
 	try
 	{
 		history = JSON.parse(fs.readFileSync(matchPath, 'utf-8'));

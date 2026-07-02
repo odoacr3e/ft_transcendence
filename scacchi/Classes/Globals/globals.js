@@ -30,8 +30,6 @@ class Globals
 		this.arenaQueue = new Queue(enumConnection.ARENA);
 		/** @type {Map<string, NodeJS.Timeout>} */
 		this.timers = new Map();
-		if (DEBUG)
-			this.matches.set(TEST_MATCH, new Match());
 		this.lastMatchId = TEST_MATCH;
 	}
 	/** @param {string} roomType */
@@ -110,8 +108,13 @@ class Globals
 		let	debugMatch;
 
 		if (!DEBUG)
-			throw ("Please turn DEBUG on to use this function");
+			return (null);
 		debugMatch = this.matches.get(TEST_MATCH);
+		if (!debugMatch)
+		{
+			this.matches.set(TEST_MATCH, new Match());
+			debugMatch = this.matches.get(TEST_MATCH);
+		}
 		if (!debugMatch)
 			throw ("No debug match in Globals!");
 		return (debugMatch);
