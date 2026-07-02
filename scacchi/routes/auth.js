@@ -51,7 +51,7 @@ authRouter.post("/login", async (req, res) => {
 		});
 		if (!user || !(await bcrypt.compare(password, user.password)))
 		{
-			// printLog(`User ${user.username} failed to login`, 'warn');
+			log.warn(`Access denied to user ${colors.bold(user.username)}`);
 			return res.status(401).json(jsonResponse.ResponseError("Invalid credentials"));
 		}
 		delete(user.password);
