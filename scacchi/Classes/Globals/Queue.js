@@ -38,8 +38,12 @@ export class Queue extends Map
 		this.set(user.id_user, new QueueNode(options));
 		this.get(user.id_user)?.userSet.add(user.id_user);
 	}
-	/** @param {string} id_user */
-	DelNode(id_user)
+	/**
+	 *  
+	 * @param {string} id_user 
+	 * @param {boolean} resetTimerBool
+	 * */
+	DelNode(id_user, resetTimerBool=true)
 	{
 		let	node;
 		let	tmpArray;
@@ -47,16 +51,15 @@ export class Queue extends Map
 		let	newLeaderId;
 
 		node = this.get(id_user);
-		if (node)
-		{
-			tmpArray = Array.from(node.userSet);
-			isLeader = node.userSet.size > 1 && tmpArray.indexOf(id_user) == 0;
-			newLeaderId = tmpArray[1];
-			node.userSet.delete(id_user);
-		}
+		if (!node)
+			return ;
+		tmpArray = Array.from(node.userSet);
+		isLeader = node.userSet.size > 1 && tmpArray.indexOf(id_user) == 0;
+		newLeaderId = tmpArray[1];
+		node.userSet.delete(id_user);
 		this.delete(id_user);
 		//NOTE - if it was not the leader socket, its ok to just remove it
-		if (isLeader == false || !node)
+		if (isLeader == false || !resetTimerBool)
 			return ;
 		//NOTE - even the second is reconnecting, lol
 		//if it disconnects: it will call delNode
@@ -65,8 +68,10 @@ export class Queue extends Map
 			return ;
 		//NOTE - else, the newLeader will search new playmates
 		clearTimeout(globals.timers.get(id_user));
+		clearTimeout(globals.timers.get(newLeaderId));
+		console.log("new matchMaking leader: old is", id_user, "new is", newLeaderId);
 		globals.timers.set(id_user, setTimeout(() => {
-			findMatch(this, {id_user: id_user, points: node.eloRange.avg});
+			findMatch(this, {id_user: newLeaderId, points: node.eloRange.avg});
 		}, 5000));
 	}
 	/**
@@ -97,17 +102,19 @@ export class Queue extends Map
 		{
 			if (key == user.id_user)//se stesso
 				continue ;
-			if (userOption.matchType != value.matchType)//match diverso
+			if (userOption.matchType != value.matchType)//tipo di match diverso
 				continue ;
 			if (value.userSet.size == value.minPlayers)//match gia pieno
+				continue ;
+			if (globals.clientMap.get(key)?.reconnectBool == true)//avversario con problemi di connessione
 				continue ;
 			// if (this.roomType == enumConnection.RANKED)//TODO - 	controlli vari per la ranked
 			// {
 			// }
 			foundBool = true;
 			this.MergeNode(key, user.id_user);
-			clearTimeout(globals.timers.get(key));//NOTE - Claude dice che non da problemi fare clear due volte o su undefined
-			clearTimeout(globals.timers.get(user.id_user));
+			globals.ClearTimer(key);
+			globals.ClearTimer(user.id_user);
 			if (this.get(user.id_user)?.IsFull())
 				break ;
 		}

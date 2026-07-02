@@ -6,10 +6,12 @@ const { redis } = lib.conn;
 const { parse, app, server } = lib.include;
 import { globals } from "../Classes/Globals/globals.js";
 import { announceMeOnline } from "./onlineStatus.js";
-import {enumConnection, eMatchPresets} from "../Macro/enums.js";
+import {enumConnection, eMatchPresets, enumSocketState} from "../Macro/enums.js";
 import { includesOneOf } from "../utils/string.js";
 import { MatchMaking } from "./MatchMaking/MatchMaking.js";
 import { DEBUG_WEBSOCKETS, SOCKET_RECONNECT_TIMER } from "../Macro/macro.js";
+
+/** @typedef {{socket: *, allowedBool: boolean, state?: string, reconnectBool?: boolean, matchData?: Player}} Socket */
 
 const clientMap = globals.clientMap;
 
@@ -50,14 +52,18 @@ sockio.engine.use(async (req, res, next) => {
 
 sockio.on('connection', async (socket) => 
 {
-	let user; 
+	let user;
+	let	socketData;
 
 	if (DEBUG_WEBSOCKETS == false)
 		user = socket.request.user;
 	else
 		user = socket.handshake.auth;
-	clearTimeout(globals.timers.get(user.id_user));
+	globals.ClearTimer(user.id_user);
 	console.log("A new user connected with id ", user.id_user);
+	socketData = clientMap.get(user.id_user);
+	if (socketData?.state == enumSocketState.MATCHMAKING)
+		return (MatchMaking(sockio, user, clientMap));
 	clientMap.set(user.id_user, {allowedBool: true, socket: socket, matchData: null});
 	let friendsId = [];
 	try {
@@ -83,9 +89,12 @@ sockio.on('connection', async (socket) =>
 		clearTimeout(globals.timers.get(user.id_user));
 		globals.clientMap.get(user.id_user).reconnectBool = true;
 		//NOTE - after SOCKET_RECONNECT_TIMER, user is considered disconnected
+		console.log("setting reconnection timeout for user", user.id_user);
 		globals.timers.set(user.id_user, setTimeout(() =>
 		{
-			console.log(`User with id ${user.id_user} disconnected`)
+			console.log(`User with id ${user.id_user} disconnected`);
+			globals.RemoveFromAllQueues(user.id_user);
+			globals.ClearTimer(user.id_user);
 			clientMap.delete(user.id_user);
 			for (const id of friendsId)
 			{

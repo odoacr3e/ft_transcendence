@@ -6,7 +6,7 @@ import {DEBUG} from "../../Macro/macro.js";
 import { enumConnection } from "../../Macro/enums.js";
 
 /** @typedef {import("../Chess/player.js").Player} Player*/
-/** @typedef {{socket: *, allowedBool: boolean, reconnectBool?: boolean, matchData?: Player}} Socket */
+/** @typedef {{socket: *, allowedBool: boolean, state?: string, reconnectBool?: boolean, matchData?: Player}} Socket */
 
 const	TEST_MATCH = "0";
 
@@ -50,6 +50,51 @@ class Globals
 			default:
 				throw (`GetQueue: roomType ${roomType} invalid`);
 		}
+	}
+	/** 
+	 * 
+	 * @param {string} userId
+	 * @param {*} options
+	*/
+	FindQueue(userId, options)
+	{
+		let	queue;
+		let	queueNode;
+		let	queueNodeArray = [];
+
+		if (!options)
+			throw ("FindQueue: please give an empty object as second parameter.");
+		queueNodeArray.push(this.rankedQueue.get(userId));
+		queueNodeArray.push(this.friendlyQueue.get(userId));
+		queueNodeArray.push(this.arenaQueue.get(userId));
+		if (queueNodeArray[0])
+			queue = this.rankedQueue;
+		else if (queueNodeArray[1])
+			queue = this.friendlyQueue;
+		else if (queueNodeArray[2])
+			queue = this.arenaQueue;
+		else
+			throw ("FindQueue: user " + userId + " is not in any queue");
+		queueNode = queue.get(userId);
+		if (!queueNode)
+			throw ("FindQueue: something went wrong with " + userId);
+		options.roomType = queue.roomType;
+		options.matchType = queueNode.matchType;
+		options.matchSettings = queueNode.matchOptions;
+		return (queue);
+	}
+	/** @param {string} userId */
+	RemoveFromAllQueues(userId, resetTimerBool=true)
+	{
+		this.friendlyQueue.DelNode(userId, resetTimerBool);
+		this.rankedQueue.DelNode(userId, resetTimerBool);
+		this.arenaQueue.DelNode(userId, resetTimerBool);
+	}
+	/** @param {string} timerId */
+	ClearTimer(timerId)
+	{
+		clearTimeout(this.timers.get(timerId));
+		this.timers.delete(timerId);
 	}
 	GetLastMatch()
 	{

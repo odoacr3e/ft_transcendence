@@ -66,6 +66,13 @@ const enumConnection =
 	ARENA: 'arena'
 };
 
+const enumSocketState =
+{
+	MATCHMAKING: "matchMaking",
+	PLAYING: "playing",
+	WATCHING: "watching"
+};
+
 const enumInitNames = 
 {
 	KING: 'K',
@@ -100,4 +107,4 @@ const kingMovements =
 	{dx:1, dy:0}, {dx:-1, dy:0},//orizzontale
 ];
 
-export {eTeam, eEvents, eMatchPresets, enumNames, arrayNames, enumInitNames, enumValues, enumSpecialMoves, kingMovements, enumConnection};
+export {eTeam, eEvents, eMatchPresets, enumNames, arrayNames, enumInitNames, enumValues, enumSpecialMoves, kingMovements, enumConnection, enumSocketState};
