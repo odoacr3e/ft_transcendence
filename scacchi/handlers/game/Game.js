@@ -90,9 +90,11 @@ async function gameWebSocketHandler(req, id_user, socketData)
 	let	matchId;
 	let	result;
 
-	matchId = socketData.matchData?.matchId;
-	if (!matchId)
+	if (!socketData?.matchData)
 		return (socketError(socketData.socket, null, 401, "Socket: you are not a player."));
+	matchId = socketData.matchData.matchId;
+	if (!matchId)
+		return (socketError(socketData.socket, null, 401, `Socket: match ${matchId} does not exist.`));
 	match = globals.matches.get(matchId);
 	if (!match)
 		return (socketError(socketData.socket, null, 403, "Socket: invalid match id " + matchId));

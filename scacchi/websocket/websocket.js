@@ -55,6 +55,7 @@ sockio.on('connection', async (socket) =>
 {
 	let user;
 	let	socketData;
+	let	friendsId = [];
 
 	if (DEBUG_WEBSOCKETS == false)
 		user = socket.request.user;
@@ -64,15 +65,8 @@ sockio.on('connection', async (socket) =>
 	console.log("A new user connected with id ", user.id_user);
 	socketData = clientMap.get(user.id_user);
 	if (socketData?.reconnectBool == true)
-		return (handleReconnect(sockio, user, socketData, socket));
-	clientMap.set(user.id_user, {allowedBool: true, socket: socket, matchData: null});
-	let friendsId = [];
-	try {
-		friendsId = await announceMeOnline(sockio, user, clientMap, friendsId);
-	} catch (error) {
-		console.error("Server error loading friends:", error);
-	}
-
+		await handleReconnect(sockio, user, socketData, socket);
+	await firstConnection(sockio, user, socket, friendsId);
 	socket.on('init', async(/** @type {matchMakingOpt}*/options) => 
 	{
 		if (!options || !options.roomType || !options.matchType)
@@ -89,10 +83,7 @@ sockio.on('connection', async (socket) =>
 	socket.on("game", async(/** @type {{from: *, to: *, type: string}}*/req) =>
 	{
 		socketData = globals.clientMap.get(user.id_user);
-		if (!socketData)
-			socket.emit("gameError", {log: {status: 500, msg: "Socket: try to refresh your data"}});
-		else
-			gameWebSocketHandler(req, user.id_user, socketData);
+		gameWebSocketHandler(req, user.id_user, socketData);
 	});
 
 	socket.on('disconnect', async () => {
@@ -119,6 +110,23 @@ sockio.on('connection', async (socket) =>
 /**
  * 
  * @param {*} sockio 
+ * @param {*} user 
+ * @param {*} socket 
+ * @param {[]} friendsId
+ */
+async function firstConnection(sockio, user, socket, friendsId)
+{
+	clientMap.set(user.id_user, {allowedBool: true, socket: socket, matchData: null});
+	try {
+		friendsId = await announceMeOnline(sockio, user, clientMap, friendsId);
+	} catch (error) {
+		console.error("Server error loading friends:", error);
+	}
+}
+
+/**
+ * 
+ * @param {*} sockio 
  * @param {*} dbUser 
  * @param {Socket} socketData 
  */
@@ -126,16 +134,17 @@ function handleReconnect(sockio, dbUser, socketData, newSocket)
 {
 	socketData.reconnectBool = false;
 	if (socketData.socket.id != newSocket.id)
-		socketData.socket
+		socketData.socket.disconnect();
+	socketData.socket.removeAllListeners();
 	socketData.socket = newSocket;
 	if (socketData.state == enumSocketState.MATCHMAKING)
 		return (MatchMaking(dbUser, clientMap));
 	else if (socketData.state == enumSocketState.PLAYING)
 	{
-		console.log("reconnect player...");
+		console.log(`reconnect player ${dbUser.id_user}...`);
 		console.log("data from db:");
 		console.log(dbUser);
-		console.log("data for Socket:");
-		console.log(socketData);
+		console.log("data for matchData:");
+		console.log(socketData.matchData);
 	}
 }
