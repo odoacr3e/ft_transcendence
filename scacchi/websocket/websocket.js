@@ -80,7 +80,7 @@ sockio.on('connection', async (socket) =>
 			return ;
 		}
 		if (includesOneOf(options.roomType, enumConnection.FRIENDLY, enumConnection.RANKED, enumConnection.ARENA))
-			MatchMaking(sockio, user, clientMap, options);
+			MatchMaking(user, clientMap, options);
 		else
 			throw ("stanze non implementate");
 	})
@@ -116,5 +116,5 @@ function handleReconnect(sockio, dbUser, socketData)
 {
 	socketData.reconnectBool = false;
 	if (socketData.state == enumSocketState.MATCHMAKING)
-		return (MatchMaking(sockio, dbUser, clientMap));
+		return (MatchMaking(dbUser, clientMap));
 }

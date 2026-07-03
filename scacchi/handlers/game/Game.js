@@ -103,8 +103,8 @@ async function gameWebSocketHandler(req, id_user, socketData)
 	result = await gameHandler(match, req);
 	if (result.log.status != 200)
 		return (socketError(socketData.socket, result));
-	//FIXME - fare una stanza dove si mettono giocatori e spettatori
 	socketData.socket.emit(req.type, result);
+	socketData.socket.to(`match_${match.id}`).emit("game", result);
 }
 
 /**

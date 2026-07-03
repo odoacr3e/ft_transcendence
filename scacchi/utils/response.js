@@ -50,7 +50,10 @@ function responseFormatter(match, result, msg, status)
 	if (match)
 	{
 		formatPlayer(match, result);
+		result.id = match.id;
 	}
+	else
+		result.id = result.match?.id;
 	if (result && result.msg && result.status)
 		log = {msg: result.msg, status: result.status};
 	else
@@ -147,15 +150,15 @@ function _jsonParser(key, val)
  * @param {object} val 
  * @returns 
  */
-/*
- function _jsonParser(key, val)
- {
- 	if (val instanceof Set)
- 		return ({ __type: "Set", data: [...val] });
- 	if (val instanceof Map)
- 		return ({ __type: "Map", data: [...val.entries()]});
- 	return (val);
- }*/
+
+// function _jsonParser(key, val)
+// {
+// 	if (val instanceof Set)
+// 		return ({ __type: "Set", data: [...val] });
+// 	if (val instanceof Map)
+// 		return ({ __type: "Map", data: [...val.entries()]});
+// 	return (val);
+// }
 
 /**
  * 

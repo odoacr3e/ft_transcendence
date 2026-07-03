@@ -15,12 +15,11 @@ import { getUserById } from "../../query/usersQuery.js";
 
 /**
  * 
- * @param {*} sockio 
  * @param {dbUser} user
  * @param {Map<string, Socket>} clientMap 
  * @param {MatchMakingOpt} options
  *///@ts-ignore
-export async function MatchMaking(sockio, user, clientMap, options={})
+export async function MatchMaking(user, clientMap, options={})
 {
 	let queue;
 	let	queueNode;
@@ -155,6 +154,7 @@ async function bindPlayersToMatch(match, queueNode)
 		promises.push(getUserById(userId));
 		user.matchData = match.currentPlayer;
 		globals.RemoveFromAllQueues(userId, false);
+		user.socket.join(`match_${match.id}`);
 		++i;
 		match.endTurn();
 	}
