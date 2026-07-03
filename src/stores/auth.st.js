@@ -56,6 +56,19 @@ export const useAuthStore = defineStore('auth', {
 			this.usersOnline.clear();
 		},
 
+		async update()
+		{
+			this.isLoading = true;
+			this.error = null;
+			try {
+				this.user = await authApi.update(credentials);
+				// if (this.user && !this.socket) { this.connectSocket(); } 
+			}
+			catch (err) { this.error = err.message; }
+			finally		{ this.isLoading = false; }
+			return (this.error);
+		},
+
 		async fetchMe() 
 		{
 			if (this.sessionChecked) { return; }

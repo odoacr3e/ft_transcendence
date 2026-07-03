@@ -39,11 +39,11 @@
 	}
 
 	async function submitForm() {
-		resp = await auth.register(formData.value);
+		resp.value = await auth.register(formData.value);
 		resetError();
-		if (!resp)	{ router.push('/me'); }
+		if (!resp.value)	{ router.push('/me'); }
 		else {
-			switch (resp) {
+			switch (resp.value) {
 				case "User already exists":
 					error.clone.fill(true)
 					break;

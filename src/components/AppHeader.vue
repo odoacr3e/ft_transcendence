@@ -78,6 +78,10 @@
 						<p class="text-white">Profilo</p>
 					</RouterLink>
 					<hr>
+					<RouterLink to="/me/edit" id="button">
+						<p class="text-white">Impostazioni</p>
+					</RouterLink>
+					<hr>
 					<button @click="submitForm()" class="cursor-pointer text-[#f1f5f7]">Logout</button>
 				</div>
 			</div>

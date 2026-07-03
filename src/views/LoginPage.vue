@@ -33,7 +33,7 @@
 </template>
 
 <style scoped>
-    #wrap {
+    /* #wrap {
         display: grid;
         grid-template-columns: max-content max-content;
         position: relative;
@@ -44,7 +44,7 @@
         font-size: 110%;
         font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         user-select: none;
-    }
+    } */
 
     h1, h4 {
         font-family: "Copperplate", Times;

@@ -13,6 +13,10 @@ export const authApi = {
 		const resp = await api.get('/api/users/me'); // ripristino sessione al mount
 		return (resp.data.user);
 	},
+	update:		async () => {
+		const resp = await api.patch('/api/users', userData); // aggiornamento delle info dello user
+		return (resp.data.user);
+	},
 	friendlist:	async () => {
 		const resp = await api.get('/api/friends'); // lista di amici
 		return (resp.data.friendship);
