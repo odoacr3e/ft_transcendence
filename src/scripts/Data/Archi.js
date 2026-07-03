@@ -1,26 +1,27 @@
 import { initLocalBoard, localMatchState, localBoard,  
 			localPlayers, startLocalMatchState, 
-			localInfo}															from "./Variables.js";
-import { checkEndTurn, hasBoost, DEBUGSetVisible, checkUpgrade, _jsonReviver }	from "./utils/ArchiUtils.js";
+			localInfo, socket}										from "./Variables.js";
+import { checkEndTurn, hasBoost, DEBUGSetVisible, checkUpgrade }	from "./utils/ArchiUtils.js";
+import "./SocketLink.js"
 
 //SECTION - INIT FUNCTIONS
 
-export async function loadReceivedMatch(style) 
-{
-	const response = await fetch("http://localhost:8080/api/game",
-	{
-		method: "POST",
-		headers: { "Content-Type": "application/json" },
-		body: JSON.stringify({ type: "init", from: style, to: "0" })
-	});
+// export async function loadReceivedMatch(style) 
+// {
+// 	const response = await fetch("http://localhost:8080/api/game",
+// 	{
+// 		method: "POST",
+// 		headers: { "Content-Type": "application/json" },
+// 		body: JSON.stringify({ type: "init", from: style, to: "0" })
+// 	});
 
-	if (!response.ok)
-		throw new Error(`Impossibile caricare /match.json: ${response.status}`);
-	const match = await response.json();
-	// const match = await JSON.parse(response.body, _jsonReviver);
-	// console.log(`responde: ${JSON.stringify(match)}`)
-	return match;
-}
+// 	if (!response.ok)
+// 		throw new Error(`Impossibile caricare /match.json: ${response.status}`);
+// 	const match = await response.json();
+// 	// const match = await JSON.parse(response.body, _jsonReviver);
+// 	// console.log(`responde: ${JSON.stringify(match)}`)
+// 	return match;
+// }
 
 export function validateReceivedMatch(rawJson)
 {
@@ -56,11 +57,26 @@ export function validateReceivedMatch(rawJson)
 	}
 }
 
-// boost di pezzi
-
 export async function initLocalMatchState(style)
 {
-	const raw = await loadReceivedMatch(style);
+	socket.connect();
+	if (!socket.connected)
+		throw new Error ("Archi.js:initLocalMatchState() init socket failed to connect to server");
+	const raw = await new Promise((resolve, reject) => {
+
+		const onError = (err) => {
+			socket.off("game/init", resolve);
+			reject(new Error(err?.log?.msg ?? "errore nell'inizializzazione partita"));
+		};
+		
+		socket.once("game/init", (payload) => {
+			socket.off("error", onError);
+			resolve(payload);
+		});
+
+		socket.once("error", onError);
+		socket.emit("init", {roomType: style, matchType: "?"});
+	})
 	const validated = validateReceivedMatch(raw);
 	startLocalMatchState(validated);
 

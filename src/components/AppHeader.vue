@@ -6,6 +6,8 @@
 	import { asset }			from '../scripts/Helper/CompUtils';
 	import { api }				from '../router/api/client';
 
+	defineOptions({ inheritAttrs: false });
+
 	const authStore = useAuthStore();
 	const { user } = storeToRefs(authStore);
 	const	bool = ref(false),
@@ -43,7 +45,7 @@
 		</RouterLink>
 	</datalist>
 
-	<div class="grid grid-cols-3 z-11 w-lvw h-15 bg-[#201e1c] border-b border-[#181715e8] justify-center">
+	<div class="grid grid-cols-3 z-11 w-lvw h-15 bg-[#201e1c] border-b border-[#181715e8] justify-center" v-bind="$attrs">
 		<RouterLink to="/" id="button" class="w-fit">
 			<div class="flex justify-self-start">
 				<img src="../assets/CrownIcon.png" alt="" class="place-self-center size-15 ml-3">

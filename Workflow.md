@@ -14,10 +14,10 @@ App.vue (src/App.vue)
 index.js (src/router/index.js)
 	->	DECIDE LA ROTTA 
 
-Game.vue (src/views/Game.vue)
+ClassicGame.vue (src/views/ClassicGame.vue)
 	->	CHIAMA (initMatchstate()) NEL (noMountedHook()) 
 
-initLocalMatchState() (src/scripts/Data/Game.js)
+initLocalMatchState() (src/scripts/Data/ClassicGame.js)
 	->	INIZIALIZZA LE VARS GLOBALI IN Variables.js DA match.json 
 
 boardConverter() 
@@ -101,7 +101,7 @@ boardConverter()
 			✓ bastardo
 			✓ minotauro
 			✓ giullare
-			✓ valkiaria
+			✓ valkirya
 			✓ campione
 			✓ re
 	✓ aura dei pezzi boostati visibile [LEO] 
@@ -129,7 +129,7 @@ boardConverter()
 	✓	websocket per lo stato online
 	✓	history dei match
 	✓	reazione del frontend agli errori (es. al login)
-	▫	refactor pagina di gioco, pulsanti con tipi di partite, creazione stanze, sfida amici [LEO]
+	✓	refactor pagina di gioco, pulsanti con tipi di partite, creazione stanze, sfida amici [LEO]
 	▫	redirection alla pagina login se si prova ad accedere a pagine protette [MAVI]
 	▫	dettagli info sui match
 	▫	pagina di modifica delle info utente
@@ -140,3 +140,10 @@ boardConverter()
 	▫	info dei profili per le partitre a 4
 	▫	re-design della home
 	▫	websocket per la partita --> in attesa di sviluppo backend
+
+	eventi:
+
+		move:
+		boost:
+		endTurn:
+		

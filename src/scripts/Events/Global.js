@@ -2,19 +2,19 @@ import { usingAbility, checkPermision,
 		checkForHighlightMove, moveDragClone, 
 		sendEndTurn,
 		shopAbility,
-		useAbility}	from "./utils/GlobalUtils.js";
+		useAbility}											from "./utils/GlobalUtils.js";
 import { rightClickSelect, highlightOnClick,
-		highlightOnDrag, clearHighlight }		from "./utils/HighlightUtils.js";
+		highlightOnDrag, clearHighlight }					from "./utils/HighlightUtils.js";
 import { localInfo, getRootDiv, localBoard, localPlayers }	from "@/scripts/Data/Variables";
-import { PIECES_ABILITY } 						from "@/scripts/Helper/abilityMovement";
-import { sendToBackend }						from "./BackLink.js";
+import { PIECES_ABILITY } 									from "@/scripts/Helper/abilityMovement";
+import { sendToBackend }									from "./BackLink.js";
 
 // ANCHOR EVENT-LISTENERS FUNCTIONS
 
 export async function globalEvents()
 {
 	const ROOT_DIV = getRootDiv();
-	// ROOT_DIV.setAttribute('tabindex', '0'); --> concetti molto interessanti che non vanno ignorati
+	// ROOT_DIV.setAttribute('tabindex', '0'); --> concetti molto interessanti
 	// ROOT_DIV.focus();
 
 	ROOT_DIV.addEventListener("click", async function(event) 

@@ -1,5 +1,5 @@
 <script setup>
-	import { DOMBoard, localInfo, localPlayers, IMG_PATHS, localBoard }	from '@/scripts/Data/Variables';
+	import { DOMBoard, localInfo, localPlayers, IMG_PATHS }	from '@/scripts/Data/Variables';
 	import { shopAbility,upgradeBastard }		from '@/scripts/Events/utils/GlobalUtils';
 	import { onMounted, computed, ref }			from 'vue';
 	import { onDragStart, onDrop }				from '@/scripts/Events/Movements';
@@ -12,6 +12,7 @@
 					 "l3", "m3", "n3", "l2", "m2", "n2", "l1", "m1", "n1"] );
 
 	const domBoardComputed = computed(() => DOMBoard());
+	// eslint-disable-next-line no-unused-vars
 	const prop = defineProps({
   	    	style: String
 	    });
@@ -32,15 +33,15 @@
                     v-for="square in row"
                     :key="square.id"
                     :id="square.id"
-                    :class="[getSquareColor(square.id), 
+                    :class="[getSquareColor(square.id),
 							'square',
+							{ 'w-18.75 h-18.75' : style === '1v1', 'w-13 h-13' : style === '14x14x4'},
 							{ 'opacity-0 hidden': style === '14x14x4' && HIDDEN.has(square.id) },
 							{'outline-4 outline-[#e2dac5c5] -outline-offset-4': dragOver === square.id},
 							{'selectedBstW': getSquareColor(square.id) == 'white' && (square.boostedHighlight && square.piece)},
 							{'selectedBstB': getSquareColor(square.id) == 'black' && (square.boostedHighlight && square.piece)},
 							{'selectedW': getSquareColor(square.id) == 'white' && (square.selected || square.highlight && square.piece)},
 							{'selectedB': getSquareColor(square.id) == 'black' && (square.selected || square.highlight && square.piece)}]"
-					v-bind:class="{ 'w-18.75 h-18.75' : style === '1v1', 'w-13 h-13' : style === '14x14x4'}"
                     @drop="onDrop($event, square); dragOver = null"
                     @dragover.prevent="dragOver = square.id;">
 					<p	class="absolute"

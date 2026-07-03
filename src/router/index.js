@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore }	from '@/stores/auth.st'
 import Home from '../views/Home.vue'
-import Game from '../views/Game.vue'
+import ClassicGame from '../views/ClassicGame.vue'
 import PlayPage from '../views/PlayPage.vue'
 import UserMe from '../views/UserMe.vue'
 import UserOther from '../views/UserOther.vue'
@@ -19,7 +19,7 @@ const routes = [
 	{
 		path: '/game',
 		name: 'game',
-		component: Game
+		component: ClassicGame
 	},
 	{
 		path: '/playpage',

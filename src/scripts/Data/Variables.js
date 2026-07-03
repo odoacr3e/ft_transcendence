@@ -1,6 +1,7 @@
 // SECTION - LE VARIABILI GLOBALI
 import { boardConverter, getLocalPlayers }	from "../Helper/RenderUtils.js";
 import { reactive }							from "vue";
+import { io } 								from "socket.io-client";
 
 export class Square {
 	constructor(id, piece, targetZones = [], boostedTargetZones = {}) {
@@ -35,6 +36,9 @@ class metaInfo {
 
 //globale contiene info. riguardante le interazione dello user con la board, utile per il rendering
 export let localInfo = reactive(new metaInfo());
+
+//Allora qui creao il socket della partita, le flag sono per rispettare l'autenticazione fatta dal back, la flag autoconnect false è per poter gestire io manualmente la connessione
+export const socket = io("http://localhost:8080", { withCredentials: true, autoConnect: false });
 
 //Globale che contiene tutti i dati della partita conservati in locale
 export let localMatchState = null;
