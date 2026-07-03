@@ -128,9 +128,9 @@ boardConverter()
 //TODO FRONTEND - 
 	✓	websocket per lo stato online
 	✓	history dei match
+	✓	reazione del frontend agli errori (es. al login)
 	▫	refactor pagina di gioco, pulsanti con tipi di partite, creazione stanze, sfida amici [LEO]
-	▫	reazione del frontend agli errori (es. al login) [MAVI]
-	▫	redirection alla pagina login se si prova ad accedere a pagine protette
+	▫	redirection alla pagina login se si prova ad accedere a pagine protette [MAVI]
 	▫	dettagli info sui match
 	▫	pagina di modifica delle info utente
 	▫	reset della password (sia dal login page che dalla pagina utente loggato)

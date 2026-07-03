@@ -19,7 +19,17 @@
 				email: [false, false],
 				password: [false, false],
 			}),
+			error_msg = {
+				clone: "Esiste gia' un utente\ncon queste credenziali",
+				username: "Lo username deve avere\nalmeno 4 caratteri",
+				email: "Controlla di aver\ninserito un email valida",
+				password: "La password deve avere:\n\
+							- almeno 8 caratteri\n- un numero\n\
+							- una maiuscola\n- una minuscola\n\
+							- un carattere speciale ($,%,#...)"
+			},
 			router = useRouter();
+	let		resp = ref(null);
 
 	function resetError() {
 		error.clone[1] = false;
@@ -29,7 +39,7 @@
 	}
 
 	async function submitForm() {
-		const resp = await auth.register(formData.value);
+		resp = await auth.register(formData.value);
 		resetError();
 		if (!resp)	{ router.push('/me'); }
 		else {
@@ -298,14 +308,37 @@
 		<option value="Zimbabwe" />
 	</datalist>
 	</datalist> -->
-	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" id="allert"
-		class="absolute size-6 text-red-100 animate-card -translate-x-3 hidden transition-all duration-250 ease-in-out"
-		:class="{	'inline translate-y-34.5' : error.username[1], 
-					'inline translate-y-49' : error.email[1],
-					'inline translate-y-63.5' : error.password[1],
-		}">
-		<path fill-rule="evenodd" d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd" />
-	</svg>
+	<div>
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" id="allert"
+			class="absolute size-6 text-red-100 animate-error -translate-x-3 hidden transition-all duration-250 ease-in-out"
+			:class="{	'inline translate-y-34.5' : error.username[1] || error.clone[1],
+						'inline translate-y-49' : error.email[1],
+						'inline translate-y-63.5' : error.password[1],
+			}">
+			<path fill-rule="evenodd" d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd" />
+		</svg>
+		<div class="hidden -translate-x-25 p-3 animate-pop flex-col items-center text-center
+				gap-2.5 absolute rounded-xl border inset-ring bg-[#2f1818]/80 text-red-100 border-red-800/10 inset-ring-red-500/20"
+			:class="{	'translate-y-24.5 -translate-x-52 inline' : error.clone[1], 
+						'translate-y-24.5 -translate-x-55' : error.username[1], 
+						'translate-y-39 -translate-x-52' : error.email[1],
+						'translate-y-53.5 -translate-x-69' : error.password[1],
+			}">	
+			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-red-100 self-center mx-auto">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+			</svg>
+			<div>
+				<h2>Credenziali errate</h2>
+				<p class="text-sm whitespace-pre-line" v-if="error.username[1]">{{ error_msg.username }}</p>
+				<p class="text-sm whitespace-pre-line" v-if="error.clone[1]">{{ error_msg.clone }}</p>
+				<p class="text-sm whitespace-pre-line" v-if="error.email[1]">{{ error_msg.email }}</p>
+				<p class="text-sm whitespace-pre-line" v-if="error.password[1]">{{ error_msg.password }}</p>
+				<RouterLink to="/log" v-if="error.clone[1]">
+                    <u><a class="text-sm cursor-pointer hover:text-[#af3d3d] active:text-[#d1aaaa]">Vuoi accedere?</a></u>
+                </RouterLink>
+			</div>
+		</div>
+	</div>
 
 
 	<div class="justify-self-center justify-items-center mt-3">
@@ -386,5 +419,14 @@
 
 	#submit {
 		transition: filter 0.2s ease-in-out;
+	}
+
+	#allert:hover + div
+	{
+		display: inline;
+	}
+
+	#allert + div:hover {
+		display: inline;
 	}
 </style>
