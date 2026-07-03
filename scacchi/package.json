@@ -28,6 +28,7 @@
   "scripts": {
     "start": "clear;node main.js",
     "dev": "clear; ./node_modules/.bin/nodemon main.js",
+    "devNode": "clear; node main.js",
     "confprisma": "npm install prisma --save-dev; npm install @prisma/client; npm install @prisma/adapter-pg --save; npx prisma generate; npm i --save-dev @types/node",
     "pulldb": "npx prisma db pull && npx prisma generate",
     "make": "r='npm run';R='\\033[31m';G='\\033[32m';Y='\\033[33m';Q='\\033[0m'; echo ♔ $Y waiting... $Q;((echo ♖ $Y updating node modules... $Q >/dev/stderr;$r) && (echo ♗ $Y configurating prisma...>/dev/stderr;$r confprisma) && (echo ♘ $Y pulling from db... remember to get the .env from Slack $Q >/dev/stderr;$r pulldb)) >/dev/null && echo ♕ $G OK $Q || echo 𝖈𝖍𝖊𝖈𝖐𝖒𝖆𝖙𝖊! $R ERROR $Q",

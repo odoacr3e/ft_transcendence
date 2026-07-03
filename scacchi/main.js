@@ -6,7 +6,7 @@ import { responseFormatter } from "./utils/response.js";
 import { colors, tag } from "./utils/colors.js";
 import { log } from "./utils/log.js";
 import { globals } from "./Classes/Globals/globals.js";
-import "./websocket/websocket.js"
+import "./websocket/websocket.js";
 
 const { ALLOWED_URL, PORT } = lib;
 const { cors } = lib.auth;

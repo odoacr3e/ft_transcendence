@@ -19,8 +19,6 @@ import {render, boardStringify} from "./render.js";
 import readline from "node:readline";
 import { makeTransfiguration } from "../handlers/game/transfiguration.js";
 import { cmd } from "./enumsTest.js";
-import { eMatchPresets } from "../Macro/enums.js";
-import { edoChampionBug } from "./savedMatches.js";
 
 /** @typedef {import("../Classes/Chess/match.js").Match} Match*/
 

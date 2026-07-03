@@ -28,8 +28,6 @@ class Player
 		//SECTION - user data
 		/** @type {dbUser | null} */
 		this.dbTable = null;
-		/** @type {* | null} */
-		this.socket = null;
 		this.matchId = "0";
 		this.id = "0";
 		//SECTION - gameData

@@ -7,6 +7,7 @@ import { render } from "../../test/render.js";
 import { getUserById } from "../../query/usersQuery.js";
 
 /** @typedef {import("../../Classes/Chess/player.js").Player} Player*/
+/** @typedef {import("../../Classes/endPoint/result.js").Result} Result*/
 /** @typedef {{socket: *, allowedBool: boolean, state?: string, reconnectBool?: boolean, matchData?: Player}} Socket */
 /** @typedef {import("../../Classes/endPoint/matchInit.js").matchMakingOpt} MatchMakingOpt*/
 /** @typedef {{id_user: string, points: number}} dbUser*/
@@ -82,28 +83,21 @@ export async function createMatch(queueNode)
 {
 	let	match;
 	let	result;
-	let	socket;
 	let	preset;
 
 	if (await validateMatch(queueNode) == false)
 		return (false);
-	console.log(globals.timers);
 	preset = queueNode.matchOptions? queueNode.matchOptions: queueNode.matchType;
 	match = new Match(preset);
 	result = init(match, preset);
 	globals.lastMatchId = match.CreateId(queueNode);
 	globals.matches.set(globals.lastMatchId, match);
-	await bindPlayersToMatch(match, queueNode);
+	//@ts-ignore
+	result.id = match.id;
+	await bindPlayersToMatch(match, queueNode, result);
 	render(match);
 	console.log("CREAZIONE MATCH: ♟️");
 	console.log(queueNode);
-	for (const id_user of queueNode.userSet)
-	{
-		socket = globals.clientMap.get(id_user);
-		if (!socket)
-			throw (`createMatch: disconnection for ${id_user}`);
-		socket.socket.emit("datiInizialiPOISIVEDECHENOMEDAREEH", result);
-	}
 	return (true);
 }
 
@@ -128,8 +122,9 @@ function validateMatch(queueNode)
  * check that all players are properly connected
  * @param {Match} match
  * @param {QueueNode} queueNode
+ * @param {Result} result
  */
-async function bindPlayersToMatch(match, queueNode)
+async function bindPlayersToMatch(match, queueNode, result)
 {
 	let	i;
 	let	userArray;
@@ -149,12 +144,12 @@ async function bindPlayersToMatch(match, queueNode)
 			throw ("bindPlayerToMatch: userId " + userArray[i] + " has left");
 		user.state = enumSocketState.PLAYING;
 		match.currentPlayer.matchId = match.id;
-		match.currentPlayer.socket = user.socket;
 		match.currentPlayer.id = userId;
 		promises.push(getUserById(userId));
 		user.matchData = match.currentPlayer;
 		globals.RemoveFromAllQueues(userId, false);
 		user.socket.join(`match_${match.id}`);
+		user.socket.emit("game", result);
 		++i;
 		match.endTurn();
 	}

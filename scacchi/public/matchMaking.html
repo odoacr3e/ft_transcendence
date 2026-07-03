@@ -182,6 +182,29 @@
             font-weight: bold;
             color: #1a1917;
         }
+
+        /* STILE NUOVO: Cerchio appariscente e cliccabile per l'ID del Match */
+        .match-circle-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #e67e22; /* Colore arancione acceso molto visibile */
+            color: white !important;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px; /* Crea un pillolo/cerchio arrotondato */
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 3px 0px #d35400;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+        .match-circle-btn:hover {
+            background-color: #f39c12;
+        }
+        .match-circle-btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 0px #d35400;
+        }
     </style>
 </head>
 <body>
@@ -241,20 +264,20 @@
         const cognomi = ["Fanelli", "Biagi", "Cerbai", "Parolisi", "Russo", "Raccanello", "Gallo", "Topo", "Formaggio", "Tersillo", "Sgrolla", "Bianghi"];
         const usernamePrefix = ["King", "GrandMaster", "Pawn", "Knight", "Rook", "CheckMate", "Investigatopo", "Bro", "Yorlo", "Calcio di pinirlone"];
         const ids = [50, 55, 57, 60, 2, 3, 61, 62, 63, 64, 65, 66, 67, 1];
-		const id_locked = [];
+        const id_locked = [];
 
         function generaDatiCasuali() {
             const nome = nomi[Math.floor(Math.random() * nomi.length)];
             const cognome = cognomi[Math.floor(Math.random() * cognomi.length)];
             const username = usernamePrefix[Math.floor(Math.random() * usernamePrefix.length)] + Math.floor(Math.random() * 100);
             let id_user = ids[(Math.floor(Math.random() * ids.length))];
-			let	i = 0;
-			while (id_locked.indexOf(id_user) != -1)
-			{
-				id_user = ids[i];
-				i++;
-			}
-			id_locked.push(id_user);
+            let i = 0;
+            while (id_locked.indexOf(id_user) != -1)
+            {
+                id_user = ids[i];
+                i++;
+            }
+            id_locked.push(id_user);
             const points = Math.floor(Math.random() * (2200 - 800 + 1)) + 800;
 
             return {
@@ -267,11 +290,11 @@
         }
 
         function creaNuovoClient() {
-			if (id_locked.length == ids.length)
-			{
-				alert("Non ci sono piu id nel db da aggiungere. Refresha la pagina");
-				return ;
-			}
+            if (id_locked.length == ids.length)
+            {
+                alert("Non ci sono piu id nel db da aggiungere. Refresha la pagina");
+                return ;
+            }
             const datiUtente = generaDatiCasuali();
 
             // --- CONNESSIONE WEBSOCKET INDIVIDUALE ---
@@ -360,12 +383,36 @@
                 }
             });
 
-            socket.on('match:assigned', (data) => {
+            // --- NUOVO ASCOLTATORE EVENTO 'game' ---
+            socket.on('game', (data) => {
                 const matchCell = document.getElementById(`match-cell-${datiUtente.id_user}`);
-                if (matchCell && data && data.matchId) {
-                    matchCell.innerText = data.matchId;
-                    clientObj.matchId = data.matchId;
-                }
+                if (matchCell && data && data.id) {
+                    clientObj.matchId = data.id;
+                    
+                   // Sostituiamo il testo con un cerchio/badge arancione cliccabile
+                    matchCell.innerHTML = `
+                        <button class="match-circle-btn" onclick="window.location.href='http://127.0.0.1:5500/scacchi/public/play.html'")">
+                            ${data.id}
+                        </button>
+                    `;
+					const btn = matchCell.querySelector('.match-circle-btn');
+						btn.onclick = () => {
+							// Prepariamo l'array con tutti i client che hanno un match id valido
+							const readyClients = clientSimulati
+								.filter(c => c.matchId && c.matchId !== "Nessuno" && c.matchId !== "In attesa...")
+								.map(c => ({ dati: c.dati, matchId: c.matchId }));
+					localStorage.setItem('attiva_gameplay_clients', JSON.stringify(readyClients));
+					window.location.href = "http://127.0.0.1:5500/scacchi/public/play.html";
+                    console.log(`[GAME EVENT] Match assegnato a ${datiUtente.username}. ID Match: ${data.id}`);
+                	}
+				}
+				else
+				{
+					console.log("match");
+					console.log(matchCell);
+					console.log(data);
+					alert("errore in init: vedi i log");
+				}
             });
 
             socket.on('error', (err) => {

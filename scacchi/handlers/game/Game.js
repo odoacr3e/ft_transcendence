@@ -3,7 +3,7 @@
 // import http from "http";
 // import express from "express";
 // import {Server as SocketIO} from "socket.io";
-import {responseFormatter} from "../../utils/response.js";
+import {jsonParser, responseFormatter} from "../../utils/response.js";
 import { Result, clientBoard, normifyRequest } from "./utils.js";
 import { move } from "./move.js";
 import { endTurn } from "./endTurn.js";
@@ -103,12 +103,14 @@ async function gameWebSocketHandler(req, id_user, socketData)
 	result = await gameHandler(match, req);
 	if (result.log.status != 200)
 		return (socketError(socketData.socket, result));
+	console.log(req.type);
+	result = jsonParser(result);
 	socketData.socket.emit(req.type, result);
 	socketData.socket.to(`match_${match.id}`).emit("game", result);
 }
 
 /**
- * handler of game POST requests
+ * handler of websockets and http request
  * @param {import("../../Classes/Chess/match.js").Match} match
  * @param {import("./utils.js").RequestBody} body
  */
@@ -218,7 +220,7 @@ function socketError(socket=null, result=null, status=0, msg=null, match=null, r
 	if (renderBool == true)
 		render(DEBUG_MATCH);
 	if (socket)
-		socket.emit("gameError", result);
+		socket.emit("gameError", jsonParser(result));
 }
 
-export {gameChecks, gameHttpHandler, error, move, endTurn, boost, init};
+export {gameChecks, gameHttpHandler, gameWebSocketHandler, error, move, endTurn, boost, init};

@@ -50,10 +50,7 @@ function responseFormatter(match, result, msg, status)
 	if (match)
 	{
 		formatPlayer(match, result);
-		result.id = match.id;
 	}
-	else
-		result.id = result.match?.id;
 	if (result && result.msg && result.status)
 		log = {msg: result.msg, status: result.status};
 	else
@@ -92,6 +89,8 @@ function formatPlayer(match, result)
 	{
 		result.p1 = match.white; 
 		result.p2 = match.black;
+		result.p1.dbTable = undefined;
+		result.p2.dbTable = undefined;
 	}
 	else if (match.settings.players.number == 4)
 	{
@@ -103,6 +102,10 @@ function formatPlayer(match, result)
 		result.p4.name = "p4";
 		result.p3.isPlaying = false;
 		result.p4.isPlaying = false;
+		result.p1.dbTable = undefined;
+		result.p2.dbTable = undefined;
+		result.p3.dbTable = undefined;
+		result.p4.dbTable = undefined;
 	}
 	else
 		throw ("formatPlayer: bad player number");

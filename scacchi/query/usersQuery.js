@@ -1,7 +1,5 @@
 
-import bcrypt from "bcryptjs";
-import * as lib from "../lib/lib.js";
-const { prisma } = lib.conn;
+import { prisma } from "../lib/prisma.js";
 
 export const getAllUsers = async () => {
 	return await prisma.users.findMany({

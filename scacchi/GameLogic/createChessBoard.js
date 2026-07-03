@@ -1,6 +1,6 @@
 //@ts-check
 import { Chess } from "../lib/lib.js";
-const {Piece} = Chess;
+import { Piece } from "../Classes/Chess/Pieces/pieces.js";
 import { Enums } from "../lib/lib.js";
 const {eTeam, enumNames, enumInitNames} = Enums;
 import {dangerUpdateAll} from "../utils/moveUtils.js";

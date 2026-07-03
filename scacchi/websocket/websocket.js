@@ -10,6 +10,7 @@ import {enumConnection, eMatchPresets, enumSocketState} from "../Macro/enums.js"
 import { includesOneOf } from "../utils/string.js";
 import { MatchMaking } from "./MatchMaking/MatchMaking.js";
 import { DEBUG_WEBSOCKETS, SOCKET_RECONNECT_TIMER } from "../Macro/macro.js";
+import { gameWebSocketHandler } from "../handlers/game/Game.js";
 
 /** @typedef {{socket: *, allowedBool: boolean, state?: string, reconnectBool?: boolean, matchData?: Player}} Socket */
 
@@ -63,7 +64,7 @@ sockio.on('connection', async (socket) =>
 	console.log("A new user connected with id ", user.id_user);
 	socketData = clientMap.get(user.id_user);
 	if (socketData?.reconnectBool == true)
-		return (handleReconnect(sockio, user, socketData));
+		return (handleReconnect(sockio, user, socketData, socket));
 	clientMap.set(user.id_user, {allowedBool: true, socket: socket, matchData: null});
 	let friendsId = [];
 	try {
@@ -83,7 +84,16 @@ sockio.on('connection', async (socket) =>
 			MatchMaking(user, clientMap, options);
 		else
 			throw ("stanze non implementate");
-	})
+	});
+
+	socket.on("game", async(/** @type {{from: *, to: *, type: string}}*/req) =>
+	{
+		socketData = globals.clientMap.get(user.id_user);
+		if (!socketData)
+			socket.emit("gameError", {log: {status: 500, msg: "Socket: try to refresh your data"}});
+		else
+			gameWebSocketHandler(req, user.id_user, socketData);
+	});
 
 	socket.on('disconnect', async () => {
 		clearTimeout(globals.timers.get(user.id_user));
@@ -112,9 +122,20 @@ sockio.on('connection', async (socket) =>
  * @param {*} dbUser 
  * @param {Socket} socketData 
  */
-function handleReconnect(sockio, dbUser, socketData)
+function handleReconnect(sockio, dbUser, socketData, newSocket)
 {
 	socketData.reconnectBool = false;
+	if (socketData.socket.id != newSocket.id)
+		socketData.socket
+	socketData.socket = newSocket;
 	if (socketData.state == enumSocketState.MATCHMAKING)
 		return (MatchMaking(dbUser, clientMap));
+	else if (socketData.state == enumSocketState.PLAYING)
+	{
+		console.log("reconnect player...");
+		console.log("data from db:");
+		console.log(dbUser);
+		console.log("data for Socket:");
+		console.log(socketData);
+	}
 }
