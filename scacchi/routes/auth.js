@@ -1,17 +1,15 @@
 
 import * as lib from "../lib/lib.js";
-import * as usersQuery from "../query/usersQuery.js";
 import bcrypt from "bcryptjs";
 import { createJwt, checkJwt, revokeTokenSessions, 
 	validateInputRegister, validateUser, cookiesOpt } from "../utils/auth.js";
 import { jsonResponse } from "../utils/response.js";
 import { colors } from "../utils/colors.js";
 import { log } from "../utils/log.js";
-import { sendEmail } from "../lib/emailSender.js";
+import { query } from "../lib/query.js";
+const { usersQuery } = query;
 const { fs, logfd } = lib.include;
-const { prisma } = lib.conn;
-const { redis } = lib.conn;
-const { crypto } = lib.conn;
+const { prisma, crypto, redis, sendEmail } = lib.conn;
 export const authRouter = lib.include.express.Router();
 
 // NOTE: route /auth
@@ -83,7 +81,7 @@ authRouter.post("/register", async (req, res) => {
 		// await sendEmail({
 		// 	to: user.email,
 		// 	subject: "Nuovo account creato",
-		// 	body: `<h2>Ciao ${user.username}!</h2><p>Il tuo acoount e' stato creato</p>`
+		// 	body: `<h2>Ciao ${user.username}!</h2><p>Il tuo account e' stato creato</p>`
 		// })
 		req.user = user;
 		await createJwt(req, res);

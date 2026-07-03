@@ -1,8 +1,7 @@
 
-import * as lib from "../lib/lib.js";
-const { prisma } = lib.conn;
+import { prisma } from "../lib/prisma.js";
 
-export const getAllUserMatches = async (id_user) => {
+export async function getAllUserMatches(id_user) {
 	const userMatches = await prisma.users_matches.findMany({
 		select: {
 			id_usermatch: true,

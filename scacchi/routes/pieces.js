@@ -1,7 +1,8 @@
 
 import * as lib from "../lib/lib.js";
-import * as piecesQuery from "../query/piecesQuery.js";
+import { query } from "../lib/query.js";
 import { jsonResponse } from "../utils/response.js";
+const { piecesQuery } = query;
 export const piecesRouter = lib.include.express.Router();
 
 // NOTE: /api/pieces

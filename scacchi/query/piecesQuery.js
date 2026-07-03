@@ -1,8 +1,7 @@
 
-import * as lib from "../lib/lib.js";
-const { prisma } = lib.conn;
+import { prisma } from "../lib/prisma.js";
 
-const getAllPieces = async () => {
+export async function getAllPieces() {
 	return await prisma.pieces.findMany({
 		select: {
 			id_piece: true,
@@ -24,7 +23,7 @@ const getAllPieces = async () => {
 	});
 }
 
-const findPieceByName = async (name) => {
+export async function findPieceByName(name) {
 	return await prisma.pieces.findMany({
 		select: {
 			id_piece: true,
@@ -52,7 +51,7 @@ const findPieceByName = async (name) => {
 	});
 }
 
-const getPieceById = async (id) => {
+export async function getPieceById(id) {
 	return await prisma.pieces.findUnique({
 		where: {
 			id_piece: Number(id)
@@ -73,5 +72,3 @@ const getPieceById = async (id) => {
 		}
 	});
 }
-
-export { getAllPieces, findPieceByName, getPieceById };

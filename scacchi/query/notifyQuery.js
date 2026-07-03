@@ -1,8 +1,7 @@
 
-import * as lib from "../lib/lib.js";
-const { prisma } = lib.conn;
+import { prisma } from "../lib/prisma.js";
 
-const getAllNotifications = async (id) => {
+export async function getAllNotifications (id) {
 	return await prisma.notifications.findMany({
 		select: {
 			id_notification: true,
@@ -25,7 +24,7 @@ const getAllNotifications = async (id) => {
 	});
 }
 
-const getFilteredNotifications = async (filter) => {
+export async function getFilteredNotifications (filter) {
 	return await prisma.notifications.findMany({
 		where: filter,
 		select: {
@@ -45,7 +44,7 @@ const getFilteredNotifications = async (filter) => {
 	});
 }
 
-const getNotificationById = async (id) => {
+export async function getNotificationById (id) {
 	return await prisma.notifications.findUnique({
 		select: {
 			id_notification: true,
@@ -69,7 +68,7 @@ const getNotificationById = async (id) => {
  * @param {{ id_sender: Number, id_receiver: Number, title: String,
  * description: String, creation_date: Date }} data
  */
-const postNotification = async (data) => {
+export async function postNotification (data) {
 	return await prisma.notifications.create({
 		data: data,
 		select: {
@@ -93,7 +92,7 @@ const postNotification = async (data) => {
  * 
  * @param {Array} ids 
  */
-const readNotifications = async (ids) => {
+export async function readNotifications (ids) {
 	return await prisma.notifications.updateMany({
 		data: {
 			status: 'read'
@@ -103,6 +102,3 @@ const readNotifications = async (ids) => {
 		}
 	});
 }
-
-export const getNotify = { getAllNotifications, getFilteredNotifications, getNotificationById };
-export const postNotify = { postNotification, readNotifications };

@@ -3,9 +3,8 @@ import * as lib from "../lib/lib.js";
 import { jsonResponse } from "../utils/response.js";
 import { checkJwt } from "../utils/auth.js";
 import { log } from "../utils/log.js";
-import { friendsQuery } from "../query/friendsQuery.js";
-import { response } from "express";
-const { prisma } = lib.conn;
+import { query } from "../lib/query.js";
+const { friendsQuery } = query;
 export const friendsRouter = lib.include.express.Router();
 
 

@@ -4,10 +4,10 @@ import { jsonResponse } from "../utils/response.js";
 import { checkJwt } from "../utils/auth.js";
 import { log } from "../utils/log.js";
 import { response } from "express";
-import { getAllUserMatches } from "../query/matchHistoryQuery.js";
 import { match } from "node:assert";
 import { matches_round } from "../generated/prisma/index.js";
-const { prisma } = lib.conn;
+import { query } from "../lib/query.js";
+const { matchHistoryQuery } = query;
 export const matchHistoryRouter = lib.include.express.Router();
 
 // NOTE /api/matchesHistory
@@ -19,7 +19,7 @@ export const matchHistoryRouter = lib.include.express.Router();
  */
 matchHistoryRouter.get('/', checkJwt, async (req, res) => {
 	try {
-		const matches = await getAllUserMatches(req.user.id_user);
+		const matches = await matchHistoryQuery(req.user.id_user);
 		return res.status(200).json(jsonResponse.ResponseSuccess({ "matches": matches }));
 	} catch (error) {
 		console.log("Error: ", error);
@@ -34,7 +34,7 @@ matchHistoryRouter.get('/', checkJwt, async (req, res) => {
  */
 matchHistoryRouter.get('/user/:id', checkJwt, async (req, res) => {
 	try {
-		const matches = await getAllUserMatches(req.params.id);
+		const matches = await matchHistoryQuery(req.params.id);
 		return res.status(200).json(jsonResponse.ResponseSuccess({ "matches": matches }));
 	} catch (error) {
 		console.log("Error: ", error);

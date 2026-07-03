@@ -4,7 +4,7 @@ import { jsonResponse } from "../utils/response.js";
 import { checkJwt } from "../utils/auth.js";
 import { log } from "../utils/log.js";
 import { response } from "express";
-const { prisma } = lib.conn;
+import { prisma } from "../lib/prisma.js";
 export const preferencesRouter = lib.include.express.Router();
 
 /**

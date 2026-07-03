@@ -1,12 +1,9 @@
 
-import * as lib from "../lib/lib.js";
-const { prisma } = lib.conn;
-
-
+import { prisma } from "../lib/prisma.js";
 /**
  * @param {Match} match 
  */
-const createMatch = async (match) => {
+export async function createMatch(match) {
 	const m = await prisma.matches.create({
 		data: {
 			start_date: match.start_date,
@@ -16,7 +13,5 @@ const createMatch = async (match) => {
 			history: match.Log()
 		}
 	});
-	return ;
+	return m;
 }
-
-export const matchQuery = { createMatch }

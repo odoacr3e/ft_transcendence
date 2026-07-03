@@ -1,12 +1,13 @@
 
 import * as lib from "../lib/lib.js";
-import * as usersQuery from "../query/usersQuery.js";
 import bcrypt from "bcryptjs"
 import { checkInputs, checkEmail, checkPassword, checkUsername } from "../utils/users.js";
 import { checkJwt } from "../utils/auth.js";
 import { jsonResponse } from "../utils/response.js"
 import { log } from "../utils/log.js"
 import { colors } from "../utils/colors.js";
+import { query } from "../lib/query.js";
+const { usersQuery } = query;
 export const usersRouter = lib.include.express.Router();
 
 // NOTE: route /api/users/

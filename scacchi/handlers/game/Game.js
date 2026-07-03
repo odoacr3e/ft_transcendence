@@ -13,7 +13,7 @@ import { render } from "../../test/render.js";
 import {makeTransfiguration} from "./transfiguration.js";
 //FIXME - solo debug
 import { globals } from "../../Classes/Globals/globals.js";
-import { matchQuery } from "../../query/gameQuery.js";
+import { createMatch } from "../../query/gameQuery.js";
 import { Match, MatchSettings } from "../../Classes/Chess/match.js";
 
 const DEBUG_MATCH = globals.getDebugMatch();
@@ -160,7 +160,7 @@ async function gameHandler(match, body)
 		try 
 		{
 			console.log("Salvataggio partita nel database...");
-			await matchQuery.createMatch(match);
+			await createMatch(match);
 			console.log("Successo!");
 		}
 		catch (error)

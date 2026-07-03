@@ -1,7 +1,7 @@
 
 import { prisma } from "../lib/prisma.js";
 
-export const getAllUsers = async () => {
+export async function getAllUsers() {
 	return await prisma.users.findMany({
 		select: {
 			id_user: true,
@@ -25,7 +25,7 @@ export const getAllUsers = async () => {
 	});
 }
 
-export const getUserById = async (id) => {
+export async function getUserById(id) {
 	return await prisma.users.findUnique({
 		select: {
 			id_user: true,
@@ -53,7 +53,7 @@ export const getUserById = async (id) => {
 
 // NOTE: cerca un utente che contiene come username lo username passato
 // e possibile passare anche solo una parte dello username -> passando 'Mario' trovera 'Mariorossi' 'supermario' oppure 'robomarione'
-export const findUserByUsername = async (username) => {
+export async function findUserByUsername(username) {
 	return await prisma.users.findMany({
 		select: {
 			id_user: true,
@@ -85,7 +85,7 @@ export const findUserByUsername = async (username) => {
 	});
 }
 
-export const getUserByUsername = async (username) => {
+export async function getUserByUsername (username) {
 	return await prisma.users.findUnique({
 			select: {
 				id_user: true,
@@ -111,7 +111,7 @@ export const getUserByUsername = async (username) => {
 		});
 }
 
-export const getUserByEmail = async (email) => {
+export async function getUserByEmail(email) {
 	return await prisma.users.findUnique({
 			select: {
 				id_user: true,
@@ -137,7 +137,7 @@ export const getUserByEmail = async (email) => {
 		});
 }
 
-export const getLeaderboard = async () => {
+export async function getLeaderboard() {
 	return await prisma.users.findMany({
 		select: {
 				id_user: true,
@@ -164,7 +164,7 @@ export const getLeaderboard = async () => {
  * @param {String} email
  * @param {String} nationality 
  */
-export const createUser = async (name, surname, username, password, email, nationality) => {
+export async function createUser(name, surname, username, password, email, nationality) {
 	return await prisma.users.create({
 		data: {
 			name: name,
@@ -195,13 +195,13 @@ export const createUser = async (name, surname, username, password, email, natio
 	});
 }
 
-export const deleteUserById = async (id) => {
+export async function deleteUserById(id) {
 	return await prisma.users.delete({
 		where: { id_user: Number(id) }
 	});
 }
 
-export const updateUserFieldsById = async (id, data) => {
+export async function updateUserFieldsById(id, data) {
 	const fields = ['name', 'surname', 'username', 'nationality', 'image', 'preferences'];
 	const updates = {};
 	for (const f of fields)
@@ -235,7 +235,7 @@ export const updateUserFieldsById = async (id, data) => {
 	});
 }
 
-export const updateUserPasswordByUsername = async (username, password) => {
+export async function updateUserPasswordByUsername(username, password) {
 	return await prisma.users.update({
 		where: {username: username},
 		data: { password: password },
@@ -260,7 +260,7 @@ export const updateUserPasswordByUsername = async (username, password) => {
 	});
 }
 
-export const updateUserPasswordById = async (id_user, password) => {
+export async function updateUserPasswordById(id_user, password) {
 	return await prisma.users.update({
 		where: {id_user: id_user},
 		data: { password: password },

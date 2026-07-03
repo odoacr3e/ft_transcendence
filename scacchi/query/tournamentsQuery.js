@@ -1,7 +1,5 @@
 
-import * as lib from "../lib/lib.js";
-const { prisma } = lib.conn;
-
+import { prisma } from "../lib/prisma.js";
 
 export async function getAllUserTournaments(id_user) {
 	const userTournaments = await prisma.tournament_players.findMany({
