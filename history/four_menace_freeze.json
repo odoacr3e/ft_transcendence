@@ -1,0 +1,151 @@
+{
+  "moves": 13,
+  "victory": "",
+  "finalBoard": "| | | |M| |V|C|K|V|J|M| | | |\n| | | |B|B|B|B|B|B|B|B| | | |\n| | | | | | | | | | | | | | |\n|M| | |J| | | | | | | | |B|M|\n| |B| | | | | | | | | | |B|J|\n|V|B|J| | | | | | | | | |B|V|\n|K|B| | | | | | | | | | |B|K|\n|C|B| | | | | | | | |B| | |C|\n|V|B| | | | | | | | | | |B|V|\n|J|B| | | | | | | | | | |B|J|\n|M|B| | | | | |B|B| | | |B|M|\n| | | | | | | | | | | | | | |\n| | | |B|B|B|B| | |B|B| | | |\n| | | |M|J|V|C|K|V|J|M| | | |\n",
+  "matchSettings": "2v2",
+  "events": [
+    {
+      "from": "i2",
+      "to": "i4",
+      "movedPiece": "Bastards",
+      "team": "yellow",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 0,
+      "updates": {},
+      "error": false
+    },
+    {
+      "from": "",
+      "to": "",
+      "movedPiece": "",
+      "team": "yellow",
+      "type": "endturn",
+      "useBoostBool": false,
+      "counter": 1,
+      "updates": {},
+      "error": false
+    },
+    {
+      "from": "b;",
+      "to": "d;",
+      "movedPiece": "Bastards",
+      "team": "blue",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 2,
+      "updates": {},
+      "error": false
+    },
+    {
+      "from": "",
+      "to": "",
+      "movedPiece": "",
+      "team": "blue",
+      "type": "endturn",
+      "useBoostBool": false,
+      "counter": 3,
+      "updates": {},
+      "error": false
+    },
+    {
+      "from": "e>",
+      "to": "f<",
+      "movedPiece": "Jester",
+      "team": "red",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 4,
+      "updates": {},
+      "error": false
+    },
+    {
+      "from": "",
+      "to": "",
+      "movedPiece": "",
+      "team": "red",
+      "type": "endturn",
+      "useBoostBool": false,
+      "counter": 5,
+      "updates": {},
+      "error": false
+    },
+    {
+      "from": "m7",
+      "to": "k7",
+      "movedPiece": "Bastards",
+      "team": "green",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 6,
+      "updates": {},
+      "error": false
+    },
+    {
+      "from": "",
+      "to": "",
+      "movedPiece": "",
+      "team": "green",
+      "type": "endturn",
+      "useBoostBool": false,
+      "counter": 7,
+      "updates": {},
+      "error": false
+    },
+    {
+      "from": "h2",
+      "to": "h4",
+      "movedPiece": "Bastards",
+      "team": "yellow",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 8,
+      "updates": {},
+      "error": false
+    },
+    {
+      "from": "",
+      "to": "",
+      "movedPiece": "",
+      "team": "yellow",
+      "type": "endturn",
+      "useBoostBool": false,
+      "counter": 9,
+      "updates": {},
+      "error": false
+    },
+    {
+      "from": "a:",
+      "to": "c9",
+      "movedPiece": "Jester",
+      "team": "blue",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 10,
+      "updates": {},
+      "error": false
+    },
+    {
+      "from": "",
+      "to": "",
+      "movedPiece": "",
+      "team": "blue",
+      "type": "endturn",
+      "useBoostBool": false,
+      "counter": 11,
+      "updates": {},
+      "error": false
+    },
+    {
+      "from": "f<",
+      "to": "d;",
+      "movedPiece": "Jester",
+      "team": "red",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 12,
+      "updates": {},
+      "error": false
+    }
+  ]
+}
