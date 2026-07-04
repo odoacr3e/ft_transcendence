@@ -17,6 +17,8 @@ const fourPresets = [
 	eMatchPresets.NoCornersFourPlayers];
 
 /**
+ * key: userId
+ * val: user matchMaking node
  * @extends {Map<string, QueueNode>}
  */
 export class Queue extends Map

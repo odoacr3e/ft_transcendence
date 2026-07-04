@@ -90,7 +90,9 @@ async function gameWebSocketHandler(req, id_user, socketData)
 	let	matchId;
 	let	result;
 
-	if (!socketData?.matchData)
+	if (!socketData)
+		return (console.error("ERROR: disconnected player not eliminated"));
+	if (!socketData.matchData)
 		return (socketError(socketData.socket, null, 401, "Socket: you are not a player."));
 	matchId = socketData.matchData.matchId;
 	if (!matchId)

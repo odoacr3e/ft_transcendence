@@ -66,7 +66,13 @@ sockio.on('connection', async (socket) =>
 	socketData = clientMap.get(user.id_user);
 	if (socketData?.reconnectBool == true)
 		await handleReconnect(sockio, user, socketData, socket);
-	await firstConnection(sockio, user, socket, friendsId);
+	else
+		await firstConnection(sockio, user, socket, friendsId);
+	try {
+		friendsId = await announceMeOnline(sockio, user, clientMap, friendsId);
+	} catch (error) {
+		console.error("Server error loading friends:", error);
+	}
 	socket.on('init', async(/** @type {matchMakingOpt}*/options) => 
 	{
 		if (!options || !options.roomType || !options.matchType)
@@ -117,11 +123,6 @@ sockio.on('connection', async (socket) =>
 async function firstConnection(sockio, user, socket, friendsId)
 {
 	clientMap.set(user.id_user, {allowedBool: true, socket: socket, matchData: null});
-	try {
-		friendsId = await announceMeOnline(sockio, user, clientMap, friendsId);
-	} catch (error) {
-		console.error("Server error loading friends:", error);
-	}
 }
 
 /**

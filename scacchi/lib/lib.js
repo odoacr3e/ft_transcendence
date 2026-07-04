@@ -27,8 +27,9 @@ import { sendEmail, bodyOTP } from "./emailSender.js"
 
 redis.on("error", (stream) =>
 {
-	if (process.env.IGNORE_REDIS != "true")
-		console.error(stream);
+	if (process.env.IGNORE_REDIS == "true")
+		return ;
+	console.error(stream);
 });
 
 // SECTION - external inclusions

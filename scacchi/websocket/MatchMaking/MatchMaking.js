@@ -4,7 +4,8 @@ import { enumConnection, enumSocketState } from "../../Macro/enums.js";
 import { Match } from "../../Classes/Chess/match.js";
 import { init } from "../../handlers/game/init.js";
 import { render } from "../../test/render.js";
-import { getUserById } from "../../query/usersQuery.js";
+import { query } from "../../lib/query.js";
+const getUserById = query.usersQuery.getUserById;
 
 /** @typedef {import("../../Classes/Chess/player.js").Player} Player*/
 /** @typedef {import("../../Classes/endPoint/result.js").Result} Result*/
