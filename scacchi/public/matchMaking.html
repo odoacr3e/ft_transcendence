@@ -309,6 +309,7 @@
                 dati: datiUtente,
                 socket: socket,
                 matchId: "In attesa...",
+                team: null, // <--- NUOVO: Salvataggio locale del team
                 countdownInterval: null // Riferimento al timer locale di questo utente
             };
 
@@ -388,31 +389,34 @@
                 const matchCell = document.getElementById(`match-cell-${datiUtente.id_user}`);
                 if (matchCell && data && data.id) {
                     clientObj.matchId = data.id;
+                    clientObj.team = data.team || "N/A"; // <--- Acquisisce il team dal backend
                     
-                   // Sostituiamo il testo con un cerchio/badge arancione cliccabile
+                    // Sostituiamo il testo con un cerchio/badge arancione cliccabile
                     matchCell.innerHTML = `
-                        <button class="match-circle-btn" onclick="window.location.href='http://127.0.0.1:5500/scacchi/public/play.html'")">
+                        <button class="match-circle-btn">
                             ${data.id}
                         </button>
                     `;
-					const btn = matchCell.querySelector('.match-circle-btn');
-						btn.onclick = () => {
-							// Prepariamo l'array con tutti i client che hanno un match id valido
-							const readyClients = clientSimulati
-								.filter(c => c.matchId && c.matchId !== "Nessuno" && c.matchId !== "In attesa...")
-								.map(c => ({ dati: c.dati, matchId: c.matchId }));
-					localStorage.setItem('attiva_gameplay_clients', JSON.stringify(readyClients));
-					window.location.href = "http://127.0.0.1:5500/scacchi/public/play.html";
-                    console.log(`[GAME EVENT] Match assegnato a ${datiUtente.username}. ID Match: ${data.id}`);
-                	}
-				}
-				else
-				{
-					console.log("match");
-					console.log(matchCell);
-					console.log(data);
-					alert("errore in init: vedi i log");
-				}
+                    
+                    const btn = matchCell.querySelector('.match-circle-btn');
+                    btn.onclick = () => {
+                        // Prepariamo l'array includendo sia i dati, il matchId e il rispettivo team assegnato
+                        const readyClients = clientSimulati
+                            .filter(c => c.matchId && c.matchId !== "Nessuno" && c.matchId !== "In attesa...")
+                            .map(c => ({ dati: c.dati, matchId: c.matchId, team: c.team })); // <--- Passa anche il team
+                            
+                        localStorage.setItem('attiva_gameplay_clients', JSON.stringify(readyClients));
+                        window.location.href = "http://127.0.0.1:5500/scacchi/public/play.html";
+                    };
+                    console.log(`[GAME EVENT] Match assegnato a ${datiUtente.username}. ID Match: ${data.id} | Team: ${clientObj.team}`);
+                }
+                else
+                {
+                    console.log("match");
+                    console.log(matchCell);
+                    console.log(data);
+                    alert("errore in init: vedi i log");
+                }
             });
 
             socket.on('error', (err) => {

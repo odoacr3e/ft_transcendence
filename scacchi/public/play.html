@@ -17,6 +17,14 @@
             --table-light: #dad8d6;
             --accent-red: #ff4d4d;
             --accent-blue: #2980b9;
+            
+            /* Colori dei Team */
+            --team-white: #ffffff;
+            --team-black: #111111;
+            --team-yellow: #f1c40f;
+            --team-blue: #3498db;
+            --team-red: #e74c3c;
+            --team-green: #2ecc71;
         }
 
         body {
@@ -156,6 +164,24 @@
         .res-ok { background-color: var(--accent-green); }
         .res-err { background-color: var(--accent-red); }
 
+        /* Etichetta Team Personalizzata */
+        .team-badge {
+            display: inline-block;
+            padding: 0.3rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: 1px solid rgba(0,0,0,0.2);
+        }
+        .team-white { background-color: var(--team-white); color: #000; }
+        .team-black { background-color: var(--team-black); color: #fff; }
+        .team-yellow { background-color: var(--team-yellow); color: #000; }
+        .team-blue { background-color: var(--team-blue); color: #fff; }
+        .team-red { background-color: var(--team-red); color: #fff; }
+        .team-green { background-color: var(--team-green); color: #fff; }
+
         /* Box globale per gli errori severi log.msg */
         #global-error-log {
             width: 100%;
@@ -182,6 +208,7 @@
                 <thead>
                     <tr>
                         <th>Stato</th>
+                        <th>Team</th>
                         <th>Username (ID Match)</th>
                         <th>points</th>
                         <th>Invia Mossa ({from, to, type})</th>
@@ -202,19 +229,35 @@
     </div>
 
     <script>
-        // Recuperiamo i dati passati dal primo HTML (usiamo localStorage per semplicità di trasporto massivo)
+        // Recuperiamo i dati passati dal primo HTML
         const clientIniziali = JSON.parse(localStorage.getItem('attiva_gameplay_clients')) || [];
         const clientSimulati = [];
-		let		lastEventType = "init";
+        let lastEventType = "init";
 
-        // Inizializzazione automatica dei client ereditati
+        // Mappa delle priorità per ordinare la tabella in base al team assegnato
+        const prioritaTeam = {
+            "white": 1, "black": 2,
+            "yellow": 3, "blue": 4, "red": 5, "green": 6,
+            "N/A": 99
+        };
+
+        // Eseguiamo il sort dell'array originario prima di iniettarlo nel DOM
+        clientIniziali.sort((a, b) => {
+            const teamA = (a.team || "N/A").toLowerCase();
+            const teamB = (b.team || "N/A").toLowerCase();
+            return (prioritaTeam[teamA] || 90) - (prioritaTeam[teamB] || 90);
+        });
+
+        // Inizializzazione automatica dei client ereditati (ora ordinati)
         if(clientIniziali.length === 0) {
-            document.getElementById('game-table-body').innerHTML = `<tr><td colspan="7" style="text-align:center; color:white; background:#262522; padding:2rem;">Nessun client in partita. Avvia un match dal Test Bench precedente.</td></tr>`;
+            document.getElementById('game-table-body').innerHTML = `<tr><td colspan="8" style="text-align:center; color:white; background:#262522; padding:2rem;">Nessun client in partita. Avvia un match dal Test Bench precedente.</td></tr>`;
         } else {
-            clientIniziali.forEach(c => creaRigaClientGameplay(c.dati, c.matchId));
+            clientIniziali.forEach(c => creaRigaClientGameplay(c.dati, c.matchId, c.team));
         }
 
-        function creaRigaClientGameplay(datiUtente, matchId) {
+        function creaRigaClientGameplay(datiUtente, matchId, teamName) {
+            const teamSicuro = teamName || "N/A";
+            
             // --- RICONNESSIONE DEL WEBSOCKET ---
             const socket = io("http://localhost:8080", {
                 auth: datiUtente,
@@ -226,6 +269,7 @@
                 dati: datiUtente,
                 socket: socket,
                 matchId: matchId,
+                team: teamSicuro,
                 countdownInterval: null
             };
             clientSimulati.push(clientObj);
@@ -236,6 +280,7 @@
             
             tr.innerHTML = `
                 <td><span id="badge-${datiUtente.id_user}" class="status-badge">Connecting</span></td>
+                <td><span class="team-badge team-${teamSicuro.toLowerCase()}">${teamSicuro}</span></td>
                 <td><strong>${datiUtente.username}</strong><br><small style="color:#444; font-family:monospace;">MID: ${matchId}</small></td>
                 <td>🎯 ${datiUtente.points}</td>
                 <td>
@@ -261,11 +306,9 @@
             tbody.appendChild(tr);
 
             // --- CONFIGURAZIONE DEGLI ASCOLTATORI EVENTI ON ---
-            const eventiMossa = ["move", "moveBoost", "boost", "transform", "endTurn"];
-            
             socket.on("game", (data) => {
-                    gestisciRispostaServer(datiUtente.id_user, lastEventType, data);
-                });
+                gestisciRispostaServer(datiUtente.id_user, lastEventType, data);
+            });
 
             // Gestione Grafica Connessione
             socket.on('connect', () => {
@@ -305,22 +348,22 @@
 
             const fromVal = document.getElementById(`from-${idUser}`).value;
             const toVal = document.getElementById(`to-${idUser}`).value;
-            const typeVal = document.getElementById(`type-${idUser}`).value;
+            const typeVal = document.getElementById('type-' + idUser).value;
 
             const payload = {
                 from: fromVal,
                 to: toVal,
                 type: typeVal
             };
-			lastEventType = typeVal;
+            lastEventType = typeVal;
             client.socket.emit("game", payload);
-            console.log(`evento [game] Inviato da ${client.dati.username}:`, payload);
+            console.log(`evento [game] Inviato da ${client.dati.username} (${client.team}):`, payload);
         }
 
         // --- GESTIONE DELLE RISPOSTE RICEVUTE SUI SOCKET.ON ---
         function gestisciRispostaServer(idUser, eventType, data) {
             const esitoCell = document.getElementById(`esito-${idUser}`);
-            console.log(`[ON ${eventType}] Ricevuto per utente ${idUser}:`, data);
+            console.log(`[ON game -> ${eventType}] Ricevuto per utente ${idUser}:`, data);
 
             // Controllo standard impostato: data.log.status
             if (data && data.log && data.log.status === 200) {
@@ -339,7 +382,7 @@
                 
                 const li = document.createElement('li');
                 li.innerHTML = `<strong>Utente ${idUser} (${eventType}):</strong> ${errorMsg} (Status: ${data?.log?.status || 'N/A'})`;
-                errorList.prepend(li); // Mette l'ultimo errore in cima
+                errorList.prepend(li);
             }
         }
 
