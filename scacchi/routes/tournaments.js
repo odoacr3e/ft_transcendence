@@ -12,7 +12,7 @@ export const tournamentsRouter = lib.include.express.Router();
 /**
  * @param {import('express').Request} req
  * @param {import('express').Response} res
- * NOTE: solo user loggati, ricerca tutti i tornei a cui l'utente ha partecipato
+ * NOTE: solo user loggati, ricerca tutti i tornei a cui l'utente ha partecipato o sta partecipando
 */
 tournamentsRouter.get('/', checkJwt, async (req, res) => {
 	try {
@@ -26,3 +26,14 @@ tournamentsRouter.get('/', checkJwt, async (req, res) => {
 	}
 });
 
+tournamentsRouter.get('/:id', checkJwt, async (req, res) => {
+	try {
+		const tournament = await tournamentsQuery.getTournamentById(req.params.id);
+		if (tournament)
+			return res.status(200).json(jsonResponse.ResponseSuccess({ "tournament": tournament }))
+		return res.status(400).json(jsonResponse.ResponseError("Tournament not found"));
+	} catch (error) {
+		console.log("Error: ", error);
+		return res.status(500).json(jsonResponse.ResponseError("Server error retrieving tournaments"));
+	}
+});
