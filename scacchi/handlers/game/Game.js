@@ -104,12 +104,13 @@ async function gameWebSocketHandler(req, id_user, socketData)
 		return (socketError(socketData.socket, null, 401, "Socket: it's not your turn, dirty greedy cheeta"));
 	if (!req.type)
 		return (socketError(socketData.socket, null, 403, "Socket: missing param type in request"));
+	req = normifyRequest(match.cursor, req);
 	result = await gameHandler(match, req);
 	if (result.log.status != 200)
 		return (socketError(socketData.socket, result));
 	console.log(req.type);
 	result = jsonParser(result);
-	socketData.socket.emit(req.type, result);
+	socketData.socket.emit("game", result);
 	socketData.socket.to(`match_${match.id}`).emit("game", result);
 }
 
@@ -214,17 +215,17 @@ function error(res=null, result=null, status=0, msg=null, renderBool=true)
 function socketError(socket=null, result=null, status=0, msg=null, match=null, renderBool=false)
 {
 	if (!result)
+	{
 		result = responseFormatter(null, result, msg, status);
-	else
-		result = responseFormatter(result.match, result, msg, status);
-	if (renderBool == true)
-		console.clear();
-	console.log("\x1b[31mGame error\x1b[0m");
-	console.log(`status: ${result.log.status}\nmsg: ${result.log.msg}`);
-	if (renderBool == true)
-		render(DEBUG_MATCH);
+		if (renderBool == true)
+			console.clear();
+		console.log("\x1b[31mGame error\x1b[0m");
+		console.log(`status: ${result.log.status}\nmsg: ${result.log.msg}`);
+		if (renderBool == true)
+			render(DEBUG_MATCH);
+	}
 	if (socket)
-		socket.emit("gameError", jsonParser(result));
+		socket.emit("game", jsonParser(result));
 }
 
 export {gameChecks, gameHttpHandler, gameWebSocketHandler, error, move, endTurn, boost, init};

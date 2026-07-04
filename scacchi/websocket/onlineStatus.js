@@ -1,5 +1,5 @@
 
-import * as lib from "../lib/lib.js"
+import * as lib from "../lib/lib.js";
 const { prisma } = lib.conn;
 
 /**

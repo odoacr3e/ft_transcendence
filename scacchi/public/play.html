@@ -205,6 +205,7 @@
         // Recuperiamo i dati passati dal primo HTML (usiamo localStorage per semplicità di trasporto massivo)
         const clientIniziali = JSON.parse(localStorage.getItem('attiva_gameplay_clients')) || [];
         const clientSimulati = [];
+		let		lastEventType = "init";
 
         // Inizializzazione automatica dei client ereditati
         if(clientIniziali.length === 0) {
@@ -262,11 +263,9 @@
             // --- CONFIGURAZIONE DEGLI ASCOLTATORI EVENTI ON ---
             const eventiMossa = ["move", "moveBoost", "boost", "transform", "endTurn"];
             
-            eventiMossa.forEach(eventType => {
-                socket.on(eventType, (data) => {
-                    gestisciRispostaServer(datiUtente.id_user, eventType, data);
+            socket.on("game", (data) => {
+                    gestisciRispostaServer(datiUtente.id_user, lastEventType, data);
                 });
-            });
 
             // Gestione Grafica Connessione
             socket.on('connect', () => {
@@ -313,7 +312,7 @@
                 to: toVal,
                 type: typeVal
             };
-
+			lastEventType = typeVal;
             client.socket.emit("game", payload);
             console.log(`evento [game] Inviato da ${client.dati.username}:`, payload);
         }

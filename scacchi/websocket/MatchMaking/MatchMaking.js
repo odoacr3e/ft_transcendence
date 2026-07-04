@@ -149,6 +149,8 @@ async function bindPlayersToMatch(match, queueNode, result)
 		promises.push(getUserById(userId));
 		user.matchData = match.currentPlayer;
 		globals.RemoveFromAllQueues(userId, false);
+		//@ts-ignore
+		result.team = match.currentPlayer.team;
 		user.socket.join(`match_${match.id}`);
 		user.socket.emit("game", result);
 		++i;

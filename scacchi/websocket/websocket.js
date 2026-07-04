@@ -62,16 +62,16 @@ sockio.on('connection', async (socket) =>
 	else
 		user = socket.handshake.auth;
 	globals.ClearTimer(user.id_user);
-	console.log("A new user connected with id ", user.id_user);
 	socketData = clientMap.get(user.id_user);
-	if (socketData?.reconnectBool == true)
+	if (socketData?.reconnectBool == true || socketData?.state)
 		await handleReconnect(sockio, user, socketData, socket);
 	else
 		await firstConnection(sockio, user, socket, friendsId);
 	try {
 		friendsId = await announceMeOnline(sockio, user, clientMap, friendsId);
 	} catch (error) {
-		console.error("Server error loading friends:", error);
+		//FIXME - entra sempre qui! da controllare come mai
+		// console.error("Server error loading friends:", error);
 	}
 	socket.on('init', async(/** @type {matchMakingOpt}*/options) => 
 	{
@@ -94,11 +94,16 @@ sockio.on('connection', async (socket) =>
 
 	socket.on('disconnect', async () => {
 		clearTimeout(globals.timers.get(user.id_user));
-		globals.clientMap.get(user.id_user).reconnectBool = true;
+		socketData = globals.clientMap.get(user.id_user);
+		if (!socketData)
+			return (console.error("ERROR: invalid socket during disconnect"));
+		socketData.reconnectBool = true;
 		//NOTE - after SOCKET_RECONNECT_TIMER, user is considered disconnected
 		console.log("setting reconnection timeout for user", user.id_user);
 		globals.timers.set(user.id_user, setTimeout(() =>
 		{
+			socket.removeAllListeners();
+			socket.disconnect();
 			console.log(`User with id ${user.id_user} disconnected`);
 			globals.RemoveFromAllQueues(user.id_user);
 			globals.ClearTimer(user.id_user);
@@ -122,6 +127,7 @@ sockio.on('connection', async (socket) =>
  */
 async function firstConnection(sockio, user, socket, friendsId)
 {
+	console.log("A new user connected with id ", user.id_user);
 	clientMap.set(user.id_user, {allowedBool: true, socket: socket, matchData: null});
 }
 
@@ -133,19 +139,17 @@ async function firstConnection(sockio, user, socket, friendsId)
  */
 function handleReconnect(sockio, dbUser, socketData, newSocket)
 {
+	console.log(`reconnect user ${dbUser.id_user}...`);
 	socketData.reconnectBool = false;
+	socketData.socket.removeAllListeners();
 	if (socketData.socket.id != newSocket.id)
 		socketData.socket.disconnect();
-	socketData.socket.removeAllListeners();
 	socketData.socket = newSocket;
 	if (socketData.state == enumSocketState.MATCHMAKING)
 		return (MatchMaking(dbUser, clientMap));
 	else if (socketData.state == enumSocketState.PLAYING)
 	{
-		console.log(`reconnect player ${dbUser.id_user}...`);
-		console.log("data from db:");
-		console.log(dbUser);
-		console.log("data for matchData:");
-		console.log(socketData.matchData);
+		if (!socketData.matchData)
+			console.log("ERROR: data for player are lost! OH NO!");
 	}
 }
