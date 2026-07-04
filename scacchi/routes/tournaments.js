@@ -25,3 +25,4 @@ tournamentsRouter.get('/', checkJwt, async (req, res) => {
 		return res.status(500).json(jsonResponse.ResponseError("Server error retrieving user tournaments"));
 	}
 });
+

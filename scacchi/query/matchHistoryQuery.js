@@ -1,4 +1,5 @@
 
+import { count } from "node:console";
 import { prisma } from "../lib/prisma.js";
 
 export async function getAllUserMatches(id_user) {
@@ -49,7 +50,7 @@ export async function getAllUserMatches(id_user) {
 			id_user: Number(id_user)
 		}
 	});
-	return userMatches.map(um => ({
+	const matches = userMatches.map(um => ({
 		id_usermatch: um.id_usermatch,
 		player: um.users.username,
 		opponent: um.matches.users_matches[0]?.users.username || null,
@@ -62,7 +63,23 @@ export async function getAllUserMatches(id_user) {
 			status: um.matches.tournaments.status,
 			round: um.matches.round,
 			created_at: um.matches.tournaments.created_at.toISOString().split('T')[0],
-			creator: {"id_user": um.matches.tournaments.users.id_user, "username": um.matches.tournaments.users.username}
+			creator: { "id_user": um.matches.tournaments.users.id_user, "username": um.matches.tournaments.users.username }
 		} : null
 	}));
+	const stats = matches.reduce((counter, m) => {
+		counter.total++;
+		switch (m.result) {
+			case 'Win':
+				counter.w++;
+				break ;
+			case 'Draw':
+				counter.d++;
+				break ;
+			case 'Lose':
+				counter.l++;
+				break ;
+		}
+		return counter;
+	}, { w: 0, d: 0, l: 0, total: 0});
+	return ({ matches, stats });
 }
