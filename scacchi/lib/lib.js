@@ -23,7 +23,7 @@ export const ALLOWED_URL = process.env.ALLOWED_URL?.split(',') ?? ['http://local
 import { prisma } from "./prisma.js";
 import { redis } from "./redis.js";
 import crypto from "crypto";
-import { sendEmail } from "./emailSender.js"
+import { sendEmail, bodyOTP } from "./emailSender.js"
 
 redis.on("error", (stream) =>
 {
@@ -53,7 +53,7 @@ import * as utils from "../utils/moveUtils.js";
 import {bastardChecks, isDangerous} from "../utils/gameUtils.js";
 let gameUtils = {bastardChecks, isDangerous};
 
-const conn = { prisma, redis, crypto, sendEmail }
+const conn = { redis, crypto, sendEmail, bodyOTP };
 const auth = { jwt, cors };
 
 

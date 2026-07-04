@@ -10,7 +10,7 @@ import { query } from "../lib/query.js";
 import { prisma } from "../lib/prisma.js";
 const { usersQuery } = query;
 const { fs, logfd } = lib.include;
-const { crypto, redis, sendEmail } = lib.conn;
+const { crypto, redis, sendEmail, bodyOTP } = lib.conn;
 export const authRouter = lib.include.express.Router();
 
 // NOTE: route /auth
@@ -79,11 +79,7 @@ authRouter.post("/register", async (req, res) => {
 			return res.status(409).json(jsonResponse.ResponseError("User already exists"));
 		const hashedPwd = await bcrypt.hash(password, parseInt(lib.Macro.HASH_SALT));
 		const user = await usersQuery.createUser(name, surname, username, hashedPwd, email, nationality);
-		// await sendEmail({
-		// 	to: user.email,
-		// 	subject: "Nuovo account creato",
-		// 	body: `<h2>Ciao ${user.username}!</h2><p>Il tuo account e' stato creato</p>`
-		// })
+		
 		req.user = user;
 		await createJwt(req, res);
 		// printLog(`New user created with username ${user.username}`, colors.brightGreen)
