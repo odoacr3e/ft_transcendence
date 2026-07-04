@@ -7,9 +7,10 @@ import { jsonResponse } from "../utils/response.js";
 import { colors } from "../utils/colors.js";
 import { log } from "../utils/log.js";
 import { query } from "../lib/query.js";
+import { prisma } from "../lib/prisma.js";
 const { usersQuery } = query;
 const { fs, logfd } = lib.include;
-const { prisma, crypto, redis, sendEmail } = lib.conn;
+const { crypto, redis, sendEmail } = lib.conn;
 export const authRouter = lib.include.express.Router();
 
 // NOTE: route /auth
