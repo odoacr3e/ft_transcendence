@@ -7,6 +7,9 @@ import { jsonResponse } from "../utils/response.js"
 import { log } from "../utils/log.js"
 import { colors } from "../utils/colors.js";
 import { query } from "../lib/query.js";
+import { chownSync } from "node:fs";
+import { sendEmail } from "../lib/emailSender.js";
+const { redis } = lib.conn;
 const { usersQuery } = query;
 export const usersRouter = lib.include.express.Router();
 
@@ -149,7 +152,29 @@ usersRouter.patch("/", checkJwt, async (req, res) => {
 /**
  * @param {import('express').Request} req
  * @param {import('express').Response} res
- * NOTE: reset e cambio password per utente loggato
+ * NOTE: invio link per mail allo user che vuole resettare la password
+*/
+// usersRouter.patch('/forgotPassword', async (req, res) => {
+// 	try {
+// 		const { username } = req.body;
+// 		const user = await usersQuery.getUserByUsername(username);
+// 		if (user) {
+// 			const resetToken = crypto.randomBytes(32).toString('hex');
+// 			const hashToken = crypto.createHash('sha256').update(resetToken).digest('hex');
+// 			await redis.set(`resetPwd:${hashToken}`, user.id_user, 'EX', 900);
+// 			const link = `http://edraccan-transcendence.duckdns.org/updatePassword?token=${resetToken}`;
+// 			await sendEmail({ to: user.email, subject: 'Link for resetting password', body: `${link}`}); // da mettere html con dentro link per reset password
+// 		}
+// 		return res.status(200).json(jsonResponse.ResponseSuccess({  }));
+// 	} catch (error) {
+		
+// 	}
+// });
+
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * NOTE: cambio password con token dentro a link inviato via mail
 */
 usersRouter.patch('/updatePassword', async (req, res) => {
 	try {
