@@ -1,10 +1,11 @@
 //@ts-check
-import { globals } from "../../Classes/Globals/globals.js";
-import { enumConnection, enumSocketState } from "../../Macro/enums.js";
-import { Match } from "../../Classes/Chess/match.js";
-import { init } from "../../handlers/game/init.js";
-import { render } from "../../test/render.js";
-import { query } from "../../lib/query.js";
+import { globals } 							from "../../Classes/Globals/globals.js";
+import { enumConnection, enumSocketState } 	from "../../Macro/enums.js";
+import { Match } 							from "../../Classes/Chess/match.js";
+import { init } 							from "../../handlers/game/init.js";
+import { render } 							from "../../test/render.js";
+import { query } 							from "../../lib/query.js";
+import { responseFormatter }				from "../../utils/response.js";
 const getUserById = query.usersQuery.getUserById;
 
 /** @typedef {import("../../Classes/Chess/player.js").Player} Player*/
@@ -134,6 +135,8 @@ async function bindPlayersToMatch(match, queueNode, result)
 	let	startTeam;
 	let	promises = [];
 
+// function responseFormatter(match, result, msg, status)
+
 	i = 0;
 	userArray = Array.from(queueNode.userSet)
 	startTeam = match.currentPlayer.team;
@@ -152,10 +155,17 @@ async function bindPlayersToMatch(match, queueNode, result)
 		//@ts-ignore
 		result.team = match.currentPlayer.team;
 		user.socket.join(`match_${match.id}`);
-		user.socket.emit("game", result);
 		++i;
 		match.endTurn();
 	}
+	while (startTeam != match.currentPlayer.team)
+	result = responseFormatter(match, result, "Room created!", 200);
+	userId = userArray[0];
+	user = globals.clientMap.get(userId);
+	if (!user.socket)
+		throw (`bindPlayersToMatch: user 0 with id ${userId} undefined or invalid`);
+	user.socket.to(`match_${match.id}`).emit("game", result);
+	user.socket.emit("game", result);
 	while (startTeam != match.currentPlayer.team)
 	//this makes the queries asynchronous from the matchMaker
 	Promise.all(promises).then(
