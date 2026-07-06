@@ -10,6 +10,8 @@ import UsersList from '../views/UsersList.vue'
 import GameFour from '../views/GameFour.vue'
 import LoginPage from '../views/LoginPage.vue'
 import RegisterPage from '../views/RegisterPage.vue'
+import ChangePwd from '../views/ChangePwd.vue'
+import PwdDEBUG from '../views/PwdDEBUG.vue'
 
 const routes = [
 	{
@@ -58,6 +60,18 @@ const routes = [
 		name: 'edit',
 		meta: { requiresAuth: true },
 		component: EditPage
+	},
+	{
+		path: `/me/edit/pwd`,
+		name: 'edit_pwd',
+		meta: { requiresAuth: true },
+		component: ChangePwd
+	},
+	{
+		path: `/DEBUG/pwd`,
+		name: 'DEBUG_pwd',
+		meta: { requiresGuest: true },
+		component: PwdDEBUG
 	},
 	{
 		path: '/users/:query?',

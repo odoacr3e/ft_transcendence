@@ -57,7 +57,9 @@
 
 					</button>
 				</div>
-				<u><a class="justify-self-center text-[80%] text-[#882a2a] cursor-pointer hover:text-[#af3d3d] active:text-[#d1aaaa]">Password dimenticata?</a></u>
+				<RouterLink to="/DEBUG/pwd">
+					<u><a class="justify-self-center text-[80%] text-[#882a2a] cursor-pointer hover:text-[#af3d3d] active:text-[#d1aaaa]">Password dimenticata?</a></u>
+                </RouterLink>
 			</div>
 			<input id="submit" class="cursor-pointer justify-self-center w-sm mt-1.5 p-3 text-base bg-[#882a2a] rounded-[7px] text-white hover:bg-linear-to-t from-[#882a2a] to-[#af3d3d]"
 					v-bind:class="{'pointer-events-none grayscale': !formData.username || !formData.password,

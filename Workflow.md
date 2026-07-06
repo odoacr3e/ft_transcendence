@@ -130,16 +130,21 @@ boardConverter()
 	✓	history dei match
 	✓	reazione del frontend agli errori (es. al login)
 	✓	redirection alla pagina login se si prova ad accedere a pagine protette
+	✓	pagina di modifica delle info utente
+	✓	reset della password (sia dal login page che dalla pagina utente loggato)
 	▫	refactor pagina di gioco, pulsanti con tipi di partite, creazione stanze, sfida amici [LEO]
-	▫	pagina di modifica delle info utente [MAVI]
-	▫	dettagli info sui match
-	▫	reset della password (sia dal login page che dalla pagina utente loggato)
+	▫	dettagli info sui match  [MAVI]
+	▫	update delle preferenze di colore degli utenti
 	▫	websocket per le notifiche
 	▫	pagina della leaderboard
 	▫	history delle mosse durante la partita (?)
 	▫	info dei profili per le partitre a 4
 	▫	re-design della home
 	▫	websocket per la partita --> in attesa di sviluppo backend
+
+
+
+
 
 
 // NOTE - RIGUARDO IL SALVATAGGIO DELL'IMMAGINE DELL'AVATR

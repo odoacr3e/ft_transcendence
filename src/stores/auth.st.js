@@ -56,7 +56,7 @@ export const useAuthStore = defineStore('auth', {
 			this.usersOnline.clear();
 		},
 
-		async update()
+		async update(credentials)
 		{
 			this.isLoading = true;
 			this.error = null;
@@ -64,6 +64,16 @@ export const useAuthStore = defineStore('auth', {
 				this.user = await authApi.update(credentials);
 				// if (this.user && !this.socket) { this.connectSocket(); } 
 			}
+			catch (err) { this.error = err.message; }
+			finally		{ this.isLoading = false; }
+			return (this.error);
+		},
+
+		async changePwd(credentials)
+		{
+			this.isLoading = true;
+			this.error = null;
+			try { await authApi.changePwd(credentials); }
 			catch (err) { this.error = err.message; }
 			finally		{ this.isLoading = false; }
 			return (this.error);

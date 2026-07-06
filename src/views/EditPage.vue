@@ -3,6 +3,7 @@
     import { ref, computed }	from 'vue';
     import { useAuthStore }     from "../stores/auth.st";
     import { storeToRefs }      from 'pinia';
+    import { useRouter }	    from 'vue-router';
     import { asset }            from '../scripts/Helper/CompUtils';
 
     const   authStore = useAuthStore(),
@@ -11,11 +12,13 @@
 	        	name: '',
 	        	surname: '',
 	        	username: '',
-	        	nationality: '',
-                preferences: 0
+	        	nationality: ''
+                // preferences: 0
 	        }),
             avatarFile = ref(null),      // il File vero e proprio
-            avatarPreview = ref(null);   // URL per l'anteprima
+            avatarPreview = ref(null),   // URL per l'anteprima
+            router = useRouter(),
+            error = ref(false);
 
     const avatarSrc = computed(() => {
         if (avatarPreview.value) 
@@ -28,16 +31,16 @@
         if (!file) return;
 
         // validazione base
-        const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
-        if (!allowedTypes.includes(file.type)) {
-            alert('Formato non supportato. Usa JPG, PNG o WEBP.');
-            return;
-        }
-        const maxSizeMB = 5;
-        if (file.size > maxSizeMB * 1024 * 1024) {
-            alert(`L'immagine supera i ${maxSizeMB}MB.`);
-            return;
-        }
+        // const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+        // if (!allowedTypes.includes(file.type)) {
+        //     alert('Formato non supportato. Usa JPG, PNG o WEBP.');
+        //     return;
+        // }
+        // const maxSizeMB = 5;
+        // if (file.size > maxSizeMB * 1024 * 1024) {
+        //     alert(`L'immagine supera i ${maxSizeMB}MB.`);
+        //     return;
+        // }
 
         avatarFile.value = file;
 
@@ -47,23 +50,50 @@
     }
 
     async function submitForm() {
-        const payload = new FormData();
-        payload.append('name', formData.value.name);
-        payload.append('surname', formData.value.surname);
-        payload.append('username', formData.value.username);
-        payload.append('nationality', formData.value.nationality);
-        if (avatarFile.value) {
-            payload.append('avatar', avatarFile.value);
+        // const payload = new FormData();
+        // payload.append('name', formData.value.name);
+        // payload.append('surname', formData.value.surname);
+        // payload.append('username', formData.value.username);
+        // payload.append('nationality', formData.value.nationality);
+        // if (avatarFile.value) {
+        //     payload.append('avatar', avatarFile.value);
+        // }
+
+        if (!formData.value.name || !formData.value.surname || !formData.value.username || !formData.value.nationality)
+        {
+            if (!formData.value.name)           { formData.value.name = user.value.name; }
+            if (!formData.value.surname)        { formData.value.surname = user.value.surname; }
+            if (!formData.value.username)       { formData.value.username = user.value.username; }
+            if (!formData.value.nationality)    { formData.value.nationality = user.value.nationality; }
         }
-    
-        const resp = await authStore.update(payload);
-        if (resp) {
-            // successo -> es. router.push('/me')
-        }
+
+        const resp = await authStore.update(formData.value);
+        if (!resp)	{ router.push('/me'); }
+        else		{ error.value = true; }
     }
 </script>
 
 <template>
+    <div>
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" id="allert"
+			class="absolute size-6 text-red-100 animate-error translate-x-168 translate-y-101 hidden transition-all duration-250 ease-in-out z-11"
+			:class="{ 'inline' : error }">
+			<path fill-rule="evenodd" d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd" />
+		</svg>
+		<div class="hidden translate-x-115 translate-y-92 p-3 animate-pop flex-col items-center text-center z-11
+				gap-2.5 absolute rounded-xl border inset-ring bg-[#2f1818]/80 text-red-100 border-red-800/10 inset-ring-red-500/20">	
+			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-red-100 self-center mx-auto">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+			</svg>
+			<div>
+				<h2>Credenziali errate</h2>
+				<p class="text-sm">Lo username deve avere</p>
+                <p class="text-sm">almeno 4 caratteri</p>
+			</div>
+		</div>
+	</div>
+
+
     <div class="min-h-screen flex flex-col">
         <AppHeader class="z-11"/>
         <div id="wrap" class="grow">
@@ -79,11 +109,13 @@
                             <p class="text-white text-xl leading-none">+</p>
                         </label>
                     </div>
-                    <RouterLink to="/change_p" class="mx-auto mt-80">
+                    <RouterLink to="/me/edit/pwd" class="mx-auto mt-80">
                         <u><a class="text-sm cursor-pointer text-[#882a2a] hover:text-[#af3d3d] active:text-[#d1aaaa]">Cambia password</a></u>
                     </RouterLink>
                     <input id="submit" class="cursor-pointer w-[90%] mt-auto mb-6 self-center p-3 
                         text-base bg-[#882a2a] rounded-[7px] text-white hover:bg-linear-to-t from-[#882a2a] to-[#af3d3d]"
+                        v-bind:class="{'pointer-events-none grayscale': !formData.name && !formData.surname && !formData.username && !formData.nationality,
+						    'pointer-events-auto grayscale-0': formData.name || formData.surname || formData.username || formData.nationality }"
 			        	type="submit" value="Salva le modifiche">
                 </div>
                 <div class="flex flex-col p-2 m-4 ml-2 text-white bg-[#201e1c] rounded-3xl border border-[#4e4e4e8c] w-[110vh]">
@@ -136,10 +168,10 @@
                             </div>
                             <div class="p-2.5 border rounded-[7px] border-[#4e4e4e8c] text-[#dcdfe4c0] justify-self-center flex w-sm mb-3
                                         transition-colors duration-200 hover:bg-[#ad1e1e36] hover:border-[#eb2c2c2a]" id="email">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 absolute translate-x-42 opacity-0 transition-opacity duration-200">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 absolute translate-x-42 opacity-0 transition-opacity duration-250">
                                   <path fill-rule="evenodd" d="M12 1.5a5.25 5.25 0 0 0-5.25 5.25v3a3 3 0 0 0-3 3v6.75a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3v-6.75a3 3 0 0 0-3-3v-3c0-2.9-2.35-5.25-5.25-5.25Zm3.75 8.25v-3a3.75 3.75 0 1 0-7.5 0v3h7.5Z" clip-rule="evenodd" />
                                 </svg>
-                                <input disabled :placeholder="user.email" size="35" class="pl-2 text-base" autofocus="true" type="email" v-model="formData.email">
+                                <input disabled :placeholder="user.email" size="35" class="pl-2 text-base" autofocus="true" type="email">
                             </div>
                         </div>
 
@@ -191,4 +223,13 @@ div.form {
     #email:hover svg {
         opacity: 100%;
     }
+
+    #allert:hover + div
+	{
+		display: inline;
+	}
+
+	#allert + div:hover {
+		display: inline;
+	}
 </style>
