@@ -33,7 +33,7 @@
                 <h2 class="text-white text-3xl self-center m-9">Cambia password</h2>
                 <div class="flex flex-col justify-center w-fit p-2 mb-6 mx-auto bg-[#201e1c] rounded-3xl border border-[#4e4e4e8c]">
                     <img :src="user.image ? asset(`${user.image}`) : asset('../assets/default.png')"
-                            alt="" class="size-35 rounded-full m-5">
+                            alt="" class="size-35 rounded-full m-5 mx-auto">
                     <h3 class="text-white text-2xl self-center">{{ user.username }}</h3>
                     <h4 class="text-zinc-300 text-md self-center">{{ user.name }} {{ user.username }}</h4>
                     <h5 class="text-zinc-500 text-sm self-center">{{ user.nationality }}</h5>

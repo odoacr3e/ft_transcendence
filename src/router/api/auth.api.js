@@ -21,7 +21,6 @@ export const authApi = {
 		const resp = await api.patch('/api/users/loggedUpdatePassword', userData); // aggiornamento della password
 		return (resp);
 	},
-	
 	friendlist:	async () => {
 		const resp = await api.get('/api/friends'); // lista di amici
 		return (resp.data.friendship);

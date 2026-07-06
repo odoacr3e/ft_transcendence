@@ -1,6 +1,5 @@
 import { io }			from 'socket.io-client'
 import { authApi }		from '../router/api/auth.api';
-import { shallowRef }	from 'vue'
 import { defineStore }	from 'pinia';
 
 export const useAuthStore = defineStore('auth', {
@@ -10,7 +9,7 @@ export const useAuthStore = defineStore('auth', {
 		error: null,
 		sessionChecked: false,
 		usersOnline: new Set(),
-		socket: shallowRef(null)
+		socket: null
 	}),
 
 	getters: 

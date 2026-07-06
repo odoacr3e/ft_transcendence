@@ -64,7 +64,7 @@
                         <h2 class="text-white text-xl m-1">Cronologia delle partite</h2>
                         <hr class="w-full justify-self-start text-[#4e4e4e8c]">
                         <div v-if="matches" :class="matches.length > 6 ? 'max-h-[50vh] overflow-y-auto' : ''">
-                            <MatchHistory :matches="matches"/>
+                            <MatchHistory :matches="matches.matches" :stats="matches.stats"/>
                         </div>
                     </div>
                 </div>
