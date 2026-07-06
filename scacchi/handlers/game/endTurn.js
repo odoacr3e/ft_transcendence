@@ -7,6 +7,7 @@ import {error, Result, checkMateAlert} from "./utils.js";
 import {DangerUpdate} from "../../utils/moveUtils.js";
 import {clientBoard} from "../../handlers/game/utils.js";
 import { checkKingDanger } from "../../utils/gameUtils.js";
+import { checkInsuficientResources } from "../../GameLogic/checkSpare.js";
 
 /**
  * goes to the next turn
@@ -20,11 +21,19 @@ function endTurn(match, sendBoardBool=true)
 	let timeout;
 	let start;
 	let time;
+	let nPieces;
 	let p = match.currentPlayer;
 
 	result = new Result();
 	time = match.currentPlayer.time;
-	// @ts-ignore
+	nPieces = match.getPieceNumber();
+	if (match.playerNum == 2 && nPieces <= 4)
+	{
+		if (checkInsuficientResources(match, nPieces))
+			return (match.DrawMatch(result));
+	}
+	if (match.spareCountDown == 50 * match.playerNum)
+		return (match.DrawMatch(result));
 	if (!updateTurn(match, result))
 		return (result);
 	// if (match.timer != null)

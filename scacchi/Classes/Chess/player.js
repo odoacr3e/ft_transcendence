@@ -34,7 +34,7 @@ class Player
 		this.nPoints = settings.players.startPoints;
 		this.bonusPointCounter = 0;
 		this.useBoostBool = false;
-		this.nPieces = 0;
+		this.nPieces = 16;
 		this.King = "";
 		this.boostedPiece = "";
 		/** @type {Set<{coord: string, target: string}>} */

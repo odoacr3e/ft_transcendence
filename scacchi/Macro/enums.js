@@ -97,6 +97,7 @@ const enumSpecialMoves =
 	ISBASTARD: 1 << 6,
 	EATENBASTARD: 1 << 7,
 	CHAMPIONBOOST: 1 << 8,
+	DRAW: 1 << 9,
 }
 
 const kingMovements = 

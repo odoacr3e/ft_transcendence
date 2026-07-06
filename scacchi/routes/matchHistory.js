@@ -20,7 +20,7 @@ export const matchHistoryRouter = lib.include.express.Router();
 matchHistoryRouter.get('/', checkJwt, async (req, res) => {
 	try {
 		const matches = await matchHistoryQuery.getAllUserMatches(req.user.id_user);
-		return res.status(200).json(jsonResponse.ResponseSuccess( matches ));
+		return res.status(200).json(jsonResponse.ResponseSuccess({ "matches": matches }));
 	} catch (error) {
 		console.log("Error: ", error);
 		return res.status(500).json(jsonResponse.ResponseError("Server error retrieving user matches history"));

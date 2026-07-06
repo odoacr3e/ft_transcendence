@@ -73,7 +73,7 @@ sockio.on('connection', async (socket) =>
 		//FIXME - entra sempre qui! da controllare come mai
 		// console.error("Server error loading friends:", error);
 	}
-	socket.on('init', async(/** @type {matchMakingOpt}*/options) => 
+	socket.on('find_match', async(/** @type {matchMakingOpt}*/options) => 
 	{
 		if (!options || !options.roomType || !options.matchType)
 		{

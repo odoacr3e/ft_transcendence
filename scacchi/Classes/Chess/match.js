@@ -57,7 +57,7 @@ class Match
 		this.id = "0";
 		/** @type {Number|null}*/this.tournament_id = null;
 		/** @type {String|null}*/this.tournament_round = null;
-
+		this.spareCountDown = 0;
 		this.cursor.square = this.currentPlayer.King;
 	}
 	/** @param {MatchSettings | string | null} preset*/
@@ -97,7 +97,7 @@ class Match
 		this.id = "0";
 		this.tournament_id = null;
 		this.tournament_round = null;
-
+		this.spareCountDown = 0; //FIXME - da riprendere
 		this.cursor.square = this.currentPlayer.King;
 	}
 	endTurn()
@@ -233,6 +233,46 @@ class Match
 			return (new Result());
 		return (result);	
 	}
+	/**
+	 * 
+	 * @param {Result | null} result 
+	 */
+	DrawMatch(result)
+	{
+		let player;
+		let tmp;
+
+		console.log("ed e' un pareggioooooooo!!!!");
+		// console.log("Premi un qualsiasi tasto per concludere...");
+		//FIXME - gestire cosa succede in base a quanti player restano
+		//FIXME - gestire salvataggio nella history
+		tmp = this.currentPlayer;
+		player = tmp.next;
+		//@ts-ignore
+		while (this[player].team != tmp.team)
+		{
+			this.DeletePlayer(tmp);
+			//@ts-ignore
+			tmp = this[player];
+			player = tmp.next;
+		}
+		this.DeletePlayer(tmp);
+		//@ts-ignore
+		tmp = this[player];
+		player = tmp.next;
+		if (result != null)
+		{
+			result.msg = "it's a spare!!!";
+			result.status = 200;
+			result.Draw = true;
+			result.specialMoves.SetDraw();
+			//@ts-ignore
+			// result.board = clientBoard(this);
+		}
+		else
+			return (new Result());
+		return (result);	
+	}
 	/** @param {string} name */
 	Log(name="")
 	{
@@ -296,6 +336,22 @@ class Match
 		console.log(`MatchId: ${id}`);
 		this.id = id;
 		return id;
+	}
+	getPieceNumber()
+	{
+		let total;
+		let p;
+
+		total = this.currentPlayer.nPieces;
+		//@ts-ignore
+		p = this[this.currentPlayer.next];
+		while (p.team != this.currentPlayer.team)
+		{
+			total += p.nPieces;
+			//@ts-ignore
+			p = this[p.next];
+		}
+		return total;
 	}
 }
 

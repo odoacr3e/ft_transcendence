@@ -33,7 +33,7 @@ function mainTerm()
 	if (!match)
 		throw ("To use term.js, you need to set the DEBUG macro true");
 	seed = lib.Macro.SEED;
-	seed = "2v2";
+	seed = "1v1";
 	init(match, seed);
 	// console.log(boardStringify(match));
 	match.cursor.square = match.currentPlayer.King;

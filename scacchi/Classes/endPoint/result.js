@@ -35,6 +35,8 @@ class bitMaskMoves
 	CheckEatenBastard(){return (this._mask & move.EATENBASTARD)};
 	SetChampionBoostUsed(){return (this._mask |= move.CHAMPIONBOOST)};
 	CheckChampionBoostUsed(){return (this._mask & move.CHAMPIONBOOST)};
+	SetDraw(){return (this._mask |= move.DRAW)};
+	CheckDraw(){return (this._mask & move.DRAW)};
 }
 
 //SECTION - class Result
@@ -52,6 +54,7 @@ class Result
 		/**	@type {*} */			this.log = {}; 
 		/** @type {Board | null} */	this.board = null;
 		/** @type {boolean} */		this.youWin = false;
+		/** @type {boolean} */		this.Draw = false;
 									this.usedBoost = false;
 									this.specialMoves = new bitMaskMoves();
 		/** @type {Match | null} */	this.match = null;
