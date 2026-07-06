@@ -115,7 +115,7 @@ export const validateUser = async (username, email) => {
 }
 
 const OTP_TTL = Number(process.env.OTP_TTL) // 5 minuti
-const MAX_TRY = Number(process.env.OTP_MAX_TRY) 
+const MAX_TRY = Number(process.env.OTP_MAX_TRY) // 5
 
 function generateOtp() {
 	return crypto.randomInt(100000, 999999).toString();
@@ -131,3 +131,24 @@ export async function createOtp(id_user) {
 	return (otp);
 }
 
+export async function verifyOtp(id_user, otp) {
+	const key = `otp:${id_user}`;
+	const keyAttempts = `otp_attempts:${id_user}`;
+	const stored = await redis.get(key);
+	console.log(`Key: ${key}, key Attempts: ${keyAttempts}, stored: ${stored}, OTP: ${otp}`);
+	if (!stored)
+		return ({ success: false, message: 'OTP expired or not valid' });
+	const attempts = parseInt(await redis.get(keyAttempts) || '0', 10);
+	if (attempts >= MAX_TRY) {
+		await redis.del(key);
+		return ({ success: false, message: 'Too many attempts' });
+	}
+	if (Number(stored) !== Number(otp)) {
+		await redis.incr(keyAttempts);
+		console.log(`type stored: ${typeof(stored)}, type otp: ${typeof(otp)}, confronto == : ${stored == otp}, confronto === : ${stored === otp}`)
+		return ({ success: false, message: 'Invalid OTP' });
+	}
+	await redis.del(key);
+	await redis.del(keyAttempts);
+	return ({ success: true });
+}

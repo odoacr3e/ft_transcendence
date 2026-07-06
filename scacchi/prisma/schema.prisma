@@ -94,6 +94,7 @@ model users {
   points                                       Int                  @default(0)
   title                                        String               @default("Newbie") @db.VarChar(200)
   id_preference                                Int                  @default(1)
+  mfa                                          Boolean              @default(true)
   friendships_friendships_id_user1Tousers      friendships[]        @relation("friendships_id_user1Tousers")
   friendships_friendships_id_user2Tousers      friendships[]        @relation("friendships_id_user2Tousers")
   friendships_friendships_senderTousers        friendships[]        @relation("friendships_senderTousers")

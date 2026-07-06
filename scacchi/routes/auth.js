@@ -2,7 +2,8 @@
 import * as lib from "../lib/lib.js";
 import bcrypt from "bcryptjs";
 import { createJwt, checkJwt, revokeTokenSessions, 
-	validateInputRegister, validateUser, cookiesOpt, createOtp } from "../utils/auth.js";
+	validateInputRegister, validateUser, cookiesOpt, 
+	createOtp, verifyOtp } from "../utils/auth.js";
 import { jsonResponse } from "../utils/response.js";
 import { colors } from "../utils/colors.js";
 import { log } from "../utils/log.js";
@@ -11,8 +12,6 @@ const { usersQuery } = query;
 const { fs, logfd } = lib.include;
 const { crypto, redis, sendEmail, bodyOTP, bodyRegistration } = lib.conn;
 export const authRouter = lib.include.express.Router();
-const _2FA = process.env.TWO_FACT_AUTH === 'true';
-
 
 // NOTE: route /auth
 
@@ -33,21 +32,36 @@ authRouter.post("/login", async (req, res) => {
 		}
 		delete(user.password);
 		req.user = user;
-		if (_2FA)
+		if (user.mfa)
 		{
 			const otp = await createOtp(user.id_user);
 			sendEmail({ to: user.email, subject: 'One Time Password', body: bodyOTP(user.username, otp)});
-			return res.status(200).json(jsonResponse.ResponseSuccess({ require2fa: true, id_user: user.id_user, message: "OTP sent by email", Expiration: `${process.env.OTP_TTL / 60} min` }));
+			return res.status(200).json(jsonResponse.ResponseSuccess({ id_user: user.id_user, message: "OTP sent by email", Expiration: `${process.env.OTP_TTL / 60} min` }));
 		}
 		log.ok(`User ${req.user.username} correctly logged in`);
 		await createJwt(req, res);
 		return res.status(200).json(jsonResponse.ResponseSuccess({ "user": user }));
 	} catch (error) {
 		console.log("Error: ", error);
-		// printLog(`User couldn't complete login due server error: ${error.name}`, 'error');
 		return res.status(500).json(jsonResponse.ResponseError("Server error checking for user"));
 	}
 });
+
+authRouter.post('/verifyOtp', async (req, res) => {
+	try {
+		const { id_user, otp } = req.body;
+		const user = await usersQuery.getUserById(id_user);
+		const result = await verifyOtp(id_user, otp);
+		if (!result.success)
+			return res.status(401).json(jsonResponse.ResponseError(result.message));
+		req.user = user;
+		await createJwt(req, res);
+		return res.status(200).json(jsonResponse.ResponseSuccess({ "user": user }));
+	} catch (error) {
+		console.log("Error: ", error);
+		return res.status(500).json(jsonResponse.ResponseError("Server error checking for user"));
+	}
+})
 
 /**
  * @param {import('express').Request} req

@@ -17,7 +17,8 @@ export async function getAllUsers() {
 					description: true,
 					colors: true,
 				}
-			}
+			},
+			mfa: true
 		},
 		orderBy: {
 			id_user: 'asc'
@@ -130,7 +131,8 @@ export async function getUserByUsernameWithPwd (username) {
 					description: true,
 					colors: true,
 				}
-			}
+			},
+			mfa: true
 		},
 		where: {
 			username: String(username)
@@ -217,7 +219,8 @@ export async function createUser(name, surname, username, password, email, natio
 					description: true,
 					colors: true,
 				}
-			}
+			},
+			mfa: true
 		}
 	});
 }
