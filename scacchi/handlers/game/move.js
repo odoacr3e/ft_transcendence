@@ -32,6 +32,8 @@ function move(match, from, to, boostBool=false)
 		return (result);
 	if (match.board.get(from).piece?.type != enumNames.BASTARDS && match.board.get(from).piece == null)
 		++match.spareCountDown;
+	else
+		match.spareCountDown = 0;
 	if (!updateChessboard([from, to], result, match, boostBool))
 		return (result);
 	result.status = 200;
