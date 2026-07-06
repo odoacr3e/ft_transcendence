@@ -44,12 +44,13 @@ export function bodyOTP(username, otp) {
 				<span style="font-size: 32px; font-weight: bold; letter-spacing: 6px; color: #2d2d2d;">${otp}</span>
 			</div>
 			<p style="color: #4a4a4a; font-size: 14px; line-height: 1.5;">
-				Il codice scade tra <strong>10 minuti</strong>. Se non hai richiesto tu la registrazione, ignora pure questa email.
+				Il codice scade tra <strong>${process.env.OTP_TTL / 60} minuti</strong>. Se non hai richiesto tu la registrazione, ignora pure questa email.
 			</p>
-			<hr style="border: none; border-top: 1px solid #e0e0e0; margin: 24px 0;">
+			<div style="border: none; border-top: 1px solid #e0e0e0; margin: 24px 0;">
 			<p style="color: #9a9a9a; font-size: 12px; text-align: center;">
-				ft_transcendence &middot; Non rispondere a questa email
+				ChessZ &middot; Non rispondere a questa email
 			</p>
+			</div>
 		</div>
 	</div>
 	`);
