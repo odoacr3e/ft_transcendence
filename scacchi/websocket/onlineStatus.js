@@ -1,6 +1,5 @@
 
-import * as lib from "../lib/lib.js";
-const { prisma } = lib.conn;
+import { prisma } from "../lib/prisma.js"
 
 /**
  * @param {import("socket.io").Server} sockio
