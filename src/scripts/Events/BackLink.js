@@ -1,8 +1,9 @@
 import { localBoard, localInfo }	from "@/scripts/Data/Variables";
-import { updateMatchState }			from "@/scripts/Data/Archi";
-import { clearHighlight }			from "@/scripts/Events/utils/HighlightUtils.js";
+// import { updateMatchState }			from "@/scripts/Data/Archi";
+// import { clearHighlight }			from "@/scripts/Events/utils/HighlightUtils.js";
 import { getTarget }				from "./utils/MovementUtils.js";
-import { MACRO } 					from "@/scripts/Data/Variables";
+// import { MACRO } 					from "@/scripts/Data/Variables";
+import { useAuthStore } from "@/stores/auth.st.js";
 // import { _jsonReviver }				from "../Data/utils/ArchiUtils.js";
 
 export async function sendToBackend(fromId, toId, flag)
@@ -14,9 +15,9 @@ export async function sendToBackend(fromId, toId, flag)
 		const promise = await requestToBack(fromId, toId);
 		if (promise)
 		{
-			clearHighlight();
-			if (MACRO.AUDIO)
-				new Audio("/src/assets/audios/moving.mp3").play();
+			// clearHighlight();
+			// if (MACRO.AUDIO)
+			// 	new Audio("/src/assets/audios/moving.mp3").play();
 			if (flag) { return (true); }
 		}
 		else
@@ -29,6 +30,7 @@ export async function sendToBackend(fromId, toId, flag)
 
 export async function requestToBack(fromSquare, toSquare)
 {
+	const auth = useAuthStore();
 	let type;
 	const toPiece = (() => {
 			if (fromSquare && toSquare && localBoard.get(toSquare).piece &&
@@ -48,27 +50,36 @@ export async function requestToBack(fromSquare, toSquare)
 		{type = "moveBoost";}
 	else {type = "move"; }
 
-	try
-	{
-		const response = await fetch("http://localhost:8080/api/game", {
-		  method: "POST",
-		  headers: { "Content-Type": "application/json" },
-		  body: JSON.stringify({ type: type, from: fromSquare, to: toSquare }),
+	return new Promise((resolve) => {
+		auth.socket.emit("game", { type, from: fromSquare, to: toSquare }, (result) => {
+			// console.log(`request: type: ${type}, from: ${fromSquare}, to:${toSquare}`)
+			if (result?.log?.status === 200 && toPiece)
+				localInfo.capturedP[toPiece.team === "white" ? "black" : "white"][toPiece.type] += 1;
+			resolve(result?.log?.status === 200);
 		});
-
-		if (!response.ok) throw new Error(`Impossibile caricare /move.json: ${response.status}`);
-
-		// const match = await JSON.parse(response.body, _jsonReviver);
-		const match = await response.json();
-		
-		updateMatchState(match);
-		if (toPiece)
-			localInfo.capturedP[toPiece.team === "white" ? "black" : "white"][toPiece.type] += 1;
-		return true;
-	}
-	catch (err)
-	{
-		console.error(err);
-		return false;
-	}
+	});
 }
+
+	// try
+	// {
+	// 	const response = await fetch("http://localhost:8080/api/game", {
+	// 	  method: "POST",
+	// 	  headers: { "Content-Type": "application/json" },
+	// 	  body: JSON.stringify({ type: type, from: fromSquare, to: toSquare }),
+	// 	});
+
+	// 	if (!response.ok) throw new Error(`Impossibile caricare /move.json: ${response.status}`);
+
+	// 	// const match = await JSON.parse(response.body, _jsonReviver);
+	// 	const match = await response.json();
+		
+	// 	updateMatchState(match);
+	// 	if (toPiece)
+	// 		localInfo.capturedP[toPiece.team === "white" ? "black" : "white"][toPiece.type] += 1;
+	// 	return true;
+	// }
+	// catch (err)
+	// {
+	// 	console.error(err);
+	// 	return false;
+	// }

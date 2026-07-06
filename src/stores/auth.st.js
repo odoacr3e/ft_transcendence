@@ -1,7 +1,8 @@
-import { io }			from 'socket.io-client'
-import { authApi }		from '../router/api/auth.api';
-import { shallowRef }	from 'vue'
-import { defineStore }	from 'pinia';
+import { io }				from 'socket.io-client'
+import { authApi }			from '../router/api/auth.api';
+import { shallowRef }		from 'vue'
+import { defineStore }		from 'pinia';
+import { assignGameSocket } from '@/scripts/Data/SocketLink';
 
 export const useAuthStore = defineStore('auth', {
 	state: () => ({
@@ -67,21 +68,16 @@ export const useAuthStore = defineStore('auth', {
 			finally	{ this.sessionChecked = true; }
 		},
 
-		connectSocket() 
+		connectSocket()
 		{
 			if (this.socket) { return; }
 
-			this.socket = io('http://localhost:8080', {
-				withCredentials: true
-			});
+			this.socket = io('http://localhost:8080', { withCredentials: true });
+			assignGameSocket(this.socket);
 
-			this.socket.on('friend:online', ({ userId }) => {
-				this.usersOnline.add(userId);
-			});
+			this.socket.on('friend:online', ({ userId }) => { this.usersOnline.add(userId); });
 
-			this.socket.on('friend:offline', ({ userId }) => {
-				this.usersOnline.delete(userId);
-			});
+			this.socket.on('friend:offline', ({ userId }) => { this.usersOnline.delete(userId); });
 		},
 
 		disconnectSocket() 

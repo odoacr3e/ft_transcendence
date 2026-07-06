@@ -1,6 +1,6 @@
 import { initLocalBoard, localMatchState, localBoard,  
 			localPlayers, startLocalMatchState, 
-			localInfo, socket}										from "./Variables.js";
+			localInfo}												from "./Variables.js";
 import { checkEndTurn, hasBoost, DEBUGSetVisible, checkUpgrade }	from "./utils/ArchiUtils.js";
 import "./SocketLink.js"
 
@@ -57,31 +57,16 @@ export function validateReceivedMatch(rawJson)
 	}
 }
 
-export async function initLocalMatchState(style)
+export function initLocalMatchState(raw)
 {
-	socket.connect();
-	if (!socket.connected)
-		throw new Error ("Archi.js:initLocalMatchState() init socket failed to connect to server");
-	const raw = await new Promise((resolve, reject) => {
-
-		const onError = (err) => {
-			socket.off("game/init", resolve);
-			reject(new Error(err?.log?.msg ?? "errore nell'inizializzazione partita"));
-		};
-		
-		socket.once("game/init", (payload) => {
-			socket.off("error", onError);
-			resolve(payload);
-		});
-
-		socket.once("error", onError);
-		socket.emit("init", {roomType: style, matchType: "?"});
-	})
 	const validated = validateReceivedMatch(raw);
 	startLocalMatchState(validated);
 
 	initLocalBoard(localMatchState.board);
 	initLocalPlayers();
+
+	localInfo.matchId = raw.id;
+	localInfo.myTeam = raw.team;
 }
 
 export function initLocalPlayers()

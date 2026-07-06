@@ -32,14 +32,9 @@
 		if (!auth.socket)
 			return;
 		auth.socket.emit('find_match', options);
+		console.log(useAuthStore().username, " ha appena richiesto un matchmaking!");
 		waiting.value = true;
 	}
-
-	// auth.socket?.on('match_found', (data) => {
-	// 	waiting.value = false;
-	// 	//--> qui poi ci spostiamo su /game una volta creata la stanza
-	// })
-
 </script>
 
 <template>

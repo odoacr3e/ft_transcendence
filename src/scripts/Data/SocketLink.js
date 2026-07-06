@@ -1,15 +1,27 @@
-import { socket, MACRO }	from "./Variables";
-import { updateMatchState }	from "./Archi";
-import { clearHighlight }	from "../Events/utils/HighlightUtils";
+import { updateMatchState, initLocalMatchState }	from "./Archi";
+import { clearHighlight }							from "../Events/utils/HighlightUtils";
+import { MACRO }									from "./Variables";
+import router 										from "@/router";			
 
-socket.on("game"), (result) => {
-	if (result.log.status != 200)
-	{
-		console.log("SocketLink.js:socket.on(): mossa non valida");
-		return;
-	}
-	updateMatchState(result);
-	clearHighlight();
-	if	(MACRO.AUDIO)
-		new Audio("/src/assets/audios/moving.mp3").play();
+export function assignGameSocket(socket)
+{
+	socket.on("game", (raw) => {
+		console.log("response: ", raw);
+		if (raw.log?.status != 200)
+		{
+			console.log("[socket]: errore -", raw.log?.msg);
+			console.log("response: ", raw);	
+			return;
+		}
+		if (raw.id !== undefined)
+		{
+			initLocalMatchState(raw);
+			router.push( {name: raw.p3 ? "GameFour" : "game"});
+			return;
+		}
+		updateMatchState(raw);
+		clearHighlight();
+		if (MACRO.AUDIO)
+			new Audio("/src/assets/audios/moving.mp3").play();
+	});
 }

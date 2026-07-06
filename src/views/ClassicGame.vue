@@ -1,19 +1,24 @@
 <script setup>
-	import { initLocalMatchState }  from '../scripts/Data/Archi';
-	import { onMounted, ref }       from 'vue';
-	import ChessBoard               from '../components/ChessBoard.vue';
 	import PlayerInfo               from '../components/PlayerInfo.vue';
+	import ChessBoard               from '../components/ChessBoard.vue';
 	import AppHeader                from '../components/AppHeader.vue';
+	import { localMatchState } 		from '@/scripts/Data/Variables';
+	import router 					from '@/router';
+	import { onMounted, ref }       from 'vue';
 
 	const ready = ref(false);
 	const style = ref("1v1");
 
 	onMounted(async () => {
 		try{
-		  await initLocalMatchState(style.value);
-		  ready.value = true;
+			if (!localMatchState) 
+			{
+				router.push({ name: "playpage"});
+				return;
+			}
+			ready.value = true;
 		} catch (err) {
-		  console.log(`${err}`);
+			console.log(`${err}`);
 		}
 	})
 </script>
@@ -31,7 +36,6 @@
                   </div>
                 </div>
                 <div class="p-10 flex-col mt-20 w-lg">
-                   
                 </div>
             </div>
         </div>
