@@ -7,7 +7,6 @@ import { jsonResponse } from "../utils/response.js";
 import { colors } from "../utils/colors.js";
 import { log } from "../utils/log.js";
 import { query } from "../lib/query.js";
-import { prisma } from "../lib/prisma.js";
 const { usersQuery } = query;
 const { fs, logfd } = lib.include;
 const { crypto, redis, sendEmail, bodyOTP, bodyRegistration } = lib.conn;
@@ -24,30 +23,7 @@ authRouter.post("/login", async (req, res) => {
 		const { username, password } = req.body;
 		if (!username || !password)
 			return (res.status(400).json(jsonResponse.ResponseError("Missing credentials")));
-		const user = await prisma.users.findUnique({
-			select: {
-				id_user: true,
-				name: true,
-				surname: true,
-				username: true,
-				password: true,
-				email: true,
-				image: true,
-				nationality: true,
-				points: true,
-				title: true,
-				preferences: {
-					select: {
-						name: true,
-						description: true,
-						colors: true
-					}
-				}
-			},
-			where: {
-				username: String(username)
-			}
-		});
+		const user = await usersQuery.getUserByUsernameWithPwd(username);
 		if (!user || !(await bcrypt.compare(password, user.password)))
 		{
 			log.warn(`Access denied to user ${colors.bold(user.username)}`);
@@ -79,14 +55,12 @@ authRouter.post("/register", async (req, res) => {
 			return res.status(409).json(jsonResponse.ResponseError("User already exists"));
 		const hashedPwd = await bcrypt.hash(password, parseInt(lib.Macro.HASH_SALT));
 		const user = await usersQuery.createUser(name, surname, username, hashedPwd, email, nationality);
-		await sendEmail({ to: user.username, subject: "Welcome to ChessZ", body: bodyRegistration(user.username)} );
+		// await sendEmail({ to: user.email, subject: "Welcome to ChessZ", body: bodyRegistration(user.username)} );
 		req.user = user;
 		await createJwt(req, res);
-		// printLog(`New user created with username ${user.username}`, colors.brightGreen)
 		return res.status(201).json(jsonResponse.ResponseSuccess({ "user": user }));
 	} catch (error) {
 		console.log("Error: ", error);
-		// printLog(`User couldn't correctly register due server error: ${error.name}`, colors.brightYellow);
 		return res.status(500).json(jsonResponse.ResponseError("Server error creating user"));
 	}
 });

@@ -111,6 +111,33 @@ export async function getUserByUsername (username) {
 		});
 }
 
+export async function getUserByUsernameWithPwd (username) {
+	return await prisma.users.findUnique({
+		select: {
+			id_user: true,
+			name: true,
+			surname: true,
+			username: true,
+			password: true,
+			email: true,
+			image: true,
+			nationality: true,
+			points: true,
+			title: true,
+			preferences: {
+				select: {
+					name: true,
+					description: true,
+					colors: true,
+				}
+			}
+		},
+		where: {
+			username: String(username)
+		}
+	});
+}
+
 export async function getUserByEmail(email) {
 	return await prisma.users.findUnique({
 			select: {
