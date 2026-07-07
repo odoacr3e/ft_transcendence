@@ -1,5 +1,16 @@
 
 services:
+  nginx:
+    image: nginx
+    container_name: nginx
+    build:
+      context: .
+      dockerfile: Dockerfile/Dockerfile.nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+      - frontend
   backend:
     image: backend
     container_name: backend

@@ -17,7 +17,7 @@ const app = express();
 const server = http.createServer(app);
 export const logfd = openSync("../log", 'a+');
 export const PORT = process.env.PORT || 8080;
-export const ALLOWED_URL = process.env.ALLOWED_URL?.split(',') ?? ['http://localhost:5173'];
+export const ALLOWED_URL = process.env.ALLOWED_URL?.split(',') ?? ['http://localhost'];
 
 // SECTION: connections
 import { prisma } from "./prisma.js";
