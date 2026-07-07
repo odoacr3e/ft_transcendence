@@ -24,9 +24,11 @@ const eEvents =
 
 const eMatchPresets =
 {
-	ClassicTwoPlayers: "8x8x2",
-	ClassicFourPlayers: "14x14x4"
-}
+	ClassicTwoPlayers: "1v1",
+	ClassicFourPlayers: "2v2", //TODO - da implementare
+	ClassicFreeForAll: "1v1v1v1",
+	NoCornersFourPlayers: "14x14x4",
+};
 
 /**
  * @enum {number}
@@ -56,6 +58,21 @@ const enumNames = {
 
 const arrayNames = Object.values(enumNames);
 
+const enumConnection = 
+{
+	PRIVATE: 'private',
+	FRIENDLY: 'friendly',
+	RANKED: 'ranked',
+	ARENA: 'arena'
+};
+
+const enumSocketState =
+{
+	MATCHMAKING: "matchMaking",
+	PLAYING: "playing",
+	WATCHING: "watching"
+};
+
 const enumInitNames = 
 {
 	KING: 'K',
@@ -80,6 +97,7 @@ const enumSpecialMoves =
 	ISBASTARD: 1 << 6,
 	EATENBASTARD: 1 << 7,
 	CHAMPIONBOOST: 1 << 8,
+	DRAW: 1 << 9,
 }
 
 const kingMovements = 
@@ -90,4 +108,4 @@ const kingMovements =
 	{dx:1, dy:0}, {dx:-1, dy:0},//orizzontale
 ];
 
-export {eTeam, eEvents, eMatchPresets, enumNames, arrayNames, enumInitNames, enumValues, enumSpecialMoves, kingMovements};
+export {eTeam, eEvents, eMatchPresets, enumNames, arrayNames, enumInitNames, enumValues, enumSpecialMoves, kingMovements, enumConnection, enumSocketState};

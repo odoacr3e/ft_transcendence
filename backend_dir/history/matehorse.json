@@ -84,7 +84,8 @@
       "pieceBoosterTargetZones": null,
       "isBoostedBool": false,
       "useBoostBool": false,
-      "counter": 7
+      "counter": 7,
+	  "lastLost": "white"
     }
   ],
   "moves": 8,

@@ -2,7 +2,7 @@
 import {MOVEMENT_MIN} from "../../Macro/macro.js";
 import { Chess } from "../../lib/lib.js";
 const {Square} = Chess;
-import {Match} from "../../Classes/Match/match.js";
+import {Match} from "../../Classes/Chess/match.js";
 import {paramCheck, Result, clientBoard} from "./utils.js";
 import {endTurn} from "./endTurn.js";
 import {checkMateCheckAll} from "../../GameLogic/checkMate.js";
@@ -10,7 +10,7 @@ import {checkMove, updateChessboard, checkSecondMove} from "../../GameLogic/move
 import {enumNames} from "../../Macro/enums.js";
 import { DangerUpdate } from "../../utils/moveUtils.js";
 
-/** @typedef {import('../../Classes/ChessBoard/chessBoard.js').Square} Square */
+/** @typedef {import('../../Classes/Chess/chessBoard.js').Square} Square */
 
 /**
  * 
@@ -30,20 +30,20 @@ function move(match, from, to, boostBool=false)
 		return (result);
 	if (!checkMove([from, to], result, match, boostBool))
 		return (result);
+	if (match.board.get(from).piece?.type != enumNames.BASTARDS && match.board.get(from).piece == null)
+		++match.spareCountDown;
+	else
+		match.spareCountDown = 0;
 	if (!updateChessboard([from, to], result, match, boostBool))
 		return (result);
 	result.status = 200;
-	// @ts-ignore
-	if (checkMateCheckAll(match, result, true) == true)
-		return (result);
+	checkMateCheckAll(match, result);
 	// @ts-ignore
 	result.board = clientBoard(match);
 	secondMoveBool = checkSecondMove(match, to);
 	if ((match.moves >= MOVEMENT_MIN && !match.currentPlayer.nPoints) && !(secondMoveBool && boostBool) && 
 	!(match.cursor.EdgeCheck(match.currentPlayer.team) && match.board.get(match.cursor.square)?.piece?.type == enumNames.BASTARDS))
 		endTurn(match, false);
-	// else if (match.CheckOtherKingsDanger() == true)
-	// 	endTurn(match);
 	return (result);
 }
 

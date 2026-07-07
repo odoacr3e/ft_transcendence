@@ -1,7 +1,7 @@
 {
-  "moves": 275,
+  "moves": 277,
   "victory": "",
-  "finalBoard": "| | | | | |M|C| |V|J|M| | | |\n| | | | |B|B|B|B|B|J|B| | | |\n| |J| | | | | | | | | | | | |\n| |B| | | | | | | | | |B| |M|\n| | | |B| | | | | | | | |B|J|\n|K| | | | | | | | | | | |B|V|\n|M| | | | | | |+C| | | | | | |\n| | | | | | | | | | | | |B|K|\n|V|B| | | | | | | | | | | | |\n|J|B| | | | | |B| | | | |B|+J|\n|M|B| | | | | | | | |B| | | |\n| | | | | | | | | | | | | |M|\n| | | | |B|B|B| |B|B|B| | | |\n| | |+C|C|J|V| |K| | |M| | | |\n",
+  "finalBoard": "| | | | | |M|C| |V|J|M| | | |\n| | | | |B|B|B|B|B|J|B| | | |\n| |J| | | |+C| | | | | | | | |\n| |B| | | | | | | | | |B| |M|\n| | |B| | | | | | | | | |B|J|\n| | | | | | | | | | | | |B|V|\n|M| |K| | | | | | | | | | |+C|\n| | | | | | | | | | | | |B|K|\n|V|B| | | | | | | | | | | | |\n|J|B| | | | | |B| | | | |B|J|\n|M|B| | | | | | | | |B| | | |\n| | | | | | | | | | | | | |M|\n| | | | |B|B|B| |B|B|B| | | |\n| | | |C|J|V| |K| | |M| | | |\n",
   "matchSettings": "14x14x4",
   "events": [
     {
@@ -1432,7 +1432,8 @@
       "useBoostBool": false,
       "counter": 129,
       "updates": {},
-      "error": false
+      "error": false,
+      "lastLost": "red"
     },
     {
       "from": "",
@@ -2026,7 +2027,8 @@
       "useBoostBool": false,
       "counter": 183,
       "updates": {},
-      "error": false
+      "error": false,
+      "lastLost": "green"
     },
     {
       "from": "n8",
@@ -2387,161 +2389,18 @@
       "team": "blue",
       "type": "move",
       "useBoostBool": false,
-      "counter": 221,
-      "updates": {},
-      "error": false
-    },
-    {
-      "from": "",
-      "to": "",
-      "movedPiece": "",
-      "team": "blue",
-      "type": "endturn",
-      "useBoostBool": false,
-      "counter": 222,
-      "updates": {},
-      "error": false
-    },
-    {
-      "from": "f<",
-      "to": "a7",
-      "movedPiece": "Champion",
-      "team": "yellow",
-      "type": "move",
-      "useBoostBool": false,
-      "counter": 237,
-      "updates": {},
-      "error": false
-    },
-    {
-      "from": "",
-      "to": "",
-      "movedPiece": "",
-      "team": "yellow",
-      "type": "endturn",
-      "useBoostBool": false,
-      "counter": 238,
-      "updates": {},
-      "error": false
-    },
-    {
-      "from": "n8",
-      "to": "b8",
-      "movedPiece": "Champion",
-      "team": "blue",
-      "type": "move",
-      "useBoostBool": false,
-      "counter": 264,
-      "updates": {},
-      "error": false
-    },
-    {
-      "from": "",
-      "to": "",
-      "movedPiece": "",
-      "team": "blue",
-      "type": "endturn",
-      "useBoostBool": false,
-      "counter": 265,
-      "updates": {},
-      "error": false
-    },
-    {
-      "from": "a7",
-      "to": "c7",
-      "movedPiece": "Champion",
-      "team": "yellow",
-      "type": "move",
-      "useBoostBool": false,
-      "counter": 266,
-      "updates": {},
-      "error": false
-    },
-    {
-      "from": "",
-      "to": "",
-      "movedPiece": "",
-      "team": "yellow",
-      "type": "endturn",
-      "useBoostBool": false,
-      "counter": 267,
-      "updates": {},
-      "error": false
-    },
-    {
-      "from": "c:",
-      "to": "d:",
-      "movedPiece": "Bastards",
-      "team": "blue",
-      "type": "move",
-      "useBoostBool": false,
-      "counter": 268,
-      "updates": {},
-      "error": false
-    },
-    {
-      "from": "",
-      "to": "",
-      "movedPiece": "",
-      "team": "blue",
-      "type": "endturn",
-      "useBoostBool": false,
-      "counter": 269,
-      "updates": {},
-      "error": false
-    },
-    {
-      "from": "c7",
-      "to": "c1",
-      "movedPiece": "Champion",
-      "team": "yellow",
-      "type": "move",
-      "useBoostBool": false,
-      "counter": 270,
-      "updates": {},
-      "error": false
-    },
-    {
-      "from": "",
-      "to": "",
-      "movedPiece": "",
-      "team": "yellow",
-      "type": "endturn",
-      "useBoostBool": false,
-      "counter": 271,
-      "updates": {},
-      "error": false
-    },
-    {
-      "from": "b8",
-      "to": "b8",
-      "movedPiece": "Champion",
-      "team": "blue",
-      "type": "move",
-      "useBoostBool": false,
-      "counter": 272,
+      "counter": 275,
       "updates": {},
       "error": true
     },
     {
       "from": "b8",
-      "to": "h8",
-      "movedPiece": "Champion",
+      "to": "c8",
+      "movedPiece": "King",
       "team": "blue",
       "type": "move",
       "useBoostBool": false,
-      "counter": 273,
-      "updates": {},
-      "error": false
-    },
-    {
-      "from": "",
-      "to": "",
-      "movedPiece": "",
-      "team": "blue",
-      "type": "endturn",
-      "useBoostBool": false,
-      "counter": 274,
+      "counter": 276,
       "updates": {},
       "error": false
     }

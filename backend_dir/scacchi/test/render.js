@@ -1,14 +1,14 @@
 // @ts-check
-import { Square, ChessBoard} from "../Classes/ChessBoard/chessBoard.js";
+import { Square, ChessBoard} from "../Classes/Chess/chessBoard.js";
 import {eTeam} from "../Macro/enums.js";
 import * as lib from "../lib/lib.js";
-// const {Match} = require("../Classes/Match/match.js");
+// const {Match} = require("../Classes/Chess/match.js");
 import {CHESSBOARD_H, CHESSBOARD_W} from "../Macro/macro.js";
 const enumNames = lib.Enums.enumNames;
 import { cmd } from "./enumsTest.js";
 import { includesOneOf } from "../utils/string.js";
 
-/** @typedef {import("../Classes/Match/match.js").Match} Match*/
+/** @typedef {import("../Classes/Chess/match.js").Match} Match*/
 
 /**
  * @param {Match | null} match 
@@ -70,7 +70,9 @@ function renderSquare(match, square, coords, selected, TargetDangerSwitch)
 	asciiArt = getAscii(square);
 	if (square.piece && square.piece.team)
 		buffer += `\x1b[37;${getSquareColor(square.piece.team)}m`;
-	if (coords.player == coords.curr)
+	if (square.wallBool == true)
+		buffer += "[X]";
+	else if (coords.player == coords.curr)
 		buffer += `\x1b[32m[${asciiArt}]`;
 	else if (includesOneOf(coords.curr, match.lastMenace.from, match.lastMenace.mid, match.lastMenace.to))
 		buffer += `\x1b[31m[${asciiArt}]`;
@@ -111,11 +113,13 @@ function getCoords(match)
 	coords.start = "a" + String.fromCharCode(match.board.heigth + "0".charCodeAt(0));
 	endCol = String.fromCharCode(match.board.width - "a".charCodeAt(0) - 1);
 	coords.end = `${endCol}1`;
-	coords.player = match.cursor.square;
-	// @ts-ignore
-	coords.playerSquare = match.board.get(coords.player);
+	coords.player = match.cursor.square;//@ts-ignore
+	coords.playerSquare = match.board._data.get(coords.player);
 	if (!coords.playerSquare)
-		throw ("Render, getCoords: invalid cursor");
+	{
+		coords.playerSquare = new Square();
+		// throw ("Render, getCoords: invalid cursor");
+	}
 	return (coords);
 }
 

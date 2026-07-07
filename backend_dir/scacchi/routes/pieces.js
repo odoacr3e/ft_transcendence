@@ -1,14 +1,15 @@
 
 import * as lib from "../lib/lib.js";
-import * as piecesQuery from "../query/piecesQuery.js";
+import { query } from "../lib/query.js";
 import { jsonResponse } from "../utils/response.js";
+const { piecesQuery } = query;
 export const piecesRouter = lib.include.express.Router();
 
 // NOTE: /api/pieces
 piecesRouter.get("/", async (req, res) => {
 	try {
 		const { name } = req.query;
-		const pieces = name ? await piecesQuery.findPieceByName(name) : pieces = await piecesQuery.getAllPieces();
+		const pieces = name ? await piecesQuery.findPieceByName(name) : await piecesQuery.getAllPieces();
 		if (pieces && pieces.length > 0)
 			return res.status(200).json(jsonResponse.ResponseSuccess({ "pieces": pieces }));
 		return res.status(404).json(jsonResponse.ResponseError("Pieces not found"));

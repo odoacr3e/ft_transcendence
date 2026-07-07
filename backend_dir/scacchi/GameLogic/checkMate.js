@@ -3,23 +3,25 @@ import { Chess } from "../lib/lib.js";
 import {Result} from "../Classes/endPoint/result.js";
 const {preset} = Chess;
 import {enumNames} from "../Macro/enums.js";
-import {Match} from "../Classes/Match/match.js";
+import {Match} from "../Classes/Chess/match.js";
 import {isDangerous} from "../utils/gameUtils.js";
-import { movePiece } from "../utils/moveUtils.js";
-import { Square } from "../Classes/ChessBoard/chessBoard.js";
-import { pathFinding } from "./moveLogic.js";
+import { movePiece, DangerUpdate } from "../utils/moveUtils.js";
+import { Square } from "../Classes/Chess/chessBoard.js";
+import { checkPieceDanger, pathFinding } from "./pathFinding.js";
+import { simulation } from "./moveLogic.js";
 
 /**
  * 
  * @param {Match} match
  * @param {string} kingCoord
  */
-function CheckMateCheck(match, kingCoord)
+function CheckMateCheck(match, kingCoord=match.currentPlayer.King)
 {
 	let threat = new Set;
 	let kingSquare;
 	let enemySquare;
 	let enemyCoord;
+	let	stopBool;
 	let team;
 
 	kingSquare = match.board.get(kingCoord);
@@ -38,39 +40,33 @@ function CheckMateCheck(match, kingCoord)
 	if (!enemyCoord)
 		return false;
 	enemySquare = match.board.get(enemyCoord);
+	stopBool = isStoppable(match, kingCoord, enemyCoord);
 	if (isDangerous(match, enemySquare.dangerZones, enemySquare.piece?.team))
 		return (cantMovePiece(match, enemyCoord, enemySquare, kingCoord));
-	if (isStoppable(match, kingCoord, enemyCoord))
-		return false;
-	return true;
+	return (!stopBool);
 }
 
 /**
  * 
  * @param {Match} match 
  * @param {Result | null} result
- * @param {boolean} lostBool
  */
-function checkMateCheckAll(match, result, lostBool=false)
+function checkMateCheckAll(match, result)
 {
-	if (match.playerNum > 2)
-	{
-		let tmp = match.currentPlayer;
+	let currTeam;
 
-		tmp = match[tmp.next];
-		while (tmp != match.currentPlayer)
+	currTeam = match.currentPlayer.team;
+	match.endTurn();
+	while (currTeam != match.currentPlayer.team)
+	{
+		if (CheckMateCheck(match))
 		{
-			// @ts-ignore
-			if (CheckMateCheck(match, match[tmp.team].King))
-			{
-				return (match.PlayerLost(result, tmp), true);
-			}
-			tmp = match[tmp.next];
-			lostBool = false;
+			match.PlayerLost(result);
 		}
+		match.endTurn();
 	}
 	// @ts-ignore
-	else if (CheckMateCheck(match, match[match.currentPlayer.next].King))
+	if (match.playerNum == 1)
 		return (match.CheckMate(result), true);
 	return (false);
 }
@@ -111,19 +107,27 @@ function getDirection(match, kingSquare, enemySquare)
 function isStoppable(match, kingSquare, enemySquareString)
 {
 	let	square;
+	let	dir;
 	let	enemySquare;
+	let	guardianSquare;
+	let	guardianPiece;
+	let	kingPiece;
+	let	normalSaveBool = false;
 
+	match.currentPlayer.guardianPieces.clear();
 	enemySquare = match.board.get(enemySquareString);
-	if (!enemySquare)
-		throw ("given to isStoppable an invalid position");//FIXME - Ale: errore grave, dare 500
+	kingPiece = match.board.get(kingSquare).piece;
+	if (!enemySquare || !kingPiece)
+		throw ("given to isStoppable an invalid position");
 	if (enemySquare.piece?.type == enumNames.JESTER || 
 	enemySquare.piece?.type == enumNames.BASTARDS || 
 	(enemySquare.piece?.type == enumNames.VALKIRYA && 
 	enemySquare.piece?.isBoostedBool == true) ||
 	match.board.get(kingSquare)?.targetZones.has(enemySquareString))
 		return false;
-	let dir = getDirection(match, kingSquare, enemySquareString);
-	match.cursor.setCursor(match.cursor.getRow() + dir.diffRow, match.cursor.getCol() + dir.diffCol);
+	dir = getDirection(match, kingSquare, enemySquareString);
+	if (!movePiece(match, dir.diffCol, dir.diffRow))
+		return true;
 	while (match.board.get(match.cursor.square)?.piece?.type != enumNames.KING)
 	{
 		square = match.board.get(match.cursor.square);
@@ -131,11 +135,41 @@ function isStoppable(match, kingSquare, enemySquareString)
 			continue ;
 		for (let x of square.dangerZones)
 		{
-			if (match.board.get(x)?.piece?.team == match.board.get(kingSquare)?.piece?.team)
-				return true;
+			guardianSquare = match.board.get(x);
+			guardianPiece = guardianSquare.piece;
+			if (!guardianPiece)
+				throw (`isStoppable: guardian of ${match.cursor.square} in ${x} missing`);
+			if (x == kingSquare)
+				continue ;
+			if (guardianPiece.type == enumNames.BASTARDS && match.cursor.IsOblique(x) == false)
+				continue ;
+			if (guardianPiece.team != kingPiece.team)
+				continue ;
+			//FIXME - CONTROLLO CHE IL DIFENSORE MANGI IN UNA MOSSA (implementare salvataggio due mosse?)
+			let	guardianBoostedSave;
+			let	guardianRegularSave;
+
+			guardianRegularSave = guardianSquare.targetZones.has(match.cursor.square);
+			for (let [key, val] of guardianSquare.boostedTargetZones)
+			{
+				if (val.has(match.cursor.square))
+				{
+					guardianBoostedSave = true;
+					break ;
+				}
+			}
+			if (guardianRegularSave)
+				normalSaveBool = true;
+				// return (match.currentPlayer.guardianPieces.clear(), true);
+			if (guardianBoostedSave)
+				match.currentPlayer.guardianPieces.add({coord: x, target: match.cursor.square});
 		}
-		match.cursor.setCursor(match.cursor.getRow() + dir.diffRow, match.cursor.getCol() + dir.diffCol);
+		if (!movePiece(match, dir.diffCol, dir.diffRow))
+			return true;//FIXME - stampella: non dovrebbe finire mai qui, eppure succede
+		//throw("isStoppable: getDirection failed");
 	}
+	if (normalSaveBool == true || match.currentPlayer.guardianPieces.size > 0)
+		return true;
 	return false;
 }
 
@@ -232,38 +266,45 @@ function doubleSave(match, threat)
 }
 
 /**
- * 
+ * can the king dodge?
  * @param {Match} match 
  * @param {Square} square 
  * @returns 
  */
-function canDodge(match, square)
+function canDodge(match, square) //FIXME - da aggiornare senza fare simulation
 {
-	let	canDodgeBool;
 	let	coord;
 	let	newSquare;
+	let	safeSet = new Set();
 	let	piece;
+	// let	row;
+	// let	col;
+	// let	diffRow;
+	// let	diffCol;
+	let	kingTargets;
 
 	piece = square.piece;
 	if (!piece)
 		throw (`canDodge: square ${square} has undefined piece`);
+	match.cursor.Save();
 	coord = piece.pos;
-	for (let newCoord of square.targetZones)//king can dodge?
+	// match.cursor.set(coord);
+	// row = match.cursor.getRow();
+	// col = match.cursor.getCol();
+	kingTargets = structuredClone(square.targetZones);
+	for (let newCoord of kingTargets)//king can dodge?
 	{
 		newSquare = match.board.get(newCoord);
-		if (isDangerous(match, newSquare.dangerZones, piece.team) || newSquare.piece?.team == piece.team)
-			continue ;
-		canDodgeBool = true;
-		for (const danger of square.dangerZones)
-		{
-			if (pathFinding(match, danger, newCoord, coord, true) != null)
-			{
-				canDodgeBool = false;
-				break ;
-			}
-		}
-		if (canDodgeBool == true)
-			return (true);
+		if (!isDangerous(match, newSquare.dangerZones, piece.team) && (!newSquare.piece || newSquare.piece?.team != square.piece?.team))
+			safeSet.add(newCoord);
+	}
+	for (let x of safeSet)
+	{
+		if (simulation([coord, x], match) == true)
+			return (match.cursor.Restore(), true);
+		// match.cursor.set(x);
+		// diffRow = row - match.cursor.getRow();
+		// diffCol = col - match.cursor.getCol();
 	}
 	return (false);
 }
@@ -306,7 +347,7 @@ function cantMovePiece(match, enemyCoord, enemySquare, kingCoord)
 	let	guardianPiece;
 	let	threatSquare;
 	let	threatPiece;
-	let	canReachKing;
+	let	canReachKing = null;
 	let	ignoredCoords;
 
 	ignoredCoords = new Set();
@@ -318,6 +359,8 @@ function cantMovePiece(match, enemyCoord, enemySquare, kingCoord)
 		guardianPiece = guardianSquare.piece; 
 		if (!guardianPiece)
 			throw ("checkMate, cantMovePiece: guardian piece undefined");
+		if (guardianPiece.team != match.currentPlayer.team)
+			continue ;
 		//checking every guardian danger zone
 		for (const threatCoord of guardianSquare.dangerZones)
 		{
@@ -333,11 +376,14 @@ function cantMovePiece(match, enemyCoord, enemySquare, kingCoord)
 				continue ;
 			canReachKing = pathFinding(match, threatSquare, kingCoord, ignoredCoords, true);
 			if (canReachKing != null)
-				return (true);
+				break ;
 		}
+		if (!canReachKing)
+			return (false);
+		canReachKing = null;
 		ignoredCoords.delete(kingGuardianCoord);
 	}
-	return (false);
+	return (true);
 }
 
-export {CheckMateCheck, checkMateCheckAll, getDirection};
+export {checkMateCheckAll, getDirection};

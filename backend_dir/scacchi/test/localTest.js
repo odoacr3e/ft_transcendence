@@ -2,7 +2,7 @@
 //SECTION - external libraries
 import fs from "fs";
 //SECTION - backend cute stuff >3
-import { globals } from "../Classes/Match/globals.js";
+import { globals } from "../Classes/Globals/globals.js";
 import { historyRestore } from "../utils/history.js";
 import {HISTORY_PATH} from "../Macro/macro.js";
 import { colors as color } from "./colorsOld.js";
@@ -46,6 +46,11 @@ function execAllTests()
 	for (const file of fs.readdirSync(HISTORY_PATH))
 	{
 		currMatch = file;
+		if (file.includes("todo"))
+		{
+			testerTodo();
+			continue ;
+		}
 		execTest(`${HISTORY_PATH}${file}`);
 	}
 	process.exit(errorFlag);
@@ -65,6 +70,11 @@ function execTest(matchPath)
 	let	boards;
 
 	match = globals.getDebugMatch();
+	if (!match)
+	{
+		testerFail(MSG.INVALID_MSG, "you need to set up DEBUG to true to use localTester");
+		process.exit();
+	}
 	try
 	{
 		history = JSON.parse(fs.readFileSync(matchPath, 'utf-8'));
@@ -112,6 +122,14 @@ function testerFail(msg, p1="", p2="")
 {
 	console.debug(`${currMatch}: ${MSG.RESULT_ERROR}`);
 	fail(msg, p1, p2);
+}
+
+/**
+ * called when a test is marked with todo
+ */
+function testerTodo()
+{
+	console.debug(`${currMatch}: ${MSG.RESULT_TODO}`);
 }
 
 /**

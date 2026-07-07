@@ -1,22 +1,14 @@
 
 import * as lib from "../lib/lib.js";
 import * as usersUtils from "./users.js"
-import * as usersQuery from "../query/usersQuery.js"
-import jwt from "jsonwebtoken";
+import { query } from "../lib/query.js";
 import ms from "ms";
 import { jsonResponse } from "../utils/response.js";
+import { createTestAccount } from "nodemailer";
+const { usersQuery } = query;
+const { jwt } = lib.auth;
 const { redis } = lib.conn;
 const { crypto } = lib.conn;
-
-/**
- * Jwt format
- * // 1. Payload - dati che vuoi salvare nel token (dati che risultino univoci)
- * // 2. Chiave segreta - presa dal .env
- * // 3. Opzioni
- * { id: x, username: y }, 
- * { JWT_SECRET },
- * { expiresIn: "h/d/y" }
- */
 
 export const cookiesOpt = {
 	httpOnly: true,
@@ -120,4 +112,43 @@ export const validateUser = async (username, email) => {
 	if (user)
 		return (false);
 	return (true);
+}
+
+const OTP_TTL = Number(process.env.OTP_TTL) // 5 minuti
+const MAX_TRY = Number(process.env.OTP_MAX_TRY) // 5
+
+function generateOtp() {
+	return crypto.randomInt(100000, 999999).toString();
+}
+
+export async function createOtp(id_user) {
+	const otp = generateOtp();
+	const key = `otp:${id_user}`;
+
+	await redis.set(key, otp, 'EX',  OTP_TTL);
+	await redis.set(`otp_attempts:${id_user}`, 0, 'EX', OTP_TTL);
+
+	return (otp);
+}
+
+export async function verifyOtp(id_user, otp) {
+	const key = `otp:${id_user}`;
+	const keyAttempts = `otp_attempts:${id_user}`;
+	const stored = await redis.get(key);
+	console.log(`Key: ${key}, key Attempts: ${keyAttempts}, stored: ${stored}, OTP: ${otp}`);
+	if (!stored)
+		return ({ success: false, message: 'OTP expired or not valid' });
+	const attempts = parseInt(await redis.get(keyAttempts) || '0', 10);
+	if (attempts >= MAX_TRY) {
+		await redis.del(key);
+		return ({ success: false, message: 'Too many attempts' });
+	}
+	if (Number(stored) !== Number(otp)) {
+		await redis.incr(keyAttempts);
+		console.log(`type stored: ${typeof(stored)}, type otp: ${typeof(otp)}, confronto == : ${stored == otp}, confronto === : ${stored === otp}`)
+		return ({ success: false, message: 'Invalid OTP' });
+	}
+	await redis.del(key);
+	await redis.del(keyAttempts);
+	return ({ success: true });
 }

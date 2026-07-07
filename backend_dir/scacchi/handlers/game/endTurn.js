@@ -2,15 +2,12 @@
 
 import {MOVEMENT_MIN, MOVEMENT_BONUS_POINT} from "../../Macro/macro.js";
 import {enumNames} from "../../Macro/enums.js";
-import {Match} from "../../Classes/Match/match.js";
+import {Match} from "../../Classes/Chess/match.js";
 import {error, Result, checkMateAlert} from "./utils.js";
-import {CheckMateCheck} from "../../GameLogic/checkMate.js";
-import {globals} from "../../Classes/Match/globals.js";
-import {isDangerous} from "../../utils/gameUtils.js";
 import {DangerUpdate} from "../../utils/moveUtils.js";
 import {clientBoard} from "../../handlers/game/utils.js";
-import { Timer } from "../../Classes/Match/match.js";
-//FIXME - ale: puoi sempre cambiare turno anche se non hai mosso
+import { checkKingDanger } from "../../utils/gameUtils.js";
+import { checkInsuficientResources } from "../../GameLogic/checkSpare.js";
 
 /**
  * goes to the next turn
@@ -24,11 +21,19 @@ function endTurn(match, sendBoardBool=true)
 	let timeout;
 	let start;
 	let time;
+	let nPieces;
 	let p = match.currentPlayer;
 
 	result = new Result();
 	time = match.currentPlayer.time;
-	// @ts-ignore
+	nPieces = match.getPieceNumber();
+	if (match.playerNum == 2 && nPieces <= 4)
+	{
+		if (checkInsuficientResources(match, nPieces))
+			return (match.DrawMatch(result));
+	}
+	if (match.spareCountDown == 50 * match.playerNum)
+		return (match.DrawMatch(result));
 	if (!updateTurn(match, result))
 		return (result);
 	// if (match.timer != null)
@@ -48,7 +53,13 @@ function endTurn(match, sendBoardBool=true)
 	// 		throw ("Timer reset: bad matchId " + matchId);
 	// 	result = new Result();
 	// 	// @ts-ignore
-	// 	return (match.PlayerLost(result, match?.currentPlayer.team));
+	// 	result = match.PlayerLost(result, match?.currentPlayer.team);
+	// 	if (match.coordToUpdate)
+	// 	{
+	// 		DangerUpdate(match, match.coordToUpdate);
+	// 		match.coordToUpdate = "";
+	// 	}
+	// 	return (result);
 	// }, time, "0");
 	// start = Date.now();
 	// match.timer = new Timer(time, start, timeout);
@@ -70,6 +81,10 @@ function updateTurn(match, result)
 	let	player;
 	let	king;
 
+	if (match.playerNum <= 1)
+		return (false);
+	if (checkKingDanger(match) == true)
+		return (error(result, 403, "Your king is in danger"));
 	player = match.currentPlayer;
 	if (match.moves < MOVEMENT_MIN)
 		return (error(result, 403, "You need to move first"));
@@ -90,15 +105,6 @@ function updateTurn(match, result)
 	match.history.UpdateEndTurn(match);
 	match.endTurn();
 	king = match.board.get(player.King);
-	// if (CheckMateCheck(match, player.King) == true)
-	// {
-	// 	console.log("hai perso, sfigato, e vuoi pure muovere di nuovo?? Appenditi idiota!!!");
-	// 	// @ts-ignore
-	// 	match.CheckMate(result);
-	// 	return (false);
-	// }
-	// else if (isDangerous(match, king.dangerZones, king.piece?.team) == true)
-	// 	result.specialMoves.SetKingDanger();
 	match.boost = 0;
 	match.moves = 0;
 	return (true);

@@ -69,7 +69,8 @@
       "to": "c4",
       "team": "white",
       "type": "move",
-      "useBoostBool": false
+      "useBoostBool": false,
+	  "counter": 42
     },
     {
       "from": "",

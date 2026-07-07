@@ -19,6 +19,7 @@ const cmd =
 	MOVE: "space",
 	LOAD_HISTORY: "p",
 	SQUARE_INFO: "i",
+	GOTO_KING: "k",
 	HELP: "h"
 };
 
@@ -30,6 +31,7 @@ const testerEnum =
 	RESULT_OK: `${color.green}[OK]${color.reset}`,
 	RESULT_FAIL: `${color.red}[KO]${color.reset}`,
 	RESULT_ERROR: `${color.yellow}[ERROR]${color.reset}`,
+	RESULT_TODO: `${color.magenta}[TODO]${color.reset}`,
 	//SECTION - testerErrors: problems caused by the tester program
 	INVALID_ARGV: "The tester did not receive the param",
 	INVALID_DIR: "Please give the tester only the file names",

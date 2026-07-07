@@ -2,7 +2,7 @@
 import {enumNames} from "../Macro/enums.js";
 import { Chess } from "../lib/lib.js";
 const {Square, Piece} = Chess;
-import {Match} from "../Classes/Match/match.js";
+import {Match} from "../Classes/Chess/match.js";
 import {getDirection} from "./checkMate.js";
 import {isDangerous} from "../utils/gameUtils.js";
 import {movePiece} from "../utils/moveUtils.js";
@@ -25,8 +25,8 @@ test/ -> Fatto
 	render
 */
 
-/** @typedef {import('../Classes/Pieces/pieces.js').Piece} Piece */
-/** @typedef {import('../Classes/ChessBoard/chessBoard.js').Square} Square */
+/** @typedef {import('../Classes/Chess/Pieces/pieces.js').Piece} Piece */
+/** @typedef {import('../Classes/Chess/chessBoard.js').Square} Square */
 
 /**@typedef {{"king": Piece, "mino": Piece, "dir": { diffRow: number; diffCol: number; }, "kingDanger": Set<string>}} pieces */
 /* 

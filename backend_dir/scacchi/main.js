@@ -5,32 +5,24 @@ import { authRouter } from "./routes/auth.js";
 import { responseFormatter } from "./utils/response.js";
 import { colors, tag } from "./utils/colors.js";
 import { log } from "./utils/log.js";
-import cookieParser from 'cookie-parser';
-import cors from 'cors';
-const app = lib.include.express();
-const server = lib.include.http.createServer(app);
-const sockio = new lib.include.SocketIO(server, {
-	cors: {
-		origin: "*", // per sviluppo, in produzione metti l'url preciso
-		methods: ["GET", "POST"],
-		credentials: true
-	},
-	connectionStateRecovery: {} // se il client si disconnette temporaneamente gli arrivano gli eventi alla riconnessione, senza vengono persi
-});
+import { globals } from "./Classes/Globals/globals.js";
+import "./websocket/websocket.js";
 
-// setup
-const PORT = 8080;
-const URL = 'http://frontend:5173';
-let requests = 0;
+const { ALLOWED_URL, PORT } = lib;
+const { cors } = lib.auth;
+const { cookieParser, app, server } = lib.include;
 
 // NOTE: serve per parsing delle richieste da frontend
 app.use(cors({
-	origin: URL,
-	credentials: true
+	origin: ALLOWED_URL,
+	credentials: true,
 }));
 
-app.set('json spaces', 2);
+app.use(cookieParser());
+app.use(lib.include.express.static('public'));
 app.use(lib.include.express.json());
+app.set('json spaces', 2);
+app.set('clientMap', globals.clientMap);
 
 // global error middleware
 app.use((err, req, res, next) => 
@@ -44,20 +36,10 @@ app.use((err, req, res, next) =>
 	res.status(500).json(formattedResponse);
 });
 
-sockio.on('connection', (socket) => 
-{
-	sockio.emit("start_game", { messaggio: "si comincia uahu" });
-	console.log("A new user connected");
-})
-
-app.use(cookieParser()); 
-app.use(lib.include.express.static('public'));
-
-
 // routes
-log.info('Routes initilization...')
+log.info('Routes initilization...');
 app.use("/api", apiRouter);
-app.use("/auth", authRouter)
+app.use("/auth", authRouter);
 log.ok(`Routes loaded`);
 
 // server confiuration wit web socket
@@ -78,4 +60,8 @@ server.on("error", (err) => {
 	process.exit(1);
 });
 
-export {app, sockio};
+
+//NOTE - DO NOT TOUCH!!!
+const oggettoVuotoPerFarFunzionareTermjsNONCANCELLARE = 42;
+export {oggettoVuotoPerFarFunzionareTermjsNONCANCELLARE};
+//NOTE - NON CANCELLARE!!!
