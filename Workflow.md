@@ -132,14 +132,15 @@ boardConverter()
 	✓	redirection alla pagina login se si prova ad accedere a pagine protette
 	✓	pagina di modifica delle info utente
 	✓	reset della password (sia dal login page che dalla pagina utente loggato)
+	✓	dettagli info sui match
 	▫	refactor pagina di gioco, pulsanti con tipi di partite, creazione stanze, sfida amici [LEO]
-	▫	dettagli info sui match  [MAVI]
-	▫	update delle preferenze di colore degli utenti
+	▫	test login e resgiter con OT e opzioni di toglierlo nelle impostazioni [MAVI]
+	▫	info dei profili per le partitre a 4
 	▫	websocket per le notifiche
 	▫	pagina della leaderboard
 	▫	history delle mosse durante la partita (?)
-	▫	info dei profili per le partitre a 4
 	▫	re-design della home
+	▫	update delle preferenze di colore degli utenti
 	▫	websocket per la partita --> in attesa di sviluppo backend
 
 

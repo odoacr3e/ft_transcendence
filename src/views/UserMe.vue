@@ -1,9 +1,9 @@
 <script setup>
-    import AppHeader from '../components/AppHeader.vue';
-    import TagTitle from '../components/TagTitle.vue';
-    import FriendList from '../components/FriendList.vue';
-    import FriendRequest from '../components/FriendRequest.vue';
-    import MatchHistory from '../components/MatchHistory.vue';
+    import TagTitle         from '../components/TagTitle.vue';
+    import AppHeader        from '../components/AppHeader.vue';
+    import FriendList       from '../components/FriendList.vue';
+    import MatchHistory     from '../components/MatchHistory.vue';
+    import FriendRequest    from '../components/FriendRequest.vue';
     import { ref, onMounted }   from 'vue';
     import { useAuthStore }     from "../stores/auth.st";
     import { storeToRefs }      from 'pinia';

@@ -29,5 +29,9 @@ export const authApi = {
 		const resp = await api.get('/api/matchesHistory'); // lista degli incontri
 		return (resp.data.matches);
 	},
+	tournament:	async () => {
+		const resp = await api.get('/api/tournaments'); // lista degli tornei
+		return (resp.data.tournaments);
+	},
 	logout:		() => api.post('/auth/logout')
 }

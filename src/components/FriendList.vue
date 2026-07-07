@@ -1,6 +1,6 @@
 <script setup>
     import TagTitle from './TagTitle.vue';
-    import statusOnline from './statusOnline.vue';
+    import StatusOnline from './StatusOnline.vue';
     import { computed } from 'vue';
     import { asset, rejectRequest } from '../scripts/Helper/CompUtils';
 
@@ -18,7 +18,7 @@
             <RouterLink :to="{ name: 'user_page', params: { username: besties.friend.username } }">
                 <div class="flex my-3 ml-2 relative">
                     <img class="size-13 rounded-full" :src="besties.friend.image ? asset(`${besties.friend.image}`) : asset('../assets/default.png')"/>
-                    <statusOnline :user_id="besties.friend.id_user" v-if="removeF"/>
+                    <StatusOnline :user_id="besties.friend.id_user" v-if="removeF"/>
                     <div class="mx-2">
                         <p class="text-white" v-if="besties.friend.username.length <= 15">
                             {{ besties.friend.username }}</p>

@@ -2,7 +2,7 @@
     import AppHeader from '../components/AppHeader.vue';
     import TagTitle from '../components/TagTitle.vue';
     import FriendList from '../components/FriendList.vue';
-    import statusOnline from '../components/statusOnline.vue';
+    import StatusOnline from '../components/StatusOnline.vue';
     import FriendButton from '../components/FriendButton.vue';
     import MatchHistory from '../components/MatchHistory.vue';
     import { useAuthStore } from "../stores/auth.st";
@@ -49,7 +49,7 @@
                 <div class="flex p-2 m-4 bg-[#201e1c] rounded-3xl border border-[#4e4e4e8c]">
                     <img :src="otherUser.image ? asset(`${otherUser.image}`) : asset('../assets/default.png')"
                             alt="" class="size-35 rounded-full place-self-start m-5">
-                    <statusOnline v-if="user.id_user === otherUser.id_user || friends?.find((frie) => frie.friend.id_user === user.id_user && frie.friend_status !== 'pending')"
+                    <StatusOnline v-if="user.id_user === otherUser.id_user || friends?.find((frie) => frie.friend.id_user === user.id_user && frie.friend_status !== 'pending')"
                         :user_id="otherUser.id_user" class="size-6 ml-31 mt-31"/>
                     <div>
                         <div class="w-150 grid grid-cols-2 items-center mt-5">

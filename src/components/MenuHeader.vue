@@ -13,17 +13,19 @@
         <div class="menu mt-5 relative flex place-items-center">
             <img class="absolute" src="../assets/sword2.png">
             <RouterLink to="/4v4_game">
+                <b><h2 class="relative text-4xl my-3 ml-2 pl-25 z-0">Partite a 4</h2></b>
+            </RouterLink>
+        </div>
+        <div class="menu mt-5 relative flex place-items-center">
+            <img class="absolute" src="../assets/sword2.png">
+            <RouterLink to="/tournaments">
                 <b><h2 class="relative text-4xl my-3 ml-2 pl-25 z-0">Tornei</h2></b>
             </RouterLink>
         </div>
         <div class="menu mt-5 relative flex place-items-center">
             <img class="absolute" src="../assets/sword2.png">
-            <b><h2 class="relative text-4xl my-3 ml-2 pl-25 z-0">Guarda</h2></b>
-        </div>
-        <div class="menu mt-5 relative flex place-items-center">
-            <img class="absolute" src="../assets/sword2.png">
 			<RouterLink to="/playpage">
-				<b><h2 class="relative text-4xl my-3 ml-2 pl-25 z-0">Statistiche</h2></b>
+				<b><h2 class="relative text-4xl my-3 ml-2 pl-25 z-0">PlayPage</h2></b>
 			</RouterLink>
         </div>
         <div class="menu mt-5 relative flex place-items-center">
@@ -81,34 +83,3 @@
     }
 
 </style>
-
-<!-- .menu {
-        width: 960px;
-        animation-duration: 0.5s;
-        animation-name: AnimationStop;
-    }
-
-    .menu:has(h2:hover)
-    {
-        animation-name: AnimationInit;
-        color: rgb(0, 0, 0, 0.5);
-        right: 100px;
-        width: 1100px;
-    }
-
-    .menu:has(img:hover)
-    {
-        animation-name: AnimationInit;
-        right: 100px;
-        width: 1100px;
-    }
-
-    @keyframes AnimationInit {
-        0%   { right:0px; width: 960px }
-        100% { right:100px; width: 1100px }
-    }
-
-    @keyframes AnimationStop {
-        0%   { right:100px; width: 1100px }
-        100% { right:0px; width: 960px }
-    } -->
