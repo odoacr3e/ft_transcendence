@@ -91,7 +91,7 @@ async function gameWebSocketHandler(req, id_user, socketData)
 	let	result;
 
 	if (!socketData)
-		return (console.error("ERROR: disconnected player not eliminated"));
+		return (console.error("ERROR: disconnected player not eliminated"), 500);
 	if (!socketData.matchData)
 		return (socketError(socketData.socket, null, 401, "Socket: you are not a player."));
 	matchId = socketData.matchData.matchId;
@@ -112,6 +112,7 @@ async function gameWebSocketHandler(req, id_user, socketData)
 	result = jsonParser(result);
 	socketData.socket.emit("game", result);
 	socketData.socket.to(`match_${match.id}`).emit("game", result);
+	return (200);
 }
 
 /**
@@ -226,6 +227,7 @@ function socketError(socket=null, result=null, status=0, msg=null, match=null, r
 	}
 	if (socket)
 		socket.emit("game", jsonParser(result));
+	return (result?.log?.status? result.log.status: 500);
 }
 
 export {gameChecks, gameHttpHandler, gameWebSocketHandler, error, move, endTurn, boost, init};

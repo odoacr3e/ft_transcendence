@@ -435,7 +435,7 @@
                     MatchSettings: null
                 };
 
-                client.socket.emit("init", payload);
+                client.socket.emit("find_match", payload);
                 console.log(`Emit 'init' inviato da ${client.dati.username}:`, payload);
                 
                 document.getElementById(`match-cell-${idUser}`).innerText = "In coda...";

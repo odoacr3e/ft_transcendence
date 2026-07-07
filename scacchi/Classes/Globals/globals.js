@@ -3,6 +3,7 @@
 import {Match} from "../Chess/match.js";
 import {Queue} from "./Queue.js";
 import {DEBUG} from "../../Macro/macro.js";
+import {render} from "../../test/render.js";
 import { enumConnection } from "../../Macro/enums.js";
 
 /** @typedef {import("../Chess/player.js").Player} Player*/
@@ -119,6 +120,35 @@ class Globals
 		if (!debugMatch)
 			throw ("No debug match in Globals!");
 		return (debugMatch);
+	}
+	/**
+	 * 
+	 * @param {string} matchId 
+	 * @param {string} playerTeam 
+	 */
+	DeletePlayer(matchId, playerTeam)
+	{
+		let	match;
+		/** @type {Player}*/
+		let	player;
+		let	result;
+
+		match = this.matches.get(matchId);
+		if (!match)
+			return (null);//@ts-ignore
+		player = match[playerTeam];
+		if (!player)
+			return (null);
+		result = match.PlayerLost(null, player);
+		//NOTE - refresho il currentPlayer
+		if (match.currentPlayer.next == playerTeam)//@ts-ignore
+			match.currentPlayer.next = match[match.currentPlayer.next].next;
+		if (match.currentPlayer.team == playerTeam)
+			match.endTurn();
+		render(match);
+		if (match.playerNum <= 1)
+			return (match.CheckMate(null)); 
+		return (result);
 	}
 }
 

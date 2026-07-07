@@ -160,12 +160,20 @@ async function bindPlayersToMatch(match, queueNode, result)
 	}
 	while (startTeam != match.currentPlayer.team)
 	result = responseFormatter(match, result, "Room created!", 200);
-	userId = userArray[0];
-	user = globals.clientMap.get(userId);
-	if (!user.socket)
-		throw (`bindPlayersToMatch: user 0 with id ${userId} undefined or invalid`);
-	user.socket.to(`match_${match.id}`).emit("game", result);
-	user.socket.emit("game", result);
+	i = 0;
+	do
+	{
+		userId = userArray[i];
+		user = globals.clientMap.get(userId);
+		if (!user?.socket)
+			throw (`bindPlayersToMatch: user 0 with id ${userId} undefined or invalid`);
+		// user.socket.to(`match_${match.id}`).emit("game", result);
+		//@ts-ignore
+		result.team = match.currentPlayer.team;
+		user.socket.emit("game", result);
+		i++;
+		match.endTurn();
+	}
 	while (startTeam != match.currentPlayer.team)
 	//this makes the queries asynchronous from the matchMaker
 	Promise.all(promises).then(

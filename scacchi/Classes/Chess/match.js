@@ -285,6 +285,9 @@ class Match
 
 		if (!player)
 			throw (`Delete player: invalid player`);
+		//@ts-ignore
+		if (!this[player.team])
+			throw (`Delete player: invalid player data`);
 		this.playerNum--;
 		if (!player.prev)
 			return ;
