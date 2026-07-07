@@ -22,9 +22,9 @@
         </div>
         <div class="menu mt-5 relative flex place-items-center">
             <img class="absolute" src="../assets/sword2.png">
-			<RouterLink to="/playpage">
+			<!-- <RouterLink to="/playpage"> -->
 				<b><h2 class="relative text-4xl my-3 ml-2 pl-25 z-0">Statistiche</h2></b>
-			</RouterLink>
+			<!-- </RouterLink> -->
         </div>
         <div class="menu mt-5 relative flex place-items-center">
             <img class="absolute" src="../assets/sword2.png">

@@ -115,7 +115,7 @@ boardConverter()
 	  una preview delle target zones rese visibili sulla scacchiera, si può fare una route apposta per chiedere 
 	  l'update delle target zones di un pezzo specifico
 	▫ Si fa fatica a capire di chi è il turno attuale
-	? orientamento della scacchiera in base al colore dei pezzi del giocatore
+	▫ orientamento della scacchiera in base al colore dei pezzi del giocatore
 
 //FIXME - Bugs
 	▫	quando finisci l'esecuzione di una mossa boostata di un pedone e clicchi su un'altro pezzo
@@ -129,21 +129,19 @@ boardConverter()
 	✓	websocket per lo stato online
 	✓	history dei match
 	✓	reazione del frontend agli errori (es. al login)
-	✓	refactor pagina di gioco, pulsanti con tipi di partite, creazione stanze, sfida amici [LEO]
+	✓	refactor pagina di gioco, pulsanti con tipi di partite, creazione stanze, sfida amici
+	✓	websocket per la partita [LEO]
 	▫	redirection alla pagina login se si prova ad accedere a pagine protette [MAVI]
 	▫	dettagli info sui match
 	▫	pagina di modifica delle info utente
 	▫	reset della password (sia dal login page che dalla pagina utente loggato)
 	▫	websocket per le notifiche
 	▫	pagina della leaderboard
-	▫	history delle mosse durante la partita (?)
-	▫	info dei profili per le partitre a 4
+	▫	history delle mosse durante la partita
+	▫	info dei profili per le partite a 4
 	▫	re-design della home
-	▫	websocket per la partita --> in attesa di sviluppo backend
-
-	eventi:
-
-		move:
-		boost:
-		endTurn:
+	▫	utilizzo websocket singolo solo per la partita diverso da websocket comunicazione server [LEO]
+	▫	implementare (reload, riaccesso, chiudi e riapri la pagina di gioco) durante la partita
+	▫	avviso di quando devi fare end turn più chiaro
+	▫	spostamento bottoni
 		

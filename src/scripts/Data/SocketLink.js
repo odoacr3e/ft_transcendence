@@ -15,6 +15,7 @@ export function assignGameSocket(socket)
 		}
 		if (raw.id !== undefined)
 		{
+			console.log("ID TROVATO!");
 			initLocalMatchState(raw);
 			router.push( {name: raw.p3 ? "GameFour" : "game"});
 			return;

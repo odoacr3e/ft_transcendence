@@ -8,21 +8,26 @@ import { useAuthStore } from "@/stores/auth.st.js";
 
 export async function sendToBackend(fromId, toId, flag)
 {
+	// console.log("[sendToBackend]: Entrato in STB");
+	
 	const	TargetZone = getTarget(fromId, toId);
 
 	if (fromId && fromId !== toId && TargetZone)
 	{
+		// console.log("[sendToBackend]: Entrato nell'if di STB");
+		
 		const promise = await requestToBack(fromId, toId);
 		if (promise)
 		{
 			// clearHighlight();
 			// if (MACRO.AUDIO)
 			// 	new Audio("/src/assets/audios/moving.mp3").play();
+			// console.log("[sendToBackend]: Mossa valida!");
 			if (flag) { return (true); }
 		}
 		else
 		{
-			console.log("[sendToBackend]: Mossa non valida");
+			// console.log("[sendToBackend]: Mossa non valida");
 			if (flag) { return (false); }
 		}
 	}
@@ -49,14 +54,21 @@ export async function requestToBack(fromSquare, toSquare)
 	else if (fromSquare && toSquare && ((localInfo.secondMove && localInfo.secondTurn) || localBoard.get(fromSquare).useAbilityBool))
 		{type = "moveBoost";}
 	else {type = "move"; }
+	let	timeout;
 
+	timeout = setTimeout(() => 
+		{
+			console.log("Il backend è stato liberato");
+		}, 1000 * 1);
 	return new Promise((resolve) => {
 		auth.socket.emit("game", { type, from: fromSquare, to: toSquare }, (result) => {
 			// console.log(`request: type: ${type}, from: ${fromSquare}, to:${toSquare}`)
+			clearTimeout(timeout);
 			if (result?.log?.status === 200 && toPiece)
 				localInfo.capturedP[toPiece.team === "white" ? "black" : "white"][toPiece.type] += 1;
 			resolve(result?.log?.status === 200);
 		});
+
 	});
 }
 
