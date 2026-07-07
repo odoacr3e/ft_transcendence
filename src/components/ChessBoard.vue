@@ -20,8 +20,12 @@
         globalEvents();
     });
 
-	const currP = ref(localPlayers.values().find(p => p.isPlaying === true)),
-		dragOver = ref(null);
+	const currP = ref(localPlayers.values().find(p => p.isPlaying === true)), dragOver = ref(null);
+
+	const orientation = computed(() => localInfo.myTeam === "white" ? "white" : "black");
+
+	const bottomRank	= computed(() => orientation.value === "white" ? 1 : 8);
+	const leftFile		= computed(() => orientation.value === "white" ? 'a' : 'h');
 </script>
 
 <template>
@@ -45,7 +49,7 @@
                     @drop="onDrop($event, square); dragOver = null"
                     @dragover.prevent="dragOver = square.id;">
 					<p	class="absolute"
-						v-if="(parseInt(square.id.substring(1)) === 1) || 
+						v-if="(parseInt(square.id.substring(1)) === bottomRank) || 
 						  	  (style === '14x14x4' && parseInt(square.id.substring(1)) === 4 &&
 							  ['a', 'b', 'c', 'l', 'm', 'n'].includes(square.id.charAt(0)))"
 						v-bind:class="{ 'ml-15 mt-13' : style === '1v1',
@@ -64,7 +68,7 @@
                         :draggable="true"
                         @dragstart="onDragStart($event, square)"/>
 					<p 	class="absolute" 
-					   	v-if="(square.id.charAt(0) == 'a') ||
+					   	v-if="(square.id.charAt(0) == leftFile) ||
 						 	  (style === '14x14x4' && square.id.charAt(0) == 'd' && 
 							  (parseInt(square.id.substring(1)) < 4 || parseInt(square.id.substring(1)) > 11))"
 						v-bind:class="{ 'mr-15 mb-13' : style === '1v1',

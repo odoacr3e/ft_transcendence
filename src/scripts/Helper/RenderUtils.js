@@ -4,24 +4,40 @@ import { localBoard, localPlayers, localInfo, FILES_TWO, FILES_FOUR }	from "@/sc
 export function boardConverter()
 {
     const DBoard = [];
-	let rank, file;
+	let maxRank, file;
 
     if (!localBoard || localBoard.size === 0) {
         console.warn("[boardConverter]: localBoard è vuoto o null");
         return [];
     }
 
-	if (localPlayers.get('p3')) { rank = 14; file = FILES_FOUR; }
-	else { rank = 8; file = FILES_TWO; }
+	if (localPlayers.get('p3')){
+		maxRank = 14; file = FILES_FOUR;
+	}
+	else 
+	{ 
+		maxRank = 8; 
+		file = FILES_TWO; 
+	}
 
-    for (rank; rank >= 1; rank -= 1)
+	const orientation = localInfo.myTeam === "white" ? "white" : "black";
+	const ranks = [];
+
+	for (let r = maxRank; r >= 1; r -= 1)
+		ranks.push(r);
+	if (orientation === "black")
+		ranks.reverse();
+
+	const files = orientation === "black" ? [...file].reverse() : file;
+
+	for (const rank of ranks)
 	{
 		const row = [];
-		for (const f of file)
+		for (const f of files)
 			row.push(localBoard.get(`${f}${rank}`));
 		DBoard.push(row);
 	}
-    return DBoard;
+	return DBoard;
 }
 
 /**
