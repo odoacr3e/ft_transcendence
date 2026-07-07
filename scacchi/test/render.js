@@ -1,6 +1,6 @@
 // @ts-check
 import { Square, ChessBoard} from "../Classes/Chess/chessBoard.js";
-import {eTeam} from "../Macro/enums.js";
+import {enumInitTeam, eTeam} from "../Macro/enums.js";
 import * as lib from "../lib/lib.js";
 // const {Match} = require("../Classes/Chess/match.js");
 import {CHESSBOARD_H, CHESSBOARD_W} from "../Macro/macro.js";
@@ -279,7 +279,7 @@ function getSquareColor(team)
  * 
  * @param {Match} match
  */
-function boardStringify(match)
+function boardStringify(match, otherInfoBool=false)
 {
 	let buffer;
 	let	board;
@@ -309,6 +309,8 @@ function boardStringify(match)
 			ascii = getAscii(square);
 			if (square.piece?.isBoostedBool)
 				ascii = `+${ascii}`;
+			if (otherInfoBool == true && square.piece)
+				ascii = `${ascii}${getInitialOfTeam(square.piece.team)}`;
 			buffer += `${ascii}|`;
 		}
 		while (match.cursor.moveCol(+1))
@@ -317,6 +319,26 @@ function boardStringify(match)
 	while (match.cursor.moveRow(-1))
 	match.cursor.set(coords.player);
 	return (buffer);
+}
+
+/** @param {string} team */
+function getInitialOfTeam(team)
+{
+	switch (team)
+	{
+		case (eTeam.Black): case (eTeam.Blue):
+			return (enumInitTeam.Black);
+		case (eTeam.Green):
+			return (enumInitTeam.Green);
+		case (eTeam.Red):
+			return (enumInitTeam.Red);
+		case (eTeam.White):
+			return (enumInitTeam.White);
+		case (eTeam.Yellow):
+			return (enumInitTeam.Yellow);
+		default:
+			throw (`getInitialOfTeam: ${team} unknown`);		
+	}
 }
 
 export {render, printSwap, boardStringify};

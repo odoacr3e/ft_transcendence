@@ -85,6 +85,16 @@ const enumInitNames =
 	GHOUL: 'G'
 };
 
+const enumInitTeam = 
+{
+	Black: 'b',
+	White: 'w',
+	Red: 'r',
+	Blue: 'b',
+	Green: 'g',
+	Yellow: 'y',
+};
+
 const enumSpecialMoves =
 {
 	NONE: 0,
@@ -108,4 +118,4 @@ const kingMovements =
 	{dx:1, dy:0}, {dx:-1, dy:0},//orizzontale
 ];
 
-export {eTeam, eEvents, eMatchPresets, enumNames, arrayNames, enumInitNames, enumValues, enumSpecialMoves, kingMovements, enumConnection, enumSocketState};
+export {eTeam, eEvents, eMatchPresets, enumNames, arrayNames, enumInitNames, enumInitTeam, enumValues, enumSpecialMoves, kingMovements, enumConnection, enumSocketState};

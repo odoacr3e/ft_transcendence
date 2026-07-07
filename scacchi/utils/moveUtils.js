@@ -134,7 +134,6 @@ function CheckInfluence(match, coords)
 {
 	let setInfluence;
 	let tmpInfluenceDanger = [];
-	let tmpInfluenceTarget = [];
 
 	for (const coord of coords)
 	{
@@ -142,10 +141,8 @@ function CheckInfluence(match, coords)
 		if (!setInfluence)
 			throw (`dangerDelPiece: invalid coord ${coord}`);
 		tmpInfluenceDanger.push(new Set(setInfluence));
-		tmpInfluenceTarget.push(new Set(match.board.get(coord).influenceZones));
 	}
 	checkInfluenceSets(match, coords, tmpInfluenceDanger);
-	// checkInfluenceSets(match, coords, tmpInfluenceTarget);
 }
 
 /**
@@ -164,7 +161,6 @@ function checkInfluenceSets(match, coords, influenceSets)
 		for (const influenceCoord of set)
 		{
 			DangerUpdate(match, influenceCoord);
-			// match.board.ResetInfluence(coords[i]);
 		}
 		++i;
 	}
@@ -174,10 +170,8 @@ function checkInfluenceSets(match, coords, influenceSets)
  * 
  * @param {Match} match 
  * @param {Array<string>} selected /* 0 = from, 1 = to
- * @param {Result | null} result
- * @param {boolean} delBool
  */
-function dangerUpdateMoved(match, selected=[], result=null, delBool=true)
+function dangerUpdateMoved(match, selected=[])
 {
 	// return (dangerUpdateAll(match));
 	if (selected.length != 2)

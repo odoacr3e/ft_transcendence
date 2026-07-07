@@ -184,7 +184,8 @@ function updateChessboard(coords=[], result, match, boostBool)
 	if (to.piece && to.piece.isMovedBool == false)
 		to.piece.isMovedBool = true;
 	checkDoubleMoveMate(match, [], result, false);
-	dangerUpdateMoved(match, coords, result);
+	
+	dangerUpdateMoved(match, coords);
 	match.moves++;
 	return (true);
 }
@@ -464,7 +465,7 @@ export function simulation(coords, match, result=null)
 		kingCoord = coords[1];
 		king = to;
 	}
-	dangerUpdateMoved(match, coords, result);
+	dangerUpdateMoved(match, coords);
 	dangerBool = isDangerous(match, king.dangerZones, king.piece?.team, true, kingCoord);
 	if (!dangerBool)
 		dangerBool = checkDoubleMoveMate(match, coords, result);
@@ -475,7 +476,7 @@ export function simulation(coords, match, result=null)
 	}
 	else
 		to.piece = tmpPiece;
-	dangerUpdateMoved(match, [coords[1], coords[0]], result);
+	dangerUpdateMoved(match, [coords[1], coords[0]]);
 	if (dangerBool)
 		dangerBool = checkGuardiansDanger(match, coords);	
 	if (tmpSquare)
