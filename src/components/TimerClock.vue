@@ -11,7 +11,7 @@
 			sec = computed(() => Math.floor((countDown.value % 60000) / 1000))
 	let		timeoutId = null,
 			firstTurn = true,
-			running = false;  // flag esplicito
+			running = false;
 
 	function stopTimer() {
 		if (timeoutId) {

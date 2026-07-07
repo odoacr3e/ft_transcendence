@@ -1,5 +1,5 @@
 <script setup>
-	import { DOMBoard, localInfo, localPlayers, IMG_PATHS, localBoard }	from '@/scripts/Data/Variables';
+	import { DOMBoard, localInfo, localPlayers, IMG_PATHS }	from '@/scripts/Data/Variables';
 	import { shopAbility,upgradeBastard }		from '@/scripts/Events/utils/GlobalUtils';
 	import { onMounted, computed, ref }			from 'vue';
 	import { onDragStart, onDrop }				from '@/scripts/Events/Movements';
@@ -12,6 +12,7 @@
 					 "l3", "m3", "n3", "l2", "m2", "n2", "l1", "m1", "n1"] );
 
 	const domBoardComputed = computed(() => DOMBoard());
+	// eslint-disable-next-line no-unused-vars
 	const prop = defineProps({
   	    	style: String
 	    });
@@ -26,28 +27,28 @@
 <template>
     <div id="root">
 		<div v-if="localInfo.goatId" id="overlay" v-bind:class="{ 'opacity-60 pointer-events-auto':localInfo.goatId }"></div>
-        <div id="board" oncontextmenu="return false;" v-bind:class="{ 'boardTwo' : style === '8x8x2', 'boardFour' : style === '14x14x4'}">
-            <div v-for="row in domBoardComputed" :key="row[0]?.id" class="grid" v-bind:class="{ 'rowTwo' : style === '8x8x2', 'rowFour' : style === '14x14x4'}">
+        <div id="board" oncontextmenu="return false;" v-bind:class="{ 'boardTwo' : style === '1v1', 'boardFour' : style === '14x14x4'}">
+            <div v-for="row in domBoardComputed" :key="row[0]?.id" class="grid" v-bind:class="{ 'rowTwo' : style === '1v1', 'rowFour' : style === '14x14x4'}">
                 <div
                     v-for="square in row"
                     :key="square.id"
                     :id="square.id"
-                    :class="[getSquareColor(square.id), 
+                    :class="[getSquareColor(square.id),
 							'square',
+							{ 'w-18.75 h-18.75' : style === '1v1', 'w-13 h-13' : style === '14x14x4'},
 							{ 'opacity-0 hidden': style === '14x14x4' && HIDDEN.has(square.id) },
 							{'outline-4 outline-[#e2dac5c5] -outline-offset-4': dragOver === square.id},
 							{'selectedBstW': getSquareColor(square.id) == 'white' && (square.boostedHighlight && square.piece)},
 							{'selectedBstB': getSquareColor(square.id) == 'black' && (square.boostedHighlight && square.piece)},
 							{'selectedW': getSquareColor(square.id) == 'white' && (square.selected || square.highlight && square.piece)},
 							{'selectedB': getSquareColor(square.id) == 'black' && (square.selected || square.highlight && square.piece)}]"
-					v-bind:class="{ 'w-18.75 h-18.75' : style === '8x8x2', 'w-13 h-13' : style === '14x14x4'}"
                     @drop="onDrop($event, square); dragOver = null"
                     @dragover.prevent="dragOver = square.id;">
 					<p	class="absolute"
 						v-if="(parseInt(square.id.substring(1)) === 1) || 
 						  	  (style === '14x14x4' && parseInt(square.id.substring(1)) === 4 &&
 							  ['a', 'b', 'c', 'l', 'm', 'n'].includes(square.id.charAt(0)))"
-						v-bind:class="{ 'ml-15 mt-13' : style === '8x8x2',
+						v-bind:class="{ 'ml-15 mt-13' : style === '1v1',
 										'ml-10.25 mt-9 text-xs' : style === '14x14x4',
 										'text-[#1b0000]': getSquareColor(square.id) == 'white' && !square.selected, 
 										'text-white	': getSquareColor(square.id) == 'black' && !square.selected,
@@ -66,7 +67,7 @@
 					   	v-if="(square.id.charAt(0) == 'a') ||
 						 	  (style === '14x14x4' && square.id.charAt(0) == 'd' && 
 							  (parseInt(square.id.substring(1)) < 4 || parseInt(square.id.substring(1)) > 11))"
-						v-bind:class="{ 'mr-15 mb-13' : style === '8x8x2',
+						v-bind:class="{ 'mr-15 mb-13' : style === '1v1',
 										'mr-10.25 mb-9.5 text-xs' : style === '14x14x4',
 										'ml-1.5' : parseInt(square.id.substring(1)) > 9,
 										'text-[#1b0000]':getSquareColor(square.id) == 'white' && !square.selected, 
@@ -76,9 +77,9 @@
 						<b>{{square.id.substring(1)}}</b>
 					</p>
                     <span v-if="square.highlight && !square.piece" class="highlight"
-						  v-bind:class="{'w-3.75 h-3.75': style === '8x8x2', 'w-2.5 h-2.5': style === '14x14x4'}"></span>
+						  v-bind:class="{'w-3.75 h-3.75': style === '1v1', 'w-2.5 h-2.5': style === '14x14x4'}"></span>
                     <span v-if="square.boostedHighlight && !square.piece" class="boostedHighlight"
-						  v-bind:class="{'w-3.75 h-3.75': style === '8x8x2', 'w-2.5 h-2.5': style === '14x14x4'}"></span>
+						  v-bind:class="{'w-3.75 h-3.75': style === '1v1', 'w-2.5 h-2.5': style === '14x14x4'}"></span>
                 </div>
             </div>
 			<div v-if="localInfo.goatId" id="choseMenu" class="flex absolute pointer-events-none size-75 z-14 gap-0.5 p-1.5 

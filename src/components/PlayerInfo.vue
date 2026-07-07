@@ -47,7 +47,7 @@
 			<button class="bg-blue-500 text-sm
 						transition delay-50 duration-300 ease-in-out hover:-translate-y-0.5 hover:scale-105 hover:bg-indigo-500 cursor-pointer"
 				@click="sendEndTurn()" v-if="endT && playing">
-				<img src="../assets/clock.png" alt="" :draggable="false" class="size-5">
+				<img src="../assets/endturn.png" alt="" :draggable="false" class="size-5">
 				<b>End Turn</b>
 			</button>
 		</div>

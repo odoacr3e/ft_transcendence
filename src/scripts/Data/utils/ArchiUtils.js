@@ -93,3 +93,18 @@ export function checkUpgrade()
 		}
 	});
 }
+
+/**
+ * 
+ * @param {string} key 
+ * @param {*} val 
+ * @returns 
+ */
+export function _jsonReviver(key, val)
+{
+	if (val && val.__type == "Set")
+		return (new Set(val.data));
+	if (val && val.__type == "Map")
+		return (new Map(val.data));
+	return val;
+}

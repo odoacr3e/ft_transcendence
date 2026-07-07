@@ -14,10 +14,10 @@ App.vue (src/App.vue)
 index.js (src/router/index.js)
 	->	DECIDE LA ROTTA 
 
-Game.vue (src/views/Game.vue)
+ClassicGame.vue (src/views/ClassicGame.vue)
 	->	CHIAMA (initMatchstate()) NEL (noMountedHook()) 
 
-initLocalMatchState() (src/scripts/Data/Game.js)
+initLocalMatchState() (src/scripts/Data/ClassicGame.js)
 	->	INIZIALIZZA LE VARS GLOBALI IN Variables.js DA match.json 
 
 boardConverter() 
@@ -83,7 +83,8 @@ boardConverter()
 			-> DOMBoard computed si ricalcola
 			-> boardConverter() esegue
 			-> ChessBoard.vue re-renderizza
-//TODO - (▫ = da fare, ✓ = completato)
+
+//TODO SCACCHIERA - (▫ = da fare, ✓ = completato)
 	✓	movimento al click
 	✓	highlight e selected corretti al 100%
 	✓	refactoring funzione che gestisce gli events
@@ -101,7 +102,7 @@ boardConverter()
 			✓ bastardo
 			✓ minotauro
 			✓ giullare
-			✓ valkiaria
+			✓ valkirya
 			✓ campione
 			✓ re
 	✓ aura dei pezzi boostati visibile [LEO] 
@@ -115,14 +116,63 @@ boardConverter()
 	  una preview delle target zones rese visibili sulla scacchiera, si può fare una route apposta per chiedere 
 	  l'update delle target zones di un pezzo specifico
 	▫ Si fa fatica a capire di chi è il turno attuale
-	? orientamento della scacchiera in base al colore dei pezzi del giocatore
+	▫ orientamento della scacchiera in base al colore dei pezzi del giocatore
+	▫	history delle mosse durante la partita
+	▫	utilizzo websocket singolo solo per la partita diverso da websocket comunicazione server [LEO]
+	▫	implementare (reload, riaccesso, chiudi e riapri la pagina di gioco) durante la partita
+	▫	avviso di quando devi fare end turn più chiaro (?)
+	▫	spostamento bottoni
 
 //FIXME - Bugs
 	▫	quando finisci l'esecuzione di una mossa boostata di un pedone e clicchi su un'altro pezzo
 		dello stesso colore del pedone appena mosso lancia eccezione
 	▫	quando finisci l'esecuzione di una mossa boostata di un pedone e al turno dopo vuoi muovere
 		lo stesso pedone manda eccezione (ma penso sia dovuto al backend)
-	▫	Gli highlits vengono displayati anche se la mossa è già stata fatta e si è semplicemente in
-		attesa che il giocatore schiacci end turn oppure boosti un pezzo
 	▫	Il pulsante use ability rimane interagibile e cliccabile anche se il pezzo si è appena
-		moso senza voler utilizzare l'abilità
+		mosso senza voler utilizzare l'abilità
+
+//TODO FRONTEND - 
+	✓	websocket per lo stato online
+	✓	history dei match
+	✓	reazione del frontend agli errori (es. al login)
+	✓	redirection alla pagina login se si prova ad accedere a pagine protette
+	✓	pagina di modifica delle info utente
+	✓	reset della password (sia dal login page che dalla pagina utente loggato)
+	✓	dettagli info sui match
+	✓	refactor pagina di gioco, pulsanti con tipi di partite, creazione stanze, sfida amici
+	✓	websocket per la partita [LEO]
+	▫	redirection alla pagina login se si prova ad accedere a pagine protette [MAVI]
+	▫	test login e resgiter con OT e opzioni di toglierlo nelle impostazioni [MAVI]
+	▫	info dei profili per le partitre a 4
+	▫	websocket per le notifiche
+	▫	pagina della leaderboard
+	▫	re-design della home
+	▫	update delle preferenze di colore degli utenti
+	▫	dettagli info sui match
+
+
+
+
+
+// NOTE - RIGUARDO IL SALVATAGGIO DELL'IMMAGINE DELL'AVATR
+Capisco cosa intendi, ma qui c'è un problema tecnico da chiarire prima di procedere: il browser (quindi il codice Vue/JS lato client) non può scrivere fisicamente file dentro la cartella public/ o assets/ del progetto frontend. Quella cartella, una volta buildata (es. con Vite), diventa un insieme di file statici serviti da un server web — il JS che gira nel browser dell'utente non ha alcun accesso al filesystem del server che ospita il tuo frontend.
+Quindi "salvare negli assets del frontend" da JS lato client non è fattibile, a prescindere dal backend che usi. Le uniche vie sono:
+----------------------------------------------------------------------------------
+1. Opzione A — Il backend salva il file, ma lo serve come statico (soluzione più comune)
+Il file viene comunque inviato al backend (con FormData, come nel messaggio precedente), ma il backend:
+
+Lo salva in una cartella pubblica servita staticamente (es. /public/uploads/avatars/ su Express, o storage/app/public su Laravel con symlink).
+Restituisce/salva nel DB solo il path relativo o l'URL (es. /uploads/avatars/uuid.png), non il binario.
+Il frontend usa quel path per mostrare l'immagine (esattamente come fai già con asset(user.image)).
+
+Questo probabilmente è quello che intendevate: niente blob nel database, solo un path — e infatti è già quello che ti avevo proposto, semplicemente il "salvataggio fisico" avviene sul server, non nel repo del frontend.
+----------------------------------------------------------------------------------
+2. Opzione B — Un piccolo servizio "media" separato dal backend principale
+Se per qualche motivo non volete che sia il backend principale a occuparsi degli upload, potete avere un microservizio/endpoint dedicato solo a ricevere e servire immagini (tipo un mini file-server), che il frontend chiama a parte. Il backend principale continua a salvare solo l'URL restituito da questo servizio.
+----------------------------------------------------------------------------------
+3. Opzione C — Storage esterno (S3, Cloudinary, ecc.)
+Il frontend carica il file direttamente su uno storage esterno (spesso con un URL pre-firmato generato dal backend), e poi manda solo l'URL risultante al backend per salvarlo nel DB. Niente passa "attraverso" il tuo server per il file in sé.
+
+Nessuna di queste comporta scrivere dentro la cartella del progetto Vue in produzione — sarebbe comunque sbagliato architetturalmente, perché ad ogni nuova build/deploy del frontend quella cartella verrebbe rigenerata e perderesti le immagini caricate dagli utenti.
+Che backend state usando? Così ti scrivo il codice concreto per l'opzione A, che è quella più vicina a quello che avevate in mente.
+		

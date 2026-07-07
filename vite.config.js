@@ -5,8 +5,6 @@ import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import tailwindcss from '@tailwindcss/vite'
 
-const PROXYURL = 'http://backend:8080';
-
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
@@ -17,22 +15,19 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: PROXYURL,
+        target: 'http://localhost:8080',
         changeOrigin: true,
       },
-      '/auth': {
-        target: PROXYURL,
-        changeOrigin: true,
-      },
-      '/socket.io': {
-        target: PROXYURL,
-        changeOrigin: true,
-        ws: true,
-    }
     },
   },
 //   server: {
-//     host: '10.11.4.4',
+// 	proxy: {
+//     	'/api': {
+//     	  target: 'http://localhost:8080',
+//     	  changeOrigin: true,
+//     	}
+// 	},
+//     host: '10.11.4.3',
 //     port: 5173,
 //     strictPort: true,
 //   },
