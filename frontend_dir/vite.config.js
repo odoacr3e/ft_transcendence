@@ -13,9 +13,10 @@ export default defineConfig({
     tailwindcss()
   ],
   server: {
+    allowedHosts: ['edraccan-transcendence.duckdns.org', 'chessz.duckdns.org'],
     proxy: {
       '/api': {
-        target: 'http://localhost',
+        target: 'http://backend:8080',
         changeOrigin: true,
       },
     },
