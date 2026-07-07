@@ -1,27 +1,25 @@
 <script setup>
-import Header from '@/components/Header.vue';
-import ChessBoard from '@/components/ChessBoard.vue';
-// size degli square = size-14
+	import AppHeader from '@/components/AppHeader.vue';
+	import ChessBoard from '@/components/ChessBoard.vue';
+	import { initLocalMatchState }  from '../scripts/Data/Archi';
+	import { onMounted, ref }       from 'vue';
 
-  import { initLocalMatchState }  from '../scripts/Data/Archi';
-  import { onMounted, ref }       from 'vue';
+	const ready = ref(false);
+	const style = ref("14x14x4");
 
-  const ready = ref(false);
-  const style = ref("14x14x4");
-
-  onMounted(async () => {
-    try{
-      await initLocalMatchState(style.value);
-      ready.value = true;
-    } catch (err) {
-      console.log(`${err}`);
-    }
-  })
+	onMounted(async () => {
+	  try{
+	    await initLocalMatchState();
+	    ready.value = true;
+	  } catch (err) {
+	    console.log(`${err}`);
+	  }
+	})
 </script>
 
 <template>
     <div class="min-h-screen flex flex-col">
-        <Header/>
+        <AppHeader class="z-11"/>
         <div id="wrap" class="grow">
             <div class="flex z-2 bg-[#181715] rounded-3xl">
                 <div class="p-6 bg-[#201e1c] rounded-l-3xl border-r border-[#4e4e4e8c]">
@@ -49,7 +47,7 @@ import ChessBoard from '@/components/ChessBoard.vue';
 </template>
 
 <style scoped>
-    #wrap {
+    /* #wrap {
         display: grid;
         grid-template-columns: max-content max-content;
         position: relative;
@@ -60,7 +58,7 @@ import ChessBoard from '@/components/ChessBoard.vue';
         font-size: 110%;
         font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         user-select: none;
-    }
+    } */
 
     h1, h4 {
         font-family: "Copperplate", Times;

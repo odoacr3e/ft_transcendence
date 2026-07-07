@@ -1,11 +1,11 @@
 <script setup>
-    import Header from '../components/Header.vue';
+    import AppHeader from '../components/AppHeader.vue';
     import LoginForm from '../components/LoginForm.vue';
 </script>
 
 <template>
     <div class="min-h-screen flex flex-col">
-        <Header/>
+        <AppHeader/>
         <div id="wrap" class="grow">
             <div class="flex z-2 bg-[#181715] rounded-3xl">
                 <div class="p-6 bg-[#201e1c] rounded-l-3xl border-r border-[#4e4e4e8c]">
@@ -33,7 +33,7 @@
 </template>
 
 <style scoped>
-    #wrap {
+    /* #wrap {
         display: grid;
         grid-template-columns: max-content max-content;
         position: relative;
@@ -44,7 +44,7 @@
         font-size: 110%;
         font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         user-select: none;
-    }
+    } */
 
     h1, h4 {
         font-family: "Copperplate", Times;
