@@ -1,10 +1,10 @@
 //@ts-check
 import { Chess } from "../lib/lib.js";
-const {Piece} = Chess;
+import { Piece } from "../Classes/Chess/Pieces/pieces.js";
 import { Enums } from "../lib/lib.js";
 const {eTeam, enumNames, enumInitNames} = Enums;
 import {dangerUpdateAll} from "../utils/moveUtils.js";
-import {Match} from "../Classes/Match/match.js";
+import {Match} from "../Classes/Chess/match.js";
 
 /**
  * 
@@ -60,9 +60,13 @@ function initBoard4v4(match)
 	let	color;
 	let team;
 	let diff;
+	let	wallBool;
 
 	if (match.board.width < 14 || match.board.heigth < 14)
 		throw ("createChessboard: minimum is 14x14");
+	wallBool = false;
+	if (match.settings.board.corners == true)
+		wallBool = true;
 	color = true;
 	diff = (match.board.heigth - 8) / 2;//FIXME - funziona solo con W == H
 	for (let [key, data] of match.board)
@@ -73,7 +77,9 @@ function initBoard4v4(match)
 		col = match.cursor.getCol();
 		row = match.cursor.getRow();
 		team = getTeamByCoord(match);
-		if ((row == 2 || row == match.board.heigth - 1) && (col > diff && col < match.board.width - diff + 1))
+		if (wallBool && (row <= diff || row > 8 + diff) && (col <= diff || col > 8 + diff))
+			data.wallBool = true;
+		else if ((row == 2 || row == match.board.heigth - 1) && (col > diff && col < match.board.width - diff + 1))
 			data.piece = new Piece(enumNames.BASTARDS, key, team);
 		else if (row == 1 || row == match.board.heigth)
 		{
@@ -103,7 +109,7 @@ function initBoard4v4(match)
 			data.piece = new Piece(enumNames.BASTARDS, key, team);
 		else if (col == 1 || col == match.board.width)
 		{
-			switch (row) 
+			switch (row)
 			{
 				case 1 + diff: case 8 + diff:
 					data.piece = new Piece(enumNames.MINOTAURUS, key, team);
@@ -247,6 +253,7 @@ function assignPieceByType(match, curr)
 	let	pos;
 	let	team;
 	let	square;
+	let	isBoostedBool = false;
 
 	if (!curr || curr == " ")
 		return ;
@@ -256,7 +263,10 @@ function assignPieceByType(match, curr)
 	if (!square)
 		throw ("init: invalid coord");
 	if (curr.at(0) == "+")
+	{
+		isBoostedBool = true;
 		curr = curr.slice(1);
+	}
 	switch (curr)
 	{
 		case (enumInitNames.BASTARDS) :
@@ -287,6 +297,11 @@ function assignPieceByType(match, curr)
 			break ;
 		default:
 			throw ("init: unrecognized piece");
+	}
+	square.piece.isBoostedBool = isBoostedBool;
+	if (isBoostedBool)
+	{//@ts-ignore
+		match[team].boostedPiece = pos;
 	}
 }
 

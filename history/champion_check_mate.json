@@ -736,7 +736,8 @@
       "useBoostBool": false,
       "counter": 66,
       "updates": {},
-      "error": false
+      "error": false,
+	  "lastLost": "black"
     }
   ],
   "moves": 67,

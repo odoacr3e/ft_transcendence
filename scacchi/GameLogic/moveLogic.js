@@ -4,19 +4,17 @@ import {MOVEMENT_MAX, CHESSBOARD_H, CHESSBOARD_W} from "../Macro/macro.js";
 import { Chess } from "../lib/lib.js";
 const {copyBoard} = Chess;
 import {movePiece, DangerUpdate, dangerUpdateAll, dangerUpdateMoved} from "../utils/moveUtils.js";
-import {isDangerous} from "../utils/gameUtils.js";
-import {Match} from "../Classes/Match/match.js";
-import {Preset} from "../Classes/Pieces/preset.js";
+import {checkKingDanger, isDangerous} from "../utils/gameUtils.js";
+import {Match} from "../Classes/Chess/match.js";
+import {Preset} from "../Classes/Chess/Pieces/preset.js";
 import {clientBoard, error, Result} from "../handlers/game/utils.js";
-import {Square} from "../Classes/ChessBoard/chessBoard.js";
+import {Square} from "../Classes/Chess/chessBoard.js";
 import {printSwap, boardStringify} from "../test/render.js";
 import {checkCastling, getPieces} from "./Castling.js";
-import { Piece } from "../Classes/Pieces/pieces.js";
-import { Cursor } from "../Classes/Match/cursor.js";
+import { Piece } from "../Classes/Chess/Pieces/pieces.js";
 import { includesOneOf } from "../utils/string.js";
 import {endTurn} from "../handlers/game/endTurn.js";
 import {checkMateCheckAll} from "./checkMate.js";
-import { resourceUsage } from "node:process";
 
 //FIXME - da mettere alcune funzioni in un utilis
 
@@ -31,6 +29,8 @@ function checkSecondMove(match, to)
 	let piece;
 	let type;
 
+	if (match.playerNum <= 1)
+		return (false);
 	tmp = match.cursor.square;
 	match.cursor.set(to);
 	type = match.board.get(to)?.piece?.type;
@@ -108,118 +108,6 @@ function checkMove(coords=[], result, match, boostBool)
 
 /**
  * 
- * @param {Match} match 
- * @param {Array<string>} coords 
- * @param {Result} result
- * @param {boolean} checkBool
- */
-function checkDoubleMoveMate(match, coords, result, checkBool=true)
-{
-	let	OtherPiece;
-	let	pieceData;
-
-	OtherPiece = match.GetBoostedPieceCoords();
-	let	theKING = match.currentPlayer.King;
-	if (coords.length >= 2 && coords[0] == theKING)
-		theKING = coords[1];
-	if (OtherPiece == null)
-		return (false);
-	for (const coords of OtherPiece)
-	{
-		pieceData = match.board.get(coords).piece;
-		if (!pieceData)
-			throw ("checkDoubleMoveMate: cannot find boosted piece");
-		if (pieceData.type == enumNames.MINOTAURUS && checkBool == false)
-			boostMinoUpdates(match, coords);
-		else if (pieceData.type == enumNames.BASTARDS && checkBool == true)
-		{	
-			if (!boostBastardsUpdates(match, coords, theKING, result))
-				return (true);
-		}
-		else
-			continue ;
-	}
-	return (false);
-}
-
-/**
- * 
- * @param {Match} match 
- * @param {string} coords 
- * @param {string} theKING
- * @param {Result} result
- * @returns 
- */
-function boostBastardsUpdates(match, coords, theKING, result)
-{
-	let boosts = match.board.get(coords).boostedTargetZones.get(coords);
-	if (boosts == undefined || boosts.size == 0)
-			return (true);
-	for (const squareCoord of boosts)
-	{
-		let	square = match.board.get(squareCoord);
-		if (!square.piece)
-			throw ("DEBUG error 1");
-		match.cursor.Save();
-		for (const moves of square.piece.moveArray)
-		{
-			match.cursor.set(squareCoord);
-			while (movePiece(match, moves.dy, moves.dx))
-			{
-				let piece;
-				let squareBastard = "";
-				piece = match.board.get(match.cursor.square).piece;
-				if (match.cursor.square == theKING)
-					return (error(result, 403, "boost bastard and his gang would threaten king"));
-				if (!piece)
-				{
-					if (!square.piece.moveLongRangeDEBUG)
-						break ;
-					else
-						continue ;
-				}
-				if (piece.isBoostedBool == true && piece.type == enumNames.BASTARDS && piece.team == square.piece.team)
-				{
-					squareBastard = match.cursor.square;
-					if (movePiece(match, moves.dy, moves.dx) == false)
-						break ;
-					if (match.cursor.square == theKING)
-						return (error(result, 403, "boost bastard and his gang would threaten king"));
-					if (match.board.get(squareBastard).targetZones.has(match.cursor.square) && 
-					match.board.get(squareBastard).targetZones.size <= 1)
-						break ;
-					if (piece.isMovedBool)
-					{
-						if (!square.piece.moveLongRangeDEBUG)
-							break ;
-						else
-						{
-							match.cursor.square = squareBastard;
-							continue ;
-						}
-					}
-					squareBastard = match.cursor.square;
-					if (movePiece(match, moves.dy, moves.dx) == false)
-						break ;
-					if (match.cursor.square == theKING)
-						return (error(result, 403, "boost bastard and his gang would threaten king"));
-					if (match.board.get(squareBastard).targetZones.has(match.cursor.square) && 
-					match.board.get(squareBastard).targetZones.size <= 2)
-						break ;
-				}
-				else
-					break ;
-			}
-			match.cursor.Restore();
-		}
-		match.cursor.Restore();
-	}
-	match.cursor.Restore();
-	return (true);
-}
-
-/**
- * 
  * @param {Match} match
  * @param {string} coords
  */
@@ -255,6 +143,11 @@ function updateChessboard(coords=[], result, match, boostBool)
 	{
 		return (error(result, 500, "from | to bug in moveFunction"));
 	}
+	if (result.usedBoost == true)
+	{
+		from.piece.isBoostedBool = false;
+		match.currentPlayer.boostedPiece = "";
+	}
 	if (coords[0] == match.currentPlayer.King)
 		match.currentPlayer.King = coords[1];
 	printSwap(match, coords, from, to);
@@ -262,6 +155,7 @@ function updateChessboard(coords=[], result, match, boostBool)
 	{
 		console.log(`player ${match.currentPlayer.team} + ${to.piece.price}💲`);
 		match.currentPlayer.nPoints += to.piece.price;
+		match[to.piece.team].nPieces -= 1;
 		if (to.piece.isBoostedBool == true)//@ts-ignore
 			match[to.piece.team].boostedPiece = "";
 	}
@@ -282,16 +176,16 @@ function updateChessboard(coords=[], result, match, boostBool)
 		if (to.piece.isBoostedBool)
 			match.currentPlayer.boostedPiece = to.piece.pos;
 		else if (boostBool)
+		{
 			match.currentPlayer.boostedPiece = "";
+			match.boostPriority.delete(match.currentPlayer.team);
+		}
 	}
 	if (to.piece && to.piece.isMovedBool == false)
 		to.piece.isMovedBool = true;
-	boostedPieceUpdates(match, coords);
-	if (result.specialMoves.CheckChampionBoostUsed())
-		updateAllChampions(match, result);
 	checkDoubleMoveMate(match, [], result, false);
-	match.moves++;
 	dangerUpdateMoved(match, coords, result);
+	match.moves++;
 	return (true);
 }
 
@@ -404,7 +298,6 @@ function moveCastling(match, from, to)
 
 /**
  * 
- * FIXME - da aggiungere check per valchiria: vuole usare boost?
  * @param {Match} match
  * @param {Result} result 
  * @param {Square} from 
@@ -430,10 +323,17 @@ function checkBooster(match, result, from, coords, boostBool) // FIXME - da aggi
 		if (!includesOneOf(match.history.Last().type, eEvents.Move, eEvents.MoveBoost))
 			return (error(result, 500, "match History is messed up"));
 	}
+	if (boostBool && from.piece.isBoostedBool == true)
+	{
+		if (from.piece.type == enumNames.VALKIRYA)
+			result.specialMoves.SetSniperMove();
+		else if (from.piece.type == enumNames.CHAMPION)
+			result.specialMoves.SetChampionBoostUsed();
+	}
 	if (from.piece.type == enumNames.BASTARDS || match.history.Last().movedPiece == enumNames.BASTARDS)
 		return (doubleBastardsCheck(match, result, coords));
 	if (pieceMultipleMoveBool == false && match.moves > 0)
-		return (error(result, 403, "Multiple moves not allowed there"));
+		return (error(result, 403, "Multiple moves not allowed there (tip: is it a moveBoost?"));
 	if (pieceMultipleMoveBool == false && from.targetZones.has(coords[1]))
 		return (true);
 	if (from.piece.isBoostedBool == false || boostBool == false)
@@ -452,12 +352,6 @@ function checkBooster(match, result, from, coords, boostBool) // FIXME - da aggi
 	if (boostedTargetZones.has(coords[1]) == false)
 		return (error(result, 403, `that piece can't do that move`));
 	from.targetZones.add(coords[1]);
-	if (from.piece.type == enumNames.VALKIRYA)
-		result.specialMoves.SetSniperMove();
-	else if (from.piece.type == enumNames.CHAMPION)
-		result.specialMoves.SetChampionBoostUsed();
-	from.piece.isBoostedBool = false;
-	match.currentPlayer.boostedPiece = "";
 	result.usedBoost = true;
 	return (true);
 }
@@ -531,42 +425,25 @@ function doubleBastardsCheck(match, result, coords)
 
 /**
  * 
- * @param {Match} match 
- * @param {Square} square
- * @param {string} pos
- */
-function RefreshChampion(match, square, pos)
-{
-	for (const zone of square.targetZones)
-		match.board.get(zone).dangerZones.delete(pos)
-	for (const [key, value] of square.boostedTargetZones)
-	{
-		for (const coord of value)
-			match.board.get(coord).dangerZones.delete(pos)
-		match.board.get(key).dangerZones.delete(pos)
-	}
-	DangerUpdate(match, pos);
-}
-
-/**
- * 
  * @param {Array<String>} coords
  * @param {Match} match
- * @param {Result} result
+ * @param {Result | null} result
  * @returns 
  */
-function simulation(coords, match, result)
+export function simulation(coords, match, result=null)
 {
 	let tmpPiece = null;
 	let tmpSquare = null;
 	let	from;
 	let	to;
 	let	king;
+	let	kingCoord;
 	let	dangerBool;
 	let boosted;
 
 	from = match.board.get(coords[0]);
 	to = match.board.get(coords[1]);
+	kingCoord = match.currentPlayer.King;
 	king = match.board.get(match.currentPlayer.King);
 	if (!from || !to || !king)
 		throw (`simulation: invalid from: ${from}/to: ${to}/king: ${king}`);
@@ -575,7 +452,7 @@ function simulation(coords, match, result)
 		tmpSquare = to.Copy();
 		tmpPiece = tmpSquare.piece;
 	}
-	if (result.specialMoves.CheckSniperMove() == 0)
+	if (!result || result.specialMoves.CheckSniperMove() == 0)
 	{
 		to.piece = from.piece;
 		from.piece = null;
@@ -583,12 +460,15 @@ function simulation(coords, match, result)
 	else
 		to.piece = null;
 	if (coords[0] == match.currentPlayer.King)
+	{
+		kingCoord = coords[1];
 		king = to;
+	}
 	dangerUpdateMoved(match, coords, result);
-	dangerBool = isDangerous(match, king.dangerZones, king.piece?.team);
+	dangerBool = isDangerous(match, king.dangerZones, king.piece?.team, true, kingCoord);
 	if (!dangerBool)
 		dangerBool = checkDoubleMoveMate(match, coords, result);
-	if (result.specialMoves.CheckSniperMove() == 0)
+	if (!result || result.specialMoves.CheckSniperMove() == 0)
 	{
 		from.piece = to.piece;
 		to.piece = tmpPiece;
@@ -596,130 +476,163 @@ function simulation(coords, match, result)
 	else
 		to.piece = tmpPiece;
 	dangerUpdateMoved(match, [coords[1], coords[0]], result);
+	if (dangerBool)
+		dangerBool = checkGuardiansDanger(match, coords);	
 	if (tmpSquare)
 		match.board.set(coords[1], tmpSquare);
-	boosted = match.GetBoostedPieceCoords();
-	for (const coord of match.board.updates)
-		DangerUpdate(match, coord);
-	if (!boosted)
-		return (!dangerBool);
-	for (const p of boosted)
-	{
-		if (match.board.get(p).piece?.type == enumNames.CHAMPION && match.board.updates.has(p))
-			RefreshChampion(match, match.board.get(p), p);
-	}
-	// DangerUpdate(match, coords[0]);
 	return (!dangerBool);
 }
 
 /**
- * 
- * @param {Array<String>} coords
- * @param {Match} match
- * @param {Result} result
- * @returns 
+ * the king is in danger, but a second move can save him?
+ * it must be called in the original pieces state
+ * @param {Match} match 
+ * @param {Array<string>} coords 
  */
-function simulationRefactor(coords, match, result)
+function checkGuardiansDanger(match, coords)
 {
-	let	startSquare;
-	let	destSquare;
-	let	kingCoord;
-	let	kingSquare;
+	let	guardianSquare;
+	let	boostTargets;
 
-	startSquare = match.board.get(coords[0]);
-	destSquare = match.board.get(coords[1]);
-	kingCoord = match.currentPlayer.King;
-	if (coords[0] == kingCoord)
-		kingCoord = coords[1];
+	for (let {coord, target} of match.currentPlayer.guardianPieces)
+	{
+		if (coord != coords[0])
+			continue ;
+		//we use piece destination
+		guardianSquare = match.board.get(coords[0]);
+		boostTargets = guardianSquare.boostedTargetZones.get(coords[1]);
+		if (!boostTargets)
+			continue ;
+		if (boostTargets.has(target) == false)
+			continue ;
+		match.currentPlayer.guardianPieces.clear();
+		return (false);	
+	}
 	return (true);
 }
 
 /**
- * check if is possible to go from start to dest
+ * 
  * @param {Match} match 
- * @param {Square | string} start 
- * @param {string} dest
- * @param {Set<string> | string} ignoredCoords
- * @param {boolean} considerBoostedBool 
+ * @param {Array<string>} coords 
+ * @param {Result | null} result
+ * @param {boolean} checkBool
  */
-export function pathFinding(match, start, dest, ignoredCoords=new Set, considerBoostedBool=false)
+function checkDoubleMoveMate(match, coords, result=null, checkBool=true)
 {
-	let	startArray = new Set;
-	let	startCoord;
-	let	destCoord;
-	let	reverseMove = {dx: 0, dy: 0};
-	let	moveData;
+	let	OtherPiece;
+	let	pieceData;
 
-	//finds data for start, dest and ignoredCoords
-	if (typeof(start) == "string")
+	OtherPiece = match.GetBoostedPieceCoords();
+	let	theKING = match.
+	currentPlayer.King;
+	if (coords.length >= 2 && coords[0] == theKING)
+		theKING = coords[1];
+	if (OtherPiece == null)
+		return (false);
+	for (const coords of OtherPiece)
 	{
-		startCoord = start;
-		start = match.board.get(start);
-	}
-	else
-		startCoord = start.piece?.pos;
-	destCoord = dest;
-	if (typeof(ignoredCoords) == "string")
-		ignoredCoords = new Set(ignoredCoords);
-	if (!start.piece || !startCoord || !destCoord)
-		throw (`pathFinding: invalid parameters`);
-	//for optimization, the search will go from dest to start
-	//because you have one dest but multiple start (boosted zones)
-	startArray.add(startCoord);
-	if (considerBoostedBool == true)
-	{
-		for (const boostStart in start.boostedTargetZones)
-			startArray.add(boostStart);
-	}
-	//reverse movement from dest to start
-	for (const move of start.piece.moveArray)
-	{
-		reverseMove.dx = -move.dx;
-		reverseMove.dy = -move.dy;
-		//move simulation takes reverted input
-		moveData = moveSimulation(match, destCoord, startArray, reverseMove, ignoredCoords);
-		if (moveData)
-		{//if exist a path, swaps from with to
-			let	tmp = moveData.from;
-			moveData.to = tmp;
-			moveData.from = moveData.to;
-			return (moveData);
+		pieceData = match.board.get(coords).piece;
+		if (!pieceData)
+			throw ("checkDoubleMoveMate: cannot find boosted piece");
+		if (pieceData.type == enumNames.MINOTAURUS && checkBool == false)
+			boostMinoUpdates(match, coords);
+		else if (pieceData.type == enumNames.BASTARDS && checkBool == true)
+		{	
+			if (!boostBastardsUpdates(match, coords, theKING, result))
+				return (true);
 		}
+		else
+			continue ;
 	}
-	return (null);
+	return (false);
 }
 
 /**
  * 
  * @param {Match} match 
- * @param {string} start
- * @param {Set<string>} destArray 
- * @param {{dx: number, dy: number}} move
- * @param {Set<string>} ignoredCoords 
+ * @param {string} coords 
+ * @param {string} theKING
+ * @param {Result | null} result
+ * @returns 
  */
-function moveSimulation(match, start, destArray, move, ignoredCoords=new Set)
+function boostBastardsUpdates(match, coords, theKING, result)
 {
-	let	square;
-	let	moveData;
-
-	match.cursor.Save();
-	match.cursor.set(start);
-	while (movePiece(match, move.dy, move.dx))
+	let boosts = match.board.get(coords).boostedTargetZones.get(coords);
+	if (boosts == undefined || boosts.size == 0)
+			return (true);
+	for (const squareCoord of boosts)
 	{
-		if (ignoredCoords.has(match.cursor.square))
-			continue ;
-		if (destArray.has(match.cursor.square))//trovato path valido
+		let	square = match.board.get(squareCoord);
+		if (!square.piece)
+			throw ("DEBUG error 1");
+		match.cursor.Save();
+		for (const moves of square.piece.moveArray)
 		{
-			moveData = {from: start, to: match.cursor.square};
+			match.cursor.set(squareCoord);
+			while (movePiece(match, moves.dy, moves.dx))
+			{
+				let piece;
+				let squareBastard = "";
+				piece = match.board.get(match.cursor.square).piece;
+				if (match.cursor.square == theKING)
+					return vitaNeraError(result);
+				if (!piece)
+				{
+					if (!square.piece.moveLongRangeDEBUG)
+						break ;
+					else
+						continue ;
+				}
+				if (piece.isBoostedBool == true && piece.type == enumNames.BASTARDS && piece.team == square.piece.team)
+				{
+					squareBastard = match.cursor.square;
+					if (movePiece(match, moves.dy, moves.dx) == false)
+						break ;
+					if (match.cursor.square == theKING)
+						return vitaNeraError(result);
+					if (match.board.get(squareBastard).targetZones.has(match.cursor.square) && 
+					match.board.get(squareBastard).targetZones.size <= 1)
+						break ;
+					if (piece.isMovedBool)
+					{
+						if (!square.piece.moveLongRangeDEBUG)
+							break ;
+						else
+						{
+							match.cursor.square = squareBastard;
+							continue ;
+						}
+					}
+					squareBastard = match.cursor.square;
+					if (movePiece(match, moves.dy, moves.dx) == false)
+						break ;
+					if (match.cursor.square == theKING)
+						return vitaNeraError(result);
+					if (match.board.get(squareBastard).targetZones.has(match.cursor.square) && 
+					match.board.get(squareBastard).targetZones.size <= 2)
+						break ;
+				}
+				else
+					break ;
+			}
 			match.cursor.Restore();
-			return (moveData);
 		}
-		square = match.board.get(match.cursor.square);
-		if (square.piece)
-			break ;
+		match.cursor.Restore();
 	}
 	match.cursor.Restore();
-	return (null);
+	return (true);
+}
+
+/**
+ * 
+ * @param {Result | null} result 
+ */
+function vitaNeraError(result)
+{
+	if (result)
+		error(result, 403, "boost bastard and his gang would threaten king");
+	return (false);
 }
 
 /**
@@ -733,6 +646,8 @@ function CheckTransfiguration(match, result, piece, newType)
 {
 	if (match.moves == 0)
 		return (error(result, 403, `you should move before transform`));
+	if (checkKingDanger(match) == true)
+		return (error(result, 403, "Your king is in danger"));
 	if (piece.type != enumNames.BASTARDS)
 		return (error(result, 403, `currently, boosting pieces different by
 		${enumNames.BASTARDS} is not allowed. However, this may be a cool idea.
@@ -771,8 +686,7 @@ function transfiguration(match, result, coord, newType)
 	square.piece.isBoostedBool = isBoostedBool;
 	DangerUpdate(match, coord);
 	match.history.UpdateTransform(match, square, coord, newType);
-	if (checkMateCheckAll(match, result, true) == true)
-		return (result);
+	checkMateCheckAll(match, result);
 	endTurn(match, false);
 	result.status = 200;
 	result.msg = "OK";

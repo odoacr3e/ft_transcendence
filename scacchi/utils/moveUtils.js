@@ -1,11 +1,11 @@
 // @ts-check
-// const { Match } = require("../Classes/Match/match.js");
+// const { Match } = require("../Classes/Chess/match.js");
 import { enumInitNames, enumNames, enumSpecialMoves, kingMovements} from "../Macro/enums.js";
 import * as Macro from "../Macro/macro.js";
 import {bastardChecks} from "./gameUtils.js";
 
-/**@typedef {import("../Classes/Match/match.js").Match} Match*/
-/**@typedef {import("../Classes/Match/player.js").Player} Player*/
+/**@typedef {import("../Classes/Chess/match.js").Match} Match*/
+/**@typedef {import("../Classes/Chess/player.js").Player} Player*/
 /**@typedef {import("../Classes/endPoint/result.js").Result} Result*/
 /**@typedef {import("../Classes/Pieces/pieces.js").Piece} Piece*/
 
@@ -14,33 +14,23 @@ import {bastardChecks} from "./gameUtils.js";
  * @param {Match} match
  * @param {number} dx 
  * @param {number} dy
- * @param {boolean} clear
  */
-let movePiece = (match, dy, dx, clear=false) =>
+let movePiece = (match, dy, dx) =>
 {
 	let newRow = match.cursor.getRow() + dx;
 	let newCol = match.cursor.getCol() + dy;
+	let	oldCursor = match.cursor.square;
 
 	if (newRow < 1 || newRow > match.board.heigth)
 		return false;
 	else if (newCol <= 0 || newCol > match.board.width)
 		return false;
-
-	if (clear == true)
-	{
-		let currentSquare = match.board.get(match.cursor.square);
-		let zones = currentSquare?.targetZones;
-
-		if (zones != null)
-		{
-			for (let zone of zones)
-			{
-				match.board.get(zone)?.dangerZones.delete(match.cursor.square);
-			}
-			zones.clear();
-		}
-	}
 	match.cursor.setCursor(newRow, newCol);
+	if (match.board.get(match.cursor.square).wallBool == true)
+	{
+		match.cursor.set(oldCursor);
+		return false;
+	}
 	return true;
 }
 
@@ -48,23 +38,25 @@ let movePiece = (match, dy, dx, clear=false) =>
  * 
  * @param {Match} match 
  * @param {string | null} pos
- * @param {boolean} updBool
+ * @param {boolean} ignoreBoostChampsBool
  * @returns 
  */
-let DangerUpdate = (match, pos=null, updBool=true) =>
+let DangerUpdate = (match, pos=null, ignoreBoostChampsBool=true) =>
 {
 	let	piece;
 	let	startPos;
 
+	match.cursor.Save();
 	if (pos != null)
 		match.cursor.set(pos);
 	else
 		pos = match.cursor.square;
+	match.board.updates.add(pos);
 	startPos = match.cursor.square;
 	match.board.ResetTargets(startPos);
 	piece = match.board.get(match.cursor.square).piece;
 	if (piece == null)
-		return (0);
+		return (match.cursor.Restore());
 	for (let {dx, dy} of piece.moveArray)
 	{
 		if (piece.type == enumNames.BASTARDS)
@@ -72,28 +64,27 @@ let DangerUpdate = (match, pos=null, updBool=true) =>
 			bastardChecks(match, dx, dy, piece);
 			continue ;
 		}
-		while (movePiece(match, dy, dx, false))
+		while (movePiece(match, dy, dx))
 		{ 
 			match.board.AddInfluence(startPos, match.cursor.square);
 			match.board.get(match.cursor.square).dangerZones.add(startPos);
 			match.board.get(startPos).targetZones.add(match.cursor.square);
-			if (piece.moveLongRangeDEBUG == false || match.board.get(match.cursor.square)?.piece != null)
+			if (piece.moveLongRangeDEBUG == false || match.board.get(match.cursor.square)?.piece != null || match.board.get(match.cursor.square)?.wallBool)
 				break ;
 		}
 		match.cursor.square = startPos;
 	}
+	match.cursor.set(pos);
+	match.board.get(pos).targetZones.delete(pos);
+	match.board.get(pos).dangerZones.delete(pos);
+	if (ignoreBoostChampsBool && piece.type == enumNames.CHAMPION && piece.isBoostedBool)
+		return (match.cursor.Restore());
 	if (piece.isBoostedBool == true)
 		piece.moveFunction(match);
 	castlingUpdate(match, startPos, piece);
 	match.board.get(pos).targetZones.delete(pos);
 	match.board.get(pos).dangerZones.delete(pos);
-	if (updBool == false)
-		return (1);
-	if (pos != null)
-		match.board.updates.add(pos);
-	else
-		match.board.updates.add(match.cursor.square);
-	return (1);
+	return (match.cursor.Restore());
 }
 
 /**
@@ -118,7 +109,7 @@ function castlingUpdate(match, startPos, piece)
 		for (const x of player.castlingArray)
 			kingSquare.targetZones.add(x);
 	}
-	else if (piece.type == enumNames.MINOTAURUS)
+	else if (piece.type == enumNames.MINOTAURUS && !piece.isMovedBool)
 	{
 		player.castlingArray.delete(startPos);
 		if (kingSquare.piece?.isMovedBool || piece.isMovedBool)
@@ -198,6 +189,52 @@ function dangerUpdateMoved(match, selected=[], result=null, delBool=true)
 	CheckInfluence(match, selected);
 	DangerUpdate(match, selected[0]);
 	DangerUpdate(match, selected[1]);
+	updateBoostedChampions(match, selected);
+}
+
+/**
+ * if they need an update, it is done in boost order
+ * @param {Match} match
+ * @param {Array<string>} coords
+ */
+function updateBoostedChampions(match, coords)
+{
+	let arr;
+	let	piece;
+	let	needUpdateBool;
+	let	boostedChampsCoords;
+
+	arr = match.GetBoostedPieceCoords(true, true);
+	if (!arr)
+		return ;
+	boostedChampsCoords = [];
+	//check if at least one boosted champion needs a refresh
+	needUpdateBool = false;
+	for (const x of arr)
+	{
+		piece = match.board.get(x).piece;
+		if (!piece && x == coords[0])
+			piece = match.board.get(coords[1]).piece;
+		if (!piece)
+			throw (`updateBoostedChampions: piece in ${x} does not exist`);
+		if (piece.type != enumNames.CHAMPION || piece.isBoostedBool == false)
+			continue ;
+		boostedChampsCoords.push(x);
+		if (match.board.updates.has(x) == true)
+			needUpdateBool = true;
+	}
+	if (needUpdateBool == false && boostedChampsCoords.length < 2)
+		return ;
+	//resets all one of them
+	for (const x of boostedChampsCoords)
+	{
+		DangerUpdate(match, x);
+	}
+	//recalculate them in boost order
+	for (const x of boostedChampsCoords)
+	{
+		DangerUpdate(match, x, false);
+	}
 }
 
 /**

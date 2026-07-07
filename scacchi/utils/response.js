@@ -1,6 +1,5 @@
 // @ts-check
-import { Match } from "../Classes/Match/match.js";
-import { Square } from "../Classes/ChessBoard/chessBoard.js";
+import { Match } from "../Classes/Chess/match.js";
 import { Result } from "../Classes/endPoint/result.js";
 
 /**
@@ -25,7 +24,7 @@ const ResponseSuccess = (object) => {
  * @param {*} result the base object from which the response json is made
  * @param {String | null} msg 
  * @param {Number | null} status 
- * @returns {{}}
+ * @returns {Result}
  * format frontend response as an object.
  * ? means the field is optional.
  * ```ts
@@ -90,6 +89,8 @@ function formatPlayer(match, result)
 	{
 		result.p1 = match.white; 
 		result.p2 = match.black;
+		result.p1.dbTable = undefined;
+		result.p2.dbTable = undefined;
 	}
 	else if (match.settings.players.number == 4)
 	{
@@ -101,6 +102,10 @@ function formatPlayer(match, result)
 		result.p4.name = "p4";
 		result.p3.isPlaying = false;
 		result.p4.isPlaying = false;
+		result.p1.dbTable = undefined;
+		result.p2.dbTable = undefined;
+		result.p3.dbTable = undefined;
+		result.p4.dbTable = undefined;
 	}
 	else
 		throw ("formatPlayer: bad player number");
@@ -133,7 +138,7 @@ function _jsonParser(key, val)
 	{
 		return [...val];
 	}
-	else if (val instanceof Map) 
+	else if (val instanceof Map)
 	{
 		return Object.fromEntries(val);
 	}
@@ -148,6 +153,7 @@ function _jsonParser(key, val)
  * @param {object} val 
  * @returns 
  */
+
 // function _jsonParser(key, val)
 // {
 // 	if (val instanceof Set)

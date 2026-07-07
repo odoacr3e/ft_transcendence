@@ -32,7 +32,8 @@
       "useBoostBool": false,
       "counter": 2,
       "updates": {},
-      "error": false
+      "error": false,
+	  "lastLost": "black"
     }
   ],
   "moves": 3,

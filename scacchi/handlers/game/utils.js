@@ -1,12 +1,11 @@
 // @ts-check
-/** @typedef {import("../../Classes/Match/match.js").Match} Match*/
-/** @typedef {import("../../Classes/Match/cursor.js").Cursor} Cursor*/
+/** @typedef {import("../../Classes/Chess/match.js").Match} Match*/
+/** @typedef {import("../../Classes/Chess/cursor.js").Cursor} Cursor*/
 
-import { assert } from "node:console";
-import { Square, copyBoard } from "../../Classes/ChessBoard/chessBoard.js";
+import { Square, copyBoard } from "../../Classes/Chess/chessBoard.js";
 import {Result} from "../../Classes/endPoint/result.js";
 import {jsonParser} from "../../utils/response.js";
-import {coordNormify} from "../../Classes/Match/cursor.js";
+import {coordNormify} from "../../Classes/Chess/cursor.js";
 
 /** @typedef {Map<String, Square>} Board */
 
@@ -71,7 +70,7 @@ function copyOnlyBoardUpdates(match)
 	return (newBoard);
 }
 
-/** @typedef {{from: string | null, to: string | null, type: string}} RequestBody*/
+/** @typedef {{from: string, to: string, type: string}} RequestBody*/
 
 /**
  * 

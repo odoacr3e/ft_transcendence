@@ -1,11 +1,11 @@
 
 import * as lib from "../lib/lib.js";
 import { jsonResponse } from "../utils/response.js";
-import { getNotify, postNotify } from "../query/notifiyQuery.js";
 import { checkJwt } from "../utils/auth.js";
 import { log } from "../utils/log.js";
-import { sockio } from "../main.js";
-const { prisma } = lib.conn.prisma;
+import { globals } from '../Classes/Globals/globals.js';
+import { query } from "../lib/query.js";
+const { notifyQuery } = query;
 export const notifyRouter = lib.include.express.Router();
 
 /**
@@ -41,7 +41,7 @@ function checkQueryParams(req) {
 notifyRouter.get("/", checkJwt, async (req, res) => {
 	try {
 		const filter = checkQueryParams(req);
-		const notif = Object.keys(filter).length > 0 ? await getNotify.getFilteredNotifications(filter) : await getNotify.getAllNotifications(req.user.id_user);
+		const notif = Object.keys(filter).length > 0 ? await notifyQuery.getFilteredNotifications(filter) : await notifyQuery.getAllNotifications(req.user.id_user);
 		if (notif && notif.length > 0)
 			return res.status(200).json(jsonResponse.ResponseSuccess({ "notifications": notif }));
 		return res.status(404).json(jsonResponse.ResponseError("Notifications not found"));
@@ -57,7 +57,7 @@ notifyRouter.get("/", checkJwt, async (req, res) => {
  */
 notifyRouter.get("/:id", async (req, res) => {
 	try {
-		const notif = await getNotify.getNotificationById(req.params.id);
+		const notif = await notifyQuery.getNotificationById(req.params.id);
 		if (notif)
 			return res.status(200).json(jsonResponse.ResponseSuccess({ "notification": notif }));
 		return res.status(404).json(jsonResponse.ResponseError("Notification not found"));
@@ -75,7 +75,6 @@ notifyRouter.post("/", checkJwt, async (req, res) => {
 	try {
 		const data = {};
 		data.id_sender = req.user.id_user;
-		console.log("id_sender: ", data.id_sender);
 		data.creation_date = new Date();
 		for (const [key, value] of Object.entries(req.body))
 		{
@@ -84,14 +83,20 @@ notifyRouter.post("/", checkJwt, async (req, res) => {
 			else
 				data[key] = value;
 		}
-		const notification = await postNotify.postNotification(data);
-		sockio.emit(`notification_${notification.id_user}`, { title: notification.title, description: notification.description, sender: notification.users_notifications_id_senderTousers.username });
+		const notification = await notifyQuery.postNotification(data);
+		const destSock = req.app.get('clientMap').get(data.id_user); // prendo il socket di riferimento all'id dello user
+		if (destSock)
+			destSock.socket.emit(`notification`, { title: notification.title, description: notification.description, sender: notification.users_notifications_id_senderTousers.username });
 		return res.status(204).send();
 	} catch (error) {
 		console.log("Error: ", error);
 		return res.status(500).json(jsonResponse.ResponseError("Server error posting new notification"));
 	}
 });
+
+/*
+
+*/
 
 /**
  * @param {import('express').Request} req
@@ -100,7 +105,7 @@ notifyRouter.post("/", checkJwt, async (req, res) => {
 notifyRouter.patch("/", async (req, res) => {
 	try {
 		const { id_notifications } = req.body;
-		const notification = await postNotify.readNotifications(id_notifications);
+		const notification = await notifyQuery.readNotifications(id_notifications);
 		log.ok("Notifications updated");
 		return res.status(204).send();
 	} catch (error) {

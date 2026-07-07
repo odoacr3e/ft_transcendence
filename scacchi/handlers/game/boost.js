@@ -1,12 +1,12 @@
 // @ts-check
 
 import {dangerUpdateAll, DangerUpdate} from "../../utils/moveUtils.js";
-import {Match} from "../../Classes/Match/match.js";
+import {Match} from "../../Classes/Chess/match.js";
 import {error, paramCheck, Result, clientBoard} from "./utils.js";
 import { endTurn } from "./endTurn.js";
 import {checkMateCheckAll} from "../../GameLogic/checkMate.js";
 import { BOOSTED_MAX, MOVEMENT_MIN } from "../../Macro/macro.js";
-import { Square } from "../../Classes/ChessBoard/chessBoard.js";
+import { checkKingDanger } from "../../utils/gameUtils.js";
 
 /**
  * 
@@ -28,8 +28,7 @@ function boost(match, from)
 	result.status = 200;
 	if (match.boost == BOOSTED_MAX)
 	{
-		if (checkMateCheckAll(match, result, true) == true)
-			return (result);
+		checkMateCheckAll(match, result);
 		endTurn(match, false);
 	}
 	if (prevBoost == "")
@@ -54,6 +53,8 @@ function tryBoost(match, result, from)
 
 	if (match.boost >= BOOSTED_MAX || match.moves < MOVEMENT_MIN)
 		return (error(result, 403, "You can't boost now"));
+	if (checkKingDanger(match) == true)
+		return (error(result, 403, "Your king is in danger"));
 	square = match.board.get(from);
 	if (!square?.piece)
 		return (error(result, 403, "Nothing to be boosted in there man"));
@@ -67,15 +68,17 @@ function tryBoost(match, result, from)
 	square.piece.isBoostedBool = true;
 	if (match.currentPlayer.boostedPiece)
 	{
+		match.boostPriority.delete(match.currentPlayer.team);
 		tmp = match.board.get(match.currentPlayer.boostedPiece);
 		if (tmp?.piece)
 			tmp.piece.isBoostedBool = false;
-		match.board.updates.add(from);
-		match.board.updates.add(match.currentPlayer.boostedPiece);
+		DangerUpdate(match, match.currentPlayer.boostedPiece, false);
 	}
+	match.board.updates.add(from);
+	match.boostPriority.add(match.currentPlayer.team);
 	match.currentPlayer.boostedPiece = square.piece.pos;
 	match.history.UpdateBoost(match, square, from);
-	DangerUpdate(match, from);
+	DangerUpdate(match, from, false);
 	match.boost += 1;
 	return (true);
 }

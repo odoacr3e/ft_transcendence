@@ -7,7 +7,7 @@ const textColor = {
 	ok:   colors.green.bold,
 	db:   colors.magenta,
   server: colors.cyan,
-	warn: colors.yellow.bold,
+	warn: colors.yellow,
 	err:  colors.red.bold
 };
 

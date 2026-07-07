@@ -3,21 +3,21 @@
 import fs from "fs";
 import { exec, execSync } from "child_process";
 //SECTION - backend cute stuff >3
-import { globals } from "../Classes/Match/globals.js";
+import { globals } from "../Classes/Globals/globals.js";
 import { historyRestore } from "../utils/history.js";
 import {HISTORY_PATH} from "../Macro/macro.js";
 import {eEvents} from "../Macro/enums.js";
 import { colors as color } from "./colorsOld.js";
 import { testerEnum as MSG, curlCmd, curlCmdInit } from "./enumsTest.js";
 import {boardStringify} from "./render.js";
-import { Match } from "../Classes/Match/match.js";
+import { Match } from "../Classes/Chess/match.js";
 import {jsonParser} from "../utils/response.js";
 import {render} from "./render.js";
-import { coordNormify } from "../Classes/Match/cursor.js";
+import { coordNormify } from "../Classes/Chess/cursor.js";
 
 /** @typedef {import ("../../history/HISTORY.json")} historyData */
-/** @typedef {import ("../Classes/ChessBoard/chessBoard.js").ChessBoard} ChessBoard */
-/** @typedef {import ("../Classes/Match/history.js").HistoryEvent} HistoryEvent */
+/** @typedef {import ("../Classes/Chess/chessBoard.js").ChessBoard} ChessBoard */
+/** @typedef {import ("../Classes/Chess/history.js").HistoryEvent} HistoryEvent */
 /** @typedef {{board: ChessBoard, log: {msg: string, status: number}}} BackResponse*/
 
 const curlWaitTimeMs = 0;
@@ -39,8 +39,8 @@ async function testerMain()
 	let	matchName;
 	let	matchPath;
 
-	exec("npm run start", (err, stdout, stderr) =>{if (err){console.error(`${err} ${stderr}`)}});
-	await msleep(1000);
+	// exec("npm run start", (err, stdout, stderr) =>{if (err){console.error(`${err} ${stderr}`)}});
+	// await msleep(1000);
 	matchName = process.argv.at(2);
 	if (!matchName)
 		return (await execAllTests());
@@ -68,6 +68,11 @@ async function execAllTests()
 	{
 		rateSuccess.tests++;
 		currMatch = file;
+		if (file.includes("todo"))
+		{
+			testerTodo();
+			continue ;
+		}
 		await execTest(`${HISTORY_PATH}${file}`);
 	}
 	console.debug(`Win rate: ${rateSuccess.success}/${rateSuccess.tests}`)
@@ -88,6 +93,11 @@ async function execTest(matchPath)
 	let	boards;
 
 	match = globals.getDebugMatch();
+	if (!match)
+	{
+		testerFail(MSG.INVALID_MSG, "you need to set up DEBUG to true to use curlTester");
+		process.exit();
+	}
 	try
 	{
 		history = JSON.parse(fs.readFileSync(matchPath, 'utf-8'));
@@ -151,10 +161,6 @@ async function executeEvents(match, history)
 		return (curlFail());
 	for (const event of history.events)
 	{
-		if (event.from && event.to)
-			render(match, [event.from, event.to], "", true);
-		else
-			render(match, [], "", true);
 		console.log(event);
 		currEvent = event;
 		if (event.from)
@@ -167,7 +173,6 @@ async function executeEvents(match, history)
 		if (cmpBoard(match.board, backendBoard) == false)
 			return (curlFail());
 	}
-	render(match, [], "", true);
 	currEvent = {type: "lastCheck"};
 	if (cmpBoard(match.board, backendBoard) == false)
 		return (curlFail());
@@ -196,6 +201,14 @@ function testerFail(msg, p1="", p2="")
 	console.debug(`${p1}`);
 	process.exit();
 	//fail(msg, p1, p2);
+}
+
+/**
+ * called when a test is marked with todo
+ */
+function testerTodo()
+{
+	console.debug(`${currMatch}: ${MSG.RESULT_TODO}`);
 }
 
 /**
@@ -316,7 +329,7 @@ async function curlSender(type, from="", to="", cmd=curlCmd)
 		if (json.log.msg == "Game Error: You need to move first")
 			return (json);
 		console.log(`ERROR(${json.log.status}) => ${json.log.msg}`);//@ts-ignore
-		if (currEvent.error)
+		if (currEvent.error || currEvent.type == "endturn")
 			return (json);
 		setError(json.log.msg);
 		throw ("");

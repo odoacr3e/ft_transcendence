@@ -1,16 +1,16 @@
 
 import * as lib from "../lib/lib.js";
-import * as usersQuery from "../query/usersQuery.js";
 import bcrypt from "bcryptjs";
 import { createJwt, checkJwt, revokeTokenSessions, 
-	validateInputRegister, validateUser, cookiesOpt } from "../utils/auth.js";
+	validateInputRegister, validateUser, cookiesOpt, 
+	createOtp, verifyOtp } from "../utils/auth.js";
 import { jsonResponse } from "../utils/response.js";
 import { colors } from "../utils/colors.js";
 import { log } from "../utils/log.js";
+import { query } from "../lib/query.js";
+const { usersQuery } = query;
 const { fs, logfd } = lib.include;
-const { prisma } = lib.conn;
-const { redis } = lib.conn;
-const { crypto } = lib.conn;
+const { crypto, redis, sendEmail, bodyOTP, bodyRegistration } = lib.conn;
 export const authRouter = lib.include.express.Router();
 
 // NOTE: route /auth
@@ -24,46 +24,44 @@ authRouter.post("/login", async (req, res) => {
 		const { username, password } = req.body;
 		if (!username || !password)
 			return (res.status(400).json(jsonResponse.ResponseError("Missing credentials")));
-		const user = await prisma.users.findUnique({
-			select: {
-				id_user: true,
-				name: true,
-				surname: true,
-				username: true,
-				password: true,
-				email: true,
-				image: true,
-				nationality: true,
-				points: true,
-				title: true,
-				preferences: {
-					select: {
-						name: true,
-						description: true,
-						colors: true
-					}
-				}
-			},
-			where: {
-				username: String(username)
-			}
-		});
+		const user = await usersQuery.getUserByUsernameWithPwd(username);
 		if (!user || !(await bcrypt.compare(password, user.password)))
 		{
-			// printLog(`User ${user.username} failed to login`, 'warn');
+			log.warn(`Access denied to user ${colors.bold(username)}`);
 			return res.status(401).json(jsonResponse.ResponseError("Invalid credentials"));
 		}
 		delete(user.password);
 		req.user = user;
+		if (user.mfa)
+		{
+			const otp = await createOtp(user.id_user);
+			sendEmail({ to: user.email, subject: 'One Time Password', body: bodyOTP(user.username, otp)});
+			return res.status(200).json(jsonResponse.ResponseSuccess({ id_user: user.id_user, message: "OTP sent by email", Expiration: `${process.env.OTP_TTL / 60} min` }));
+		}
+		log.ok(`User ${req.user.username} correctly logged in`);
 		await createJwt(req, res);
-		// printLog(`User ${user.username} correctly logged in`, 'ok')
 		return res.status(200).json(jsonResponse.ResponseSuccess({ "user": user }));
 	} catch (error) {
 		console.log("Error: ", error);
-		// printLog(`User couldn't complete login due server error: ${error.name}`, 'error');
 		return res.status(500).json(jsonResponse.ResponseError("Server error checking for user"));
 	}
 });
+
+authRouter.post('/verifyOtp', async (req, res) => {
+	try {
+		const { id_user, otp } = req.body;
+		const user = await usersQuery.getUserById(id_user);
+		const result = await verifyOtp(id_user, otp);
+		if (!result.success)
+			return res.status(401).json(jsonResponse.ResponseError(result.message));
+		req.user = user;
+		await createJwt(req, res);
+		return res.status(200).json(jsonResponse.ResponseSuccess({ "user": user }));
+	} catch (error) {
+		console.log("Error: ", error);
+		return res.status(500).json(jsonResponse.ResponseError("Server error checking for user"));
+	}
+})
 
 /**
  * @param {import('express').Request} req
@@ -79,12 +77,12 @@ authRouter.post("/register", async (req, res) => {
 			return res.status(409).json(jsonResponse.ResponseError("User already exists"));
 		const hashedPwd = await bcrypt.hash(password, parseInt(lib.Macro.HASH_SALT));
 		const user = await usersQuery.createUser(name, surname, username, hashedPwd, email, nationality);
+		// await sendEmail({ to: user.email, subject: "Welcome to ChessZ", body: bodyRegistration(user.username)} );
 		req.user = user;
 		await createJwt(req, res);
-		// printLog(`New user created with username ${user.username}`, colors.brightGreen)
 		return res.status(201).json(jsonResponse.ResponseSuccess({ "user": user }));
 	} catch (error) {
-		// printLog(`User couldn't correctly register due server error: ${error.name}`, colors.brightYellow);
+		console.log("Error: ", error);
 		return res.status(500).json(jsonResponse.ResponseError("Server error creating user"));
 	}
 });
@@ -101,7 +99,7 @@ authRouter.post("/refresh", async (req, res) => {
 		const refToken = await redis.get(`refresh:${refresh}`);
 		if (!refToken)
 			return res.status(403).json(jsonResponse.ResponseError("Invalid or expired token"));
-		/** @type {token} raw */
+		/** @type {token} rawToken */
 		const rawToken = JSON.parse(refToken);
 		if (rawToken.used == true)
 		{

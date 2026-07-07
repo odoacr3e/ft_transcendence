@@ -3,9 +3,8 @@ import * as lib from "../lib/lib.js";
 import { jsonResponse } from "../utils/response.js";
 import { checkJwt } from "../utils/auth.js";
 import { log } from "../utils/log.js";
-import { prisma } from "../lib/prisma.js";
-import { friendsQuery } from "../query/friendsQuery.js";
-import { response } from "express";
+import { query } from "../lib/query.js";
+const { friendsQuery } = query;
 export const friendsRouter = lib.include.express.Router();
 
 
@@ -18,11 +17,25 @@ export const friendsRouter = lib.include.express.Router();
 friendsRouter.get('/', checkJwt, async (req, res) => {
 	try {
 		const friendships = await friendsQuery.getAllUserFriendships(req.user.id_user);
-		console.log(friendships);
 		return res.status(200).json(jsonResponse.ResponseSuccess({ friendship: friendships }));
 	} catch (error) {
 		console.log("Error: ", error);
 		return res.status(500).json(jsonResponse.ResponseError("Server error retrieving user friendships"));
+	}
+});
+
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * NOTE: riprende le amicizie di un utente preso tramite id
+ */
+friendsRouter.get('/:id', checkJwt, async (req, res) => {
+	try {
+		const userFriendships = await friendsQuery.getUserFriendsById(req.params.id);
+		return res.status(200).json(jsonResponse.ResponseSuccess({ friendship: userFriendships }));
+	} catch (error) {
+		console.log("Error: ", error);
+		return res.status(500).json(jsonResponse.ResponseError("Server error retrieving another user's friendships"));
 	}
 });
 
@@ -37,6 +50,7 @@ friendsRouter.post('/', checkJwt, async (req, res) => {
 	} catch (error) {
 		if (error.code == 'P2002')
 			return res.status(409).json(jsonResponse.ResponseError("Friendship already exists or pending"));
+		console.log("Error: ", error);
 		return res.status(500).json(jsonResponse.ResponseError("Server error sending new friendships"));
 	}
 })
@@ -67,6 +81,6 @@ friendsRouter.patch('/', checkJwt, async (req, res) => {
 	} catch (error) {
 		if (error.code == 'P2025')
 			return res.status(409).json(jsonResponse.ResponseError("Friendship not found or already accepted"));
-		return res.status(500).json(jsonResponse.ResponseError("Internal server error"));
+		return res.status(500).json(jsonResponse.ResponseError("Server error updating friendship"));
 	}
 })

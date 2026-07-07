@@ -1,17 +1,17 @@
 // @ts-check
 import fs from "fs";
 import {eEvents} from "../Macro/enums.js";
-import {Match} from "../Classes/Match/match.js";
-import {HistoryEvent} from "../Classes/Match/history.js";
-import { Piece } from "../Classes/Pieces/pieces.js";
+import {Match} from "../Classes/Chess/match.js";
+import {HistoryEvent} from "../Classes/Chess/history.js";
 import {move, boost, endTurn, init, error} from "../handlers/game/Game.js";
 import { render } from "../test/render.js";
 import { makeTransfiguration } from "../handlers/game/transfiguration.js";
 
 
-/** @typedef {import ("../Classes/Match/history.js").History} History */
+/** @typedef {import ("../Classes/Chess/history.js").History} History */
 
 let	DEBUGCounter = 0;
+let	DEBUGEvent = "";
 
 /** 
  * 
@@ -40,6 +40,8 @@ function historyRestore(match, path)
 		match.historyCreateBool = true;
 		for (const event of history.events)
 		{
+			//@ts-ignore
+			DEBUGEvent = event;
 			playerNum = match.playerNum;
 			console.log(`History: move number ${event.counter}`);
 			if (DEBUGCounter == 12)
@@ -68,7 +70,7 @@ function historyRestore(match, path)
 			else
 				error(null, result, 0, null, false);
 			// if (match.victory)
-			// 	throw(`this move give invalid victory for ${match.victory}. \nevent: ${JSON.stringify(event)}`);
+			// 	console.debug(`this move give invalid victory for ${match.victory}. \nevent: ${JSON.stringify(event)}`);
 			if (event.lastLost && playerNum == match.playerNum)
 				throw(`player ${event.lastLost} should have lost. \nevent: ${JSON.stringify(event)}`);
 			if (!event.lastLost && playerNum != match.playerNum)
@@ -83,7 +85,8 @@ function historyRestore(match, path)
 	}
 	catch(err)
 	{
-		throw (`Move ${DEBUGCounter}: ${err}`);
+		DEBUGEvent = JSON.stringify(DEBUGEvent, null, 2);
+		throw (`Move ${DEBUGEvent}: ${err}`);
 	}
 }
 

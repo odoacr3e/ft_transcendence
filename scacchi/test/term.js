@@ -1,4 +1,4 @@
-// @ts-check
+//@ts-check
 import {HISTORY_FILE, HISTORY_PATH} from "../Macro/macro.js";
 import {eEvents, eTeam} from "../Macro/enums.js";
 import {movePiece, dangerUpdateAll} from "../utils/moveUtils.js";
@@ -6,21 +6,21 @@ import {includesOneOf} from "../utils/string.js";
 import {historyRestore} from "../utils/history.js";
 import {error, move, boost, endTurn, init} from "../handlers/game/Game.js";
 import {Result} from "../handlers/game/utils.js";
-import {globals} from "../Classes/Match/globals.js";
-//NOTE - non cancellare :)
+import {globals} from "../Classes/Globals/globals.js";
+
+//NOTE - NON CANCELLARE!!!
 //		senza term.js non apre le porte
-import {app} from "../main.js"
+import {oggettoVuotoPerFarFunzionareTermjsNONCANCELLARE} from "../main.js";
+//NOTE - NON CANCELLARE!!!
 
 import * as lib from "../lib/lib.js";
 import {abort} from "node:process";
-import {render} from "./render.js";
+import {render, boardStringify} from "./render.js";
 import readline from "node:readline";
 import { makeTransfiguration } from "../handlers/game/transfiguration.js";
 import { cmd } from "./enumsTest.js";
-import { eMatchPresets } from "../Macro/enums.js";
-import { edoChampionBug } from "./savedMatches.js";
 
-/** @typedef {import("../Classes/Match/match.js").Match} Match*/
+/** @typedef {import("../Classes/Chess/match.js").Match} Match*/
 
 //SECTION - main: inizializza e fa primo render, mette terminale in ascolto
 function mainTerm()
@@ -30,9 +30,13 @@ function mainTerm()
 
 	termInit();
 	match = globals.getDebugMatch();
+	if (!match)
+		throw ("To use term.js, you need to set the DEBUG macro true");
 	seed = lib.Macro.SEED;
-	seed = 0;
+	seed = "1v1";
 	init(match, seed);
+	// console.log(boardStringify(match));
+	match.cursor.square = match.currentPlayer.King;
 	// edoChampionBug(match);
 	render(match);
 	return (match);
@@ -54,6 +58,7 @@ process.stdin.on('keypress', (str, key) =>
 	let	dx;
 	let	dy;
 
+	match = globals.GetLastMatch();
 	mutex = true;
 	dx = 0;
 	dy = 0;
@@ -75,6 +80,9 @@ process.stdin.on('keypress', (str, key) =>
 			break ;
 		case (cmd.RIGHT) : case (cmd.D) :
 			dx += 1;
+			break ;
+		case (cmd.GOTO_KING) :
+			match.cursor.square = match.currentPlayer.King;
 			break ;
 		case (cmd.TARGET_DANGER_SWITCH) :
 			if (TargetDangerSwitch == "None")
@@ -151,7 +159,7 @@ process.stdin.on('keypress', (str, key) =>
 			break ;
 		}
 	}
-	if (includesOneOf(key.name, cmd.MOVEMENTS) && !movePiece(match, dx, dy, false))
+	if (includesOneOf(key.name, cmd.MOVEMENTS) && !movePiece(match, dx, dy))
 	{
 		console.log("lol no");
 	}
@@ -168,7 +176,7 @@ process.stdin.on('keypress', (str, key) =>
  */
 function print(key)
 {
-	console.log("row", match.cursor.getRow(), ", col", match.cursor.getCol(), ", cursor", match.cursor.Normify());
+	console.log("\n\n\nrow", match.cursor.getRow(), ", col", match.cursor.getCol(), ", cursor", match.cursor.Normify(), `(${match.cursor.square})`);
 	if (TargetDangerSwitch != "None")
 		console.log(`Visualizing ${TargetDangerSwitch} zones`);
 	render(match, selected, TargetDangerSwitch);
@@ -184,6 +192,7 @@ function print(key)
 		console.log(`transform "${cmd.TRANSFORM}"`);
 		console.log(`square info "${cmd.SQUARE_INFO}"`);
 		console.log(`restoreHistory "${cmd.LOAD_HISTORY}"`);
+		console.log(`gotoKing "${cmd.GOTO_KING}"`);
 	}
 }
 
