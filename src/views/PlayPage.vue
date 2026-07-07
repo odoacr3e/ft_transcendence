@@ -1,7 +1,7 @@
 <script setup>
 	import AppHeader					from '../components/AppHeader.vue';
 	import { matchMakingOpt }			from '@/scripts/Data/Variables.js';
-	import { eRoomType, eMatchPresets }	from '../../../Common/ENUMS.js'
+	import { eRoomType, eMatchPresets } from '@/Common/ENUMS.js';
 	import { useAuthStore } 			from '@/stores/auth.st.js';
 	import { ref, computed, watch }		from 'vue';
 
