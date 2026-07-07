@@ -354,6 +354,8 @@ function cantMovePiece(match, enemyCoord, enemySquare, kingCoord)
 	ignoredCoords.add(enemyCoord);
 	for (const kingGuardianCoord of enemySquare.dangerZones)
 	{
+		if (kingGuardianCoord == kingCoord)
+			continue ;
 		ignoredCoords.add(kingGuardianCoord);
 		guardianSquare = match.board.get(kingGuardianCoord);
 		guardianPiece = guardianSquare.piece; 

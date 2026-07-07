@@ -1,6 +1,6 @@
 {
-  "moves": 39,
-  "victory": "",
+  "moves": 42,
+  "victory": "black",
   "finalBoard": "|M|J|V| |K| | | |\n|B|B|B|B| |B|B| |\n| | | | | | | | |\n| | | | |B| | | |\n| |V| |B| | | | |\n| | | |J| | | | |\n|B|B|B| |B| |B|M|\n|M| | |K|C|V|J|M|\n",
   "matchSettings": "1v1",
   "events": [
@@ -185,7 +185,7 @@
       "to": "h2",
       "movedPiece": "Minotaurus",
       "team": "black",
-      "type": "move",
+      "type": "moveboost",
       "useBoostBool": false,
       "counter": 16,
       "updates": {},
@@ -405,33 +405,34 @@
       "to": "h4",
       "movedPiece": "Champion",
       "team": "black",
-      "type": "move",
+      "type": "moveboost",
       "useBoostBool": false,
-      "counter": 36,
+      "counter": 39,
       "updates": {},
       "error": false
+    },
+    {
+      "from": "h2",
+      "to": "e1",
+      "movedPiece": "Bastards",
+      "team": "white",
+      "type": "moveboost",
+      "useBoostBool": false,
+      "counter": 40,
+      "updates": {},
+      "error": true
     },
     {
       "from": "h4",
       "to": "e1",
       "movedPiece": "Champion",
       "team": "black",
-      "type": "move",
+      "type": "moveboost",
       "useBoostBool": false,
-      "counter": 37,
+      "counter": 41,
       "updates": {},
-      "error": false
-    },
-    {
-      "from": "",
-      "to": "",
-      "movedPiece": "",
-      "team": "black",
-      "type": "endturn",
-      "useBoostBool": false,
-      "counter": 38,
-      "updates": {},
-      "error": false
+      "error": false,
+      "lastLost": "white"
     }
   ]
 }
