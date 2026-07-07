@@ -39,9 +39,10 @@ let movePiece = (match, dy, dx) =>
  * @param {Match} match 
  * @param {string | null} pos
  * @param {boolean} ignoreBoostChampsBool
+ * @param {boolean} castlingBool
  * @returns 
  */
-let DangerUpdate = (match, pos=null, ignoreBoostChampsBool=true) =>
+let DangerUpdate = (match, pos=null, ignoreBoostChampsBool=true, castlingBool=false) =>
 {
 	let	piece;
 	let	startPos;
@@ -81,7 +82,8 @@ let DangerUpdate = (match, pos=null, ignoreBoostChampsBool=true) =>
 		return (match.cursor.Restore());
 	if (piece.isBoostedBool == true)
 		piece.moveFunction(match);
-	castlingUpdate(match, startPos, piece);
+	if (castlingBool == true)
+		castlingUpdate(match, startPos, piece);
 	match.board.get(pos).targetZones.delete(pos);
 	match.board.get(pos).dangerZones.delete(pos);
 	return (match.cursor.Restore());
@@ -129,8 +131,9 @@ function castlingUpdate(match, startPos, piece)
  * 
  * @param {Match} match
  * @param {Array<string>} coords
+ * @param {boolean} castlingBool
  */
-function CheckInfluence(match, coords)
+function CheckInfluence(match, coords, castlingBool)
 {
 	let setInfluence;
 	let tmpInfluenceDanger = [];
@@ -142,7 +145,7 @@ function CheckInfluence(match, coords)
 			throw (`dangerDelPiece: invalid coord ${coord}`);
 		tmpInfluenceDanger.push(new Set(setInfluence));
 	}
-	checkInfluenceSets(match, coords, tmpInfluenceDanger);
+	checkInfluenceSets(match, coords, tmpInfluenceDanger, castlingBool);
 }
 
 /**
@@ -150,8 +153,9 @@ function CheckInfluence(match, coords)
  * @param {Match} match 
  * @param {Array<string>} coords 
  * @param {Array<Set<string>>} influenceSets the set for every coord
+ * @param {boolean} castlingBool
  */
-function checkInfluenceSets(match, coords, influenceSets)
+function checkInfluenceSets(match, coords, influenceSets, castlingBool)
 {
 	let	i;
 
@@ -160,7 +164,7 @@ function checkInfluenceSets(match, coords, influenceSets)
 	{
 		for (const influenceCoord of set)
 		{
-			DangerUpdate(match, influenceCoord);
+			DangerUpdate(match, influenceCoord, true, castlingBool);
 		}
 		++i;
 	}
@@ -170,19 +174,15 @@ function checkInfluenceSets(match, coords, influenceSets)
  * 
  * @param {Match} match 
  * @param {Array<string>} selected /* 0 = from, 1 = to
+ * @param {boolean} castlingBool
  */
-function dangerUpdateMoved(match, selected=[])
+function dangerUpdateMoved(match, selected=[], castlingBool=false)
 {
-	// return (dangerUpdateAll(match));
 	if (selected.length != 2)
-		throw ("dangerUpdateMoved must be called with two pieces: from, to");
-	// if (delBool == true)
-	// 	dangerDelPiece(match, selected[0], selected[1], result);
-	// dangerUpPiece(match, selected[1], result);
-	// DangerUpdate(match, selected[1]);
-	CheckInfluence(match, selected);
-	DangerUpdate(match, selected[0]);
-	DangerUpdate(match, selected[1]);
+		throw ("dangerUpdateMoved must be called with two pieces: from, to"); 
+	CheckInfluence(match, selected, castlingBool);
+	DangerUpdate(match, selected[0], true, castlingBool);
+	DangerUpdate(match, selected[1], true, castlingBool);
 	updateBoostedChampions(match, selected);
 }
 

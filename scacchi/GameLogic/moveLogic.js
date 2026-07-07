@@ -184,8 +184,7 @@ function updateChessboard(coords=[], result, match, boostBool)
 	if (to.piece && to.piece.isMovedBool == false)
 		to.piece.isMovedBool = true;
 	checkDoubleMoveMate(match, [], result, false);
-	
-	dangerUpdateMoved(match, coords);
+	dangerUpdateMoved(match, coords, true);
 	match.moves++;
 	return (true);
 }
@@ -292,8 +291,8 @@ function moveCastling(match, from, to)
 	match.currentPlayer.castlingArray.clear();
 	pieces.king.isMovedBool = true;
 	pieces.mino.isMovedBool = true;
-	DangerUpdate(match, pieces.mino.pos);
-	DangerUpdate(match, pieces.king.pos);
+	DangerUpdate(match, pieces.mino.pos, true, true);
+	DangerUpdate(match, pieces.king.pos, true, true);
 	match.cursor.Restore();
 }
 
@@ -440,7 +439,6 @@ export function simulation(coords, match, result=null)
 	let	king;
 	let	kingCoord;
 	let	dangerBool;
-	let boosted;
 
 	from = match.board.get(coords[0]);
 	to = match.board.get(coords[1]);
