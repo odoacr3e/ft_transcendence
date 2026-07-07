@@ -1,22 +1,20 @@
 <script setup>
-import AppHeader from '@/components/AppHeader.vue';
-import ChessBoard from '@/components/ChessBoard.vue';
-// size degli square = size-14
+	import AppHeader from '@/components/AppHeader.vue';
+	import ChessBoard from '@/components/ChessBoard.vue';
+	import { initLocalMatchState }  from '../scripts/Data/Archi';
+	import { onMounted, ref }       from 'vue';
 
-  import { initLocalMatchState }  from '../scripts/Data/Archi';
-  import { onMounted, ref }       from 'vue';
+	const ready = ref(false);
+	const style = ref("14x14x4");
 
-  const ready = ref(false);
-  const style = ref("14x14x4");
-
-  onMounted(async () => {
-    try{
-      await initLocalMatchState(style.value);
-      ready.value = true;
-    } catch (err) {
-      console.log(`${err}`);
-    }
-  })
+	onMounted(async () => {
+	  try{
+	    await initLocalMatchState();
+	    ready.value = true;
+	  } catch (err) {
+	    console.log(`${err}`);
+	  }
+	})
 </script>
 
 <template>

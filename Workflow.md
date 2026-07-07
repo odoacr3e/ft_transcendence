@@ -14,10 +14,10 @@ App.vue (src/App.vue)
 index.js (src/router/index.js)
 	->	DECIDE LA ROTTA 
 
-Game.vue (src/views/Game.vue)
+ClassicGame.vue (src/views/ClassicGame.vue)
 	->	CHIAMA (initMatchstate()) NEL (noMountedHook()) 
 
-initLocalMatchState() (src/scripts/Data/Game.js)
+initLocalMatchState() (src/scripts/Data/ClassicGame.js)
 	->	INIZIALIZZA LE VARS GLOBALI IN Variables.js DA match.json 
 
 boardConverter() 
@@ -83,6 +83,7 @@ boardConverter()
 			-> DOMBoard computed si ricalcola
 			-> boardConverter() esegue
 			-> ChessBoard.vue re-renderizza
+
 //TODO SCACCHIERA - (▫ = da fare, ✓ = completato)
 	✓	movimento al click
 	✓	highlight e selected corretti al 100%
@@ -101,7 +102,7 @@ boardConverter()
 			✓ bastardo
 			✓ minotauro
 			✓ giullare
-			✓ valkiaria
+			✓ valkirya
 			✓ campione
 			✓ re
 	✓ aura dei pezzi boostati visibile [LEO] 
@@ -115,7 +116,12 @@ boardConverter()
 	  una preview delle target zones rese visibili sulla scacchiera, si può fare una route apposta per chiedere 
 	  l'update delle target zones di un pezzo specifico
 	▫ Si fa fatica a capire di chi è il turno attuale
-	? orientamento della scacchiera in base al colore dei pezzi del giocatore
+	▫ orientamento della scacchiera in base al colore dei pezzi del giocatore
+	▫	history delle mosse durante la partita
+	▫	utilizzo websocket singolo solo per la partita diverso da websocket comunicazione server [LEO]
+	▫	implementare (reload, riaccesso, chiudi e riapri la pagina di gioco) durante la partita
+	▫	avviso di quando devi fare end turn più chiaro (?)
+	▫	spostamento bottoni
 
 //FIXME - Bugs
 	▫	quando finisci l'esecuzione di una mossa boostata di un pedone e clicchi su un'altro pezzo
@@ -133,16 +139,16 @@ boardConverter()
 	✓	pagina di modifica delle info utente
 	✓	reset della password (sia dal login page che dalla pagina utente loggato)
 	✓	dettagli info sui match
-	▫	refactor pagina di gioco, pulsanti con tipi di partite, creazione stanze, sfida amici [LEO]
+	✓	refactor pagina di gioco, pulsanti con tipi di partite, creazione stanze, sfida amici
+	✓	websocket per la partita [LEO]
+	▫	redirection alla pagina login se si prova ad accedere a pagine protette [MAVI]
 	▫	test login e resgiter con OT e opzioni di toglierlo nelle impostazioni [MAVI]
 	▫	info dei profili per le partitre a 4
 	▫	websocket per le notifiche
 	▫	pagina della leaderboard
-	▫	history delle mosse durante la partita (?)
 	▫	re-design della home
 	▫	update delle preferenze di colore degli utenti
-	▫	websocket per la partita --> in attesa di sviluppo backend
-
+	▫	dettagli info sui match
 
 
 
@@ -169,3 +175,4 @@ Il frontend carica il file direttamente su uno storage esterno (spesso con un UR
 
 Nessuna di queste comporta scrivere dentro la cartella del progetto Vue in produzione — sarebbe comunque sbagliato architetturalmente, perché ad ogni nuova build/deploy del frontend quella cartella verrebbe rigenerata e perderesti le immagini caricate dagli utenti.
 Che backend state usando? Così ti scrivo il codice concreto per l'opzione A, che è quella più vicina a quello che avevate in mente.
+		
