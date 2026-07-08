@@ -1,7 +1,7 @@
 {
-  "moves": 46,
-  "victory": "",
-  "finalBoard": "|M| | |C| |V|K|M|\n|B|B|B| |B|C|B| |\n| | |J| | | | | |\n| |+V| |B| | |J|B|\n| | | |B|B| |+V| |\n| | |J| | | | | |\n|B|B|B| | |B|B| |\n|M| | | |K| | |M|\n",
+  "moves": 47,
+  "victory": "white",
+  "finalBoard": "|M| | |C| |V|K|M|\n|B|B|B| |B|C|B| |\n| | |J| | | | | |\n| |+V| |B| | |J|B|\n| | | |B|B| |V| |\n| | |J| | | | | |\n|B|B|B| | |B|B| |\n|M| | | |K| | |M|\n",
   "matchSettings": "1v1",
   "events": [
     {
@@ -240,7 +240,7 @@
       "to": "e4",
       "movedPiece": "Bastards",
       "team": "white",
-      "type": "move",
+      "type": "moveboost",
       "useBoostBool": false,
       "counter": 21,
       "updates": {},
@@ -251,7 +251,7 @@
       "to": "b5",
       "movedPiece": "Valkirya",
       "team": "white",
-      "type": "move",
+      "type": "moveboost",
       "useBoostBool": false,
       "counter": 22,
       "updates": {},
@@ -508,7 +508,8 @@
       "useBoostBool": false,
       "counter": 45,
       "updates": {},
-      "error": false
+      "error": false,
+      "lastLost": "black"
     }
   ]
 }

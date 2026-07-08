@@ -161,7 +161,7 @@ function updateChessboard(coords=[], result, match, boostBool)
 		if (to.piece.isBoostedBool == true)//@ts-ignore
 			match[to.piece.team].boostedPiece = "";
 	}
-	match.history.UpdateMoves(match, from, coords);
+	match.history.UpdateMoves(match, from, coords, boostBool);
 	if (result.specialMoves.CheckSniperMove())
 	{
 		to.piece = null;
