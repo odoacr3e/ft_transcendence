@@ -152,7 +152,7 @@ async function bindPlayersToMatch(match, queueNode, result)
 		match.currentPlayer.id = userId;
 		promises.push(getUserById(userId));//@ts-ignore
 		startTeam = match.settings?.players[match.currentPlayer.team];
-		match.users.push({id_user: userId, outcome: "Lose", startTeam: startTeam, team: match.currentPlayer.team});
+		match.users.push({id_user: userId, outcome: "Lose", startTeam: startTeam? startTeam: null, team: match.currentPlayer.team});
 		user.matchData = match.currentPlayer;
 		globals.RemoveFromAllQueues(userId, false);
 		//@ts-ignore
