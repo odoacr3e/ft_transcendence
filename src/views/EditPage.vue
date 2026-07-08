@@ -13,7 +13,7 @@
 	        	surname: '',
 	        	username: '',
 	        	nationality: '',
-                // otp: false
+                // mfa: false
                 // preferences: 0
 	        }),
             avatarFile = ref(null),      // il File vero e proprio
@@ -66,7 +66,7 @@
             if (!formData.value.surname)        { formData.value.surname = user.value.surname; }
             if (!formData.value.username)       { formData.value.username = user.value.username; }
             if (!formData.value.nationality)    { formData.value.nationality = user.value.nationality; }
-            // if (!formData.value.otp)         { formData.value.otp = user.value.otp; }
+            // if (!formData.value.mfa)         { formData.value.mfa = user.value.mfa; }
         }
 
         const resp = await authStore.update(formData.value);
@@ -198,7 +198,7 @@
                             </div>
                             <div class="flex w-sm mb-3 p-2.5 justify-self-center">
                                 <label class="inline-flex items-center me-5 cursor-pointer">
-                                  <input type="checkbox" value="" class="sr-only peer" v-model="formData.otp">
+                                  <input type="checkbox" value="" class="sr-only peer" :checked="user.mfa" v-model="formData.mfa">
                                   <span class="select-none me-3 text-sm font-medium text-heading">Disattivato</span>
                                   <div class="relative w-9 h-5 bg-neutral-quaternary rounded-full bg-[#0c0c0b]
                                         peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:inset-s-0.5 after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#882a2a]"></div>
