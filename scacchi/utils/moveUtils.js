@@ -82,8 +82,7 @@ let DangerUpdate = (match, pos=null, ignoreBoostChampsBool=true, castlingBool=fa
 		return (match.cursor.Restore());
 	if (piece.isBoostedBool == true)
 		piece.moveFunction(match);
-	if (castlingBool == true)
-		castlingUpdate(match, startPos, piece);
+	castlingUpdate(match, startPos, piece, castlingBool);
 	match.board.get(pos).targetZones.delete(pos);
 	match.board.get(pos).dangerZones.delete(pos);
 	return (match.cursor.Restore());
@@ -94,13 +93,15 @@ let DangerUpdate = (match, pos=null, ignoreBoostChampsBool=true, castlingBool=fa
  * @param {Match} match 
  * @param {string} startPos 
  * @param {Piece} piece 
+ * @param {boolean} castlingBool
  */
-function castlingUpdate(match, startPos, piece)
+function castlingUpdate(match, startPos, piece, castlingBool)
 {
 	/** @type {Player} */
 	let player;
 	let	kingCoord;
 	let	kingSquare;
+	let	minoSquare;
 
 	//@ts-ignore
 	player = match[piece.team];
@@ -111,19 +112,24 @@ function castlingUpdate(match, startPos, piece)
 		for (const x of player.castlingArray)
 			kingSquare.targetZones.add(x);
 	}
+	else if (castlingBool == false)
+		return ;
 	else if (piece.type == enumNames.MINOTAURUS && !piece.isMovedBool)
 	{
 		player.castlingArray.delete(startPos);
-		if (kingSquare.piece?.isMovedBool || piece.isMovedBool)
-			kingSquare.targetZones.delete(startPos);
-		else if (match.board.get(startPos).targetZones.has(kingCoord))
+		minoSquare = match.board.get(startPos); 
+		if (minoSquare.targetZones.has(kingCoord) == false || 
+			kingSquare.piece?.isMovedBool || piece.isMovedBool)
 		{
-			match.board.updates.add(kingCoord);
-			player.castlingArray.add(startPos);
-			kingSquare.targetZones.add(startPos);		
-		}
-		else
+			if (kingSquare.targetZones.has(startPos))
+				match.board.updates.add(kingCoord);
 			kingSquare.targetZones.delete(startPos);
+			return ;
+		}
+		if (kingSquare.targetZones.has(startPos) == false)
+			match.board.updates.add(kingCoord);
+		player.castlingArray.add(startPos);
+		kingSquare.targetZones.add(startPos);	
 	}
 }
 
