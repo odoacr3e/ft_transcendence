@@ -58,6 +58,7 @@ class Match
 		/** @type {Number|null}*/this.tournament_id = null;
 		/** @type {String|null}*/this.tournament_round = null;
 		this.spareCountDown = 0;
+		/** @type {Map<string, number>}*/ this.boardStateMap = new Map();
 		this.cursor.square = this.currentPlayer.King;
 	}
 	/** @param {MatchSettings | string | null} preset*/
@@ -97,7 +98,8 @@ class Match
 		this.id = "0";
 		this.tournament_id = null;
 		this.tournament_round = null;
-		this.spareCountDown = 0; //FIXME - da riprendere
+		this.spareCountDown = 0;
+		this.boardStateMap = new Map();
 		this.cursor.square = this.currentPlayer.King;
 	}
 	endTurn()

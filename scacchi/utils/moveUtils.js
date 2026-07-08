@@ -119,7 +119,7 @@ function castlingUpdate(match, startPos, piece, castlingBool)
 		player.castlingArray.delete(startPos);
 		minoSquare = match.board.get(startPos); 
 		if (minoSquare.targetZones.has(kingCoord) == false || 
-			kingSquare.piece?.isMovedBool || piece.isMovedBool)
+		kingSquare.piece?.isMovedBool || piece.isMovedBool)
 		{
 			if (kingSquare.targetZones.has(startPos))
 				match.board.updates.add(kingCoord);

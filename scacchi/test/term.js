@@ -67,8 +67,6 @@ process.stdin.on('keypress', (str, key) =>
 		termCleanup(key.name);
 	}
 	console.clear();
-	console.log("castlingArray");
-	console.log(match.currentPlayer.castlingArray);
 	switch (key.name)
 	{
 		case (cmd.UP) : case (cmd.W) :

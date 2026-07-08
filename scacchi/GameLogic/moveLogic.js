@@ -137,6 +137,8 @@ function updateChessboard(coords=[], result, match, boostBool)
 	let	from;
 	let	to;
 
+	if (match.currentPlayer.castlingArray.has(coords[0]))
+		match.currentPlayer.castlingArray.delete(coords[0]);
 	from = match.board.get(coords[0]);
 	to = match.board.get(coords[1]);
 	if (!from || !to || !from.piece)
