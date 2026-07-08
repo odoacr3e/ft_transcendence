@@ -159,7 +159,7 @@ async function gameHandler(match, body)
 		return (error(null, result), result);
 	result = responseFormatter(match, result, null, null);
 	render(match);
-	if (match.playerNum <= 1)
+	if (match.playerNum <= 1 && match.id != "0")
 	{
 		try 
 		{
