@@ -38,10 +38,10 @@ export async function createUsersMatch(match) {
 }
 
 // [
-// {
-// 	id_user: string,
-// 	outcome: "Win" | "Lose" | "Draw",
-// 	startTeam: "pezzi iniziali(definire format universale)" | null,
-// 	team: "black" | "white" | ...
-// }
+// 	{
+// 		id_user: string,
+// 		outcome: "Win" | "Lose" | "Draw",
+// 		startTeam: "pezzi iniziali(definire format universale)" | null,
+// 		team: "black" | "white" | ...  
+// 	}
 // ]

@@ -198,7 +198,6 @@ function success()
  */
 function testerFail(msg, p1="", p2="")
 {
-	curlFail();
 	console.debug(`${MSG.RESULT_ERROR}: riprova, ogni tanto curl si impalla`);
 	//@ts-ignore
 	console.debug(`${p1}`);
