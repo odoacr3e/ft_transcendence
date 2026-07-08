@@ -41,10 +41,20 @@ tournamentsRouter.get('/:id', checkJwt, async (req, res) => {
 tournamentsRouter.post('/', async (req, res) => {
 	try {
 		const tournament = await tournamentsQuery.createTournament(req.body.name, req.body.id_creator);
-		return res.status(200).json(jsonResponse.ResponseSuccess({ "tournament": tournament }));
+		if (tournament)
+			return res.status(200).json(jsonResponse.ResponseSuccess({ "tournament": tournament }));
+		return res.status(400).json(jsonResponse.ResponseError("Impossible to create new tournament"));
 	} catch (error) {
 		if (error.code == 'P2002')
 			return res.status(409).json(jsonResponse.ResponseError("Tournament already exists"));
-		return res.status(409).json(jsonResponse.ResponseError(""));
+		return res.status(500).json(jsonResponse.ResponseError("Server error creating new tournament"));
 	}
 });
+
+tournamentsRouter.patch('/', async (req, res) => {
+	try {
+		// const updateTournament = await tournamentsQuery.updateTournamentStatus(req.body.)
+	} catch (error) {
+		
+	}
+})

@@ -85,6 +85,7 @@ export async function getTournamentById(id_tournament) {
 	});
 }
 
+// NOTE: creazione nuovo torneo
 export async function createTournament(name, id_creator) {
 	const tournament = await prisma.tournaments.create({
 		data: {
@@ -112,5 +113,20 @@ export async function createTournament(name, id_creator) {
 		status: tournament.status,
 		created_at: tournament.created_at.toISOString().split('T')[0],
 		created_by: { id_user: tournament.users.id_user, username: tournament.users.username }
+	});
+}
+
+// NOTE: 
+export async function updateTournamentStatus(id_tournament, status) {
+	const validStatus = ['open', 'ongoing', 'closed'];
+	if (!validStatus.includes(status))
+		return null;
+	return await prisma.tournaments.update({
+		where: {
+			AND: [
+				{ id_tournament: Number(id_tournament) },
+				{ status: { not: status } }
+			]
+		}
 	});
 }
