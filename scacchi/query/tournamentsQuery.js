@@ -121,12 +121,32 @@ export async function updateTournamentStatus(id_tournament, status) {
 	const validStatus = ['open', 'ongoing', 'closed'];
 	if (!validStatus.includes(status))
 		return null;
-	return await prisma.tournaments.update({
+	const updated = await prisma.tournaments.update({
 		where: {
 			AND: [
 				{ id_tournament: Number(id_tournament) },
 				{ status: { not: status } }
 			]
+		},
+		data: { status: status },
+		select: {
+			id_tournament: true,
+			status: true,
+			created_at: true,
+			name: true,
+			users: {
+				select: {
+					id_user: true,
+					username: true
+				}
+			}
 		}
+	});
+	return ({
+		id_tournament: updated.id_tournament,
+		name: updated.name,
+		status: updated.status,
+		created_at: updated.created_at.toISOString().split('T')[0],
+		created_by: { id_user: updated.users.id_user, username: updated.users.username }
 	});
 }
