@@ -196,6 +196,11 @@ class Match
 		console.log("haaaaaiiiiii viiiiiiintoooooooooo!!!!!!!");
 		this.victory = this.currentPlayer.team;
 		this.history.victory = this.victory;
+		for (const user of this.users)
+		{
+			if (this.FindPlayer(user.team) == true)
+				user.outcome = "Win";
+		}
 		if (this.id != "0")
 			globals.matches.delete(this.id);
 		if (result != null)
@@ -253,6 +258,11 @@ class Match
 		//FIXME - gestire salvataggio nella history
 		tmp = this.currentPlayer;
 		player = tmp.next;
+		for (let x of this.users)
+		{
+			if (this.FindPlayer(x.team))
+				x.outcome = "Draw";
+		}
 		//@ts-ignore
 		while (this[player].team != tmp.team)
 		{
@@ -277,6 +287,21 @@ class Match
 		else
 			return (new Result());
 		return (result);	
+	}
+	/** @param {string} team */
+	FindPlayer(team)
+	{
+		let	currTeam = this.currentPlayer.team;
+		let	foundBool = false;
+
+		do
+		{
+			if (team == this.currentPlayer.team)
+				foundBool = true;
+			this.endTurn();
+		}
+		while(this.currentPlayer.team != currTeam)
+		return (foundBool);
 	}
 	/** @param {string} name */
 	Log(name="")

@@ -25,6 +25,7 @@ export async function createMatch(match) {
 export async function createUsersMatch(match) {
 	if (!match.users)
 		return (console.log("Array of object match.user doesn't exist"));
+	console.log(match.users);
 	for (const u of match.users) {
 		await prisma.users_matches.create({
 			data: {
