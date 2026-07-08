@@ -163,6 +163,8 @@ async function executeEvents(match, history)
 	{
 		console.log(event);
 		currEvent = event;
+		if (event.counter == 66)
+			console.log("66");
 		if (event.from)
 			event.from = coordNormify(event.from);
 		if (event.to && event.type != "trans")
@@ -196,6 +198,7 @@ function success()
  */
 function testerFail(msg, p1="", p2="")
 {
+	curlFail();
 	console.debug(`${MSG.RESULT_ERROR}: riprova, ogni tanto curl si impalla`);
 	//@ts-ignore
 	console.debug(`${p1}`);

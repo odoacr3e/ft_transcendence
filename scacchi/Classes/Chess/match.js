@@ -245,6 +245,7 @@ class Match
 		let tmp;
 
 		console.log("ed e' un pareggioooooooo!!!!");
+		this.victory = "draw";
 		// console.log("Premi un qualsiasi tasto per concludere...");
 		//FIXME - gestire cosa succede in base a quanti player restano
 		//FIXME - gestire salvataggio nella history

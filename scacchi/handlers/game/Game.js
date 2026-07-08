@@ -15,6 +15,7 @@ import {makeTransfiguration} from "./transfiguration.js";
 import { globals } from "../../Classes/Globals/globals.js";
 import { createMatch } from "../../query/gameQuery.js";
 import { Match, MatchSettings } from "../../Classes/Chess/match.js";
+import { includesOneOf } from "../../utils/string.js";
 
 const DEBUG_MATCH = globals.getDebugMatch();
 
@@ -124,8 +125,18 @@ async function gameHandler(match, body)
 {
 	let	result;
 
+	if (includesOneOf(body.type, "reload", "history"))
+		return (gameInfoHandler(match, body));
 	result = new Result();
 	console.clear();
+	if (match.victory != "")
+	{
+		if (match.victory == "draw")
+			error(null, result, 403, `match already finished in a ${match.victory}!`);
+		else
+			error(null, result, 403, `match already finished: won by ${match.victory}!`);
+		return (result);
+	}
 	if (body.type == "move")
 		result = move(match, body.from, body.to);
 	else if (body.type == "boost")
@@ -136,18 +147,6 @@ async function gameHandler(match, body)
 		result = endTurn(match);
 	else if (body.type == "trans")
 		result = makeTransfiguration(match, body.from, body.to);
-	else if (body.type == "reload")
-	{
-		result.Success();
-		// @ts-ignore
-		result.board = clientBoard(match, true, true);
-		result.youWin = match.victory != "";
-	}
-	else if (body.type == "history")
-	{
-		result.Success();//@ts-ignore
-		result.history = match.history;
-	}
 	else
 	{
 		error(null, result, 400, `invalid type ${body.type}`);
@@ -159,7 +158,7 @@ async function gameHandler(match, body)
 		return (error(null, result), result);
 	result = responseFormatter(match, result, null, null);
 	render(match);
-	if (match.playerNum <= 1 && match.id != "0")
+	if (match.victory != "" && match.id != "0")
 	{
 		try 
 		{
@@ -172,6 +171,34 @@ async function gameHandler(match, body)
 			console.log("Error: ", error);
 		}
 	}
+	return (result);
+}
+
+/**
+ * handler of game info request
+ * @param {import("../../Classes/Chess/match.js").Match} match
+ * @param {import("./utils.js").RequestBody} body
+ */
+async function gameInfoHandler(match, body)
+{
+	let	result;
+
+	result = new Result();
+	if (body.type == "reload")
+	{
+		result.Success();
+		// @ts-ignore
+		result.board = clientBoard(match, true, true);
+		result.youWin = match.victory != "";
+	}
+	else if (body.type == "history")
+	{
+		result.Success();//@ts-ignore
+		result.history = match.history;
+	}
+	else
+		throw ("gameInfoHandler: invalid type " + body.type);
+	result = responseFormatter(match, result, null, null);
 	return (result);
 }
 

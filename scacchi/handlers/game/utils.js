@@ -31,8 +31,8 @@ function clientBoard(match, copyAll=false, avoidReset=false)
 	{
 		dest = copyOnlyBoardUpdates(match);
 	}
-	console.log("updates:");
-	console.log(match.board.updates);
+	// console.log("updates:");
+	// console.log(match.board.updates);
 	if (avoidReset == false)
 		match.board.updates.clear();
 	modifyBoard(dest);
