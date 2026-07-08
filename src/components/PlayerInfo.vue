@@ -53,7 +53,7 @@
 		</div>
 		<!-- <img :src="IMG_PATHS[player.team + 'King']" alt="TeamKing" :draggable="false" class="size-18.75 shrink-0"
 			v-bind:class="{'drop-shadow-custom':playing }"> -->
-		<TimerClock :Millis="player.time" :Go="playing"/>
+		<TimerClock :millis="player.time" :go="playing" :team="player.team"/>
 	</div>
 </template>
 
