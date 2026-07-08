@@ -19,6 +19,7 @@ import {render, boardStringify} from "./render.js";
 import readline from "node:readline";
 import { makeTransfiguration } from "../handlers/game/transfiguration.js";
 import { cmd } from "./enumsTest.js";
+import { getLegalMoves } from "../GameLogic/checkLegalMoves.js";
 
 /** @typedef {import("../Classes/Chess/match.js").Match} Match*/
 
@@ -176,6 +177,7 @@ process.stdin.on('keypress', (str, key) =>
  */
 function print(key)
 {
+	// console.log(getLegalMoves(match));
 	console.log("\n\n\nrow", match.cursor.getRow(), ", col", match.cursor.getCol(), ", cursor", match.cursor.Normify(), `(${match.cursor.square})`);
 	if (TargetDangerSwitch != "None")
 		console.log(`Visualizing ${TargetDangerSwitch} zones`);

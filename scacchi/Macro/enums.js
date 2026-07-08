@@ -1,4 +1,4 @@
-// @ts-check
+//@ts-check
 
 /**
  * @enum {string}

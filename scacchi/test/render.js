@@ -1,5 +1,6 @@
 // @ts-check
 import { Square, ChessBoard} from "../Classes/Chess/chessBoard.js";
+import { getLegalMoves } from "../GameLogic/checkLegalMoves.js";
 import {eTeam, getInitialOfTeam} from "../Macro/enums.js";
 import * as lib from "../lib/lib.js";
 // const {Match} = require("../Classes/Chess/match.js");
@@ -47,6 +48,7 @@ function render(match=null, selected=[], TargetDangerSwitch="", silentBool=false
 	}
 	while (match.cursor.moveRow(-1))
 	match.cursor.set(coords.player);
+	// console.log(getLegalMoves(match));
 	console.log(buffer);
 	console.log(match.yellow.King, match.red.King, match.blue.King, match.green.King);
 }

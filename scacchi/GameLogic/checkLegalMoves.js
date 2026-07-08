@@ -1,14 +1,17 @@
 //@ts-check
 
+import { enumNames } from "../Macro/enums.js";
+import { isDangerous } from "../utils/gameUtils.js";
+
 /** @typedef {import("../Classes/Chess/match").Match} Match*/
 
 /**
  * returns an array of {from, to} legal moves about the currentPlayer  
  * @param {Match} match 
+ * @param {string} team
  * */
-function getLegalMoves(match)
+export function getLegalMoves(match, team=match.currentPlayer.team)
 {
-	let	currTeam;
 	let	targetSquare;
 	/** @type {Map<string, Set<string>>} */
 	let	legalMovesMap = new Map();
@@ -17,21 +20,27 @@ function getLegalMoves(match)
 
 	for (const [coord, square] of match.board)
 	{
+		if (square.piece?.team != team)
+			continue ;
 		for (const targetCoord of square.targetZones)
 		{
 			targetSquare = match.board.get(targetCoord);
 			if (targetSquare.piece?.team == square.piece?.team)
 				continue ;
+			if (square.piece?.type == enumNames.KING)
+			{
+				if (isDangerous(match, targetSquare.dangerZones, square.piece?.team))
+					continue ;
+			}
 			if (legalMovesMap.has(coord) == false)
 				legalMovesMap.set(coord, new Set());
 			legalMovesMap.get(coord)?.add(targetCoord);
 		}
 	}
-	currTeam = match.currentPlayer.team;
-	do
-	{
-		
+	for (const [coord, targetSet] of legalMovesMap)
+	{// FIXME - eventualmente controllo per vedere che il re sia al sicuro dopo la mossa
+		for (const targetCoord of targetSet)
+			legalMovesArray.push({from: coord, to: targetCoord});
 	}
-	while (match.currentPlayer.team )
 	return (legalMovesArray);
 }

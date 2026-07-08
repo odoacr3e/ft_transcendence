@@ -9,6 +9,7 @@ import { movePiece, DangerUpdate } from "../utils/moveUtils.js";
 import { Square } from "../Classes/Chess/chessBoard.js";
 import { checkPieceDanger, pathFinding } from "./pathFinding.js";
 import { simulation } from "./moveLogic.js";
+import { getLegalMoves } from "./checkLegalMoves.js";
 
 /**
  * 
@@ -68,6 +69,11 @@ function checkMateCheckAll(match, result)
 	// @ts-ignore
 	if (match.playerNum == 1)
 		return (match.CheckMate(result), true);
+	if (getLegalMoves(match, match.currentPlayer.next).length == 0)
+	{
+		console.log("szechuan...");
+		return (match.DrawMatch(result), true);
+	}
 	return (false);
 }
 
