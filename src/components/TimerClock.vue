@@ -61,7 +61,7 @@
 </script>
 
 <template>
-	<div class="rounded-lg text-2xl mr-2 w-fit flex h-fit self-center p-2"
+	<div class="rounded-lg text-2xl mr-2 flex w-20% h-10% self-center p-2"
 		style="font-weight: 700;"
 		:class="{
 			'opacity-50': !props.go,

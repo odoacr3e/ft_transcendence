@@ -112,20 +112,23 @@ boardConverter()
 	✓ 	non si dovrebbe poter boostare se non hai ancora mosso nessun pezzo
 	▫ 	feedback quando il re è sotto scacco, (abbiamo bisogno di una flag oppure 
 		usiamo gli enum di errore comuni)
-	▫	Far vedere che pezzo hai selezionato
+	▫	Far vedere che pezzo hai selezionato [LEO]
 	▫ 	quando fai hover sul bottone per boostare il pezzo sarebbe carino poter avere
 	  	una preview delle target zones rese visibili sulla scacchiera, si può fare 
 	  	una route apposta per chiedere l'update delle target zones di un pezzo specifico
-	▫	Si fa fatica a capire di chi è il turno attuale
+	✓	Si fa fatica a capire di chi è il turno attuale
 	✓	orientamento della scacchiera in base al colore dei pezzi del giocatore
 	✓	orientamento del giocatore in base al giocatore
 	▫	history delle mosse durante la partita
 	▫	utilizzo websocket singolo solo per la partita diverso da websocket 
-		comunicazione server [LEO]
+		comunicazione server
 	▫	implementare (reload, riaccesso, chiudi e riapri la pagina di gioco) 
 		durante la partita
 	▫	avviso di quando devi fare end turn più chiaro (?)
 	▫	spostamento bottoni
+	▫	le mosse dell'avversario sono poco visibili, servirebbero delle animazioni sul
+		pezzo mosso oppure un evidenziazione sull'ulitmo pezzo mosso
+	▫
 
 //FIXME - Bugs
 	▫	quando finisci l'esecuzione di una mossa boostata di un pedone e clicchi su un'altro pezzo

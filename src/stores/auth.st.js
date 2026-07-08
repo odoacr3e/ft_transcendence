@@ -94,7 +94,7 @@ export const useAuthStore = defineStore('auth', {
 		{
 			if (this.socket) { return; }
 
-			this.socket = io('http://localhost:8080', { withCredentials: true });
+			this.socket = io(`http://${window.location.hostname}:8080`, { withCredentials: true });
 			assignGameSocket(this.socket);
 
 			this.socket.on('friend:online', ({ userId }) => { this.usersOnline.add(userId); });
