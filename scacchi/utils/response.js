@@ -67,8 +67,8 @@ function responseFormatter(match, result, msg, status)
 	if (!result.board)
 		delete result.board;
 	result.log = log;
-	if (!result.youWin)
-		result.youWin = false;
+	if (!result.victory)
+		result.victory = match? match.victory: "";
 	if (log.status != 200)
 		result.log.msg = "Game Error: " + result.log.msg;
 	result.match = null;

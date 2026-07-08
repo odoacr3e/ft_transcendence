@@ -199,7 +199,7 @@ class Match
 		{
 			result.msg = "you win!";
 			result.status = 200;
-			result.youWin = true;
+			result.victory = this.victory;
 			result.specialMoves.SetCheckMate();
 			//@ts-ignore
 			// result.board = clientBoard(this);
@@ -226,7 +226,6 @@ class Match
 		{
 			result.msg = "you lost!!!";
 			result.status = 200;
-			result.youWin = false;
 			result.specialMoves.SetCheckMate();
 			//@ts-ignore
 			// result.board = clientBoard(this);
@@ -267,7 +266,7 @@ class Match
 		{
 			result.msg = "it's a spare!!!";
 			result.status = 200;
-			result.Draw = true;
+			result.victory = this.victory;
 			result.specialMoves.SetDraw();
 			//@ts-ignore
 			// result.board = clientBoard(this);
