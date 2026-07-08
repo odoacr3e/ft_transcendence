@@ -32,7 +32,7 @@ export async function createUsersMatch(match) {
 				id_match: match.id,
 				id_user: u.id_user,
 				outcome: u.outcome,
-				team: u.startTeam
+				...(u.startTeam != null && { team: u.startTeam })
 			}
 		});
 	};

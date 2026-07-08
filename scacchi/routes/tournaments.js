@@ -37,3 +37,14 @@ tournamentsRouter.get('/:id', checkJwt, async (req, res) => {
 		return res.status(500).json(jsonResponse.ResponseError("Server error retrieving tournaments"));
 	}
 });
+
+tournamentsRouter.post('/', async (req, res) => {
+	try {
+		const tournament = await tournamentsQuery.createTournament(req.body.name, req.body.id_creator);
+		return res.status(200).json(jsonResponse.ResponseSuccess({ "tournament": tournament }));
+	} catch (error) {
+		if (error.code == 'P2002')
+			return res.status(409).json(jsonResponse.ResponseError("Tournament already exists"));
+		return res.status(409).json(jsonResponse.ResponseError(""));
+	}
+});

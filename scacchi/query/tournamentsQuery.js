@@ -84,3 +84,33 @@ export async function getTournamentById(id_tournament) {
 		players: tournament.tournament_players.map(tp => tp.users)
 	});
 }
+
+export async function createTournament(name, id_creator) {
+	const tournament = await prisma.tournaments.create({
+		data: {
+			name: name,
+			created_at: new Date().toISOString(),
+			status: 'open',
+			created_by: id_creator
+		},
+		select: {
+			id_tournament: true,
+			status: true,
+			created_at: true,
+			name: true,
+			users: {
+				select: {
+					id_user: true,
+					username: true
+				}
+			}
+		}
+	});
+	return ({
+		id_tournament: tournament.id_tournament,
+		name: tournament.name,
+		status: tournament.status,
+		created_at: tournament.created_at.toISOString().split('T')[0],
+		created_by: { id_user: tournament.users.id_user, username: tournament.users.username }
+	});
+}
