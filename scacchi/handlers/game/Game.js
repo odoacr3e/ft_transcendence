@@ -13,7 +13,8 @@ import { render } from "../../test/render.js";
 import {makeTransfiguration} from "./transfiguration.js";
 //FIXME - solo debug
 import { globals } from "../../Classes/Globals/globals.js";
-import { createMatch } from "../../query/gameQuery.js";
+import { query } from "../../lib/query.js";
+const { createMatch, createUsersMatch } = query.gameQuery;
 import { Match, MatchSettings } from "../../Classes/Chess/match.js";
 import { includesOneOf } from "../../utils/string.js";
 
@@ -158,12 +159,13 @@ async function gameHandler(match, body)
 		return (error(null, result), result);
 	result = responseFormatter(match, result, null, null);
 	render(match);
-	if (match.victory != "" && match.id != "0")
+	if (match.victory != "" /* && match.id != "0" */)
 	{
 		try 
 		{
 			console.log("Salvataggio partita nel database...");
 			await createMatch(match);
+			await createUsersMatch(match);
 			console.log("Successo!");
 		}
 		catch (error)

@@ -134,14 +134,14 @@
       "useBoostBool": false,
       "counter": 9,
       "updates": {},
-      "error": false
+      "error": true
     },
     {
-      "from": "",
-      "to": "",
-      "movedPiece": "",
+      "from": "b4",
+      "to": "a5",
+      "movedPiece": "Bastards",
       "team": "white",
-      "type": "endturn",
+      "type": "move",
       "useBoostBool": false,
       "counter": 10,
       "updates": {},
