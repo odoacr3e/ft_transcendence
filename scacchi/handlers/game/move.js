@@ -8,7 +8,6 @@ import {endTurn} from "./endTurn.js";
 import {checkMateCheckAll} from "../../GameLogic/checkMate.js";
 import {checkMove, updateChessboard, checkSecondMove} from "../../GameLogic/moveLogic.js";
 import {enumNames} from "../../Macro/enums.js";
-import { DangerUpdate } from "../../utils/moveUtils.js";
 
 /** @typedef {import('../../Classes/Chess/chessBoard.js').Square} Square */
 
