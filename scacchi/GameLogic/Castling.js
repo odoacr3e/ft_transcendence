@@ -1,4 +1,11 @@
 // @ts-check
+
+//SECTION - castling functions
+/*
+	list of exports:
+	-	checkCastling:	checks if a castling move is possible or not.	
+*/
+
 import {enumNames} from "../Macro/enums.js";
 import { Chess } from "../lib/lib.js";
 const {Square, Piece} = Chess;
@@ -39,7 +46,7 @@ non in diagonale - OK
 */
 
 /**
- * 
+ * checks if a castling move is possible or not.
  * @param {Match} match
  * @param {Result} result
  * @param {Square} to

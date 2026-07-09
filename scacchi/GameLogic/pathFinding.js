@@ -1,5 +1,12 @@
 //@ts-check
 
+//SECTION - pathFinding functions
+/*
+	list of exports:
+	-	checkPieceDanger:	checks piece danger ignoring a coord
+	-	pathFinding:		check if is possible to go from start to dest
+*/
+
 import {movePiece, DangerUpdate, dangerUpdateAll, dangerUpdateMoved} from "../utils/moveUtils.js";
 
 /** @typedef {import("../Classes/Chess/match.js").Match} Match*/
@@ -7,13 +14,12 @@ import {movePiece, DangerUpdate, dangerUpdateAll, dangerUpdateMoved} from "../ut
 /** @typedef {import("../Classes/Chess/chessBoard.js").Square} Square*/
 
 /**
- * 
+ * checks piece danger ignoring a coord
  * @param {Match} match 
- * @param {string} checkDangerCoord 
- * @param {Piece} piece 
- * @param {string} pieceCoord
- * @param {string} ignoreCoord 
- * @returns 
+ * @param {string} checkDangerCoord the coord source of danger 
+ * @param {Piece} piece the piece to check
+ * @param {string} pieceCoord the current piece coord
+ * @param {string} ignoreCoord the coord to ignore (usually is the `from` coord)
  */
 export function checkPieceDanger(match, checkDangerCoord, piece, pieceCoord, ignoreCoord)
 {
@@ -34,6 +40,7 @@ export function checkPieceDanger(match, checkDangerCoord, piece, pieceCoord, ign
 	return (false);
 }
 
+//FIXME - refactorizzare (semplificare, tanta roba inutile)
 /**
  * check if is possible to go from start to dest
  * @param {Match} match 

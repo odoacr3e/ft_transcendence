@@ -1,12 +1,19 @@
 //@ts-check
 
+//SECTION - checkLegalMoves function
+/*
+	list of exports:
+	-	getLegalMoves:	returns an array of valid moves for a player
+*/
+
 import { enumNames } from "../Macro/enums.js";
 import { isDangerous } from "../utils/gameUtils.js";
 
 /** @typedef {import("../Classes/Chess/match").Match} Match*/
 
 /**
- * returns an array of {from, to} legal moves about the currentPlayer  
+ * returns an array of valid moves for a player.
+ * the array elements are formatted as: {from: coord, to: coord}.
  * @param {Match} match 
  * @param {string} team
  * */

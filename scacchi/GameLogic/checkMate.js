@@ -1,4 +1,12 @@
 // @ts-check
+
+//SECTION - checkMate functions
+/*
+	list of exports:
+	-	checkMateCheckAll: checks if every active player is in check/staleMate
+	-	getDirection: 		given two coords, it returns {Δx, Δy}.
+*/
+
 import { Chess } from "../lib/lib.js";
 import {Result} from "../Classes/endPoint/result.js";
 const {preset} = Chess;
@@ -12,7 +20,7 @@ import { simulation } from "./moveLogic.js";
 import { getLegalMoves } from "./checkLegalMoves.js";
 
 /**
- * 
+ * checks if a player is in checkMate
  * @param {Match} match
  * @param {string} kingCoord
  */
@@ -48,7 +56,7 @@ function CheckMateCheck(match, kingCoord=match.currentPlayer.King)
 }
 
 /**
- * 
+ * checks if every active player is in check/staleMate
  * @param {Match} match 
  * @param {Result | null} result
  */
@@ -80,18 +88,18 @@ function checkMateCheckAll(match, result)
 /**
  * 
  * @param {Match} match
- * @param {string} kingSquare 
- * @param {string} enemySquare 
+ * @param {string} kingCoord 
+ * @param {string} enemyCoord 
  */
-function getDirection(match, kingSquare, enemySquare)
+function getDirection(match, kingCoord, enemyCoord)
 {
 	let rowK, rowE, diffRow;
 	let colK, colE, diffCol;
 
-	match.cursor.square = kingSquare;
+	match.cursor.square = kingCoord;
 	rowK = match.cursor.getRow();
 	colK = match.cursor.getCol();
-	match.cursor.square = enemySquare;
+	match.cursor.square = enemyCoord;
 	rowE = match.cursor.getRow();
 	colE = match.cursor.getCol();
 	diffRow = rowK - rowE;

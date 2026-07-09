@@ -1,4 +1,7 @@
 // @ts-check
+
+//FIXME - fare piu file!!!
+
 import {eEvents, enumNames, arrayNames, enumSpecialMoves, eTeam} from "../Macro/enums.js";
 import {MOVEMENT_MAX, CHESSBOARD_H, CHESSBOARD_W} from "../Macro/macro.js";
 import { Chess } from "../lib/lib.js";
