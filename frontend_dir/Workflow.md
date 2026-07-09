@@ -105,23 +105,30 @@ boardConverter()
 			✓ valkirya
 			✓ campione
 			✓ re
-	✓ aura dei pezzi boostati visibile [LEO] 
-	▫ end turn, boost e useAbility triggerabili da pulsanti da tastiera [LEO]
-	▫ bottone di potenziamento clickabile solo durante il second turn 
-	▫ refactor di archi nel caso la board non esista
-	▫ non si dovrebbe poter boostare se non hai ancora mosso nessun pezzo
-	▫ feedback quando il re è sotto scacco, (abbiamo bisogno di una flag oppure usiamo gli enum di 
-	  errore comuni)
-	▫ quando fai hover sul bottone per boostare il pezzo sarebbe carino poter avere
-	  una preview delle target zones rese visibili sulla scacchiera, si può fare una route apposta per chiedere 
-	  l'update delle target zones di un pezzo specifico
-	▫ Si fa fatica a capire di chi è il turno attuale
-	▫ orientamento della scacchiera in base al colore dei pezzi del giocatore
+	✓ 	aura dei pezzi boostati visibile [LEO] 
+	✓ 	end turn, boost e useAbility triggerabili da pulsanti da tastiera [LEO]
+	✓ 	bottone di potenziamento clickabile solo durante il second turn 
+	▫ 	refactor di archi nel caso la board non esista
+	✓ 	non si dovrebbe poter boostare se non hai ancora mosso nessun pezzo
+	▫ 	feedback quando il re è sotto scacco, (abbiamo bisogno di una flag oppure 
+		usiamo gli enum di errore comuni)
+	▫	Far vedere che pezzo hai selezionato [LEO]
+	▫ 	quando fai hover sul bottone per boostare il pezzo sarebbe carino poter avere
+	  	una preview delle target zones rese visibili sulla scacchiera, si può fare 
+	  	una route apposta per chiedere l'update delle target zones di un pezzo specifico
+	✓	Si fa fatica a capire di chi è il turno attuale
+	✓	orientamento della scacchiera in base al colore dei pezzi del giocatore
+	✓	orientamento del giocatore in base al giocatore
 	▫	history delle mosse durante la partita
-	▫	utilizzo websocket singolo solo per la partita diverso da websocket comunicazione server [LEO]
-	▫	implementare (reload, riaccesso, chiudi e riapri la pagina di gioco) durante la partita
+	▫	utilizzo websocket singolo solo per la partita diverso da websocket 
+		comunicazione server
+	▫	implementare (reload, riaccesso, chiudi e riapri la pagina di gioco) 
+		durante la partita
 	▫	avviso di quando devi fare end turn più chiaro (?)
 	▫	spostamento bottoni
+	▫	le mosse dell'avversario sono poco visibili, servirebbero delle animazioni sul
+		pezzo mosso oppure un evidenziazione sull'ulitmo pezzo mosso
+	▫
 
 //FIXME - Bugs
 	▫	quando finisci l'esecuzione di una mossa boostata di un pedone e clicchi su un'altro pezzo
@@ -141,13 +148,18 @@ boardConverter()
 	✓	dettagli info sui match
 	✓	refactor pagina di gioco, pulsanti con tipi di partite, creazione stanze, sfida amici
 	✓	websocket per la partita [LEO]
-	▫	test login e resgiter con OTP e opzioni di toglierlo nelle impostazioni [MAVI]
+	▫	redirection alla pagina login se si prova ad accedere a pagine protette [MAVI]
+	▫	test login e resgiter con OT e opzioni di toglierlo nelle impostazioni [MAVI]
 	▫	info dei profili per le partitre a 4
 	▫	websocket per le notifiche
 	▫	pagina della leaderboard
 	▫	re-design della home
 	▫	update delle preferenze di colore degli utenti
 	▫	dettagli info sui match
+
+//NOTE - Testing
+	▫	gio provando a connettersi ha beccato errore SSL_PROTOCOL_ERROR, risolto non connettendosi con https
+	▫	nome utente in grassetto
 
 
 

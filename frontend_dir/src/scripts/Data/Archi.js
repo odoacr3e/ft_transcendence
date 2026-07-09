@@ -1,7 +1,8 @@
 import { initLocalBoard, localMatchState, localBoard,  
-			localPlayers, startLocalMatchState, 
-			localInfo}												from "./Variables.js";
-import { checkEndTurn, hasBoost, DEBUGSetVisible, checkUpgrade }	from "./utils/ArchiUtils.js";
+		 localPlayers, startLocalMatchState, 
+		 localInfo}										from "./Variables.js";
+import { checkEndTurn, hasBoost, DEBUGSetVisible, 
+		 checkUpgrade, assignLastMoveSquares }			from "./utils/ArchiUtils.js";
 import "./SocketLink.js"
 
 //SECTION - INIT FUNCTIONS
@@ -119,6 +120,8 @@ export function updateLocalBoard(changes)
 	if (typeof board !== "object" || Array.isArray(board))
 		throw new Error("[updateLocalBoard]: Board format not valid!");
 
+	const movedSquares = new Set();
+
 	Object.entries(board).forEach(([squareKey, newSquare]) => {
 		if (localBoard.has(squareKey))
 		{
@@ -129,13 +132,14 @@ export function updateLocalBoard(changes)
 					([key, value]) => [key, new Set(Array.isArray(value) ? value : [])]
 				)
 			);
-			
 			const oldSquare = localBoard.get(squareKey);
+			assignLastMoveSquares(oldSquare, newSquare, movedSquares);
 			oldSquare.piece = newSquare.piece;
 			oldSquare.targetZones = newSquare.targetZones;
 			oldSquare.boostedTargetZones = newSquare.boostedTargetZones;
 		}
 	});
+	localInfo.lastMovesSquares = movedSquares;
 }
 
 export function updateLocalPlayers(changes) 

@@ -19,8 +19,20 @@ export default defineConfig({
         target: 'http://backend:8080',
         changeOrigin: true,
       },
+	'/auth': {
+        target: 'http://backend:8080',
+        changeOrigin: true,
+      },
     },
   },
+//   server: {
+//     proxy: {
+//       '/api': {
+//         target: 'http://localhost:8080',
+//         changeOrigin: true,
+//       },
+//     },
+//   },
 //   server: {
 // 	proxy: {
 //     	'/api': {

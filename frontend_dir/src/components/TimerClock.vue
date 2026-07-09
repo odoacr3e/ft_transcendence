@@ -2,11 +2,12 @@
 	import { computed, ref, watch, onMounted, onUnmounted } from 'vue'
 
 	const props = defineProps({
-		Millis: { type: Number, default: 0 },
-		Go: { type: Boolean, default: false }
+		millis: { type: Number, default: 0 },
+		go: { type: Boolean, default: false },
+		team: {type: String, default: 'black'}
 	})
 
-	const	countDown = ref(props.Millis * +1),
+	const	countDown = ref(props.millis * +1),
 			min = computed(() => Math.floor(countDown.value / 60000)),
 			sec = computed(() => Math.floor((countDown.value % 60000) / 1000))
 	let		timeoutId = null,
@@ -35,7 +36,7 @@
 		else return num;
 	}
 
-	watch(() => props.Millis, (val) => {
+	watch(() => props.millis, (val) => {
 		countDown.value = val;
 		if (running) {
 			stopTimer();
@@ -43,14 +44,14 @@
 		}
 	});
 
-	watch(() => props.Go, (val) => {
+	watch(() => props.go, (val) => {
 		if (val) { if (!running) { running = true; countDownTimer(); } }
 		else { if (running) { running = false; stopTimer(); }}
 	});
 
 	onMounted(() => {
 		if (firstTurn) { firstTurn = false; return; }
-		if (props.Go) { running = true; countDownTimer(); }
+		if (props.go) { running = true; countDownTimer(); }
 	});
 
 	onUnmounted(() => {
@@ -60,11 +61,21 @@
 </script>
 
 <template>
-	<div class="bg-[#181715] rounded-lg border border-[#4e4e4e8c] text-2xl mr-2 w-fit flex h-fit self-center p-2 text-white"
-		:class="{'border-[#f1e8e89a] drop-shadow-custom': props.Go}">
+	<div class="rounded-lg text-2xl mr-2 flex w-20% h-10% self-center p-2"
+		style="font-weight: 700;"
+		:class="{
+			'opacity-50': !props.go,
+			'bg-[#181715] text-white': props.team === 'black',
+			'bg-[#ededed] text-black': props.team === 'white'
+		}">
 		<p class="justify-self-center self-center">{{ pad(min) }} : {{ pad(sec) }}</p>
 	</div>
 </template>
 
 <style scoped>
+
+div {
+    font-family: 'Inter Variable', sans-serif;
+}
+
 </style>

@@ -46,13 +46,13 @@ export async function requestToBack(fromSquare, toSquare)
 		})();
 
 	if (fromSquare === null && toSquare === null && localInfo.secondTurn)
-		{type = "endTurn"; fromSquare = ""; toSquare = ""; }
+		{type = "endturn"; fromSquare = ""; toSquare = ""; }
 	else if (fromSquare && toSquare === null)
 		{type = "boost"; toSquare = ""; }
 	else if (fromSquare == null && toSquare)
 		{type = "trans"; fromSquare = localInfo.goatId; localInfo.goatId = null; }
 	else if (fromSquare && toSquare && ((localInfo.secondMove && localInfo.secondTurn) || localBoard.get(fromSquare).useAbilityBool))
-		{type = "moveBoost";}
+		{type = "moveboost";}
 	else {type = "move"; }
 	let	timeout;
 

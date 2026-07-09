@@ -26,3 +26,8 @@ push_fe:
 restore:
 	git restore backend_dir
 	git restore frontend_dir
+
+# Se vuoi fare un pull da un branch specifico da backend o frontend usa questo comando
+# git subtree pull --prefix=<backend_dir/frontend_dir> origin <branch che vuoi> --squash
+# Se vuoi fare un npm install per fare update dei modules in back o front fai così
+# cd <frontend_dir/backend_dir> && <npm update/npm install>
