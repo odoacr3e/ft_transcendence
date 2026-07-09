@@ -1,7 +1,7 @@
 // @ts-check
 // const {Match} = require("../Chess/match.js");
 import {movePiece} from "../../../utils/dangerUpdate.js";
-import {bastardChecks} from "../../../utils/checkDanger.js";
+import {dangerUpdateBastards} from "../../../utils/dangerUpdate.js";
 
 /** @typedef {import("../match.js").Match} Match*/
 
@@ -24,7 +24,7 @@ let movementBastards = function (match)
 	match.board.get(startPos)?.boostedTargetZones.set(startPos, new Set());
 	for (let {dx, dy} of piece.moveArray)
 	{
-		if (!bastardChecks(match, dx, dy, piece))
+		if (!dangerUpdateBastards(match, dx, dy, piece))
 		{
 			usedBoard.get(match.cursor.square)?.dangerZones.add(startPos);
 			continue ;

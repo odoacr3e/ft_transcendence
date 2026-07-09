@@ -7,12 +7,13 @@
 	-	pathFinding:		check if is possible to go from start to dest
 */
 
-import {movePiece, DangerUpdate, dangerUpdateAll, dangerUpdateMoved} from "../utils/dangerUpdate.js";
+import {movePiece} from "../utils/dangerUpdate.js";
 
 /** @typedef {import("../Classes/Chess/match.js").Match} Match*/
 /** @typedef {import("../Classes/Chess/Pieces/pieces.js").Piece} Piece*/
 /** @typedef {import("../Classes/Chess/chessBoard.js").Square} Square*/
 
+//FIXME - spostare da qualche altra parte
 /**
  * checks piece danger ignoring a coord
  * @param {Match} match 

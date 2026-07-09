@@ -1,6 +1,5 @@
 // @ts-check
 import { enumNames} from "../Macro/enums.js";
-import {bastardChecks} from "./checkDanger.js";
 import { movePiece } from "./movePiece.js";
 
 /**@typedef {import("../Classes/Chess/match.js").Match} Match*/
@@ -36,7 +35,7 @@ let DangerUpdate = (match, pos=null, ignoreBoostChampsBool=true, castlingBool=fa
 	{
 		if (piece.type == enumNames.BASTARDS)
 		{
-			bastardChecks(match, dx, dy, piece);
+			dangerUpdateBastards(match, dx, dy, piece);
 			continue ;
 		}
 		while (movePiece(match, dy, dx))
@@ -106,7 +105,99 @@ function dangerUpdateMoved(match, selected=[], castlingBool=false)
 	updateBoostedChampions(match, selected);
 }
 
+/*										dy/dx	dy/dx	dy/dx
+	red/white: SOUTH, dy positivo  -->	1, 0	1,-1	1,1
+	yellow/black: NORTH dy negativo		-1, 0	-1,-1	-1,1
+	blue: WEST dx positivo				0, 1	-1,1	1,1
+	green: EAST dx positivo				0, -1	-1,-1	1,-1
+*/
+let bastardMove = // aggiornato movimenti
+{
+	white: new Set(["1|0", "1|1", "1|-1"]),
+	yellow: new Set(["1|0", "1|1", "1|-1"]),
+	black: new Set(["-1|0", "-1|-1", "-1|1"]),
+	red: new Set(["-1|0", "-1|-1", "-1|1"]),
+	blue: new Set(["0|1", "-1|1", "1|1"]),
+	green: new Set(["0|-1", "-1|-1", "1|-1"])
+}
+
+/**
+ * 
+ * @param {Match} match
+ * @param {Number} dy
+ * @param {Number} dx
+ * @param {*} piece
+ */
+function dangerUpdateBastards(match, dy, dx, piece)
+{
+	let	target;
+	let	startPos;
+	let	targetPos;
+
+	if (piece.type != enumNames.BASTARDS)
+		return true;
+	//@ts-ignore
+	if (!bastardMove[piece.team])
+		throw ("dangerUpdateBastards: unknown piece team");
+	// @ts-ignore
+	match.cursor.Save();
+	startPos = match.cursor.square;
+	if (match.cursor.moveRow(dy) == false)
+		return (false);
+	if (match.cursor.moveCol(dx) == false)
+		return (match.cursor.Restore(), false);
+	if (match.board.get(match.cursor.square).wallBool == true)
+		return (match.cursor.Restore(), false);
+	match.board.AddInfluence(startPos, match.cursor.square);//@ts-ignore
+	if (!bastardMove[piece.team].has(`${dy}|${dx}`))
+		return (match.cursor.Restore(), false);
+	targetPos = match.cursor.square;
+	target = match.board.get(targetPos).piece;
+	if (dx != 0 && dy != 0)//NOTE - bastards moves diagonally
+	{
+		match.board.get(targetPos).dangerZones.add(startPos);
+		match.cursor.Restore();
+		if (!target || target.team == piece.team)
+			return (false);
+		match.board.get(startPos).targetZones.add(targetPos);
+		return (true);
+	}
+	else if (target)//NOTE - bastards moves front
+	{
+		addLongBastardInfluence(match, dx, dy, startPos, piece);
+		return (match.cursor.Restore(), false);
+	}
+	match.board.get(startPos).targetZones.add(targetPos);
+	addLongBastardInfluence(match, dx, dy, startPos, piece);
+	if (match.board.get(match.cursor.square).wallBool == true)
+		return (match.cursor.Restore(), false);
+	if (!piece.isMovedBool && !match.board.get(match.cursor.square).piece)
+	{
+		match.board.get(startPos).targetZones.add(match.cursor.square);
+		// match.board.get(match.cursor.square).dangerZones.add(startPos);
+	}
+	match.cursor.Restore();
+	return (true);
+}
+
 //SECTION - utils
+
+/**
+ * 
+ * @param {Match} match 
+ * @param {number} dx 
+ * @param {number} dy 
+ * @param {string} startPos 
+ * @param {Piece} piece
+ */
+function addLongBastardInfluence(match, dx, dy, startPos, piece)
+{
+	match.cursor.Restore();
+	match.cursor.moveRow(dy + dy);
+	match.cursor.moveCol(dx + dx);
+	if (!piece.isMovedBool)
+		match.board.AddInfluence(startPos, match.cursor.square);
+}
 
 /**
  * checks if any king castling needs an update
@@ -242,4 +333,4 @@ function updateBoostedChampions(match, coords)
 	}
 }
 
-export {DangerUpdate, dangerUpdateAll, dangerUpdateMoved, movePiece};
+export {DangerUpdate, dangerUpdateAll, dangerUpdateMoved, dangerUpdateBastards, movePiece};

@@ -3,7 +3,9 @@
 //SECTION - castling functions
 /*
 	list of exports:
-	-	checkCastling:	checks if a castling move is possible or not.	
+	-	checkCastling:	checks if a castling move is possible or not.
+	-	moveCastling:	performs a castling move.
+	-	//FIXME - getPieces: spostare in un altro file 
 */
 
 import {enumNames} from "../Macro/enums.js";
@@ -14,6 +16,7 @@ import {getDirection} from "./checkMate.js";
 import {isDangerous} from "../utils/checkDanger.js";
 import {movePiece} from "../utils/dangerUpdate.js";
 import { Result } from "../Classes/endPoint/result.js";
+import { DangerUpdate } from "../utils/dangerUpdate.js";
 
 /** @typedef {import('../Classes/Chess/Pieces/pieces.js').Piece} Piece */
 /** @typedef {import('../Classes/Chess/chessBoard.js').Square} Square */
@@ -79,6 +82,64 @@ function checkCastling(match, result, to, from)
 
 /**
  * 
+ * @param {Match} match 
+ * @param {Square} from 
+ * @param {Square} to 
+ */
+function moveCastling(match, from, to)
+{
+	let pieces = getPieces(match, from, to);
+	let kpos;
+	let mpos;
+
+	kpos = pieces?.king.pos;
+	mpos = pieces?.mino.pos;
+	match.cursor.Save();
+	if (pieces == null)
+		throw ("moveCastling: we have lost our pieces coords, sorry");
+	match.board.updates.add(kpos);
+	match.board.updates.add(mpos);
+	match.cursor.set(pieces.king.pos);
+	for (let i = 0; movePiece(match, pieces.dir.diffCol, pieces.dir.diffRow); ++i)
+	{
+		if (match.cursor.square == pieces.mino.pos || i == 1)
+			break;
+	}
+	let square1 = match.board.get(match.cursor.square);
+	if (square1)
+	{
+		pieces.king.pos = match.cursor.square;
+		square1.piece = pieces.king;
+	}
+	// @ts-ignore
+	let square2 = match.board.get(kpos);
+	if (square2)
+		square2.piece = null;
+	movePiece(match, -pieces.dir.diffCol, -pieces.dir.diffRow);
+	let square3 = match.board.get(match.cursor.square);
+	if (square3)
+	{
+		pieces.mino.pos = match.cursor.square;
+		square3.piece = pieces.mino;
+	}
+	// @ts-ignore
+	let square4 = match.board.get(mpos);
+	if (square4)
+		square4.piece = null;
+	if (square1.piece)
+		match.currentPlayer.King = square1.piece.pos;
+	else
+		throw ("moveCastling: backend has lost the king");
+	match.currentPlayer.castlingArray.clear();
+	pieces.king.isMovedBool = true;
+	pieces.mino.isMovedBool = true;
+	DangerUpdate(match, pieces.mino.pos, true, true);
+	DangerUpdate(match, pieces.king.pos, true, true);
+	match.cursor.Restore();
+}
+
+/**
+ * 
  * @param {Match} match
  * @param {Square} from 
  * @param {Square} to 
@@ -114,4 +175,4 @@ function getPieces(match, from, to)
 	return (pieces);
 }
 
-export {checkCastling, getPieces};
+export {checkCastling, moveCastling, getPieces};

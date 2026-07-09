@@ -4,16 +4,15 @@
 /*
 	list of exports:
 	-	initSavedBoard:	 	init a board saved in string form (B|C|...\n|B|...)
-	-	initRandomBoard:	init a random board, given a generation seed (int)
 	-	initClassicBoard:	init the 8x8/14x14 classic board
+	-	initRandomBoard:	init a random board, given a generation seed (int)
 */
 
-import { Chess } from "../lib/lib.js";
 import { Piece } from "../Classes/Chess/Pieces/pieces.js";
 import { Enums } from "../lib/lib.js";
-const {eTeam, enumNames, enumInitNames} = Enums;
 import {dangerUpdateAll} from "../utils/dangerUpdate.js";
 import {Match} from "../Classes/Chess/match.js";
+const {eTeam, enumNames, enumInitNames} = Enums;
 
 /**
  * 
@@ -56,93 +55,6 @@ function initSavedBoard(match)
 	while (match.cursor.moveRow(-1))
 	dangerUpdateAll(match);
 	match.cursor.Restore();
-}
-
-/**
- * 
- * @param {Match} match 
- */
-function initBoard4v4(match)
-{
-	let	row;
-	let	col;
-	let	color;
-	let team;
-	let diff;
-	let	wallBool;
-
-	if (match.board.width < 14 || match.board.heigth < 14)
-		throw ("createChessboard: minimum is 14x14");
-	wallBool = false;
-	if (match.settings.board.corners == true)
-		wallBool = true;
-	color = true;
-	diff = (match.board.heigth - 8) / 2;//FIXME - funziona solo con W == H
-	for (let [key, data] of match.board)
-	{
-		data.piece = null;
-		color = !color;
-		match.cursor.set(key);
-		col = match.cursor.getCol();
-		row = match.cursor.getRow();
-		team = getTeamByCoord(match);
-		if (wallBool && (row <= diff || row > 8 + diff) && (col <= diff || col > 8 + diff))
-			data.wallBool = true;
-		else if ((row == 2 || row == match.board.heigth - 1) && (col > diff && col < match.board.width - diff + 1))
-			data.piece = new Piece(enumNames.BASTARDS, key, team);
-		else if (row == 1 || row == match.board.heigth)
-		{
-			switch (col)
-			{
-				case 1 + diff: case 8 + diff:
-					data.piece = new Piece(enumNames.MINOTAURUS, key, team);
-					break;
-				case 2 + diff: case 7 + diff:
-					data.piece = new Piece(enumNames.JESTER, key, team);
-					break ;
-				case 3 + diff: case 6 + diff:
-					data.piece = new Piece(enumNames.VALKIRYA, key, team);
-					break ;
-				case 4 + diff:
-					data.piece = new Piece(enumNames.CHAMPION, key, team);
-					break ;
-				case 5 + diff:
-					data.piece = new Piece(enumNames.KING, key, team);//@ts-ignore
-					match[team].King = match.cursor.square;
-					break;
-				default :
-					continue ;
-			}
-		}
-		else if ((col == 2 || col == match.board.width - 1) && (row > diff && row < match.board.heigth - diff + 1))
-			data.piece = new Piece(enumNames.BASTARDS, key, team);
-		else if (col == 1 || col == match.board.width)
-		{
-			switch (row)
-			{
-				case 1 + diff: case 8 + diff:
-					data.piece = new Piece(enumNames.MINOTAURUS, key, team);
-					break;
-				case 2 + diff: case 7 + diff:
-					data.piece = new Piece(enumNames.JESTER, key, team);
-					break ;
-				case 3 + diff: case 6 + diff:
-					data.piece = new Piece(enumNames.VALKIRYA, key, team);
-					break ;
-				case 4 + diff:
-					data.piece = new Piece(enumNames.CHAMPION, key, team);
-					break ;
-				case 5 + diff:
-					data.piece = new Piece(enumNames.KING, key, team);//@ts-ignore
-					match[team].King = match.cursor.square;
-					break;
-				default :
-					continue ;
-			}
-		}
-	}
-	match.forceYellowTurn();
-	dangerUpdateAll(match);
 }
 
 /**
@@ -251,6 +163,93 @@ function initRandomBoard(match, rng)
 }
 
 //SECTION - utils
+
+/**
+ * 
+ * @param {Match} match 
+ */
+function initBoard4v4(match)
+{
+	let	row;
+	let	col;
+	let	color;
+	let team;
+	let diff;
+	let	wallBool;
+
+	if (match.board.width < 14 || match.board.heigth < 14)
+		throw ("createChessboard: minimum is 14x14");
+	wallBool = false;
+	if (match.settings.board.corners == true)
+		wallBool = true;
+	color = true;
+	diff = (match.board.heigth - 8) / 2;//FIXME - funziona solo con W == H
+	for (let [key, data] of match.board)
+	{
+		data.piece = null;
+		color = !color;
+		match.cursor.set(key);
+		col = match.cursor.getCol();
+		row = match.cursor.getRow();
+		team = getTeamByCoord(match);
+		if (wallBool && (row <= diff || row > 8 + diff) && (col <= diff || col > 8 + diff))
+			data.wallBool = true;
+		else if ((row == 2 || row == match.board.heigth - 1) && (col > diff && col < match.board.width - diff + 1))
+			data.piece = new Piece(enumNames.BASTARDS, key, team);
+		else if (row == 1 || row == match.board.heigth)
+		{
+			switch (col)
+			{
+				case 1 + diff: case 8 + diff:
+					data.piece = new Piece(enumNames.MINOTAURUS, key, team);
+					break;
+				case 2 + diff: case 7 + diff:
+					data.piece = new Piece(enumNames.JESTER, key, team);
+					break ;
+				case 3 + diff: case 6 + diff:
+					data.piece = new Piece(enumNames.VALKIRYA, key, team);
+					break ;
+				case 4 + diff:
+					data.piece = new Piece(enumNames.CHAMPION, key, team);
+					break ;
+				case 5 + diff:
+					data.piece = new Piece(enumNames.KING, key, team);//@ts-ignore
+					match[team].King = match.cursor.square;
+					break;
+				default :
+					continue ;
+			}
+		}
+		else if ((col == 2 || col == match.board.width - 1) && (row > diff && row < match.board.heigth - diff + 1))
+			data.piece = new Piece(enumNames.BASTARDS, key, team);
+		else if (col == 1 || col == match.board.width)
+		{
+			switch (row)
+			{
+				case 1 + diff: case 8 + diff:
+					data.piece = new Piece(enumNames.MINOTAURUS, key, team);
+					break;
+				case 2 + diff: case 7 + diff:
+					data.piece = new Piece(enumNames.JESTER, key, team);
+					break ;
+				case 3 + diff: case 6 + diff:
+					data.piece = new Piece(enumNames.VALKIRYA, key, team);
+					break ;
+				case 4 + diff:
+					data.piece = new Piece(enumNames.CHAMPION, key, team);
+					break ;
+				case 5 + diff:
+					data.piece = new Piece(enumNames.KING, key, team);//@ts-ignore
+					match[team].King = match.cursor.square;
+					break;
+				default :
+					continue ;
+			}
+		}
+	}
+	match.forceYellowTurn();
+	dangerUpdateAll(match);
+}
 
 /**
  * 

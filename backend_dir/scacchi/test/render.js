@@ -3,6 +3,7 @@ import { Square, ChessBoard} from "../Classes/Chess/chessBoard.js";
 import { getLegalMoves } from "../GameLogic/checkLegalMoves.js";
 import {eTeam, getInitialOfTeam} from "../Macro/enums.js";
 import * as lib from "../lib/lib.js";
+import { isDangerous } from "../utils/checkDanger.js";
 // const {Match} = require("../Classes/Chess/match.js");
 const enumNames = lib.Enums.enumNames;
 import { includesOneOf } from "../utils/string.js";
@@ -157,7 +158,7 @@ function displayPlayerInfo(board, match)
 */
 function kingThreat(board, match)
 {
-	if (lib.gameUtils.isDangerous(match, match.board.get(match.currentPlayer.King)?.dangerZones, match.currentPlayer.team))
+	if (isDangerous(match, match.board.get(match.currentPlayer.King)?.dangerZones, match.currentPlayer.team))
 		return (true);
 	return (false);
 }

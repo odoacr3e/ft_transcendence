@@ -9,6 +9,7 @@ import { colors as color } from "./colorsOld.js";
 import { testerEnum as MSG } from "./enumsTest.js";
 import {boardStringify} from "./render.js";
 
+//@ts-ignore
 /** @typedef {import ("../../history/HISTORY.json")} historyData */
 
 let	currMatch = "";

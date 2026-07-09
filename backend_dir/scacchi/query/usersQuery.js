@@ -231,7 +231,7 @@ export async function deleteUserById(id) {
 }
 
 export async function updateUserFieldsById(id, data) {
-	const fields = ['name', 'surname', 'username', 'nationality', 'image', 'preferences'];
+	const fields = ['name', 'surname', 'username', 'nationality', 'image', 'preferences', 'mfa'];
 	const updates = {};
 	for (const f of fields)
 	{
@@ -239,6 +239,15 @@ export async function updateUserFieldsById(id, data) {
 			updates[f] = data[f];
 		if (data.preferences && f === 'preferences')
 			updates.preferences = { connect: { id_preference: Number(data[f]) }};
+		if (data.mfa && f === 'mfa')
+		{
+			const user = await prisma.users.findUnique({
+				where: { id_user: Number(id) },
+				select: { mfa: true }
+			});
+			if (data.mfa !== user.mfa)
+				updates.preferences = data.mfa;
+		}
 	}
 	return await prisma.users.update({
 		where: { id_user: Number(id) },
