@@ -127,8 +127,9 @@ export class HistoryEvent
  * @param {Match} match
  * @param {Square} square 
  * @param {Array<string>} coords 
+ * @param {boolean} boostBool
  */
-function updateMoves(match, square, coords)
+function updateMoves(match, square, coords, boostBool=false)
 {
 	let	record;
 	let	eName;
@@ -142,7 +143,7 @@ function updateMoves(match, square, coords)
 	// if (!square.piece)
 	// 	throw (`History: missing piece in square: ${square}`);
 	eName = eEvents.Move;
-	if (match.currentPlayer.useBoostBool)
+	if (match.currentPlayer.useBoostBool || boostBool == true)
 		eName = eEvents.MoveBoost;
 	record = new HistoryEvent(this.moves, eName, square.piece?.team, match.board.updates, square.piece?.type, coords[0], coords[1], square.boostedTargetZones, square.piece?.isBoostedBool);
 	this.events.push(record);

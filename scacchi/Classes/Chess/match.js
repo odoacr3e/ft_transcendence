@@ -8,8 +8,8 @@ import {HISTORY_PATH, CHESSBOARD_W, CHESSBOARD_H} from "../../Macro/macro.js";
 import {Result} from "../endPoint/result.js";
 import {Player} from "./player.js";
 import {boardStringify} from "../../test/render.js";
-import { isDangerous } from "../../utils/gameUtils.js";
-import { DangerUpdate } from "../../utils/moveUtils.js";
+import { isDangerous } from "../../utils/checkDanger.js";
+import { DangerUpdate } from "../../utils/dangerUpdate.js";
 import { History } from "./history.js";
 import { clientBoard } from "../../handlers/game/utils.js";
 import { MATCHTIMER } from "../../Macro/macro.js"; 
@@ -36,6 +36,8 @@ class Match
 		this.blue = new Player(eTeam.Blue, this.settings);
 		this.green = new Player(eTeam.Green, this.settings);
 		this.yellow = new Player(eTeam.Yellow, this.settings);
+		/** @type {Array<{id_user: string, outcome: string, startTeam: string | null, team: string}>} */
+		this.users = [];
 		w = this.settings.board.width;
 		h = this.settings.board.heigth;
 		this.board = new ChessBoard(w, h);
@@ -58,6 +60,7 @@ class Match
 		/** @type {Number|null}*/this.tournament_id = null;
 		/** @type {String|null}*/this.tournament_round = null;
 		this.spareCountDown = 0;
+		/** @type {Map<string, number>}*/ this.boardStateMap = new Map();
 		this.cursor.square = this.currentPlayer.King;
 	}
 	/** @param {MatchSettings | string | null} preset*/
@@ -76,6 +79,7 @@ class Match
 		this.blue = new Player(eTeam.Blue, this.settings);
 		this.green = new Player(eTeam.Green, this.settings);
 		this.yellow = new Player(eTeam.Yellow, this.settings);
+		this.users = [];
 		w = this.settings.board.width;
 		h = this.settings.board.heigth;
 		this.board = new ChessBoard(w, h);
@@ -97,7 +101,8 @@ class Match
 		this.id = "0";
 		this.tournament_id = null;
 		this.tournament_round = null;
-		this.spareCountDown = 0; //FIXME - da riprendere
+		this.spareCountDown = 0;
+		this.boardStateMap = new Map();
 		this.cursor.square = this.currentPlayer.King;
 	}
 	endTurn()
@@ -191,13 +196,18 @@ class Match
 		console.log("haaaaaiiiiii viiiiiiintoooooooooo!!!!!!!");
 		this.victory = this.currentPlayer.team;
 		this.history.victory = this.victory;
+		for (const user of this.users)
+		{
+			if (this.FindPlayer(user.team) == true)
+				user.outcome = "Win";
+		}
 		if (this.id != "0")
 			globals.matches.delete(this.id);
 		if (result != null)
 		{
 			result.msg = "you win!";
 			result.status = 200;
-			result.youWin = true;
+			result.victory = this.victory;
 			result.specialMoves.SetCheckMate();
 			//@ts-ignore
 			// result.board = clientBoard(this);
@@ -224,7 +234,6 @@ class Match
 		{
 			result.msg = "you lost!!!";
 			result.status = 200;
-			result.youWin = false;
 			result.specialMoves.SetCheckMate();
 			//@ts-ignore
 			// result.board = clientBoard(this);
@@ -243,11 +252,17 @@ class Match
 		let tmp;
 
 		console.log("ed e' un pareggioooooooo!!!!");
+		this.victory = "draw";
 		// console.log("Premi un qualsiasi tasto per concludere...");
 		//FIXME - gestire cosa succede in base a quanti player restano
 		//FIXME - gestire salvataggio nella history
 		tmp = this.currentPlayer;
 		player = tmp.next;
+		for (let x of this.users)
+		{
+			if (this.FindPlayer(x.team))
+				x.outcome = "Draw";
+		}
 		//@ts-ignore
 		while (this[player].team != tmp.team)
 		{
@@ -264,7 +279,7 @@ class Match
 		{
 			result.msg = "it's a spare!!!";
 			result.status = 200;
-			result.Draw = true;
+			result.victory = this.victory;
 			result.specialMoves.SetDraw();
 			//@ts-ignore
 			// result.board = clientBoard(this);
@@ -272,6 +287,21 @@ class Match
 		else
 			return (new Result());
 		return (result);	
+	}
+	/** @param {string} team */
+	FindPlayer(team)
+	{
+		let	currTeam = this.currentPlayer.team;
+		let	foundBool = false;
+
+		do
+		{
+			if (team == this.currentPlayer.team)
+				foundBool = true;
+			this.endTurn();
+		}
+		while(this.currentPlayer.team != currTeam)
+		return (foundBool);
 	}
 	/** @param {string} name */
 	Log(name="")
@@ -285,6 +315,9 @@ class Match
 
 		if (!player)
 			throw (`Delete player: invalid player`);
+		//@ts-ignore
+		if (!this[player.team])
+			throw (`Delete player: invalid player data`);
 		this.playerNum--;
 		if (!player.prev)
 			return ;

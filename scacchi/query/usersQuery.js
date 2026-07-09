@@ -17,8 +17,7 @@ export async function getAllUsers() {
 					description: true,
 					colors: true,
 				}
-			},
-			mfa: true
+			}
 		},
 		orderBy: {
 			id_user: 'asc'
@@ -260,7 +259,8 @@ export async function updateUserFieldsById(id, data) {
 					description: true,
 					colors: true,
 				}
-			}
+			},
+			mfa: true
 		}
 	});
 }

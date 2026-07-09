@@ -1,9 +1,18 @@
 //@ts-check
+
+//SECTION - createChessBoard function
+/*
+	list of exports:
+	-	initSavedBoard:	 	init a board saved in string form (B|C|...\n|B|...)
+	-	initRandomBoard:	init a random board, given a generation seed (int)
+	-	initClassicBoard:	init the 8x8/14x14 classic board
+*/
+
 import { Chess } from "../lib/lib.js";
 import { Piece } from "../Classes/Chess/Pieces/pieces.js";
 import { Enums } from "../lib/lib.js";
 const {eTeam, enumNames, enumInitNames} = Enums;
-import {dangerUpdateAll} from "../utils/moveUtils.js";
+import {dangerUpdateAll} from "../utils/dangerUpdate.js";
 import {Match} from "../Classes/Chess/match.js";
 
 /**
@@ -98,7 +107,7 @@ function initBoard4v4(match)
 					data.piece = new Piece(enumNames.CHAMPION, key, team);
 					break ;
 				case 5 + diff:
-					data.piece = new Piece(enumNames.KING, key, team);
+					data.piece = new Piece(enumNames.KING, key, team);//@ts-ignore
 					match[team].King = match.cursor.square;
 					break;
 				default :
@@ -124,7 +133,7 @@ function initBoard4v4(match)
 					data.piece = new Piece(enumNames.CHAMPION, key, team);
 					break ;
 				case 5 + diff:
-					data.piece = new Piece(enumNames.KING, key, team);
+					data.piece = new Piece(enumNames.KING, key, team);//@ts-ignore
 					match[team].King = match.cursor.square;
 					break;
 				default :

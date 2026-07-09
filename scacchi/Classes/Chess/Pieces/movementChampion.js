@@ -1,7 +1,7 @@
 // @ts-check
 import {berserkMode} from "./berserkMode.js";
-import {movePiece} from "../../../utils/moveUtils.js";
-import {isDangerous} from "../../../utils/gameUtils.js";
+import {movePiece} from "../../../utils/dangerUpdate.js";
+import {isDangerous} from "../../../utils/checkDanger.js";
 import { checkPieceDanger } from "../../../GameLogic/pathFinding.js";
 import { enumNames } from "../../../Macro/enums.js";
 
@@ -25,7 +25,10 @@ let movementChampion = function (match)
 	if (piece == undefined)
 		return (0);
 	if (piece.pos != startPos)
+	{
+		console.trace();
 		throw (`movementChampion: mismatch: startPos ${startPos}, piece.pos ${piece.pos}`);
+	}
 	for (let {dx, dy} of piece.moveArray)
 	{
 		match.cursor.square = startPos;

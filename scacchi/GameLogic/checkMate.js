@@ -1,17 +1,26 @@
 // @ts-check
+
+//SECTION - checkMate functions
+/*
+	list of exports:
+	-	checkMateCheckAll: checks if every active player is in check/staleMate
+	-	getDirection: 		given two coords, it returns {Δx, Δy}.
+*/
+
 import { Chess } from "../lib/lib.js";
 import {Result} from "../Classes/endPoint/result.js";
 const {preset} = Chess;
 import {enumNames} from "../Macro/enums.js";
 import {Match} from "../Classes/Chess/match.js";
-import {isDangerous} from "../utils/gameUtils.js";
-import { movePiece, DangerUpdate } from "../utils/moveUtils.js";
+import {isDangerous} from "../utils/checkDanger.js";
+import { movePiece, DangerUpdate } from "../utils/dangerUpdate.js";
 import { Square } from "../Classes/Chess/chessBoard.js";
 import { checkPieceDanger, pathFinding } from "./pathFinding.js";
 import { simulation } from "./moveLogic.js";
+import { getLegalMoves } from "./checkLegalMoves.js";
 
 /**
- * 
+ * checks if a player is in checkMate
  * @param {Match} match
  * @param {string} kingCoord
  */
@@ -47,7 +56,7 @@ function CheckMateCheck(match, kingCoord=match.currentPlayer.King)
 }
 
 /**
- * 
+ * checks if every active player is in check/staleMate
  * @param {Match} match 
  * @param {Result | null} result
  */
@@ -68,24 +77,29 @@ function checkMateCheckAll(match, result)
 	// @ts-ignore
 	if (match.playerNum == 1)
 		return (match.CheckMate(result), true);
+	if (getLegalMoves(match, match.currentPlayer.next).length == 0)
+	{
+		console.log("szechuan...");
+		return (match.DrawMatch(result), true);
+	}
 	return (false);
 }
 
 /**
  * 
  * @param {Match} match
- * @param {string} kingSquare 
- * @param {string} enemySquare 
+ * @param {string} kingCoord 
+ * @param {string} enemyCoord 
  */
-function getDirection(match, kingSquare, enemySquare)
+function getDirection(match, kingCoord, enemyCoord)
 {
 	let rowK, rowE, diffRow;
 	let colK, colE, diffCol;
 
-	match.cursor.square = kingSquare;
+	match.cursor.square = kingCoord;
 	rowK = match.cursor.getRow();
 	colK = match.cursor.getCol();
-	match.cursor.square = enemySquare;
+	match.cursor.square = enemyCoord;
 	rowE = match.cursor.getRow();
 	colE = match.cursor.getCol();
 	diffRow = rowK - rowE;
@@ -354,6 +368,8 @@ function cantMovePiece(match, enemyCoord, enemySquare, kingCoord)
 	ignoredCoords.add(enemyCoord);
 	for (const kingGuardianCoord of enemySquare.dangerZones)
 	{
+		if (kingGuardianCoord == kingCoord)
+			continue ;
 		ignoredCoords.add(kingGuardianCoord);
 		guardianSquare = match.board.get(kingGuardianCoord);
 		guardianPiece = guardianSquare.piece; 
