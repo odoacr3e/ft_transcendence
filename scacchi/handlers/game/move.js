@@ -6,8 +6,9 @@ import {Match} from "../../Classes/Chess/match.js";
 import {paramCheck, Result, clientBoard} from "./utils.js";
 import {endTurn} from "./endTurn.js";
 import {checkMateCheckAll} from "../../GameLogic/checkMate.js";
-import {checkMove, updateChessboard, checkSecondMove} from "../../GameLogic/moveLogic.js";
+import {updateChessboard} from "../../GameLogic/moveLogic.js";
 import {enumNames} from "../../Macro/enums.js";
+import { checkMove, checkSecondMove } from "../../GameLogic/checkMove.js";
 
 /** @typedef {import('../../Classes/Chess/chessBoard.js').Square} Square */
 

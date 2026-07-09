@@ -15,6 +15,7 @@ import {jsonParser} from "../utils/response.js";
 import {render} from "./render.js";
 import { coordNormify } from "../Classes/Chess/cursor.js";
 
+//@ts-ignore
 /** @typedef {import ("../../history/HISTORY.json")} historyData */
 /** @typedef {import ("../Classes/Chess/chessBoard.js").ChessBoard} ChessBoard */
 /** @typedef {import ("../Classes/Chess/history.js").HistoryEvent} HistoryEvent */

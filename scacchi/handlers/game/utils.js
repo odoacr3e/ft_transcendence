@@ -179,7 +179,6 @@ function error(result, status, msg)
 function checkMateAlert(result, team="")
 {
 	result.status = 200;
-	result.youWin = true;
 	result.msg = `Player ${team} has won!!!`
 	return (result);
 }

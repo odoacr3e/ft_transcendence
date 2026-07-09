@@ -16,7 +16,7 @@ import {isDangerous} from "../utils/checkDanger.js";
 import { movePiece, DangerUpdate } from "../utils/dangerUpdate.js";
 import { Square } from "../Classes/Chess/chessBoard.js";
 import { checkPieceDanger, pathFinding } from "./pathFinding.js";
-import { simulation } from "./moveLogic.js";
+import { simulation } from "./simulation.js";
 import { getLegalMoves } from "./checkLegalMoves.js";
 
 /**
