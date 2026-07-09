@@ -65,9 +65,11 @@ export function highlightOnDrag(event)
 	 	
 		if (Piece.team != Player.team) { return; }
 
+		clearHighlight("clicked");
 		PIECES_HIGHLIGHT[Piece.type](clickedId);
 		if (localInfo.savedBoostedMap && localInfo.savedBoostedMap.has(clickedId))
 			localBoard.get(clickedId).boostedHighlight = true;
+		localBoard.get(clickedId).clicked = true;
 		resetPrice();
 	}
 }
