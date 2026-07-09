@@ -3,6 +3,10 @@ import { api } from './client'
 export const authApi = {
 	login:		async (credentials) => {
 		const resp = await api.post('/auth/login', credentials); // { username, password }
+		return (resp);
+	},
+	mfa:	async(credentials) => {
+		const resp = await api.post('/auth/verifyOtp', credentials); // { OTP code }
 		return (resp.data.user);
 	},
 	register:	async (userData) => {

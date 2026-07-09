@@ -3,23 +3,102 @@
 	import { useRouter }	from 'vue-router';
 	import { ref }			from 'vue';
 
-	const formData = ref({
-	  username: '',
-	  password: ''
-	});
-	const	auth = useAuthStore(),
+	const	formData = ref({
+			  username: '',
+			  password: ''
+			}),
+			otpData = ref({
+			  id_user: '',
+			  otp: ''
+			}),
+			otpValues = ref(['', '', '', '', '', '']),
+			auth = useAuthStore(),
 			visible = ref(false),
+			popup = ref(false),
 			error = ref(false),
 			error_card = ref(false),
-			router = useRouter();
+			router = useRouter(),
+			resp = ref(null);
 
 	async function submitForm() {
-		const resp = await auth.login(formData.value);
-		if (!resp)	{ router.push('/me'); }
-		else		{ error.value = true; error_card.value = true; }
+		resp.value = await auth.login(formData.value);
+
+		if (!resp.value && auth.isAuthenticated)			{ router.push('/me'); }
+		else if (resp.value && resp.value.status === "success" && !auth.isAuthenticated)
+		{
+			popup.value = true;
+			otpData.value.id_user = resp.value.data.id_user;
+		}
+		else										{ error.value = true; error_card.value = true; }
 	}
 
+	async function submitOtp()
+	{
+		otpData.value.otp = otpValues.value.join('');
+		resp.value = await auth.mfa(otpData.value);
+
+		if (!resp.value)	{ router.push('/me'); }
+		else				{ error.value = true; error_card.value = true; }
+	}
+
+	const closePopup = () => {
+        popup.value = false;
+    };
+
 	function show() { visible.value = !visible.value; }
+
+	function handleOtpInput(index, event) {
+		const value = event.target.value;
+		if (value && /^\d$/.test(value)) // /^\d$/ ^ -> inziio stringa, \d = digit 0-9, $ = fine stringa
+		{
+			otpValues.value[index] = value;
+			if (index < 5)
+				setTimeout(() => document.getElementById(`otp-${index + 1}`)?.focus(), 0);
+		} 
+		else { otpValues.value[index] = ''; }
+	}
+
+	function handleOtpKeydown(index, event) {
+		if (event.ctrlKey || event.metaKey) return;
+
+		if (!/^\d$/.test(event.key) && !['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab'].includes(event.key))
+		{
+    	    event.preventDefault();
+    	    return;
+    	}
+
+		if (event.key === 'Backspace')
+		{
+			if (otpValues.value[index] === '' && index > 0)
+			{
+				otpValues.value[index - 1] = '';
+				setTimeout(() => document.getElementById(`otp-${index - 1}`)?.focus(), 0);
+			}
+			else
+				otpValues.value[index] = '';
+		}
+		else if (event.key === 'ArrowLeft' && index > 0)	{ document.getElementById(`otp-${index - 1}`)?.focus(); }
+		else if (event.key === 'ArrowRight' && index < 5)	{ document.getElementById(`otp-${index + 1}`)?.focus(); }
+	}
+
+	function handleOtpPaste(event) {
+		event.preventDefault();
+
+		const	pasted = event.clipboardData.getData('text').trim(),
+				digits = pasted.replace(/\D/g, '').split(''); // solo le cifre
+
+		if (digits.length === 0)
+			return;
+
+		let currentIndex = 0;
+		for (let i = 0; i < digits.length && currentIndex < 6; i++) {
+			otpValues.value[currentIndex] = digits[i]; // Riempi gli input
+			currentIndex++;
+		}
+
+		const focusIndex = Math.min(currentIndex, 5);  // focus sull'ultimo campo 
+		setTimeout(() => document.getElementById(`otp-${focusIndex}`)?.focus(), 0);
+	}
 </script>
 
 <template>
@@ -67,6 +146,33 @@
 					type="submit" value="Accedi">
 		</form>
 	</div>
+
+	<div v-if="popup" class="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-xs px-4">
+        <div class="w-full max-w-lg rounded-3xl border border-[#4e4e4e8c] bg-[#201e1c] p-6 text-white shadow-2xl">
+            <div class="flex items-start justify-between gap-4">
+                <p class="text-sm uppercase tracking-widest text-zinc-300">Autenticazione OTP</p>
+				<button type="button" class="text-2xl leading-none text-zinc-400 hover:text-white" @click="closePopup">&times;</button>
+            </div>
+			<hr class="w-[90%] justify-self-start text-[#4e4e4e8c] mt-1 mb-2">
+			<div class="justify-self-center mt-4">
+				<p class="text-sm justify-self-center">Inserisci le il codice che ti e' stato mandato via email.</p>
+				<p class="text-sm justify-self-center mb-2">Scadra' in {{ resp.data.Expiration }}.</p>
+				<form @submit.prevent="submitOtp" class="justify-self-center">
+					<div class="flex">
+						<div v-for="(digit, index) in otpValues" :key="`otp-${index}`" class="otp" id="otpContainer">
+							<input type="text" class="otp-input" maxlength="1"
+									:id="`otp-${index}`" :value="digit" :autofocus="index === 0"
+									@input="handleOtpInput(index, $event)" @keydown="handleOtpKeydown(index, $event)" @paste="handleOtpPaste($event)">
+						</div>
+					</div>
+					<input id="submit" type="submit" value="Accedi"
+						class="cursor-pointer justify-self-center w-full my-3 p-3 text-base bg-[#882a2a] rounded-[7px] text-white hover:bg-linear-to-t from-[#882a2a] to-[#af3d3d]"
+						:class="{	'pointer-events-none grayscale': otpValues.some(v => !v), 
+									'pointer-events-auto grayscale-0': otpValues.every(v => v) }">
+				</form>
+			</div>
+		</div>
+    </div>
 </template>
 
 <style scoped>
@@ -94,5 +200,37 @@
 
 	#submit {
 		transition: filter 0.2s ease-in-out;
+	}
+
+	.otp {
+	    display: flex;
+	    gap: 15px;
+	    justify-content: center;
+		margin: 5px;
+		padding: 15px;
+		border-width: 1px;
+		border-radius: 7px;
+		border-color: #4e4e4e8c;
+		color: #dcdfe4c0;
+		justify-self: center;
+	}
+
+	.otp input {
+	    width: 20px;
+	    height: 30px;
+	    border: none;
+	    outline: none;
+	    font-size: 28px;
+	    text-align: center;
+	    transition: 0.3s;
+	}
+
+	div.otp:focus-within {
+		border-color: #f1e8e870;
+	}
+
+	div.otp:hover {
+		border-color: #f1e8e870;
+		transition: border 0.25s ease-in-out;
 	}
 </style>
