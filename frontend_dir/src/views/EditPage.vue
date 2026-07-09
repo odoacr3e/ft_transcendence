@@ -12,7 +12,8 @@
 	        	name: '',
 	        	surname: '',
 	        	username: '',
-	        	nationality: ''
+	        	nationality: '',
+                // mfa: false
                 // preferences: 0
 	        }),
             avatarFile = ref(null),      // il File vero e proprio
@@ -65,6 +66,7 @@
             if (!formData.value.surname)        { formData.value.surname = user.value.surname; }
             if (!formData.value.username)       { formData.value.username = user.value.username; }
             if (!formData.value.nationality)    { formData.value.nationality = user.value.nationality; }
+            // if (!formData.value.mfa)         { formData.value.mfa = user.value.mfa; }
         }
 
         const resp = await authStore.update(formData.value);
@@ -184,6 +186,24 @@
                             </div>
                             <div class="form flex w-sm mb-3">
                                 <input :placeholder="user.nationality" list="country" size="35" class="pl-2 text-base" autofocus="true" type="text" v-model="formData.nationality">
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex gap-2 mb-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.6" stroke="currentColor" class="mt-1 size-6 text-[#dcdfe4c0]">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z" />
+                                </svg>
+                                <h3 class="text-xl">Autenticazione via OTP</h3>
+                            </div>
+                            <div class="flex w-sm mb-3 p-2.5 justify-self-center">
+                                <label class="inline-flex items-center me-5 cursor-pointer">
+                                  <input type="checkbox" value="" class="sr-only peer" :checked="user.mfa" v-model="formData.mfa">
+                                  <span class="select-none me-3 text-sm font-medium text-heading">Disattivato</span>
+                                  <div class="relative w-9 h-5 bg-neutral-quaternary rounded-full bg-[#0c0c0b]
+                                        peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:inset-s-0.5 after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#882a2a]"></div>
+                                  <span class="select-none ms-3 text-sm font-medium text-heading">Attivato</span>
+                                </label>
                             </div>
                         </div>
                     </div>
