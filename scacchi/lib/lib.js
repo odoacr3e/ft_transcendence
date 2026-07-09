@@ -51,8 +51,7 @@ import * as Enums from "../Macro/enums.js";
 
 // SECTION - utils function
 import * as utils from "../utils/dangerUpdate.js";
-import {bastardChecks, isDangerous} from "../utils/checkDanger.js";
-let gameUtils = {bastardChecks, isDangerous};
+let gameUtils = {};
 
 const conn = { redis, crypto, sendEmail, bodyOTP, bodyRegistration };
 const auth = { jwt, cors };
