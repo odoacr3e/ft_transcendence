@@ -1,5 +1,11 @@
 //@ts-check
 
+//SECTION - movePiece function
+/*
+	list of exports:
+	-	movePiece:	try to move the cursor to dx, dy. return true/false.
+*/
+
 /**@typedef {import("../Classes/Chess/match.js").Match} Match*/
 
 /**

@@ -1,4 +1,13 @@
 // @ts-check
+
+//SECTION - response functions
+/*
+	list of exports:
+	-	jsonResponse:		object that formats an http success/error response.
+	-	responseFormatter:	format response for /api/game and game websockets.
+	-	jsonParser:			parse strings into js objects and viceversa.
+*/
+
 import { Match } from "../Classes/Chess/match.js";
 import { Result } from "../Classes/endPoint/result.js";
 

@@ -1,4 +1,11 @@
 // @ts-check
+
+//SECTION - history function
+/*
+	list of exports:
+	-	historyRestore:	restores a match using a history file.
+*/
+
 import fs from "fs";
 import {eEvents} from "../Macro/enums.js";
 import {Match} from "../Classes/Chess/match.js";
@@ -14,7 +21,7 @@ let	DEBUGCounter = 0;
 let	DEBUGEvent = "";
 
 /** 
- * 
+ * restores a match using a history file.
  * @param {Match} match
  * @param {string} path
  */
