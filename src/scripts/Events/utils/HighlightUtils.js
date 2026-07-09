@@ -71,6 +71,7 @@ export function highlightOnDrag(event)
 			localBoard.get(clickedId).boostedHighlight = true;
 		localBoard.get(clickedId).clicked = true;
 		resetPrice();
+		// ciao
 	}
 }
 
