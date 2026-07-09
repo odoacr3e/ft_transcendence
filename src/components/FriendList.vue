@@ -30,7 +30,7 @@
                             <p class="text-zinc-300">Punti: {{ besties.friend.points }}</p>
                         </div>
                     </div>
-                    <button @click.stop.prevent="rejectRequest(besties.friend.id_user)" v-if="removeF"
+                    <button @click="rejectRequest(besties.friend.id_user)" v-if="removeF"
                                 class="h-[80%] p-1.25 px-2 ml-[10%] cursor-pointer self-center rounded-md inset-ring text-sm
                                     bg-red-400/10 text-red-500 inset-ring-red-500/20">Elimina amicizia</button>
                 </div>

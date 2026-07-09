@@ -20,7 +20,7 @@ export function boardConverter()
 		file = FILES_TWO; 
 	}
 
-	const orientation = localInfo.myTeam === "black" ? "black" : "white";
+	const orientation = localInfo.myTeam === "white" ? "white" : "black";
 	const ranks = [];
 
 	for (let r = maxRank; r >= 1; r -= 1)

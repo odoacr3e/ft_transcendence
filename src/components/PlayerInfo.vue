@@ -24,7 +24,7 @@
 	<div class="wrap"
 		v-bind:class="{'rounded-t-md mb-1':up, 'rounded-b-md mt-1':down}">
 
-		<img src="../assets/default.png" alt="User Icon" :draggable="false" class="size-18.75 shrink-0"
+		<img src="../assets/default.png" alt="User Icon" :draggable="false" class="size-18.75 shrink-0 stretch 0"
 			v-bind:class="{'rounded-tl-md':up, 'rounded-bl-md':down}">
 
 		<div class="shrink-0">
@@ -53,7 +53,7 @@
 		</div>
 		<!-- <img :src="IMG_PATHS[player.team + 'King']" alt="TeamKing" :draggable="false" class="size-18.75 shrink-0"
 			v-bind:class="{'drop-shadow-custom':playing }"> -->
-		<TimerClock :Millis="player.time" :Go="playing"/>
+		<TimerClock :millis="player.time" :go="playing" :team="player.team"/>
 	</div>
 </template>
 

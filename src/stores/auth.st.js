@@ -22,31 +22,12 @@ export const useAuthStore = defineStore('auth', {
 
 	actions: 
 	{
-		async 	login(credentials)
+		async login(credentials)
 		{
 			this.isLoading = true;
 			this.error = null;
 			try {
-				const resp = await authApi.login(credentials);
-				if (resp.data.user)
-				{
-					this.user = resp.data.user;
-					this.connectSocket();
-				}
-				else if (resp.data.message === "OTP sent by email")
-					this.error = resp;
-			}
-			catch (err) { this.error = err.message; }
-			finally		{ this.isLoading = false; }
-			return (this.error);
-		},
-
-		async	mfa(credentials)
-		{
-			this.isLoading = true;
-			this.error = null;
-			try {
-				this.user = await authApi.mfa(credentials);
+				this.user = await authApi.login(credentials);
 				this.connectSocket();
 			}
 			catch (err) { this.error = err.message; }
@@ -113,7 +94,7 @@ export const useAuthStore = defineStore('auth', {
 		{
 			if (this.socket) { return; }
 
-			this.socket = io('http://localhost:8080', { withCredentials: true });
+			this.socket = io(`http://${window.location.hostname}:8080`, { withCredentials: true });
 			assignGameSocket(this.socket);
 
 			this.socket.on('friend:online', ({ userId }) => { this.usersOnline.add(userId); });
