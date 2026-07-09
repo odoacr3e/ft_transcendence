@@ -1,9 +1,9 @@
 <script setup>
 	import { DOMPlayer, localBoard, localInfo, IMG_PATHS }	from '@/scripts/Data/Variables';
-	import { useAbility, sendEndTurn }			from '@/scripts/Events/utils/GlobalUtils';
-	import { computed }							from 'vue';
-	import	TimerClock							from "./TimerClock.vue"
-	import	CapturedPieces						from "./CapturedPieces.vue"
+	import { useAbility, sendEndTurn }						from '@/scripts/Events/utils/GlobalUtils';
+	import { computed }										from 'vue';
+	import	TimerClock										from "./TimerClock.vue"
+	import	CapturedPieces									from "./CapturedPieces.vue"
 
 	const prop = defineProps({
   		p: Number
@@ -11,13 +11,7 @@
 	const	player = computed(() => DOMPlayer(prop.p)),
 			playing = computed(() => player.value.isPlaying),
 			up = prop.p === 2 ? true : false,
-			down = prop.p === 1 ? true : false,
-			endT = computed(() => localInfo.secondTurn);
-
-	const Piece = computed(() => {
-		if (!localInfo.clickedId) { return null; }
-		return localBoard.get(localInfo.clickedId)?.piece ?? null;
-	});
+			down = prop.p === 1 ? true : false
 </script>
 
 <template>
@@ -35,7 +29,7 @@
 				<CapturedPieces :player="player"/>
 			</div>
 		</div>
-		<div class="grow flex items-center justify-start gap-2 pr-2">
+		<!-- <div class="grow flex items-center justify-start gap-2 pr-2">
 			<button class="bg-amber-300 text-sm
 							transition delay-50 duration-300 ease-in-out hover:-translate-y-0.5 hover:scale-105 hover:bg-orange-400"
 					v-bind:class="{ 'grayscale pointer-events-none':(!playing || !Piece || !Piece.isBoostedBool || Piece.team !== player.team || localInfo.secondTurn),
@@ -50,9 +44,10 @@
 				<img src="../assets/endturn.png" alt="" :draggable="false" class="size-5">
 				<b>End Turn</b>
 			</button>
-		</div>
+		</div> -->
 		<!-- <img :src="IMG_PATHS[player.team + 'King']" alt="TeamKing" :draggable="false" class="size-18.75 shrink-0"
 			v-bind:class="{'drop-shadow-custom':playing }"> -->
+		<div class="grow"></div>
 		<TimerClock :millis="player.time" :go="playing" :team="player.team"/>
 	</div>
 </template>
