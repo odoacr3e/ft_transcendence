@@ -1,13 +1,17 @@
 //@ts-check
 
+//SECTION - checkMove functions
+/*
+	list of exports:
+	-	checkMove: 			checks the validity of a move.
+	-	checkSecondMove:	checks if a second move is possible.
+*/
+
 import { error } from "../handlers/game/utils.js";
 import { enumNames, eEvents } from "../Macro/enums.js";
 import { movePiece } from "../utils/dangerUpdate.js";
 import { Preset } from "../Classes/Chess/Pieces/preset.js";
 import {checkCastling} from "./Castling.js";
-import {checkMateCheckAll} from "../GameLogic/checkMate.js";
-import { DangerUpdate } from "../utils/dangerUpdate.js";
-import { checkKingDanger } from "../utils/checkDanger.js";
 import { includesOneOf } from "../utils/string.js";
 import { MOVEMENT_MAX } from "../Macro/macro.js";
 import { simulation } from "./simulation.js";
@@ -18,7 +22,7 @@ import { simulation } from "./simulation.js";
 /** @typedef {import("../Classes/Chess/Pieces/pieces.js").Piece} Piece*/
 
 /**
- * check the validity of a move.
+ * checks the validity of a move.
  * @param {Array<String>} coords
  * @param {Result} result
  * @param {Match} match

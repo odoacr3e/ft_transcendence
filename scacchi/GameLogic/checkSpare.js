@@ -6,11 +6,8 @@
 	-	checkInsuficientResources:	checks if all player cannot win
 */
 
-import { Chess } from "../lib/lib.js";
 import { enumNames } from "../Macro/enums.js";
 import { Match } from "../Classes/Chess/match.js";
-import { Square } from "../Classes/Chess/chessBoard.js";
-import { Piece } from "../Classes/Chess/Pieces/pieces.js";
 
 //FIXME - considerare anche casi con 3/4 team (?)
 /**

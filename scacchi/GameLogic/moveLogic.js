@@ -1,24 +1,16 @@
 // @ts-check
 
-//FIXME - fare piu file!!!
+//SECTION - moveLogic functions
+/*
+	list of exports:
+	-	updateChessBoard:	given a valid move, it updates the chessBoard.
+*/
 
-import {eEvents, enumNames, arrayNames, enumSpecialMoves, eTeam} from "../Macro/enums.js";
-import {MOVEMENT_MAX, CHESSBOARD_H, CHESSBOARD_W} from "../Macro/macro.js";
-import { Chess } from "../lib/lib.js";
-const {copyBoard} = Chess;
-import {movePiece, DangerUpdate, dangerUpdateAll, dangerUpdateMoved} from "../utils/dangerUpdate.js";
-import {checkKingDanger, isDangerous} from "../utils/checkDanger.js";
+import {dangerUpdateMoved} from "../utils/dangerUpdate.js";
 import {Match} from "../Classes/Chess/match.js";
-import {Preset} from "../Classes/Chess/Pieces/preset.js";
-import {clientBoard, error, Result} from "../handlers/game/utils.js";
-import {Square} from "../Classes/Chess/chessBoard.js";
-import {printSwap, boardStringify} from "../test/render.js";
+import {error, Result} from "../handlers/game/utils.js";
+import {printSwap} from "../test/render.js";
 import { moveCastling } from "./Castling.js";
-import {checkCastling, getPieces} from "./Castling.js";
-import { Piece } from "../Classes/Chess/Pieces/pieces.js";
-import { includesOneOf } from "../utils/string.js";
-import {endTurn} from "../handlers/game/endTurn.js";
-import {checkMateCheckAll} from "./checkMate.js";
 
 //FIXME - da mettere alcune funzioni in un utilis
 
@@ -29,7 +21,7 @@ import {checkMateCheckAll} from "./checkMate.js";
  * @param {Match} match
  * @param {boolean} boostBool
  */
-function updateChessboard(coords=[], result, match, boostBool)
+export function updateChessboard(coords=[], result, match, boostBool)
 {
 	let	from;
 	let	to;
@@ -86,7 +78,3 @@ function updateChessboard(coords=[], result, match, boostBool)
 	match.moves++;
 	return (true);
 }
-
-//SECTION - move utils
-
-export { updateChessboard};

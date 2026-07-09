@@ -3,7 +3,9 @@
 //SECTION - castling functions
 /*
 	list of exports:
-	-	checkCastling:	checks if a castling move is possible or not.	
+	-	checkCastling:	checks if a castling move is possible or not.
+	-	moveCastling:	performs a castling move.
+	-	//FIXME - getPieces: spostare in un altro file 
 */
 
 import {enumNames} from "../Macro/enums.js";

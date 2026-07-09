@@ -1,7 +1,7 @@
 //@ts-check
 import {HISTORY_FILE, HISTORY_PATH} from "../Macro/macro.js";
-import {eEvents, eTeam} from "../Macro/enums.js";
-import {movePiece, dangerUpdateAll} from "../utils/dangerUpdate.js";
+import {eEvents} from "../Macro/enums.js";
+import {movePiece} from "../utils/dangerUpdate.js";
 import {includesOneOf} from "../utils/string.js";
 import {historyRestore} from "../utils/history.js";
 import {error, move, boost, endTurn, init} from "../handlers/game/Game.js";
@@ -19,7 +19,6 @@ import {render, boardStringify} from "./render.js";
 import readline from "node:readline";
 import { makeTransfiguration } from "../handlers/game/transfiguration.js";
 import { cmd } from "./enumsTest.js";
-import { getLegalMoves } from "../GameLogic/checkLegalMoves.js";
 
 /** @typedef {import("../Classes/Chess/match.js").Match} Match*/
 

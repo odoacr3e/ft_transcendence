@@ -1,15 +1,16 @@
 //@ts-check
 
+//SECTION - simulation function
+/*
+	list of exports:
+	-	simulation:		simulate a move to check the king safety.
+*/
+
 import { error } from "../handlers/game/utils.js";
-import { enumNames, eEvents } from "../Macro/enums.js";
+import { enumNames } from "../Macro/enums.js";
 import { movePiece } from "../utils/dangerUpdate.js";
-import { Preset } from "../Classes/Chess/Pieces/preset.js";
-import {checkCastling} from "./Castling.js";
-import {checkMateCheckAll} from "../GameLogic/checkMate.js";
 import { dangerUpdateMoved } from "../utils/dangerUpdate.js";
 import { isDangerous } from "../utils/checkDanger.js";
-import { includesOneOf } from "../utils/string.js";
-import { MOVEMENT_MAX } from "../Macro/macro.js";
 
 /** @typedef {import("../Classes/Chess/match").Match} Match*/
 /** @typedef {import("../Classes/Chess/chessBoard.js").Square} Square*/
@@ -17,7 +18,7 @@ import { MOVEMENT_MAX } from "../Macro/macro.js";
 /** @typedef {import("../Classes/Chess/Pieces/pieces.js").Piece} Piece*/
 
 /**
- * 
+ * simulate a move to check the king safety.
  * @param {Array<String>} coords
  * @param {Match} match
  * @param {Result | null} result
@@ -74,6 +75,8 @@ export function simulation(coords, match, result=null)
 		match.board.set(coords[1], tmpSquare);
 	return (!dangerBool);
 }
+
+//SECTION - utils
 
 /**
  * the king is in danger, but a second move can save him?

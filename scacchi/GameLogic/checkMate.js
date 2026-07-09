@@ -4,20 +4,21 @@
 /*
 	list of exports:
 	-	checkMateCheckAll: checks if every active player is in check/staleMate
+	//FIXME: spostare in utils!	
 	-	getDirection: 		given two coords, it returns {Δx, Δy}.
 */
 
 import { Chess } from "../lib/lib.js";
 import {Result} from "../Classes/endPoint/result.js";
-const {preset} = Chess;
 import {enumNames} from "../Macro/enums.js";
 import {Match} from "../Classes/Chess/match.js";
 import {isDangerous} from "../utils/checkDanger.js";
-import { movePiece, DangerUpdate } from "../utils/dangerUpdate.js";
+import { movePiece } from "../utils/dangerUpdate.js";
 import { Square } from "../Classes/Chess/chessBoard.js";
-import { checkPieceDanger, pathFinding } from "./pathFinding.js";
+import { pathFinding } from "./pathFinding.js";
 import { simulation } from "./simulation.js";
 import { getLegalMoves } from "./checkLegalMoves.js";
+const {preset} = Chess;
 
 /**
  * checks if a player is in checkMate
