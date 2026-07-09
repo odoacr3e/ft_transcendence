@@ -6,8 +6,11 @@ import {DEBUG} from "../../Macro/macro.js";
 import {render} from "../../test/render.js";
 import { enumConnection } from "../../Macro/enums.js";
 
+/** @typedef {import("../endPoint/result.js").Result} Result*/
+/** @typedef {import("../Chess/chessBoard.js").ChessBoard} ChessBoard*/
 /** @typedef {import("../Chess/player.js").Player} Player*/
 /** @typedef {{socket: *, allowedBool: boolean, state?: string, reconnectBool?: boolean, matchData?: Player}} Socket */
+/** @typedef {string} matchId*/
 
 const	TEST_MATCH = "0";
 
@@ -32,6 +35,8 @@ class Globals
 		/** @type {Map<string, NodeJS.Timeout>} */
 		this.timers = new Map();
 		this.lastMatchId = TEST_MATCH;
+		/** @type {Map<matchId, Array<Result>>} */
+		this.matchCache = new Map();//
 	}
 	/** @param {string} roomType */
 	GetQueue(roomType)

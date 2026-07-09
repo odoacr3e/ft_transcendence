@@ -3,7 +3,7 @@ import {HISTORY_FILE, HISTORY_PATH} from "../Macro/macro.js";
 import {eEvents} from "../Macro/enums.js";
 import {movePiece} from "../utils/dangerUpdate.js";
 import {includesOneOf} from "../utils/string.js";
-import {historyRestore} from "../utils/history.js";
+import {historyRestore, historyRestoreFromDb} from "../utils/history.js";
 import {error, move, boost, endTurn, init} from "../handlers/game/Game.js";
 import {Result} from "../handlers/game/utils.js";
 import {globals} from "../Classes/Globals/globals.js";
@@ -29,6 +29,8 @@ function mainTerm()
 	let	seed;
 
 	termInit();
+	//FIXME - testing su questa funzione
+	// historyRestoreFromDb(218);
 	match = globals.getDebugMatch();
 	if (!match)
 		throw ("To use term.js, you need to set the DEBUG macro true");
