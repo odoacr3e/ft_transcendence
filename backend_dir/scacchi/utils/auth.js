@@ -135,7 +135,6 @@ export async function verifyOtp(id_user, otp) {
 	const key = `otp:${id_user}`;
 	const keyAttempts = `otp_attempts:${id_user}`;
 	const stored = await redis.get(key);
-	console.log(`Key: ${key}, key Attempts: ${keyAttempts}, stored: ${stored}, OTP: ${otp}`);
 	if (!stored)
 		return ({ success: false, message: 'OTP expired or not valid' });
 	const attempts = parseInt(await redis.get(keyAttempts) || '0', 10);
@@ -145,7 +144,6 @@ export async function verifyOtp(id_user, otp) {
 	}
 	if (Number(stored) !== Number(otp)) {
 		await redis.incr(keyAttempts);
-		console.log(`type stored: ${typeof(stored)}, type otp: ${typeof(otp)}, confronto == : ${stored == otp}, confronto === : ${stored === otp}`)
 		return ({ success: false, message: 'Invalid OTP' });
 	}
 	await redis.del(key);

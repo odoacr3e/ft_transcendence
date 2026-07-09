@@ -133,13 +133,14 @@ async function bindPlayersToMatch(match, queueNode, result)
 	let	user;
 	let	userId;
 	let	startTeam;
+	let	currTeam;
 	let	promises = [];
 
 // function responseFormatter(match, result, msg, status)
 
 	i = 0;
 	userArray = Array.from(queueNode.userSet)
-	startTeam = match.currentPlayer.team;
+	currTeam = match.currentPlayer.team;
 	do
 	{
 		userId = userArray[i];
@@ -149,7 +150,9 @@ async function bindPlayersToMatch(match, queueNode, result)
 		user.state = enumSocketState.PLAYING;
 		match.currentPlayer.matchId = match.id;
 		match.currentPlayer.id = userId;
-		promises.push(getUserById(userId));
+		promises.push(getUserById(userId));//@ts-ignore
+		startTeam = match.settings?.players[match.currentPlayer.team];
+		match.users.push({id_user: userId, outcome: "Lose", startTeam: null, team: match.currentPlayer.team});
 		user.matchData = match.currentPlayer;
 		globals.RemoveFromAllQueues(userId, false);
 		//@ts-ignore
@@ -158,15 +161,23 @@ async function bindPlayersToMatch(match, queueNode, result)
 		++i;
 		match.endTurn();
 	}
-	while (startTeam != match.currentPlayer.team)
+	while (currTeam != match.currentPlayer.team)
 	result = responseFormatter(match, result, "Room created!", 200);
-	userId = userArray[0];
-	user = globals.clientMap.get(userId);
-	if (!user.socket)
-		throw (`bindPlayersToMatch: user 0 with id ${userId} undefined or invalid`);
-	user.socket.to(`match_${match.id}`).emit("game", result);
-	user.socket.emit("game", result);
-	while (startTeam != match.currentPlayer.team)
+	i = 0;
+	do
+	{
+		userId = userArray[i];
+		user = globals.clientMap.get(userId);
+		if (!user?.socket)
+			throw (`bindPlayersToMatch: user 0 with id ${userId} undefined or invalid`);
+		// user.socket.to(`match_${match.id}`).emit("game", result);
+		//@ts-ignore
+		result.team = match.currentPlayer.team;
+		user.socket.emit("game", result);
+		i++;
+		match.endTurn();
+	}
+	while (currTeam != match.currentPlayer.team)
 	//this makes the queries asynchronous from the matchMaker
 	Promise.all(promises).then(
 	(dbData) =>
@@ -178,6 +189,6 @@ async function bindPlayersToMatch(match, queueNode, result)
 			++i;
 			match.endTurn();
 		}
-		while (startTeam != match.currentPlayer.team)
+		while (currTeam != match.currentPlayer.team)
 	}).catch((err)=>{console.log(err);});
 }

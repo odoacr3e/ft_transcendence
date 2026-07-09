@@ -9,8 +9,9 @@ import { announceMeOnline } from "./onlineStatus.js";
 import {enumConnection, eMatchPresets, enumSocketState} from "../Macro/enums.js";
 import { includesOneOf } from "../utils/string.js";
 import { MatchMaking } from "./MatchMaking/MatchMaking.js";
-import { DEBUG_WEBSOCKETS, SOCKET_RECONNECT_TIMER } from "../Macro/macro.js";
+import { DEBUG_WEBSOCKETS, MATCH_RECONNECT_TIMER, SOCKET_RECONNECT_TIMER } from "../Macro/macro.js";
 import { gameWebSocketHandler } from "../handlers/game/Game.js";
+import { responseFormatter } from "../utils/response.js";
 
 /** @typedef {{socket: *, allowedBool: boolean, state?: string, reconnectBool?: boolean, matchData?: Player}} Socket */
 
@@ -86,10 +87,15 @@ sockio.on('connection', async (socket) =>
 			throw ("stanze non implementate");
 	});
 
-	socket.on("game", async(/** @type {{from: *, to: *, type: string}}*/req) =>
+	socket.on("game", async(/** @type {{from: *, to: *, type: string}}*/req, callback) =>
 	{
+		let	status;
+
 		socketData = globals.clientMap.get(user.id_user);
-		gameWebSocketHandler(req, user.id_user, socketData);
+		status = await gameWebSocketHandler(req, user.id_user, socketData);
+		//NOTE - the callback alerts the frontend that emit is done
+		if (typeof(callback) == "function")
+			callback({log: {status: status}});
 	});
 
 	socket.on('disconnect', async () => {
@@ -102,11 +108,19 @@ sockio.on('connection', async (socket) =>
 		console.log("setting reconnection timeout for user", user.id_user);
 		globals.timers.set(user.id_user, setTimeout(() =>
 		{
+			let	result;
+
+			socketData = globals.clientMap.get(user.id_user);
+			if (!socketData)
+				return (console.error("ERROR: invalid socket during timeout end"));
+			globals.ClearTimer(user.id_user);
 			socket.removeAllListeners();
 			socket.disconnect();
 			console.log(`User with id ${user.id_user} disconnected`);
 			globals.RemoveFromAllQueues(user.id_user);
-			globals.ClearTimer(user.id_user);
+			result = globals.DeletePlayer(socketData.matchData?.matchId, socketData.matchData?.team);
+			if (result)
+				roomMessage(socketData.matchData?.matchId, result);
 			clientMap.delete(user.id_user);
 			for (const id of friendsId)
 			{
@@ -114,7 +128,7 @@ sockio.on('connection', async (socket) =>
 				if (friendSock)
 					sockio.to(friendSock.socket.id).emit('friend:offline', { userId: user.id_user });
 			}
-		}, SOCKET_RECONNECT_TIMER));
+		}, getReconnectTime(socketData.state)));
 	})
 });
 
@@ -152,4 +166,27 @@ function handleReconnect(sockio, dbUser, socketData, newSocket)
 		if (!socketData.matchData)
 			console.log("ERROR: data for player are lost! OH NO!");
 	}
+}
+
+/**
+ * 
+ * @param {string} state 
+ */
+function getReconnectTime(state)
+{
+	if (state == enumSocketState.PLAYING)
+		return (MATCH_RECONNECT_TIMER);
+	return (SOCKET_RECONNECT_TIMER);
+}
+
+/**
+ * 
+ * @param {string} roomName 
+ * @param {Result} result 
+ */
+function roomMessage(roomName, result)
+{
+	if (!roomName || !result)
+		return ;
+	sockio.to(roomName, responseFormatter(null, result));
 }

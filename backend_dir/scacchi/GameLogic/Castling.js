@@ -1,29 +1,19 @@
 // @ts-check
+
+//SECTION - castling functions
+/*
+	list of exports:
+	-	checkCastling:	checks if a castling move is possible or not.	
+*/
+
 import {enumNames} from "../Macro/enums.js";
 import { Chess } from "../lib/lib.js";
 const {Square, Piece} = Chess;
 import {Match} from "../Classes/Chess/match.js";
 import {getDirection} from "./checkMate.js";
-import {isDangerous} from "../utils/gameUtils.js";
-import {movePiece} from "../utils/moveUtils.js";
+import {isDangerous} from "../utils/checkDanger.js";
+import {movePiece} from "../utils/dangerUpdate.js";
 import { Result } from "../Classes/endPoint/result.js";
-
-/* 
-
-Classi/ -> Fatto
-		Piecese/ un file per pezzo (con dentro la funzione moveBoost), e uno per i preset
-		ChessBoard/ ChessBoard, cursor 
-		Match/ match, match, history
-Utility/
-		match/ 
-		move/
-Macro/ -> Fatto
-	macro, enum
-GameLogic/ 
-	checkMate, Castling e roba dentro move
-test/ -> Fatto
-	render
-*/
 
 /** @typedef {import('../Classes/Chess/Pieces/pieces.js').Piece} Piece */
 /** @typedef {import('../Classes/Chess/chessBoard.js').Square} Square */
@@ -39,7 +29,7 @@ non in diagonale - OK
 */
 
 /**
- * 
+ * checks if a castling move is possible or not.
  * @param {Match} match
  * @param {Result} result
  * @param {Square} to

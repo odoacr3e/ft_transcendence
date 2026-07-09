@@ -1,12 +1,12 @@
 // @ts-check
 
-import {dangerUpdateAll, DangerUpdate} from "../../utils/moveUtils.js";
+import {dangerUpdateAll, DangerUpdate} from "../../utils/dangerUpdate.js";
 import {Match} from "../../Classes/Chess/match.js";
 import {error, paramCheck, Result, clientBoard} from "./utils.js";
 import { endTurn } from "./endTurn.js";
 import {checkMateCheckAll} from "../../GameLogic/checkMate.js";
 import { BOOSTED_MAX, MOVEMENT_MIN } from "../../Macro/macro.js";
-import { checkKingDanger } from "../../utils/gameUtils.js";
+import { checkKingDanger } from "../../utils/checkDanger.js";
 
 /**
  * 

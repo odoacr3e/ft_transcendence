@@ -53,9 +53,8 @@ class Result
 		/** @type {string | null} */this.msg = "OK";
 		/**	@type {*} */			this.log = {}; 
 		/** @type {Board | null} */	this.board = null;
-		/** @type {boolean} */		this.youWin = false;
-		/** @type {boolean} */		this.Draw = false;
 									this.usedBoost = false;
+									this.victory = "";
 									this.specialMoves = new bitMaskMoves();
 		/** @type {Match | null} */	this.match = null;
 

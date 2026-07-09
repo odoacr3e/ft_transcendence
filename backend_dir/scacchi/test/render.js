@@ -1,11 +1,10 @@
 // @ts-check
 import { Square, ChessBoard} from "../Classes/Chess/chessBoard.js";
-import {eTeam} from "../Macro/enums.js";
+import { getLegalMoves } from "../GameLogic/checkLegalMoves.js";
+import {eTeam, getInitialOfTeam} from "../Macro/enums.js";
 import * as lib from "../lib/lib.js";
 // const {Match} = require("../Classes/Chess/match.js");
-import {CHESSBOARD_H, CHESSBOARD_W} from "../Macro/macro.js";
 const enumNames = lib.Enums.enumNames;
-import { cmd } from "./enumsTest.js";
 import { includesOneOf } from "../utils/string.js";
 
 /** @typedef {import("../Classes/Chess/match.js").Match} Match*/
@@ -49,6 +48,7 @@ function render(match=null, selected=[], TargetDangerSwitch="", silentBool=false
 	}
 	while (match.cursor.moveRow(-1))
 	match.cursor.set(coords.player);
+	// console.log(getLegalMoves(match));
 	console.log(buffer);
 	console.log(match.yellow.King, match.red.King, match.blue.King, match.green.King);
 }
@@ -279,7 +279,7 @@ function getSquareColor(team)
  * 
  * @param {Match} match
  */
-function boardStringify(match)
+function boardStringify(match, otherInfoBool=false)
 {
 	let buffer;
 	let	board;
@@ -309,6 +309,8 @@ function boardStringify(match)
 			ascii = getAscii(square);
 			if (square.piece?.isBoostedBool)
 				ascii = `+${ascii}`;
+			if (otherInfoBool == true && square.piece)
+				ascii = `${ascii}${getInitialOfTeam(square.piece.team)}`;
 			buffer += `${ascii}|`;
 		}
 		while (match.cursor.moveCol(+1))
@@ -316,7 +318,28 @@ function boardStringify(match)
 	}
 	while (match.cursor.moveRow(-1))
 	match.cursor.set(coords.player);
+	if (otherInfoBool == true)
+		buffer += `|${boardOtherInfo(match)}|`;
 	return (buffer);
+}
+
+/** @param {Match} match*/
+function boardOtherInfo(match)
+{
+	let	currTeam;
+	let	buffer = "";
+
+	currTeam = match.currentPlayer.team;
+	do
+	{
+		if (match.currentPlayer.castlingArray.size > 0)
+			buffer += '1';
+		else
+			buffer += '0';
+		match.endTurn();
+	}
+	while(match.currentPlayer.team != currTeam)
+	return buffer;
 }
 
 export {render, printSwap, boardStringify};

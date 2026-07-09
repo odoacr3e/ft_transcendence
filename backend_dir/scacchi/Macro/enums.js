@@ -1,4 +1,4 @@
-// @ts-check
+//@ts-check
 
 /**
  * @enum {string}
@@ -85,6 +85,36 @@ const enumInitNames =
 	GHOUL: 'G'
 };
 
+const enumInitTeam = 
+{
+	Black: 'b',
+	White: 'w',
+	Red: 'r',
+	Blue: 'b',
+	Green: 'g',
+	Yellow: 'y',
+};
+
+/** @param {string} team */
+function getInitialOfTeam(team)
+{
+	switch (team)
+	{
+		case (eTeam.Black): case (eTeam.Blue):
+			return (enumInitTeam.Black);
+		case (eTeam.Green):
+			return (enumInitTeam.Green);
+		case (eTeam.Red):
+			return (enumInitTeam.Red);
+		case (eTeam.White):
+			return (enumInitTeam.White);
+		case (eTeam.Yellow):
+			return (enumInitTeam.Yellow);
+		default:
+			throw (`getInitialOfTeam: ${team} unknown`);		
+	}
+}
+
 const enumSpecialMoves =
 {
 	NONE: 0,
@@ -108,4 +138,4 @@ const kingMovements =
 	{dx:1, dy:0}, {dx:-1, dy:0},//orizzontale
 ];
 
-export {eTeam, eEvents, eMatchPresets, enumNames, arrayNames, enumInitNames, enumValues, enumSpecialMoves, kingMovements, enumConnection, enumSocketState};
+export {eTeam, eEvents, eMatchPresets, enumNames, arrayNames, enumInitNames, getInitialOfTeam, enumInitTeam, enumValues, enumSpecialMoves, kingMovements, enumConnection, enumSocketState};

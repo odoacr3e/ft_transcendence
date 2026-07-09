@@ -4,10 +4,11 @@ import {MOVEMENT_MIN, MOVEMENT_BONUS_POINT} from "../../Macro/macro.js";
 import {enumNames} from "../../Macro/enums.js";
 import {Match} from "../../Classes/Chess/match.js";
 import {error, Result, checkMateAlert} from "./utils.js";
-import {DangerUpdate} from "../../utils/moveUtils.js";
+import {DangerUpdate} from "../../utils/dangerUpdate.js";
 import {clientBoard} from "../../handlers/game/utils.js";
-import { checkKingDanger } from "../../utils/gameUtils.js";
+import { checkKingDanger } from "../../utils/checkDanger.js";
 import { checkInsuficientResources } from "../../GameLogic/checkSpare.js";
+import { boardStringify } from "../../test/render.js";
 
 /**
  * goes to the next turn
@@ -23,10 +24,14 @@ function endTurn(match, sendBoardBool=true)
 	let time;
 	let nPieces;
 	let p = match.currentPlayer;
+	let boardState;
 
 	result = new Result();
 	time = match.currentPlayer.time;
 	nPieces = match.getPieceNumber();
+	boardState = boardStringify(match, true);
+	if (!updateTurn(match, result))
+		return (result);
 	if (match.playerNum == 2 && nPieces <= 4)
 	{
 		if (checkInsuficientResources(match, nPieces))
@@ -34,8 +39,12 @@ function endTurn(match, sendBoardBool=true)
 	}
 	if (match.spareCountDown == 50 * match.playerNum)
 		return (match.DrawMatch(result));
-	if (!updateTurn(match, result))
-		return (result);
+	if (!match.boardStateMap.has(boardState))
+		match.boardStateMap.set(boardState, 1);//@ts-ignore
+	else if (match.boardStateMap.get(boardState) >= 2)
+		return (match.DrawMatch(result));//@ts-ignore
+	else if (match.boardStateMap.get(boardState) < 2)
+		match.boardStateMap.set(boardState, 2);
 	// if (match.timer != null)
 	// {
 	// 	// @ts-ignore

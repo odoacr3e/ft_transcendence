@@ -50,8 +50,8 @@ import * as Macro from "../Macro/macro.js";
 import * as Enums from "../Macro/enums.js";
 
 // SECTION - utils function
-import * as utils from "../utils/moveUtils.js";
-import {bastardChecks, isDangerous} from "../utils/gameUtils.js";
+import * as utils from "../utils/dangerUpdate.js";
+import {bastardChecks, isDangerous} from "../utils/checkDanger.js";
 let gameUtils = {bastardChecks, isDangerous};
 
 const conn = { redis, crypto, sendEmail, bodyOTP, bodyRegistration };
