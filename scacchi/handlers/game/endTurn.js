@@ -4,9 +4,9 @@ import {MOVEMENT_MIN, MOVEMENT_BONUS_POINT} from "../../Macro/macro.js";
 import {enumNames} from "../../Macro/enums.js";
 import {Match} from "../../Classes/Chess/match.js";
 import {error, Result, checkMateAlert} from "./utils.js";
-import {DangerUpdate} from "../../utils/moveUtils.js";
+import {DangerUpdate} from "../../utils/dangerUpdate.js";
 import {clientBoard} from "../../handlers/game/utils.js";
-import { checkKingDanger } from "../../utils/gameUtils.js";
+import { checkKingDanger } from "../../utils/checkDanger.js";
 import { checkInsuficientResources } from "../../GameLogic/checkSpare.js";
 import { boardStringify } from "../../test/render.js";
 

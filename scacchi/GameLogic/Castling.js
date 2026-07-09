@@ -11,8 +11,8 @@ import { Chess } from "../lib/lib.js";
 const {Square, Piece} = Chess;
 import {Match} from "../Classes/Chess/match.js";
 import {getDirection} from "./checkMate.js";
-import {isDangerous} from "../utils/gameUtils.js";
-import {movePiece} from "../utils/moveUtils.js";
+import {isDangerous} from "../utils/checkDanger.js";
+import {movePiece} from "../utils/dangerUpdate.js";
 import { Result } from "../Classes/endPoint/result.js";
 
 /** @typedef {import('../Classes/Chess/Pieces/pieces.js').Piece} Piece */

@@ -7,7 +7,7 @@
 	-	pathFinding:		check if is possible to go from start to dest
 */
 
-import {movePiece, DangerUpdate, dangerUpdateAll, dangerUpdateMoved} from "../utils/moveUtils.js";
+import {movePiece, DangerUpdate, dangerUpdateAll, dangerUpdateMoved} from "../utils/dangerUpdate.js";
 
 /** @typedef {import("../Classes/Chess/match.js").Match} Match*/
 /** @typedef {import("../Classes/Chess/Pieces/pieces.js").Piece} Piece*/

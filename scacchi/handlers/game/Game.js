@@ -191,7 +191,6 @@ async function gameInfoHandler(match, body)
 		result.Success();
 		// @ts-ignore
 		result.board = clientBoard(match, true, true);
-		result.youWin = match.victory != "";
 	}
 	else if (body.type == "history")
 	{

@@ -99,7 +99,7 @@ function bastardChecks(match, dy, dx, piece)
 		return (match.cursor.Restore(), false);
 	if (match.board.get(match.cursor.square).wallBool == true)
 		return (match.cursor.Restore(), false);
-	match.board.AddInfluence(startPos, match.cursor.square);
+	match.board.AddInfluence(startPos, match.cursor.square);//@ts-ignore
 	if (!bastardMove[piece.team].has(`${dy}|${dx}`))
 		return (match.cursor.Restore(), false);
 	targetPos = match.cursor.square;

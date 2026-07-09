@@ -1,38 +1,12 @@
 // @ts-check
-// const { Match } = require("../Classes/Chess/match.js");
-import { enumInitNames, enumNames, enumSpecialMoves, kingMovements} from "../Macro/enums.js";
-import * as Macro from "../Macro/macro.js";
-import {bastardChecks} from "./gameUtils.js";
+import { enumNames} from "../Macro/enums.js";
+import {bastardChecks} from "./checkDanger.js";
+import { movePiece } from "./movePiece.js";
 
 /**@typedef {import("../Classes/Chess/match.js").Match} Match*/
 /**@typedef {import("../Classes/Chess/player.js").Player} Player*/
 /**@typedef {import("../Classes/endPoint/result.js").Result} Result*/
-/**@typedef {import("../Classes/Pieces/pieces.js").Piece} Piece*/
-
-/**
- * try to move the cursor to dx, dy. return true/false
- * @param {Match} match
- * @param {number} dx 
- * @param {number} dy
- */
-let movePiece = (match, dy, dx) =>
-{
-	let newRow = match.cursor.getRow() + dx;
-	let newCol = match.cursor.getCol() + dy;
-	let	oldCursor = match.cursor.square;
-
-	if (newRow < 1 || newRow > match.board.heigth)
-		return false;
-	else if (newCol <= 0 || newCol > match.board.width)
-		return false;
-	match.cursor.setCursor(newRow, newCol);
-	if (match.board.get(match.cursor.square).wallBool == true)
-	{
-		match.cursor.set(oldCursor);
-		return false;
-	}
-	return true;
-}
+/**@typedef {import("../Classes/Chess/Pieces/pieces.js").Piece} Piece*/
 
 /**
  * 
@@ -89,7 +63,53 @@ let DangerUpdate = (match, pos=null, ignoreBoostChampsBool=true, castlingBool=fa
 }
 
 /**
+ * resets the board and calculates it from scratch
+ * @param {Match} match 
+ */
+function dangerUpdateAll(match)
+{
+	let	temp;
+	let usedBoard;
+
+	temp = match.cursor.square;
+	usedBoard = match.board;
+	for (let [pos, square] of usedBoard)
+	{
+		square.ClearZones();
+	}
+	for (let [pos, square] of usedBoard)
+	{
+		match.cursor.set(pos);
+		if (square.piece && square.piece.isBoostedBool)
+		{
+			square.piece.moveFunction(match);
+			continue ;
+		}
+		DangerUpdate(match);
+	}
+	match.cursor.set(temp);
+}
+
+/**
  * 
+ * @param {Match} match 
+ * @param {Array<string>} selected /* 0 = from, 1 = to
+ * @param {boolean} castlingBool
+ */
+function dangerUpdateMoved(match, selected=[], castlingBool=false)
+{
+	if (selected.length != 2)
+		throw ("dangerUpdateMoved must be called with two pieces: from, to"); 
+	CheckInfluence(match, selected, castlingBool);
+	DangerUpdate(match, selected[0], true, castlingBool);
+	DangerUpdate(match, selected[1], true, castlingBool);
+	updateBoostedChampions(match, selected);
+}
+
+//SECTION - utils
+
+/**
+ * checks if any king castling needs an update
  * @param {Match} match 
  * @param {string} startPos 
  * @param {Piece} piece 
@@ -154,6 +174,7 @@ function CheckInfluence(match, coords, castlingBool)
 	checkInfluenceSets(match, coords, tmpInfluenceDanger, castlingBool);
 }
 
+//FIXME - incorpare in checkInfluence
 /**
  * 
  * @param {Match} match 
@@ -174,22 +195,6 @@ function checkInfluenceSets(match, coords, influenceSets, castlingBool)
 		}
 		++i;
 	}
-}
-
-/**
- * 
- * @param {Match} match 
- * @param {Array<string>} selected /* 0 = from, 1 = to
- * @param {boolean} castlingBool
- */
-function dangerUpdateMoved(match, selected=[], castlingBool=false)
-{
-	if (selected.length != 2)
-		throw ("dangerUpdateMoved must be called with two pieces: from, to"); 
-	CheckInfluence(match, selected, castlingBool);
-	DangerUpdate(match, selected[0], true, castlingBool);
-	DangerUpdate(match, selected[1], true, castlingBool);
-	updateBoostedChampions(match, selected);
 }
 
 /**
@@ -237,32 +242,4 @@ function updateBoostedChampions(match, coords)
 	}
 }
 
-/**
- * 
- * @param {Match} match 
- */
-function dangerUpdateAll(match)
-{
-	let	temp;
-	let usedBoard;
-
-	temp = match.cursor.square;
-	usedBoard = match.board;
-	for (let [pos, square] of usedBoard)
-	{
-		square.ClearZones();
-	}
-	for (let [pos, square] of usedBoard)
-	{
-		match.cursor.set(pos);
-		if (square.piece && square.piece.isBoostedBool)
-		{
-			square.piece.moveFunction(match);
-			continue ;
-		}
-		DangerUpdate(match);
-	}
-	match.cursor.set(temp);
-}
-
-export {movePiece, DangerUpdate, dangerUpdateAll, dangerUpdateMoved};
+export {DangerUpdate, dangerUpdateAll, dangerUpdateMoved, movePiece};

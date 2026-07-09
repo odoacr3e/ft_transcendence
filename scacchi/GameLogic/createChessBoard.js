@@ -12,7 +12,7 @@ import { Chess } from "../lib/lib.js";
 import { Piece } from "../Classes/Chess/Pieces/pieces.js";
 import { Enums } from "../lib/lib.js";
 const {eTeam, enumNames, enumInitNames} = Enums;
-import {dangerUpdateAll} from "../utils/moveUtils.js";
+import {dangerUpdateAll} from "../utils/dangerUpdate.js";
 import {Match} from "../Classes/Chess/match.js";
 
 /**

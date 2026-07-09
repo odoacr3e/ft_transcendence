@@ -7,7 +7,7 @@
 */
 
 import { enumNames } from "../Macro/enums.js";
-import { isDangerous } from "../utils/gameUtils.js";
+import { isDangerous } from "../utils/checkDanger.js";
 
 /** @typedef {import("../Classes/Chess/match").Match} Match*/
 

@@ -4,9 +4,9 @@ import { Match } from "../../Classes/Chess/match.js";
 import {error, paramCheck, Result, clientBoard} from "./utils.js";
 import {endTurn} from "./endTurn.js";
 import {checkMateCheckAll} from "../../GameLogic/checkMate.js";
-import { DangerUpdate } from "../../utils/moveUtils.js";
+import { DangerUpdate } from "../../utils/dangerUpdate.js";
 import { Piece } from "../../Classes/Chess/Pieces/pieces.js";
-import { checkKingDanger } from "../../utils/gameUtils.js";
+import { checkKingDanger } from "../../utils/checkDanger.js";
 import { enumNames, arrayNames } from "../../Macro/enums.js";
 import { includesOneOf } from "../../utils/string.js";
 

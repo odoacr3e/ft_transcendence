@@ -6,8 +6,8 @@ import {eEvents, enumNames, arrayNames, enumSpecialMoves, eTeam} from "../Macro/
 import {MOVEMENT_MAX, CHESSBOARD_H, CHESSBOARD_W} from "../Macro/macro.js";
 import { Chess } from "../lib/lib.js";
 const {copyBoard} = Chess;
-import {movePiece, DangerUpdate, dangerUpdateAll, dangerUpdateMoved} from "../utils/moveUtils.js";
-import {checkKingDanger, isDangerous} from "../utils/gameUtils.js";
+import {movePiece, DangerUpdate, dangerUpdateAll, dangerUpdateMoved} from "../utils/dangerUpdate.js";
+import {checkKingDanger, isDangerous} from "../utils/checkDanger.js";
 import {Match} from "../Classes/Chess/match.js";
 import {Preset} from "../Classes/Chess/Pieces/preset.js";
 import {clientBoard, error, Result} from "../handlers/game/utils.js";
