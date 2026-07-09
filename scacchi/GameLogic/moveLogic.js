@@ -22,7 +22,8 @@ import {checkMateCheckAll} from "./checkMate.js";
 //FIXME - da mettere alcune funzioni in un utilis
 
 /**
- * 
+ * checks if a second move is possible.
+ * used to pass the turn automatically when needed.
  * @param {Match} match 
  * @param {string} to 
  */
@@ -57,7 +58,7 @@ function checkSecondMove(match, to)
 }
 
 /**
- * 
+ * check the validity of a move.
  * @param {Array<String>} coords
  * @param {Result} result
  * @param {Match} match
@@ -104,28 +105,7 @@ function checkMove(coords=[], result, match, boostBool)
 		result.specialMoves.SetKingDanger();
 		return (error(result, 403, "this would put your king in danger"));
 	}
-	// if (checkDoubleMoveMate(match, coords, result) == false)
-	// 	return (false);
 	return (true);
-}
-
-/**
- * 
- * @param {Match} match
- * @param {string} coords
- */
-function boostMinoUpdates(match, coords)
-{
-	for (const target of match.board.get(coords).targetZones)
-		match.board.get(target).dangerZones.delete(coords);
-	for (const [key, target] of match.board.get(coords).boostedTargetZones)
-	{
-		for (const second of target)
-		{
-			match.board.get(second).dangerZones.delete(coords);
-		}
-	}
-	DangerUpdate(match, coords);
 }
 
 /**
@@ -159,7 +139,7 @@ function updateChessboard(coords=[], result, match, boostBool)
 	if (to.piece && to.piece.team != from.piece.team)
 	{
 		console.log(`player ${match.currentPlayer.team} + ${to.piece.price}💲`);
-		match.currentPlayer.nPoints += to.piece.price;
+		match.currentPlayer.nPoints += to.piece.price;//@ts-ignore
 		match[to.piece.team].nPieces -= 1;
 		if (to.piece.isBoostedBool == true)//@ts-ignore
 			match[to.piece.team].boostedPiece = "";
@@ -188,60 +168,12 @@ function updateChessboard(coords=[], result, match, boostBool)
 	}
 	if (to.piece && to.piece.isMovedBool == false)
 		to.piece.isMovedBool = true;
-	checkDoubleMoveMate(match, [], result, false);
 	dangerUpdateMoved(match, coords, true);
 	match.moves++;
 	return (true);
 }
 
 //SECTION - move utils
-
-/**
- * 
- * @param {Match} match
- * @param {Result} result
- */
-function updateAllChampions(match, result)
-{
-	let arr;
-
-	arr = match.GetBoostedPieceCoords();
-	if (arr == null)
-		return ;
-	for (let x of arr)
-		DangerUpdate(match, x);
-}
-
-/**
- * 
- * @param {Match} match 
- * @param {Array<string>} coords 
- */
-function boostedPieceUpdates(match, coords)
-{
-	let	boostPieceSquare;
-	let	boostPieceCoord;
-	let	diff;
-
-	if (coords.length != 2)
-		throw ("boostedPIeceUpdates: coords size error");
-	if (!match.currentPlayer.boostedPiece)
-		return ;
-	if (coords.at(0) == match.currentPlayer.boostedPiece)
-	{
-		match.currentPlayer.boostedPiece = coords[1];
-		return ;
-	}
-	boostPieceCoord = match.currentPlayer.boostedPiece;
-	boostPieceSquare = match.board.get(boostPieceCoord);
-	if (!boostPieceSquare.piece)
-		throw ("boostedPIeceUpdates: backend has lost track of boosted piece");
-	if (boostPieceSquare.piece.type != enumNames.BASTARDS)
-		return ;
-	diff = match.cursor.Diff(coords[1], boostPieceCoord);
-	if (Math.abs(diff.col) < 2 && Math.abs(diff.row) < 2)
-		DangerUpdate(match, boostPieceCoord);
-}
 
 /**
  * 
@@ -336,7 +268,7 @@ function checkBooster(match, result, from, coords, boostBool) // FIXME - da aggi
 			result.specialMoves.SetChampionBoostUsed();
 	}
 	if (from.piece.type == enumNames.BASTARDS || match.history.Last().movedPiece == enumNames.BASTARDS)
-		return (doubleBastardsCheck(match, result, coords));
+		return (checkDoubleBastardMove(match, result, coords));
 	if (pieceMultipleMoveBool == false && match.moves > 0)
 		return (error(result, 403, "Multiple moves not allowed there (tip: is it a moveBoost?"));
 	if (pieceMultipleMoveBool == false && from.targetZones.has(coords[1]))
@@ -368,7 +300,7 @@ function checkBooster(match, result, from, coords, boostBool) // FIXME - da aggi
  * @param {Array<string>} coords
  * @returns {boolean}
  */
-function doubleBastardsCheck(match, result, coords)
+function checkDoubleBastardMove(match, result, coords)
 {
 	let from;
 	let to;
@@ -520,9 +452,8 @@ function checkGuardiansDanger(match, coords)
  * @param {Match} match 
  * @param {Array<string>} coords 
  * @param {Result | null} result
- * @param {boolean} checkBool
  */
-function checkDoubleMoveMate(match, coords, result=null, checkBool=true)
+function checkDoubleMoveMate(match, coords, result=null)
 {
 	let	OtherPiece;
 	let	pieceData;
@@ -539,15 +470,10 @@ function checkDoubleMoveMate(match, coords, result=null, checkBool=true)
 		pieceData = match.board.get(coords).piece;
 		if (!pieceData)
 			throw ("checkDoubleMoveMate: cannot find boosted piece");
-		if (pieceData.type == enumNames.MINOTAURUS && checkBool == false)
-			boostMinoUpdates(match, coords);
-		else if (pieceData.type == enumNames.BASTARDS && checkBool == true)
-		{	
-			if (!boostBastardsUpdates(match, coords, theKING, result))
-				return (true);
-		}
-		else
+		if (pieceData.type != enumNames.BASTARDS)
 			continue ;
+		if (!boostBastardsUpdates(match, coords, theKING, result))
+			return (true);
 	}
 	return (false);
 }
@@ -639,6 +565,7 @@ function vitaNeraError(result)
 	return (false);
 }
 
+//FIXME - checkMove
 /**
  * 
  * @param {Match} match 
