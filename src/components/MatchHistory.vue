@@ -41,7 +41,7 @@
         </div>
     </div>
     <hr class="w-full justify-self-start text-[#4e4e4e8c]">
-    <div v-for="(game, index) in matches" :key="game.id_usermatch" class="ml-2">
+    <div v-for="(game, index) in matches.slice().reverse()" :key="game.id_usermatch" class="ml-2">
         <div class="flex my-3.25 ml-2 w-full">
             <div class="size-13 rounded-full items-center inline-flex text-lg"
                 v-bind:class="{ 'bg-green-50/90 text-green-600' : game.result === 'Win',

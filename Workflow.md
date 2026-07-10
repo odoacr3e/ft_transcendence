@@ -141,8 +141,9 @@ boardConverter()
 	✓	dettagli info sui match
 	✓	refactor pagina di gioco, pulsanti con tipi di partite, creazione stanze, sfida amici
 	✓	websocket per la partita [LEO]
-	▫	test login e resgiter con OTP e opzioni di toglierlo nelle impostazioni [MAVI]
-	▫	info dei profili per le partitre a 4
+	✓	test login e resgiter con OTP e opzioni di toglierlo nelle impostazioni
+	▫	info dei profili per le partitre a 4 [MAVI]
+	▫	finire l'editing del profilo
 	▫	websocket per le notifiche
 	▫	pagina della leaderboard
 	▫	re-design della home
