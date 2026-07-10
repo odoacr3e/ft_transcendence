@@ -48,4 +48,17 @@ function strCount(haystack, needle)
 	return (count);
 }
 
-export {includesOneOf, strCount};
+/**
+ * 
+ * @param {String} string 
+ */
+function isLowerCase(string)
+{
+	let	chr = string.charCodeAt(0);
+
+	if (string.length <= 0)
+		return (false);
+	return (chr >= 97 && chr <= 122);
+}
+
+export {includesOneOf, strCount, isLowerCase};

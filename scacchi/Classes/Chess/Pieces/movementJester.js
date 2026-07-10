@@ -21,7 +21,6 @@ let movementJester = function (match)
 	match.board.get(startPos)?.boostedTargetZones.set(startPos, new Set());
 	for (let {dx, dy} of piece.moveArray)
 	{
-		console.log(`dx(${dx}), dy(${dy})`);
 		let row = match.cursor.getRow();
 		let col = match.cursor.getCol();
 

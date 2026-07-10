@@ -19,6 +19,7 @@ import {render, boardStringify} from "./render.js";
 import readline from "node:readline";
 import { makeTransfiguration } from "../handlers/game/transfiguration.js";
 import { cmd } from "./enumsTest.js";
+import { MatchSettings } from "../Classes/Chess/match.js";
 
 /** @typedef {import("../Classes/Chess/match.js").Match} Match*/
 
@@ -27,17 +28,20 @@ function mainTerm()
 {
 	let	match;
 	let	seed;
+	let	time;
+	let	matchSettings;
 
+	console.profile();
 	termInit();
 	//FIXME - testing su questa funzione
-	// historyRestoreFromDb(218);
 	match = globals.getDebugMatch();
 	if (!match)
 		throw ("To use term.js, you need to set the DEBUG macro true");
 	seed = lib.Macro.SEED;
 	seed = "1v1";
-	init(match, seed);
-	// console.log(boardStringify(match));
+	time = process.hrtime.bigint();
+	init(match, matchSettings);
+	console.log(`time to init: ${(process.hrtime.bigint() - time) / 1000n} microseconds`);
 	match.cursor.square = match.currentPlayer.King;
 	// edoChampionBug(match);
 	render(match);
@@ -66,6 +70,7 @@ process.stdin.on('keypress', (str, key) =>
 	dy = 0;
 	if ((key.ctrl && key.name == "c"))// || match.victory)
 	{
+		console.profileEnd();
 		termCleanup(key.name);
 	}
 	console.clear();

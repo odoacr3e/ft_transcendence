@@ -11,17 +11,18 @@ import {eEvents} from "../Macro/enums.js";
 import {Match} from "../Classes/Chess/match.js";
 import {HistoryEvent} from "../Classes/Chess/history.js";
 import {move, boost, endTurn, init, error} from "../handlers/game/Game.js";
-import { render } from "../test/render.js";
+import { boardStringify, render } from "../test/render.js";
 import { makeTransfiguration } from "../handlers/game/transfiguration.js";
 //FIXME - togliere
 import { prisma } from "../lib/prisma.js";
 import { globals } from "../Classes/Globals/globals.js";
 import { clientBoard } from "../handlers/game/utils.js";
 import { jsonParser } from "./response.js";
+import { DEBUG } from "../Macro/macro.js";
+import { Result } from "../Classes/endPoint/result.js";
 
 
 /** @typedef {import ("../Classes/Chess/history.js").History} History */
-/** @typedef {import ("../Classes/endPoint/result.js").Result} Result */
 
 let	DEBUGCounter = 0;
 let	DEBUGEvent = "";
@@ -58,19 +59,26 @@ async function historyRestoreFromDb(matchId)
 	//FIXME - spostare nelle query
 	const dbHistory = await prisma.matches.findUnique(
 	{
-		where: 
+		where:
 		{
 			id_match: Number(matchId)
 		}
 	});
 	if (!dbHistory)
-		return (false);
+		return (new Result().Error(`match with id ${matchId} not found`, 400));
 	//@ts-ignore
 	history = jsonParser(dbHistory.history);
 	//@ts-ignore
 	history.matchId = matchId;
-	recreateMatch(null, history, true);
-	return (true);
+	try
+	{
+		recreateMatch(null, history, true);
+	}
+	catch(err)
+	{
+		return (new Result().Error(`match with id ${matchId} is invalid.\nError:\n${err}`, 500));
+	}
+	return (new Result().Success());
 }
 
 //SECTION - utils
@@ -89,12 +97,12 @@ function recreateMatch(match, history, cacheMatchBool=false)
 	if (!match)
 		match = new Match(history.matchSettings);
 	else
-		match.Reset(history.matchSettings);//@ts-ignore
-	match.id = history.matchId;
+		match.Reset(history.matchSettings);
 	DEBUGCounter = 0;
 	try
 	{
-		result = init(match, match.settings);
+		result = init(match, match.settings);//@ts-ignore
+		match.id = history.matchId;
 		if (cacheMatchBool == true)
 			cacheMatchState(match, result);
 		match.historyCreateBool = true;
@@ -122,7 +130,11 @@ function recreateMatch(match, history, cacheMatchBool=false)
 			if (result.status != 200 && !event.error)
 				throw (`${result.status}: ${result.msg}\n${JSON.stringify(event, null, 2)}`);//@ts-ignore
 			else if (result.status == 200 && event.error == true)
+			{
+				if (cacheMatchBool && DEBUG)
+					continue ;
 				throw (`${result.status}: \n${JSON.stringify(event, null, 2)}`);
+			}
 			else if (result.status == 200)
 			{
 				if (cacheMatchBool == true)
@@ -175,9 +187,9 @@ function printResponse(match, event, result)
  */
 function cacheMatchState(match, result)
 {
-	if (globals.matchCache.has(match.id) == false)
-		globals.matchCache.set(match.id, new Array);
-	globals.matchCache.get(match.id)?.push(result);
+	if (globals.matchCache.has(match.id.toString()) == false)
+		globals.matchCache.set(match.id.toString(), new Array);
+	globals.matchCache.get(match.id.toString())?.push(boardStringify(match, true));
 }
 
 export {historyRestore, historyRestoreFromDb};

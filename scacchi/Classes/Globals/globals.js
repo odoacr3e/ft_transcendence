@@ -11,6 +11,7 @@ import { enumConnection } from "../../Macro/enums.js";
 /** @typedef {import("../Chess/player.js").Player} Player*/
 /** @typedef {{socket: *, allowedBool: boolean, state?: string, reconnectBool?: boolean, matchData?: Player}} Socket */
 /** @typedef {string} matchId*/
+/** @typedef {string} stringifyBoard*/
 
 const	TEST_MATCH = "0";
 
@@ -35,7 +36,7 @@ class Globals
 		/** @type {Map<string, NodeJS.Timeout>} */
 		this.timers = new Map();
 		this.lastMatchId = TEST_MATCH;
-		/** @type {Map<matchId, Array<Result>>} */
+		/** @type {Map<matchId, Array<stringifyBoard>>} */
 		this.matchCache = new Map();//
 	}
 	/** @param {string} roomType */
