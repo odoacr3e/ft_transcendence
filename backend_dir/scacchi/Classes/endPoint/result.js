@@ -71,13 +71,13 @@ class Result
 	{
 		this.status = 200;
 		this.msg = msg;
-		return (true);
+		return (this);
 	}
 	Error(msg="Backend failed for unknown reasons", status=500)
 	{
 		this.status = status;
 		this.msg = msg;
-		return (false);
+		return (this);
 	}
 }
 

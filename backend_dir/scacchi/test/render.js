@@ -308,10 +308,10 @@ function boardStringify(match, otherInfoBool=false)
 			if (!square)
 				throw (`board position ${match.cursor.square} gives back null pointer`);
 			ascii = getAscii(square);
+			if (otherInfoBool == true && square.piece)
+				ascii = `${getInitialOfTeam(square.piece.team)}${ascii}`;
 			if (square.piece?.isBoostedBool)
 				ascii = `+${ascii}`;
-			if (otherInfoBool == true && square.piece)
-				ascii = `${ascii}${getInitialOfTeam(square.piece.team)}`;
 			buffer += `${ascii}|`;
 		}
 		while (match.cursor.moveCol(+1))
