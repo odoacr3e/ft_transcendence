@@ -55,9 +55,9 @@ notifyRouter.get("/", checkJwt, async (req, res) => {
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  */
-notifyRouter.get("/:id", async (req, res) => {
+notifyRouter.get("/:id", checkJwt, async (req, res) => {
 	try {
-		const notif = await notifyQuery.getNotificationById(req.params.id);
+		const notif = await notifyQuery.getNotificationById(req.user.id_user, req.params.id);
 		if (notif)
 			return res.status(200).json(jsonResponse.ResponseSuccess({ "notification": notif }));
 		return res.status(404).json(jsonResponse.ResponseError("Notification not found"));
@@ -85,18 +85,16 @@ notifyRouter.post("/", checkJwt, async (req, res) => {
 		}
 		const notification = await notifyQuery.postNotification(data);
 		const destSock = req.app.get('clientMap').get(data.id_user); // prendo il socket di riferimento all'id dello user
-		if (destSock)
+		if (destSock && notification)
 			destSock.socket.emit(`notification`, { title: notification.title, description: notification.description, sender: notification.users_notifications_id_senderTousers.username });
 		return res.status(204).send();
 	} catch (error) {
 		console.log("Error: ", error);
+		if (error.code == 'P2002')
+			return res.status(409).json(jsonResponse.ResponseError("Notification already exists"));
 		return res.status(500).json(jsonResponse.ResponseError("Server error posting new notification"));
 	}
 });
-
-/*
-
-*/
 
 /**
  * @param {import('express').Request} req
@@ -106,7 +104,6 @@ notifyRouter.patch("/", async (req, res) => {
 	try {
 		const { id_notifications } = req.body;
 		const notification = await notifyQuery.readNotifications(id_notifications);
-		log.ok("Notifications updated");
 		return res.status(204).send();
 	} catch (error) {
 		log.err(`Server error updating notifications: ${error.code}`);

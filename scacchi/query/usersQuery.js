@@ -319,7 +319,8 @@ export async function updateUserPasswordById(id_user, password) {
 					description: true,
 					colors: true,
 				}
-			}
+			},
+			mfa: true
 		}
 	});
 }
