@@ -1,13 +1,15 @@
 <script setup>
-	import PlayerInfo               from '../components/PlayerInfo.vue';
-	import ChessBoard               from '../components/ChessBoard.vue';
-	import AppHeader                from '../components/AppHeader.vue';
-	import { localMatchState } 		from '@/scripts/Data/Variables';
-	import router 					from '@/router';
-	import { onMounted, ref }       from 'vue';
+	import { localMatchState, localInfo, DOMPlayer }	from '@/scripts/Data/Variables';
+	import { onMounted, ref, computed }       			from 'vue';
+	import PlayerInfo               					from '../components/PlayerInfo.vue';
+	import ChessBoard               					from '../components/ChessBoard.vue';
+	import AppHeader                					from '../components/AppHeader.vue';
+	import router 										from '@/router';
 
-	const ready = ref(false);
-	const style = ref("1v1");
+	const ready		= ref(false);
+	const style		= ref("1v1");
+	const bottomP	= computed(() => DOMPlayer(2)?.team === localInfo.myTeam ? 2 : 1);
+	const topP		= computed(() => bottomP.value === 1 ? 2: 1);
 
 	onMounted(async () => {
 		try{
@@ -30,9 +32,9 @@
             <div class="flex z-2 bg-[#181715] rounded-3xl">
                 <div class="p-6 bg-[#201e1c] rounded-l-3xl border-r border-[#4e4e4e8c]">
                   <div v-if="ready">
-                    <PlayerInfo :p="2"/>
+                    <PlayerInfo :p="topP" pos="top"/>
                     <ChessBoard :style="style"/>
-                    <PlayerInfo :p="1"/>
+                    <PlayerInfo :p="bottomP" pos="bottom"/>
                   </div>
                 </div>
                 <div class="p-10 flex-col mt-20 w-lg">

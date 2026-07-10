@@ -52,6 +52,7 @@ export async function globalEvents()
 
 	ROOT_DIV.addEventListener("dragend", function(event) 
 	{
+		clearHighlight("clicked");
 		setTimeout(() => {
 			if (event.target.classList.contains("piece") && !localInfo.dropDone)
 				event.target.style.visibility = "visible";

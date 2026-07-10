@@ -7,7 +7,7 @@ services:
       context: .
       dockerfile: Dockerfile/Dockerfile.nginx
     ports:
-      - "80:80"
+      - "8000:80"
     depends_on:
       - backend
       - frontend
@@ -22,12 +22,9 @@ services:
     volumes:
       - ./backend_dir/scacchi:/app
       - /app/node_modules
-
   frontend:
     image: frontend
     container_name: frontend
-    # ports:
-    #   - "5173:5173"
     build:
       context: .
       dockerfile: Dockerfile/Dockerfile.fe

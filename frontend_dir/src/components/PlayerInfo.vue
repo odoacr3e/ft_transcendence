@@ -1,18 +1,19 @@
 <script setup>
 	import { DOMPlayer, localBoard, localInfo, IMG_PATHS }	from '@/scripts/Data/Variables';
-	import { useAbility, sendEndTurn }			from '@/scripts/Events/utils/GlobalUtils';
-	import { computed }							from 'vue';
-	import	TimerClock							from "./TimerClock.vue"
-	import	CapturedPieces						from "./CapturedPieces.vue"
+	import { useAbility, sendEndTurn }						from '@/scripts/Events/utils/GlobalUtils';
+	import { computed }										from 'vue';
+	import	TimerClock										from "./TimerClock.vue"
+	import	CapturedPieces									from "./CapturedPieces.vue"
 
 	const prop = defineProps({
-  		p: Number
+  		p: Number,
+		pos: {type: String, default: 'bottom'}
 	});
-	const	player = computed(() => DOMPlayer(prop.p)),
-			playing = computed(() => player.value.isPlaying),
-			up = prop.p === 2 ? true : false,
-			down = prop.p === 1 ? true : false,
-			endT = computed(() => localInfo.secondTurn);
+	const	player	= computed(() => DOMPlayer(prop.p)),
+			playing	= computed(() => player.value.isPlaying),
+			up		= prop.pos === 'top',
+			down	= prop.pos === 'bottom',
+			endT	= computed(() => localInfo.secondTurn);
 
 	const Piece = computed(() => {
 		if (!localInfo.clickedId) { return null; }

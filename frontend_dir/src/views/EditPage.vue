@@ -12,7 +12,8 @@
 	        	name: '',
 	        	surname: '',
 	        	username: '',
-	        	nationality: ''
+	        	nationality: '',
+                // mfa: false
                 // preferences: 0
 	        }),
             avatarFile = ref(null),      // il File vero e proprio
@@ -59,41 +60,24 @@
         //     payload.append('avatar', avatarFile.value);
         // }
 
-        if (!formData.value.name || !formData.value.surname || !formData.value.username || !formData.value.nationality)
-        {
-            if (!formData.value.name)           { formData.value.name = user.value.name; }
-            if (!formData.value.surname)        { formData.value.surname = user.value.surname; }
-            if (!formData.value.username)       { formData.value.username = user.value.username; }
-            if (!formData.value.nationality)    { formData.value.nationality = user.value.nationality; }
-        }
+        const payload = {
+            username: formData.value.username ? formData.value.username : user.value.username
+        };
 
-        const resp = await authStore.update(formData.value);
+        if (formData.value.name)        { payload.name = formData.value.name; }
+        if (formData.value.surname)     { payload.surname = formData.value.surname; }
+        if (formData.value.nationality) { payload.nationality = formData.value.nationality; }
+        // if (formData.value.mfa)         { payload.mfa = formData.value.mfa; }
+        // if (formData.value.preferences) { payload.preferences = formData.value.preferences; }
+
+
+        const resp = await authStore.update(payload);
         if (!resp)	{ router.push('/me'); }
         else		{ error.value = true; }
     }
 </script>
 
 <template>
-    <div>
-		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" id="allert"
-			class="absolute size-6 text-red-100 animate-error translate-x-168 translate-y-101 hidden transition-all duration-250 ease-in-out z-11"
-			:class="{ 'inline' : error }">
-			<path fill-rule="evenodd" d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd" />
-		</svg>
-		<div class="hidden translate-x-115 translate-y-92 p-3 animate-pop flex-col items-center text-center z-11
-				gap-2.5 absolute rounded-xl border inset-ring bg-[#2f1818]/80 text-red-100 border-red-800/10 inset-ring-red-500/20">	
-			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-red-100 self-center mx-auto">
-				<path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
-			</svg>
-			<div>
-				<h2>Credenziali errate</h2>
-				<p class="text-sm">Lo username deve avere</p>
-                <p class="text-sm">almeno 4 caratteri</p>
-			</div>
-		</div>
-	</div>
-
-
     <div class="min-h-screen flex flex-col">
         <AppHeader class="z-11"/>
         <div id="wrap" class="grow">
@@ -147,13 +131,31 @@
                             </div>
                         </div>
 
-                        <div>
+                        <div class="relative">
                             <div class="flex gap-2 mb-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mt-1 size-6 text-[#dcdfe4c0]">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                                 </svg>
                                 <h3 class="text-xl">Username</h3>
                             </div>
+                            <div>
+	                        	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" id="allert"
+	                        		class="absolute size-6 text-red-100 animate-error -translate-x-8 translate-y-3 hidden transition-all duration-250 ease-in-out z-11"
+	                        		:class="{ 'inline' : error }">
+	                        		<path fill-rule="evenodd" d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd" />
+	                        	</svg>
+	                        	<div class="hidden p-3 animate-pop flex-col items-center text-center z-11 -translate-x-60 -translate-y-6
+	                        			gap-2.5 absolute rounded-xl border inset-ring bg-[#2f1818]/80 text-red-100 border-red-800/10 inset-ring-red-500/20">	
+	                        		<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-red-100 self-center mx-auto">
+	                        			<path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+	                        		</svg>
+	                        		<div>
+	                        			<h2>Credenziali errate</h2>
+	                        			<p class="text-sm">Lo username deve avere</p>
+                                        <p class="text-sm">almeno 4 caratteri</p>
+	                        		</div>
+	                        	</div>
+	                        </div>
                             <div class="form flex w-sm mb-3">
                                 <input :placeholder="user.username" size="35" class="pl-2 text-base" autofocus="true" type="text" v-model="formData.username">
                             </div>
@@ -184,6 +186,24 @@
                             </div>
                             <div class="form flex w-sm mb-3">
                                 <input :placeholder="user.nationality" list="country" size="35" class="pl-2 text-base" autofocus="true" type="text" v-model="formData.nationality">
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex gap-2 mb-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.6" stroke="currentColor" class="mt-1 size-6 text-[#dcdfe4c0]">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z" />
+                                </svg>
+                                <h3 class="text-xl">Autenticazione via OTP</h3>
+                            </div>
+                            <div class="flex w-sm mb-3 p-2.5 justify-self-center">
+                                <label class="inline-flex items-center me-5 cursor-pointer">
+                                  <input type="checkbox" value="" class="sr-only peer" :checked="user.mfa" v-model="formData.mfa">
+                                  <span class="select-none me-3 text-sm font-medium text-heading">Disattivato</span>
+                                  <div class="relative w-9 h-5 bg-neutral-quaternary rounded-full bg-[#0c0c0b]
+                                        peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:inset-s-0.5 after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#882a2a]"></div>
+                                  <span class="select-none ms-3 text-sm font-medium text-heading">Attivato</span>
+                                </label>
                             </div>
                         </div>
                     </div>

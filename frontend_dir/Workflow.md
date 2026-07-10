@@ -112,7 +112,7 @@ boardConverter()
 	✓ 	non si dovrebbe poter boostare se non hai ancora mosso nessun pezzo
 	▫ 	feedback quando il re è sotto scacco, (abbiamo bisogno di una flag oppure 
 		usiamo gli enum di errore comuni)
-	▫	Far vedere che pezzo hai selezionato [LEO]
+	✓	Far vedere che pezzo hai selezionato [LEO]
 	▫ 	quando fai hover sul bottone per boostare il pezzo sarebbe carino poter avere
 	  	una preview delle target zones rese visibili sulla scacchiera, si può fare 
 	  	una route apposta per chiedere l'update delle target zones di un pezzo specifico
@@ -124,11 +124,10 @@ boardConverter()
 		comunicazione server
 	▫	implementare (reload, riaccesso, chiudi e riapri la pagina di gioco) 
 		durante la partita
-	▫	avviso di quando devi fare end turn più chiaro (?)
+	✓	avviso di quando devi fare end turn più chiaro (?)
 	▫	spostamento bottoni
-	▫	le mosse dell'avversario sono poco visibili, servirebbero delle animazioni sul
+	✓	le mosse dell'avversario sono poco visibili, servirebbero delle animazioni sul
 		pezzo mosso oppure un evidenziazione sull'ulitmo pezzo mosso
-	▫
 
 //FIXME - Bugs
 	▫	quando finisci l'esecuzione di una mossa boostata di un pedone e clicchi su un'altro pezzo
@@ -148,9 +147,9 @@ boardConverter()
 	✓	dettagli info sui match
 	✓	refactor pagina di gioco, pulsanti con tipi di partite, creazione stanze, sfida amici
 	✓	websocket per la partita [LEO]
-	▫	redirection alla pagina login se si prova ad accedere a pagine protette [MAVI]
-	▫	test login e resgiter con OT e opzioni di toglierlo nelle impostazioni [MAVI]
-	▫	info dei profili per le partitre a 4
+	✓	test login e resgiter con OTP e opzioni di toglierlo nelle impostazioni
+	▫	info dei profili per le partitre a 4 [MAVI]
+	▫	finire l'editing del profilo
 	▫	websocket per le notifiche
 	▫	pagina della leaderboard
 	▫	re-design della home
@@ -158,7 +157,6 @@ boardConverter()
 	▫	dettagli info sui match
 
 //NOTE - Testing
-	▫	gio provando a connettersi ha beccato errore SSL_PROTOCOL_ERROR, risolto non connettendosi con https
 	▫	nome utente in grassetto
 
 
