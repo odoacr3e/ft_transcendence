@@ -6,6 +6,8 @@ import { abort } from "node:process";
 const DEBUG = true;
 //@ts-ignore
 /** @type {boolean} */const DEBUG_WEBSOCKETS = process.env.DEBUG_WEBSOCKETS == "true" ? true : false;
+//@ts-ignore
+/** @type {boolean} */const DEBUG_CURL = process.env.DEBUG_CURL == "true" ? true : false;
 
 //SECTION - history
 const HISTORY_PATH = "../history/";
@@ -68,4 +70,4 @@ function error(text)
 	abort();
 }
 
-export { macroReset, DEBUG, DEBUG_WEBSOCKETS, HISTORY_FILE, HISTORY_DEFAULT, HISTORY_PATH, CHESSBOARD_H, CHESSBOARD_W, MOVEMENT_MIN, MOVEMENT_MAX, MOVEMENT_BONUS_POINT, BOOSTED_MAX, HASH_SALT, SEED, MATCHTIMER, SOCKET_RECONNECT_TIMER, MATCH_RECONNECT_TIMER};
+export { macroReset, DEBUG, DEBUG_WEBSOCKETS, DEBUG_CURL, HISTORY_FILE, HISTORY_DEFAULT, HISTORY_PATH, CHESSBOARD_H, CHESSBOARD_W, MOVEMENT_MIN, MOVEMENT_MAX, MOVEMENT_BONUS_POINT, BOOSTED_MAX, HASH_SALT, SEED, MATCHTIMER, SOCKET_RECONNECT_TIMER, MATCH_RECONNECT_TIMER};

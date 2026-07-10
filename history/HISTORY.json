@@ -1,0 +1,206 @@
+{
+  "moves": 16,
+  "victory": "",
+  "finalBoard": "|M|J|V| |K|V|J|M|\n|J|B| | |+B|B|B|B|\n| | |B| | | | | |\n| | | | | | | | |\n| | | | | | | | |\n| | | | | | | | |\n|B| | |B|V|B|B|B|\n|M|C|V|C|K| |J|M|\n",
+  "matchSettings": {
+    "timer": 900000,
+    "board": {
+      "width": 8,
+      "heigth": 8,
+      "seed": 0,
+      "start": "|bM|bJ|bV| |bK|bV|bJ|bM|\n|bB|bB|bB| |+bB|bB|bB|bB|\n| | | | | | | | |\n| | | | |bC| | | |\n| | | | | | | | |\n| | | | | | | | |\n|wB|wB| |wB| |wB|wB|wB|\n|wM|wJ|wV|wC|wK|wV|wJ|wM|\n|00|",
+      "corners": false
+    },
+    "players": {
+      "number": 2,
+      "startPoints": 0,
+      "teams": {
+        "white": "",
+        "black": "",
+        "yellow": "",
+        "red": "",
+        "blue": "",
+        "green": ""
+      }
+    },
+    "presetType": null
+  },
+  "events": [
+    {
+      "from": "f1",
+      "to": "e2",
+      "movedPiece": "Valkirya",
+      "team": "white",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 0,
+      "updates": {},
+      "error": false
+    },
+    {
+      "from": "",
+      "to": "",
+      "movedPiece": "",
+      "team": "white",
+      "type": "endturn",
+      "useBoostBool": false,
+      "counter": 1,
+      "updates": {},
+      "error": false
+    },
+    {
+      "from": "e5",
+      "to": "b2",
+      "movedPiece": "Champion",
+      "team": "black",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 2,
+      "updates": {},
+      "error": false
+    },
+    {
+      "from": "",
+      "to": "",
+      "movedPiece": "",
+      "team": "black",
+      "type": "endturn",
+      "useBoostBool": false,
+      "counter": 3,
+      "updates": {},
+      "error": false
+    },
+    {
+      "from": "c7",
+      "to": "c6",
+      "movedPiece": "Bastards",
+      "team": "black",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 4,
+      "updates": {},
+      "error": true
+    },
+    {
+      "from": "",
+      "to": "",
+      "movedPiece": "",
+      "team": "white",
+      "type": "endturn",
+      "useBoostBool": false,
+      "counter": 5,
+      "updates": {},
+      "error": true
+    },
+    {
+      "from": "b1",
+      "to": "a3",
+      "movedPiece": "Jester",
+      "team": "white",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 6,
+      "updates": {},
+      "error": false
+    },
+    {
+      "from": "",
+      "to": "",
+      "movedPiece": "",
+      "team": "white",
+      "type": "endturn",
+      "useBoostBool": false,
+      "counter": 7,
+      "updates": {},
+      "error": false
+    },
+    {
+      "from": "b2",
+      "to": "b1",
+      "movedPiece": "Champion",
+      "team": "black",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 8,
+      "updates": {},
+      "error": false
+    },
+    {
+      "from": "a3",
+      "to": "b5",
+      "movedPiece": "Jester",
+      "team": "white",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 9,
+      "updates": {},
+      "error": true
+    },
+    {
+      "from": "",
+      "to": "",
+      "movedPiece": "",
+      "team": "black",
+      "type": "endturn",
+      "useBoostBool": false,
+      "counter": 10,
+      "updates": {},
+      "error": false
+    },
+    {
+      "from": "a3",
+      "to": "b5",
+      "movedPiece": "Jester",
+      "team": "white",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 11,
+      "updates": {},
+      "error": false
+    },
+    {
+      "from": "",
+      "to": "",
+      "movedPiece": "",
+      "team": "white",
+      "type": "endturn",
+      "useBoostBool": false,
+      "counter": 12,
+      "updates": {},
+      "error": false
+    },
+    {
+      "from": "c7",
+      "to": "c6",
+      "movedPiece": "Bastards",
+      "team": "black",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 13,
+      "updates": {},
+      "error": false
+    },
+    {
+      "from": "",
+      "to": "",
+      "movedPiece": "",
+      "team": "black",
+      "type": "endturn",
+      "useBoostBool": false,
+      "counter": 14,
+      "updates": {},
+      "error": false
+    },
+    {
+      "from": "b5",
+      "to": "a7",
+      "movedPiece": "Jester",
+      "team": "white",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 15,
+      "updates": {},
+      "error": false
+    }
+  ]
+}

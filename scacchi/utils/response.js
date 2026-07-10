@@ -1,6 +1,16 @@
 // @ts-check
+
+//SECTION - response functions
+/*
+	list of exports:
+	-	jsonResponse:		object that formats an http success/error response.
+	-	responseFormatter:	format response for /api/game and game websockets.
+	-	jsonParser:			parse strings into js objects and viceversa.
+*/
+
 import { Match } from "../Classes/Chess/match.js";
 import { Result } from "../Classes/endPoint/result.js";
+import { DEBUG_CURL } from "../Macro/macro.js";
 
 /**
  * 
@@ -125,7 +135,6 @@ function formatPlayer(match, result)
 		throw ("formatPlayer: backend forgot the turn order, sorry");
 }
 
-// FIXME - con questa va il FRONTEND
 /**
  * this function is used by JSON to recursively parse Objects
  * this should not be called
@@ -133,6 +142,18 @@ function formatPlayer(match, result)
  * @param {*} val 
  */
 function _jsonParser(key, val)
+{
+	if (DEBUG_CURL == true)
+		return (_jsonParserTester(key, val));
+	return (_jsonParserFrontend(key, val));
+}
+
+/**
+ * parser for the vue.js frontend
+ * @param {*} key 
+ * @param {*} val 
+ */
+function _jsonParserFrontend(key, val)
 {
 	if (val instanceof Set)
 	{
@@ -146,24 +167,24 @@ function _jsonParser(key, val)
 		return (val);
 }
 
-// FIXME - con questa va test/curlTest.js
 /**
- * 
+ * parser for internal backend testers
  * @param {string} key 
  * @param {object} val 
  * @returns 
  */
-// function _jsonParser(key, val)
-// {
-// 	if (val instanceof Set)
-// 		return ({ __type: "Set", data: [...val] });
-// 	if (val instanceof Map)
-// 		return ({ __type: "Map", data: [...val.entries()]});
-// 	return (val);
-// }
+function _jsonParserTester(key, val)
+{
+	if (val instanceof Set)
+		return ({ __type: "Set", data: [...val] });
+	if (val instanceof Map)
+		return ({ __type: "Map", data: [...val.entries()]});
+	return (val);
+}
 
 /**
- * 
+ * this function is used by JSON to create js objects from JSON strings
+ * this should not be called
  * @param {string} key 
  * @param {*} val 
  * @returns 

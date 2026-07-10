@@ -1,4 +1,14 @@
 // @ts-check
+
+//SECTION - dangerUpdate function
+/*
+	list of exports:
+	-	dangerUpdate:			updates piece targets.
+	-	dangerUpdateAll:		resets the board and calculates it from scratch.
+	-	dangerUpdateMove:		update all squares influenced in a movement.
+	-	dangerUpdateBastards:	hardcodes the targets of bastards.
+*/
+
 import { enumNames} from "../Macro/enums.js";
 import { movePiece } from "./movePiece.js";
 
@@ -8,7 +18,7 @@ import { movePiece } from "./movePiece.js";
 /**@typedef {import("../Classes/Chess/Pieces/pieces.js").Piece} Piece*/
 
 /**
- * 
+ * updates piece targets.
  * @param {Match} match 
  * @param {string | null} pos
  * @param {boolean} ignoreBoostChampsBool
@@ -62,7 +72,7 @@ let DangerUpdate = (match, pos=null, ignoreBoostChampsBool=true, castlingBool=fa
 }
 
 /**
- * resets the board and calculates it from scratch
+ * resets the board and calculates it from scratch.
  * @param {Match} match 
  */
 function dangerUpdateAll(match)
@@ -105,7 +115,10 @@ function dangerUpdateMoved(match, selected=[], castlingBool=false)
 	updateBoostedChampions(match, selected);
 }
 
-/*										dy/dx	dy/dx	dy/dx
+/*		
+	//NOTE - objects used by dangerUpdateBastards.
+
+										dy/dx	dy/dx	dy/dx
 	red/white: SOUTH, dy positivo  -->	1, 0	1,-1	1,1
 	yellow/black: NORTH dy negativo		-1, 0	-1,-1	-1,1
 	blue: WEST dx positivo				0, 1	-1,1	1,1
@@ -122,6 +135,7 @@ let bastardMove = // aggiornato movimenti
 }
 
 /**
+ * hardcodes the targets of bastards.
  * 
  * @param {Match} match
  * @param {Number} dy
@@ -254,6 +268,7 @@ function CheckInfluence(match, coords, castlingBool)
 {
 	let setInfluence;
 	let tmpInfluenceDanger = [];
+	let	i;
 
 	for (const coord of coords)
 	{
@@ -262,23 +277,8 @@ function CheckInfluence(match, coords, castlingBool)
 			throw (`dangerDelPiece: invalid coord ${coord}`);
 		tmpInfluenceDanger.push(new Set(setInfluence));
 	}
-	checkInfluenceSets(match, coords, tmpInfluenceDanger, castlingBool);
-}
-
-//FIXME - incorpare in checkInfluence
-/**
- * 
- * @param {Match} match 
- * @param {Array<string>} coords 
- * @param {Array<Set<string>>} influenceSets the set for every coord
- * @param {boolean} castlingBool
- */
-function checkInfluenceSets(match, coords, influenceSets, castlingBool)
-{
-	let	i;
-
 	i = 0;
-	for (const set of influenceSets)
+	for (const set of tmpInfluenceDanger)
 	{
 		for (const influenceCoord of set)
 		{
@@ -287,6 +287,29 @@ function checkInfluenceSets(match, coords, influenceSets, castlingBool)
 		++i;
 	}
 }
+
+// //FIXME - incorpare in checkInfluence
+// /**
+//  * 
+//  * @param {Match} match 
+//  * @param {Array<string>} coords 
+//  * @param {Array<Set<string>>} influenceSets the set for every coord
+//  * @param {boolean} castlingBool
+//  */
+// function checkInfluenceSets(match, coords, influenceSets, castlingBool)
+// {
+// 	let	i;
+
+// 	i = 0;
+// 	for (const set of influenceSets)
+// 	{
+// 		for (const influenceCoord of set)
+// 		{
+// 			DangerUpdate(match, influenceCoord, true, castlingBool);
+// 		}
+// 		++i;
+// 	}
+// }
 
 /**
  * if they need an update, it is done in boost order

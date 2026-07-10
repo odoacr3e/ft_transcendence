@@ -115,6 +115,35 @@ function getInitialOfTeam(team)
 	}
 }
 
+/** 
+ * 
+ * @param {string} initial 
+ * @param {number} nPlayer
+ * */
+function getTeamByInitial(initial, nPlayer)
+{
+	if (nPlayer != 2 && nPlayer != 4)
+		throw ("getTeamByInitial: invalid nPlayer number.");
+	switch (initial)
+	{
+		case (enumInitTeam.Black): case (enumInitTeam.Blue):
+			if (nPlayer == 2)
+				return (eTeam.Black);
+			else
+				return(eTeam.Blue);
+		case (enumInitTeam.Green):
+			return (eTeam.Green);
+		case (enumInitTeam.Red):
+			return (eTeam.Red);
+		case (enumInitTeam.White):
+			return (eTeam.White);
+		case (enumInitTeam.Yellow):
+			return (eTeam.Yellow);
+		default:
+			throw (`getTeamByInitial: ${initial} unknown`);		
+	}
+}
+
 const enumSpecialMoves =
 {
 	NONE: 0,
@@ -138,4 +167,4 @@ const kingMovements =
 	{dx:1, dy:0}, {dx:-1, dy:0},//orizzontale
 ];
 
-export {eTeam, eEvents, eMatchPresets, enumNames, arrayNames, enumInitNames, getInitialOfTeam, enumInitTeam, enumValues, enumSpecialMoves, kingMovements, enumConnection, enumSocketState};
+export {eTeam, eEvents, eMatchPresets, enumNames, arrayNames, enumInitNames, getInitialOfTeam, enumInitTeam, enumValues, enumSpecialMoves, kingMovements, enumConnection, enumSocketState, getTeamByInitial};

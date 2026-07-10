@@ -12,7 +12,8 @@ import { Piece } from "../Classes/Chess/Pieces/pieces.js";
 import { Enums } from "../lib/lib.js";
 import {dangerUpdateAll} from "../utils/dangerUpdate.js";
 import {Match} from "../Classes/Chess/match.js";
-const {eTeam, enumNames, enumInitNames} = Enums;
+import { isLowerCase } from "../utils/string.js";
+const {eTeam, enumNames, enumInitNames, getTeamByInitial} = Enums;
 
 /**
  * 
@@ -45,7 +46,7 @@ function initSavedBoard(match)
 				curr = rows[i]?.slice(0, indexSep);// curr = C
 				//@ts-ignore
 				rows[i] = rows[i]?.slice(indexSep + 1);// next = B|...
-				console.log(curr, match.cursor.square);
+				// console.log(curr, match.cursor.square);
 				assignPieceByType(match, curr);
 			}
 		}
@@ -262,19 +263,27 @@ function assignPieceByType(match, curr)
 	let	team;
 	let	square;
 	let	isBoostedBool = false;
+	let	nPlayer;
 
+	nPlayer = match.settings.players.number;
 	if (!curr || curr == " ")
 		return ;
-	pos = match.cursor.square;
-	team = getTeamByCoord(match);
-	square = match.board.get(pos);
-	if (!square)
-		throw ("init: invalid coord");
 	if (curr.at(0) == "+")
 	{
 		isBoostedBool = true;
 		curr = curr.slice(1);
 	}
+	pos = match.cursor.square;
+	if (isLowerCase(curr) == true)
+	{
+		team = getTeamByInitial(curr.charAt(0), nPlayer);
+		curr = curr.slice(1);
+	}
+	else
+		team = getTeamByCoord(match);
+	square = match.board.get(pos);
+	if (!square)
+		throw ("init: invalid coord");
 	switch (curr)
 	{
 		case (enumInitNames.BASTARDS) :
