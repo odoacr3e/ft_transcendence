@@ -31,13 +31,17 @@ export function highlightOnClick(event)
 		updatePrice();
 		if (localInfo.clickedId === localInfo.lastClickedId) 
 		{
+			localBoard.get(localInfo.clickedId).clicked = false;
 			clearHighlight();
 			localInfo.lastClickedId = null;
 			return;
 		}
+		if (localInfo.lastClickedId)
+			localBoard.get(localInfo.lastClickedId).clicked = false;
 		const piece = localBoard.get(localInfo.clickedId).piece.type;
 		if (!localInfo.secondTurn || (localInfo.secondTurn && localInfo.secondMove))
 			PIECES_HIGHLIGHT[piece](localInfo.clickedId);
+		localBoard.get(localInfo.clickedId).clicked = true;
 		localInfo.lastClickedId = localInfo.clickedId;
 	}
 	else
@@ -61,10 +65,13 @@ export function highlightOnDrag(event)
 	 	
 		if (Piece.team != Player.team) { return; }
 
+		clearHighlight("clicked");
 		PIECES_HIGHLIGHT[Piece.type](clickedId);
 		if (localInfo.savedBoostedMap && localInfo.savedBoostedMap.has(clickedId))
 			localBoard.get(clickedId).boostedHighlight = true;
+		localBoard.get(clickedId).clicked = true;
 		resetPrice();
+		// ciao
 	}
 }
 
@@ -101,6 +108,8 @@ export function clearHighlight(flag)
 	localBoard.forEach(square => {
 		if (square.selected === true && (flag === "selected" || flag === undefined))
 			square.selected = false;
+		if (square.clicked === true && (flag === "clicked" || flag === undefined))
+			square.clicked = false;
 		if ((square.highlight === true || square.boostedHighlight == true)&& (flag === "highlight" || flag === undefined))
 			{
 				square.highlight = false;

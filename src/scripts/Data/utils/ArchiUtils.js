@@ -1,5 +1,5 @@
 import { computePosition, offset, flip, shift, autoUpdate }	from "@floating-ui/dom"; 
-import { localBoard, localInfo, localPlayers } from "../Variables";
+import { localBoard, localInfo, localPlayers, Square } 		from "../Variables";
 
 let stopAutoUpdate = null;
 
@@ -107,4 +107,21 @@ export function _jsonReviver(key, val)
 	if (val && val.__type == "Map")
 		return (new Map(val.data));
 	return val;
+}
+
+export function assignLastMoveSquares(oldSquare, newSquare, newSet)
+{
+	const oldPiece	 = oldSquare.piece;
+	const newPiece	 = newSquare.piece;
+	const oldPSignat = oldPiece ? oldPiece.team + ":" + oldPiece.type : null;
+	const newPSignat = newPiece ? newPiece.team + ":" + newPiece.type : null;
+	const isOldEmpty = oldPSignat === null;
+	const isNewEmpty = newPSignat === null;
+
+	if (!isOldEmpty && isNewEmpty)
+		newSet.add(oldSquare.id);
+	if (isOldEmpty && !isNewEmpty)
+		newSet.add(oldSquare.id);
+	if (!isOldEmpty && !isNewEmpty && oldPSignat !== newPSignat)
+		newSet.add(oldSquare.id);
 }

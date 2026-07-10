@@ -1,18 +1,19 @@
 <script setup>
 	import { DOMPlayer, localBoard, localInfo, IMG_PATHS }	from '@/scripts/Data/Variables';
-	import { useAbility, sendEndTurn }			from '@/scripts/Events/utils/GlobalUtils';
-	import { computed }							from 'vue';
-	import	TimerClock							from "./TimerClock.vue"
-	import	CapturedPieces						from "./CapturedPieces.vue"
+	import { useAbility, sendEndTurn }						from '@/scripts/Events/utils/GlobalUtils';
+	import { computed }										from 'vue';
+	import	TimerClock										from "./TimerClock.vue"
+	import	CapturedPieces									from "./CapturedPieces.vue"
 
 	const prop = defineProps({
-  		p: Number
+  		p: Number,
+		pos: {type: String, default: 'bottom'}
 	});
-	const	player = computed(() => DOMPlayer(prop.p)),
-			playing = computed(() => player.value.isPlaying),
-			up = prop.p === 2 ? true : false,
-			down = prop.p === 1 ? true : false,
-			endT = computed(() => localInfo.secondTurn);
+	const	player	= computed(() => DOMPlayer(prop.p)),
+			playing	= computed(() => player.value.isPlaying),
+			up		= prop.pos === 'top',
+			down	= prop.pos === 'bottom',
+			endT	= computed(() => localInfo.secondTurn);
 
 	const Piece = computed(() => {
 		if (!localInfo.clickedId) { return null; }
@@ -24,7 +25,7 @@
 	<div class="wrap"
 		v-bind:class="{'rounded-t-md mb-1':up, 'rounded-b-md mt-1':down}">
 
-		<img src="../assets/default.png" alt="User Icon" :draggable="false" class="size-18.75 shrink-0"
+		<img src="../assets/default.png" alt="User Icon" :draggable="false" class="size-18.75 shrink-0 stretch 0"
 			v-bind:class="{'rounded-tl-md':up, 'rounded-bl-md':down}">
 
 		<div class="shrink-0">
@@ -53,7 +54,7 @@
 		</div>
 		<!-- <img :src="IMG_PATHS[player.team + 'King']" alt="TeamKing" :draggable="false" class="size-18.75 shrink-0"
 			v-bind:class="{'drop-shadow-custom':playing }"> -->
-		<TimerClock :Millis="player.time" :Go="playing"/>
+		<TimerClock :millis="player.time" :go="playing" :team="player.team"/>
 	</div>
 </template>
 

@@ -20,8 +20,12 @@
         globalEvents();
     });
 
-	const currP = ref(localPlayers.values().find(p => p.isPlaying === true)),
-		dragOver = ref(null);
+	const currP = ref(localPlayers.values().find(p => p.isPlaying === true)), dragOver = ref(null);
+
+	const orientation = computed(() => localInfo.myTeam === "white" ? "white" : "black");
+
+	const bottomRank	= computed(() => orientation.value === "white" ? 1 : 8);
+	const leftFile		= computed(() => orientation.value === "white" ? 'a' : 'h');
 </script>
 
 <template>
@@ -41,11 +45,12 @@
 							{'selectedBstW': getSquareColor(square.id) == 'white' && (square.boostedHighlight && square.piece)},
 							{'selectedBstB': getSquareColor(square.id) == 'black' && (square.boostedHighlight && square.piece)},
 							{'selectedW': getSquareColor(square.id) == 'white' && (square.selected || square.highlight && square.piece)},
-							{'selectedB': getSquareColor(square.id) == 'black' && (square.selected || square.highlight && square.piece)}]"
+							{'selectedB': getSquareColor(square.id) == 'black' && (square.selected || square.highlight && square.piece)},
+							{'pieceClicked': square.piece && square.piece.team === localInfo.myTeam && square.clicked}]"
                     @drop="onDrop($event, square); dragOver = null"
                     @dragover.prevent="dragOver = square.id;">
 					<p	class="absolute"
-						v-if="(parseInt(square.id.substring(1)) === 1) || 
+						v-if="(parseInt(square.id.substring(1)) === bottomRank) || 
 						  	  (style === '14x14x4' && parseInt(square.id.substring(1)) === 4 &&
 							  ['a', 'b', 'c', 'l', 'm', 'n'].includes(square.id.charAt(0)))"
 						v-bind:class="{ 'ml-15 mt-13' : style === '1v1',
@@ -64,7 +69,7 @@
                         :draggable="true"
                         @dragstart="onDragStart($event, square)"/>
 					<p 	class="absolute" 
-					   	v-if="(square.id.charAt(0) == 'a') ||
+					   	v-if="(square.id.charAt(0) == leftFile) ||
 						 	  (style === '14x14x4' && square.id.charAt(0) == 'd' && 
 							  (parseInt(square.id.substring(1)) < 4 || parseInt(square.id.substring(1)) > 11))"
 						v-bind:class="{ 'mr-15 mb-13' : style === '1v1',
@@ -77,9 +82,13 @@
 						<b>{{square.id.substring(1)}}</b>
 					</p>
                     <span v-if="square.highlight && !square.piece" class="highlight"
-						  v-bind:class="{'w-3.75 h-3.75': style === '1v1', 'w-2.5 h-2.5': style === '14x14x4'}"></span>
+							v-bind:class="{'w-3.75 h-3.75': style === '1v1', 'w-2.5 h-2.5': style === '14x14x4'}"></span>
                     <span v-if="square.boostedHighlight && !square.piece" class="boostedHighlight"
-						  v-bind:class="{'w-3.75 h-3.75': style === '1v1', 'w-2.5 h-2.5': style === '14x14x4'}"></span>
+							v-bind:class="{'w-3.75 h-3.75': style === '1v1', 'w-2.5 h-2.5': style === '14x14x4'}"></span>
+					<!-- <span v-if="square.piece && square.piece.team === localInfo.myTeam && square.id === localInfo.clickedId && localInfo.clickedId === localInfo.lastClickedId"
+							class="teamSelectedBackground"></span> -->
+					<span v-if="localInfo.lastMovesSquares.has(square.id)"
+							class="lastMoveOverlay"></span>
                 </div>
             </div>
 			<div v-if="localInfo.goatId" id="choseMenu" class="flex absolute pointer-events-none size-75 z-14 gap-0.5 p-1.5 
@@ -110,7 +119,9 @@
 </template>
 
 <style scoped>
-	div#overlay {
+
+	div#overlay
+	{
 		opacity: 0.4;                    /* fisso, la transizione la gestisci con v-if */
 		background: rgba(0, 0, 0, 0.35);
 		inset: 0;
@@ -118,7 +129,7 @@
 		z-index: 14;                     /* sotto al menu */
 		pointer-events: auto;            /* blocca i click sotto */
 		transition: opacity 0.2s ease;
-}
+	}
 
 	#shop {
 		position: absolute;
@@ -137,6 +148,8 @@
 		display: grid;
 		width: fit-content;
 		margin: auto;
+		--piece-clicked-bg: rgba(209, 152, 8, 0.55);
+		--last-move-color: rgba(65, 54, 27, 0.692);
 	}
 
 	.boardTwo {
@@ -173,14 +186,56 @@
 		align-items: center;
 		justify-content: center;
 		user-select: none;
+		position: relative;
+		z-index: 0;
 	}
 
+	/* .teamSelectedCrosses
+	{
+		--corner-color: rgba(204, 21, 21, 0.7);
+		--corner-thikness: 4px;
+		--corner-lenght: 28%;
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+		z-index: -1;
+		background:
+        	linear-gradient(var(--corner-color), var(--corner-color)) top left     /var(--corner-lenght) 			var(--corner-thikness) no-repeat,
+			linear-gradient(var(--corner-color), var(--corner-color)) top 			var(--corner-thikness) left		/var(--corner-thikness) calc(var(--corner-lenght) - var(--corner-thikness)) no-repeat,
+			linear-gradient(var(--corner-color), var(--corner-color)) top right    /var(--corner-lenght) 			var(--corner-thikness) no-repeat,
+			linear-gradient(var(--corner-color), var(--corner-color)) top 			var(--corner-thikness) right 	/var(--corner-thikness) calc(var(--corner-lenght) - var(--corner-thikness)) no-repeat,
+			linear-gradient(var(--corner-color), var(--corner-color)) bottom left  /var(--corner-lenght) 			var(--corner-thikness) no-repeat,
+			linear-gradient(var(--corner-color), var(--corner-color)) bottom 		var(--corner-thikness) left		/var(--corner-thikness) calc(var(--corner-lenght) - var(--corner-thikness)) no-repeat,
+			linear-gradient(var(--corner-color), var(--corner-color)) bottom right /var(--corner-lenght) 			var(--corner-thikness) no-repeat,
+			linear-gradient(var(--corner-color), var(--corner-color)) bottom 		var(--corner-thikness) right	/var(--corner-thikness) calc(var(--corner-lenght) - var(--corner-thikness)) no-repeat;
+	} */
+
+	/* .teamSelectedBackground
+	{
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+		background-color: rgba(209, 152, 8, 0.37);
+	} */
+
+	.lastMoveOverlay {
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+		pointer-events: none;
+		background-color: var(--last-move-color);
+	}
+	
 	.white{
 		background-color: white;
 	}
 
 	.black{
 		background-color: rgb(27, 0, 0);
+	}
+
+	.pieceClicked {
+		background-color: var(--piece-clicked-bg);
 	}
 
 	.highlight

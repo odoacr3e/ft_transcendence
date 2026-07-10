@@ -10,6 +10,7 @@ export class Square {
 		this.boostedHighlight = false;
 		this.useAbilityBool = false;
 		this.selected = false;
+		this.clicked = false;
 		this.targetZones = new Set(targetZones);
 		this.boostedTargetZones = new Map(boostedTargetZones);
 	}
@@ -30,6 +31,7 @@ class metaInfo {
 		this.goatId = null;
 		this.matchId = null;
 		this.myTeam = null;
+		this.lastMovesSquares = new Set();
 		this.capturedP = {	white: { Bastards: 0, Minotaurus: 0, Valkirya: 0, Jester: 0, Champion: 0},
 							black: { Bastards: 0, Minotaurus: 0, Valkirya: 0, Jester: 0, Champion: 0} };
 	}
@@ -63,6 +65,7 @@ export function initLocalBoard(boardData)
 	if (!localMatchState)
 		throw new Error("[initLocalBoard]: Match non inizializzato: chiama prima initLocalMatchState().");
 	localBoard.clear();
+	localInfo.lastMovesSquares = new Set();
 	if (boardData && typeof boardData === 'object') {
 		Object.entries(boardData).forEach(([squareId, squareData]) => {
 
