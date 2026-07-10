@@ -4,7 +4,6 @@
 
     const prop = defineProps({
   	    	matches: Array,
-            stats: Object
 	    });
 
     const selectedT = ref(null);
@@ -19,28 +18,6 @@
 </script>
 
 <template>
-    <div v-if="stats" class="flex gap-3 m-2 text-sm text-white justify-self-center">
-        <div class="flex gap-2">
-            <p>Vittorie:</p>
-            <p class="text-green-600">{{ stats.w }}</p>
-        </div>
-        <p class="text-[#4e4e4e8c]">|</p>
-        <div class="flex gap-2">
-            <p>Patte:</p>
-            <p class="text-gray-300">{{ stats.d }}</p>
-        </div>
-        <p class="text-[#4e4e4e8c]">|</p>
-        <div class="flex gap-2">
-            <p>Sconfitte:</p>
-            <p class="text-red-500">{{ stats.l }}</p>
-        </div>
-        <p class="text-[#4e4e4e8c]">|</p>
-        <div class="flex gap-2">
-            <p>N. partite:</p>
-            <p>{{ stats.total }}</p>
-        </div>
-    </div>
-    <hr class="w-full justify-self-start text-[#4e4e4e8c]">
     <div v-for="(game, index) in matches.slice().reverse()" :key="game.id_usermatch" class="ml-2">
         <div class="flex my-3.25 ml-2 w-full">
             <div class="size-13 rounded-full items-center inline-flex text-lg"
