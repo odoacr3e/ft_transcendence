@@ -6,10 +6,11 @@ import { matchMakingOpt } from "../endPoint/matchInit.js";
 import { enumConnection } from "../../Macro/enums.js";
 import { globals } from "./globals.js";
 import { findMatch } from "../../websocket/MatchMaking/MatchMaking.js";
+import { from } from "node:stream/iter";
 
 /** @typedef {import("../Chess/match.js").MatchSettings} MatchSettings*/
 /** @typedef {{id_user: string, points: number}} dbUser*/
-/** @typedef {{from: number, to: number, avg: number}} EloRange*/
+/** @typedef {{min: number, max: number, avg: number}} EloRange*/
 
 const fourPresets = [
 	eMatchPresets.ClassicFourPlayers,
@@ -37,7 +38,7 @@ export class Queue extends Map
 	{
 		if (this.has(user.id_user))
 			return ;
-		this.set(user.id_user, new QueueNode(options));
+		this.set(user.id_user, new QueueNode(user, options));
 		this.get(user.id_user)?.userSet.add(user.id_user);
 	}
 	/**
@@ -83,36 +84,43 @@ export class Queue extends Map
 	MergeNode(fromId, toId)
 	{
 		let	toNode;
+		let	fromNode;
+		let fromRange;
 
 		// this.DelNode(fromId);
+		fromNode = this.get(fromId);
 		toNode = this.get(toId);
-		if (!toNode)
-			throw (`Queue, MergeNode: toNode ${toNode} does not exist`);
+		if (!toNode || !fromNode)
+			throw (`Queue, MergeNode: toNode ${toNode} or fromNode ${fromNode} does not exist`);
+		fromRange = fromNode.eloRange;
 		this.set(fromId, toNode);
 		toNode.userSet.add(fromId);
+		toNode.EloAverage(fromRange.avg);
 	}
 	/** @param {dbUser} user */
 	Find(user)
 	{
-		let userOption;
+		let userNode;
 		let	foundBool = false;
 
-		userOption = this.get(user.id_user);
-		if (!userOption)
+		userNode = this.get(user.id_user);
+		if (!userNode)
 			throw (`Queue, Find: get of id_user ${user.id_user} does not exist`);
-		for (let [key, value] of this)
+		for (let [key, otherNode] of this)
 		{
 			if (key == user.id_user)//se stesso
 				continue ;
-			if (userOption.matchType != value.matchType)//tipo di match diverso
+			if (userNode.matchType != otherNode.matchType)//tipo di match diverso
 				continue ;
-			if (value.userSet.size == value.minPlayers)//match gia pieno
+			if (otherNode.userSet.size == otherNode.minPlayers)//match gia pieno
 				continue ;
 			if (globals.clientMap.get(key)?.reconnectBool == true)//avversario con problemi di connessione
 				continue ;
-			// if (this.roomType == enumConnection.RANKED)//TODO - 	controlli vari per la ranked
-			// {
-			// }
+			if (this.roomType == enumConnection.RANKED)//stesso range di elo
+			{
+				if ((userNode.eloRange.avg < otherNode.eloRange.min) && (userNode.eloRange.avg > otherNode.eloRange.max))
+					continue ;
+			}
 			foundBool = true;
 			this.MergeNode(key, user.id_user);
 			globals.ClearTimer(key);
@@ -127,12 +135,16 @@ export class Queue extends Map
 export class QueueNode
 {
 	/**
+	 *  @param {dbUser} user
 	 *  @param {matchMakingOpt} options
 	*/
-	constructor(options)
+	constructor(user, options)
 	{
+		let	elo;
+
+		elo = user.points;
 		/** @type {Set<string>} */ 					this.userSet = new Set();
-		/** @type {EloRange} */						this.eloRange = {from: 0, to: 2200, avg: 1100};
+		/** @type {EloRange} */						this.eloRange = {min: elo, max: elo, avg: elo};
 		/** @type {MatchSettings | null}*/			this.matchOptions = options.matchSettings ? options.matchSettings:null;
 		/** @type {string} */						this.matchType = options.matchType;
 		/** @type {number} */						this.minPlayers = 2;
@@ -143,5 +155,31 @@ export class QueueNode
 	IsFull()
 	{
 		return (this.userSet.size == this.minPlayers);
+	}
+	/**
+	 * 
+	 * @param {number} max 
+	 * @param {number} min 
+	 */
+	increaseDelta(max, min)
+	{
+		if ((max - min) == 400)
+			return ;
+		this.eloRange.max = max;
+		this.eloRange.min = min;
+		this.eloRange.avg = (max + min) / 2;
+	}
+	/** 
+	 * 
+	 * @param {number} otherElo
+	 */
+	EloAverage(otherElo)
+	{
+		let tot;
+
+		this.eloRange.min = this.eloRange.min < otherElo? this.eloRange.min : otherElo;
+		this.eloRange.max = this.eloRange.max > otherElo? this.eloRange.max : otherElo;
+		tot = (this.eloRange.max + this.eloRange.min) / 2;
+		this.eloRange.avg = tot;
 	}
 }

@@ -10,6 +10,7 @@
     "cookies": "^0.9.1",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
+    "elo-rank": "^1.0.4",
     "express": "^5.2.1",
     "ioredis": "^5.10.1",
     "jsonwebtoken": "^9.0.3",
@@ -35,7 +36,7 @@
     "gtest": "node test/cursorTest.js && node test/localTest.js && node test/curlTest.js && echo '\n\\033[32mGAME OK!' || echo '\n\\033[31m' KO!; echo '\n\\033[0m'",
     "term": "clear ; node --trace-uncaught --env-file=.env test/term.js",
     "debugTerm": "clear ; node --trace-uncaught --inspect --env-file=.env test/term.js",
-	"profileGame": "clear; node --prof --env-file=.env test/term.js"
+    "profileGame": "clear; node --prof --env-file=.env test/term.js"
   },
   "keywords": [],
   "author": "",

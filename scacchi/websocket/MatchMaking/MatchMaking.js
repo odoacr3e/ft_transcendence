@@ -67,8 +67,8 @@ export async function findMatch(queue, user)
 		findBool = queue.Find(user);
 	if (findBool && queue.get(user.id_user)?.IsFull())
 		return createMatch(queueNode);
-	// else if (!findBool)
-	// 	aumentaRangeElo();//TODO - 
+	else if (!findBool)
+		queueNode.increaseDelta(queueNode.eloRange.max + 15, queueNode.eloRange.min + 15);
 	console.log("Adding timer for", user.id_user);
 	globals.timers.set(user.id_user, setTimeout(() => {
 		globals.timers.delete(user.id_user);
