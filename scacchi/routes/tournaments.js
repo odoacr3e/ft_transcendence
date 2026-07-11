@@ -38,7 +38,7 @@ tournamentsRouter.get('/:id', checkJwt, async (req, res) => {
 	}
 });
 
-tournamentsRouter.post('/', async (req, res) => {
+tournamentsRouter.post('/', checkJwt, async (req, res) => {
 	try {
 		const tournament = await tournamentsQuery.createTournament(req.body.name, req.body.id_creator);
 		if (tournament)
@@ -51,7 +51,7 @@ tournamentsRouter.post('/', async (req, res) => {
 	}
 });
 
-tournamentsRouter.patch('/', async (req, res) => {
+tournamentsRouter.patch('/', checkJwt, async (req, res) => {
 	try {
 		const updateTournament = await tournamentsQuery.updateTournamentStatus(req.body.id_tournament, req.body.status);
 		if (updateTournament)
