@@ -10,8 +10,12 @@ import { query } from "../lib/query.js";
 import { chownSync } from "node:fs";
 import { sendEmail } from "../lib/emailSender.js";
 const { redis } = lib.conn;
+const { fs, multer, sharp } = lib.include;
+const upload = multer({ dest: 'usersAvatar/' });
 const { usersQuery } = query;
 export const usersRouter = lib.include.express.Router();
+
+const uploadMiddleware = upload.single('avatar');
 
 // NOTE: route /api/users/
 
@@ -129,14 +133,16 @@ usersRouter.delete("/", checkJwt, async (req, res) => {
  * @param {import('express').Response} res
  * NOTE: solo user loggati, patch su utente richiedente
 */
-usersRouter.patch("/", checkJwt, async (req, res) => {
+usersRouter.patch("/", checkJwt, uploadMiddleware, async (req, res) => {
 	try {
 		const { username } = req.body;
 		if (!username || !checkUsername(username))
-			return res.status(400).json(jsonResponse.ResponseError("Invalid username format"));			
-		const user = await usersQuery.updateUserFieldsById(req.user.id_user, req.body);
-		delete(user.password);
-		return res.status(200).json(jsonResponse.ResponseSuccess({ "user": user }));
+			return res.status(400).json(jsonResponse.ResponseError("Invalid username format"));
+		console.log("FILE: ", req.file);
+		// const user = await usersQuery.updateUserFieldsById(req.user.id_user, req.body);
+		// delete(user.password);
+		// return res.status(200).json(jsonResponse.ResponseSuccess({ "user": user }));
+		return res.status(204).send();
 	} catch (error) {
 		if (error.code === 'P2002')
 			return res.status(404).json(jsonResponse.ResponseError("Username already taken"));
