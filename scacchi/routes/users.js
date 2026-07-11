@@ -10,8 +10,9 @@ import { query } from "../lib/query.js";
 import { chownSync } from "node:fs";
 import { sendEmail } from "../lib/emailSender.js";
 import { prisma } from "../lib/prisma.js";
+import fs from 'fs/promises';
 const { redis } = lib.conn;
-const { fs, multer, sharp, path } = lib.include;
+const { multer, sharp, path } = lib.include;
 const { usersQuery } = query;
 export const usersRouter = lib.include.express.Router();
 
@@ -139,8 +140,8 @@ usersRouter.delete("/", checkJwt, async (req, res) => {
 	}
 });
 
-async function uploadAvatar(req, username) {
-	const filename = `img_${username}_${Date.now()}.webp`;
+async function uploadAvatar(req) {
+	const filename = `img_${req.user.id_user}_${Date.now()}.webp`;
 	const outputPath = path.join('usersAvatar', filename);
 	try {
 		await sharp(req.file.buffer).resize(256, 256, { fit: 'cover' }).webp({ quality: 80 }).toFile(outputPath);
@@ -168,11 +169,12 @@ usersRouter.patch("/", checkJwt, uploadMiddleware, async (req, res) => {
 			return res.status(400).json(jsonResponse.ResponseError("Invalid username format"));
 		delete req.body.image; // cancello il campo image dal body che viene passato (la vera immagine (avatar) non si trova li)
 		if (req.file)
-			req.body.image = await uploadAvatar(req, username);
+			req.body.image = await uploadAvatar(req);
 		const user = await usersQuery.updateUserFieldsById(req.user.id_user, req.body);
 		delete(user.password);
 		return res.status(200).json(jsonResponse.ResponseSuccess({ "user": user }));
 	} catch (error) {
+		console.log("error: ", error);
 		if (error.code === 'P2002')
 			return res.status(404).json(jsonResponse.ResponseError("Username already taken"));
 		// printLog(`User not found due to a server error: ${error.name}`, colors.brightRed);
