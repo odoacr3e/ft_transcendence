@@ -132,17 +132,13 @@ usersRouter.delete("/", checkJwt, async (req, res) => {
 usersRouter.patch("/", checkJwt, async (req, res) => {
 	try {
 		const { username } = req.body;
-		if (!username)
-			return res.status(400).json(jsonResponse.ResponseError("Username parameter not found"));			
-		if (!checkUsername(username))
-			return res.status(400).json(jsonResponse.ResponseError("Invalid username format"));
+		if (!username || !checkUsername(username))
+			return res.status(400).json(jsonResponse.ResponseError("Invalid username format"));			
 		const user = await usersQuery.updateUserFieldsById(req.user.id_user, req.body);
 		delete(user.password);
-		if (user)
-			return res.status(200).json(jsonResponse.ResponseSuccess({ "user": user }));
-		return res.status(404).json(jsonResponse.ResponseError("User not found"));
+		return res.status(200).json(jsonResponse.ResponseSuccess({ "user": user }));
 	} catch (error) {
-		if (error.code = 'P2002')
+		if (error.code === 'P2002')
 			return res.status(404).json(jsonResponse.ResponseError("Username already taken"));
 		// printLog(`User not found due to a server error: ${error.name}`, colors.brightRed);
 		return res.status(500).json(jsonResponse.ResponseError("Server error changing user params"));

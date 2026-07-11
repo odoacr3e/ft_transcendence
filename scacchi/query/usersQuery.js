@@ -239,15 +239,6 @@ export async function updateUserFieldsById(id, data) {
 			updates[f] = data[f];
 		if (data.preferences && f === 'preferences')
 			updates.preferences = { connect: { id_preference: Number(data[f]) }};
-		if (data.mfa && f === 'mfa')
-		{
-			const user = await prisma.users.findUnique({
-				where: { id_user: Number(id) },
-				select: { mfa: true }
-			});
-			if (data.mfa !== user.mfa)
-				updates.preferences = data.mfa;
-		}
 	}
 	return await prisma.users.update({
 		where: { id_user: Number(id) },
@@ -276,7 +267,7 @@ export async function updateUserFieldsById(id, data) {
 
 export async function updateUserPasswordByUsername(username, password) {
 	return await prisma.users.update({
-		where: {username: username},
+		where: { username: username },
 		data: { password: password },
 		select: {
 			id_user: true,
