@@ -6,7 +6,6 @@ import { matchMakingOpt } from "../endPoint/matchInit.js";
 import { enumConnection } from "../../Macro/enums.js";
 import { globals } from "./globals.js";
 import { findMatch } from "../../websocket/MatchMaking/MatchMaking.js";
-import { from } from "node:stream/iter";
 
 /** @typedef {import("../Chess/match.js").MatchSettings} MatchSettings*/
 /** @typedef {{id_user: string, points: number}} dbUser*/

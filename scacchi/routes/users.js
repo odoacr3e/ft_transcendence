@@ -9,12 +9,23 @@ import { colors } from "../utils/colors.js";
 import { query } from "../lib/query.js";
 import { chownSync } from "node:fs";
 import { sendEmail } from "../lib/emailSender.js";
+import { prisma } from "../lib/prisma.js";
 const { redis } = lib.conn;
-const { fs, multer, sharp } = lib.include;
-const upload = multer({ dest: 'usersAvatar/' });
+const { fs, multer, sharp, path } = lib.include;
 const { usersQuery } = query;
 export const usersRouter = lib.include.express.Router();
 
+// SECTION: multer setup
+const upload = multer({
+	storage: multer.memoryStorage(),
+	limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB
+	fileFilter: (req, file, cb) => {
+		const typeAllowed = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+		if (!typeAllowed.includes(file.mimetype))
+			return cb(new Error('Invalid file type'));
+		cb(null, true);
+	}
+});
 const uploadMiddleware = upload.single('avatar');
 
 // NOTE: route /api/users/
@@ -128,6 +139,23 @@ usersRouter.delete("/", checkJwt, async (req, res) => {
 	}
 });
 
+async function uploadAvatar(req, username) {
+	const filename = `img_${username}_${Date.now()}.webp`;
+	const outputPath = path.join('usersAvatar', filename);
+	try {
+		await sharp(req.file.buffer).resize(256, 256, { fit: 'cover' }).webp({ quality: 80 }).toFile(outputPath);
+	} catch (error) {
+		throw new Error('Invalid image file');
+	}
+	const oldAvatar = await prisma.users.findUnique({
+		where: { id_user: Number(req.user.id_user) },
+		select: { image: true }
+	});
+	if (oldAvatar?.image)
+		await fs.unlink(path.join('.', oldAvatar.image)).catch(() => {});
+	return (`/usersAvatar/${filename}`);
+}
+
 /**
  * @param {import('express').Request} req
  * @param {import('express').Response} res
@@ -136,13 +164,14 @@ usersRouter.delete("/", checkJwt, async (req, res) => {
 usersRouter.patch("/", checkJwt, uploadMiddleware, async (req, res) => {
 	try {
 		const { username } = req.body;
-		if (!username || !checkUsername(username))
+		if (username && !checkUsername(username))
 			return res.status(400).json(jsonResponse.ResponseError("Invalid username format"));
-		console.log("FILE: ", req.file);
-		// const user = await usersQuery.updateUserFieldsById(req.user.id_user, req.body);
-		// delete(user.password);
-		// return res.status(200).json(jsonResponse.ResponseSuccess({ "user": user }));
-		return res.status(204).send();
+		delete req.body.image; // cancello il campo image dal body che viene passato (la vera immagine (avatar) non si trova li)
+		if (req.file)
+			req.body.image = await uploadAvatar(req, username);
+		const user = await usersQuery.updateUserFieldsById(req.user.id_user, req.body);
+		delete(user.password);
+		return res.status(200).json(jsonResponse.ResponseSuccess({ "user": user }));
 	} catch (error) {
 		if (error.code === 'P2002')
 			return res.status(404).json(jsonResponse.ResponseError("Username already taken"));
