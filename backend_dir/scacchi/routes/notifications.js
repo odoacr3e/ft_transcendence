@@ -41,9 +41,7 @@ function checkQueryParams(req) {
 notifyRouter.get("/", checkJwt, async (req, res) => {
 	try {
 		const filter = checkQueryParams(req);
-		console.log(filter);
 		const notif = Object.keys(filter).length > 1 ? await notifyQuery.getFilteredNotifications(filter) : await notifyQuery.getAllNotifications(req.user.id_user);
-		console.log("QUI")
 		if (notif && notif.length > 0)
 			return res.status(200).json(jsonResponse.ResponseSuccess({ "notifications": notif }));
 		return res.status(404).json(jsonResponse.ResponseError("Notifications not found"));
