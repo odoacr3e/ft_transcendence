@@ -1,6 +1,7 @@
 <script setup>
-	import { ref, onMounted }	from 'vue';
+	import { ref, onMounted, onBeforeUnmount }	from 'vue';
 	import { useAuthStore }		from "../stores/auth.st";
+	import { rework_date }		from '../scripts/Helper/CompUtils';
 	import { storeToRefs }		from 'pinia';
 	import { useRouter }		from 'vue-router';
 	import { asset }			from '../scripts/Helper/CompUtils';
@@ -10,10 +11,12 @@
 
 	const authStore = useAuthStore();
 	const { user } = storeToRefs(authStore);
-	const	bool = ref(false),
+	const	p_bool = ref(false),
+			n_bool = ref(false),
 			router = useRouter(),
 			db = ref([]),
-			searchUser = ref("");
+			searchUser = ref(""),
+			dropdown = ref(null);
 
 	async function submitForm() {
         const authStore = useAuthStore();
@@ -31,10 +34,19 @@
 			router.push(`/users/${encodeURIComponent(username)}`);
 	}
 
+	function handleClickOutside(e) {
+		if (dropdown.value && !dropdown.value.contains(e.target))
+			p_bool.value = false;
+	}
+
 	onMounted(async () => {
 		db.value = (await api.get("/api/users")).data.users;
+		document.addEventListener('click', handleClickOutside);
     });
 
+	onBeforeUnmount(() => {
+		document.removeEventListener('click', handleClickOutside);
+	});
 </script>
 
 <template>
@@ -62,37 +74,108 @@
 		</div>
 		<div class="flex justify-self-end place-self-center" v-if="user">
 			<div class="place-self-center relative">
-				<div v-if="false">
-					<span class="absolute inline-flex ml-5.5 h-3 w-3 animate-ping rounded-full bg-[#c41c1c] opacity-75"></span>
-					<span class="absolute justify-self-end ml-5.5 size-3 rounded-full bg-[#c41c1c]"></span>
-				</div>
-				<img src="../assets/bell.png" alt="" class="mr-3 size-9 place-self-center">
-			</div>
-			<div class="relative w-fit">
-				<button class="flex cursor-pointer mr-1" @click="bool = !bool">
-					<h2 class="text-white text-lg place-self-center mr-3">{{ user.username }}</h2>
-					<img :src="user.image ? asset(`${user.image}`) : asset('../assets/default.png')"
-						alt="" class="size-12 rounded-full place-self-center">
+				<button
+					class="flex items-center cursor-pointer mr-1"
+					@click="n_bool = !n_bool"
+					:aria-expanded="n_bool"
+					aria-haspopup="true">
+					<div v-if="authStore.msgRecevied && Array.from(authStore.msgRecevied).find(m => m.status === 'not_read') !== undefined">
+						<span class="absolute inline-flex translate-x-5.5 -translate-y-3.5 size-3 animate-ping rounded-full bg-[#c41c1c] opacity-75"></span>
+						<span class="absolute justify-self-end translate-x-5.5 -translate-y-3.5 size-3 rounded-full bg-[#c41c1c]"></span>
+					</div>
+					<img src="../assets/bell.png" alt="" class="mr-4 size-9 place-self-center">
 				</button>
-				<div class="mt-1.25 p-2 absolute right-0 pointer-events-auto bg-[#181715] origin-top align-bottom border border-[#181715e8] min-w-full transition-all ease-out"
-					v-bind:class="{'scale-y-0 pointer-events-none border-0': !bool, 'scale-y-100 pointer-events-auto': bool}">
-					<RouterLink to="/me" id="button">
-						<p class="text-white">Profilo</p>
-					</RouterLink>
-					<hr>
-					<RouterLink to="/me/edit" id="button">
-						<p class="text-white">Impostazioni</p>
-					</RouterLink>
-					<hr>
-					<button @click="submitForm()" class="cursor-pointer text-[#f1f5f7]">Logout</button>
-				</div>
+				<Transition
+					class="origin-top-right -translate-x-62 translate-y-1.5"
+					enter-active-class="transition ease-out duration-150"
+					enter-from-class="opacity-0 scale-70"
+					enter-to-class="opacity-100 scale-100"
+					leave-active-class="transition ease-in duration-100"
+					leave-from-class="opacity-100 scale-100"
+					leave-to-class="opacity-0 scale-70">
+					<div v-if="n_bool" class="mt-1.25 px-2 absolute bg-[#181715] border border-[#181715e8] w-76.5">
+						<div v-if="authStore.msgRecevied" v-for="m in [...authStore.msgRecevied].reverse()"
+							class="bg-[#201e1c] p-2 my-2 rounded-sm text-white">
+							<div class="flex gap-2 pb-1 items-center">
+								<span class="py-1 block size-2 rounded-full bg-[#c41c1c]"/>
+								<h3 class="text-md">{{ m.title }}</h3>
+								<p class="text-[#4e4e4e8c]">|</p>
+								<p class="text-xs text-zinc-500">{{ rework_date(m.creation_date) }}</p>
+							</div>
+							<hr class="w-full justify-self-start text-[#4e4e4e8c]">
+							<div class="items-end">
+								<RouterLink v-if="m.description[0] === ' '" :to="{ name: 'user_page', params: { username: m.sender.username } }">
+									<div v-if="m.description[0] === ' '" class="flex gap-1 text-zinc-300 text-sm pt-2.5 pb-1">
+										<p class="hover:underline">{{ m.sender.username }} {{ m.description }}</p>
+									</div>
+								</RouterLink>
+								<div v-if="m.description[0] !== ' '">
+									<p class="text-zinc-300 text-sm pt-2.5 pb-1">{{ m.description }}</p>
+									<div class="ml-auto -mt-3.5 flex gap-1 h-fit w-fit">
+										<p v-if="m.sender" class="text-xs text-zinc-500">
+											da</p>
+										<RouterLink :to="{ name: 'user_page', params: { username: m.sender.username } }">
+											<p class="text-xs text-zinc-500 hover:underline" v-if="m.sender.username.length <= 10">
+												{{ m.sender.username }}</p>
+											<p class="text-xs text-zinc-500 hover:underline" v-if="m.sender.username.length > 10">
+												{{ m.sender.username.slice(0, 9) + "..." }}</p>
+										</RouterLink>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>	
+				</Transition>
+			</div>
+
+			<div class="relative w-fit" ref="dropdown">
+				<button
+					class="flex items-center cursor-pointer mr-1"
+					@click="p_bool = !p_bool"
+					:aria-expanded="p_bool"
+					aria-haspopup="true">
+					<h2 class="text-white text-lg place-self-center mr-2">{{ user.username }}</h2>
+					<img
+						:src="user.image ? asset(`${user.image}`) : asset('../assets/default.png')"
+						alt=""
+						class="size-12 rounded-full place-self-center mr-1">
+					<svg
+						class="size-4 text-white transition-transform duration-200"
+						:class="{ 'rotate-180': p_bool }"
+						viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+						<path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/>
+					</svg>
+				</button>
+				<Transition
+					class="origin-top-right"
+					enter-active-class="transition ease-out duration-150"
+					enter-from-class="opacity-0 scale-70"
+					enter-to-class="opacity-100 scale-100"
+					leave-active-class="transition ease-in duration-100"
+					leave-from-class="opacity-100 scale-100"
+					leave-to-class="opacity-0 scale-70">
+					<div v-if="p_bool" class="mt-1.25 p-2 absolute right-0 bg-[#181715] origin-top border border-[#181715e8] min-w-full">
+						<RouterLink to="/me" @click="p_bool = false">
+							<p class="text-white hover:underline">Profilo</p>
+						</RouterLink>
+						<hr class="w-full justify-self-start text-[#4e4e4e8c]">
+						<RouterLink to="/me/edit" @click="p_bool = false">
+							<p class="text-white hover:underline">Impostazioni</p>
+						</RouterLink>
+						<hr class="w-full justify-self-start text-[#4e4e4e8c]">
+						<button @click="submitForm(); p_bool = false" class="cursor-pointer text-[#f1f5f7] hover:underline">
+							Logout
+						</button>
+					</div>
+				</Transition>
 			</div>
 		</div>
+ 
 		<div v-if="user === null" class="justify-self-end place-self-center">
-		<RouterLink to="/log" class="flex mr-3">
-            <button class="flex cursor-pointer w-25 justify-center p-2 text-base bg-[#882a2a] rounded-[7px] text-white 
-                            hover:bg-linear-to-t from-[#882a2a] to-[#af3d3d]">Accedi</button>
-        </RouterLink>
+			<RouterLink to="/log" class="flex mr-3">
+				<button class="flex cursor-pointer w-25 justify-center p-2 text-base bg-[#882a2a] rounded-[7px] text-white
+								hover:bg-linear-to-t from-[#882a2a] to-[#af3d3d]">Accedi</button>
+			</RouterLink>
 		</div>
 	</div>
 </template>
@@ -111,6 +194,7 @@
 	    cursor: pointer;
 	    background-image: url(" ### Inline SVG of Choice ### ");
 	}
+
 	input::-webkit-calendar-picker-indicator {
 		display: none !important;
 	}

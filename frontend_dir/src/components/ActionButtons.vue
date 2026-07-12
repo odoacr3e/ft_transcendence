@@ -30,7 +30,7 @@
 				<img src="../assets/boost.png" alt="" :draggable="false" class="size-5">
 				<b>Use Ability!</b>
 		</button>
-		<button class="action bg-emerald-400 hover:bg-emerald-500 flex-col !gap-0"
+		<button class="action bg-emerald-400 hover:bg-emerald-500 flex-col gap-0"
 				v-bind:class="canBoost ? 'on' : 'off'"
 				@click="shopAbility()">
 				<b>Boost your Piece!</b>

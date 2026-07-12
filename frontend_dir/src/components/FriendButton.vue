@@ -34,6 +34,10 @@
 	async function sendRequest()
 	{
 		await api.post("/api/friends", { id_friend: prop.user.id_user });
+		await api.post("/api/notifications", 
+						{	title: "Richiesta di amicizia",
+							description: ` ti ha inviato una richiesta di amicizia`,
+							id_receiver: prop.user.id_user });
 		router.go(0);
 	}
 	

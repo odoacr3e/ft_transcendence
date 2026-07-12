@@ -10,6 +10,7 @@ export const useAuthStore = defineStore('auth', {
 		error: null,
 		sessionChecked: false,
 		usersOnline: new Set(),
+		msgRecevied: new Set(),
 		socket: null
 	}),
 
@@ -31,6 +32,7 @@ export const useAuthStore = defineStore('auth', {
 				if (resp.data.user)
 				{
 					this.user = resp.data.user;
+					this.getAllMsg();
 					this.connectSocket();
 				}
 				else if (resp.data.message === "OTP sent by email")
@@ -47,6 +49,7 @@ export const useAuthStore = defineStore('auth', {
 			this.error = null;
 			try {
 				this.user = await authApi.mfa(credentials);
+				this.getAllMsg();
 				this.connectSocket();
 			}
 			catch (err) { this.error = err.message; }
@@ -73,6 +76,7 @@ export const useAuthStore = defineStore('auth', {
 			this.disconnectSocket();
 			this.user = null;
 			this.usersOnline.clear();
+			this.msgRecevied.clear();
 		},
 
 		async update(credentials)
@@ -103,10 +107,23 @@ export const useAuthStore = defineStore('auth', {
 			if (this.sessionChecked) { return; }
 			try {
 				this.user = await authApi.me();
-				if (this.user) { this.connectSocket(); } 
+				if (this.user) { this.connectSocket(); this.getAllMsg(); } 
 			}
 			catch	{ this.user = null; }
 			finally	{ this.sessionChecked = true; }
+		},
+
+		async getAllMsg()
+		{
+			try {
+				const resp = await authApi.msglist();
+				Array.from(resp).slice().reverse().forEach((m, index) => {
+					if (index < 10)
+						this.msgRecevied.add(m);
+				})
+			}
+			catch (err) { this.error = err.message; }
+			return (this.error);
 		},
 
 		connectSocket()
@@ -116,9 +133,18 @@ export const useAuthStore = defineStore('auth', {
 			this.socket = io({ withCredentials: true });
 			assignGameSocket(this.socket);
 
-			this.socket.on('friend:online', ({ userId }) => { this.usersOnline.add(userId); });
-
-			this.socket.on('friend:offline', ({ userId }) => { this.usersOnline.delete(userId); });
+			this.socket.on('friend:online',		({ userId }) =>	{ this.usersOnline.add(userId); });
+			this.socket.on('friend:offline',	({ userId }) =>	{ this.usersOnline.delete(userId); });
+			this.socket.on(`notification`,		({ msg }) =>	{
+				msg.status = "not read";
+				if (this.msgRecevied.size === 10)
+				{
+					const firstReadMessage = Array.from(this.msgRecevied).find(m => m.status === "read");
+					if (firstReadMessage)
+						this.msgRecevied.delete(firstReadMessage);
+				}
+				this.msgRecevied.add(msg);
+			});
 		},
 
 		disconnectSocket() 

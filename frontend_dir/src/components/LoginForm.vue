@@ -20,7 +20,6 @@
 
 	async function submitForm() {
 		resp.value = await auth.login(formData.value);
-
 		if (!resp.value && auth.isAuthenticated)	{ router.push('/me'); }
 		else if (resp.value && resp.value.status === "success" && !auth.isAuthenticated)
 		{

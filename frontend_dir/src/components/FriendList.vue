@@ -20,9 +20,9 @@
                     <img class="size-13 rounded-full" :src="besties.friend.image ? asset(`${besties.friend.image}`) : asset('../assets/default.png')"/>
                     <StatusOnline :user_id="besties.friend.id_user" v-if="removeF"/>
                     <div class="mx-2">
-                        <p class="text-white" v-if="besties.friend.username.length <= 15">
+                        <p class="text-white hover:underline" v-if="besties.friend.username.length <= 15">
                             {{ besties.friend.username }}</p>
-                        <p class="text-white" v-if="besties.friend.username.length > 15">
+                        <p class="text-white hover:underline" v-if="besties.friend.username.length > 15">
                             {{ besties.friend.username.slice(0, 14) + "..." }}</p>
                         <div class="flex items-center gap-1">
                             <TagTitle :title="besties.friend.title" class="mt-1"/>
