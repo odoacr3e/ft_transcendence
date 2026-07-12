@@ -9,9 +9,25 @@ import { colors } from "../utils/colors.js";
 import { query } from "../lib/query.js";
 import { chownSync } from "node:fs";
 import { sendEmail } from "../lib/emailSender.js";
+import { prisma } from "../lib/prisma.js";
+import fs from 'fs/promises';
 const { redis } = lib.conn;
+const { multer, sharp, path } = lib.include;
 const { usersQuery } = query;
 export const usersRouter = lib.include.express.Router();
+
+// SECTION: multer setup
+const upload = multer({
+	storage: multer.memoryStorage(),
+	limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB
+	fileFilter: (req, file, cb) => {
+		const typeAllowed = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+		if (!typeAllowed.includes(file.mimetype))
+			return cb(new Error('Invalid file type'));
+		cb(null, true);
+	}
+});
+const uploadMiddleware = upload.single('avatar');
 
 // NOTE: route /api/users/
 
@@ -124,25 +140,42 @@ usersRouter.delete("/", checkJwt, async (req, res) => {
 	}
 });
 
+async function uploadAvatar(req) {
+	const filename = `img_${req.user.id_user}_${Date.now()}.webp`;
+	const outputPath = path.join('usersAvatar', filename);
+	try {
+		await sharp(req.file.buffer).resize(256, 256, { fit: 'cover' }).webp({ quality: 80 }).toFile(outputPath);
+	} catch (error) {
+		throw new Error('Invalid image file');
+	}
+	const oldAvatar = await prisma.users.findUnique({
+		where: { id_user: Number(req.user.id_user) },
+		select: { image: true }
+	});
+	if (oldAvatar?.image)
+		await fs.unlink(path.join('.', oldAvatar.image)).catch(() => {});
+	return (`/usersAvatar/${filename}`);
+}
+
 /**
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  * NOTE: solo user loggati, patch su utente richiedente
 */
-usersRouter.patch("/", checkJwt, async (req, res) => {
+usersRouter.patch("/", checkJwt, uploadMiddleware, async (req, res) => {
 	try {
 		const { username } = req.body;
-		if (!username)
-			return res.status(400).json(jsonResponse.ResponseError("Username parameter not found"));			
-		if (!checkUsername(username))
+		if (username && !checkUsername(username))
 			return res.status(400).json(jsonResponse.ResponseError("Invalid username format"));
+		delete req.body.image; // cancello il campo image dal body che viene passato (la vera immagine (avatar) non si trova li)
+		if (req.file)
+			req.body.image = await uploadAvatar(req);
 		const user = await usersQuery.updateUserFieldsById(req.user.id_user, req.body);
 		delete(user.password);
-		if (user)
-			return res.status(200).json(jsonResponse.ResponseSuccess({ "user": user }));
-		return res.status(404).json(jsonResponse.ResponseError("User not found"));
+		return res.status(200).json(jsonResponse.ResponseSuccess({ "user": user }));
 	} catch (error) {
-		if (error.code = 'P2002')
+		console.log("error: ", error);
+		if (error.code === 'P2002')
 			return res.status(404).json(jsonResponse.ResponseError("Username already taken"));
 		// printLog(`User not found due to a server error: ${error.name}`, colors.brightRed);
 		return res.status(500).json(jsonResponse.ResponseError("Server error changing user params"));

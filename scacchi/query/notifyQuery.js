@@ -44,7 +44,7 @@ export async function getFilteredNotifications (filter) {
 	});
 }
 
-export async function getNotificationById (id) {
+export async function getNotificationById (id_user, id_notification) {
 	return await prisma.notifications.findUnique({
 		select: {
 			id_notification: true,

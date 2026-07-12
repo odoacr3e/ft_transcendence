@@ -90,7 +90,7 @@ model users {
   password                                     String               @db.VarChar(200)
   email                                        String               @unique(map: "unique_email") @db.VarChar(100)
   nationality                                  String               @db.VarChar(50)
-  image                                        Bytes?
+  image                                        String?
   points                                       Int                  @default(0)
   title                                        String               @default("Newbie") @db.VarChar(200)
   id_preference                                Int                  @default(1)

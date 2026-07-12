@@ -38,7 +38,7 @@ tournamentsRouter.get('/:id', checkJwt, async (req, res) => {
 	}
 });
 
-tournamentsRouter.post('/', async (req, res) => {
+tournamentsRouter.post('/', checkJwt, async (req, res) => {
 	try {
 		const tournament = await tournamentsQuery.createTournament(req.body.name, req.body.id_creator);
 		if (tournament)
@@ -51,16 +51,14 @@ tournamentsRouter.post('/', async (req, res) => {
 	}
 });
 
-tournamentsRouter.patch('/', async (req, res) => {
+tournamentsRouter.patch('/', checkJwt, async (req, res) => {
 	try {
 		const updateTournament = await tournamentsQuery.updateTournamentStatus(req.body.id_tournament, req.body.status);
-		if (updateTournament)
-			return res.status(200).json(jsonResponse.ResponseSuccess({ updated_tournament: updateTournament }));
-		return res.status(400).json(jsonResponse.ResponseError("Status passed is not valid"));
+		return res.status(200).json(jsonResponse.ResponseSuccess({ updated_tournament: updateTournament }));
 	} catch (error) {
 		console.log("Error: ", error);
 		if (error.code == 'P2025')
-			return res.status(409).json(jsonResponse.ResponseError("Tournament has the same status as the one passed"));
+			return res.status(409).json(jsonResponse.ResponseError("Status is already set to this tournament or tournament not found"));
 		return res.status(500).json(jsonResponse.ResponseError("Server error updating tournament status"));
 	}
 })
