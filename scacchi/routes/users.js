@@ -144,17 +144,17 @@ async function uploadAvatar(req) {
 	const filename = `img_${req.user.id_user}_${Date.now()}.webp`;
 	const outputPath = path.join('media', 'usersAvatar', filename);
 	try {
-		await sharp(req.file.buffer).resize(256, 256, { fit: 'cover' }).webp({ quality: 80 }).toFile(outputPath);
+		await sharp(req.file.buffer).resize(300, 300, { fit: 'outside' }).webp({ quality: 80 }).toFile(outputPath);
 	} catch (error) {
 		throw new Error('Invalid image file');
 	}
-	const oldAvatar = await prisma.users.findUnique({
+	const u = await prisma.users.findUnique({
 		where: { id_user: Number(req.user.id_user) },
 		select: { image: true }
 	});
-	if (oldAvatar?.image)
-		await fs.unlink(path.join('.', oldAvatar.image)).catch(() => {});
-	return (`/usersAvatar/${filename}`);
+	if (u?.image)
+		await fs.unlink(path.join('.', u.image)).catch(() => {});
+	return (`/media/usersAvatar/${filename}`);
 }
 
 /**
@@ -168,7 +168,9 @@ usersRouter.patch("/", checkJwt, uploadMiddleware, async (req, res) => {
 		if (username && !checkUsername(username))
 			return res.status(400).json(jsonResponse.ResponseError("Invalid username format"));
 		delete req.body.image; // cancello il campo image dal body che viene passato (la vera immagine (avatar) non si trova li)
-		if (req.file)
+		if (req.body.preset)
+			const a = 2;
+		else if (req.file)
 			req.body.image = await uploadAvatar(req);
 		const user = await usersQuery.updateUserFieldsById(req.user.id_user, req.body);
 		delete(user.password);
