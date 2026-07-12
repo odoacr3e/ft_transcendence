@@ -11,6 +11,8 @@ import jwt from "jsonwebtoken";
 import cors from 'cors';
 import { parse } from "cookie";
 import cookieParser from 'cookie-parser';
+import multer from 'multer';
+import sharp from 'sharp';
 
 // SECTION: vars
 const app = express();
@@ -33,7 +35,7 @@ redis.on("error", (stream) =>
 });
 
 // SECTION - external inclusions
-const include = {http, https, url, fs, path, express, SocketIO, app, server, parse, cookieParser};
+const include = {http, https, url, fs, multer, sharp, path, express, SocketIO, app, server, parse, cookieParser};
 
 // SECTION - chess classes/objects
 import {Piece} from "../Classes/Chess/Pieces/pieces.js";

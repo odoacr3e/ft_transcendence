@@ -123,10 +123,8 @@ export async function updateTournamentStatus(id_tournament, status) {
 		return null;
 	const updated = await prisma.tournaments.update({
 		where: {
-			AND: [
-				{ id_tournament: Number(id_tournament) },
-				{ status: { not: status } }
-			]
+			id_tournament: Number(id_tournament),
+			status: { not: status }
 		},
 		data: { status: status },
 		select: {
