@@ -142,7 +142,7 @@ usersRouter.delete("/", checkJwt, async (req, res) => {
 
 async function uploadAvatar(req) {
 	const filename = `img_${req.user.id_user}_${Date.now()}.webp`;
-	const outputPath = path.join('usersAvatar', filename);
+	const outputPath = path.join('media', 'usersAvatar', filename);
 	try {
 		await sharp(req.file.buffer).resize(256, 256, { fit: 'cover' }).webp({ quality: 80 }).toFile(outputPath);
 	} catch (error) {

@@ -2,7 +2,7 @@
 import { prisma } from "../lib/prisma.js";
 
 export async function getAllNotifications (id) {
-	return await prisma.notifications.findMany({
+	const notif = await prisma.notifications.findMany({
 		select: {
 			id_notification: true,
 			title: true,
@@ -22,10 +22,21 @@ export async function getAllNotifications (id) {
 			id_notification: 'desc'
 		}
 	});
+	return notif.map(n => ({
+		id_notification: n.id_notification,
+		title: n.title,
+		description: n.description,
+		status: n.status,
+		id_user: n.id_user,
+		creation_date: n.creation_date.toISOString().split('T')[0],
+		sender: n.users_notifications_id_senderTousers
+			? { id_user: n.users_notifications_id_senderTousers.id_user, username: n.users_notifications_id_senderTousers.username }
+			: null
+	}));
 }
 
 export async function getFilteredNotifications (filter) {
-	return await prisma.notifications.findMany({
+	const notif = await prisma.notifications.findMany({
 		where: filter,
 		select: {
 			id_notification: true,
@@ -42,10 +53,21 @@ export async function getFilteredNotifications (filter) {
 			}
 		}
 	});
+	return notif.map(n => ({
+		id_notification: n.id_notification,
+		title: n.title,
+		description: n.description,
+		status: n.status,
+		id_user: n.id_user,
+		creation_date: n.creation_date.toISOString().split('T')[0],
+		sender: n.users_notifications_id_senderTousers
+			? { id_user: n.users_notifications_id_senderTousers.id_user, username: n.users_notifications_id_senderTousers.username }
+			: null
+	}));
 }
 
 export async function getNotificationById (id_user, id_notification) {
-	return await prisma.notifications.findUnique({
+	const n = await prisma.notifications.findUnique({
 		select: {
 			id_notification: true,
 			title: true,
@@ -60,7 +82,21 @@ export async function getNotificationById (id_user, id_notification) {
 				}
 			}
 		},
-		where: {id_notification: Number(id)}
+		where: {
+			id_notification: Number(id_notification),
+			id_user: Number(id_user)
+		}
+	});
+	return ({
+		id_notification: n.id_notification,
+		title: n.title,
+		description: n.description,
+		status: n.status,
+		id_user: n.id_user,
+		creation_date: n.creation_date.toISOString().split('T')[0],
+		sender: n.users_notifications_id_senderTousers
+			? { id_user: n.users_notifications_id_senderTousers.id_user, username: n.users_notifications_id_senderTousers.username }
+			: null
 	});
 }
 
