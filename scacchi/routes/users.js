@@ -57,7 +57,7 @@ usersRouter.get("/", checkJwt, async (req, res) => {
 */
 usersRouter.get("/me", checkJwt, async (req, res) => {
 	try {
-		const user = await usersQuery.getUserById(req.user.id_user);
+		const user = await usersQuery.getMe(req.user.id_user);
 		if (user)
 			return res.status(200).json(jsonResponse.ResponseSuccess({ "user": user }));
 		return res.status(404).json(jsonResponse.ResponseError("User not found"));
