@@ -1,4 +1,3 @@
-
 up:
 	docker compose up --build
 
@@ -7,6 +6,8 @@ down:
 
 delete:
 	docker system prune -a
+
+re: delete up
 
 pull_be:
 	git subtree pull --prefix=backend_dir origin backend --squash
