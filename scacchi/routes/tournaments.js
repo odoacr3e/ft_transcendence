@@ -63,10 +63,12 @@ tournamentsRouter.patch('/', checkJwt, async (req, res) => {
 	}
 })
 
-// tournamentsRouter.post('/addPlayers', checkJwt, (req, res) => {
-// 	try {
-// 		const rows = await tournamentsQuery.addPlayersToTournament()
-// 	} catch (error) {
+tournamentsRouter.post('/addPlayers', checkJwt, (req, res) => {
+	try {
+		console.log(req.body.id_users);
+		// const rows = await tournamentsQuery.addPlayersToTournament()
+		return res.status(204).send();
+	} catch (error) {
 		
-// 	}
-// });
+	}
+});

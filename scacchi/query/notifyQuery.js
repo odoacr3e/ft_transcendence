@@ -125,8 +125,7 @@ export async function postNotification (data) {
 }
 
 /**
- * 
- * @param {Array} ids 
+ * @param {Number} id_notification 
  */
 export async function readNotifications (id_notification) {
 	return await prisma.notifications.updateMany({
