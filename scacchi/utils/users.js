@@ -36,7 +36,7 @@ export const checkInputs = (username, email, password) => {
 
 export async function deleteOldAvatar(id_user) {
 	const u = await prisma.users.findUnique({
-		where: { id_user: Number(req.user.id_user) },
+		where: { id_user: Number(id_user) },
 		select: { image: true }
 	});
 	if (u?.image && !u?.image.includes('presetIcon'))
