@@ -8,7 +8,6 @@ import { jsonResponse } from "../utils/response.js"
 import { log } from "../utils/log.js"
 import { colors } from "../utils/colors.js";
 import { query } from "../lib/query.js";
-import { chownSync } from "node:fs";
 import { sendEmail } from "../lib/emailSender.js";
 import { prisma } from "../lib/prisma.js";
 import fs from 'fs/promises';
@@ -82,23 +81,6 @@ usersRouter.get('/leaderboard', async (req, res) => {
 		console.log("Error: ", error);
 		return res.status(500).json(jsonResponse.ResponseError("Server error while retrieving leaderboard"));
 	}
-});
-
-/**
- * @param {import('express').Request} req
- * @param {import('express').Response} res
- * NOTE: endpoint per displayare immagine da frontend
-*/
-usersRouter.get('/media/*folder', checkJwt, (req, res) => {
-	const relPath = req.params.folder;
-	const filePath = path.join(process.cwd(), 'media', ...relPath);
-	const basePath = path.join(process.cwd(), 'media');
-	if (!filePath.startsWith(basePath))
-		return res.status(403).json(jsonResponse.ResponseError("Invalid path"));
-	res.sendFile(filePath, (err) => {
-		if (err)
-			res.status(404).json(jsonResponse.ResponseError("Image not found"));
-	})
 });
 
 /**
