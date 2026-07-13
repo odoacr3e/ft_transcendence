@@ -65,10 +65,16 @@ tournamentsRouter.patch('/', checkJwt, async (req, res) => {
 
 tournamentsRouter.post('/addPlayers', checkJwt, (req, res) => {
 	try {
-		console.log(req.body.id_users);
-		// const rows = await tournamentsQuery.addPlayersToTournament()
-		return res.status(204).send();
+		const rows = await tournamentsQuery.addPlayersToTournament(req.body.id_users);
+		if (rows > 0)
+			return res.status(200).json(jsonResponse.ResponseSuccess({ "playersAdded": rows }));
+		return res.status(400).json(jsonResponse.ResponseError("No players were added to tournament"));
 	} catch (error) {
-		
+		console.log("error:", error);
+		if (error.code == 'P2002')			
+			return res.status(500).json(jsonResponse.ResponseError("One or more players are already subscribed to tournament"));
+		if (error.code == 'P2003')			
+			return res.status(500).json(jsonResponse.ResponseError(`User or tournament don't exist: ${error.meta}`));
+		return res.status(500).json(jsonResponse.ResponseError("Server error adding players to tournament"));
 	}
 });
