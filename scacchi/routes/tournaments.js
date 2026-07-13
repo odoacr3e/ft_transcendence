@@ -65,9 +65,10 @@ tournamentsRouter.patch('/', checkJwt, async (req, res) => {
 
 tournamentsRouter.post('/addPlayers', checkJwt, async (req, res) => {
 	try {
-		const rows = await tournamentsQuery.addPlayersToTournament(req.body.id_users);
-		if (rows > 0)
-			return res.status(200).json(jsonResponse.ResponseSuccess({ "playersAdded": rows }));
+		const rows = await tournamentsQuery.addPlayersToTournament(req.body.id_tournament, req.body.id_users);
+		console.log("Rows: ", rows);
+		if (rows.count > 0)
+			return res.status(200).json(jsonResponse.ResponseSuccess({ "playersAdded": rows.count }));
 		return res.status(400).json(jsonResponse.ResponseError("No players were added to tournament"));
 	} catch (error) {
 		console.log("error:", error);
