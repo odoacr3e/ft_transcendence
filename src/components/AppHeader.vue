@@ -32,7 +32,10 @@
 	}
 
 	onMounted(async () => {
-		db.value = (await api.get("/api/users")).data.users;
+		try {
+			if (user.value)
+				db.value = (await api.get("/api/users")).data.users;
+		} catch (error) { console.log("user non loggato, impossibile fare fetch su db");}
     });
 
 </script>
