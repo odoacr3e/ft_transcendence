@@ -89,9 +89,9 @@ usersRouter.get('/leaderboard', async (req, res) => {
  * @param {import('express').Response} res
  * NOTE: endpoint per displayare immagine da frontend
 */
-usersRouter.get('/media/*', checkJwt, (req, res) => {
-	const relPath = req.params[0];
-	const filePath = path.join(process.cwd(), 'media', relPath);
+usersRouter.get('/media/*folder', checkJwt, (req, res) => {
+	const relPath = req.params.folder;
+	const filePath = path.join(process.cwd(), 'media', ...relPath);
 	const basePath = path.join(process.cwd(), 'media');
 	if (!filePath.startsWith(basePath))
 		return res.status(403).json(jsonResponse.ResponseError("Invalid path"));
