@@ -148,6 +148,8 @@ usersRouter.delete("/", checkJwt, async (req, res) => {
 */
 usersRouter.patch("/", checkJwt, uploadMiddleware, async (req, res) => {
 	try {
+		if (req.body.preset && req.file)
+			return res.status(400).json(jsonResponse.ResponseError("Invalid request, preset and avatar are both present"));
 		const { username } = req.body;
 		if (username && !checkUsername(username))
 			return res.status(400).json(jsonResponse.ResponseError("Invalid username format"));
