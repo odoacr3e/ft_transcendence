@@ -31,3 +31,24 @@ export const checkInputs = (username, email, password) => {
 		return ("Invalid password format");
 	return ("OK");
 }
+
+export async function deleteOldAvatar(id_user) {
+	const u = await prisma.users.findUnique({
+		where: { id_user: Number(req.user.id_user) },
+		select: { image: true }
+	});
+	if (u?.image && !u?.image.includes('presetIcon'))
+		await fs.unlink(path.join('.', u.image)).catch(() => {});
+}
+
+export async function uploadAvatar(req) {
+	const filename = `img_${req.user.id_user}_${Date.now()}.webp`;
+	const outputPath = path.join('media', 'usersAvatar', filename);
+	try {
+		await sharp(req.file.buffer).resize(300, 300, { fit: 'outside' }).webp({ quality: 80 }).toFile(outputPath);
+	} catch (error) {
+		throw new Error('Invalid image file');
+	}
+	await deleteOldAvatar(req.user.id_user);
+	return (`/media/usersAvatar/${filename}`);
+}

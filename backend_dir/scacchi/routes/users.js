@@ -1,7 +1,8 @@
 
 import * as lib from "../lib/lib.js";
 import bcrypt from "bcryptjs"
-import { checkInputs, checkEmail, checkPassword, checkUsername } from "../utils/users.js";
+import { checkInputs, checkEmail, checkPassword, 
+	checkUsername, uploadAvatar, deleteOldAvatar } from "../utils/users.js";
 import { checkJwt } from "../utils/auth.js";
 import { jsonResponse } from "../utils/response.js"
 import { log } from "../utils/log.js"
@@ -140,23 +141,6 @@ usersRouter.delete("/", checkJwt, async (req, res) => {
 	}
 });
 
-async function uploadAvatar(req) {
-	const filename = `img_${req.user.id_user}_${Date.now()}.webp`;
-	const outputPath = path.join('media', 'usersAvatar', filename);
-	try {
-		await sharp(req.file.buffer).resize(300, 300, { fit: 'outside' }).webp({ quality: 80 }).toFile(outputPath);
-	} catch (error) {
-		throw new Error('Invalid image file');
-	}
-	const u = await prisma.users.findUnique({
-		where: { id_user: Number(req.user.id_user) },
-		select: { image: true }
-	});
-	if (u?.image)
-		await fs.unlink(path.join('.', u.image)).catch(() => {});
-	return (`/media/usersAvatar/${filename}`);
-}
-
 /**
  * @param {import('express').Request} req
  * @param {import('express').Response} res
@@ -164,12 +148,16 @@ async function uploadAvatar(req) {
 */
 usersRouter.patch("/", checkJwt, uploadMiddleware, async (req, res) => {
 	try {
+		if (req.body.preset && req.file)
+			return res.status(400).json(jsonResponse.ResponseError("Invalid request, preset and avatar are both present"));
 		const { username } = req.body;
 		if (username && !checkUsername(username))
 			return res.status(400).json(jsonResponse.ResponseError("Invalid username format"));
 		delete req.body.image; // cancello il campo image dal body che viene passato (la vera immagine (avatar) non si trova li)
-		if (req.body.preset)
-			const a = 2;
+		if (req.body.preset) {
+			req.body.image = path.join('media', 'presetIcon', `${req.body.preset}.PNG`);
+			await deleteOldAvatar(req.user.id_user);
+		}
 		else if (req.file)
 			req.body.image = await uploadAvatar(req);
 		const user = await usersQuery.updateUserFieldsById(req.user.id_user, req.body);
