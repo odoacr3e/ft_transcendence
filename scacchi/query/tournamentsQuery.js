@@ -148,3 +148,19 @@ export async function updateTournamentStatus(id_tournament, status) {
 		created_by: { id_user: updated.users.id_user, username: updated.users.username }
 	});
 }
+
+/**
+ * 
+ * @param {Number} id_tournament 
+ * @param {Array<Number>} id_users
+ * @returns number of records created
+ * NOTE: aggiunge al torneo con id passato gli utenti che hanno id in id_users. Ritorna il numero di record creati 
+ */
+export async function addPlayersToTournament(id_tournament, id_users) {
+	return await prisma.tournament_players.createMany({
+		data: id_users.map(id => ({
+			id_tournament: id_tournament,
+			id_user: id
+		}))
+	});
+}
