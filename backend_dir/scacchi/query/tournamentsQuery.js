@@ -161,7 +161,7 @@ export async function addPlayersToTournament(id_tournament, id_users) {
 		throw new Error("User array is empty or not an array");
 	const currentPlayers = await prisma.tournament_players.count({ where: { id_tournament: Number(id_tournament) } });
 	if (currentPlayers + id_users.length > 8)
-		throw new Error ("Tournament is already full. Max number of players reached");
+		throw new Error (`Players joined: ${currentPlayers}. Can't add other ${id_users.length} players to tournament. There are only ${8 - currentPlayers} free slots`);
 	return await prisma.tournament_players.createMany({
 		data: id_users.map(id => ({
 			id_tournament: id_tournament,
