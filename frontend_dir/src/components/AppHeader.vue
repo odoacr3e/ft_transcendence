@@ -16,7 +16,8 @@
 			router = useRouter(),
 			db = ref([]),
 			searchUser = ref(""),
-			dropdown = ref(null);
+			p_dropdown = ref(null),
+			n_dropdown = ref(null);
 
 	async function submitForm() {
         const authStore = useAuthStore();
@@ -35,8 +36,22 @@
 	}
 
 	function handleClickOutside(e) {
-		if (dropdown.value && !dropdown.value.contains(e.target))
+		if (p_dropdown.value && !p_dropdown.value.contains(e.target))
 			p_bool.value = false;
+
+		if (n_dropdown.value && !n_dropdown.value.contains(e.target))
+			n_bool.value = false;
+	}
+
+	async function readMsg(msg)
+	{
+		if (msg.status === "not_read")
+		{
+			msg.status = 'read';
+			await api.patch("/api/notifications", { id_notification: Number(msg.id_notification) });
+			
+			console.log({id_notification: Number(msg.id_notification)});
+		}
 	}
 
 	onMounted(async () => {
@@ -76,7 +91,7 @@
 			</form>
 		</div>
 		<div class="flex justify-self-end place-self-center" v-if="user">
-			<div class="place-self-center relative">
+			<div class="place-self-center relative" ref="n_dropdown">
 				<button
 					class="flex items-center cursor-pointer mr-1"
 					@click="n_bool = !n_bool"
@@ -96,18 +111,22 @@
 					leave-active-class="transition ease-in duration-100"
 					leave-from-class="opacity-100 scale-100"
 					leave-to-class="opacity-0 scale-70">
-					<div v-if="n_bool" class="mt-1.25 px-2 absolute bg-[#181715] border border-[#181715e8] w-76.5">
+					<div v-if="n_bool" class="mt-1.25 px-2 absolute bg-[#181715] border border-[#181715e8] w-76.5"
+						:class="authStore.msgRecevied.size > 3 ? 'w-79 max-h-[40vh] overflow-y-auto' : ''">
 						<div v-if="authStore.msgRecevied" v-for="m in [...authStore.msgRecevied].reverse()"
 							class="bg-[#201e1c] p-2 my-2 rounded-sm text-white">
 							<div class="flex gap-2 pb-1 items-center">
-								<span class="py-1 block size-2 rounded-full bg-[#c41c1c]"/>
+								<span class="py-1 block size-2 rounded-full"
+									:class="{	'bg-[#c41c1c]' : m.status === 'not_read',
+												'bg-zinc-500' : m.status === 'read' }"/>
 								<h3 class="text-md">{{ m.title }}</h3>
 								<p class="text-[#4e4e4e8c]">|</p>
 								<p class="text-xs text-zinc-500">{{ rework_date(m.creation_date) }}</p>
 							</div>
 							<hr class="w-full justify-self-start text-[#4e4e4e8c]">
 							<div class="items-end">
-								<RouterLink v-if="m.description[0] === ' '" :to="{ name: 'user_page', params: { username: m.sender.username } }">
+								<RouterLink v-if="m.description[0] === ' '" :to="{ name: 'user_page', params: { username: m.sender.username } }"
+									@click="readMsg(m)">
 									<div v-if="m.description[0] === ' '" class="flex gap-1 text-zinc-300 text-sm pt-2.5 pb-1">
 										<p class="hover:underline">{{ m.sender.username }} {{ m.description }}</p>
 									</div>
@@ -127,11 +146,14 @@
 								</div>
 							</div>
 						</div>
+						<div v-if="!authStore.msgRecevied.size" class="flex p-2 my-2 rounded-sm text-white">
+							<p class="mx-auto">Nessuna notifica</p>
+						</div>
 					</div>	
 				</Transition>
 			</div>
 
-			<div class="relative w-fit" ref="dropdown">
+			<div class="relative w-fit" ref="p_dropdown">
 				<button
 					class="flex items-center cursor-pointer mr-1"
 					@click="p_bool = !p_bool"
@@ -139,9 +161,9 @@
 					aria-haspopup="true">
 					<h2 class="text-white text-lg place-self-center mr-2">{{ user.username }}</h2>
 					<img
-						:src="user.image ? asset(`${user.image}`) : asset('../assets/default.png')"
+						:src="user.image ? `${user.image}` : asset('../assets/default.png')"
 						alt=""
-						class="size-12 rounded-full place-self-center mr-1">
+						class="size-12 rounded-full place-self-center mr-1 object-cover">
 					<svg
 						class="size-4 text-white transition-transform duration-200"
 						:class="{ 'rotate-180': p_bool }"

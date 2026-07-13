@@ -1,9 +1,9 @@
 <script setup>
     import AppHeader from '../components/AppHeader.vue';
     import TagTitle from '../components/TagTitle.vue';
-    import { ref, onMounted, watch }	from 'vue';
-    import { api }				from '../router/api/client';
-    import { asset }			from '../scripts/Helper/CompUtils';
+    import { ref, watch }	from 'vue';
+    import { api }			from '../router/api/client';
+    import { asset }		from '../scripts/Helper/CompUtils';
 
     // router.push(`/?username=${username}`) il push va fatto ad una pagina intermedia dove avviene un fetch con questa querry
 	const   prop = defineProps({
@@ -41,8 +41,8 @@
                 <div class="p-8 grid grid-cols-4 gap-10 w-full" :class="db.length > 8 ? 'max-h-[75vh] overflow-y-auto' : ''">
                     <div v-for="user in db" v-if="db" class="grid grid-cols-1 w-fit">
                         <RouterLink :to="{ name: 'user_page', params: { username: user.username } }">
-                            <img :src="user.image ? asset(`${user.image}`) : asset('../assets/default.png')"
-						        alt="" class="size-35 rounded-t-md place-self-center">
+                            <img :src="user.image ? `${user.image}` : asset('../assets/default.png')"
+						        alt="" class="size-35 rounded-t-md place-self-center object-cover">
                             <div class="bg-[#181715] py-2 grid grid-cols-1 border-b border-x border-[#4e4e4e8c] rounded-b-md w-full justify-items-center">
                                 <h3 class="text-white" v-if="user.username.length > 11">{{ user.username.slice(0, 10) + "..."}}</h3>
                                 <h3 class="text-white" v-if="user.username.length <= 11">{{ user.username }}</h3>

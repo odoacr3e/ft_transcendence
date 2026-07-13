@@ -36,13 +36,13 @@
 
                 <div class="flex my-2 justify-self-center">
                     <RouterLink :to="{ name: 'user_page', params: { username: currentRequest.friend.username } }" class="flex">
-                        <img class="size-13 rounded-full" :src="currentRequest.friend.image ? asset(`${currentRequest.friend.image}`) : asset('../assets/default.png')"/>
+                        <img class="size-13 rounded-full object-cover" :src="currentRequest.friend.image ? `${currentRequest.friend.image}` : asset('../assets/default.png')"/>
                         <div class="mx-2">
                             <p class="text-white" v-if="currentRequest.friend.username.length > 12">
                                 {{ currentRequest.friend.username.slice(0, 11) + "..." }}</p>
                             <p class="text-white" v-if="currentRequest.friend.username.length <= 12">
                                 {{ currentRequest.friend.username }}</p>
-                            <p class="text-zinc-300">Punti: {{ currentRequest.friend.points }}</p>
+                            <p class="text-zinc-300 text-sm">Punti: {{ currentRequest.friend.points }}</p>
                         </div>
                     </RouterLink>
                     <div class="ml-7 self-center">

@@ -31,8 +31,8 @@
         <div id="wrap" class="grow">
             <div class="flex-row z-2 bg-[#181715] rounded-3xl w-[100vh] h-[80vh]">
                 <div class="flex p-2 m-4 bg-[#201e1c] rounded-3xl border border-[#4e4e4e8c]">
-                    <img :src="user.image ? asset(`${user.image}`) : asset('../assets/default.png')"
-                            alt="" class="size-35 rounded-full place-self-start m-5">
+                    <img :src="user.image ? `${user.image}` : asset('../assets/default.png')"
+                            alt="" class="size-35 rounded-full place-self-start m-5 object-cover">
                     <div>
                         <h2 class="text-white text-3xl mt-5">{{ user.username }}</h2>
                         <div class="flex gap-3 my-1">

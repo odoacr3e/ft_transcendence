@@ -17,7 +17,7 @@
         <div v-for="(besties, index) in visibleFriendlist" :key="besties.friend.id_user">
             <RouterLink :to="{ name: 'user_page', params: { username: besties.friend.username } }">
                 <div class="flex my-3 ml-2 relative">
-                    <img class="size-13 rounded-full" :src="besties.friend.image ? asset(`${besties.friend.image}`) : asset('../assets/default.png')"/>
+                    <img class="size-13 rounded-full object-cover" :src="besties.friend.image ? `${besties.friend.image}` : asset('../assets/default.png')"/>
                     <StatusOnline :user_id="besties.friend.id_user" v-if="removeF"/>
                     <div class="mx-2">
                         <p class="text-white hover:underline" v-if="besties.friend.username.length <= 15">
@@ -27,11 +27,11 @@
                         <div class="flex items-center gap-1">
                             <TagTitle :title="besties.friend.title" class="mt-1"/>
                             <p class="text-[#4e4e4e8c]">|</p>
-                            <p class="text-zinc-300">Punti: {{ besties.friend.points }}</p>
+                            <p class="text-zinc-300 text-sm">Punti: {{ besties.friend.points }}</p>
                         </div>
                     </div>
                     <button @click.stop.prevent="rejectRequest(besties.friend.id_user)" v-if="removeF"
-                                class="h-[80%] p-1.25 px-2 ml-[10%] cursor-pointer self-center rounded-md inset-ring text-sm
+                                class="h-[80%] p-1.25 px-2 mr-1 ml-auto cursor-pointer self-center rounded-md inset-ring text-sm
                                     bg-red-400/10 text-red-500 inset-ring-red-500/20">Elimina amicizia</button>
                 </div>
             </RouterLink>

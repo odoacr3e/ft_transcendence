@@ -5,7 +5,7 @@ import { assignGameSocket } from '@/scripts/Data/SocketLink';
 
 export const useAuthStore = defineStore('auth', {
 	state: () => ({
-		user: null,	// { id_user, name, surname, username, email, image, nationality, points, title, preferences }
+		user: null,	// { id_user, name, surname, username, email, image, nationality, points, title, preferences, mfa }
 		isLoading: false,
 		error: null,
 		sessionChecked: false,
@@ -102,12 +102,12 @@ export const useAuthStore = defineStore('auth', {
 			return (this.error);
 		},
 
-		async fetchMe() 
+		async fetchMe(force = false) 
 		{
-			if (this.sessionChecked) { return; }
+			if (this.sessionChecked && !force) { return; }
 			try {
 				this.user = await authApi.me();
-				if (this.user) { this.connectSocket(); this.getAllMsg(); } 
+				if (this.user) { this.connectSocket(); this.getAllMsg(); }
 			}
 			catch	{ this.user = null; }
 			finally	{ this.sessionChecked = true; }
@@ -123,7 +123,6 @@ export const useAuthStore = defineStore('auth', {
 				})
 			}
 			catch (err) { this.error = err.message; }
-			return (this.error);
 		},
 
 		connectSocket()

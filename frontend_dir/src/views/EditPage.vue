@@ -5,6 +5,7 @@
     import { storeToRefs }      from 'pinia';
     import { useRouter }	    from 'vue-router';
     import { asset }            from '../scripts/Helper/CompUtils';
+    import { api }              from '../router/api/client'
 
     const   authStore = useAuthStore(),
 	        { user } = storeToRefs(authStore),
@@ -13,7 +14,7 @@
 	        	surname: '',
 	        	username: '',
 	        	nationality: '',
-                // mfa: false
+                mfa: user.value.mfa
                 // preferences: 0
 	        }),
             avatarFile = ref(null),      // il File vero e proprio
@@ -22,9 +23,9 @@
             error = ref(false);
 
     const avatarSrc = computed(() => {
-        if (avatarPreview.value) 
+        if (avatarPreview.value)
             return avatarPreview.value;
-        return user.value.image ? asset(user.value.image) : asset('../assets/default.png');
+        return user.value.image ? user.value.image : asset('../assets/default.png');
     });
 
     function handleAvatarChange(event) {
@@ -32,16 +33,16 @@
         if (!file) return;
 
         // validazione base
-        // const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
-        // if (!allowedTypes.includes(file.type)) {
-        //     alert('Formato non supportato. Usa JPG, PNG o WEBP.');
-        //     return;
-        // }
-        // const maxSizeMB = 5;
-        // if (file.size > maxSizeMB * 1024 * 1024) {
-        //     alert(`L'immagine supera i ${maxSizeMB}MB.`);
-        //     return;
-        // }
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+        if (!allowedTypes.includes(file.type)) {
+            alert('Formato non supportato. Usa JPG, PNG o WEBP.');
+            return;
+        }
+        const maxSizeMB = 10;
+        if (file.size > maxSizeMB * 1024 * 1024) {
+            alert(`L'immagine supera i ${maxSizeMB}MB.`);
+            return;
+        }
 
         avatarFile.value = file;
 
@@ -51,28 +52,28 @@
     }
 
     async function submitForm() {
-        // const payload = new FormData();
-        // payload.append('name', formData.value.name);
-        // payload.append('surname', formData.value.surname);
-        // payload.append('username', formData.value.username);
-        // payload.append('nationality', formData.value.nationality);
-        // if (avatarFile.value) {
-        //     payload.append('avatar', avatarFile.value);
-        // }
+        const fd = new FormData();
+        let resp;
 
-        const payload = {
-            username: formData.value.username ? formData.value.username : user.value.username
-        };
+        if (formData.value.name)        { fd.append('name', formData.value.name); }
+        if (formData.value.username)    { fd.append('username', formData.value.username); }
+        if (formData.value.surname)     { fd.append('surname', formData.value.surname); }
+        if (formData.value.nationality) { fd.append('nationality', formData.value.nationality); }
+        if (formData.value.mfa !== user.value.mfa) { fd.append('mfa', formData.value.mfa); }
+        // if (formData.value.preferences) { fd.append('preferences', formData.value.preferences); }
 
-        if (formData.value.name)        { payload.name = formData.value.name; }
-        if (formData.value.surname)     { payload.surname = formData.value.surname; }
-        if (formData.value.nationality) { payload.nationality = formData.value.nationality; }
-        // if (formData.value.mfa)         { payload.mfa = formData.value.mfa; }
-        // if (formData.value.preferences) { payload.preferences = formData.value.preferences; }
+        if (!!avatarFile.value)
+        {    
+            fd.append('avatar', avatarFile.value);
+            resp = await api.patch_m('/api/users', fd);
+        }
+        else
+            resp = await authStore.update(fd);
 
-
-        const resp = await authStore.update(payload);
-        if (!resp)	{ router.push('/me'); }
+        if (!resp) {
+            await authStore.fetchMe(true);
+            await router.replace('/me');
+        }
         else		{ error.value = true; }
     }
 </script>
@@ -84,7 +85,7 @@
             <form @submit.prevent="submitForm" class="flex z-2 bg-[#181715] rounded-3xl w-[140vh] h-[80vh]">
                 <div class="flex flex-col p-2 m-4 mr-2 rounded-3xl border border-[#4e4e4e8c] w-[30vh]">
                     <div class="cursr-pointer relative group m-5 rounded-full overflow-hidden">
-                        <img :src="avatarSrc" alt="" class="size-50 rounded-full">
+                        <img :src="avatarSrc" alt="" class="size-50 rounded-full object-cover">
                         <input id="avatar-input" type="file" accept="image/png, image/jpeg, image/webp"
                             class="hidden" @change="handleAvatarChange">
                         <label for="avatar-input" class="absolute inset-0 size-50 flex flex-col items-center justify-center rounded-full
@@ -98,8 +99,8 @@
                     </RouterLink>
                     <input id="submit" class="cursor-pointer w-[90%] mt-auto mb-6 self-center p-3 
                         text-base bg-[#882a2a] rounded-[7px] text-white hover:bg-linear-to-t from-[#882a2a] to-[#af3d3d]"
-                        v-bind:class="{'pointer-events-none grayscale': !formData.name && !formData.surname && !formData.username && !formData.nationality,
-						    'pointer-events-auto grayscale-0': formData.name || formData.surname || formData.username || formData.nationality }"
+                        v-bind:class="{'pointer-events-none grayscale': !formData.name && !formData.surname && !formData.username && !formData.nationality && !avatarFile && formData.mfa === user.mfa ,
+						    'pointer-events-auto grayscale-0': formData.name || formData.surname || formData.username || formData.nationality || avatarFile || formData.mfa !== user.mfa}"
 			        	type="submit" value="Salva le modifiche">
                 </div>
                 <div class="flex flex-col p-2 m-4 ml-2 text-white bg-[#201e1c] rounded-3xl border border-[#4e4e4e8c] w-[110vh]">
@@ -198,7 +199,7 @@
                             </div>
                             <div class="flex w-sm mb-3 p-2.5 justify-self-center">
                                 <label class="inline-flex items-center me-5 cursor-pointer">
-                                  <input type="checkbox" value="" class="sr-only peer" :checked="user.mfa" v-model="formData.mfa">
+                                  <input type="checkbox" class="sr-only peer" :checked="formData.mfa" v-model="formData.mfa">
                                   <span class="select-none me-3 text-sm font-medium text-heading">Disattivato</span>
                                   <div class="relative w-9 h-5 bg-neutral-quaternary rounded-full bg-[#0c0c0b]
                                         peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:inset-s-0.5 after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#882a2a]"></div>

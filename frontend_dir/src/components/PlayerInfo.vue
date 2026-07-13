@@ -1,5 +1,5 @@
 <script setup>
-	import { DOMPlayer, localBoard, localInfo, IMG_PATHS }	from '@/scripts/Data/Variables';
+	import { DOMPlayer, localBoard, localInfo }	from '@/scripts/Data/Variables';
 	import { useAbility, sendEndTurn }						from '@/scripts/Events/utils/GlobalUtils';
 	import { computed }										from 'vue';
 	import	TimerClock										from "./TimerClock.vue"
@@ -24,8 +24,8 @@
 <template>
 	<div class="wrap"
 		v-bind:class="{'rounded-t-md mb-1':up, 'rounded-b-md mt-1':down}">
-
-		<img src="../assets/default.png" alt="User Icon" :draggable="false" class="size-18.75 shrink-0 stretch 0"
+		<img :src="player.image ? `${player.image}` : asset('../assets/default.png')"
+				alt="User Icon" :draggable="false" class="size-18.75 shrink-0 object-cover"
 			v-bind:class="{'rounded-tl-md':up, 'rounded-bl-md':down}">
 
 		<div class="shrink-0">
@@ -52,8 +52,6 @@
 				<b>End Turn</b>
 			</button>
 		</div>
-		<!-- <img :src="IMG_PATHS[player.team + 'King']" alt="TeamKing" :draggable="false" class="size-18.75 shrink-0"
-			v-bind:class="{'drop-shadow-custom':playing }"> -->
 		<TimerClock :millis="player.time" :go="playing" :team="player.team"/>
 	</div>
 </template>
