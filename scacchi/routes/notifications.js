@@ -102,8 +102,8 @@ notifyRouter.post("/", checkJwt, async (req, res) => {
  */
 notifyRouter.patch("/", async (req, res) => {
 	try {
-		const { id_notifications } = req.body;
-		const notification = await notifyQuery.readNotifications(id_notifications);
+		const { id_notification } = req.body;
+		const notification = await notifyQuery.readNotifications(id_notification);
 		return res.status(204).send();
 	} catch (error) {
 		log.err(`Server error updating notifications: ${error.code}`);
