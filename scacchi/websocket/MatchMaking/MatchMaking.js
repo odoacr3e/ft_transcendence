@@ -40,7 +40,7 @@ export async function MatchMaking(user, clientMap, options={})
 	socketData.state = enumSocketState.MATCHMAKING;
 	queueNode = queue.get(user.id_user);
 	if (queueNode?.IsFull() == true)
-		return createMatch(queueNode);
+		return createMatch(queue, queueNode);
 	queue.AddNode(user, options);
 	findMatch(queue, user);
 	console.log(`user in queue ${options.roomType}:`);
@@ -62,11 +62,11 @@ export async function findMatch(queue, user)
 	if (!queueNode)
 		throw (`findMatch: node for user ${user.id_user} undefined. ${console.trace()}`);
 	if (queue.get(user.id_user)?.IsFull())
-		return createMatch(queueNode);
+		return createMatch(queue, queueNode);
 	else
 		findBool = queue.Find(user);
 	if (findBool && queue.get(user.id_user)?.IsFull())
-		return createMatch(queueNode);
+		return createMatch(queue, queueNode);
 	else if (!findBool)
 		queueNode.increaseDelta(queueNode.eloRange.max + 15, queueNode.eloRange.min + 15);
 	console.log("Adding timer for", user.id_user);
@@ -78,10 +78,10 @@ export async function findMatch(queue, user)
 }
 
 /**
- * 
+ * @param {Queue} queue 
  * @param {QueueNode} queueNode
  */
-export async function createMatch(queueNode)
+export async function createMatch(queue, queueNode)
 {
 	let	match;
 	let	result;
@@ -92,6 +92,8 @@ export async function createMatch(queueNode)
 	preset = queueNode.matchOptions? queueNode.matchOptions: queueNode.matchType;
 	match = new Match(preset);
 	result = init(match, preset);
+	if (queue.roomType == enumConnection.RANKED)
+		match.settings.room.isRanked = true;
 	globals.lastMatchId = match.CreateId(queueNode);
 	globals.matches.set(globals.lastMatchId, match);
 	//@ts-ignore
@@ -179,16 +181,28 @@ async function bindPlayersToMatch(match, queueNode, result)
 	}
 	while (currTeam != match.currentPlayer.team)
 	//this makes the queries asynchronous from the matchMaker
-	Promise.all(promises).then(
-	(dbData) =>
+	try
 	{
+		let		dbData;
+
+		const dbDataArray = await Promise.all(promises);
 		i = 0;
 		do
 		{
-			match.currentPlayer.dbTable = dbData[i];
+			dbData = dbDataArray[i];
+			if (!dbData)
+				throw (`bindPLayersToMatch, saving dbUser ${i} of ${match.currentPlayer.team}`);
+			//@ts-ignore
+			match.currentPlayer.dbTable = dbData;
 			++i;
 			match.endTurn();
 		}
 		while (currTeam != match.currentPlayer.team)
-	}).catch((err)=>{console.log(err);});
+		match.ExpectedElo();
+	}
+	catch (err)
+	{
+		console.log(err);
+		throw ("error querying from db during matchMaking");
+	}
 }
