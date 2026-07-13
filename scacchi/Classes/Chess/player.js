@@ -26,10 +26,12 @@ class Player
 		if (!data)
 			throw (`cannot find player ${color}`);
 		//SECTION - user data
-		/** @type {dbUser | null} */
+		/** @type {dbUser} *///@ts-ignore
 		this.dbTable = null;
 		this.matchId = "0";
 		this.id = "0";
+		/** @type {number | null} */
+		this.expectedElo = null;
 		//SECTION - gameData
 		this.nPoints = settings.players.startPoints;
 		this.bonusPointCounter = 0;

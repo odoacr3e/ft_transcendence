@@ -15,6 +15,7 @@ import { clientBoard } from "../../handlers/game/utils.js";
 import { MATCHTIMER } from "../../Macro/macro.js"; 
 import { globals } from "../Globals/globals.js";
 import { match } from "assert/strict";
+import EloRank from "elo-rank";
 
 /** @typedef {import("../Globals/Queue.js").QueueNode} QueueNode*/
 
@@ -63,6 +64,9 @@ class Match
 		this.spareCountDown = 0;
 		/** @type {Map<string, number>}*/ this.boardStateMap = new Map();
 		this.cursor.square = this.currentPlayer.King;
+		this.elo = new EloRank();
+		if (!this.elo)
+			throw (`Match: eloRank library error during initialization`);
 	}
 	/** @param {MatchSettings | string | null} preset*/
 	Reset(preset=null)
@@ -104,6 +108,9 @@ class Match
 		this.tournament_round = null;
 		this.spareCountDown = 0;
 		this.boardStateMap = new Map();
+		this.elo = new EloRank();
+		if (!this.elo)
+			throw (`Match: eloRank library error during initialization`);
 		this.cursor.square = this.currentPlayer.King;
 	}
 	endTurn()
@@ -197,6 +204,7 @@ class Match
 		console.log("haaaaaiiiiii viiiiiiintoooooooooo!!!!!!!");
 		this.victory = this.currentPlayer.team;
 		this.history.victory = this.victory;
+		this.UpdateElo(this.currentPlayer, true);
 		for (const user of this.users)
 		{
 			if (this.FindPlayer(user.team) == true)
@@ -225,6 +233,7 @@ class Match
 	PlayerLost(result, player=this.currentPlayer)
 	{
 		this.lastLost = player.team;
+		this.UpdateElo(player, false);
 		this.DeletePlayer(player);
 		console.log(player.team, ":haaaaaiiiiii persoooooooooooooooooo!!!!!!!");
 		// console.log("Premi un qualsiasi tasto per concludere...");
@@ -303,6 +312,22 @@ class Match
 		}
 		while(this.currentPlayer.team != currTeam)
 		return (foundBool);
+	}
+	ExpectedElo()
+	{
+		let	currTeam;
+		let average;
+
+		if (this.settings.room.isRanked == false)
+			return ;
+		currTeam = this.currentPlayer.team;
+		do
+		{
+			average = getOtherAverage(this);
+			this.currentPlayer.expectedElo = this.elo.getExpected(this.currentPlayer.dbTable.points, average);
+			this.endTurn();
+		}
+		while (this.currentPlayer.team != currTeam)
 	}
 	/** @param {string} name */
 	Log(name="")
@@ -387,6 +412,52 @@ class Match
 		}
 		return total;
 	}
+	/**
+	 * 
+	 * @param {Player} player
+	 * @param {boolean} winBool
+	 */
+	UpdateElo(player, winBool)
+	{
+		let	newElo;
+
+		if (this.settings.room.isRanked != true)
+			return ;
+		if (!player.expectedElo)
+			throw (`UpdateElo: elo not initializated`);
+		newElo = this.elo.updateRating(player.expectedElo, winBool? 1: 0, player.dbTable.points);
+		console.log(`UpdateElo: user ${player.id} old elo is ${player.dbTable.points}, new is ${newElo}`);
+		//FIXME - query sul db
+		
+	}
+}
+
+/** @param {Match} match */
+function getOtherAverage(match)
+{
+	let	currTeam;
+	let	eloAverage;
+	let	i;
+
+	currTeam = match.currentPlayer.team;
+	eloAverage = 0;
+	match.endTurn();
+	if (match.playerNum == 2)
+	{
+		eloAverage = match.currentPlayer.dbTable.points;
+		match.endTurn(); 
+		return (eloAverage);
+	}
+	i = 0;
+	while (match.currentPlayer.team != currTeam)
+	{
+		++i;
+		eloAverage += match.currentPlayer.dbTable.points;
+		match.endTurn();
+	}
+	if (i == 0)
+		throw (`getOtherAverage: no players`);
+	return (eloAverage / i);
 }
 
 /**
@@ -424,7 +495,7 @@ class MatchSettings
 			seed: 0,
 			start: "",
 			corners: false
-		}
+		};
 		this.players =
 		{
 			number: 2,
@@ -438,7 +509,11 @@ class MatchSettings
 				blue: "",
 				green: ""
 			}
-		}
+		};
+		this.room =
+		{
+			isRanked: false
+		};
 		/** @type {string | null} */
 		this.presetType = null;
 		if (!other)
