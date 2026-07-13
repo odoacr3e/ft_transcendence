@@ -1,5 +1,8 @@
 
 import * as lib from "../lib/lib.js";
+import { checkJwt } from "../utils/auth.js";
+import { jsonResponse } from "../utils/response.js"
+const { path } = lib.include;
 export const mediaRouter = lib.include.express.Router();
 
 /**
