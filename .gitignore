@@ -4,3 +4,6 @@ node_modules
 generated/
 public
 .DS_Store
+# worktrees (branch backend/frontend, gestiti a parte)
+backend_dir/
+frontend_dir/
