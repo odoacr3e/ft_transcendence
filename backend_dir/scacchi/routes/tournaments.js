@@ -63,7 +63,7 @@ tournamentsRouter.patch('/', checkJwt, async (req, res) => {
 	}
 })
 
-tournamentsRouter.post('/addPlayers', checkJwt, (req, res) => {
+tournamentsRouter.post('/addPlayers', checkJwt, async (req, res) => {
 	try {
 		const rows = await tournamentsQuery.addPlayersToTournament(req.body.id_users);
 		if (rows > 0)
