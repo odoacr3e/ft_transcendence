@@ -1,6 +1,6 @@
 
 import * as lib from "../lib/lib.js";
-const { path } = lib.include;
+const { path, sharp } = lib.include;
 
 
 const emailRegex = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
