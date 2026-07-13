@@ -157,6 +157,11 @@ export async function updateTournamentStatus(id_tournament, status) {
  * NOTE: aggiunge al torneo con id passato gli utenti che hanno id in id_users. Ritorna il numero di record creati 
  */
 export async function addPlayersToTournament(id_tournament, id_users) {
+	if (!Array.isArray(id_users) || id_users.length === 0)
+		throw new Error("User array is empty or not an array");
+	const currentPlayers = await prisma.tournament_players.count({ where: { id_tournament: Number(id_tournament) } });
+	if (currentPlayers + id_users.length > 8)
+		throw new Error ("Tournament is already full. Max number of players reached");
 	return await prisma.tournament_players.createMany({
 		data: id_users.map(id => ({
 			id_tournament: id_tournament,
