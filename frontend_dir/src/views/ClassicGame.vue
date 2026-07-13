@@ -1,6 +1,7 @@
 <script setup>
 	import { localMatchState, localInfo, DOMPlayer }	from '@/scripts/Data/Variables';
 	import { onMounted, ref, computed }       			from 'vue';
+	import { reloadMatch }								from '@/scripts/Events/BackLink.js';
 	import PlayerInfo               					from '../components/PlayerInfo.vue';
 	import ChessBoard               					from '../components/ChessBoard.vue';
 	import AppHeader                					from '../components/AppHeader.vue';
@@ -15,8 +16,12 @@
 		try{
 			if (!localMatchState) 
 			{
-				router.push({ name: "playpage"});
-				return;
+				const restored = await reloadMatch();
+				if (!restored || !localMatchState)
+				{
+					router.push({ name: "playpage"});
+					return;
+				}
 			}
 			ready.value = true;
 		} catch (err) {

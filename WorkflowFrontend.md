@@ -118,19 +118,21 @@ boardConverter()
 	  	una route apposta per chiedere l'update delle target zones di un pezzo specifico
 	✓	Si fa fatica a capire di chi è il turno attuale
 	✓	orientamento della scacchiera in base al colore dei pezzi del giocatore
-	✓	orientamento del giocatore in base al giocatore
+	✓	orientamento delle info del giocatore in base al giocatore
 	▫	history delle mosse durante la partita
 	▫	utilizzo websocket singolo solo per la partita diverso da websocket 
 		comunicazione server
 	▫	implementare (reload, riaccesso, chiudi e riapri la pagina di gioco) 
 		durante la partita
 	✓	avviso di quando devi fare end turn più chiaro (?)
-	▫	spostamento bottoni
+	▫	implementare segnali visivi relativi ai turni dei giocatori
+	✓		spostamento bottoni
 	✓	le mosse dell'avversario sono poco visibili, servirebbero delle animazioni sul
 		pezzo mosso oppure un evidenziazione sull'ulitmo pezzo mosso
 
 //FIXME - Bugs
-	▫	quando finisci l'esecuzione di una mossa boostata di un pedone e clicchi su un'altro pezzo
+	▫	quando finisci l'esecuzione di una moyour Prisma Client (See: https://pris.ly/d/importing-client)
+backend   | ssa boostata di un pedone e clicchi su un'altro pezzo
 		dello stesso colore del pedone appena mosso lancia eccezione
 	▫	quando finisci l'esecuzione di una mossa boostata di un pedone e al turno dopo vuoi muovere
 		lo stesso pedone manda eccezione (ma penso sia dovuto al backend)
