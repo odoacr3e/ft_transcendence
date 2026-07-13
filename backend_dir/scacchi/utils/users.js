@@ -1,5 +1,7 @@
 
 import * as lib from "../lib/lib.js";
+const { path } = lib.include;
+
 
 const emailRegex = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
 const userRegex = /^[a-zA-Z0-9][a-zA-Z0-9_-]{2,18}[a-zA-Z0-9]$/;
@@ -50,5 +52,5 @@ export async function uploadAvatar(req) {
 		throw new Error('Invalid image file');
 	}
 	await deleteOldAvatar(req.user.id_user);
-	return (`/media/usersAvatar/${filename}`);
+	return (path.join('media', 'usersAvatar', filename));
 }
