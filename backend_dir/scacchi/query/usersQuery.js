@@ -25,6 +25,33 @@ export async function getAllUsers() {
 	});
 }
 
+export async function getMe(id) {
+	return await prisma.users.findUnique({
+		select: {
+			id_user: true,
+			name: true,
+			surname: true,
+			username: true,
+			email: true,
+			image: true,
+			nationality: true,
+			points: true,
+			title: true,
+			preferences: {
+				select: {
+					name: true,
+					description: true,
+					colors: true,
+				}
+			},
+			mfa: true
+		},
+		where: {
+			id_user: Number(id)
+		}
+	});
+}
+
 export async function getUserById(id) {
 	return await prisma.users.findUnique({
 		select: {

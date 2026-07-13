@@ -62,3 +62,11 @@ tournamentsRouter.patch('/', checkJwt, async (req, res) => {
 		return res.status(500).json(jsonResponse.ResponseError("Server error updating tournament status"));
 	}
 })
+
+tournamentsRouter.post('/addPlayers', checkJwt, (req, res) => {
+	try {
+		const rows = await tournamentsQuery.addPlayersToTournament()
+	} catch (error) {
+		
+	}
+});
