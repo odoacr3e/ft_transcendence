@@ -300,7 +300,7 @@ class Match
 		}
 		else
 			return (new Result());
-		return (result);	
+		return (result);
 	}
 	/** @param {string} team */
 	FindPlayer(team)
