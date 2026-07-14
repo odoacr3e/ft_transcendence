@@ -84,7 +84,7 @@ async function historyRestoreFromDb(matchId)
 
 /** 
  * returns a board from specific matchId/moveId.
- * @param {{matchId: number, moveId: number}} req 
+ * @param {{matchId: number, moveId: number, delBool?: boolean}} req 
  */
 async function historyGetMatchState(req)
 {
@@ -98,11 +98,16 @@ async function historyGetMatchState(req)
 			msg = "replay_game: missing req";
 		else if (Number.isInteger(req?.matchId) == false)
 			msg = "invalid matchId " + req?.matchId;
-		else if (Number.isInteger(req?.moveId) == false)
+		else if (!req.delBool && Number.isInteger(req?.moveId) == false)
 			msg = "invalid matchId " + req?.moveId;
 		if (msg)
 			return (new Result().Error(msg, 400));
 		matchId = Number(req.matchId);
+		if (req.delBool == true)
+		{
+			globals.matchCache.delete(String(matchId));
+			return (new Result().Success());
+		}
 		moveId = Number(req.moveId);
 		if (globals.matchCache.has(String(matchId)) == false)
 		{

@@ -51,7 +51,7 @@ function init(match=null, preset=null)
 	result.status = 200;
 	// @ts-ignore
 	result.board = clientBoard(match, true);
-	// render(match);
+	render(match);
 	return (result);
 }
 

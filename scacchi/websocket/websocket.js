@@ -100,7 +100,7 @@ sockio.on('connection', async (socket) =>
 			callback({log: {status: status}});
 	});
 
-	socket.on("replay_game", async(/** @type {{matchId: number, moveId: number}}*/req, callback) => 
+	socket.on("replay_game", async(/** @type {{matchId: number, moveId: number, delBool?: Boolean}}*/req, callback) => 
 	{
 		let	result;
 
