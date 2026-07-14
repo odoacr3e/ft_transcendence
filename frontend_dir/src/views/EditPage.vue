@@ -13,6 +13,7 @@
 	        	surname: '',
 	        	username: '',
 	        	nationality: '',
+                preset: '',
                 mfa: !!user.value.mfa
                 // preferences: 0
 	        }),
@@ -32,6 +33,7 @@
         const file = event.target.files[0];
         if (!file) return;
         if (removeAvatar.value) { removeAvatar.value = false; }
+        if (formData.value.preset) { formData.value.preset = ''; }
 
         // validazione base
         const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
@@ -54,10 +56,17 @@
     function handleAvatarRemove()
     {
         if (!user.value.image && !avatarFile.value) { return; }
+        if (avatarFile.value || formData.value.preset)
+        {
+            formData.value.preset = '';
+            avatarPreview.value = user.value.image ? user.value.image : asset('../assets/default.png');
+        }
+        else
+        {
+            if (user.value.image) { removeAvatar.value = true; }
+            avatarPreview.value = asset('../assets/default.png');
+        }
         avatarFile.value = null;
-        avatarPreview.value = asset('../assets/default.png');
-        if (user.value.image)
-            removeAvatar.value = true;
     }
 
     async function submitForm() {
@@ -69,9 +78,13 @@
         if (formData.value.nationality) { fd.append('nationality', formData.value.nationality); }
         if (formData.value.mfa !== user.value.mfa) { fd.append('mfa', formData.value.mfa); }
         // if (formData.value.preferences) { fd.append('preferences', formData.value.preferences); }
-
-        if (avatarFile.value)                       { fd.append('avatar', avatarFile.value); }
-        else if (!avatarFile.value && removeAvatar.value) { fd.append('avatar', ''); }
+        
+        if (formData.value.preset) { fd.append('preset', formData.value.preset); }
+        else
+        {
+            if (avatarFile.value)                       { fd.append('avatar', avatarFile.value); }
+            else if (!avatarFile.value && removeAvatar.value) { fd.append('avatar', ''); }    
+        }
         
         const resp = await authStore.update(fd);
         if (!resp)
@@ -89,7 +102,7 @@
         <div id="wrap" class="grow">
             <form @submit.prevent="submitForm" class="flex z-2 bg-[#181715] rounded-3xl w-[140vh] h-[80vh]">
                 <div class="flex flex-col p-2 m-4 mr-2 rounded-3xl border border-[#4e4e4e8c] w-[30vh]">
-                    <div class="cursr-pointer relative group m-5 rounded-full overflow-hidden">
+                    <div class="cursr-pointer relative group m-5 mb-1 rounded-full overflow-hidden">
                         <img :src="avatarSrc" alt="" class="size-50 rounded-full object-cover">
                         <input id="avatar-input" type="file" accept="image/png, image/jpeg, image/webp"
                             class="hidden" @change="handleAvatarChange">
@@ -102,13 +115,26 @@
                     <button type="button" class="mx-auto" @click="handleAvatarRemove">
                         <u><a class="text-sm cursor-pointer text-[#882a2a] hover:text-[#af3d3d] active:text-[#d1aaaa]">Elimina avatar</a></u>
                     </button>
-                    <RouterLink to="/me/edit/pwd" class="mx-auto mt-78">
+                    <div class="flex flex-col gap-3 mt-5 mx-2.5">
+                        <div class="flex w-full justify-evenly my-0.5">
+                            <img @click="formData.preset = 'bastardo'; avatarPreview = '/media/presetIcon/bastardo.PNG'" 
+                                :src="'/media/presetIcon/bastardo.PNG'" title="Bastardo" class="size-21 rounded-full object-cover cursor-pointer">
+                            <img @click="formData.preset = 'sovrano'; avatarPreview = '/media/presetIcon/sovrano.PNG'"
+                                :src="'/media/presetIcon/sovrano.PNG'" title="Sovrano" class="size-21 rounded-full object-cover cursor-pointer">
+                        </div>
+                        <!-- altri 4 preset-->
+                    </div>
+                    <RouterLink to="/me/edit/pwd" class="mx-auto mt-54">
                         <u><a class="text-sm cursor-pointer text-[#882a2a] hover:text-[#af3d3d] active:text-[#d1aaaa]">Cambia password</a></u>
                     </RouterLink>
                     <input id="submit" class="cursor-pointer w-[90%] mt-auto mb-6 self-center p-3 
                         text-base bg-[#882a2a] rounded-[7px] text-white hover:bg-linear-to-t from-[#882a2a] to-[#af3d3d]"
-                        v-bind:class="{'pointer-events-none grayscale': !formData.name && !formData.surname && !formData.username && !formData.nationality && (!avatarFile && !removeAvatar) && formData.mfa === user.mfa ,
-						    'pointer-events-auto grayscale-0': formData.name || formData.surname || formData.username || formData.nationality || avatarFile || (!avatarFile && removeAvatar) || formData.mfa !== user.mfa}"
+                        v-bind:class="{ 'pointer-events-none grayscale': !formData.name && !formData.surname && !formData.username 
+                                                                     && !formData.nationality && !formData.preset && formData.mfa === user.mfa 
+                                                                     && (!avatarFile && !removeAvatar) ,
+						                'pointer-events-auto grayscale-0': formData.name || formData.surname || formData.username 
+                                                                        || formData.nationality || formData.preset  || formData.mfa !== user.mfa 
+                                                                        || avatarFile || (!avatarFile && removeAvatar) }"
 			        	type="submit" value="Salva le modifiche">
                 </div>
                 <div class="flex flex-col p-2 m-4 ml-2 text-white bg-[#201e1c] rounded-3xl border border-[#4e4e4e8c] w-[110vh]">
@@ -193,7 +219,11 @@
                                 </svg>
                                 <h3 class="text-xl">Nazionalità</h3>
                             </div>
-                            <div class="form flex w-sm mb-3">
+                            <div class="p-2.5 border rounded-[7px] border-[#4e4e4e8c] text-[#dcdfe4c0] justify-self-center flex w-sm mb-3
+                                        transition-colors duration-200 hover:bg-[#ad1e1e36] hover:border-[#eb2c2c2a]" id="email">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 absolute translate-x-42 opacity-0 transition-opacity duration-250">
+                                  <path fill-rule="evenodd" d="M12 1.5a5.25 5.25 0 0 0-5.25 5.25v3a3 3 0 0 0-3 3v6.75a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3v-6.75a3 3 0 0 0-3-3v-3c0-2.9-2.35-5.25-5.25-5.25Zm3.75 8.25v-3a3.75 3.75 0 1 0-7.5 0v3h7.5Z" clip-rule="evenodd" />
+                                </svg>
                                 <input :placeholder="user.nationality" list="country" size="35" class="pl-2 text-base" autofocus="true" type="text" v-model="formData.nationality">
                             </div>
                         </div>
