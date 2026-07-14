@@ -263,9 +263,14 @@ export async function updateUserFieldsById(id, data) {
 	for (const f of fields)
 	{
 		if (data[f] !== undefined)
-			updates[f] = data[f];
-		if (data.preferences && f === 'preferences')
-			updates.preferences = { connect: { id_preference: Number(data[f]) }};
+		{
+			if (data.preferences && f === 'preferences')
+				updates.preferences = { connect: { id_preference: Number(data[f]) }};
+			else if (data.mfa && f === 'mfa')
+				updates.mfa = data[f] === 'true';
+			else
+				updates[f] = data[f];
+		}
 	}
 	return await prisma.users.update({
 		where: { id_user: Number(id) },
