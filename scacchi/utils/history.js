@@ -104,7 +104,7 @@ function recreateMatch(match, history, cacheMatchBool=false)
 		result = init(match, match.settings);//@ts-ignore
 		match.id = history.matchId;
 		if (cacheMatchBool == true)
-			cacheMatchState(match, result);
+			cacheMatchState(match);
 		match.historyCreateBool = true;
 		for (const event of history.events)
 		{
@@ -138,7 +138,7 @@ function recreateMatch(match, history, cacheMatchBool=false)
 			else if (result.status == 200)
 			{
 				if (cacheMatchBool == true)
-					cacheMatchState(match, result);
+					cacheMatchState(match);
 				DEBUGCounter++;
 			}
 			else
@@ -183,9 +183,8 @@ function printResponse(match, event, result)
 /** 
  * saves into the global cache the state of the match in a turn.
  * @param {Match} match
- * @param {Result} result
  */
-function cacheMatchState(match, result)
+function cacheMatchState(match)
 {
 	if (globals.matchCache.has(match.id.toString()) == false)
 		globals.matchCache.set(match.id.toString(), new Array);

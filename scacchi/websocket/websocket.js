@@ -12,6 +12,8 @@ import { MatchMaking } from "./MatchMaking/MatchMaking.js";
 import { DEBUG_WEBSOCKETS, MATCH_RECONNECT_TIMER, SOCKET_RECONNECT_TIMER } from "../Macro/macro.js";
 import { gameWebSocketHandler } from "../handlers/game/Game.js";
 import { responseFormatter } from "../utils/response.js";
+import { Result } from "../Classes/endPoint/result.js";
+import { historyRestoreFromDb } from "../utils/history.js";
 
 /** @typedef {{socket: *, allowedBool: boolean, state?: string, reconnectBool?: boolean, matchData?: Player}} Socket */
 
@@ -97,6 +99,46 @@ sockio.on('connection', async (socket) =>
 		if (typeof(callback) == "function")
 			callback({log: {status: status}});
 	});
+
+	socket.on("replay_game", async(/** @type {{matchId: number, moveId: number}}*/req, callback) => 
+	{
+		let	matchId;
+		let	moveId;
+		let	result;
+		let	msg = undefined;
+
+		if (!req)
+			msg = "replay_game: missing req";
+		else if (Number.isInteger(req?.matchId) == false)
+			msg = "invalid matchId " + req?.matchId;
+		else if (Number.isInteger(req?.moveId) == false)
+			msg = "invalid matchId " + req?.moveId;
+		if (msg)
+		{
+			socket.emit({log: {status: 400, msg: msg}});
+			if (typeof(callback) == "function")
+				callback({log: {status: status}});
+			return ;
+		}
+		matchId = String(matchId);
+		moveId = String(moveId);
+		result = new Result().Success();
+		if (globals.matchCache.has(matchId) == false)
+		{
+			result = await historyRestoreFromDb(Number(matchId));
+			if (result.status != 200)
+			{
+				socket.emit({log: {status: result.status, msg: "cannot retrive match"}});
+				if (typeof(callback) == "function")
+					callback({log: {status: status}});
+				return ;
+			}
+		}
+		//FIXME - ripristinare match a mossa corretta
+		socket.emit({log: {status: 500, msg: "not implemented (yet)"}});
+		if (typeof(callback) == "function")
+			callback({log: {status: status}});
+	})
 
 	socket.on('disconnect', async () => {
 		clearTimeout(globals.timers.get(user.id_user));

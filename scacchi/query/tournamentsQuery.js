@@ -169,3 +169,7 @@ export async function addPlayersToTournament(id_tournament, id_users) {
 		}))
 	});
 }
+
+// export async function getTournamentResults(id_tournament) {
+// 	const matches = prisma.
+// }
