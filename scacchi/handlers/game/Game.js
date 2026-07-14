@@ -148,6 +148,13 @@ async function gameHandler(match, body)
 		result = endTurn(match);
 	else if (body.type == "trans")
 		result = makeTransfiguration(match, body.from, body.to);
+	else if (body.type == "giveup")
+	{
+		match.PlayerLost(result);
+		match.endTurn();
+		if (match.playerNum <= 1)
+			match.CheckMate(result);
+	}
 	else
 	{
 		error(null, result, 400, `invalid type ${body.type}`);
