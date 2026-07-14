@@ -48,6 +48,11 @@ export async function getAllUserMatches(id_user) {
 		},
 		where: {
 			id_user: Number(id_user)
+		},
+		orderBy: {
+			matches: {
+				end_date: 'desc'
+			}
 		}
 	});
 	const matches = userMatches.map(um => ({
