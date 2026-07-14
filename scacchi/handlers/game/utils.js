@@ -83,6 +83,7 @@ function normifyRequest(cursor, body)
 {
 	if (body.type == "init")
 		return body;
+	body.type = body.type.toLocaleLowerCase();
 	if (body.from && typeof(body.from) == "string")
 		body.from = cursor.Normify(body.from);
 	if (body.to && typeof(body.to) == "string" && body.to.length == 3)

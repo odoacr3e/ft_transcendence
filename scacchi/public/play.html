@@ -230,7 +230,8 @@
 
     <script>
         // Recuperiamo i dati passati dal primo HTML
-        const clientIniziali = JSON.parse(localStorage.getItem('attiva_gameplay_clients')) || [];
+		//alert(`${localStorage.getItem('play_clients')}`);
+        const clientIniziali = JSON.parse(localStorage.getItem('play_clients')) || [];
         const clientSimulati = [];
         let lastEventType = "init";
 
@@ -291,8 +292,9 @@
                             <option value="move">move</option>
                             <option value="moveBoost">moveBoost</option>
                             <option value="boost">boost</option>
-                            <option value="transform">transform</option>
+                            <option value="trans">transform</option>
                             <option value="endTurn">endTurn</option>
+                            <option value="giveUp">giveUp💀</option>
                         </select>
                         <button class="btn-send" onclick="inviaMossa('${datiUtente.id_user}')">Invia</button>
                     </div>
