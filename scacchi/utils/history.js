@@ -20,6 +20,7 @@ import { clientBoard } from "../handlers/game/utils.js";
 import { jsonParser } from "./response.js";
 import { DEBUG } from "../Macro/macro.js";
 import { Result } from "../Classes/endPoint/result.js";
+import { initFromStr } from "../handlers/game/init.js";
 
 
 /** @typedef {import ("../Classes/Chess/history.js").History} History */
@@ -79,6 +80,43 @@ async function historyRestoreFromDb(matchId)
 		return (new Result().Error(`match with id ${matchId} is invalid.\nError:\n${err}`, 500));
 	}
 	return (new Result().Success());
+}
+
+/** 
+ * returns a board from specific matchId/moveId.
+ * @param {{matchId: number, moveId: number}} req 
+ */
+async function historyGetMatchState(req)
+{
+		let	matchId;
+		let	moveId;
+		let	result;
+		let	msg = undefined;
+		let	boardStr;
+
+		if (!req)
+			msg = "replay_game: missing req";
+		else if (Number.isInteger(req?.matchId) == false)
+			msg = "invalid matchId " + req?.matchId;
+		else if (Number.isInteger(req?.moveId) == false)
+			msg = "invalid matchId " + req?.moveId;
+		if (msg)
+			return (new Result().Error(msg, 400));
+		matchId = Number(req.matchId);
+		moveId = Number(req.moveId);
+		if (globals.matchCache.has(String(matchId)) == false)
+		{
+			result = await historyRestoreFromDb(matchId);
+			if (result.status != 200)
+				return (result);
+		}
+		if (moveId < 0)
+			boardStr = globals.matchCache.get(String(matchId))?.at(0);
+		else
+			boardStr = globals.matchCache.get(String(matchId))?.at(moveId + 1);
+		if (typeof(boardStr) != "string")
+			return (new Result().Error(`moveId ${moveId} invalid`, 400));
+		return (initFromStr(boardStr));
 }
 
 //SECTION - utils
@@ -191,4 +229,4 @@ function cacheMatchState(match)
 	globals.matchCache.get(match.id.toString())?.push(boardStringify(match, true));
 }
 
-export {historyRestore, historyRestoreFromDb};
+export {historyRestore, historyRestoreFromDb, historyGetMatchState};
