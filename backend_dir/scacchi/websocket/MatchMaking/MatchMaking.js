@@ -136,9 +136,7 @@ async function bindPlayersToMatch(match, queueNode, result)
 	let	userId;
 	let	startTeam;
 	let	currTeam;
-	let	promises = [];
-
-// function responseFormatter(match, result, msg, status)
+	let dbTable;
 
 	i = 0;
 	userArray = Array.from(queueNode.userSet)
@@ -152,7 +150,10 @@ async function bindPlayersToMatch(match, queueNode, result)
 		user.state = enumSocketState.PLAYING;
 		match.currentPlayer.matchId = match.id;
 		match.currentPlayer.id = userId;
-		promises.push(getUserById(userId));//@ts-ignore
+		dbTable = await getUserById(userId);
+		if (!dbTable)
+			throw (`bindPlayersToMatch: cannot get user ${userId} from db`);
+		match.currentPlayer.dbTable = dbTable;//@ts-ignore
 		startTeam = match.settings?.players[match.currentPlayer.team];
 		match.users.push({id_user: userId, outcome: "Lose", startTeam: null, team: match.currentPlayer.team});
 		user.matchData = match.currentPlayer;
@@ -164,6 +165,7 @@ async function bindPlayersToMatch(match, queueNode, result)
 		match.endTurn();
 	}
 	while (currTeam != match.currentPlayer.team)
+	match.ExpectedElo();
 	result = responseFormatter(match, result, "Room created!", 200);
 	i = 0;
 	do
@@ -172,7 +174,6 @@ async function bindPlayersToMatch(match, queueNode, result)
 		user = globals.clientMap.get(userId);
 		if (!user?.socket)
 			throw (`bindPlayersToMatch: user 0 with id ${userId} undefined or invalid`);
-		// user.socket.to(`match_${match.id}`).emit("game", result);
 		//@ts-ignore
 		result.team = match.currentPlayer.team;
 		user.socket.emit("game", result);
@@ -180,29 +181,4 @@ async function bindPlayersToMatch(match, queueNode, result)
 		match.endTurn();
 	}
 	while (currTeam != match.currentPlayer.team)
-	//this makes the queries asynchronous from the matchMaker
-	try
-	{
-		let		dbData;
-
-		const dbDataArray = await Promise.all(promises);
-		i = 0;
-		do
-		{
-			dbData = dbDataArray[i];
-			if (!dbData)
-				throw (`bindPLayersToMatch, saving dbUser ${i} of ${match.currentPlayer.team}`);
-			//@ts-ignore
-			match.currentPlayer.dbTable = dbData;
-			++i;
-			match.endTurn();
-		}
-		while (currTeam != match.currentPlayer.team)
-		match.ExpectedElo();
-	}
-	catch (err)
-	{
-		console.log(err);
-		throw ("error querying from db during matchMaking");
-	}
 }

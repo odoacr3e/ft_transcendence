@@ -212,6 +212,7 @@ class Match
 		}
 		if (this.id != "0")
 			globals.matches.delete(this.id);
+		globals.lastMatchId = "0";
 		if (result != null)
 		{
 			result.msg = "you win!";
@@ -285,6 +286,9 @@ class Match
 		//@ts-ignore
 		tmp = this[player];
 		player = tmp.next;
+		if (this.id != "0")
+			globals.matches.delete(this.id);
+		globals.lastMatchId = "0";
 		if (result != null)
 		{
 			result.msg = "it's a spare!!!";

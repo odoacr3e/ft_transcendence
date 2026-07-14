@@ -386,6 +386,7 @@
 
             // --- NUOVO ASCOLTATORE EVENTO 'game' ---
             socket.on('game', (data) => {
+				//alert("~ASCOLTO GAME~!");
                 const matchCell = document.getElementById(`match-cell-${datiUtente.id_user}`);
                 if (matchCell && data && data.id) {
                     clientObj.matchId = data.id;
@@ -405,8 +406,9 @@
                             .filter(c => c.matchId && c.matchId !== "Nessuno" && c.matchId !== "In attesa...")
                             .map(c => ({ dati: c.dati, matchId: c.matchId, team: c.team })); // <--- Passa anche il team
                             
-                        localStorage.setItem('attiva_gameplay_clients', JSON.stringify(readyClients));
-                        window.location.href = "http://127.0.0.1:5500/scacchi/public/play.html";
+                        localStorage.setItem('play_clients', JSON.stringify(readyClients));
+						//alert(`${localStorage.getItem('attiva_gameplay_clients')}`);
+                        window.location.href = "play.html";
                     };
                     console.log(`[GAME EVENT] Match assegnato a ${datiUtente.username}. ID Match: ${data.id} | Team: ${clientObj.team}`);
                 }
