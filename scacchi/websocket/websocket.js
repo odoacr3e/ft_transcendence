@@ -89,6 +89,16 @@ sockio.on('connection', async (socket) =>
 			throw ("stanze non implementate");
 	});
 
+	socket.on("amiplaying", async(req, callback) =>
+	{
+		let	socketData;
+
+		socketData = clientMap.get(user.id_user);
+		socket.emit("amiplaying", socketData?.state == enumSocketState.PLAYING);
+		if (typeof(callback) == "function")
+			callback({log: {status: status}});
+	});
+
 	socket.on("game", async(/** @type {{from: *, to: *, type: string}}*/req, callback) =>
 	{
 		let	status;
