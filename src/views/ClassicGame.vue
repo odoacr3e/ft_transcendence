@@ -13,12 +13,21 @@
 	const topP		= computed(() => bottomP.value === 1 ? 2: 1);
 
 	onMounted(async () => {
+		console.log("OnMounted");		
 		try{
 			if (!localMatchState) 
 			{
-				const restored = await reloadMatch();
+				if (!sessionStorage.getItem("match:id"))
+				{
+					router.push({ name: "playpage" });
+					return;
+				}
+
+				const restored = await reloadMatch();				
 				if (!restored || !localMatchState)
 				{
+					sessionStorage.removeItem("match:id");
+					sessionStorage.removeItem("match:myTeam");
 					router.push({ name: "playpage"});
 					return;
 				}

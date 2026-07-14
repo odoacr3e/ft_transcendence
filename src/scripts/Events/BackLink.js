@@ -4,6 +4,8 @@ import { localBoard, localInfo }	from "@/scripts/Data/Variables";
 import { getTarget }				from "./utils/MovementUtils.js";
 // import { MACRO } 					from "@/scripts/Data/Variables";
 import { useAuthStore } from "@/stores/auth.st.js";
+import { sendEndTurn } from "./utils/GlobalUtils.js";
+// import { connect } from "node:http2";
 // import { _jsonReviver }				from "../Data/utils/ArchiUtils.js";
 
 export async function sendToBackend(fromId, toId, flag)
@@ -58,12 +60,31 @@ export async function requestToBack(fromSquare, toSquare)
 
 	timeout = setTimeout(() => 
 		{
-			console.log("Il backend è stato liberato");
+			// console.log("Il backend è stato liberato");
 		}, 1000 * 1);
+	// if (type === "endturn")
+	// {
+	// 	return new Promise((resolve) => {
+	// 	let done = false;
+	// 	const giorgio = setTimeout(() => { if (!done) {done = true; resolve(false); }}, 5000);
+	// 	auth.socket.emit("game", { type: "reload", from: "", to: ""}, (result) => {
+	// 		if (done)
+	// 		{
+	// 			clearTimeout(giorgio);
+	// 			return;
+	// 		}
+	// 		clearTimeout(giorgio);
+	// 		done = true;
+	// 		console.log("SCACCHIERA");			
+	// 		console.log(result);
+	// 		resolve(result?.log.status == 200);
+	// 	});
+	// 	});
+	// }
 	return new Promise((resolve) => {
 		auth.socket.emit("game", { type, from: fromSquare, to: toSquare }, (result) => {
 			// console.log(`request: type: ${type}, from: ${fromSquare}, to:${toSquare}`)
-			clearTimeout(timeout);
+			// clearTimeout(timeout);
 			if (result?.log?.status === 200 && toPiece)
 				localInfo.capturedP[toPiece.team === "white" ? "black" : "white"][toPiece.type] += 1;
 			resolve(result?.log?.status === 200);
@@ -72,21 +93,80 @@ export async function requestToBack(fromSquare, toSquare)
 	});
 }
 
+// export function reloadMatch()
+// {
+// 	console.log("Chiamata di reload!");
+// 	const auth = useAuthStore();
+// 	if (!auth.socket)
+// 		return(Promise.resolve(false));
+// 	return new Promise((resolve) => 
+// 	{
+// 		let done = false;
+// 		const finish = (ok) => {
+// 			if (done)
+// 				return;
+// 			clearTimeout(timeout);
+// 			auth.socket.off('connect', sendReload);
+// 			resolve(ok);
+// 		}
+// 		const timeout = setTimeout(() => finish(false), 8000);
+
+// 		const sendReload = () => {
+// 			auth.socket.emit('game', {type: "reload", from: "", to: ""}, (result) => {
+// 				finish(result?.log?.status === 200);
+// 			});
+// 		};
+
+// 		if (auth.socket.connected)
+// 			sendReload();
+// 		else
+// 			auth.socket.once("connect", sendReload);
+// 	});
+// }
+
+
 export function reloadMatch()
 {
+	console.log("Chiamata di reload!");
 	const auth = useAuthStore();
 	if (!auth.socket)
-		return(Promise.resolve(false));
-	return new Promise((resolve) => 
+		return (Promise.resolve(false));
+
+	return new Promise((resolve) =>
 	{
 		let done = false;
-		const timeout = setTimeout(() => { if (!done) {done = true; resolve(false); }}, 5000);
-		auth.socket.emit("game", { type: "reload", from: "", to: ""}, (result) => {
-			if (done)
-				return;
+		let retryId = null;
+
+		const finish = (ok) => {
+			if (done) return;
 			done = true;
-			clearTimeout(timeout);
-			resolve(result?.log.status == 200);
-		});
+			clearTimeout(hardTimeout);
+			if (retryId) clearInterval(retryId);
+			auth.socket.off("connect", tryReload);
+			resolve(ok);
+		};
+
+		const tryReload = () => {
+			if (done || !auth.socket?.connected) return;
+			console.log("[reload] tentativo emit, socket connesso:", auth.socket.connected);
+			auth.socket.emit("game", { type: "reload", from: "", to: "" }, (result) => {
+				console.log("[reload] ack ricevuto:", result);
+				if (result?.log?.status === 200)
+					finish(true);
+			});
+		};
+
+		// timeout di sicurezza complessivo
+		const hardTimeout = setTimeout(() => finish(false), 8000);
+
+		// riprova ogni secondo: copre la finestra in cui il backend
+		// ha riconnesso il socket ma non ha ancora registrato l'handler "game"
+		retryId = setInterval(tryReload, 1000);
+
+		// primo tentativo appena possibile
+		if (auth.socket.connected)
+			tryReload();
+		else
+			auth.socket.once("connect", tryReload);
 	});
 }

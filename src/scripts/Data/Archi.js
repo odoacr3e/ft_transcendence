@@ -68,6 +68,9 @@ export function initLocalMatchState(raw)
 
 	localInfo.matchId = raw.id;
 	localInfo.myTeam = raw.team;
+
+	sessionStorage.setItem("match:myTeam", raw.team);
+	sessionStorage.setItem("match:id", raw.id);
 }
 
 export function initLocalPlayers()
@@ -161,3 +164,15 @@ export function updateLocalPlayers(changes)
 	hasBoost(localPlayers.values().find(p => p.isPlaying === true));
 }
 //!SECTION
+
+export function reloadMatchState(raw)
+{
+	const validated = validateReceivedMatch(raw);
+	startLocalMatchState(validated);
+
+	initLocalBoard(localMatchState.board);
+	initLocalPlayers();
+
+	localInfo.myTeam = sessionStorage.getItem("match:myTeam");
+	localInfo.id = sessionStorage.getItem("match:id");
+}
