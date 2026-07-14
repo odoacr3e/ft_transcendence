@@ -1,6 +1,6 @@
 
-import { trace } from "node:console";
 import { prisma } from "../lib/prisma.js";
+import { MatchSettings } from "../Classes/Chess/match.js";
 
 export async function getAllUserTournaments(id_user) {
 	const userTournaments = await prisma.tournament_players.findMany({
@@ -170,6 +170,40 @@ export async function addPlayersToTournament(id_tournament, id_users) {
 	});
 }
 
-// export async function getTournamentResults(id_tournament) {
-// 	const matches = prisma.
-// }
+export async function getTournamentResults(id_tournament) {
+	const matches = await prisma.matches.findMany({
+		where: { id_tournament: Number(id_tournament) },
+		include: {
+			users_matches: {
+				include: {
+					users: {
+						select: {
+							id_user: true,
+							username: true,
+							image: true,
+							points: true,
+							title: true
+						}
+					}
+				}
+			}
+		},
+		orderBy: [
+			{ round: 'asc' },
+			{ id_match: 'asc' }
+		]
+	});
+	const final = matches.find(m => m.round === 'F');
+	const semifinals = matches.filter(m => m.round === 'SF');
+
+	const first = final?.users_matches.find(um => um.outcome === 'Win')?.users.username;
+	const second = final?.users_matches.find(um => um.outcome === 'Lose')?.users.username;
+	const third = semifinals.map(sf => sf.users_matches.find(um => um.outcome === 'Lose')?.users.username).filter(Boolean); // .filter(Boolean) serve per eliminare valori falsy
+
+	return {
+		"winner": first,
+		"second": second,
+		"third": third,
+		"matches": matches
+	}
+}
