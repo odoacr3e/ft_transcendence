@@ -152,13 +152,17 @@ usersRouter.patch("/", checkJwt, uploadMiddleware, async (req, res) => {
 		const { username } = req.body;
 		if (username && !checkUsername(username))
 			return res.status(400).json(jsonResponse.ResponseError("Invalid username format"));
-		delete req.body.image; // cancello il campo image dal body che viene passato (la vera immagine (avatar) non si trova li)
-		if (req.body.preset) {
-			req.body.image = path.join(`/media/presetIcon/${req.body.preset}.PNG`);
-			await deleteOldAvatar(req.user.id_user);
+		if (req.body.image == "")
+			req.body.image = null;
+		else {
+			delete req.body.image; // cancello il campo image dal body che viene passato (la vera immagine (avatar) non si trova li)
+			if (req.body.preset) {
+				req.body.image = path.join(`/media/presetIcon/${req.body.preset}.PNG`);
+				await deleteOldAvatar(req.user.id_user);
+			}
+			else if (req.file)
+				req.body.image = await uploadAvatar(req);
 		}
-		else if (req.file)
-			req.body.image = await uploadAvatar(req);
 		const user = await usersQuery.updateUserFieldsById(req.user.id_user, req.body);
 		delete(user.password);
 		return res.status(200).json(jsonResponse.ResponseSuccess({ "user": user }));
