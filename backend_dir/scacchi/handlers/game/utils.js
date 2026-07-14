@@ -106,7 +106,8 @@ function modifyBoard(copiedBoard)
 		// @ts-ignore
 		if (!square.piece)
 			continue ;
-		square.piece.moveArray = [];
+		// @ts-ignore
+		delete (square).piece.moveArray;
 		// @ts-ignore
 		delete (square).piece?.isMovedBool;
 		// @ts-ignore
@@ -115,27 +116,6 @@ function modifyBoard(copiedBoard)
 		delete (square).piece?.moveLongRangeDEBUG;
 		// @ts-ignore
 		delete (square).piece?.pos;
-	}
-}
-
-//FIXME - x di mbiagi
-/**
- * Adds all dangerZones of a square to the dest Board
- * @param {Board} src the source board 
- * @param {Board} dest the board to send to client
- * @param {Square} square the from/to Square 
- */
-function addDangerZonesCoords(src, dest, square)
-{
-	let	dangerSquare;
-
-	for (let dangerCoord of square.dangerZones)
-	{
-		dangerSquare = src.get(dangerCoord);
-		// assert(dangerSquare, `Invalid DangerSquare: "${dangerCoord}"`);
-		// if (!dangerSquare)
-		// 	continue ;
-		dest.set(dangerCoord, new Square(dangerSquare));
 	}
 }
 
