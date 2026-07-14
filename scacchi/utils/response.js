@@ -9,7 +9,9 @@
 */
 
 import { Match } from "../Classes/Chess/match.js";
+import { Player } from "../Classes/Chess/player.js";
 import { Result } from "../Classes/endPoint/result.js";
+import { eTeam } from "../Macro/enums.js";
 import { DEBUG_CURL } from "../Macro/macro.js";
 
 /**
@@ -97,42 +99,50 @@ function formatPlayer(match, result)
 {
 	if (match.settings.players.number == 2)
 	{
-		result.p1 = match.white; 
-		result.p2 = match.black;
-		result.p1.dbTable = undefined;
-		result.p2.dbTable = undefined;
+		getPlayerData(match.white, result, 1, match.currentPlayer.team == eTeam.White);
+		getPlayerData(match.black, result, 2, match.currentPlayer.team == eTeam.Black);
 	}
 	else if (match.settings.players.number == 4)
 	{
-		result.p1 = match.yellow; 
-		result.p2 = match.blue;
-		result.p3 = match.red;
-		result.p4 = match.green;
-		result.p3.name = "p3";
-		result.p4.name = "p4";
-		result.p3.isPlaying = false;
-		result.p4.isPlaying = false;
-		result.p1.dbTable = undefined;
-		result.p2.dbTable = undefined;
-		result.p3.dbTable = undefined;
-		result.p4.dbTable = undefined;
+		getPlayerData(match.yellow, result, 1, match.currentPlayer.team == eTeam.Yellow);
+		getPlayerData(match.blue, result, 2, match.currentPlayer.team == eTeam.Blue);
+		getPlayerData(match.red, result, 3, match.currentPlayer.team == eTeam.Red);
+		getPlayerData(match.green, result, 4, match.currentPlayer.team == eTeam.Green);
 	}
 	else
 		throw ("formatPlayer: bad player number");
-	result.p1.name = "p1";
-	result.p2.name = "p2";
-	result.p1.isPlaying = false;
-	result.p2.isPlaying = false;
-	if (match.currentPlayer.team == result.p1.team)
-		result.p1.isPlaying = true;
-	else if (match.currentPlayer.team == result.p2.team)
-		result.p2.isPlaying = true;
-	else if (match.currentPlayer.team == result.p3?.team)
-		result.p3.isPlaying = true;
-	else if (match.currentPlayer.team == result.p4?.team)
-		result.p4.isPlaying = true;
-	else
-		throw ("formatPlayer: backend forgot the turn order, sorry");
+}
+
+/*
+	p1: 
+	{
+		name: "pippo",
+		nPoints: 0,
+		bonusPointCounter: 0,//quando arriva a 4, nPoints++
+		nPieces: 0,
+		team: "Green",
+		isPlaying: true || false,
+	},
+*/
+
+/**
+ * 
+ * @param {Player} player 
+ * @param {*} result 
+ * @param {number} num
+ * @param {boolean} isPlaying
+ */
+function getPlayerData(player, result, num, isPlaying)
+{
+	result[`p${num}`] =
+	{
+		name: player.dbTable?.name,
+		nPoints: player.nPoints,
+		bonusPointCounter: player.bonusPointCounter,
+		nPieces: player.nPieces,
+		team: player.team,
+		isPlaying: isPlaying,
+	};
 }
 
 /**
