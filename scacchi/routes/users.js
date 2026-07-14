@@ -152,7 +152,7 @@ usersRouter.patch("/", checkJwt, uploadMiddleware, async (req, res) => {
 		const { username } = req.body;
 		if (username && !checkUsername(username))
 			return res.status(400).json(jsonResponse.ResponseError("Invalid username format"));
-		if (req.body.image == "")
+		if (req.body.avatar == "")
 			req.body.image = null;
 		else {
 			delete req.body.image; // cancello il campo image dal body che viene passato (la vera immagine (avatar) non si trova li)
