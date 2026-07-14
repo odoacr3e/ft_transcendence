@@ -39,7 +39,7 @@ async function request_m(endpoint, options = {}) {
 		throw new AuthError('Sessione scaduta');
 	}
 
-	checkResp(res);
+	return(checkResp(res));
 }
 
 async function request(endpoint, options = {}) {

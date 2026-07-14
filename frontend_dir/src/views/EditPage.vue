@@ -5,7 +5,6 @@
     import { storeToRefs }      from 'pinia';
     import { useRouter }	    from 'vue-router';
     import { asset }            from '../scripts/Helper/CompUtils';
-    import { api }              from '../router/api/client'
 
     const   authStore = useAuthStore(),
 	        { user } = storeToRefs(authStore),
@@ -14,13 +13,14 @@
 	        	surname: '',
 	        	username: '',
 	        	nationality: '',
-                mfa: user.value.mfa
+                mfa: !!user.value.mfa
                 // preferences: 0
 	        }),
             avatarFile = ref(null),      // il File vero e proprio
             avatarPreview = ref(null),   // URL per l'anteprima
             router = useRouter(),
-            error = ref(false);
+            error = ref(false),
+            removeAvatar = ref(false);
 
     const avatarSrc = computed(() => {
         if (avatarPreview.value)
@@ -31,6 +31,7 @@
     function handleAvatarChange(event) {
         const file = event.target.files[0];
         if (!file) return;
+        if (removeAvatar.value) { removeAvatar.value = false; }
 
         // validazione base
         const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
@@ -46,35 +47,39 @@
 
         avatarFile.value = file;
 
-        // libera l'URL precedente per evitare memory leak
         if (avatarPreview.value) URL.revokeObjectURL(avatarPreview.value);
         avatarPreview.value = URL.createObjectURL(file);
     }
 
+    function handleAvatarRemove()
+    {
+        if (!user.value.image && !avatarFile.value) { return; }
+        avatarFile.value = null;
+        avatarPreview.value = asset('../assets/default.png');
+        if (user.value.image)
+            removeAvatar.value = true;
+    }
+
     async function submitForm() {
         const fd = new FormData();
-        let resp;
 
         if (formData.value.name)        { fd.append('name', formData.value.name); }
-        if (formData.value.username)    { fd.append('username', formData.value.username); }
         if (formData.value.surname)     { fd.append('surname', formData.value.surname); }
+        if (formData.value.username)    { fd.append('username', formData.value.username); }
         if (formData.value.nationality) { fd.append('nationality', formData.value.nationality); }
         if (formData.value.mfa !== user.value.mfa) { fd.append('mfa', formData.value.mfa); }
         // if (formData.value.preferences) { fd.append('preferences', formData.value.preferences); }
 
-        if (!!avatarFile.value)
-        {    
-            fd.append('avatar', avatarFile.value);
-            resp = await api.patch_m('/api/users', fd);
-        }
-        else
-            resp = await authStore.update(fd);
-
-        if (!resp) {
+        if (avatarFile.value)                       { fd.append('avatar', avatarFile.value); }
+        else if (!avatarFile.value && removeAvatar.value) { fd.append('avatar', ''); }
+        
+        const resp = await authStore.update(fd);
+        if (!resp)
+        {
             await authStore.fetchMe(true);
             await router.replace('/me');
         }
-        else		{ error.value = true; }
+        else { error.value = true; }
     }
 </script>
 
@@ -94,13 +99,16 @@
                             <p class="text-white text-xl leading-none">+</p>
                         </label>
                     </div>
-                    <RouterLink to="/me/edit/pwd" class="mx-auto mt-80">
+                    <button type="button" class="mx-auto" @click="handleAvatarRemove">
+                        <u><a class="text-sm cursor-pointer text-[#882a2a] hover:text-[#af3d3d] active:text-[#d1aaaa]">Elimina avatar</a></u>
+                    </button>
+                    <RouterLink to="/me/edit/pwd" class="mx-auto mt-78">
                         <u><a class="text-sm cursor-pointer text-[#882a2a] hover:text-[#af3d3d] active:text-[#d1aaaa]">Cambia password</a></u>
                     </RouterLink>
                     <input id="submit" class="cursor-pointer w-[90%] mt-auto mb-6 self-center p-3 
                         text-base bg-[#882a2a] rounded-[7px] text-white hover:bg-linear-to-t from-[#882a2a] to-[#af3d3d]"
-                        v-bind:class="{'pointer-events-none grayscale': !formData.name && !formData.surname && !formData.username && !formData.nationality && !avatarFile && formData.mfa === user.mfa ,
-						    'pointer-events-auto grayscale-0': formData.name || formData.surname || formData.username || formData.nationality || avatarFile || formData.mfa !== user.mfa}"
+                        v-bind:class="{'pointer-events-none grayscale': !formData.name && !formData.surname && !formData.username && !formData.nationality && (!avatarFile && !removeAvatar) && formData.mfa === user.mfa ,
+						    'pointer-events-auto grayscale-0': formData.name || formData.surname || formData.username || formData.nationality || avatarFile || (!avatarFile && removeAvatar) || formData.mfa !== user.mfa}"
 			        	type="submit" value="Salva le modifiche">
                 </div>
                 <div class="flex flex-col p-2 m-4 ml-2 text-white bg-[#201e1c] rounded-3xl border border-[#4e4e4e8c] w-[110vh]">
@@ -199,7 +207,7 @@
                             </div>
                             <div class="flex w-sm mb-3 p-2.5 justify-self-center">
                                 <label class="inline-flex items-center me-5 cursor-pointer">
-                                  <input type="checkbox" class="sr-only peer" :checked="formData.mfa" v-model="formData.mfa">
+                                  <input type="checkbox" class="sr-only peer" v-model="formData.mfa">
                                   <span class="select-none me-3 text-sm font-medium text-heading">Disattivato</span>
                                   <div class="relative w-9 h-5 bg-neutral-quaternary rounded-full bg-[#0c0c0b]
                                         peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:inset-s-0.5 after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#882a2a]"></div>

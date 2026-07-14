@@ -150,40 +150,13 @@ backend   | ssa boostata di un pedone e clicchi su un'altro pezzo
 	✓	refactor pagina di gioco, pulsanti con tipi di partite, creazione stanze, sfida amici
 	✓	websocket per la partita [LEO]
 	✓	test login e resgiter con OTP e opzioni di toglierlo nelle impostazioni
-	▫	info dei profili per le partitre a 4 [MAVI]
-	▫	finire l'editing del profilo
-	▫	websocket per le notifiche
+	✓	finire l'editing del profilo
+	✓	websocket per le notifiche
+	▫	re-design della home [MAVI]
+	▫	info dei profili per le partitre a 4
 	▫	pagina della leaderboard
-	▫	re-design della home
 	▫	update delle preferenze di colore degli utenti
 	▫	dettagli info sui match
 
 //NOTE - Testing
 	▫	nome utente in grassetto
-
-
-
-
-
-// NOTE - RIGUARDO IL SALVATAGGIO DELL'IMMAGINE DELL'AVATR
-Capisco cosa intendi, ma qui c'è un problema tecnico da chiarire prima di procedere: il browser (quindi il codice Vue/JS lato client) non può scrivere fisicamente file dentro la cartella public/ o assets/ del progetto frontend. Quella cartella, una volta buildata (es. con Vite), diventa un insieme di file statici serviti da un server web — il JS che gira nel browser dell'utente non ha alcun accesso al filesystem del server che ospita il tuo frontend.
-Quindi "salvare negli assets del frontend" da JS lato client non è fattibile, a prescindere dal backend che usi. Le uniche vie sono:
-----------------------------------------------------------------------------------
-1. Opzione A — Il backend salva il file, ma lo serve come statico (soluzione più comune)
-Il file viene comunque inviato al backend (con FormData, come nel messaggio precedente), ma il backend:
-
-Lo salva in una cartella pubblica servita staticamente (es. /public/uploads/avatars/ su Express, o storage/app/public su Laravel con symlink).
-Restituisce/salva nel DB solo il path relativo o l'URL (es. /uploads/avatars/uuid.png), non il binario.
-Il frontend usa quel path per mostrare l'immagine (esattamente come fai già con asset(user.image)).
-
-Questo probabilmente è quello che intendevate: niente blob nel database, solo un path — e infatti è già quello che ti avevo proposto, semplicemente il "salvataggio fisico" avviene sul server, non nel repo del frontend.
-----------------------------------------------------------------------------------
-2. Opzione B — Un piccolo servizio "media" separato dal backend principale
-Se per qualche motivo non volete che sia il backend principale a occuparsi degli upload, potete avere un microservizio/endpoint dedicato solo a ricevere e servire immagini (tipo un mini file-server), che il frontend chiama a parte. Il backend principale continua a salvare solo l'URL restituito da questo servizio.
-----------------------------------------------------------------------------------
-3. Opzione C — Storage esterno (S3, Cloudinary, ecc.)
-Il frontend carica il file direttamente su uno storage esterno (spesso con un URL pre-firmato generato dal backend), e poi manda solo l'URL risultante al backend per salvarlo nel DB. Niente passa "attraverso" il tuo server per il file in sé.
-
-Nessuna di queste comporta scrivere dentro la cartella del progetto Vue in produzione — sarebbe comunque sbagliato architetturalmente, perché ad ogni nuova build/deploy del frontend quella cartella verrebbe rigenerata e perderesti le immagini caricate dagli utenti.
-Che backend state usando? Così ti scrivo il codice concreto per l'opzione A, che è quella più vicina a quello che avevate in mente.
-		

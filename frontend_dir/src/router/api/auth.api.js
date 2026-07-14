@@ -18,7 +18,7 @@ export const authApi = {
 		return (resp.data.user);
 	},
 	update:		async (userData) => {
-		const resp = await api.patch('/api/users', userData); // aggiornamento delle info dello user
+		const resp = await api.patch_m('/api/users', userData); // aggiornamento delle info dello user
 		return (resp.data.user);
 	},
 	changePwd:	async (userData) => {
