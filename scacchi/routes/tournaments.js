@@ -26,6 +26,16 @@ tournamentsRouter.get('/', checkJwt, async (req, res) => {
 	}
 });
 
+tournamentsRouter.get('/:id/results',checkJwt, async (req, res) => {
+	try {
+		const results = await tournamentsQuery.getTournamentResults(req.params.id);
+		return res.status(200).json(jsonResponse.ResponseSuccess({ results }));
+	} catch (error) {
+		console.log("Error:", error);
+		return res.status(500).json(jsonResponse.ResponseError("Server error retrieving tournaments results"));
+	}
+})
+
 tournamentsRouter.get('/:id', checkJwt, async (req, res) => {
 	try {
 		const tournament = await tournamentsQuery.getTournamentById(req.params.id);
@@ -34,7 +44,7 @@ tournamentsRouter.get('/:id', checkJwt, async (req, res) => {
 		return res.status(400).json(jsonResponse.ResponseError("Tournament not found"));
 	} catch (error) {
 		console.log("Error: ", error);
-		return res.status(500).json(jsonResponse.ResponseError("Server error retrieving tournaments"));
+		return res.status(500).json(jsonResponse.ResponseError("Server error retrieving tournament by id"));
 	}
 });
 
@@ -51,6 +61,21 @@ tournamentsRouter.post('/', checkJwt, async (req, res) => {
 	}
 });
 
+tournamentsRouter.post('/addPlayers', checkJwt, async (req, res) => {
+	try {
+		const rows = await tournamentsQuery.addPlayersToTournament(req.body.id_tournament, req.body.id_users);
+		if (rows.count > 0)
+			return res.status(200).json(jsonResponse.ResponseSuccess({ "id_tournament": req.body.id_tournament, "playersAdded": rows.count }));
+		return res.status(400).json(jsonResponse.ResponseError("No players were added to tournament"));
+	} catch (error) {
+		if (error.code == 'P2002')			
+			return res.status(409).json(jsonResponse.ResponseError("One or more players are already subscribed to tournament"));
+		if (error.code == 'P2003')			
+			return res.status(500).json(jsonResponse.ResponseError(`User or tournament don't exist: ${error.meta}`));
+		return res.status(500).json(jsonResponse.ResponseError(error.message));
+	}
+});
+
 tournamentsRouter.patch('/', checkJwt, async (req, res) => {
 	try {
 		const updateTournament = await tournamentsQuery.updateTournamentStatus(req.body.id_tournament, req.body.status);
@@ -62,18 +87,3 @@ tournamentsRouter.patch('/', checkJwt, async (req, res) => {
 		return res.status(500).json(jsonResponse.ResponseError("Server error updating tournament status"));
 	}
 })
-
-tournamentsRouter.post('/addPlayers', checkJwt, async (req, res) => {
-	try {
-		const rows = await tournamentsQuery.addPlayersToTournament(req.body.id_tournament, req.body.id_users);
-		if (rows.count > 0)
-			return res.status(200).json(jsonResponse.ResponseSuccess({ "id_tournament": req.body.id_tournament, "playersAdded": rows.count }));
-		return res.status(400).json(jsonResponse.ResponseError("No players were added to tournament"));
-	} catch (error) {
-		if (error.code == 'P2002')			
-			return res.status(500).json(jsonResponse.ResponseError("One or more players are already subscribed to tournament"));
-		if (error.code == 'P2003')			
-			return res.status(500).json(jsonResponse.ResponseError(`User or tournament don't exist: ${error.meta}`));
-		return res.status(500).json(jsonResponse.ResponseError(error.message));
-	}
-});
