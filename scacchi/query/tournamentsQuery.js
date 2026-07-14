@@ -1,5 +1,4 @@
 
-import { trace } from "node:console";
 import { prisma } from "../lib/prisma.js";
 import { MatchSettings } from "../Classes/Chess/match.js";
 
