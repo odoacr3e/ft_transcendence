@@ -92,6 +92,7 @@ async function gameWebSocketHandler(req, id_user, socketData)
 	let	matchId;
 	let	result;
 
+	//FIXME - reload e history vanno bene
 	if (!socketData)
 		return (console.error("ERROR: disconnected player not eliminated"), 500);
 	if (!socketData.matchData)
@@ -102,17 +103,22 @@ async function gameWebSocketHandler(req, id_user, socketData)
 	match = globals.matches.get(matchId);
 	if (!match)
 		return (socketError(socketData.socket, null, 403, "Socket: invalid match id " + matchId));
-	if (match.currentPlayer.team != socketData.matchData?.team)
-		return (socketError(socketData.socket, null, 401, "Socket: it's not your turn, dirty greedy cheeta"));
-	if (!req.type)
-		return (socketError(socketData.socket, null, 403, "Socket: missing param type in request"));
 	req = normifyRequest(match.cursor, req);
-	result = await gameHandler(match, req);
+	if (includesOneOf(req.type, "reload", "history"))
+		result = await gameInfoHandler(match, req);
+	else if (match.currentPlayer.team != socketData.matchData?.team)
+		return (socketError(socketData.socket, null, 401, "Socket: it's not your turn, dirty greedy cheeta"));
+	else if (!req.type)
+		return (socketError(socketData.socket, null, 403, "Socket: missing param type in request"));
+	else
+		result = await gameHandler(match, req);
 	if (result.log.status != 200)
 		return (socketError(socketData.socket, result));
 	console.log(req.type);
 	result = jsonParser(result);
-	socketData.socket.emit("game", result);
+	//@ts-ignore
+	result.type = req.type; //Leo per capire quando la riposta che ci mandate si tratta di una reload
+	socketData.socket.emit("game", result);	
 	socketData.socket.to(`match_${match.id}`).emit("game", result);
 	return (200);
 }

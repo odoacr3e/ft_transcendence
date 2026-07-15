@@ -3,7 +3,7 @@ import {HISTORY_FILE, HISTORY_PATH} from "../Macro/macro.js";
 import {eEvents} from "../Macro/enums.js";
 import {movePiece} from "../utils/dangerUpdate.js";
 import {includesOneOf} from "../utils/string.js";
-import {historyRestore, historyRestoreFromDb} from "../utils/history.js";
+import {historyGetMatchState, historyRestore, historyRestoreFromDb} from "../utils/history.js";
 import {error, move, boost, endTurn, init} from "../handlers/game/Game.js";
 import {Result} from "../handlers/game/utils.js";
 import {globals} from "../Classes/Globals/globals.js";
@@ -19,7 +19,6 @@ import {render, boardStringify} from "./render.js";
 import readline from "node:readline";
 import { makeTransfiguration } from "../handlers/game/transfiguration.js";
 import { cmd } from "./enumsTest.js";
-import { MatchSettings } from "../Classes/Chess/match.js";
 
 /** @typedef {import("../Classes/Chess/match.js").Match} Match*/
 
@@ -48,6 +47,12 @@ function mainTerm()
 	return (match);
 }
 
+// console.log(await prisma.matches.findMany());
+// await historyGetMatchState({matchId: 235, moveId: 2});
+// await historyGetMatchState({matchId: 235, moveId: 1});
+// await historyGetMatchState({matchId: 235, moveId: 0});
+// await historyGetMatchState({matchId: 235, moveId: -1});
+// process.exit();
 let match = mainTerm();
 let	helpBool = true;
 let	mutex = false;

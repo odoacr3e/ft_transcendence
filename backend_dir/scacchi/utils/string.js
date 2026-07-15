@@ -41,7 +41,7 @@ function strCount(haystack, needle)
 	i = 0;
 	while (i != haystack.length)
 	{
-		if (haystack.slice(i, needleLen + 1) == needle)
+		if (haystack.slice(i, i + needleLen) == needle)
 			count++;
 		i++;
 	}
