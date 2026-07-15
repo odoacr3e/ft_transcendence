@@ -20,10 +20,9 @@ const getUserById = query.usersQuery.getUserById;
 /**
  * 
  * @param {dbUser} user
- * @param {Map<string, Socket>} clientMap 
  * @param {MatchMakingOpt} options
  *///@ts-ignore
-export async function MatchMaking(user, clientMap, options={})
+export async function MatchMaking(user, options={})
 {
 	let queue;
 	let	queueNode;

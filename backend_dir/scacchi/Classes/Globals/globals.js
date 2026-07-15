@@ -133,7 +133,7 @@ class Globals
 	}
 	/**
 	 * 
-	 * @param {string} matchId 
+	 * @param {string | undefined} matchId 
 	 * @param {string} playerTeam 
 	 */
 	DeletePlayer(matchId, playerTeam)
@@ -143,6 +143,8 @@ class Globals
 		let	player;
 		let	result;
 
+		if (!matchId)
+			return (null);
 		match = this.matches.get(matchId);
 		if (!match)
 			return (null);//@ts-ignore
