@@ -63,14 +63,19 @@ const enumConnection =
 	PRIVATE: 'private',
 	FRIENDLY: 'friendly',
 	RANKED: 'ranked',
-	ARENA: 'arena'
+	ARENA: 'arena',
+	TOURNAMENT: 'tournament'
 };
 
 const enumSocketState =
 {
 	MATCHMAKING: "matchMaking",
 	PLAYING: "playing",
-	WATCHING: "watching"
+	WATCHING: "watching",
+	WAITING: "waiting",
+	PLAYING_TOURNAMENT: "playing_tournament",
+	JOIN_TOURNAMENT: "join_tournament",
+	NAVIGATING: "navigating"
 };
 
 const enumInitNames = 

@@ -85,6 +85,19 @@ export async function getTournamentById(id_tournament) {
 	});
 }
 
+/** @param {string} name*/
+export async function checkTournamentName(name) {
+	const tournament = await prisma.tournaments.findUnique({
+		select: {
+			id_tournament: true
+		},
+		where: { name: String(name) }
+	});
+	if (!tournament)
+		return (false);
+	return (true);
+}
+
 // NOTE: creazione nuovo torneo
 export async function createTournament(name, id_creator) {
 	const tournament = await prisma.tournaments.create({

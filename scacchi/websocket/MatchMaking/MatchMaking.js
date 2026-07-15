@@ -6,11 +6,12 @@ import { init } 							from "../../handlers/game/init.js";
 import { render } 							from "../../test/render.js";
 import { query } 							from "../../lib/query.js";
 import { responseFormatter }				from "../../utils/response.js";
+
 const getUserById = query.usersQuery.getUserById;
 
 /** @typedef {import("../../Classes/Chess/player.js").Player} Player*/
 /** @typedef {import("../../Classes/endPoint/result.js").Result} Result*/
-/** @typedef {{socket: *, allowedBool: boolean, state?: string, reconnectBool?: boolean, matchData?: Player}} Socket */
+/** @typedef {import("../../Classes/Globals/socketInfo.js")} Socket */
 /** @typedef {import("../../Classes/endPoint/matchInit.js").matchMakingOpt} MatchMakingOpt*/
 /** @typedef {{id_user: string, points: number}} dbUser*/
 /** @typedef {import("../../Classes/Globals/Queue.js").Queue} Queue*/
@@ -29,7 +30,7 @@ export async function MatchMaking(user, clientMap, options={})
 	let	socketData;
 
 	console.log(user);
-	socketData = clientMap.get(user.id_user);
+	socketData = globals.clientMap.get(user.id_user);
 	if (!socketData)
 		throw (`user id ${user.id_user} does not exist`);
 	socketData.reconnectBool = false;
@@ -43,7 +44,7 @@ export async function MatchMaking(user, clientMap, options={})
 		return createMatch(queue, queueNode);
 	queue.AddNode(user, options);
 	findMatch(queue, user);
-	console.log(`user in queue ${options.roomType}:`);
+	console.log(`user in queue ${options?.roomType}:`);
 	console.log(queue);
 }
 
@@ -152,7 +153,7 @@ async function bindPlayersToMatch(match, queueNode, result)
 		match.currentPlayer.id = userId;
 		dbTable = await getUserById(userId);
 		if (!dbTable)
-			throw (`bindPlayersToMatch: cannot get user ${userId} from db`);
+			throw (`bindPlayersToMatch: cannot get user ${userId} from db`);//@ts-ignore
 		match.currentPlayer.dbTable = dbTable;//@ts-ignore
 		startTeam = match.settings?.players[match.currentPlayer.team];
 		match.users.push({id_user: userId, outcome: "Lose", startTeam: null, team: match.currentPlayer.team});

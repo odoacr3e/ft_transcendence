@@ -1,15 +1,17 @@
 // @ts-check
 
-import {Match} from "../Chess/match.js";
-import {Queue} from "./Queue.js";
-import {DEBUG} from "../../Macro/macro.js";
-import {render} from "../../test/render.js";
+import { Match } from "../Chess/match.js";
+import { Queue } from "./Queue.js";
+import { Room } from "./room.js";
+import { DEBUG } from "../../Macro/macro.js";
+import { render } from "../../test/render.js";
 import { enumConnection } from "../../Macro/enums.js";
+import { Result } from "../endPoint/result.js";
+import { SocketInfo } from "./socketInfo.js";
 
-/** @typedef {import("../endPoint/result.js").Result} Result*/
 /** @typedef {import("../Chess/chessBoard.js").ChessBoard} ChessBoard*/
 /** @typedef {import("../Chess/player.js").Player} Player*/
-/** @typedef {{socket: *, allowedBool: boolean, state?: string, reconnectBool?: boolean, matchData?: Player}} Socket */
+/** @typedef {import("./socketInfo.js").SocketInfo} Socket*/
 /** @typedef {string} matchId*/
 /** @typedef {string} stringifyBoard*/
 
@@ -31,8 +33,10 @@ class Globals
 		this.rankedQueue = new Queue(enumConnection.RANKED);
 		/** @type {Queue} */
 		this.friendlyQueue = new Queue(enumConnection.FRIENDLY);
-		/** @type {Queue} */
-		this.arenaQueue = new Queue(enumConnection.ARENA);
+		// /** @type {Queue} */
+		// this.arenaQueue = new Queue(enumConnection.ARENA);
+		/** @type {Map<string | undefined, Room>} */
+		this.rooms = new Map();
 		/** @type {Map<string, NodeJS.Timeout>} */
 		this.timers = new Map();
 		this.lastMatchId = TEST_MATCH;
@@ -48,8 +52,8 @@ class Globals
 				return (this.rankedQueue);
 			case (enumConnection.FRIENDLY):
 				return (this.friendlyQueue);
-			case (enumConnection.ARENA):
-				return (this.arenaQueue);
+			// case (enumConnection.ARENA):
+			// 	return (this.arenaQueue);
 			case (enumConnection.PRIVATE):
 				throw (`GetQueue: roomType ${roomType} invalid for matchmaking`);
 			default:
@@ -71,14 +75,14 @@ class Globals
 			throw ("FindQueue: please give an empty object as second parameter.");
 		queueNodeArray.push(this.rankedQueue.get(userId));
 		queueNodeArray.push(this.friendlyQueue.get(userId));
-		queueNodeArray.push(this.arenaQueue.get(userId));
+		// queueNodeArray.push(this.arenaQueue.get(userId));
 		console.log(this.friendlyQueue);
 		if (queueNodeArray[0])
 			queue = this.rankedQueue;
 		else if (queueNodeArray[1])
 			queue = this.friendlyQueue;
-		else if (queueNodeArray[2])
-			queue = this.arenaQueue;
+		// else if (queueNodeArray[2])
+		// 	queue = this.arenaQueue;
 		else
 			throw ("FindQueue: user " + userId + " is not in any queue");
 		queueNode = queue.get(userId);
@@ -94,7 +98,7 @@ class Globals
 	{
 		this.friendlyQueue.DelNode(userId, resetTimerBool);
 		this.rankedQueue.DelNode(userId, resetTimerBool);
-		this.arenaQueue.DelNode(userId, resetTimerBool);
+		// this.arenaQueue.DelNode(userId, resetTimerBool);
 	}
 	/** @param {string} timerId */
 	ClearTimer(timerId)
@@ -155,6 +159,23 @@ class Globals
 		if (match.playerNum <= 1)
 			return (match.CheckMate(null)); 
 		return (result);
+	}
+	/** 
+	 * 
+	 * @param {SocketInfo} socketInfo
+	 * @param {string} idUser
+	 * */
+	LeaveRoom(socketInfo, idUser)
+	{
+		let	room;
+
+		room = this.rooms.get(socketInfo.roomData?.cryptId);
+		if (!room)
+			return ;
+		socketInfo.socket.leave(room.id);
+		if (room.players.delete(idUser) == true)
+			return (new Result().Success());
+		return (new Result().Error('User not in this room', 400));
 	}
 }
 
