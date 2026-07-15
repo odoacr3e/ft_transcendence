@@ -9,7 +9,7 @@ import { announceMeOnline } from "./onlineStatus.js";
 import {enumConnection, eMatchPresets, enumSocketState} from "../Macro/enums.js";
 import { includesOneOf } from "../utils/string.js";
 import { MatchMaking } from "./MatchMaking/MatchMaking.js";
-import { DEBUG_WEBSOCKETS, MATCH_RECONNECT_TIMER, SOCKET_RECONNECT_TIMER } from "../Macro/macro.js";
+import { DEBUG_WEBSOCKETS, MATCH_RECONNECT_TIMER, SOCKET_RECONNECT_TIMER, TOURNAMENT_WAIT_TIMER} from "../Macro/macro.js";
 import { gameWebSocketHandler, init } from "../handlers/game/Game.js";
 import { responseFormatter } from "../utils/response.js";
 import { Result } from "../Classes/endPoint/result.js";
@@ -17,6 +17,7 @@ import { historyGetMatchState, historyRestoreFromDb } from "../utils/history.js"
 import { type } from "node:os";
 import { Room } from "../Classes/Globals/room.js";
 import { checkTournamentName } from "../query/tournamentsQuery.js";
+import { SocketInfo } from "../Classes/Globals/socketInfo.js";
 
 /** @typedef {import("../Classes/Globals/socketInfo.js").SocketInfo} Socket */
 
@@ -93,7 +94,7 @@ sockio.on('connection', async (socket) =>
 			return ;
 		}
 		if (includesOneOf(options.roomType, enumConnection.FRIENDLY, enumConnection.RANKED, enumConnection.ARENA))
-			MatchMaking(user, clientMap, options);
+			MatchMaking(user, options);
 		else
 			throw ("stanze non implementate");
 	});
@@ -129,7 +130,7 @@ sockio.on('connection', async (socket) =>
 			result = historyGetMatchState(req);
 		socket.emit("replay_game", result);
 		if (typeof(callback) == "function")
-			callback(result.log);
+			callback(result?.log);
 	});
 
 	socket.on('create_tournament', async (/** @type {{name: string, maxPlayers: number}}*/req, callback) => 
@@ -139,26 +140,27 @@ sockio.on('connection', async (socket) =>
 
 		try
 		{
-			if (req.preset != eMatchPresets.ClassicTwoPlayers)
-				throw (`create_tournament: wrong match preset ${req.preset}, not implemented yet...stay tuned for updates`);
+			socketData = clientMap.get(user.id_user);
+			if (!socketData)
+				throw (`create_tournament: socketData is empty`);
 			if (isBusy(user.id_user) == true)
 				result = new Result().Error("You are already doing something", 400);
-			else if (await checkTournamentName(name) == true)
+			else if (await checkTournamentName(req?.name) == true)
 				result = new Result().Error(`Tournament already exists`, 409);
 			else
 			{
-				room = new Room(user.id_user, req?.maxPlayers, name);
+				room = new Room(user.id_user, req?.maxPlayers, req?.name);
 				globals.rooms.set(room.cryptId, room);
 				socket.join(room.id);
 				if (socketData)
 					socketData.state = enumSocketState.JOIN_TOURNAMENT;
-				result = new Result().Success();
+				result = new Result().Success();//@ts-ignore
 				result.tournament_link = room.cryptId;
 			}
 		}
 		catch (error)
 		{
-			result = new Result().Error(error, 500);
+			result = new Result().Error(String(error), 500);
 		}
 		socket.emit('create_tournament', result);
 		if (typeof(callback) == "function")
@@ -196,13 +198,14 @@ sockio.on('connection', async (socket) =>
 	{
 		let	result;
 
-		result = globals.LeaveRoom(socketData, user.id_user)
-		roomMessage(socketData.matchData?.cryptId, result);
 		socketData = clientMap.get(user.id_user);
-			if (socketData)
-				socketData.state = enumSocketState.NAVIGATING;
+		if (!socketData)
+			throw (`leave_tournament: socketData is empty`);
+		socketData.state = enumSocketState.NAVIGATING;
+		result = globals.LeaveRoom(socketData, user.id_user)
+		roomMessage(socketData.roomData?.cryptId, 'leave_tournament', result);
 		if (typeof(callback) == "function")
-			callback(result.log);
+			callback(result?.log);
 	});
 
 	socket.on('disconnect', async () => {
@@ -219,16 +222,16 @@ sockio.on('connection', async (socket) =>
 
 			socketData = globals.clientMap.get(user.id_user);
 			if (!socketData)
-				return (console.error("ERROR: invalid socket during timeout end"));
+				throw (`disconnect: socketData is empty`);
 			globals.ClearTimer(user.id_user);
 			socket.removeAllListeners();
 			socket.disconnect();
 			console.log(`User with id ${user.id_user} disconnected`);
 			globals.RemoveFromAllQueues(user.id_user);
 			result = globals.DeletePlayer(socketData.matchData?.matchId, socketData.matchData?.team);
-			roomMessage(socketData.matchData?.matchId, result);
+			roomMessage(socketData.matchData?.matchId, `game`, result);
 			result = globals.LeaveRoom(socketData, user.id_user);
-			roomMessage(socketData.roomData?.id, result);
+			roomMessage(socketData.roomData?.id, "leave_room", result);
 			clientMap.delete(user.id_user);
 			for (const id of friendsId)
 			{
@@ -258,6 +261,7 @@ async function firstConnection(sockio, user, socket, friendsId)
  * @param {*} sockio 
  * @param {*} dbUser 
  * @param {Socket} socketData 
+ * @param {*} newSocket 
  */
 function handleReconnect(sockio, dbUser, socketData, newSocket)
 {
@@ -268,7 +272,7 @@ function handleReconnect(sockio, dbUser, socketData, newSocket)
 		socketData.socket.disconnect();
 	socketData.socket = newSocket;
 	if (socketData.state == enumSocketState.MATCHMAKING)
-		return (MatchMaking(dbUser, clientMap));
+		return (MatchMaking(dbUser));
 	else if (socketData.state == enumSocketState.PLAYING)
 	{
 		if (!socketData.matchData)
@@ -289,23 +293,27 @@ function getReconnectTime(state)
 	return (SOCKET_RECONNECT_TIMER);
 }
 
+/** @param {string} userId */
 function isBusy(userId)
 {
 	let	socketInfo = globals.clientMap.get(userId);
 
 	if (!socketInfo)
 		return (false);
+	if (socketInfo.state != enumSocketState.NAVIGATING)
+		console.log("you are already doing " + socketInfo.state);
 	return (socketInfo.state != enumSocketState.NAVIGATING);
 }
 
 /**
  * 
- * @param {string} roomName 
- * @param {Result} result 
+ * @param {string | undefined} roomName 
+ * @param {string | undefined} eventType 
+ * @param {Result | null | undefined} result 
  */
-function roomMessage(roomName, result)
+function roomMessage(roomName, eventType, result)
 {
-	if (!roomName || !result)
+	if (!roomName || !eventType || !result)
 		return ;
-	sockio.to(roomName, responseFormatter(null, result));
+	sockio.to(roomName).emit('eventType', responseFormatter(null, result, null, null));
 }
