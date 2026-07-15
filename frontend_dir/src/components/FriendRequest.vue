@@ -1,5 +1,5 @@
 <script setup>
-    import { asset, acceptRequest, rejectRequest } from '../scripts/Helper/CompUtils';
+    import { defaultAvatar, handleAvatarError, acceptRequest, rejectRequest } from '../scripts/Helper/CompUtils';
     import { computed, ref } from 'vue';
     const prop = defineProps({
   	    	friendReq: Array,
@@ -36,7 +36,7 @@
 
                 <div class="flex my-2 justify-self-center">
                     <RouterLink :to="{ name: 'user_page', params: { username: currentRequest.friend.username } }" class="flex">
-                        <img class="size-13 rounded-full object-cover" :src="currentRequest.friend.image ? `${currentRequest.friend.image}` : asset('../assets/default.png')"/>
+                        <img class="size-13 rounded-full object-cover" :src="currentRequest.friend.image ? `${currentRequest.friend.image}` : defaultAvatar" @error="handleAvatarError"/>
                         <div class="mx-2">
                             <p class="text-white" v-if="currentRequest.friend.username.length > 12">
                                 {{ currentRequest.friend.username.slice(0, 11) + "..." }}</p>

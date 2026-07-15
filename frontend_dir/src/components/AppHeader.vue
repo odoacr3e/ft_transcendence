@@ -1,11 +1,10 @@
 <script setup>
 	import { ref, onMounted, onBeforeUnmount }	from 'vue';
-	import { useAuthStore }		from "../stores/auth.st";
-	import { rework_date }		from '../scripts/Helper/CompUtils';
-	import { storeToRefs }		from 'pinia';
-	import { useRouter }		from 'vue-router';
-	import { asset }			from '../scripts/Helper/CompUtils';
-	import { api }				from '../router/api/client';
+	import { rework_date, defaultAvatar, handleAvatarError }	from '../scripts/Helper/CompUtils';
+	import { useAuthStore }	from "../stores/auth.st";
+	import { storeToRefs }	from 'pinia';
+	import { useRouter }	from 'vue-router';
+	import { api }			from '../router/api/client';
 
 	defineOptions({ inheritAttrs: false });
 
@@ -161,8 +160,7 @@
 					aria-haspopup="true">
 					<h2 class="text-white text-lg place-self-center mr-2">{{ user.username }}</h2>
 					<img
-						:src="user.image ? `${user.image}` : asset('../assets/default.png')"
-						alt=""
+						:src="user.image ? `${user.image}` : defaultAvatar" @error="handleAvatarError"
 						class="size-12 rounded-full place-self-center mr-1 object-cover">
 					<svg
 						class="size-4 text-white transition-transform duration-200"

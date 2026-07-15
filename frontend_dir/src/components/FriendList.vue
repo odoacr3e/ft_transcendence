@@ -2,7 +2,7 @@
     import TagTitle from './TagTitle.vue';
     import StatusOnline from './StatusOnline.vue';
     import { computed } from 'vue';
-    import { asset, rejectRequest } from '../scripts/Helper/CompUtils';
+    import { defaultAvatar, rejectRequest, handleAvatarError } from '../scripts/Helper/CompUtils';
 
     const prop = defineProps({
   	    	friendlist: Array,
@@ -17,7 +17,7 @@
         <div v-for="(besties, index) in visibleFriendlist" :key="besties.friend.id_user">
             <RouterLink :to="{ name: 'user_page', params: { username: besties.friend.username } }">
                 <div class="flex my-3 ml-2 relative">
-                    <img class="size-13 rounded-full object-cover" :src="besties.friend.image ? `${besties.friend.image}` : asset('../assets/default.png')"/>
+                    <img class="size-13 rounded-full object-cover" :src="besties.friend.image ? `${besties.friend.image}` : defaultAvatar" @error="handleAvatarError"/>
                     <StatusOnline :user_id="besties.friend.id_user" v-if="removeF"/>
                     <div class="mx-2">
                         <p class="text-white hover:underline" v-if="besties.friend.username.length <= 15">

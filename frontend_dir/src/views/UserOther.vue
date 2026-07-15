@@ -5,10 +5,10 @@
     import StatusOnline from '../components/StatusOnline.vue';
     import FriendButton from '../components/FriendButton.vue';
     import MatchHistory from '../components/MatchHistory.vue';
+    import { defaultAvatar, handleAvatarError }    from '../scripts/Helper/CompUtils';
     import { useAuthStore } from "../stores/auth.st";
     import { storeToRefs }  from 'pinia';
     import { ref, watch }   from 'vue';
-    import { asset }        from '../scripts/Helper/CompUtils';
     import { api }          from '../router/api/client';
 
     const authStore = useAuthStore();
@@ -47,7 +47,7 @@
         <div id="wrap" class="grow">
             <div v-if="otherUser" class="flex-row z-2 bg-[#181715] rounded-3xl w-[100vh] h-[80vh]">
                 <div class="flex p-2 m-4 bg-[#201e1c] rounded-3xl border border-[#4e4e4e8c]">
-                    <img :src="otherUser.image ? `${otherUser.image}` : asset('../assets/default.png')"
+                    <img :src="otherUser.image ? `${otherUser.image}` : defaultAvatar" @error="handleAvatarError"
                             alt="" class="size-35 rounded-full place-self-start m-5 object-cover">
                     <StatusOnline v-if="user.id_user === otherUser.id_user || friends?.find((frie) => frie.friend.id_user === user.id_user && frie.friend_status !== 'pending')"
                         :user_id="otherUser.id_user" class="size-6 ml-31 mt-31"/>

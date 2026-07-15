@@ -1,10 +1,10 @@
 <script setup>
     import AppHeader from '../components/AppHeader.vue';
+    import { defaultAvatar, handleAvatarError }    from '../scripts/Helper/CompUtils';
     import { ref, computed }	from 'vue';
     import { useAuthStore }     from "../stores/auth.st";
     import { storeToRefs }      from 'pinia';
     import { useRouter }	    from 'vue-router';
-    import { asset }            from '../scripts/Helper/CompUtils';
 
     const   authStore = useAuthStore(),
 	        { user } = storeToRefs(authStore),
@@ -26,7 +26,7 @@
     const avatarSrc = computed(() => {
         if (avatarPreview.value)
             return avatarPreview.value;
-        return user.value.image ? user.value.image : asset('../assets/default.png');
+        return user.value.image ? user.value.image : defaultAvatar;
     });
 
     function handleAvatarChange(event) {
@@ -59,12 +59,12 @@
         if (avatarFile.value || formData.value.preset)
         {
             formData.value.preset = '';
-            avatarPreview.value = user.value.image ? user.value.image : asset('../assets/default.png');
+            avatarPreview.value = user.value.image ? user.value.image : defaultAvatar;
         }
         else
         {
             if (user.value.image) { removeAvatar.value = true; }
-            avatarPreview.value = asset('../assets/default.png');
+            avatarPreview.value = defaultAvatar;
         }
         avatarFile.value = null;
     }
@@ -103,7 +103,7 @@
             <form @submit.prevent="submitForm" class="flex z-2 bg-[#181715] rounded-3xl w-[140vh] h-[80vh]">
                 <div class="flex flex-col p-2 m-4 mr-2 rounded-3xl border border-[#4e4e4e8c] w-[30vh]">
                     <div class="cursr-pointer relative group m-5 mb-1 rounded-full overflow-hidden">
-                        <img :src="avatarSrc" alt="" class="size-50 rounded-full object-cover">
+                        <img :src="avatarSrc" @error="handleAvatarError" alt="" class="size-50 rounded-full object-cover">
                         <input id="avatar-input" type="file" accept="image/png, image/jpeg, image/webp"
                             class="hidden" @change="handleAvatarChange">
                         <label for="avatar-input" class="absolute inset-0 size-50 flex flex-col items-center justify-center rounded-full

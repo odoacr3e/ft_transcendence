@@ -1,9 +1,10 @@
 <script setup>
 	import { DOMPlayer, localBoard, localInfo }	from '@/scripts/Data/Variables';
-	import { useAbility, sendEndTurn }						from '@/scripts/Events/utils/GlobalUtils';
-	import { computed }										from 'vue';
-	import	TimerClock										from "./TimerClock.vue"
-	import	CapturedPieces									from "./CapturedPieces.vue"
+	import { useAbility, sendEndTurn }			from '@/scripts/Events/utils/GlobalUtils';
+	import { defaultAvatar, handleAvatarError }	from '../scripts/Helper/CompUtils';
+	import { computed }							from 'vue';
+	import	TimerClock							from "./TimerClock.vue"
+	import	CapturedPieces						from "./CapturedPieces.vue"
 
 	const prop = defineProps({
   		p: Number,
@@ -24,7 +25,7 @@
 <template>
 	<div class="wrap"
 		v-bind:class="{'rounded-t-md mb-1':up, 'rounded-b-md mt-1':down}">
-		<img :src="player.image ? `${player.image}` : asset('../assets/default.png')"
+		<img :src="player.image ? `${player.image}` : defaultAvatar" @error="handleAvatarError"
 				alt="User Icon" :draggable="false" class="size-18.75 shrink-0 object-cover"
 			v-bind:class="{'rounded-tl-md':up, 'rounded-bl-md':down}">
 

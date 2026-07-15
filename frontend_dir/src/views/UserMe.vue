@@ -5,10 +5,10 @@
     import MatchHistory     from '../components/MatchHistory.vue';
     import FriendRequest    from '../components/FriendRequest.vue';
     import { ref, onMounted }   from 'vue';
+    import { defaultAvatar, handleAvatarError }    from '../scripts/Helper/CompUtils';
     import { useAuthStore }     from "../stores/auth.st";
     import { storeToRefs }      from 'pinia';
     import { authApi }          from '../router/api/auth.api';
-    import { asset }            from '../scripts/Helper/CompUtils';
 
 	const friends = ref(null), matches = ref(null), fReq = ref([]);
     const authStore = useAuthStore();
@@ -31,7 +31,7 @@
         <div id="wrap" class="grow">
             <div class="flex-row z-2 bg-[#181715] rounded-3xl w-[100vh] h-[80vh]">
                 <div class="flex p-2 m-4 bg-[#201e1c] rounded-3xl border border-[#4e4e4e8c]">
-                    <img :src="user.image ? `${user.image}` : asset('../assets/default.png')"
+                        <img :src="user.image ? `${user.image}` : defaultAvatar" @error="handleAvatarError"
                             alt="" class="size-35 rounded-full place-self-start m-5 object-cover">
                     <div>
                         <h2 class="text-white text-3xl mt-5">{{ user.username }}</h2>
