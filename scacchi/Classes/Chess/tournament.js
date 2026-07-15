@@ -2,7 +2,6 @@
 
 import { eMatchPresets } from "../../Macro/enums";
 import { rng } from "../../utils/random";
-import {compareSync, hashSync} from "bcrypt";
 
 /** @typedef {number} matchId */
 /** @typedef {number} userId */
