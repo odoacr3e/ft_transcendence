@@ -18,6 +18,7 @@ import { type } from "node:os";
 import { Room } from "../Classes/Globals/room.js";
 import { checkTournamentName } from "../query/tournamentsQuery.js";
 import { SocketInfo } from "../Classes/Globals/socketInfo.js";
+import { query } from "../lib/query.js";
 
 /** @typedef {import("../Classes/Globals/socketInfo.js").SocketInfo} Socket */
 
@@ -55,6 +56,7 @@ sockio.engine.use(async (req, res, next) => {
 		console.log("error: ", error);
 		return next(new Error("User not authorized"));
 	}
+	req.user = await query.usersQuery.getUserById(req.user.id_user);
 	next();
 });
 
