@@ -35,7 +35,7 @@ export async function sendToBackend(fromId, toId, flag)
 	}
 }
 
-export async function requestToBack(fromSquare, toSquare)
+export async function requestToBack(fromSquare, toSquare, giveUp)
 {
 	const auth = useAuthStore();
 	let type;
@@ -46,7 +46,8 @@ export async function requestToBack(fromSquare, toSquare)
 			else
 				return null;
 		})();
-
+	if (giveUp === "giveUp")
+		{type = "giveup"; fromSquare = ""; toSquare = ""; }
 	if (fromSquare === null && toSquare === null && localInfo.secondTurn)
 		{type = "endturn"; fromSquare = ""; toSquare = ""; }
 	else if (fromSquare && toSquare === null)
@@ -55,36 +56,17 @@ export async function requestToBack(fromSquare, toSquare)
 		{type = "trans"; fromSquare = localInfo.goatId; localInfo.goatId = null; }
 	else if (fromSquare && toSquare && ((localInfo.secondMove && localInfo.secondTurn) || localBoard.get(fromSquare).useAbilityBool))
 		{type = "moveboost";}
-	else {type = "move"; }
+	else {type = "move";}
 	let	timeout;
 
 	timeout = setTimeout(() => 
 		{
 			// console.log("Il backend è stato liberato");
 		}, 1000 * 1);
-	// if (type === "endturn")
-	// {
-	// 	return new Promise((resolve) => {
-	// 	let done = false;
-	// 	const giorgio = setTimeout(() => { if (!done) {done = true; resolve(false); }}, 5000);
-	// 	auth.socket.emit("game", { type: "reload", from: "", to: ""}, (result) => {
-	// 		if (done)
-	// 		{
-	// 			clearTimeout(giorgio);
-	// 			return;
-	// 		}
-	// 		clearTimeout(giorgio);
-	// 		done = true;
-	// 		console.log("SCACCHIERA");			
-	// 		console.log(result);
-	// 		resolve(result?.log.status == 200);
-	// 	});
-	// 	});
-	// }
 	return new Promise((resolve) => {
 		auth.socket.emit("game", { type, from: fromSquare, to: toSquare }, (result) => {
-			// console.log(`request: type: ${type}, from: ${fromSquare}, to:${toSquare}`)
-			// clearTimeout(timeout);
+			console.log(`request: type: ${type}, from: ${fromSquare}, to:${toSquare}`)
+			clearTimeout(timeout);
 			if (result?.log?.status === 200 && toPiece)
 				localInfo.capturedP[toPiece.team === "white" ? "black" : "white"][toPiece.type] += 1;
 			resolve(result?.log?.status === 200);
@@ -124,7 +106,7 @@ export async function requestToBack(fromSquare, toSquare)
 // 	});
 // }
 
-
+// sta funzione è una ginata colossale
 export function reloadMatch()
 {
 	console.log("Chiamata di reload!");

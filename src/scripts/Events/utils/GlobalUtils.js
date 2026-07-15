@@ -41,7 +41,7 @@ export function shopAbility()
 				if (MACRO.AUDIO)
 					new Audio("/src/assets/audios/boost.mp3").play(); 
 			}},
-			function(value) {if (!value) { console.log("Mossa non valida"); }}
+			function(value) {if (!value) { console.log("Shop non completato correttamente"); }}
 		);
 }
 
@@ -57,7 +57,22 @@ export async function sendEndTurn()
 			new Audio("/src/assets/audios/endTurn.mp3").play();
 	}
 	else
-		console.log("Mossa non valida");
+		console.log("End turn non mandato correttamente");
+}
+
+export async function sendGiveUp()
+{
+	let response;
+
+	response = await requestToBack(null, null, 'giveup');
+	if (response)
+	{
+		clearHighlight();
+		if (MACRO.AUDIO)
+			new Audio("vedemmu");
+	}
+	else
+		console.log("Give up non mandato correttamente")
 }
 
 export function upgradeBastard(newType)

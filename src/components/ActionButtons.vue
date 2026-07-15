@@ -1,7 +1,7 @@
 <script setup>
-	import { localInfo, localBoard, localPlayers }	from '@/scripts/Data/Variables.js';
-	import { useAbility, sendEndTurn, shopAbility }	from '@/scripts/Events/utils/GlobalUtils';
-	import { computed } 							from 'vue'
+	import { localInfo, localBoard, localPlayers }				from '@/scripts/Data/Variables.js';
+	import { useAbility, sendEndTurn, shopAbility, sendGiveUp }	from '@/scripts/Events/utils/GlobalUtils';
+	import { computed } 										from 'vue'
 
 	const localPlayer	= computed(() => [...localPlayers.values()].find(p => p.team === localInfo.myTeam) ?? null);
 	const myTurn		= computed(() => localPlayer.value?.isPlaying === true);
@@ -20,27 +20,33 @@
 									&& localPlayer.value?.nPoints >= Piece.value?.price
 									&& localInfo.secondTurn);
 	const canEndTurn = computed(() => myTurn.value && localInfo.secondTurn);
+	const canGiveUp = computed(() => myTurn.value)
 </script>
 
 <template>
 	<div class="column" v-if="localPlayer">
 		<button class="action bg-amber-300 hover:bg-orange-400"
-				v-bind:class="canUseAbility ? 'on' : 'off'"
-				@click="useAbility()">
-				<img src="../assets/boost.png" alt="" :draggable="false" class="size-5">
-				<b>Use Ability!</b>
+			v-bind:class="canUseAbility ? 'on' : 'off'"
+			@click="useAbility()">
+			<img src="../assets/boost.png" alt="" :draggable="false" class="size-5">
+			<b>Use Ability!</b>
 		</button>
 		<button class="action bg-emerald-400 hover:bg-emerald-500 flex-col !gap-0"
-				v-bind:class="canBoost ? 'on' : 'off'"
-				@click="shopAbility()">
-				<b>Boost your Piece!</b>
-				<p style="white-space: pre-line" class="text-xs"><i>{{ localInfo.priceSelected }}</i></p>
+			v-bind:class="canBoost ? 'on' : 'off'"
+			@click="shopAbility()">
+			<b>Boost your Piece!</b>
+			<p style="white-space: pre-line" class="text-xs"><i>{{ localInfo.priceSelected }}</i></p>
 		</button>
 		<button class="action bg-blue-500 hover:bg-indigo-500"
-				v-bind:class="canEndTurn ? 'on' : 'off'"
-				@click="sendEndTurn()">
-				<img src="../assets/endturn.png" alt="" :draggable="false" class="size-5">
-				<b>End Turn</b>
+			v-bind:class="canEndTurn ? 'on' : 'off'"
+			@click="sendEndTurn()">
+			<img src="../assets/endturn.png" alt="" :draggable="false" class="size-5">
+			<b>End Turn!</b>
+		</button>
+		<button class="action bg-grey-500 hover:bg-indigo-100"
+			v-bind:class="canGiveUp ? 'true' : 'false'"
+			@click="sendGiveUp()">
+			<b>Give Up!</b>
 		</button>
 	</div>
 </template>

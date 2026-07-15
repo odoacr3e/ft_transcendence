@@ -85,36 +85,11 @@
 							v-bind:class="{'w-3.75 h-3.75': style === '1v1', 'w-2.5 h-2.5': style === '14x14x4'}"></span>
                     <span v-if="square.boostedHighlight && !square.piece" class="boostedHighlight"
 							v-bind:class="{'w-3.75 h-3.75': style === '1v1', 'w-2.5 h-2.5': style === '14x14x4'}"></span>
-					<!-- <span v-if="square.piece && square.piece.team === localInfo.myTeam && square.id === localInfo.clickedId && localInfo.clickedId === localInfo.lastClickedId"
-							class="teamSelectedBackground"></span> -->
 					<span v-if="localInfo.lastMovesSquares.has(square.id)"
 							class="lastMoveOverlay"></span>
                 </div>
             </div>
-			<div v-if="localInfo.goatId" id="choseMenu" class="flex absolute pointer-events-none size-75 z-14 gap-0.5 p-1.5 
-					border-2 border-[#1b0000] rounded-md bg-[#fafafa] max-h-[10%]">
-				<button @click="upgradeBastard('Champion')" class="rounded-md p-1 hover:bg-[#a52a2a]">
-					<img :src="IMG_PATHS[currP.team + 'Champion']" alt="Champion" :draggable="false">
-				</button>
-				<button @click="upgradeBastard('Jester')" class="rounded-md p-1 hover:bg-[#a52a2a]">
-					<img :src="IMG_PATHS[currP.team + 'Jester']" alt="Jester" :draggable="false">
-				</button>
-				<button @click="upgradeBastard('Minotaurus')" class="rounded-md p-1 hover:bg-[#a52a2a]">
-					<img :src="IMG_PATHS[currP.team + 'Minotaurus']" alt="Minotaurus" :draggable="false">
-				</button>
-				<button @click="upgradeBastard('Valkirya')" class="rounded-md p-1 hover:bg-[#a52a2a]">
-					<img :src="IMG_PATHS[currP.team + 'Valkirya']" alt="Valkirya" :draggable="false">
-				</button>
-			</div>
         </div>
-		<!-- <div id="shop">
-			<img src="../assets/Frame1.png" alt="" class="shrink-0 size-35 absolute bottom-[80%] z-12">
-			<button class="side-button bg-amber-300 text-sm p-2.5 rounded-2xl cursor-pointer z-13 w-45"
-					@click="shopAbility()">
-					<b>Boost your Pieces!</b><br>
-					<p style="white-space: pre-line"><i>{{ localInfo.priceSelected }}</i></p>
-			</button>
-		</div> -->
     </div>
 </template>
 

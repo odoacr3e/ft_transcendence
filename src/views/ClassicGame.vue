@@ -4,6 +4,7 @@
 	import { reloadMatch }								from '@/scripts/Events/BackLink.js';
 	import PlayerInfo               					from '../components/PlayerInfo.vue';
 	import ChessBoard               					from '../components/ChessBoard.vue';
+	import ActionButtons								from '../components/ActionButtons.vue';
 	import AppHeader                					from '../components/AppHeader.vue';
 	import router 										from '@/router';
 
@@ -44,6 +45,9 @@
         <AppHeader class="z-11"/>
         <div id="wrap" class="grow">
             <div class="flex z-2 bg-[#181715] rounded-3xl">
+                <div class="flex items-center px-4" v-if="ready">
+                    <ActionButtons/>
+                </div>
                 <div class="p-6 bg-[#201e1c] rounded-l-3xl border-r border-[#4e4e4e8c]">
                   <div v-if="ready">
                     <PlayerInfo :p="topP" pos="top"/>

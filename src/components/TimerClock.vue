@@ -1,5 +1,5 @@
 <script setup>
-	import { computed, ref, watch, onMounted, onUnmounted } from 'vue'
+	import { computed, ref, watch, onUnmounted } from 'vue'
 
 	const props = defineProps({
 		millis: { type: Number, default: 0 },
@@ -11,7 +11,6 @@
 			min = computed(() => Math.floor(countDown.value / 60000)),
 			sec = computed(() => Math.floor((countDown.value % 60000) / 1000))
 	let		timeoutId = null,
-			firstTurn = true,
 			running = false;
 
 	function stopTimer() {
@@ -45,14 +44,15 @@
 	});
 
 	watch(() => props.go, (val) => {
-		if (val) { if (!running) { running = true; countDownTimer(); } }
-		else { if (running) { running = false; stopTimer(); }}
-	});
-
-	onMounted(() => {
-		if (firstTurn) { firstTurn = false; return; }
-		if (props.go) { running = true; countDownTimer(); }
-	});
+		if (val) { 
+			if (!running) 
+			{ running = true; countDownTimer(); } 
+		}
+		else { 
+			if (running) 
+			{ running = false; stopTimer(); }
+		}
+	}, { immediate: true });
 
 	onUnmounted(() => {
 		running = false;
