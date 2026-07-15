@@ -136,7 +136,7 @@ function getPlayerData(player, result, num, isPlaying)
 {
 	result[`p${num}`] =
 	{
-		name: player.dbTable?.name,
+		name: player.dbTable?.username,
 		nPoints: player.nPoints,
 		bonusPointCounter: player.bonusPointCounter,
 		nPieces: player.nPieces,

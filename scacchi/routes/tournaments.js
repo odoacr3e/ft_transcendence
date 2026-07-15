@@ -26,9 +26,9 @@ tournamentsRouter.get('/', checkJwt, async (req, res) => {
 	}
 });
 
-tournamentsRouter.get('/:id/results',checkJwt, async (req, res) => {
+tournamentsRouter.get('/:id/results', checkJwt, async (req, res) => {
 	try {
-		const results = await tournamentsQuery.getTournamentResults(req.params.id);
+		const results = await tournamentsQuery.getTournamentResults(req.user.id_user, req.params.id);
 		return res.status(200).json(jsonResponse.ResponseSuccess({ results }));
 	} catch (error) {
 		console.log("Error:", error);

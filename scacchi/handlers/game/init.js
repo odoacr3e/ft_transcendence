@@ -5,6 +5,9 @@ import {initRng} from "../../utils/random.js";
 import { CHESSBOARD_W, CHESSBOARD_H } from "../../Macro/macro.js";
 import * as creators from "../../GameLogic/createChessBoard.js";
 import { MatchSettings, matchPresets } from "../../Classes/Chess/match.js";
+import { includesOneOf, strCount } from "../../utils/string.js";
+import { enumInitTeam } from "../../Macro/enums.js";
+import { render } from "../../test/render.js";
 
 /**
  * The Map board is added to result to be sent to the client. Steps:
@@ -48,7 +51,35 @@ function init(match=null, preset=null)
 	result.status = 200;
 	// @ts-ignore
 	result.board = clientBoard(match, true);
+	render(match);
 	return (result);
 }
 
-export {init};
+/** 
+ * 
+ * @param {string} boardStr 
+ * @param {MatchSettings | null} matchSettings */
+function initFromStr(boardStr, matchSettings=null)
+{
+	let	firstLine;
+	let	boardX;
+	let	boardY;
+	let	playerNum;
+
+	if (matchSettings)
+		return (init(null, matchSettings));
+	firstLine = boardStr.substring(0, boardStr.indexOf("\n"));
+	boardX = strCount(firstLine, "|") - 1;
+	boardY = strCount(boardStr, "\n");
+	playerNum = 2;
+	if (includesOneOf(boardStr, enumInitTeam.Green, enumInitTeam.Red, enumInitTeam.Yellow))
+		playerNum = 4;
+	matchSettings = new MatchSettings();
+	matchSettings.board.heigth = boardY;
+	matchSettings.board.width = boardX;
+	matchSettings.players.number = playerNum;
+	matchSettings.board.start = boardStr;
+	return (init(null, matchSettings));
+}
+
+export {init, initFromStr};
