@@ -11,7 +11,7 @@ Al successo, lo store chiama `this.connectSocket()` (`auth.st.js:71-81`):
 - crea `this.socket = io('http://localhost:8080', { withCredentials: true })`
   (handshake autenticato via cookie JWT, validato lato server dal middleware in
   `backend/scacchi/websocket/websocket.js:31-52`);
-- registra `assignGameSocket(this.socket)` (`frontend/src/scripts/Data/SocketLink.js`)
+- registra `listenGameSocket(this.socket)` (`frontend/src/scripts/Data/SocketLink.js`)
   — da qui in poi il listener sull'evento `"game"` resta attivo per tutta la sessione;
 - registra anche `friend:online` / `friend:offline`.
 
@@ -39,7 +39,7 @@ Nessun callback/`.then` qui: la UI resta sullo spinner "Looking for opponent..."
 
 ## 5. Frontend — il listener perenne intercetta l'evento
 
-Su **entrambi** i browser, `assignGameSocket` (`SocketLink.js`) riceve `"game"`:
+Su **entrambi** i browser, `listenGameSocket` (`SocketLink.js`) riceve `"game"`:
 
 ```js
 socket.on("game", (raw) => {
@@ -87,7 +87,7 @@ fa **due emit**:
 - `socketData.socket.to('match_' + match.id).emit("game", result)` → a tutti gli
   altri nella stanza (l'avversario).
 
-Di nuovo `assignGameSocket` intercetta `"game"`: stavolta `raw.id` è `undefined`
+Di nuovo `listenGameSocket` intercetta `"game"`: stavolta `raw.id` è `undefined`
 → ramo `updateMatchState(raw)` → board reattiva aggiornata, `clearHighlight()`,
 eventuale audio. Identico per entrambi i giocatori, con lo stesso evento — è il
 motivo per cui l'avversario vede la mossa in tempo reale, senza dover ripollare.

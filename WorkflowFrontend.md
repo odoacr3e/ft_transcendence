@@ -105,30 +105,37 @@ boardConverter()
 			✓ valkirya
 			✓ campione
 			✓ re
-	✓ 	aura dei pezzi boostati visibile [LEO] 
-	✓ 	end turn, boost e useAbility triggerabili da pulsanti da tastiera [LEO]
+	✓ 	aura dei pezzi boostati visibile 
+	✓ 	end turn, boost e useAbility triggerabili da pulsanti da tastiera
 	✓ 	bottone di potenziamento clickabile solo durante il second turn 
-	▫ 	refactor di archi nel caso la board non esista
 	✓ 	non si dovrebbe poter boostare se non hai ancora mosso nessun pezzo
-	▫ 	feedback quando il re è sotto scacco, (abbiamo bisogno di una flag oppure 
-		usiamo gli enum di errore comuni)
-	✓	Far vedere che pezzo hai selezionato [LEO]
-	▫ 	quando fai hover sul bottone per boostare il pezzo sarebbe carino poter avere
-	  	una preview delle target zones rese visibili sulla scacchiera, si può fare 
-	  	una route apposta per chiedere l'update delle target zones di un pezzo specifico
+	✓	Far vedere che pezzo hai selezionato
 	✓	Si fa fatica a capire di chi è il turno attuale
 	✓	orientamento della scacchiera in base al colore dei pezzi del giocatore
 	✓	orientamento delle info del giocatore in base al giocatore
-	▫	history delle mosse durante la partita
-	▫	utilizzo websocket singolo solo per la partita diverso da websocket 
-		comunicazione server
-	▫	implementare (reload, riaccesso, chiudi e riapri la pagina di gioco) 
-		durante la partita
-	✓	avviso di quando devi fare end turn più chiaro (?)
-	▫	implementare segnali visivi relativi ai turni dei giocatori
-	✓		spostamento bottoni
 	✓	le mosse dell'avversario sono poco visibili, servirebbero delle animazioni sul
 		pezzo mosso oppure un evidenziazione sull'ulitmo pezzo mosso
+	✓	avviso di quando devi fare end turn più chiaro
+	✓	implementare reload durante la partita
+	▫	spostamento bottoni
+	▫	display del nome dei giocatori durante la partita
+	▫	Aggiungere bottone per arrendersi evento 'giveup'
+	▫	Aggiornare la pagina di testing su notion e scriverci i trace del back quando crasho
+	▫	schermata di fine partita, e aggiustamenti necessari. c'è una voce victory nella response 	
+		con il colore di chi vince o con draw, stringa
+	▫	implementare il riaccesso ad una partita in corso dopo chiusura della pagina: richiesta su 
+		evento websocket 'amiplaying', se risponde true lancio reload, sennò pace.
+	▫ 	feedback quando il re è sotto scacco, (abbiamo bisogno di una flag oppure 
+		usiamo gli enum di errore comuni) {from: coord, mid: coord, to: coord}. devo decidere un messaggio da chiedere a il team back.
+	▫ 	quando fai hover sul bottone per boostare il pezzo sarebbe carino poter avere
+	  	una preview delle target zones rese visibili sulla scacchiera, si può fare 
+	  	una route apposta per chiedere l'update delle target zones di un pezzo specifico
+	▫	implementare (reload, riaccesso, chiudi e riapri la pagina di gioco)
+		durante la partita
+	▫	history delle mosse durante la partita
+	▫	history delle partite
+	▫	implementare segnali visivi relativi ai turni dei giocatori
+	▫ 	refactor di archi nel caso la board non esista
 
 //FIXME - Bugs
 	▫	quando finisci l'esecuzione di una moyour Prisma Client (See: https://pris.ly/d/importing-client)
@@ -148,7 +155,7 @@ backend   | ssa boostata di un pedone e clicchi su un'altro pezzo
 	✓	reset della password (sia dal login page che dalla pagina utente loggato)
 	✓	dettagli info sui match
 	✓	refactor pagina di gioco, pulsanti con tipi di partite, creazione stanze, sfida amici
-	✓	websocket per la partita [LEO]
+	✓	websocket per la partita
 	✓	test login e resgiter con OTP e opzioni di toglierlo nelle impostazioni
 	▫	info dei profili per le partitre a 4 [MAVI]
 	▫	finire l'editing del profilo
@@ -187,3 +194,8 @@ Il frontend carica il file direttamente su uno storage esterno (spesso con un UR
 Nessuna di queste comporta scrivere dentro la cartella del progetto Vue in produzione — sarebbe comunque sbagliato architetturalmente, perché ad ogni nuova build/deploy del frontend quella cartella verrebbe rigenerata e perderesti le immagini caricate dagli utenti.
 Che backend state usando? Così ti scrivo il codice concreto per l'opzione A, che è quella più vicina a quello che avevate in mente.
 		
+
+//NOTE
+La api di reload funziona quando lanciata da connessione socket già stabilita
+Quando schiaccio ctrl+r sembra che la riconnessione non funzioni correttamente e magari
+distruggiamo il websocket male, magari non ci riconnettiamo bene.
