@@ -13,13 +13,13 @@ const getUserById = query.usersQuery.getUserById;
 /** @typedef {import("../../Classes/endPoint/result.js").Result} Result*/
 /** @typedef {import("../../Classes/Globals/socketInfo.js")} Socket */
 /** @typedef {import("../../Classes/endPoint/matchInit.js").matchMakingOpt} MatchMakingOpt*/
-/** @typedef {{id_user: string, points: number}} dbUser*/
 /** @typedef {import("../../Classes/Globals/Queue.js").Queue} Queue*/
 /** @typedef {import("../../Classes/Globals/Queue.js").QueueNode} QueueNode*/
+/** @typedef {import("../../Classes/Chess/player.js").dbUser} dbUser*/
 
 /**
  * 
- * @param {dbUser} user
+ * @param {import("../../Classes/Chess/player.js").dbUser} user
  * @param {MatchMakingOpt} options
  *///@ts-ignore
 export async function MatchMaking(user, options={})

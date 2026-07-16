@@ -1,9 +1,11 @@
 
 import { prisma } from "../lib/prisma.js"
 
+/** @typedef {import("../Classes/Globals/socketInfo.js").SocketInfo} SocketInfo*/
+
 /**
  * @param {import("socket.io").Server} sockio
- * @param {Map<number, string>} clientMap
+ * @param {Map<number, SocketInfo>} clientMap
  */
 export async function announceMeOnline(sockio, user, clientMap, friendsId) {
 	const friends = await prisma.friendships.findMany({

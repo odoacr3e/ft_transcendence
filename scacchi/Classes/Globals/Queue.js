@@ -5,10 +5,10 @@ import { eMatchPresets } from "../../Macro/enums.js";
 import { matchMakingOpt } from "../endPoint/matchInit.js";
 import { enumConnection } from "../../Macro/enums.js";
 import { globals } from "./globals.js";
-import { findMatch } from "../../websocket/MatchMaking/MatchMaking.js";
+import { findMatch } from "../../websocket/handlers/MatchMaking.js";
 
 /** @typedef {import("../Chess/match.js").MatchSettings} MatchSettings*/
-/** @typedef {{id_user: string, points: number}} dbUser*/
+/** @typedef {import("../Chess/player.js").dbUser} dbUser*/
 /** @typedef {{min: number, max: number, avg: number}} EloRange*/
 
 const fourPresets = [
@@ -19,7 +19,7 @@ const fourPresets = [
 /**
  * key: userId
  * val: user matchMaking node
- * @extends {Map<string, QueueNode>}
+ * @extends {Map<number, QueueNode>}
  */
 export class Queue extends Map
 {
@@ -42,7 +42,7 @@ export class Queue extends Map
 	}
 	/**
 	 *  
-	 * @param {string} id_user 
+	 * @param {number} id_user 
 	 * @param {boolean} resetTimerBool
 	 * */
 	DelNode(id_user, resetTimerBool=true)
@@ -72,13 +72,14 @@ export class Queue extends Map
 		clearTimeout(globals.timers.get(id_user));
 		clearTimeout(globals.timers.get(newLeaderId));
 		console.log("new matchMaking leader: old is", id_user, "new is", newLeaderId);
-		globals.timers.set(id_user, setTimeout(() => {
+		globals.timers.set(id_user, setTimeout(() => 
+		{//@ts-ignore
 			findMatch(this, {id_user: newLeaderId, points: node.eloRange.avg});
 		}, 5000));
 	}
 	/**
-	 * @param {string} fromId 
-	 * @param {string} toId 
+	 * @param {number} fromId 
+	 * @param {number} toId 
 	 */
 	MergeNode(fromId, toId)
 	{
@@ -138,7 +139,7 @@ export class Queue extends Map
 export class QueueNode
 {
 	/**
-	 *  @param {dbUser} user
+	 *  @param {import("../Chess/player.js").dbUser} user
 	 *  @param {matchMakingOpt} options
 	*/
 	constructor(user, options)
@@ -146,7 +147,7 @@ export class QueueNode
 		let	elo;
 
 		elo = user.points;
-		/** @type {Set<string>} */ 					this.userSet = new Set();
+		/** @type {Set<number>} */ 					this.userSet = new Set();
 		/** @type {EloRange} */						this.eloRange = {min: elo, max: elo, avg: elo};
 		/** @type {MatchSettings | null}*/			this.matchOptions = options.matchSettings ? options.matchSettings:null;
 		/** @type {string} */						this.matchType = options.matchType;

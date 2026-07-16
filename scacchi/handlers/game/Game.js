@@ -83,7 +83,7 @@ async function gameHttpHandler(req, res)
 /**
  * 
  * @param {{from: *, to: *, type: string}} req 
- * @param {string} id_user 
+ * @param {number} id_user 
  * @param {import("../../Classes/Globals/globals.js").Socket | undefined} socketData 
  */
 async function gameWebSocketHandler(req, id_user, socketData)

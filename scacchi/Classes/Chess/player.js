@@ -29,7 +29,7 @@ class Player
 		/** @type {dbUser} *///@ts-ignore
 		this.dbTable = null;
 		this.matchId = "0";
-		this.id = "0";
+		this.id = 0;
 		/** @type {number | null} */
 		this.expectedElo = null;
 		//SECTION - gameData

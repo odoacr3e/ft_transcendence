@@ -8,7 +8,7 @@ export class SocketInfo
 {
 	/**
 	 * 
-	 * @param {*} socket 
+	 * @param {import("socket.io").Socket} socket 
 	 */
 	constructor(socket)
 	{

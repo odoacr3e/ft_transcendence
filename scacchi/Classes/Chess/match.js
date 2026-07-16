@@ -38,7 +38,7 @@ class Match
 		this.blue = new Player(eTeam.Blue, this.settings);
 		this.green = new Player(eTeam.Green, this.settings);
 		this.yellow = new Player(eTeam.Yellow, this.settings);
-		/** @type {Array<{id_user: string, outcome: string, startTeam: string | null, team: string}>} */
+		/** @type {Array<{id_user: number, outcome: string, startTeam: string | null, team: string}>} */
 		this.users = [];
 		w = this.settings.board.width;
 		h = this.settings.board.heigth;

@@ -27,7 +27,7 @@ class Globals
 	{
 		/** @type {Map<string, Match>} */
 		this.matches = new Map();
-		/** @type {Map<string, Socket>} */
+		/** @type {Map<number, Socket>} */
 		this.clientMap = new Map();
 		/** @type {Queue} */
 		this.rankedQueue = new Queue(enumConnection.RANKED);
@@ -37,7 +37,7 @@ class Globals
 		// this.arenaQueue = new Queue(enumConnection.ARENA);
 		/** @type {Map<string | undefined, Room>} */
 		this.rooms = new Map();
-		/** @type {Map<string, NodeJS.Timeout>} */
+		/** @type {Map<number, NodeJS.Timeout>} */
 		this.timers = new Map();
 		this.lastMatchId = TEST_MATCH;
 		/** @type {Map<matchId, Array<stringifyBoard>>} */
@@ -62,7 +62,7 @@ class Globals
 	}
 	/** 
 	 * 
-	 * @param {string} userId
+	 * @param {number} userId
 	 * @param {*} options
 	*/
 	FindQueue(userId, options)
@@ -93,14 +93,14 @@ class Globals
 		options.matchSettings = queueNode.matchOptions;
 		return (queue);
 	}
-	/** @param {string} userId */
+	/** @param {number} userId */
 	RemoveFromAllQueues(userId, resetTimerBool=true)
 	{
 		this.friendlyQueue.DelNode(userId, resetTimerBool);
 		this.rankedQueue.DelNode(userId, resetTimerBool);
 		// this.arenaQueue.DelNode(userId, resetTimerBool);
 	}
-	/** @param {string} timerId */
+	/** @param {number} timerId */
 	ClearTimer(timerId)
 	{
 		clearTimeout(this.timers.get(timerId));
@@ -165,7 +165,7 @@ class Globals
 	/** 
 	 * 
 	 * @param {SocketInfo} socketInfo
-	 * @param {string} idUser
+	 * @param {number} idUser
 	 * */
 	LeaveRoom(socketInfo, idUser)
 	{
