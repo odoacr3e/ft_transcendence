@@ -9,8 +9,10 @@ export async function getAllUsers() {
 			surname: true,
 			username: true,
 			email: true,
+			image: true,
 			nationality: true,
 			points: true,
+			title: true,
 			preferences: {
 				select: {
 					name: true,

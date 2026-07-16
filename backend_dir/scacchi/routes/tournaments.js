@@ -26,6 +26,11 @@ tournamentsRouter.get('/', checkJwt, async (req, res) => {
 	}
 });
 
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * NOTE: check risultati torneo + partite preso tramite id
+*/
 tournamentsRouter.get('/:id/results', checkJwt, async (req, res) => {
 	try {
 		const results = await tournamentsQuery.getTournamentResults(req.user.id_user, req.params.id);
@@ -36,6 +41,11 @@ tournamentsRouter.get('/:id/results', checkJwt, async (req, res) => {
 	}
 })
 
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * NOTE: prende info torneo tramite id
+*/
 tournamentsRouter.get('/:id', checkJwt, async (req, res) => {
 	try {
 		const tournament = await tournamentsQuery.getTournamentById(req.params.id);
@@ -48,6 +58,11 @@ tournamentsRouter.get('/:id', checkJwt, async (req, res) => {
 	}
 });
 
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * NOTE: crea torneo passando nome torneo e id_user del creatore
+*/
 tournamentsRouter.post('/', checkJwt, async (req, res) => {
 	try {
 		const tournament = await tournamentsQuery.createTournament(req.body.name, req.body.id_creator);
@@ -61,6 +76,11 @@ tournamentsRouter.post('/', checkJwt, async (req, res) => {
 	}
 });
 
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * NOTE: aggiunge partecipanti (tramite array non vuoto nel body) ad un torneo passato tramite id nel body
+*/
 tournamentsRouter.post('/addPlayers', checkJwt, async (req, res) => {
 	try {
 		const rows = await tournamentsQuery.addPlayersToTournament(req.body.id_tournament, req.body.id_users);
@@ -76,6 +96,11 @@ tournamentsRouter.post('/addPlayers', checkJwt, async (req, res) => {
 	}
 });
 
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * NOTE: aggiorna status torneo
+*/
 tournamentsRouter.patch('/', checkJwt, async (req, res) => {
 	try {
 		const updateTournament = await tournamentsQuery.updateTournamentStatus(req.body.id_tournament, req.body.status);
