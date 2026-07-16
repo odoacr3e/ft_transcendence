@@ -7,6 +7,7 @@ import { globals } from "../../Classes/Globals/globals.js";
 import { Room } from "../../Classes/Globals/room.js";
 import { init } from "../../handlers/game/init.js";
 import { query } from "../../lib/query.js";
+import { eMatchPresets } from "../../Macro/enums.js";
 import { bindPlayersToMatch } from "./MatchMaking.js";
 const { tournamentsQuery } = query;
 
@@ -17,6 +18,8 @@ const { tournamentsQuery } = query;
 export async function initTournament(room)
 {
 	let tournament;
+	let	me;
+	let	opponent;
 	let i = 0;
 
 	try
@@ -24,6 +27,7 @@ export async function initTournament(room)
 		tournament = new Tournament(room.name, room.matchType, room.maxPlayers);
 		tournament.id = (await tournamentsQuery.createTournament(room.name, room.ownerId)).id_tournament;
 		await tournamentsQuery.addPlayersToTournament(tournament.id, Array.from(room.players));
+		globals.tournamentMap.set(tournament.id, tournament);
 		tournament.startUserIds = new Set(room.players);
 		tournament.userIds[tournament.round] = new Array();
 		tournament.userIds[tournament.round] = Array.from(room.players);
@@ -33,7 +37,10 @@ export async function initTournament(room)
 		console.log(tournament.userIds);
 		while (tournament.userIds[tournament.round].length != i)
 		{
-			
+			me = globals.clientMap.get(tournament.userIds[tournament.round][i]);
+			opponent = globals.clientMap.get(tournament.userIds[tournament.round][i + 1]);
+			if (!me)
+
 			i += 2;
 		}
 	}
@@ -45,22 +52,23 @@ export async function initTournament(room)
 }
 
 /*
-	1-	admin: voglio fare torneo
-	2-	e possibile creare il torneo
-	3-	prendiamo id torneo da db
-	4-	settiamo nella map tornei id torneo =>	oggetto
+	OK-	admin: voglio fare torneo
+	OK-	e possibile creare il torneo
+	OK-	prendiamo id torneo da db
+	OK-	settiamo nella map tornei id torneo =>	oggetto
 	5-	avvisiamo e diamo dati del pairing iniziale
 	6-	socketData: salvare =>	{id_torneo, me: ...}
-	7-	aspettare entrambi pronti
-	8-	appena entrambi pronti: match
+	OK-	aspettare entrambi pronti
+	OK-	appena entrambi pronti: match
 	9-	quando finisce match, aggiornare torneo
 */
 
 /**
- * @param {string} matchType 
  * @param {Set<number>} players 
+ * @param {{round: number, id: number}} tournament
+ * @param {string} matchType 
  */
-async function createMatchFromRoom(matchType, players)
+export async function createMatchTournament(players, tournament, matchType=eMatchPresets.ClassicTwoPlayers)
 {
 	let	match;
 	let	result;
@@ -68,6 +76,7 @@ async function createMatchFromRoom(matchType, players)
 
 	preset = matchType;
 	match = new Match(preset);
+	match.tournament = tournament;
 	result = init(match, preset);
 	match.settings.room.isRanked = false;
 	globals.lastMatchId = match.CreateId(players);
@@ -77,5 +86,5 @@ async function createMatchFromRoom(matchType, players)
 	await bindPlayersToMatch(match, players, result);
 	// render(match);
 	console.log("CREAZIONE MATCH: ♟️");
-	return (true);
+	return (match);
 }

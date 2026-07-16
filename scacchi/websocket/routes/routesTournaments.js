@@ -6,7 +6,7 @@ import { Room } from "../../Classes/Globals/room.js";
 import { query } from "../../lib/query.js";
 import { enumSocketState } from "../../Macro/enums.js";
 import { isBusy, roomMessage } from "../utils.js";
-import { initTournament } from "../handlers/tournament.js";
+import { createMatchTournament, initTournament } from "../handlers/tournament.js";
 
 /** 
  * 
@@ -95,12 +95,21 @@ export function routesTournament(socket, user)
 	// ripescare il socket dello user
 	// utilizzo tournament data che ha l'id del torneo -> se non c'e da 500
 	// ripescare l'indice dell'uitente nell'array delle partite
-	socket.on('start_tournament_match', async (req, callback) => {
+	socket.on('tournament_match:create', async (req, callback) => {
 		const socketData = globals.clientMap.get(user.id_user);
+		if (!socketData || !socketData.tournamentData)
+			throw new Error("Can't find myself or tournament I've joined");
 		const tournament = globals.tournamentMap.get(socketData?.tournamentData?.id);
 		if (!tournament)
 			throw new Error("Tournament doesn't exist");
-		// socketData?.tournamentData?.me
-		// socketData.id_tournament
+		const opponent = globals.clientMap.get(socketData?.tournamentData?.opponent);
+		if (!opponent)
+			throw new Error("Opponent not found, disconnected");
+		const players = new Set([user.id_user, socketData?.tournamentData?.opponent]);
+		if (opponent.tournamentData?.ready)
+		{
+			const match = await createMatchTournament(players, {round: tournament.round, id: tournament.id});
+			socket.to(match.id).emit('tournament_match:start', new Result().Success());
+		}
 	})
 }

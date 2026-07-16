@@ -1,7 +1,7 @@
 //@ts-check
 
-import { eMatchPresets } from "../../Macro/enums";
-import { rng } from "../../utils/random";
+import { eMatchPresets } from "../../Macro/enums.js";
+import { rng } from "../../utils/random.js";
 
 /** @typedef {number} matchId */
 /** @typedef {number} userId */

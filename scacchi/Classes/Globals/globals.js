@@ -46,6 +46,7 @@ class Globals
 		this.lastMatchId = TEST_MATCH;
 		/** @type {Map<matchId, Array<stringifyBoard>>} */
 		this.matchCache = new Map();
+		this.turns = ['QF', 'SF', 'F'];
 	}
 	/** @param {string} roomType */
 	GetQueue(roomType)
