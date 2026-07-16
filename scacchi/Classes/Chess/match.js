@@ -385,14 +385,14 @@ class Match
 	{
 		return (this.board.get(this.currentPlayer.King));
 	}
-	/** @param {QueueNode} queueNode */
-	CreateId(queueNode)
+	/** @param {Set<number>} userSet */
+	CreateId(userSet)
 	{
 		let userNames = "";
 		let date;
 		let id;
 
-		for (let x of queueNode.userSet)
+		for (let x of userSet)
 			userNames += x;
 		date = Date.now().toString();
 		id = date + userNames;

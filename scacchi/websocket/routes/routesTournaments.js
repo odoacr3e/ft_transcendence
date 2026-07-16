@@ -6,6 +6,7 @@ import { Room } from "../../Classes/Globals/room.js";
 import { query } from "../../lib/query.js";
 import { enumSocketState } from "../../Macro/enums.js";
 import { isBusy, roomMessage } from "../utils.js";
+import { initTournament } from "../handlers/tournament.js";
 
 /** 
  * 
@@ -28,8 +29,6 @@ export function routesTournament(socket, user)
 				throw (`create_tournament: socketData is empty`);
 			if (isBusy(user.id_user) == true)
 				result = new Result().Error("You are already doing something", 400);
-			else if (await query.tournamentsQuery.checkTournamentName(req?.name) == true)
-				result = new Result().Error(`Tournament already exists`, 409);
 			else
 			{
 				room = new Room(user.id_user, req?.maxPlayers, req?.name);
@@ -70,7 +69,7 @@ export function routesTournament(socket, user)
 				socketData.state = enumSocketState.JOIN_TOURNAMENT;
 		}
 		if (room && result.status == 200 && room.players.size == room.maxPlayers)
-			initTournament(); //TODO - AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+			initTournament(room);
 		else
 			socket.emit('join_tournament', result);
 		if (typeof(callback) == "function")
@@ -90,4 +89,18 @@ export function routesTournament(socket, user)
 		if (typeof(callback) == "function")
 			callback(result?.log);
 	});
+
+	// evento join tournament match
+	// settare come pronto il socket e controllare se anche l'avversario e pronto
+	// ripescare il socket dello user
+	// utilizzo tournament data che ha l'id del torneo -> se non c'e da 500
+	// ripescare l'indice dell'uitente nell'array delle partite
+	socket.on('start_tournament_match', async (req, callback) => {
+		const socketData = globals.clientMap.get(user.id_user);
+		const tournament = globals.tournamentMap.get(socketData?.tournamentData?.id);
+		if (!tournament)
+			throw new Error("Tournament doesn't exist");
+		// socketData?.tournamentData?.me
+		// socketData.id_tournament
+	})
 }

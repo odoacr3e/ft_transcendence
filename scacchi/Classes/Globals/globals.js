@@ -12,7 +12,9 @@ import { SocketInfo } from "./socketInfo.js";
 /** @typedef {import("../Chess/chessBoard.js").ChessBoard} ChessBoard*/
 /** @typedef {import("../Chess/player.js").Player} Player*/
 /** @typedef {import("./socketInfo.js").SocketInfo} Socket*/
+/** @typedef {import("../Chess/tournament.js").Tournament} Tournament*/
 /** @typedef {string} matchId*/
+
 /** @typedef {string} stringifyBoard*/
 
 const	TEST_MATCH = "0";
@@ -33,6 +35,8 @@ class Globals
 		this.rankedQueue = new Queue(enumConnection.RANKED);
 		/** @type {Queue} */
 		this.friendlyQueue = new Queue(enumConnection.FRIENDLY);
+		/** @type {Map<number | undefined, Tournament>} */
+		this.tournamentMap = new Map();
 		// /** @type {Queue} */
 		// this.arenaQueue = new Queue(enumConnection.ARENA);
 		/** @type {Map<string | undefined, Room>} */
@@ -41,7 +45,7 @@ class Globals
 		this.timers = new Map();
 		this.lastMatchId = TEST_MATCH;
 		/** @type {Map<matchId, Array<stringifyBoard>>} */
-		this.matchCache = new Map();//
+		this.matchCache = new Map();
 	}
 	/** @param {string} roomType */
 	GetQueue(roomType)
