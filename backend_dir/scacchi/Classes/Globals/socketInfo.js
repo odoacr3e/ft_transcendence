@@ -8,7 +8,7 @@ export class SocketInfo
 {
 	/**
 	 * 
-	 * @param {*} socket 
+	 * @param {import("socket.io").Socket} socket 
 	 */
 	constructor(socket)
 	{
@@ -20,5 +20,7 @@ export class SocketInfo
 		this.matchData = null;
 		/** @type {Room | null} */
 		this.roomData = null;
+		/** @type {{id: number, me: number, opponent: number, ready: boolean} | null} */
+		this.tournamentData = null;
 	}
 }

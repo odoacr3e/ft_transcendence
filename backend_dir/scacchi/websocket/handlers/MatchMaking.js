@@ -13,13 +13,13 @@ const getUserById = query.usersQuery.getUserById;
 /** @typedef {import("../../Classes/endPoint/result.js").Result} Result*/
 /** @typedef {import("../../Classes/Globals/socketInfo.js")} Socket */
 /** @typedef {import("../../Classes/endPoint/matchInit.js").matchMakingOpt} MatchMakingOpt*/
-/** @typedef {{id_user: string, points: number}} dbUser*/
 /** @typedef {import("../../Classes/Globals/Queue.js").Queue} Queue*/
 /** @typedef {import("../../Classes/Globals/Queue.js").QueueNode} QueueNode*/
+/** @typedef {import("../../Classes/Chess/player.js").dbUser} dbUser*/
 
 /**
  * 
- * @param {dbUser} user
+ * @param {import("../../Classes/Chess/player.js").dbUser} user
  * @param {MatchMakingOpt} options
  *///@ts-ignore
 export async function MatchMaking(user, options={})
@@ -40,7 +40,7 @@ export async function MatchMaking(user, options={})
 	socketData.state = enumSocketState.MATCHMAKING;
 	queueNode = queue.get(user.id_user);
 	if (queueNode?.IsFull() == true)
-		return createMatch(queue, queueNode);
+		return createMatchFromQueue(queue, queueNode);
 	queue.AddNode(user, options);
 	findMatch(queue, user);
 	console.log(`user in queue ${options?.roomType}:`);
@@ -62,11 +62,11 @@ export async function findMatch(queue, user)
 	if (!queueNode)
 		throw (`findMatch: node for user ${user.id_user} undefined. ${console.trace()}`);
 	if (queue.get(user.id_user)?.IsFull())
-		return createMatch(queue, queueNode);
+		return createMatchFromQueue(queue, queueNode);
 	else
 		findBool = queue.Find(user);
 	if (findBool && queue.get(user.id_user)?.IsFull())
-		return createMatch(queue, queueNode);
+		return createMatchFromQueue(queue, queueNode);
 	else if (!findBool)
 		queueNode.increaseDelta(queueNode.eloRange.max + 15, queueNode.eloRange.min + 15);
 	console.log("Adding timer for", user.id_user);
@@ -81,7 +81,7 @@ export async function findMatch(queue, user)
  * @param {Queue} queue 
  * @param {QueueNode} queueNode
  */
-export async function createMatch(queue, queueNode)
+async function createMatchFromQueue(queue, queueNode)
 {
 	let	match;
 	let	result;
@@ -94,11 +94,11 @@ export async function createMatch(queue, queueNode)
 	result = init(match, preset);
 	if (queue.roomType == enumConnection.RANKED)
 		match.settings.room.isRanked = true;
-	globals.lastMatchId = match.CreateId(queueNode);
+	globals.lastMatchId = match.CreateId(queueNode.userSet);
 	globals.matches.set(globals.lastMatchId, match);
 	//@ts-ignore
 	result.id = match.id;
-	await bindPlayersToMatch(match, queueNode, result);
+	await bindPlayersToMatch(match, queueNode.userSet, result);
 	render(match);
 	console.log("CREAZIONE MATCH: ♟️");
 	console.log(queueNode);
@@ -125,10 +125,10 @@ function validateMatch(queueNode)
 /**
  * check that all players are properly connected
  * @param {Match} match
- * @param {QueueNode} queueNode
+ * @param {Set<number>} userSet
  * @param {Result} result
  */
-async function bindPlayersToMatch(match, queueNode, result)
+export async function bindPlayersToMatch(match, userSet, result)
 {
 	let	i;
 	let	userArray;
@@ -139,7 +139,7 @@ async function bindPlayersToMatch(match, queueNode, result)
 	let dbTable;
 
 	i = 0;
-	userArray = Array.from(queueNode.userSet)
+	userArray = Array.from(userSet);
 	currTeam = match.currentPlayer.team;
 	do
 	{

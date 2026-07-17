@@ -12,7 +12,9 @@ import { SocketInfo } from "./socketInfo.js";
 /** @typedef {import("../Chess/chessBoard.js").ChessBoard} ChessBoard*/
 /** @typedef {import("../Chess/player.js").Player} Player*/
 /** @typedef {import("./socketInfo.js").SocketInfo} Socket*/
+/** @typedef {import("../Chess/tournament.js").Tournament} Tournament*/
 /** @typedef {string} matchId*/
+
 /** @typedef {string} stringifyBoard*/
 
 const	TEST_MATCH = "0";
@@ -27,21 +29,24 @@ class Globals
 	{
 		/** @type {Map<string, Match>} */
 		this.matches = new Map();
-		/** @type {Map<string, Socket>} */
+		/** @type {Map<number, Socket>} */
 		this.clientMap = new Map();
 		/** @type {Queue} */
 		this.rankedQueue = new Queue(enumConnection.RANKED);
 		/** @type {Queue} */
 		this.friendlyQueue = new Queue(enumConnection.FRIENDLY);
+		/** @type {Map<number | undefined, Tournament>} */
+		this.tournamentMap = new Map();
 		// /** @type {Queue} */
 		// this.arenaQueue = new Queue(enumConnection.ARENA);
 		/** @type {Map<string | undefined, Room>} */
 		this.rooms = new Map();
-		/** @type {Map<string, NodeJS.Timeout>} */
+		/** @type {Map<number, NodeJS.Timeout>} */
 		this.timers = new Map();
 		this.lastMatchId = TEST_MATCH;
 		/** @type {Map<matchId, Array<stringifyBoard>>} */
-		this.matchCache = new Map();//
+		this.matchCache = new Map();
+		this.turns = ['QF', 'SF', 'F'];
 	}
 	/** @param {string} roomType */
 	GetQueue(roomType)
@@ -62,7 +67,7 @@ class Globals
 	}
 	/** 
 	 * 
-	 * @param {string} userId
+	 * @param {number} userId
 	 * @param {*} options
 	*/
 	FindQueue(userId, options)
@@ -93,14 +98,14 @@ class Globals
 		options.matchSettings = queueNode.matchOptions;
 		return (queue);
 	}
-	/** @param {string} userId */
+	/** @param {number} userId */
 	RemoveFromAllQueues(userId, resetTimerBool=true)
 	{
 		this.friendlyQueue.DelNode(userId, resetTimerBool);
 		this.rankedQueue.DelNode(userId, resetTimerBool);
 		// this.arenaQueue.DelNode(userId, resetTimerBool);
 	}
-	/** @param {string} timerId */
+	/** @param {number} timerId */
 	ClearTimer(timerId)
 	{
 		clearTimeout(this.timers.get(timerId));
@@ -165,7 +170,7 @@ class Globals
 	/** 
 	 * 
 	 * @param {SocketInfo} socketInfo
-	 * @param {string} idUser
+	 * @param {number} idUser
 	 * */
 	LeaveRoom(socketInfo, idUser)
 	{

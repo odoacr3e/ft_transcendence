@@ -1,7 +1,7 @@
 //@ts-check
 
-import { eMatchPresets } from "../../Macro/enums";
-import { rng } from "../../utils/random";
+import { eMatchPresets } from "../../Macro/enums.js";
+import { rng } from "../../utils/random.js";
 
 /** @typedef {number} matchId */
 /** @typedef {number} userId */
@@ -17,16 +17,18 @@ import { rng } from "../../utils/random";
 - number playerNum
 */
 
-class Tournament
+export class Tournament
 {
 	/**
 	 * 
+	 * @param {string} name
 	 * @param {string} matchType 
 	 * @param {number} playerNum 
 	 */
-	constructor (matchType=eMatchPresets.ClassicTwoPlayers, playerNum=8)
+	constructor (name="", matchType=eMatchPresets.ClassicTwoPlayers, playerNum=8)
 	{
-		this.id = "";//NOTE - prendiamo da prisma
+		this.id = 0;//NOTE - prendiamo da prisma
+		this.name = name;
 		/** @type {OldMatch} */
 		this.oldMatchIds = new Array();
 		this.startUserIds = new Set();

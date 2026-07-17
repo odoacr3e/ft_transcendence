@@ -7,14 +7,11 @@ import {Square, initBoard, copyBoard, copyBoostedTargetZones, ChessBoard} from "
 import {HISTORY_PATH, CHESSBOARD_W, CHESSBOARD_H} from "../../Macro/macro.js";
 import {Result} from "../endPoint/result.js";
 import {Player} from "./player.js";
-import {boardStringify} from "../../test/render.js";
 import { isDangerous } from "../../utils/checkDanger.js";
 import { DangerUpdate } from "../../utils/dangerUpdate.js";
 import { History } from "./history.js";
-import { clientBoard } from "../../handlers/game/utils.js";
 import { MATCHTIMER } from "../../Macro/macro.js"; 
 import { globals } from "../Globals/globals.js";
-import { match } from "assert/strict";
 import EloRank from "elo-rank";
 
 /** @typedef {import("../Globals/Queue.js").QueueNode} QueueNode*/
@@ -38,7 +35,7 @@ class Match
 		this.blue = new Player(eTeam.Blue, this.settings);
 		this.green = new Player(eTeam.Green, this.settings);
 		this.yellow = new Player(eTeam.Yellow, this.settings);
-		/** @type {Array<{id_user: string, outcome: string, startTeam: string | null, team: string}>} */
+		/** @type {Array<{id_user: number, outcome: string, startTeam: string | null, team: string}>} */
 		this.users = [];
 		w = this.settings.board.width;
 		h = this.settings.board.heigth;
@@ -67,6 +64,8 @@ class Match
 		this.elo = new EloRank();
 		if (!this.elo)
 			throw (`Match: eloRank library error during initialization`);
+		/** @type {{id: number, round: number} | null} */
+		this.tournament = null;
 	}
 	/** @param {MatchSettings | string | null} preset*/
 	Reset(preset=null)
@@ -112,6 +111,7 @@ class Match
 		if (!this.elo)
 			throw (`Match: eloRank library error during initialization`);
 		this.cursor.square = this.currentPlayer.King;
+		this.tournament = null;
 	}
 	endTurn()
 	{
@@ -385,14 +385,14 @@ class Match
 	{
 		return (this.board.get(this.currentPlayer.King));
 	}
-	/** @param {QueueNode} queueNode */
-	CreateId(queueNode)
+	/** @param {Set<number>} userSet */
+	CreateId(userSet)
 	{
 		let userNames = "";
 		let date;
 		let id;
 
-		for (let x of queueNode.userSet)
+		for (let x of userSet)
 			userNames += x;
 		date = Date.now().toString();
 		id = date + userNames;

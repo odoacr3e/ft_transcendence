@@ -83,7 +83,7 @@ async function gameHttpHandler(req, res)
 /**
  * 
  * @param {{from: *, to: *, type: string}} req 
- * @param {string} id_user 
+ * @param {number} id_user 
  * @param {import("../../Classes/Globals/globals.js").Socket | undefined} socketData 
  */
 async function gameWebSocketHandler(req, id_user, socketData)
@@ -115,6 +115,14 @@ async function gameWebSocketHandler(req, id_user, socketData)
 	if (result.log.status != 200)
 		return (socketError(socketData.socket, result));
 	console.log(req.type);
+	// if (result.victory != "") //FIXME - mettere socket state a NAVIGATING
+	// {
+	// 	if (match.users)
+	// }
+	// if (match.history.Last().lastLost)
+	// {
+		// 
+	// }
 	result = jsonParser(result);
 	//@ts-ignore
 	result.type = req.type; //Leo per capire quando la riposta che ci mandate si tratta di una reload
