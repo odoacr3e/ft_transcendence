@@ -234,6 +234,7 @@ class Match
 	PlayerLost(result, player=this.currentPlayer)
 	{
 		this.lastLost = player.team;
+		this.history.Last().loserSet.add(player.id);
 		this.UpdateElo(player, false);
 		this.DeletePlayer(player);
 		console.log(player.team, ":haaaaaiiiiii persoooooooooooooooooo!!!!!!!");
