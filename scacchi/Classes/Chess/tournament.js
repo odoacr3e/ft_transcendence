@@ -2,6 +2,8 @@
 
 import { eMatchPresets } from "../../Macro/enums.js";
 import { rng } from "../../utils/random.js";
+import { globals } from "../Globals/globals.js";
+import { createMatchId } from "./match.js";
 
 /** @typedef {number} matchId */
 /** @typedef {number} userId */
@@ -43,9 +45,9 @@ export class Tournament
 		}
 		this.round = 0;
 		this.activeMatches = 0;
-		this.first = "";
-		this.second = "";
-		this.third = ["", ""];
+		this.first = 0;
+		this.second = 0;
+		this.third = [0, 0];
 	}
 	RNGplayer()
 	{
@@ -77,6 +79,38 @@ export class Tournament
 	}
 	nextRound()
 	{
+		let	i;
+		let	me;
+		let	meId;
+		let	opponent;
+		let	oppoId;
+		let	matchId;
+
 		this.round += 1;
+		i = 1;
+		while (this.userIds[this.round].length > i)
+		{
+			meId = this.userIds[this.round][i];
+			oppoId = this.userIds[this.round][i + 1];
+			matchId = createMatchId(new Set([meId, oppoId]));
+			me = globals.clientMap.get(meId);
+			opponent = globals.clientMap.get(oppoId);
+			if (!me || !opponent)
+				throw (new Error(`initTournament: unhandled player disconnect. info: ${{me: me, opponent: opponent}}`));
+			this.activeMatches += 1;
+			me.tournamentData = {id: this.id, me: {id: meId, index: i}, opponent: {id: oppoId, index: i + 1}, matchId: matchId, ready: false};
+			opponent.tournamentData = {id: this.id, me: {id: oppoId, index: i + 1}, opponent: {id: meId, index: i}, matchId: matchId, ready: false};
+			me.socket.join(`match_${matchId}`);
+			opponent.socket.join(`match_${matchId}`);
+			me.socket.join(`tournament_${this.id}`);
+			opponent.socket.join(`tournament_${this.id}`);
+			i += 2;
+		}
+	}
+	checkFinish()
+	{
+		if (this.userIds[this.round].length != 1)
+			return false;
+		return true;
 	}
 }

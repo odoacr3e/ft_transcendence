@@ -35,7 +35,7 @@ class Globals
 		this.rankedQueue = new Queue(enumConnection.RANKED);
 		/** @type {Queue} */
 		this.friendlyQueue = new Queue(enumConnection.FRIENDLY);
-		/** @type {Map<number | undefined, Tournament>} */
+		/** @type {Map<number | undefined | null, Tournament>} */
 		this.tournamentMap = new Map();
 		// /** @type {Queue} */
 		// this.arenaQueue = new Queue(enumConnection.ARENA);

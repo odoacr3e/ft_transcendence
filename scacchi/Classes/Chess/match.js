@@ -35,7 +35,7 @@ class Match
 		this.blue = new Player(eTeam.Blue, this.settings);
 		this.green = new Player(eTeam.Green, this.settings);
 		this.yellow = new Player(eTeam.Yellow, this.settings);
-		/** @type {Array<{id_user: number, outcome: string, startTeam: string | null, team: string}>} */
+		/** @type {Array<{id_user: number, outcome: string, startTeam: string | null, team: string, tour_index?: number}>} */
 		this.users = [];
 		w = this.settings.board.width;
 		h = this.settings.board.heigth;
@@ -64,7 +64,7 @@ class Match
 		this.elo = new EloRank();
 		if (!this.elo)
 			throw (`Match: eloRank library error during initialization`);
-		/** @type {{id: number, round: number} | null} */
+		/** @type {number | null} */
 		this.tournament = null;
 	}
 	/** @param {MatchSettings | string | null} preset*/
@@ -388,17 +388,8 @@ class Match
 	/** @param {Set<number>} userSet */
 	CreateId(userSet)
 	{
-		let userNames = "";
-		let date;
-		let id;
-
-		for (let x of userSet)
-			userNames += x;
-		date = Date.now().toString();
-		id = date + userNames;
-		console.log(`MatchId: ${id}`);
-		this.id = id;
-		return id;
+		this.id = createMatchId(userSet);
+		return (this.id);
 	}
 	getPieceNumber()
 	{
@@ -434,6 +425,23 @@ class Match
 		//FIXME - query sul db
 		
 	}
+}
+
+/**
+ * 
+ * @param {Set<number>} userSet 
+ * @returns 
+ */
+function createMatchId(userSet)
+{
+	let userNames = "";
+	let date;
+	let id;
+	for (let x of userSet)
+		userNames += x;
+	date = Date.now().toString();
+	id = date + userNames;
+	return (id);
 }
 
 /** @param {Match} match */
@@ -568,4 +576,4 @@ matchPresets.fourPlayerWalls = structuredClone(matchPresets.fourPlayer);
 matchPresets.fourPlayerWalls.board.corners = true;
 matchPresets.fourPlayerWalls.presetType = eMatchPresets.NoCornersFourPlayers;
 
-export {Match, Timer, MatchSettings, matchPresets};
+export {Match, Timer, MatchSettings, matchPresets, createMatchId};

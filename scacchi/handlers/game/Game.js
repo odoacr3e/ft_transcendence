@@ -17,6 +17,7 @@ import { query } from "../../lib/query.js";
 const { createMatch, createUsersMatch } = query.gameQuery;
 import { Match, MatchSettings } from "../../Classes/Chess/match.js";
 import { includesOneOf } from "../../utils/string.js";
+import { updateTournament } from "../../websocket/handlers/tournament.js";
 
 const DEBUG_MATCH = globals.getDebugMatch();
 
@@ -184,6 +185,8 @@ async function gameHandler(match, body)
 	{
 		try 
 		{
+			if (match.victory == "draw")
+				throw ("the match ended in a draw");
 			console.log("Salvataggio partita nel database...");
 			await createMatch(match);
 			await createUsersMatch(match);
@@ -193,6 +196,8 @@ async function gameHandler(match, body)
 		{
 			console.log("Error: ", error);
 		}
+		if (match.tournament)
+			updateTournament(match, match.victory == "draw");
 	}
 	return (result);
 }

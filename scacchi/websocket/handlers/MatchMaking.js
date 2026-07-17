@@ -127,8 +127,9 @@ function validateMatch(queueNode)
  * @param {Match} match
  * @param {Set<number>} userSet
  * @param {Result} result
+ * @param {Map<number, number> | null} userIdIndexMap
  */
-export async function bindPlayersToMatch(match, userSet, result)
+export async function bindPlayersToMatch(match, userSet, result, userIdIndexMap=null)
 {
 	let	i;
 	let	userArray;
@@ -137,6 +138,7 @@ export async function bindPlayersToMatch(match, userSet, result)
 	let	startTeam;
 	let	currTeam;
 	let dbTable;
+	let	tourIndex;
 
 	i = 0;
 	userArray = Array.from(userSet);
@@ -155,7 +157,9 @@ export async function bindPlayersToMatch(match, userSet, result)
 			throw (`bindPlayersToMatch: cannot get user ${userId} from db`);//@ts-ignore
 		match.currentPlayer.dbTable = dbTable;//@ts-ignore
 		startTeam = match.settings?.players[match.currentPlayer.team];
-		match.users.push({id_user: userId, outcome: "Lose", startTeam: null, team: match.currentPlayer.team});
+		tourIndex = userIdIndexMap?.get(userId);
+		match.currentPlayer.tournament_index = tourIndex;
+		match.users.push({id_user: userId, outcome: "Lose", startTeam: null, team: match.currentPlayer.team, tour_index: tourIndex});
 		user.matchData = match.currentPlayer;
 		globals.RemoveFromAllQueues(userId, false);
 		//@ts-ignore
