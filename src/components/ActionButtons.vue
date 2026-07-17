@@ -20,7 +20,7 @@
 									&& localPlayer.value?.nPoints >= Piece.value?.price
 									&& localInfo.secondTurn);
 	const canEndTurn = computed(() => myTurn.value && localInfo.secondTurn);
-	const canGiveUp = computed(() => myTurn.value)
+	const canGiveUp = computed(() => myTurn.value || localInfo.secondTurn);
 </script>
 
 <template>
@@ -31,7 +31,7 @@
 			<img src="../assets/boost.png" alt="" :draggable="false" class="size-5">
 			<b>Use Ability!</b>
 		</button>
-		<button class="action bg-emerald-400 hover:bg-emerald-500 flex-col !gap-0"
+		<button class="action bg-emerald-400 hover:bg-emerald-500 flex-col gap-0!"
 			v-bind:class="canBoost ? 'on' : 'off'"
 			@click="shopAbility()">
 			<b>Boost your Piece!</b>
@@ -43,9 +43,12 @@
 			<img src="../assets/endturn.png" alt="" :draggable="false" class="size-5">
 			<b>End Turn!</b>
 		</button>
-		<button class="action bg-grey-500 hover:bg-indigo-100"
-			v-bind:class="canGiveUp ? 'true' : 'false'"
+		<button class="action bg-red-400 hover:bg-red-500"
+			v-bind:class="canGiveUp ? 'on' : 'off'"
 			@click="sendGiveUp()">
+			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M3 3v1.5M3 21v-6m0 0 2.77-.693a9 9 0 0 1 6.208.682l.108.054a9 9 0 0 0 6.086.71l3.114-.732a48.524 48.524 0 0 1-.005-10.499l-3.11.732a9 9 0 0 1-6.085-.711l-.108-.054a9 9 0 0 0-6.208-.682L3 4.5M3 15V4.5" />
+			</svg>
 			<b>Give Up!</b>
 		</button>
 	</div>

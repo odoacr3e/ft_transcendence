@@ -48,7 +48,7 @@ export async function requestToBack(fromSquare, toSquare, giveUp)
 		})();
 	if (giveUp === "giveUp")
 		{type = "giveup"; fromSquare = ""; toSquare = ""; }
-	if (fromSquare === null && toSquare === null && localInfo.secondTurn)
+	else if (fromSquare === null && toSquare === null && localInfo.secondTurn)
 		{type = "endturn"; fromSquare = ""; toSquare = ""; }
 	else if (fromSquare && toSquare === null)
 		{type = "boost"; toSquare = ""; }
@@ -124,7 +124,7 @@ export function reloadMatch()
 			done = true;
 			clearTimeout(hardTimeout);
 			if (retryId) clearInterval(retryId);
-			auth.socket.off("connect", tryReload);
+			auth.socket.off("connect", startLoop);
 			resolve(ok);
 		};
 
@@ -138,17 +138,20 @@ export function reloadMatch()
 			});
 		};
 
-		// timeout di sicurezza complessivo
 		const hardTimeout = setTimeout(() => finish(false), 8000);
 
-		// riprova ogni secondo: copre la finestra in cui il backend
-		// ha riconnesso il socket ma non ha ancora registrato l'handler "game"
-		retryId = setInterval(tryReload, 1000);
+		const startLoop = () => {
+			if (done) return;
+			setTimeout(() => {
+				if (done) return;
+				tryReload();
+				retryId = setInterval(tryReload, 1000);
+			}, 1500);
+		};
 
-		// primo tentativo appena possibile
 		if (auth.socket.connected)
-			tryReload();
+			startLoop();
 		else
-			auth.socket.once("connect", tryReload);
+			auth.socket.once("connect", startLoop);
 	});
 }
