@@ -42,7 +42,7 @@
                     <div v-for="user in db" v-if="db" class="grid grid-cols-1 w-fit">
                         <RouterLink :to="{ name: 'user_page', params: { username: user.username } }">
                             <img :src="user.image ? `${user.image}` : defaultAvatar" @error="handleAvatarError"
-						        alt="" class="size-35 rounded-t-md place-self-center object-cover">
+						        alt="" class="size-35 rounded-t-md place-self-center object-cover bg-linear-to-t from-[#882a2a] to-[#201e1c]">
                             <div class="bg-[#181715] py-2 grid grid-cols-1 border-b border-x border-[#4e4e4e8c] rounded-b-md w-full justify-items-center">
                                 <h3 class="text-white" v-if="user.username.length > 11">{{ user.username.slice(0, 10) + "..."}}</h3>
                                 <h3 class="text-white" v-if="user.username.length <= 11">{{ user.username }}</h3>

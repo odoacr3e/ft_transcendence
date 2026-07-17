@@ -55,7 +55,7 @@
         <hr v-if="index !== matches.length - 1" class="text-[#4e4e4e80] border-dashed">
     </div>
 
-    <div v-if="selectedT" class="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-xs px-4" @click.self="closeTournamentPopup">
+    <div v-if="selectedT" class="fixed inset-0 z-25 flex items-center justify-center bg-black/20 backdrop-blur-xs px-4" @click.self="closeTournamentPopup">
         <div class="w-full max-w-md rounded-3xl border border-[#4e4e4e8c] bg-[#201e1c] p-6 text-white shadow-2xl">
             <div class="flex items-start justify-between gap-4">
                 <div>

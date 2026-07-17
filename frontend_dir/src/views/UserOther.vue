@@ -72,7 +72,7 @@
                     <div class="w-full m-2 p-2 h-auto bg-[#201e1c] rounded-3xl border border-[#4e4e4e8c]">
                         <h2 class="text-white text-xl m-1">Cronologia delle partite</h2>
                         <hr class="w-full justify-self-start text-[#4e4e4e8c]">
-                        <div class="flex gap-3 m-2 text-sm text-white justify-self-center">
+                        <div v-if="matches?.stats" class="flex gap-3 m-2 text-sm text-white justify-self-center">
                             <div class="flex gap-2">
                                 <p>Vittorie:</p>
                                 <p class="text-green-600">{{ matches.stats.w }}</p>

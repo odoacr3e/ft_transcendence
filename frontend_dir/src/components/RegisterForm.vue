@@ -66,7 +66,7 @@
 </script>
 
 <template>
-	<!-- <datalist id="country" class="max-h-50">
+	<datalist id="country" class="max-h-50">
 		<datalist id="country">
 		<option value="Afghanistan" />
 		<option value="Albania" />
@@ -307,7 +307,7 @@
 		<option value="Zambia" />
 		<option value="Zimbabwe" />
 	</datalist>
-	</datalist> -->
+	</datalist>
 	<div>
 		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" id="allert"
 			class="absolute size-6 text-red-100 animate-error -translate-x-3 hidden transition-all duration-250 ease-in-out"

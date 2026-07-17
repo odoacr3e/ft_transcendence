@@ -77,12 +77,12 @@
 	<div class="grid grid-cols-3 z-11 w-lvw h-15 bg-[#201e1c] border-b border-[#181715e8] justify-center" v-bind="$attrs">
 		<RouterLink to="/" id="button" class="w-fit">
 			<div class="flex justify-self-start">
-				<img src="../assets/CrownIcon.png" alt="" class="place-self-center size-15 ml-3">
+				<img src="../assets/CrownIcon.png" alt="" class="place-self-center size-15 ml-3" :draggable="false">
 				<h1 class="text-white text-4xl place-self-center">ChessZ</h1>
 			</div>
 		</RouterLink>
-		<div class="flex bg-[#302d2a] w-[150%] justify-self-center rounded-4xl h-11 self-center content-center border border-[#4e4e4e8c]">
-			<img src="../assets/search.png" alt="" class="size-7 self-center ml-3">
+		<div class="flex bg-[#302d2a] w-[150%] justify-self-center rounded-4xl h-11 self-center content-center border border-[#4e4e4e8c] overflow-hidden">
+			<img src="../assets/search.png" alt="" class="size-7 self-center ml-3" :draggable="false">
 			<form @submit.prevent="goToUser">
 				<input v-model="searchUser" type="search" name="searchBar" id="searchBar" placeholder="Cerca" autocomplete="off"
 					class="justify-self-center rounded-4xl h-10 w-235 pl-3 text-white"
@@ -100,7 +100,7 @@
 						<span class="absolute inline-flex translate-x-5.5 -translate-y-3.5 size-3 animate-ping rounded-full bg-[#c41c1c] opacity-75"></span>
 						<span class="absolute justify-self-end translate-x-5.5 -translate-y-3.5 size-3 rounded-full bg-[#c41c1c]"></span>
 					</div>
-					<img src="../assets/bell.png" alt="" class="mr-4 size-9 place-self-center">
+					<img src="../assets/bell.png" alt="" class="mr-4 size-9 place-self-center" :draggable="false">
 				</button>
 				<Transition
 					class="origin-top-right -translate-x-62 translate-y-1.5"
@@ -132,8 +132,8 @@
 								</RouterLink>
 								<div v-if="m.description[0] !== ' '">
 									<p class="text-zinc-300 text-sm pt-2.5 pb-1">{{ m.description }}</p>
-									<div class="ml-auto -mt-3.5 flex gap-1 h-fit w-fit">
-										<p v-if="m.sender" class="text-xs text-zinc-500">
+									<div class="ml-auto -mt-3.5 flex gap-1 h-fit w-fit" v-if="m.sender">
+										<p class="text-xs text-zinc-500">
 											da</p>
 										<RouterLink :to="{ name: 'user_page', params: { username: m.sender.username } }">
 											<p class="text-xs text-zinc-500 hover:underline" v-if="m.sender.username.length <= 10">
@@ -160,7 +160,7 @@
 					aria-haspopup="true">
 					<h2 class="text-white text-lg place-self-center mr-2">{{ user.username }}</h2>
 					<img
-						:src="user.image ? `${user.image}` : defaultAvatar" @error="handleAvatarError"
+						:src="user.image ? `${user.image}` : defaultAvatar" @error="handleAvatarError" :draggable="false"
 						class="size-12 rounded-full place-self-center mr-1 object-cover">
 					<svg
 						class="size-4 text-white transition-transform duration-200"
