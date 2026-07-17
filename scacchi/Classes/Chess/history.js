@@ -10,6 +10,7 @@ import {boardStringify} from "../../test/render.js";
 /**@typedef {import("./match.js").Match} Match*/
 /**@typedef {import("./match.js").MatchSettings} MatchSettings*/
 /**@typedef {import("./chessBoard.js").Square} Square*/
+/**@typedef {import("./player.js").Player} Player*/
 
 export class History
 {
@@ -116,6 +117,8 @@ export class HistoryEvent
 		this.error = false;
 		/** @type {string | null} */ 
 		this.lastLost = null;
+		/** @type {Set<number>} */
+		this.loserSet = new Set();
 		if (pieceBoosterZones)
 			this.pieceBoosterTargetZones = copyBoostedTargetZones(pieceBoosterZones);
 	}

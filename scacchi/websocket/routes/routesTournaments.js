@@ -95,21 +95,28 @@ export function routesTournament(socket, user)
 	// ripescare il socket dello user
 	// utilizzo tournament data che ha l'id del torneo -> se non c'e da 500
 	// ripescare l'indice dell'uitente nell'array delle partite
-	socket.on('tournament_match:create', async (req, callback) => {
+	socket.on('tournament_match:create', async (req, callback) => 
+	{
+		/** @type {Map<number, number>} */
+		let	userIdIndexMap;
+
 		const socketData = globals.clientMap.get(user.id_user);
 		if (!socketData || !socketData.tournamentData)
 			throw new Error("Can't find myself or tournament I've joined");
 		const tournament = globals.tournamentMap.get(socketData?.tournamentData?.id);
 		if (!tournament)
 			throw new Error("Tournament doesn't exist");
-		const opponent = globals.clientMap.get(socketData?.tournamentData?.opponent);
+		const opponent = globals.clientMap.get(socketData?.tournamentData?.opponent.id);
 		if (!opponent)
 			throw new Error("Opponent not found, disconnected");
-		const players = new Set([user.id_user, socketData?.tournamentData?.opponent]);
+		const players = new Set([socketData?.tournamentData?.me.id, socketData?.tournamentData?.opponent.id]);
 		if (opponent.tournamentData?.ready)
 		{
-			const match = await createMatchTournament(players, {round: tournament.round, id: tournament.id});
+			userIdIndexMap = new Map();
+			userIdIndexMap.set(socketData.tournamentData.me.id, socketData.tournamentData.me.index);
+			userIdIndexMap.set(socketData.tournamentData.opponent.id, socketData.tournamentData.opponent.index);
+			const match = await createMatchTournament(players, socketData.tournamentData.matchId, tournament.id, userIdIndexMap);
 			socket.to(match.id).emit('tournament_match:start', new Result().Success());
 		}
-	})
+	});
 }

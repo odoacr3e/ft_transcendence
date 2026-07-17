@@ -4,6 +4,8 @@ import { Player } from "../Chess/player.js";
 import { Room } from "./room.js";
 import { enumSocketState } from "../../Macro/enums.js";
 
+/** @typedef {{id: number, me: {id: number, index: number}, opponent: {id: number, index: number}, matchId: string, ready: boolean}} tournamentData*/
+
 export class SocketInfo
 {
 	/**
@@ -20,7 +22,7 @@ export class SocketInfo
 		this.matchData = null;
 		/** @type {Room | null} */
 		this.roomData = null;
-		/** @type {{id: number, me: number, opponent: number, ready: boolean} | null} */
+		/** @type {tournamentData | null} */
 		this.tournamentData = null;
 	}
 }
