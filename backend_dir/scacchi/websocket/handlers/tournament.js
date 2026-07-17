@@ -1,6 +1,6 @@
 // @ts-check
 
-import { Match } from "../../Classes/Chess/match.js";
+import { createMatchId, Match } from "../../Classes/Chess/match.js";
 import { Tournament } from "../../Classes/Chess/tournament.js";
 import { Result } from "../../Classes/endPoint/result.js";
 import { globals } from "../../Classes/Globals/globals.js";
@@ -8,6 +8,8 @@ import { Room } from "../../Classes/Globals/room.js";
 import { init } from "../../handlers/game/init.js";
 import { query } from "../../lib/query.js";
 import { eMatchPresets } from "../../Macro/enums.js";
+import { roomMessage } from "../utils.js";
+import { sockio } from "../websocket.js";
 import { bindPlayersToMatch } from "./MatchMaking.js";
 const { tournamentsQuery } = query;
 
@@ -20,6 +22,9 @@ export async function initTournament(room)
 	let tournament;
 	let	me;
 	let	opponent;
+	let	meId;
+	let	oppoId;
+	let	matchId;
 	let i = 0;
 
 	try
@@ -29,25 +34,22 @@ export async function initTournament(room)
 		await tournamentsQuery.addPlayersToTournament(tournament.id, Array.from(room.players));
 		globals.tournamentMap.set(tournament.id, tournament);
 		tournament.startUserIds = new Set(room.players);
-		tournament.userIds[tournament.round] = new Array();
-		tournament.userIds[tournament.round] = Array.from(room.players);
+		tournament.userIds[0] = new Array();
+		tournament.userIds[0] = Array.from(room.players);
 		console.log("THE 84 TENKAICHI TOURNAMENT WILL START!!!");
 		console.log(tournament.userIds);
 		tournament.RNGplayer();
 		console.log(tournament.userIds);
-		while (tournament.userIds[tournament.round].length != i)
-		{
-			me = globals.clientMap.get(tournament.userIds[tournament.round][i]);
-			opponent = globals.clientMap.get(tournament.userIds[tournament.round][i + 1]);
-			if (!me)
-
-			i += 2;
-		}
+		tournament.nextRound();
+		//FIXME - decidere con frontend, oltre ad eventi, che dati mandare
+		//@ts-ignore
+		roomMessage(`tournament_${tournament.id}`, "start_tournament", {pairings: tournament.userIds[tournament.round], log: new Result().Success().log});
 	}
 	catch(error)
 	{
 		//FIXME - mandare 500 server error via websockets
-		console.log("ERROR: cannot init tournament");
+		console.log("ERROR: cannot init tournament. info:");
+		console.error(error);
 	}
 }
 
@@ -56,19 +58,22 @@ export async function initTournament(room)
 	OK-	e possibile creare il torneo
 	OK-	prendiamo id torneo da db
 	OK-	settiamo nella map tornei id torneo =>	oggetto
-	5-	avvisiamo e diamo dati del pairing iniziale
-	6-	socketData: salvare =>	{id_torneo, me: ...}
+	OK-	avvisiamo e diamo dati del pairing iniziale
+	OK-	socketData: salvare =>	{id_torneo, me: ...}
 	OK-	aspettare entrambi pronti
 	OK-	appena entrambi pronti: match
-	9-	quando finisce match, aggiornare torneo
+	OK-	quando finisce match, aggiornare torneo db
+	10-	quando finisce match, aggiornare torneo oggetto
 */
 
 /**
  * @param {Set<number>} players 
- * @param {{round: number, id: number}} tournament
+ * @param {string} matchId
+ * @param {number} tournamentId
+ * @param {Map<number, number>} userIdIndexMap
  * @param {string} matchType 
  */
-export async function createMatchTournament(players, tournament, matchType=eMatchPresets.ClassicTwoPlayers)
+export async function createMatchTournament(players, matchId, tournamentId, userIdIndexMap, matchType=eMatchPresets.ClassicTwoPlayers)
 {
 	let	match;
 	let	result;
@@ -76,15 +81,72 @@ export async function createMatchTournament(players, tournament, matchType=eMatc
 
 	preset = matchType;
 	match = new Match(preset);
-	match.tournament = tournament;
+	match.tournament = tournamentId;
 	result = init(match, preset);
 	match.settings.room.isRanked = false;
-	globals.lastMatchId = match.CreateId(players);
+	globals.lastMatchId = matchId;
 	globals.matches.set(globals.lastMatchId, match);
 	//@ts-ignore
 	result.id = match.id;
-	await bindPlayersToMatch(match, players, result);
+	await bindPlayersToMatch(match, players, result, userIdIndexMap);
 	// render(match);
 	console.log("CREAZIONE MATCH: ♟️");
 	return (match);
+}
+
+/**
+ * 
+ * @param {Match} match 
+ * @param {boolean} drawBool
+ */
+export async function updateTournament(match, drawBool)
+{
+	let	tournament;
+	let matchNum;
+	/** @type {Map<number, number>} */
+	let	userIdIndexMap;
+	let userSet = new Set();
+
+	tournament = globals.tournamentMap.get(match.tournament);
+	if (!tournament)
+		return (console.error(`update tournament: id ${match.tournament} invalid.`), null);
+	if (drawBool)
+	{
+		userIdIndexMap = new Map();
+		match.users.forEach((v) => 
+		{
+			userSet.add(v.id_user);//@ts-ignore
+			userIdIndexMap.set(v.id_user, v.tour_index);
+		});
+		createMatchTournament(userSet, match.id, tournament.id, userIdIndexMap);
+		return ;
+	}
+	if (!tournament.userIds[tournament.round + 1])
+		tournament.userIds[tournament.round + 1] = new Array();
+	//@ts-ignore
+	matchNum = tournament.userIds[tournament.round].indexOf((match[match.victory].tournament_index));//@ts-ignore
+	tournament.userIds[tournament.round + 1][matchNum / 2] = match[match.victory].tournament_index;
+	tournament.activeMatches--;
+	if (tournament.activeMatches == 0)
+		tournament.nextRound();
+	if (tournament.checkFinish())
+		endTournament(tournament);
+}
+
+/**
+ * 
+ * @param {Tournament} tournament 
+ */
+function endTournament(tournament)
+{
+	tournament.first = tournament.userIds[tournament.round][0];
+	tournament.second = tournament.userIds[tournament.round - 1][0] != tournament.first? tournament.userIds[tournament.round - 1][0] : tournament.userIds[tournament.round - 1][1];
+	for (let x of tournament.userIds[tournament.round - 2])
+	{
+		if (x != tournament.first && x != tournament.second)
+			tournament.third.push(x);
+	}
+	//@ts-ignore
+	roomMessage(`tournament_${tournament.id}`, "tournament_FINE", {fine: "si", log: new Result().Success().log});
+	query.tournamentsQuery.updateTournamentStatus(tournament.id, 'closed');
 }

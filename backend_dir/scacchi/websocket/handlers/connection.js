@@ -123,7 +123,8 @@ function handleReconnect(dbUser, socketData, newSocket)
 	else if (socketData.state == enumSocketState.PLAYING)
 	{
 		if (!socketData.matchData)
-			console.log("ERROR: data for player are lost! OH NO!");
+			return (console.log("ERROR: data for player are lost! OH NO!"));		
+		socketData.socket.join(`match_${socketData.matchData.matchId}`);
 	}
 }
 

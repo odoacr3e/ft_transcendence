@@ -30,6 +30,8 @@ class Player
 		this.dbTable = null;
 		this.matchId = "0";
 		this.id = 0;
+		/** @type {number | undefined} */
+		this.tournament_index = undefined;
 		/** @type {number | null} */
 		this.expectedElo = null;
 		//SECTION - gameData
