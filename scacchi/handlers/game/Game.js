@@ -1,8 +1,5 @@
 // @ts-check
 
-// import http from "http";
-// import express from "express";
-// import {Server as SocketIO} from "socket.io";
 import {jsonParser, responseFormatter} from "../../utils/response.js";
 import { Result, clientBoard, normifyRequest } from "./utils.js";
 import { move } from "./move.js";
@@ -18,6 +15,8 @@ const { createMatch, createUsersMatch } = query.gameQuery;
 import { Match, MatchSettings } from "../../Classes/Chess/match.js";
 import { includesOneOf } from "../../utils/string.js";
 import { updateTournament } from "../../websocket/handlers/tournament.js";
+import { roomMessage } from "../../websocket/utils.js";
+import { Room } from "../../Classes/Globals/room.js";
 
 const DEBUG_MATCH = globals.getDebugMatch();
 
@@ -92,6 +91,7 @@ async function gameWebSocketHandler(req, id_user, socketData)
 	let	match;
 	let	matchId;
 	let	result;
+	let	id;
 
 	//FIXME - reload e history vanno bene
 	if (!socketData)
@@ -104,11 +104,12 @@ async function gameWebSocketHandler(req, id_user, socketData)
 	match = globals.matches.get(matchId);
 	if (!match)
 		return (socketError(socketData.socket, null, 403, "Socket: invalid match id " + matchId));
+	id = match.id;
 	req = normifyRequest(match.cursor, req);
 	if (includesOneOf(req.type, "reload", "history"))
 		result = await gameInfoHandler(match, req);
 	else if (match.currentPlayer.team != socketData.matchData?.team)
-		return (socketError(socketData.socket, null, 401, "Socket: it's not your turn, dirty greedy cheeta"));
+		return (socketError(socketData.socket, null, 401, "Socket: it's not your turn, mr.greedy cheeta"));
 	else if (!req.type)
 		return (socketError(socketData.socket, null, 403, "Socket: missing param type in request"));
 	else
@@ -128,7 +129,10 @@ async function gameWebSocketHandler(req, id_user, socketData)
 	//@ts-ignore
 	result.type = req.type; //Leo per capire quando la riposta che ci mandate si tratta di una reload
 	socketData.socket.emit("game", result);	
-	socketData.socket.to(`match_${match.id}`).emit("game", result);
+	socketData.socket.to(`match_${id}`).emit("game", result);
+	console.log(socketData.socket.rooms);
+	if (match.victory != "")//@ts-ignore
+		roomMessage(`match_${id}`, "game", {victory: match.victory, log: result.log});
 	return (200);
 }
 

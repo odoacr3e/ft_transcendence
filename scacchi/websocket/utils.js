@@ -49,7 +49,7 @@ function isBusy(userId)
  * emit a message to all client in a socket.io room.
  * @param {string | undefined} roomName the name of the room
  * @param {string | undefined} eventType the name of the event to emit
- * @param {Result | null | undefined} result the object to emit
+ * @param {*} result the object to emit
  */
 function roomMessage(roomName, eventType, result)
 {
