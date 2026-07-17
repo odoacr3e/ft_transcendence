@@ -68,6 +68,7 @@ export function initLocalMatchState(raw)
 
 	localInfo.matchId = raw.id;
 	localInfo.myTeam = raw.team;
+	localInfo.victory = raw.victory;
 
 	sessionStorage.setItem("match:myTeam", raw.team);
 	sessionStorage.setItem("match:id", raw.id);
@@ -99,8 +100,8 @@ export function updateMatchState(nextRaw)
 {
 	const validated = validateReceivedMatch(nextRaw);
 
+	localInfo.victory = nextRaw.victory ?? null;
 	checkEndTurn(validated);
-
 	startLocalMatchState(validated);
 	try 
 	{
@@ -175,4 +176,5 @@ export function reloadMatchState(raw)
 
 	localInfo.myTeam = sessionStorage.getItem("match:myTeam");
 	localInfo.id = sessionStorage.getItem("match:id");
+	localInfo.victory = raw.victory;
 }

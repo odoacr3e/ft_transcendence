@@ -31,6 +31,7 @@ class metaInfo {
 		this.goatId = null;
 		this.matchId = null;
 		this.myTeam = null;
+		this.victory = null;
 		this.lastMovesSquares = new Set();
 		this.capturedP = {	white: { Bastards: 0, Minotaurus: 0, Valkirya: 0, Jester: 0, Champion: 0},
 							black: { Bastards: 0, Minotaurus: 0, Valkirya: 0, Jester: 0, Champion: 0} };

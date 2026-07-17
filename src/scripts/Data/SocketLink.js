@@ -6,6 +6,7 @@ import router 														from "@/router";
 export function listenGameSocket(socket)
 {
 	socket.on("game", (raw) => {
+		console.log("[socket game] ricevuto:", raw.type, "victory:", raw.victory);
 		if (raw.log?.status != 200)
 		{
 			console.log("[socket]: errore -", raw.log?.msg);
