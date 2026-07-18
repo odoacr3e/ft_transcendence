@@ -4,20 +4,15 @@ import passport  from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 const  { usersQuery } = query;
 
-// console.log("clientID:", process.env.GOOGLE_CLIENT_ID,
-// 		"clientSecret:", process.env.GOOGLE_CLIENT_SECRET,
-// 		"callbackURL:", '/auth/google_login/callback')
-
+/**
+ * @typedef {import('passport-google-oauth20').Profile} profile
+ * @typedef {import('passport').DoneCallback} done
+ */
 passport.use(new GoogleStrategy({
 		clientID: process.env.GOOGLE_CLIENT_ID,
 		clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-		callbackURL: '/auth/google_login/callback', // callback nostra interna su backend
-		// scope: ['profile']
+		callbackURL: '/auth/google_login/callback' // callback nostra interna su backend
 	},
-	/**
-	* @param {import('passport-google-oauth20').Profile} profile
-	* @param {import('passport').DoneCallback} done
-	*/
 	async function (_accessToken, _refreshToken, profile, done) {
 		let user = await usersQuery.getUserByGoogleId(profile.id);
 
@@ -29,7 +24,7 @@ passport.use(new GoogleStrategy({
 			user = await usersQuery.updateUserFieldsById(user.id_user, {google_id: profile.id});
 			return done (null, user);
 		}
-		let username = "user" + Math.trunc(Math.random() * `100000000`);
+		let username = "user" + Math.trunc(Math.random() * 100000000);
 		user = await usersQuery.getUserByUsername(username);
 		if (user)
 		{

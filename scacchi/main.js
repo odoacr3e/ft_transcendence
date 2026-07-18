@@ -1,7 +1,8 @@
 
 import * as lib from "./lib/lib.js";
 import { apiRouter } from "./routes/api.js";
-import { authRouter } from "./routes/auth.js";
+import { authRouter } from "./routes/auth/auth.js";
+import { OAuthRouter } from "./routes/auth/OAuth.js";
 import { mediaRouter } from "./routes/media.js";
 import { responseFormatter, jsonResponse } from "./utils/response.js";
 import { colors, tag } from "./utils/colors.js";
@@ -32,7 +33,7 @@ app.set('clientMap', globals.clientMap);
 // SECTION - routes
 log.info('Routes initilization...');
 app.use("/api", apiRouter);
-app.use("/auth", authRouter);
+app.use("/auth", authRouter, OAuthRouter);
 app.use('/media', mediaRouter);
 log.ok(`Routes loaded`);
 

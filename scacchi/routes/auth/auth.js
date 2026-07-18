@@ -1,40 +1,19 @@
 
-import * as lib from "../lib/lib.js";
+import * as lib from "../../lib/lib.js";
 import bcrypt from "bcryptjs";
 import { createJwt, checkJwt, revokeTokenSessions, 
 	validateInputRegister, validateUser, cookiesOpt,
-	createOtp, verifyOtp } from "../utils/auth.js";
-import { jsonResponse } from "../utils/response.js";
-import { colors } from "../utils/colors.js";
-import { log } from "../utils/log.js";
-import { query } from "../lib/query.js";
+	createOtp, verifyOtp } from "../../utils/auth.js";
+import { jsonResponse } from "../../utils/response.js";
+import { colors } from "../../utils/colors.js";
+import { log } from "../../utils/log.js";
+import { query } from "../../lib/query.js";
 const { usersQuery } = query;
 const { fs, logfd } = lib.include;
 const { crypto, redis, sendEmail, bodyOTP, bodyRegistration } = lib.conn;
-const { passport } = lib.auth;
 export const authRouter = lib.include.express.Router();
 
 // NOTE: route /auth
-
-/**
- * @param {import('express').Request} req
- * @param {import('express').Response} res
- */
-// FIXME - da sostituire http con https una volta messi i cert
-authRouter.get("/google_login",	passport.authenticate('google', { scope: ['profile', 'email'] }));
-
-authRouter.get("/google_login/callback",
-	passport.authenticate('google', {session: false/*, failureRedirect: "/auth/login"/* , successRedirect: "/api/users/me" */}),
-	async (req, res) => {
-		try {
-			const user = req.user;
-			await createJwt(req, res);
-			return res.status(200).json(jsonResponse.ResponseSuccess({ "user": user }));
-		} catch (error) {
-			console.log("Error: ", error);
-			return res.status(500).json(jsonResponse.ResponseError("Server error checking for user"));
-		}
-});
 
 /**
  * @param {import('express').Request} req
