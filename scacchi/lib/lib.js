@@ -9,6 +9,7 @@ import express from "express";
 import {Server as SocketIO} from "socket.io";
 import jwt from "jsonwebtoken";
 import cors from 'cors';
+import passport from './passport.js';
 import { parse } from "cookie";
 import cookieParser from 'cookie-parser';
 import multer from 'multer';
@@ -56,8 +57,7 @@ import * as utils from "../utils/dangerUpdate.js";
 let gameUtils = {};
 
 const conn = { redis, crypto, sendEmail, bodyOTP, bodyRegistration };
-const auth = { jwt, cors };
-
+const auth = { jwt, cors, passport };
 
 const lib = { include, Chess, Macro, Enums, preset, utils, gameUtils, conn};
 

@@ -56,8 +56,26 @@ export async function getMe(id) {
 
 export async function getUserByGoogleId(google_id) {
 	return await prisma.users.findUnique({
-		select: { id_user: true, email: true, username: true },
-		where: { google_id: google_id }
+		select: {
+			id_user: true,
+			name: true,
+			surname: true,
+			username: true,
+			email: true,
+			image: true,
+			nationality: true,
+			points: true,
+			title: true,
+			preferences: {
+				select: {
+					name: true,
+					description: true,
+					colors: true,
+				}
+			},
+			mfa: true
+		},
+		where: { google_id: String(google_id) }
 	});
 }
 
@@ -196,7 +214,7 @@ export async function getUserByEmail(email) {
 				}
 			},
 			where: {
-				id_user: String(email)
+				email: String(email)
 			}
 		});
 }

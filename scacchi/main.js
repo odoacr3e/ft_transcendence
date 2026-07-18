@@ -7,6 +7,7 @@ import { responseFormatter, jsonResponse } from "./utils/response.js";
 import { colors, tag } from "./utils/colors.js";
 import { log } from "./utils/log.js";
 import { globals } from "./Classes/Globals/globals.js";
+const passport = lib.auth;
 import "./websocket/websocket.js";
 
 const { ALLOWED_URL, PORT } = lib;

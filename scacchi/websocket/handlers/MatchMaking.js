@@ -7,8 +7,6 @@ import { render } 							from "../../test/render.js";
 import { query } 							from "../../lib/query.js";
 import { responseFormatter }				from "../../utils/response.js";
 
-const getUserById = query.usersQuery.getUserById;
-
 /** @typedef {import("../../Classes/Chess/player.js").Player} Player*/
 /** @typedef {import("../../Classes/endPoint/result.js").Result} Result*/
 /** @typedef {import("../../Classes/Globals/socketInfo.js")} Socket */
@@ -152,7 +150,7 @@ export async function bindPlayersToMatch(match, userSet, result, userIdIndexMap=
 		user.state = enumSocketState.PLAYING;
 		match.currentPlayer.matchId = match.id;
 		match.currentPlayer.id = userId;
-		dbTable = await getUserById(userId);
+		dbTable = await query.usersQuery.getUserById(userId);
 		if (!dbTable)
 			throw (`bindPlayersToMatch: cannot get user ${userId} from db`);//@ts-ignore
 		match.currentPlayer.dbTable = dbTable;//@ts-ignore

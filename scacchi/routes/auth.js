@@ -2,18 +2,16 @@
 import * as lib from "../lib/lib.js";
 import bcrypt from "bcryptjs";
 import { createJwt, checkJwt, revokeTokenSessions, 
-	validateInputRegister, validateUser, cookiesOpt, 
+	validateInputRegister, validateUser, cookiesOpt,
 	createOtp, verifyOtp } from "../utils/auth.js";
 import { jsonResponse } from "../utils/response.js";
 import { colors } from "../utils/colors.js";
 import { log } from "../utils/log.js";
 import { query } from "../lib/query.js";
-import passport  from 'passport';
-import GoogleStrategy  from 'passport-google-oidc';
-import { maxHeaderSize } from "node:http";
 const { usersQuery } = query;
 const { fs, logfd } = lib.include;
 const { crypto, redis, sendEmail, bodyOTP, bodyRegistration } = lib.conn;
+const { passport } = lib.auth;
 export const authRouter = lib.include.express.Router();
 
 // NOTE: route /auth
@@ -23,45 +21,20 @@ export const authRouter = lib.include.express.Router();
  * @param {import('express').Response} res
  */
 // FIXME - da sostituire http con https una volta messi i cert
-authRouter.post("/google_login", async (req, res) => {
-	try {
-		passport.use(new GoogleStrategy({
-			clientID: process.env.GOOGLE_CLIENT_ID,
-			clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-			callbackURL: 'http://localhost:8000/auth/google/callback', // callback nostra interna su backend
-			// scope: ['profile']
-		},
-		/**
-		* @param {import('passport-google-oauth20').Profile} profile
-		* @param {import('passport').DoneCallback} done
-		*/
-		function (_accessToken, _refreshToken, profile, done) {
-			let user = await usersQuery.getUserByGoogleId(profile.id);
+authRouter.get("/google_login",	passport.authenticate('google', { scope: ['profile', 'email'] }));
 
-			if (user)
-				done(null, user);
-			user = await usersQuery.getUserByEmail(profile.emails[0].verified);
-			if (user)
-			{
-				await usersQuery.updateUserFieldsById(user.id_user, {google_id: profile.id});
-				done (null, user);
-			}
-			const u = await usersQuery.getUserByUsername(profile.username);
-			if (!u)
-				usersQuery.createUser(profile.name.givenName, profile.name.familyName, profile.username, null, profile.emails[0].value, 'N/D');
-			else
-			{
-				let username = username = "user" + (Math.random() * 100000000);
-				while (await usersQuery.getUserByUsername(username))
-					username = "user" + (Math.random() * 1000000000);
-				usersQuery.createUser(profile.name.givenName, profile.name.familyName, username, null, profile.emails[0].value, 'N/D');
-			}
-		}));
-	} catch (error) {
-		
-	}
-})
-
+authRouter.get("/google_login/callback",
+	passport.authenticate('google', {session: false/*, failureRedirect: "/auth/login"/* , successRedirect: "/api/users/me" */}),
+	async (req, res) => {
+		try {
+			const user = req.user;
+			await createJwt(req, res);
+			return res.status(200).json(jsonResponse.ResponseSuccess({ "user": user }));
+		} catch (error) {
+			console.log("Error: ", error);
+			return res.status(500).json(jsonResponse.ResponseError("Server error checking for user"));
+		}
+});
 
 /**
  * @param {import('express').Request} req
