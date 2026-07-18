@@ -8,12 +8,60 @@ import { jsonResponse } from "../utils/response.js";
 import { colors } from "../utils/colors.js";
 import { log } from "../utils/log.js";
 import { query } from "../lib/query.js";
+import passport  from 'passport';
+import GoogleStrategy  from 'passport-google-oidc';
+import { maxHeaderSize } from "node:http";
 const { usersQuery } = query;
 const { fs, logfd } = lib.include;
 const { crypto, redis, sendEmail, bodyOTP, bodyRegistration } = lib.conn;
 export const authRouter = lib.include.express.Router();
 
 // NOTE: route /auth
+
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
+// FIXME - da sostituire http con https una volta messi i cert
+authRouter.post("/google_login", async (req, res) => {
+	try {
+		passport.use(new GoogleStrategy({
+			clientID: process.env.GOOGLE_CLIENT_ID,
+			clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+			callbackURL: 'http://localhost:8000/auth/google/callback', // callback nostra interna su backend
+			// scope: ['profile']
+		},
+		/**
+		* @param {import('passport-google-oauth20').Profile} profile
+		* @param {import('passport').DoneCallback} done
+		*/
+		function (_accessToken, _refreshToken, profile, done) {
+			let user = await usersQuery.getUserByGoogleId(profile.id);
+
+			if (user)
+				done(null, user);
+			user = await usersQuery.getUserByEmail(profile.emails[0].verified);
+			if (user)
+			{
+				await usersQuery.updateUserFieldsById(user.id_user, {google_id: profile.id});
+				done (null, user);
+			}
+			const u = await usersQuery.getUserByUsername(profile.username);
+			if (!u)
+				usersQuery.createUser(profile.name.givenName, profile.name.familyName, profile.username, null, profile.emails[0].value, 'N/D');
+			else
+			{
+				let username = username = "user" + (Math.random() * 100000000);
+				while (await usersQuery.getUserByUsername(username))
+					username = "user" + (Math.random() * 1000000000);
+				usersQuery.createUser(profile.name.givenName, profile.name.familyName, username, null, profile.emails[0].value, 'N/D');
+			}
+		}));
+	} catch (error) {
+		
+	}
+})
+
 
 /**
  * @param {import('express').Request} req
