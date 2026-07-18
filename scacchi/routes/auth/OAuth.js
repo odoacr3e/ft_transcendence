@@ -19,7 +19,7 @@ function passportHandler(req, res, next) {
 			return res.status(401).json(jsonResponse.ResponseSuccess("Google authentication failed"));
 		req.user = user;
 		next();
-	})(res, req, next);
+	})(req, res, next);
 }
 
 /**
