@@ -1,5 +1,6 @@
 <script setup>
 	import { localInfo, startLocalMatchState }	from '@/scripts/Data/Variables';
+	import { clearMatchStorage }				from '@/scripts/Data/Archi';
 	import { computed, ref, watch }				from 'vue'
 	import router								from '@/router';
 
@@ -27,7 +28,11 @@
 		draw: { img: drawImg, title: 'Draw!', cls:'text-amber-300'},
 	}[outcome.value] ?? { img: '', title: '', cls: ''}));
 
-	watch(victory, (v) => { if (v) dismissed.value = false; });
+	watch(victory, (v) => {
+		if (v) 
+			dismissed.value = false;
+		clearMatchStorage()
+	});
 
 	function leaveMatch() {
 		sessionStorage.removeItem('match:id');

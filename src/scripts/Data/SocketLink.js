@@ -22,8 +22,15 @@ export function listenGameSocket(socket)
 		}
 		if (raw.type === "reload")
 		{
+			console.log("[reload] entrato. Localmatchstate =", localMatchState);
 			if (!localMatchState)
+			{
 				reloadMatchState(raw);
+				console.log("vado a game");
+				router.push({ name: "game" });
+			}
+			else
+				console.log("false, tutto rotto non navigo");
 			return;
 		}
 		console.log("response type", raw.type);

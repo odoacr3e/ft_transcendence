@@ -1,16 +1,17 @@
 <script setup>
-	import AppHeader					from '../components/AppHeader.vue';
-	import { matchMakingOpt }			from '@/scripts/Data/Variables.js';
-	import { eRoomType, eMatchPresets } from '@/Common/ENUMS.js';
-	import { useAuthStore } 			from '@/stores/auth.st.js';
-	import { ref, computed, watch }		from 'vue';
+	import AppHeader										from '../components/AppHeader.vue';
+	import { matchMakingOpt }								from '@/scripts/Data/Variables.js';
+	import { eRoomType, eMatchPresets } 					from '@/Common/ENUMS.js';
+	import { useAuthStore } 								from '@/stores/auth.st.js';
+	import { ref, computed, watch, onMounted, onUnmounted }	from 'vue';
 
-	const auth     = useAuthStore();
+	const auth      = useAuthStore();
 
-	const roomType = ref(null);
-	const players  = ref(null);
-	const time     = ref(null);
-	const waiting  = ref(false);
+	const roomType  = ref(null);
+	const players   = ref(null);
+	const time      = ref(null);
+	const waiting   = ref(false);
+	const reloading = ref(false);
 
 	const canPlay = computed(() => {
 		if (!roomType.value || !players.value)
@@ -35,6 +36,27 @@
 		console.log(useAuthStore().username, " ha appena richiesto un matchmaking!");
 		waiting.value = true;
 	}
+
+	function amIPlaying(playing)
+	{
+		if (playing)
+		{
+			reloading.value = true;
+			waiting.value = true;
+			auth.socket.emit('game', { type: "reload" });	
+		}
+	}
+
+	onMounted(() => {
+		if (!auth.socket)
+			return;
+		auth.socket.once('amiplaying', amIPlaying);
+		auth.socket.emit('amiplaying');
+	});
+
+	onUnmounted(() => {
+		auth.socket?.off('amiplaying', amIPlaying);
+	});
 </script>
 
 <template>
@@ -98,8 +120,11 @@
 					</div>
 					<div v-else class="flex flex-col items-center justify-center gap-6 py-20">
 						<div class="w-16 h-16 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin"></div>
-						<p class="text-white text-xl tracking-widest">
+						<p v-if="!reloading" class="text-white text-xl tracking-widest">
 							Looking for opponent<span class="dot dot-1">.</span><span class="dot dot-2">.</span><span class="dot dot-3">.</span>
+						</p>
+						<p v-else class="text-white text-xl tracking-widest">
+							Reloading game<span class="dot dot-1">.</span><span class="dot dot-2">.</span><span class="dot dot-3">.</span>
 						</p>
 						<button @click="waiting = false; auth.socket?.emit('cancel_match')"
 								class="text-zinc-400 text-sm hover:text-white cursor-pointer transition-colors border-black border-5 rounded-full p-2 bg-red">

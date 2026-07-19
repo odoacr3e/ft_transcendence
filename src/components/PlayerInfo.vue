@@ -15,6 +15,14 @@
 			down	= prop.pos === 'bottom',
 			endT	= computed(() => localInfo.secondTurn);
 
+	const nameSize = computed(() => {
+		const len = player.value.name?.length ?? 0;
+		if (len <= 12)	{ return 'x-large'; }
+		if (len <= 18)	{ return 'large'; }
+		if (len <= 24)	{ return 'medium'; }
+		return 'small';
+	});
+
 	const Piece = computed(() => {
 		if (!localInfo.clickedId) { return null; }
 		return localBoard.get(localInfo.clickedId)?.piece ?? null;
@@ -29,7 +37,8 @@
 			v-bind:class="{'rounded-tl-md':up, 'rounded-bl-md':down}">
 
 		<div class="shrink-0">
-			<b><h1 class="max-w-44 overflow-hidden text-ellipsis">{{ player.name }}</h1></b>
+			<b><h1 class="max-w-56 overflow-hidden text-ellipsis whitespace-nowrap"
+					:style="{ fontSize: nameSize }">{{ player.name }}</h1></b>
 			<div class="flex">
 				<h2>Points: {{ player.nPoints }}</h2>
 				<p class="text-[#4e4e4e8c] mx-2">|</p>
@@ -74,7 +83,6 @@
 		color: white;
 		padding: 3px;
 		padding-left: 8px;
-		font-size: x-large;
 	}
 
 	h2 {

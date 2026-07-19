@@ -1,14 +1,15 @@
 <script setup>
 	import { localMatchState, localInfo, DOMPlayer }	from '@/scripts/Data/Variables';
 	import { onMounted, ref, computed }       			from 'vue';
-	import { reloadMatch }								from '@/scripts/Events/BackLink.js';
+	import { askAmIPlaying, reloadMatch }								from '@/scripts/Events/BackLink.js';
 	import PlayerInfo               					from '../components/PlayerInfo.vue';
 	import ChessBoard               					from '../components/ChessBoard.vue';
 	import ActionButtons								from '../components/ActionButtons.vue';
 	import AppHeader                					from '../components/AppHeader.vue';
 	import EndGameOverlay 								from '@/components/EndGameOverlay.vue';
+	import { clearMatchStorage }						from '@/scripts/Data/Archi.js';
 	import router 										from '@/router';
-import GameFour from './GameFour.vue';
+	import GameFour										from './GameFour.vue';
 
 	const ready		= ref(false);
 	const style		= ref("1v1");
@@ -20,17 +21,18 @@ import GameFour from './GameFour.vue';
 		try{
 			if (!localMatchState) 
 			{
-				if (!sessionStorage.getItem("match:id"))
+				const playing = await askAmIPlaying();
+				if (!playing)
 				{
-					router.push({ name: "playpage" });
+					clearMatchStorage
+					router.push({ name: "playpage"});
 					return;
 				}
 
 				const restored = await reloadMatch();				
 				if (!restored || !localMatchState)
 				{
-					sessionStorage.removeItem("match:id");
-					sessionStorage.removeItem("match:myTeam");
+					clearMatchStorage
 					router.push({ name: "playpage"});
 					return;
 				}

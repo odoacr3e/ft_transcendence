@@ -75,37 +75,6 @@ export async function requestToBack(fromSquare, toSquare, giveUp)
 	});
 }
 
-// export function reloadMatch()
-// {
-// 	console.log("Chiamata di reload!");
-// 	const auth = useAuthStore();
-// 	if (!auth.socket)
-// 		return(Promise.resolve(false));
-// 	return new Promise((resolve) => 
-// 	{
-// 		let done = false;
-// 		const finish = (ok) => {
-// 			if (done)
-// 				return;
-// 			clearTimeout(timeout);
-// 			auth.socket.off('connect', sendReload);
-// 			resolve(ok);
-// 		}
-// 		const timeout = setTimeout(() => finish(false), 8000);
-
-// 		const sendReload = () => {
-// 			auth.socket.emit('game', {type: "reload", from: "", to: ""}, (result) => {
-// 				finish(result?.log?.status === 200);
-// 			});
-// 		};
-
-// 		if (auth.socket.connected)
-// 			sendReload();
-// 		else
-// 			auth.socket.once("connect", sendReload);
-// 	});
-// }
-
 // sta funzione è una ginata colossale
 export function reloadMatch()
 {
@@ -153,5 +122,37 @@ export function reloadMatch()
 			startLoop();
 		else
 			auth.socket.once("connect", startLoop);
+	});
+}
+
+export function askAmIPlaying()
+{
+	const auth = useAuthStore();
+	if (!auth.socket)
+		return Promise.resolve(false);
+
+	return new Promise((resolve) => {
+		let settled = false;
+		const onReply = (playing) => {
+			if (settled)
+				return;
+			settled = true;
+			clearTimeout(timer);
+			resolve(!!playing);
+		};
+		const timer = setTimeout(() => {
+			if (settled)
+				return;
+			settled = true;
+			auth.socket.off('amiplaying', onReply);
+			resolve(false);
+		}, 3000);
+
+		auth.socket.once('amiplaying', onReply);
+		const emit = () => auth.socket.emit('amiplaying');
+		if (auth.socket.connected)
+			emit();
+		else
+			auth.socket.once('connect', emit);	
 	});
 }

@@ -174,7 +174,16 @@ export function reloadMatchState(raw)
 	initLocalBoard(localMatchState.board);
 	initLocalPlayers();
 
-	localInfo.myTeam = sessionStorage.getItem("match:myTeam");
-	localInfo.id = sessionStorage.getItem("match:id");
+	localInfo.myTeam = raw.team ?? sessionStorage.getItem("match:myTeam");
+	localInfo.matchId = sessionStorage.getItem("match:id");
 	localInfo.victory = raw.victory;
+
+	if (raw.team)
+		sessionStorage.setItem("match:myTeam", raw.team);
+}
+
+export function clearMatchStorage()
+{
+	sessionStorage.removeItem("match:id");
+	sessionStorage.removeItem("match:myTeam");
 }
