@@ -372,7 +372,7 @@ export async function updateUserPasswordByUsername(username, password) {
 }
 
 export async function updateUserPasswordById(id_user, password) {
-	return await prisma.users.update({
+	const u = await prisma.users.update({
 		where: {id_user: id_user},
 		data: { password: password },
 		select: {
@@ -394,5 +394,19 @@ export async function updateUserPasswordById(id_user, password) {
 			},
 			mfa: true
 		}
+	});
+	return ({
+		id_user: u.id_user,
+		name: u.name,
+		surname: u.surname,
+		username: u.username,
+		setpwd: u.password !== null, 
+		email: u.email,
+		image: u.image,
+		nationality: u.nationality,
+		points: u.points,
+		title: u.title,
+		preferences: u.preferences,
+		mfa: u.mfa
 	});
 }
