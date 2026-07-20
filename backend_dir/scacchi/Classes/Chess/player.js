@@ -49,6 +49,7 @@ class Player
 		this.team = data.team;
 		this.next = data.next;
 		this.prev = data.prev;
+		this.allie = data.allie;
 	}
 }
 
@@ -59,36 +60,42 @@ const preset =
 		team: eTeam.White,
 		next: eTeam.Black,
 		prev: eTeam.Black,
+		allie: eTeam.White,
 	},
 	black: 
 	{
 		team: eTeam.Black,
 		next: eTeam.White,
 		prev: eTeam.White,
+		allie: eTeam.Black,
 	},
 	red: 
 	{
 		team: eTeam.Red,
 		next: eTeam.Green,
 		prev: eTeam.Blue,
+		allie: eTeam.Yellow,
 	},
 	blue: 
 	{
 		team: eTeam.Blue,
 		next: eTeam.Red,
 		prev: eTeam.Yellow,
+		allie: eTeam.Green,
 	},
 	green: 
 	{
 		team: eTeam.Green,
 		next: eTeam.Yellow,
 		prev: eTeam.Red,
+		allie: eTeam.Blue,
 	},
 	yellow: 
 	{
 		team: eTeam.Yellow,
 		next: eTeam.Blue,
 		prev: eTeam.Green,
+		allie: eTeam.Red,
 	},
 }
 

@@ -1,5 +1,7 @@
 // @ts-check
 
+import { eMatchPresets } from "../Macro/enums.js";
+
 //SECTION - checkDanger function
 /*
 	list of exports:
@@ -34,7 +36,9 @@ let isDangerous = (match, setZones, team, saveInfoBool=false, pieceCoord=match.c
 		if (!match.board.get(x).piece)
 			return (false);
 		if (match.board.get(x)?.piece?.team != team)
-		{
+		{//@ts-ignore
+			if (match.settings.preset == eMatchPresets.ClassicFourPlayers && match.board.get(x)?.piece?.team == match[team].allie)
+				continue ;
 			dangerCoord = x;
 			break ;
 		}
