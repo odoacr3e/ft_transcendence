@@ -1,13 +1,13 @@
 
-import * as lib from "../lib/lib.js";
+import * as lib from "../../lib/lib.js";
 import bcrypt from "bcryptjs";
 import { createJwt, checkJwt, revokeTokenSessions, 
-	validateInputRegister, validateUser, cookiesOpt, 
-	createOtp, verifyOtp } from "../utils/auth.js";
-import { jsonResponse } from "../utils/response.js";
-import { colors } from "../utils/colors.js";
-import { log } from "../utils/log.js";
-import { query } from "../lib/query.js";
+	validateInputRegister, validateUser, cookiesOpt,
+	createOtp, verifyOtp } from "../../utils/auth.js";
+import { jsonResponse } from "../../utils/response.js";
+import { colors } from "../../utils/colors.js";
+import { log } from "../../utils/log.js";
+import { query } from "../../lib/query.js";
 const { usersQuery } = query;
 const { fs, logfd } = lib.include;
 const { crypto, redis, sendEmail, bodyOTP, bodyRegistration } = lib.conn;
