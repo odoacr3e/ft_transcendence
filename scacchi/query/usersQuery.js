@@ -54,6 +54,31 @@ export async function getMe(id) {
 	});
 }
 
+export async function getUserByGoogleId(google_id) {
+	return await prisma.users.findUnique({
+		select: {
+			id_user: true,
+			name: true,
+			surname: true,
+			username: true,
+			email: true,
+			image: true,
+			nationality: true,
+			points: true,
+			title: true,
+			preferences: {
+				select: {
+					name: true,
+					description: true,
+					colors: true,
+				}
+			},
+			mfa: true
+		},
+		where: { google_id: String(google_id) }
+	});
+}
+
 export async function getUserById(id) {
 	return await prisma.users.findUnique({
 		select: {
@@ -189,7 +214,7 @@ export async function getUserByEmail(email) {
 				}
 			},
 			where: {
-				id_user: String(email)
+				email: String(email)
 			}
 		});
 }
@@ -260,7 +285,7 @@ export async function deleteUserById(id) {
 }
 
 export async function updateUserFieldsById(id, data) {
-	const fields = ['name', 'surname', 'username', 'nationality', 'image', 'preferences', 'mfa'];
+	const fields = ['name', 'surname', 'username', 'nationality', 'image', 'preferences', 'mfa', 'google_id'];
 	const updates = {};
 	for (const f of fields)
 	{
