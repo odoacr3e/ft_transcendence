@@ -299,6 +299,13 @@ export async function deleteUserById(id) {
 	});
 }
 
+export async function updateUserELO(id_user, elo) {
+	return await prisma.users.update({
+		where: { id_user: id_user },
+		data: { points: elo }
+	});
+}
+
 export async function updateUserFieldsById(id, data) {
 	const fields = ['name', 'surname', 'username', 'nationality', 'image', 'preferences', 'mfa', 'google_id'];
 	const updates = {};
