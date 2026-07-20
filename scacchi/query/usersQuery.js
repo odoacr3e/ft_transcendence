@@ -28,12 +28,13 @@ export async function getAllUsers() {
 }
 
 export async function getMe(id) {
-	return await prisma.users.findUnique({
+	const u = await prisma.users.findUnique({
 		select: {
 			id_user: true,
 			name: true,
 			surname: true,
 			username: true,
+			password: true,
 			email: true,
 			image: true,
 			nationality: true,
@@ -51,6 +52,20 @@ export async function getMe(id) {
 		where: {
 			id_user: Number(id)
 		}
+	});
+	return ({
+		id_user: u.id_user,
+		name: u.name,
+		surname: u.surname,
+		username: u.username,
+		setpwd: u.password !== null, 
+		email: u.email,
+		image: u.image,
+		nationality: u.nationality,
+		points: u.points,
+		title: u.title,
+		preferences: u.preferences,
+		mfa: u.mfa
 	});
 }
 
