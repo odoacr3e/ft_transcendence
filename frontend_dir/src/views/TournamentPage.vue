@@ -34,7 +34,7 @@
 
         try
         {
-            const resp = await api.post("/api/tournaments", fd);
+            const resp = await api.post("/api/tournaments", fd); //non faro' piu' richiesta al db ma al back con websocket
             if (resp.status === "success")
             {
                 router.push({

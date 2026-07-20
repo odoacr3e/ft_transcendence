@@ -10,12 +10,12 @@
 
     const   tournament = ref(null),
             friends = ref(null),
-            id_users = ref(new Set()), //?
+            invites = ref(new Set()),
+            players = ref(new Set()),
             searchUser = ref(""),
             searchList = ref(null),
             authStore = useAuthStore(),
             { user } = storeToRefs(authStore);
-            // inviteUsers = computed(() => friends.value ? friends.value.filter((u) => u.username !== user.value?.username) : [] );
 
     const route = useRoute()
 
@@ -27,15 +27,15 @@
         }
         catch(err) {}
         
-        id_users.value.add(user.value);
+        players.value.add(user.value);
     });
 
     function addToArry(id)
     {
-        if (id_users.value.has(id))
-            id_users.value.delete(id);
-        else if (id_users.value.size < 8)
-            id_users.value.add(id);
+        if (invites.value.has(id))
+            invites.value.delete(id);
+        else if (invites.value.size < 7)
+            invites.value.add(id);
     }
 
     async function search()
@@ -43,11 +43,28 @@
         const username = searchUser.value.trim();
 		if (!username) { searchList.value = null; return; }
         try {
-            searchList.value = (await api.get(`/api/users/?username=${username}`)).data.users;
-            if (!searchList.value)
+            const temp= (await api.get(`/api/users/?username=${username}`)).data.users;
+            if (!temp)
                 searchList.value = null;
+            searchList.value  = temp.filter((u) => u.username !== user.value?.username);
         }
         catch { searchList.value = null; }
+    }
+
+    async function inviteUsers()
+    {
+        try
+        {
+            for (const u of invites.value.values())
+            {
+                console.log(u.id_user);
+                    await api.post("/api/notifications", 
+                                {	title: "Invito ad un torneo",
+                                    description: ` ti ha invitato a partecipare al torneo ${tournament.value?.name}`,
+                                    id_receiver: u.id_user });
+            }
+        }
+        catch(err) { console.log(err); }
     }
 </script>
 
@@ -72,7 +89,7 @@
                                     <img :src="u.friend.image ? `${u.friend.image}` : defaultAvatar" @error="handleAvatarError" :draggable="false"
                                         alt="" class="size-22 rounded-t-md place-self-center object-cover bg-linear-to-t from-[#882a2a] to-[#201e1c]">
                                     <div class="bg-[#181715] py-2 grid grid-cols-1 border-b-2 border-x-2 border-[#4e4e4e8c] rounded-b-md w-full justify-items-center"
-                                        :class="{ 'border-[#a1a1a1d5] bg-[#555555]' : id_users.has(u.friend)}">
+                                        :class="{ 'border-[#a1a1a1d5] bg-[#555555]' : invites.has(u.friend)}">
                                         <h3 class="text-white text-sm" v-if="u.friend.username.length > 8">{{ u.friend.username.slice(0, 7) + "..."}}</h3>
                                         <h3 class="text-white text-sm" v-if="u.friend.username.length <= 8">{{ u.friend.username }}</h3>
                                     </div>
@@ -85,7 +102,6 @@
                                 <form @submit.prevent="search()">
                                     <input v-model="searchUser" type="search" name="searchBar" placeholder="Cerca" autocomplete="off"
                                         class="justify-self-center h-10 pl-3 text-white border-b border-[#4e4e4e8c]" value="searchUser">
-                                        <!-- :list="searchUser ? 'users' : null"> -->
                                 </form>
                             </div>
                             <div v-if="searchList" class="p-8 grid grid-cols-4 gap-6 w-full" :class="friends?.length > 5 ? 'max-h-[35vh] overflow-y-auto' : ''">
@@ -93,7 +109,7 @@
                                     <img :src="u.image ? `${u.image}` : defaultAvatar" @error="handleAvatarError" :draggable="false"
                                         alt="" class="size-22 rounded-t-md place-self-center object-cover bg-linear-to-t from-[#882a2a] to-[#201e1c]">
                                     <div class="bg-[#181715] py-2 grid grid-cols-1 border-b-2 border-x-2 border-[#4e4e4e8c] rounded-b-md w-full justify-items-center"
-                                        :class="{ 'border-[#a1a1a1d5] bg-[#555555]' : id_users.has(u)}">
+                                        :class="{ 'border-[#a1a1a1d5] bg-[#555555]' : invites.has(u)}">
                                         <h3 class="text-white text-sm" v-if="u.username.length > 8">{{ u.username.slice(0, 7) + "..."}}</h3>
                                         <h3 class="text-white text-sm" v-if="u.username.length <= 8">{{ u.username }}</h3>
                                     </div>
@@ -103,28 +119,45 @@
                     </div>
                     <div class="my-4 mx-8 h-[68vh] w-[77vh] bg-[#181715] text-white rounded-3xl border border-[#4e4e4e8c]">
                         <div class="p-4">
-                            <div class="flex m-2 items-center">
-                                <img :src="user.image ? `${user.image}` : defaultAvatar" @error="handleAvatarError" :draggable="false"
-                                alt="" class="size-15 rounded-full object-cover mx-2">
-                                <div>
-                                    <p>Tu</p>
-                                    <p>[ADMIN]</p>
+                            <div>
+                                <div class="flex justify-between">
+                                    <h2 class="text-2xl m-3">Giocatori:</h2>
+                                    <form @submit.prevent="" method="post" enctype="application/json" class="text-white items-center">
+                                        <input id="submit" class="h-fit self-center transition-opacity w-fit p-3 m-2 mr-5 text-base bg-[#882a2a] rounded-[7px] text-white hover:bg-linear-to-t from-[#882a2a] to-[#af3d3d]"
+                                                type="submit" value="Inizia il torneo!" :class="{ 'opacity-100 duration-250 cursor-pointer pointer-events-auto' : players.size === 8, 'pointer-events-none opacity-0' : players.size < 8 }">
+                                    </form>
+                                </div>
+                                <div class="grid grid-cols-2 grid-rows-1" 
+                                    :class="{   'grid-rows-4' : players.size == 8 || players.size == 7, 'grid-rows-3' : players.size == 6 || players.size == 5, 
+                                                'grid-rows-2' : players.size == 4 || players.size == 3 }">
+                                    <div v-for="p in players" class="flex m-3 items-center">
+                                            <img :src="p.image ? `${p.image}` : defaultAvatar" @error="handleAvatarError" :draggable="false"
+                                                alt="" class="size-15 rounded-full object-cover mx-2">
+                                            <div>
+                                                <p>{{ p.username }}</p>
+                                                <p v-if="p.username !== tournament.created_by.username">Pronto!</p>
+                                                <p v-if="p.username === tournament.created_by.username">Admin</p>
+                                            </div>
+                                    </div>
                                 </div>
                             </div>
-                            <h2 class="text-2xl m-3">Invitati:     ({{ id_users.size }}/8)</h2>
-                            <div class="grid grid-cols-2 grid-rows-4">
-                                <div v-for="p in id_users" class="flex m-6 items-center" :class="{ 'hidden' : p.username === user.username }">
-                                        <img v-if="p.username !== user.username" :src="p.image ? `${p.image}` : defaultAvatar" @error="handleAvatarError" :draggable="false"
-                                            alt="" class="size-15 rounded-full object-cover mx-2">
-                                        <div>
-                                            <p v-if="p.username !== user.username">{{ p.username }}</p>
-                                            <p>...</p>
-                                        </div>
+                            <div>
+                                <div class="flex justify-between">
+                                    <h2 class="text-2xl m-3">Invitati:     ({{ invites.size + 1 }}/8)</h2>
+                                    <button @click="inviteUsers()" class="h-fit self-center transition-opacity w-25 p-2 m-2 mr-5 text-base bg-[#882a2a] rounded-[7px] text-white hover:bg-linear-to-t from-[#882a2a] to-[#af3d3d]">
+                                        <p>Invita!</p>
+                                    </button>
                                 </div>
-                                <form @submit.prevent="submitFirstForm" method="post" enctype="application/json" class="flex flex-col text-white items-center">
-                                    <input id="submit" class="cursor-pointer h-fit self-end w-25 p-2 m-2 text-base bg-[#882a2a] rounded-[7px] text-white hover:bg-linear-to-t from-[#882a2a] to-[#af3d3d]"
-				                	        type="submit" value="Crea" :class="{ 'opacity-100 transition-opacity duration-250' : id_users.size === 8, 'opacity-0 transition-none' : id_users.size < 8 }">
-                                </form>
+                                <div class="grid grid-cols-2 grid-rows-4">
+                                    <div v-for="p in invites" class="flex m-3 items-center">
+                                            <img :src="p.image ? `${p.image}` : defaultAvatar" @error="handleAvatarError" :draggable="false"
+                                                alt="" class="size-15 rounded-full object-cover mx-2">
+                                            <div>
+                                                <p>{{ p.username }}</p>
+                                                <p>...</p>
+                                            </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

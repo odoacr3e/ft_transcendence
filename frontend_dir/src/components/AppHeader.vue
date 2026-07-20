@@ -12,6 +12,7 @@
 	const { user } = storeToRefs(authStore);
 	const	p_bool = ref(false),
 			n_bool = ref(false),
+			popUp = ref(false),
 			router = useRouter(),
 			db = ref([]),
 			searchUser = ref(""),
@@ -47,11 +48,15 @@
 		if (msg.status === "not_read")
 		{
 			msg.status = 'read';
-			await api.patch("/api/notifications", { id_notification: Number(msg.id_notification) });
-			
-			console.log({id_notification: Number(msg.id_notification)});
+			try
+			{ await api.patch("/api/notifications", { id_notification: Number(msg.id_notification) }); }
+			catch(err) { console.log(err); }
 		}
 	}
+
+	const closePopup = () => {
+        popUp.value = false;
+    };
 
 	onMounted(async () => {
 		try {
@@ -124,12 +129,20 @@
 							</div>
 							<hr class="w-full justify-self-start text-[#4e4e4e8c]">
 							<div class="items-end">
-								<RouterLink v-if="m.description[0] === ' '" :to="{ name: 'user_page', params: { username: m.sender.username } }"
+								<RouterLink v-if="m.description[0] === ' ' && m.description.includes('amicizia')" :to="{ name: 'user_page', params: { username: m.sender.username } }"
 									@click="readMsg(m)">
 									<div v-if="m.description[0] === ' '" class="flex gap-1 text-zinc-300 text-sm pt-2.5 pb-1">
 										<p class="hover:underline">{{ m.sender.username }} {{ m.description }}</p>
 									</div>
 								</RouterLink>
+
+								<div v-if="m.description[0] === ' ' && m.description.includes('torneo')"
+									@click="readMsg(m); n_bool = false; popUp = true;" class="cursor-pointer">
+									<div v-if="m.description[0] === ' '" class="flex gap-1 text-zinc-300 text-sm pt-2.5 pb-1">
+										<p class="hover:underline">{{ m.sender.username }} {{ m.description }}</p>
+									</div>
+								</div>
+
 								<div v-if="m.description[0] !== ' '">
 									<p class="text-zinc-300 text-sm pt-2.5 pb-1">{{ m.description }}</p>
 									<div class="ml-auto -mt-3.5 flex gap-1 h-fit w-fit" v-if="m.sender">
@@ -201,6 +214,12 @@
 			</RouterLink>
 		</div>
 	</div>
+
+	<div v-if="popUp" class="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-xs px-4" @click.self="closePopup()">
+        <div class="w-full max-w-lg rounded-3xl border border-[#4e4e4e8c] bg-[#201e1c] p-6 text-white shadow-2xl">
+            <!-- qui devo fare un fetch sulla variabile nuova che mi dice se questo utente e' invitato o meno a questo torneo... -->
+		</div>
+    </div>
 </template>
 
 <style scoped>
