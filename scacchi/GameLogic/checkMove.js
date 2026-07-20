@@ -8,7 +8,7 @@
 */
 
 import { error } from "../handlers/game/utils.js";
-import { enumNames, eEvents } from "../Macro/enums.js";
+import { enumNames, eEvents, eMatchPresets } from "../Macro/enums.js";
 import { movePiece } from "../utils/dangerUpdate.js";
 import { Preset } from "../Classes/Chess/Pieces/preset.js";
 import {checkCastling} from "./Castling.js";
@@ -58,6 +58,11 @@ export function checkMove(coords=[], result, match, boostBool)
 			if (checkCastling(match, result, to, from))
 				return (true);
 			return (error(result, 403, "you can't eat your team mates"));
+		}
+		if (match.settings.preset == eMatchPresets.ClassicFourPlayers)
+		{
+			if (to.piece.team == match.currentPlayer.allie)
+				return (error(result, 403, "you can't eat your allie's pieces"));
 		}
 	}
 	if (!checkBooster(match, result, from, coords, boostBool))

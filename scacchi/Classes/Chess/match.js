@@ -13,6 +13,7 @@ import { History } from "./history.js";
 import { MATCHTIMER } from "../../Macro/macro.js"; 
 import { globals } from "../Globals/globals.js";
 import EloRank from "elo-rank";
+import { query } from "../../lib/query.js";
 
 /** @typedef {import("../Globals/Queue.js").QueueNode} QueueNode*/
 
@@ -424,7 +425,7 @@ class Match
 		newElo = this.elo.updateRating(player.expectedElo, winBool? 1: 0, player.dbTable.points);
 		console.log(`UpdateElo: user ${player.id} old elo is ${player.dbTable.points}, new is ${newElo}`);
 		//FIXME - query sul db
-		
+		query.usersQuery.updateUserELO(player.id, newElo);
 	}
 }
 
@@ -499,7 +500,12 @@ class MatchSettings
 		if (other == "0")
 			other = null;
 		if (typeof(other) == "string")
+		{
+			this.preset = other;
 			other = this.GetPresetByType(other);
+		}
+		else //@ts-ignore
+			this.preset = other == null ? other : other.preset;
 		this.timer = MATCHTIMER;
 		this.board =
 		{

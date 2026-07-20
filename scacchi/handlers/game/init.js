@@ -44,8 +44,8 @@ function init(match=null, preset=null)
 	rng = initRng(seed);
 	if (match.settings.board.start)
 		creators.initSavedBoard(match);
-	else if (seed == 0 || preset == null)//@ts-ignore
-		creators.initClassicBoard(match, preset);
+	else if (seed == 0 || preset == null)
+		creators.initClassicBoard(match);
 	else
 		creators.initRandomBoard(match, rng);
 	result.status = 200;

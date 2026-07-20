@@ -28,7 +28,6 @@ function mainTerm()
 	let	match;
 	let	seed;
 	let	time;
-	let	matchSettings;
 
 	console.profile();
 	termInit();
@@ -37,9 +36,9 @@ function mainTerm()
 	if (!match)
 		throw ("To use term.js, you need to set the DEBUG macro true");
 	seed = lib.Macro.SEED;
-	seed = "1v1";
+	seed = "2v2";
 	time = process.hrtime.bigint();
-	init(match, matchSettings);
+	init(match, seed);
 	console.log(`time to init: ${(process.hrtime.bigint() - time) / 1000n} microseconds`);
 	match.cursor.square = match.currentPlayer.King;
 	// edoChampionBug(match);
