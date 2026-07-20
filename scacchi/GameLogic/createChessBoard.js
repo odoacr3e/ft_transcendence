@@ -61,8 +61,9 @@ function initSavedBoard(match)
 /**
  * 
  * @param {Match} match 
+ * @param {string | null} preset 
  */
-function initClassicBoard(match)
+function initClassicBoard(match, preset=null)
 {
 	let	row;
 	let	col;
@@ -70,7 +71,7 @@ function initClassicBoard(match)
 
 	color = true;
 	if (match.settings.players.number == 4)
-		return initBoard4v4(match);
+		return initBoard4v4(match, preset);
 	for (let [key, data] of match.board)
 	{
 		data.piece = null;
@@ -168,8 +169,9 @@ function initRandomBoard(match, rng)
 /**
  * 
  * @param {Match} match 
+ * @param {string | null} preset 
  */
-function initBoard4v4(match)
+function initBoard4v4(match, preset)
 {
 	let	row;
 	let	col;
@@ -192,6 +194,7 @@ function initBoard4v4(match)
 		match.cursor.set(key);
 		col = match.cursor.getCol();
 		row = match.cursor.getRow();
+		// if ( == )
 		team = getTeamByCoord(match);
 		if (wallBool && (row <= diff || row > 8 + diff) && (col <= diff || col > 8 + diff))
 			data.wallBool = true;
