@@ -24,7 +24,7 @@ authRouter.post("/login", async (req, res) => {
 		const { username, password } = req.body;
 		if (!username || !password)
 			return (res.status(400).json(jsonResponse.ResponseError("Missing credentials")));
-		const user = await usersQuery.getUserByUsernameWithPwd(username);
+		const user = await usersQuery.getUserWithPwd(username);
 		if (!user || !(await bcrypt.compare(password, user.password)))
 		{
 			log.warn(`Access denied to user ${colors.bold(username)}`);
