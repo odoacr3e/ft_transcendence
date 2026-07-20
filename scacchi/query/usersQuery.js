@@ -181,7 +181,7 @@ export async function getUserByUsername (username) {
 }
 
 export async function getUserWithPwd (user) {
-	return await prisma.users.findUnique({
+	return await prisma.users.findFirst({
 		select: {
 			id_user: true,
 			name: true,
@@ -207,7 +207,6 @@ export async function getUserWithPwd (user) {
 				{ username: String(user) },
 				{ email: String(user) }
 			]
-			
 		}
 	});
 }
