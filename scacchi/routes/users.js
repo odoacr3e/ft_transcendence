@@ -229,7 +229,7 @@ usersRouter.patch('/loggedUpdatePassword', checkJwt, async (req, res) => {
 			return res.status(400).json(jsonResponse.ResponseError("Invalid password format"));
 		const user = await usersQuery.updateUserPasswordById(req.user.id_user, await bcrypt.hash(password, parseInt(lib.Macro.HASH_SALT)))
 		if (user)
-			return res.status(204).send();
+			return res.status(200).json(jsonResponse.ResponseSuccess({ "user": user }));
 		return res.status(404).json(jsonResponse.ResponseError("User not found"));
 	} catch (error) {
 		if (error.code == 'P2025')

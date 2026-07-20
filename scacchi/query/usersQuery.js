@@ -180,7 +180,7 @@ export async function getUserByUsername (username) {
 		});
 }
 
-export async function getUserByUsernameWithPwd (username) {
+export async function getUserWithPwd (user) {
 	return await prisma.users.findUnique({
 		select: {
 			id_user: true,
@@ -203,7 +203,11 @@ export async function getUserByUsernameWithPwd (username) {
 			mfa: true
 		},
 		where: {
-			username: String(username)
+			OR: [
+				{ username: String(user) },
+				{ email: String(user) }
+			]
+			
 		}
 	});
 }
