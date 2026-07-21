@@ -59,7 +59,7 @@
 						</button>
 					</div>
 					<div class="text-xs mx-5 self-center justify-self-center text-[#882a2a]" 
-						:class="{ 'transition-colors duration-200 text-[#c46b6b]': error, 'transition-colors duration-200 text-[#882a2a]': !error, }" 
+						:class="{ 'transition-colors duration-200 text-[#d1aaaa]': error, 'transition-colors duration-200 text-[#882a2a]': !error, }" 
 						@animationend="error = false">
 						<p>Ricorda, la password deve avere almeno 8 caratteri, un numero,</p>
 						<p> una maiuscola, una minuscola e un carattere speciale ($,%,#...)</p>

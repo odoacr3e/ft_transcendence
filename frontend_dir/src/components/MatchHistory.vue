@@ -74,7 +74,7 @@
                         </RouterLink>
                     </p>
                 </div>
-                <button type="button" class="text-2xl leading-none text-zinc-400 hover:text-white" @click="closeTournamentPopup">&times;</button>
+                <button type="button" class="text-2xl leading-none text-zinc-500 hover:text-white" @click="closeTournamentPopup">&times;</button>
             </div>
             <div class="mt-6 mb-3 flex gap-2 justify-self-center">
                 <p v-if="selectedT.result == 'Win'" class="text-green-600">{{ selectedT.result }}</p>

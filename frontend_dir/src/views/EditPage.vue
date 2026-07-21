@@ -14,8 +14,8 @@
 	        	username: '',
 	        	nationality: '',
                 preset: '',
-                mfa: !!user.value.mfa
-                // preferences: 0
+                mfa: !!user.value.mfa,
+                preferences: 0
 	        }),
             avatarFile = ref(null),      // il File vero e proprio
             avatarPreview = ref(null),   // URL per l'anteprima
@@ -107,7 +107,7 @@
                         <input id="avatar-input" type="file" accept="image/png, image/jpeg, image/webp"
                             class="hidden" @change="handleAvatarChange">
                         <label for="avatar-input" class="absolute inset-0 size-50 flex flex-col items-center justify-center rounded-full
-                            bg-[#55555577] opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                            bg-black/20 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
                             <p class="text-white">Cambia foto</p>
                             <p class="text-white text-xl leading-none">+</p>
                         </label>
@@ -137,8 +137,8 @@
                                                                         || avatarFile || (!avatarFile && removeAvatar) }"
 			        	type="submit" value="Salva le modifiche">
                 </div>
-                <div class="flex flex-col p-2 m-4 ml-2 text-white bg-[#201e1c] rounded-3xl border border-[#4e4e4e8c] w-[110vh]">
-                    <h2 class="text-2xl m-5">Informazioni utente
+                <div class="flex flex-col m-4 ml-2 text-white bg-[#201e1c] rounded-3xl border border-[#4e4e4e8c] w-[110vh]">
+                    <h2 class="text-2xl m-5 p-2">Informazioni utente
                         <hr class="w-full justify-self-start text-[#4e4e4e8c]">
                     </h2>
                     <div class="grid grid-cols-2 grid-rows-3 gap-5 m-5 self-center">
@@ -239,12 +239,45 @@
                                 <label class="inline-flex items-center me-5 cursor-pointer">
                                   <input type="checkbox" class="sr-only peer" v-model="formData.mfa">
                                   <span class="select-none me-3 text-sm font-medium text-heading">Disattivato</span>
-                                  <div class="relative w-9 h-5 bg-neutral-quaternary rounded-full bg-[#0c0c0b]
+                                  <div class="relative w-9 h-5 bg-neutral-quaternary rounded-full bg-[#181715]
                                         peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:inset-s-0.5 after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#882a2a]"></div>
                                   <span class="select-none ms-3 text-sm font-medium text-heading">Attivato</span>
                                 </label>
                             </div>
                         </div>
+
+                        <div>
+                            <div class="flex gap-2 mb-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="mt-1 size-6 text-[#dcdfe4c0]">
+                                    <path fill-rule="evenodd" d="M2.25 4.125c0-1.036.84-1.875 1.875-1.875h5.25c1.036 0 1.875.84 1.875 1.875V17.25a4.5 4.5 0 1 1-9 0V4.125Zm4.5 14.25a1.125 1.125 0 1 0 0-2.25 1.125 1.125 0 0 0 0 2.25Z" clip-rule="evenodd" />
+                                    <path d="M10.719 21.75h9.156c1.036 0 1.875-.84 1.875-1.875v-5.25c0-1.036-.84-1.875-1.875-1.875h-.14l-8.742 8.743c-.09.089-.18.175-.274.257ZM12.738 17.625l6.474-6.474a1.875 1.875 0 0 0 0-2.651L15.5 4.787a1.875 1.875 0 0 0-2.651 0l-.1.099V17.25c0 .126-.003.251-.01.375Z" />
+                                </svg>
+                                <h3 class="text-xl">Tema</h3>
+                            </div>
+                            <div class="form flex w-sm mb-3">
+                                <div>
+                                    <input size="35" class="pl-2 text-base" type="radio" id="1" value="1" v-model="formData.preferences">
+                                    <label for="1">Test1</label>
+                                </div>
+                                <div>
+                                    <input size="35" class="pl-2 text-base" type="radio" id="2" value="2" v-model="formData.preferences">
+                                    <label for="2">Test2</label>
+                                </div>
+                                <div>
+                                    <input size="35" class="pl-2 text-base" type="radio" id="3" value="3"v-model="formData.preferences">
+                                    <label for="3">Test3</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div v-if="!user.setpwd" class="flex items-center mt-auto px-5 p-2 rounded-b-3xl text-[80%] border bg-red-500/10 text-red-100 border-red-800/10 inset-ring-red-500/20">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-red-100 mr-2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+                        </svg>
+                        <p>Hai fatto accesso con il tuo account Google e in questo momento non hai una password.</p>
+                        <RouterLink to="/me/edit/pwd" class="mx-auto">
+                            <u><a class="text-sm cursor-pointer text-[#882a2a] hover:text-[#af3d3d] active:text-[#d1aaaa]">Creane una per la tua sicurezza!</a></u>
+                        </RouterLink>
                     </div>
                 </div>
             </form>

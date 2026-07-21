@@ -1,12 +1,12 @@
 <script setup>
     import AppHeader    from '../components/AppHeader.vue';
     import { defaultAvatar, handleAvatarError } from '../scripts/Helper/CompUtils';
+    import { ref, onMounted }   from 'vue';
+    import { useAuthStore }     from "../stores/auth.st";
+    import { storeToRefs }      from 'pinia';
     import { useRoute } from 'vue-router'
-    import { ref, onMounted, computed } from 'vue';
-    import { useAuthStore } from "../stores/auth.st";
-    import { storeToRefs }  from 'pinia';
     import { authApi }  from '../router/api/auth.api';
-    import { api } from '@/router/api/client';
+    import { api }      from '@/router/api/client';
 
     const   tournament = ref(null),
             friends = ref(null),
@@ -57,11 +57,10 @@
         {
             for (const u of invites.value.values())
             {
-                console.log(u.id_user);
-                    await api.post("/api/notifications", 
-                                {	title: "Invito ad un torneo",
-                                    description: ` ti ha invitato a partecipare al torneo ${tournament.value?.name}`,
-                                    id_receiver: u.id_user });
+                await api.post("/api/notifications", 
+                    {	title: "Invito ad un torneo",
+                        description: ` ti ha invitato a partecipare al torneo ${tournament.value?.name}`,
+                        id_receiver: u.id_user });
             }
         }
         catch(err) { console.log(err); }
@@ -88,8 +87,9 @@
                                 <div v-for="u in friends" class="grid grid-cols-1 w-fit cursor-pointer" @click="addToArry(u.friend)" :title="u.friend.username">
                                     <img :src="u.friend.image ? `${u.friend.image}` : defaultAvatar" @error="handleAvatarError" :draggable="false"
                                         alt="" class="size-22 rounded-t-md place-self-center object-cover bg-linear-to-t from-[#882a2a] to-[#201e1c]">
-                                    <div class="bg-[#181715] py-2 grid grid-cols-1 border-b-2 border-x-2 border-[#4e4e4e8c] rounded-b-md w-full justify-items-center"
-                                        :class="{ 'border-[#a1a1a1d5] bg-[#555555]' : invites.has(u.friend)}">
+                                    <div class="py-2 grid grid-cols-1 border-[#4e4e4e8c] border-b-2 border-x-2 rounded-b-md w-full justify-items-center"
+                                        :class="{   'bg-[#302d2a]' : invites.has(u.friend),
+                                                    'bg-[#181715]' : !invites.has(u.friend) }">
                                         <h3 class="text-white text-sm" v-if="u.friend.username.length > 8">{{ u.friend.username.slice(0, 7) + "..."}}</h3>
                                         <h3 class="text-white text-sm" v-if="u.friend.username.length <= 8">{{ u.friend.username }}</h3>
                                     </div>
@@ -108,8 +108,9 @@
                                 <div v-for="u in searchList" class="grid grid-cols-1 w-fit cursor-pointer" @click="addToArry(u)" :title="u.username">
                                     <img :src="u.image ? `${u.image}` : defaultAvatar" @error="handleAvatarError" :draggable="false"
                                         alt="" class="size-22 rounded-t-md place-self-center object-cover bg-linear-to-t from-[#882a2a] to-[#201e1c]">
-                                    <div class="bg-[#181715] py-2 grid grid-cols-1 border-b-2 border-x-2 border-[#4e4e4e8c] rounded-b-md w-full justify-items-center"
-                                        :class="{ 'border-[#a1a1a1d5] bg-[#555555]' : invites.has(u)}">
+                                    <div class="py-2 grid grid-cols-1 border-[#4e4e4e8c] border-b-2 border-x-2 rounded-b-md w-full justify-items-center"
+                                        :class="{   'bg-[#302d2a]' : invites.has(u),
+                                                    'bg-[#181715]' : !invites.has(u) }">
                                         <h3 class="text-white text-sm" v-if="u.username.length > 8">{{ u.username.slice(0, 7) + "..."}}</h3>
                                         <h3 class="text-white text-sm" v-if="u.username.length <= 8">{{ u.username }}</h3>
                                     </div>

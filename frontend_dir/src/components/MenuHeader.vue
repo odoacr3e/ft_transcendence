@@ -56,22 +56,6 @@
         z-index: 100;
     }
 
-    #button {
-        padding: 6px;
-        padding-left: 20px;
-        padding-right: 20px;
-        margin: 20px;
-        margin-right: -20px;
-        background-color: brown;
-        border-radius: 20px;
-        font-size: large;
-        cursor: pointer;
-        align-self: end;
-        transition: color 0.15s ease-in-out;
-        border-width: 2px;
-        border-color: rgb(0, 0, 0);
-    }
-
     .menu {
         cursor: pointer;
         position: relative;

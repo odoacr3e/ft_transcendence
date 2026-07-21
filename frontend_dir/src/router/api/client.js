@@ -45,6 +45,7 @@ async function request_m(endpoint, options = {}) {
 async function request(endpoint, options = {}) {
 	const res = await fetch(`${BASE_URL}${endpoint}`, {
 		headers: { 'Content-Type': 'application/json' },
+		cache: 'no-store',
 		credentials: 'include',
 		...options
 	});

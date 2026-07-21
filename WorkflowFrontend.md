@@ -160,3 +160,52 @@ backend   | ssa boostata di un pedone e clicchi su un'altro pezzo
 
 //NOTE - Testing
 	▫	nome utente in grassetto
+
+
+#test {	  /*hex-code		name					tailwind_code*/
+	color: #201e1c;	/*bg_default*/
+	color: #181715e8;	/*bord_default*/
+	color: #302d2a;	/*bg_second*/
+	color: #4e4e4e8c;	/*bord_second*/
+	color: #181715;	/*bg_darker*/
+	color: #ffffff;	/*text_default*/			/*white*/
+	color: #d4d4d8;	/*text_second*/				/*zinc-300*/
+	color: #71717b;	/*text_third*/				/*zinc-500*/
+	color: #4e4e4e8c;	/*text_last*/
+	color: #dcdfe4c0;	/*bg_icons*/
+
+	color: #c41c1c;	/*notif_on*/
+	color: #00c950;	/*online*/					/*green-500*/
+	color: #00000033;	/*bg_blur*/					/*black/20*/
+	color: #882a2a;	/*bg_button*/
+	color: #af3d3d;	/*light_button*/
+	color: #d1aaaa;	/*active_button*/
+
+	color: #2f1818cc;	/*bg_error*/				/*[#2f1818]/80*/
+	color: #ffe2e2;	/*text_error*/				/*red-100*/
+	color: #9f07111a;	/*border_error*/			/*red-800/10*/
+	color: #fb2c3633;	/*inset_error*/				/*red-500/20*/
+
+	color: #00a63e;	/*win*/						/*green-600*/
+	color: #f0fdf4e6;	/*bg_win*/					/*green-50/90*/
+	color: #d1d5dc;	/*draw*/					/*gray-300*/
+	color: #d1d5dce6;	/*bg_draw*/					/*gray-300/90*/
+	color: #fb2c36;	/*lose*/					/*red-500*/
+	color: #fef2f2e6;	/*bg_lose*/					/*red-50/90*/
+
+	color: #bedbff;	/*text_tour*/				/*blue-200*/
+	color: #51a2ff1a;	/*bg_tour*/					/*blue-400/10*/
+	color: #2b80ff33;	/*inset_tour*/				/*blue-500/20*/
+	color: #51a2ff33;	/*hover_tour*/				/*blue-400/20*/
+
+	color: #05df721a;	/*bg_accept*/				/*green-400/10*/
+	color: #00c95033;	/*inset_accept*/			/*green-500/20*/
+	color: #ff64671a;	/*bg_reject*/				/*red-400/10*/
+	color: #fb2c3633;	/*inset_reject*/			/*red-500/20*/
+	color: #d1d5dc;	/*text_wait*/				/*gray-300*/
+	color: #e5e7eb1a;	/*bg_wait*/					/*gray-200/10*/
+	color: #d1d5dc33;	/*inset_wait*/				/*gray-300/20*/
+	color: #bedbff;	/*text_friend*/				/*blue-200*/
+	color: #51a2ff1a;	/*bg_friend*/				/*blue-400/10*/
+	color: #2b80ff33;	/*inset_friend*/			/*blue-500/20*/
+};

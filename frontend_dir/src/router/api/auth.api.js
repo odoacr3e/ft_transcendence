@@ -23,7 +23,7 @@ export const authApi = {
 	},
 	changePwd:	async (userData) => {
 		const resp = await api.patch('/api/users/loggedUpdatePassword', userData); // aggiornamento della password
-		return (resp);
+		return (resp.data.user);
 	},
 	friendlist:	async () => {
 		const resp = await api.get('/api/friends'); // lista di amici

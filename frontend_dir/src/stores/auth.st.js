@@ -11,6 +11,7 @@ export const useAuthStore = defineStore('auth', {
 		sessionChecked: false,
 		usersOnline: new Set(),
 		msgRecevied: new Set(),
+		preference: null,
 		socket: null
 	}),
 
@@ -96,7 +97,7 @@ export const useAuthStore = defineStore('auth', {
 		{
 			this.isLoading = true;
 			this.error = null;
-			try { await authApi.changePwd(credentials); }
+			try { this.user = await authApi.changePwd(credentials); }
 			catch (err) { this.error = err.message; }
 			finally		{ this.isLoading = false; }
 			return (this.error);

@@ -35,7 +35,7 @@
                     <img :src="user.image ? `${user.image}` : defaultAvatar" @error="handleAvatarError"
                             alt="" class="size-35 rounded-full m-5 mx-auto object-cover">
                     <h3 class="text-white text-2xl self-center">{{ user.username }}</h3>
-                    <h4 class="text-zinc-300 text-md self-center">{{ user.name }} {{ user.username }}</h4>
+                    <h4 class="text-zinc-300 text-md self-center">{{ user.name }} {{ user.surname }}</h4>
                     <h5 class="text-zinc-500 text-sm self-center">{{ user.nationality }}</h5>
                 </div>
                 <form @submit.prevent="submitForm" method="post" enctype="application/json" class="text-white self-center flex flex-col">

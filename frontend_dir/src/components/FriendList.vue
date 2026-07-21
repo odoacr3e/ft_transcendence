@@ -35,7 +35,7 @@
                                     bg-red-400/10 text-red-500 inset-ring-red-500/20">Elimina amicizia</button>
                 </div>
             </RouterLink>
-            <hr v-if="index !== visibleFriendlist.length - 1" class="text-[#4e4e4e80] border-dashed">
+            <hr v-if="index !== visibleFriendlist.length - 1" class="text-[#4e4e4e8c] border-dashed">
         </div>
 </template>
 
