@@ -1,6 +1,6 @@
 // @ts-check
 
-//SECTION - castling functions
+//SECTION - castling (arrocco) functions
 /*
 	list of exports:
 	-	checkCastling:	checks if a castling move is possible or not.

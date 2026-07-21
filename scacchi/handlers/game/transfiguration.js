@@ -1,5 +1,12 @@
 //@ts-check
 
+//SECTION - transfiguration function
+/*
+	list of exports:
+	-	makeTransfiguration:	transform a piece. 
+								It can lead to checkMate. Ends the turn.
+*/
+
 import { Match } from "../../Classes/Chess/match.js";
 import {error, paramCheck, Result, clientBoard} from "./utils.js";
 import {endTurn} from "./endTurn.js";
