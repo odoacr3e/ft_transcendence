@@ -65,7 +65,7 @@ export function simulation(coords, match, result=null)
 	{
 		dangerBool = checkKingDanger(match, match.currentPlayer.allie);
 		if (dangerBool && result)//@ts-ignore
-			result.alert = "Salva il tuo amico! puoi usare: " + match.currentPlayer.allieGuardianCoord;
+			result.specialMoves.SetAllyGuardian();
 	}
 	if (!result || result.specialMoves.CheckSniperMove() == 0)
 	{
