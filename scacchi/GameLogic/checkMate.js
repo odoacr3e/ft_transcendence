@@ -130,6 +130,7 @@ function isStoppable(match, kingSquare, enemySquareString)
 	let	guardianPiece;
 	let	kingPiece;
 	let	normalSaveBool = false;
+	let	allyGuardianCoord = "";
 
 	match.currentPlayer.guardianPieces.clear();
 	enemySquare = match.board.get(enemySquareString);
@@ -147,6 +148,7 @@ function isStoppable(match, kingSquare, enemySquareString)
 		return true;
 	while (match.board.get(match.cursor.square)?.piece?.type != enumNames.KING)
 	{
+		allyGuardianCoord = "";
 		square = match.board.get(match.cursor.square);
 		if (!square || !square.dangerZones)
 			continue ;
@@ -162,15 +164,19 @@ function isStoppable(match, kingSquare, enemySquareString)
 				continue ;
 			if (guardianPiece.team != kingPiece.team)
 			{
-				if  (!match.settings.players.allies || guardianPiece.team != match.currentPlayer.allie)
+				if  (!match.settings.players.allies || guardianPiece.team != match.currentPlayer.allie || match.currentPlayer.next != enemySquare.piece?.team)
 					continue ;
+				else
+					allyGuardianCoord = x;
 			}
 			//FIXME - CONTROLLO CHE IL DIFENSORE MANGI IN UNA MOSSA (implementare salvataggio due mosse?)
 			let	guardianBoostedSave = false;
 			let	guardianRegularSave = false;
 
 			if (guardianSquare.targetZones.has(match.cursor.square) && square.piece == null)
+			{
 				guardianRegularSave = true;
+			}
 			for (let [key, val] of guardianSquare.boostedTargetZones)
 			{
 				if (val.has(match.cursor.square))
@@ -181,7 +187,6 @@ function isStoppable(match, kingSquare, enemySquareString)
 			}
 			if (guardianRegularSave)
 				normalSaveBool = true;
-				// return (match.currentPlayer.guardianPieces.clear(), true);
 			if (guardianBoostedSave)
 				match.currentPlayer.guardianPieces.add({coord: x, target: match.cursor.square});
 		}
@@ -190,7 +195,11 @@ function isStoppable(match, kingSquare, enemySquareString)
 		//throw("isStoppable: getDirection failed");
 	}
 	if (normalSaveBool == true || match.currentPlayer.guardianPieces.size > 0)
+	{
+		if (allyGuardianCoord)//@ts-ignore
+			match[match.currentPlayer.allie].allieGuardianCoord = allyGuardianCoord;
 		return true;
+	}
 	return false;
 }
 
@@ -371,6 +380,7 @@ function cantMovePiece(match, enemyCoord, enemySquare, kingCoord)
 	let	canReachKing = null;
 	let	ignoredCoords;
 	let kingPiece;
+	let	allyGuardianCoord = "";
 
 	ignoredCoords = new Set();
 	ignoredCoords.add(enemyCoord);
@@ -388,8 +398,10 @@ function cantMovePiece(match, enemyCoord, enemySquare, kingCoord)
 			throw ("checkMate, cantMovePiece: guardian piece undefined");
 		if (guardianPiece.team != kingPiece.team)
 		{
-			if  (!match.settings.players.allies || guardianPiece.team != match.currentPlayer.allie)
+			if  (!match.settings.players.allies || guardianPiece.team != match.currentPlayer.allie || match.currentPlayer.next != enemySquare.piece?.team)
 				continue ;
+			else
+				allyGuardianCoord = kingGuardianCoord;
 		}
 		//checking every guardian danger zone
 		for (const threatCoord of guardianSquare.dangerZones)
@@ -413,6 +425,8 @@ function cantMovePiece(match, enemyCoord, enemySquare, kingCoord)
 		canReachKing = null;
 		ignoredCoords.delete(kingGuardianCoord);
 	}
+	if (allyGuardianCoord)//@ts-ignore
+		match[match.currentPlayer.allie].allieGuardianCoord = allyGuardianCoord;
 	return (true);
 }
 

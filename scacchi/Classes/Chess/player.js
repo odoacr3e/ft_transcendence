@@ -50,6 +50,7 @@ class Player
 		this.next = data.next;
 		this.prev = data.prev;
 		this.allie = data.allie;
+		this.allieGuardianCoord = "";
 	}
 }
 

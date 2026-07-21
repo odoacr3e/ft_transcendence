@@ -2,7 +2,7 @@
   "moves": 13,
   "victory": "",
   "finalBoard": "| | | |M| |V|C|K|V|J|M| | | |\n| | | |B|B|B|B|B|B|B|B| | | |\n| | | | | | | | | | | | | | |\n|M| | |J| | | | | | | | |B|M|\n| |B| | | | | | | | | | |B|J|\n|V|B|J| | | | | | | | | |B|V|\n|K|B| | | | | | | | | | |B|K|\n|C|B| | | | | | | | |B| | |C|\n|V|B| | | | | | | | | | |B|V|\n|J|B| | | | | | | | | | |B|J|\n|M|B| | | | | |B|B| | | |B|M|\n| | | | | | | | | | | | | | |\n| | | |B|B|B|B| | |B|B| | | |\n| | | |M|J|V|C|K|V|J|M| | | |\n",
-  "matchSettings": "2v2",
+  "matchSettings": "1v1v1v1",
   "events": [
     {
       "from": "i2",

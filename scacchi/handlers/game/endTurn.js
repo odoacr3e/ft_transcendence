@@ -37,7 +37,8 @@ function endTurn(match, sendBoardBool=true)
 	nPieces = match.getPieceNumber();
 	boardState = boardStringify(match, true);
 	if (!updateTurn(match, result))
-		return (result);
+		return (result);//@ts-ignore
+	match[match.currentPlayer.prev].allieGuardianCoord = "";
 	if (match.playerNum == 2 && nPieces <= 4)
 	{
 		if (checkInsuficientResources(match, nPieces))
