@@ -557,12 +557,12 @@ class MatchSettings
 		{
 			case (eMatchPresets.ClassicTwoPlayers):
 				return (new MatchSettings(matchPresets.twoPlayer));
+			case (eMatchPresets.ClassicFreeForAll):
+				return (new MatchSettings(matchPresets.fourPlayer));
 			case (eMatchPresets.ClassicFourPlayers):
 				return (new MatchSettings(matchPresets.fourPlayerAllies));
-			case (eMatchPresets.ClassicFreeForAll):
-				return (new MatchSettings(matchPresets.fourPlayerWalls));
 			case (eMatchPresets.NoCornersFourPlayers):
-				return (new MatchSettings(matchPresets.fourPlayer));
+				return (new MatchSettings(matchPresets.fourPlayerNoCorners));
 			default:
 				throw (`MatchSettings: invalid preset name "${matchPresetType}"`);
 		}
@@ -572,19 +572,19 @@ class MatchSettings
 const matchPresets =
 {
 	twoPlayer: new MatchSettings(),
+	fourPlayerNoCorners: new MatchSettings(),
 	fourPlayer: new MatchSettings(),
-	fourPlayerWalls: new MatchSettings(),
 	fourPlayerAllies: new MatchSettings()
 }
 matchPresets.twoPlayer.presetType = eMatchPresets.ClassicTwoPlayers;
-matchPresets.fourPlayer.presetType = eMatchPresets.ClassicFourPlayers;
-matchPresets.fourPlayer.board.width = 14;
-matchPresets.fourPlayer.board.heigth = 14;
-matchPresets.fourPlayer.players.number = 4;
-matchPresets.fourPlayerWalls = structuredClone(matchPresets.fourPlayer);
-matchPresets.fourPlayerWalls.board.corners = true;
-matchPresets.fourPlayerWalls.presetType = eMatchPresets.NoCornersFourPlayers;
-matchPresets.fourPlayerAllies = structuredClone(matchPresets.fourPlayerWalls);
+matchPresets.fourPlayerNoCorners.presetType = eMatchPresets.ClassicFourPlayers;
+matchPresets.fourPlayerNoCorners.board.width = 14;
+matchPresets.fourPlayerNoCorners.board.heigth = 14;
+matchPresets.fourPlayerNoCorners.players.number = 4;
+matchPresets.fourPlayer = structuredClone(matchPresets.fourPlayerNoCorners);
+matchPresets.fourPlayer.board.corners = true;
+matchPresets.fourPlayer.presetType = eMatchPresets.NoCornersFourPlayers;
+matchPresets.fourPlayerAllies = structuredClone(matchPresets.fourPlayer);
 matchPresets.fourPlayerAllies.players.allies = true;
 matchPresets.fourPlayerAllies.presetType = eMatchPresets.ClassicFourPlayers;
 
