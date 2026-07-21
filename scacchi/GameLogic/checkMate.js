@@ -164,7 +164,7 @@ function isStoppable(match, kingSquare, enemySquareString)
 				continue ;
 			if (guardianPiece.team != kingPiece.team)
 			{
-				if  (!match.settings.players.allies || guardianPiece.team != match.currentPlayer.allie || match.currentPlayer.next != enemySquare.piece?.team)
+				if  (!match.settings.players.allies || guardianPiece.team != match.currentPlayer.ally || match.currentPlayer.next != enemySquare.piece?.team)
 					continue ;
 				else
 					allyGuardianCoord = x;
@@ -197,7 +197,7 @@ function isStoppable(match, kingSquare, enemySquareString)
 	if (normalSaveBool == true || match.currentPlayer.guardianPieces.size > 0)
 	{
 		if (allyGuardianCoord)//@ts-ignore
-			match[match.currentPlayer.allie].allieGuardianCoord = allyGuardianCoord;
+			match[match.currentPlayer.ally].allieGuardianCoord = allyGuardianCoord;
 		return true;
 	}
 	return false;
@@ -398,7 +398,7 @@ function cantMovePiece(match, enemyCoord, enemySquare, kingCoord)
 			throw ("checkMate, cantMovePiece: guardian piece undefined");
 		if (guardianPiece.team != kingPiece.team)
 		{
-			if  (!match.settings.players.allies || guardianPiece.team != match.currentPlayer.allie || match.currentPlayer.next != enemySquare.piece?.team)
+			if  (!match.settings.players.allies || guardianPiece.team != match.currentPlayer.ally || match.currentPlayer.next != enemySquare.piece?.team)
 				continue ;
 			else
 				allyGuardianCoord = kingGuardianCoord;
@@ -426,7 +426,7 @@ function cantMovePiece(match, enemyCoord, enemySquare, kingCoord)
 		ignoredCoords.delete(kingGuardianCoord);
 	}
 	if (allyGuardianCoord)//@ts-ignore
-		match[match.currentPlayer.allie].allieGuardianCoord = allyGuardianCoord;
+		match[match.currentPlayer.ally].allieGuardianCoord = allyGuardianCoord;
 	return (true);
 }
 

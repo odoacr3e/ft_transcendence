@@ -49,7 +49,7 @@ class Player
 		this.team = data.team;
 		this.next = data.next;
 		this.prev = data.prev;
-		this.allie = data.allie;
+		this.ally = data.ally;
 		this.allieGuardianCoord = "";
 	}
 }
@@ -61,42 +61,42 @@ const preset =
 		team: eTeam.White,
 		next: eTeam.Black,
 		prev: eTeam.Black,
-		allie: eTeam.White,
+		ally: eTeam.White,
 	},
 	black: 
 	{
 		team: eTeam.Black,
 		next: eTeam.White,
 		prev: eTeam.White,
-		allie: eTeam.Black,
+		ally: eTeam.Black,
 	},
 	red: 
 	{
 		team: eTeam.Red,
 		next: eTeam.Green,
 		prev: eTeam.Blue,
-		allie: eTeam.Yellow,
+		ally: eTeam.Yellow,
 	},
 	blue: 
 	{
 		team: eTeam.Blue,
 		next: eTeam.Red,
 		prev: eTeam.Yellow,
-		allie: eTeam.Green,
+		ally: eTeam.Green,
 	},
 	green: 
 	{
 		team: eTeam.Green,
 		next: eTeam.Yellow,
 		prev: eTeam.Red,
-		allie: eTeam.Blue,
+		ally: eTeam.Blue,
 	},
 	yellow: 
 	{
 		team: eTeam.Yellow,
 		next: eTeam.Blue,
 		prev: eTeam.Green,
-		allie: eTeam.Red,
+		ally: eTeam.Red,
 	},
 }
 

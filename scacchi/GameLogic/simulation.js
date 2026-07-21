@@ -63,7 +63,7 @@ export function simulation(coords, match, result=null)
 		dangerBool = checkDoubleMoveMate(match, coords, result);
 	if (!dangerBool && match.settings.players.allies)
 	{
-		dangerBool = checkKingDanger(match, match.currentPlayer.allie);
+		dangerBool = checkKingDanger(match, match.currentPlayer.ally);
 		if (dangerBool && result)//@ts-ignore
 			result.specialMoves.SetAllyGuardian();
 	}

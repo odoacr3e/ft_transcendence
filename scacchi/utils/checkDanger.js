@@ -37,7 +37,7 @@ let isDangerous = (match, setZones, team, saveInfoBool=false, pieceCoord=match.c
 			return (false);
 		if (match.board.get(x)?.piece?.team != team)
 		{//@ts-ignore
-			if (match.settings.players.allies == true && match.board.get(x)?.piece?.team == match[team].allie)
+			if (match.settings.players.allies == true && match.board.get(x)?.piece?.team == match[team].ally)
 				continue ;
 			dangerCoord = x;
 			break ;

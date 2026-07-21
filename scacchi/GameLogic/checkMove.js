@@ -62,8 +62,8 @@ export function checkMove(coords=[], result, match, boostBool)
 		}
 		if (match.settings.players.allies == true)
 		{
-			if (to.piece.team == match.currentPlayer.allie)
-				return (error(result, 403, "you can't eat your allie's pieces"));
+			if (to.piece.team == match.currentPlayer.ally)
+				return (error(result, 403, "you can't eat your ally's pieces"));
 		}
 	}
 	if (!checkBooster(match, result, from, coords, boostBool))
@@ -73,7 +73,7 @@ export function checkMove(coords=[], result, match, boostBool)
 	if (!simulation(coords, match, result))
 	{
 		if (result.specialMoves.CheckAllyGuardian())
-			return (error(result, 403, `protect your allie! you can use your ${match.board._data.get(match.currentPlayer.allieGuardianCoord)?.piece?.type} in ${coordNormify(match.currentPlayer.allieGuardianCoord)}`));
+			return (error(result, 403, `protect your ally! you can use your ${match.board._data.get(match.currentPlayer.allieGuardianCoord)?.piece?.type} in ${coordNormify(match.currentPlayer.allieGuardianCoord)}`));
 		result.specialMoves.SetKingDanger();
 		return (error(result, 403, "this would put your king in danger"));
 	}
