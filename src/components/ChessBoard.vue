@@ -10,8 +10,6 @@
 					 "l14", "m14", "n14", "l13", "m13", "n13", "l12", "m12", "n12",
 					 "a3", "b3", "c3", "a2", "b2", "c2", "a1", "b1", "c1",
 					 "l3", "m3", "n3", "l2", "m2", "n2", "l1", "m1", "n1"] );
-
-	const domBoardComputed = computed(() => DOMBoard());
 	// eslint-disable-next-line no-unused-vars
 	const prop = defineProps({
   	    	style: String
@@ -21,77 +19,77 @@
     });
 
 	const currP = ref(localPlayers.values().find(p => p.isPlaying === true)), dragOver = ref(null);
-
-	const orientation = computed(() => localInfo.myTeam === "white" ? "white" : "black");
-
-	const bottomRank	= computed(() => orientation.value === "white" ? 1 : 8);
-	const leftFile		= computed(() => orientation.value === "white" ? 'a' : 'h');
+	const domBoardComputed	= computed(() => DOMBoard());
+	const orientation		= computed(() => localInfo.myTeam === "white" ? "white" : "black");
+	const bottomRank		= computed(() => orientation.value === "white" ? 1 : 8);
+	const leftFile			= computed(() => orientation.value === "white" ? 'a' : 'h');
 </script>
 
 <template>
     <div id="root">
 		<div v-if="localInfo.goatId" id="overlay" v-bind:class="{ 'opacity-60 pointer-events-auto':localInfo.goatId }"></div>
-        <div id="board" oncontextmenu="return false;" v-bind:class="{ 'boardTwo' : style === '1v1', 'boardFour' : style === '14x14x4'}">
-            <div v-for="row in domBoardComputed" :key="row[0]?.id" class="grid" v-bind:class="{ 'rowTwo' : style === '1v1', 'rowFour' : style === '14x14x4'}">
-                <div
-                    v-for="square in row"
-                    :key="square.id"
-                    :id="square.id"
-                    :class="[getSquareColor(square.id),
-							'square',
-							{ 'w-18.75 h-18.75' : style === '1v1', 'w-13 h-13' : style === '14x14x4'},
-							{ 'opacity-0 hidden': style === '14x14x4' && HIDDEN.has(square.id) },
-							{'outline-4 outline-[#e2dac5c5] -outline-offset-4': dragOver === square.id},
-							{'selectedBstW': getSquareColor(square.id) == 'white' && (square.boostedHighlight && square.piece)},
-							{'selectedBstB': getSquareColor(square.id) == 'black' && (square.boostedHighlight && square.piece)},
-							{'selectedW': getSquareColor(square.id) == 'white' && (square.selected || square.highlight && square.piece)},
-							{'selectedB': getSquareColor(square.id) == 'black' && (square.selected || square.highlight && square.piece)},
-							{'pieceClicked': square.piece && square.piece.team === localInfo.myTeam && square.clicked}]"
-                    @drop="onDrop($event, square); dragOver = null"
-                    @dragover.prevent="dragOver = square.id;">
-					<p	class="absolute"
-						v-if="(parseInt(square.id.substring(1)) === bottomRank) || 
-						  	  (style === '14x14x4' && parseInt(square.id.substring(1)) === 4 &&
-							  ['a', 'b', 'c', 'l', 'm', 'n'].includes(square.id.charAt(0)))"
-						v-bind:class="{ 'ml-15 mt-13' : style === '1v1',
-										'ml-10.25 mt-9 text-xs' : style === '14x14x4',
-										'text-[#1b0000]': getSquareColor(square.id) == 'white' && !square.selected, 
-										'text-white	': getSquareColor(square.id) == 'black' && !square.selected,
-										'text-[#801a12]' : getSquareColor(square.id) == 'white' && square.selected,
-										'text-[#bb4232]' : getSquareColor(square.id) == 'black' && square.selected }">
-						<b>{{ square.id.charAt(0) }}</b>
-					</p>
-                    <img
-                        v-if="square.piece"
-                        class="piece"
-						v-bind:class="{ 'boosted-aura':square.piece.isBoostedBool }"
-                        :src="IMG_PATHS[square.piece.team + square.piece.type]"
-                        :draggable="true"
-                        @dragstart="onDragStart($event, square)"/>
-					<p 	class="absolute" 
-					   	v-if="(square.id.charAt(0) == leftFile) ||
-						 	  (style === '14x14x4' && square.id.charAt(0) == 'd' && 
-							  (parseInt(square.id.substring(1)) < 4 || parseInt(square.id.substring(1)) > 11))"
-						v-bind:class="{ 'mr-15 mb-13' : style === '1v1',
-										'mr-10.25 mb-9.5 text-xs' : style === '14x14x4',
-										'ml-1.5' : parseInt(square.id.substring(1)) > 9,
-										'text-[#1b0000]':getSquareColor(square.id) == 'white' && !square.selected, 
-										'text-white':getSquareColor(square.id) == 'black' && !square.selected,
-										'text-[#801a12]' : getSquareColor(square.id) == 'white' && square.selected,
-										'text-[#bb4232]' : getSquareColor(square.id) == 'black' && square.selected }">
-						<b>{{square.id.substring(1)}}</b>
-					</p>
-                    <span v-if="square.highlight && !square.piece" class="highlight"
-							v-bind:class="{'w-3.75 h-3.75': style === '1v1', 'w-2.5 h-2.5': style === '14x14x4'}"></span>
-                    <span v-if="square.boostedHighlight && !square.piece" class="boostedHighlight"
-							v-bind:class="{'w-3.75 h-3.75': style === '1v1', 'w-2.5 h-2.5': style === '14x14x4'}"></span>
-					<span v-if="localInfo.lastMovesSquares.has(square.id)"
-							class="lastMoveOverlay"></span>
-                </div>
-            </div>
-        </div>
+		<div id="board" oncontextmenu="return false;" v-bind:class="{ 'boardTwo' : style === '1v1', 'boardFour' : style === '14x14x4'}">
+				<div v-for="row in domBoardComputed" :key="row[0]?.id" class="grid" v-bind:class="{ 'rowTwo' : style === '1v1', 'rowFour' : style === '14x14x4'}">
+					<div
+						v-for="square in row"
+						:key="square.id"
+						:id="square.id"
+						:class="[getSquareColor(square.id),
+								'square',
+								{ 'w-18.75 h-18.75' : style === '1v1', 'w-13 h-13' : style === '14x14x4'},
+								{ 'opacity-0 hidden': style === '14x14x4' && HIDDEN.has(square.id) },
+								{'outline-4 outline-[#e2dac5c5] -outline-offset-4': dragOver === square.id},
+								{'selectedBstW': getSquareColor(square.id) == 'white' && (square.boostedHighlight && square.piece)},
+								{'selectedBstB': getSquareColor(square.id) == 'black' && (square.boostedHighlight && square.piece)},
+								{'selectedW': getSquareColor(square.id) == 'white' && (square.selected || square.highlight && square.piece)},
+								{'selectedB': getSquareColor(square.id) == 'black' && (square.selected || square.highlight && square.piece)},
+								{'pieceClicked': square.piece && square.piece.team === localInfo.myTeam && square.clicked}]"
+						@drop="onDrop($event, square); dragOver = null"
+						@dragover.prevent="dragOver = square.id;">
+						<p	class="absolute"
+							v-if="(parseInt(square.id.substring(1)) === bottomRank) || 
+								(style === '14x14x4' && parseInt(square.id.substring(1)) === 4 &&
+								['a', 'b', 'c', 'l', 'm', 'n'].includes(square.id.charAt(0)))"
+							v-bind:class="{ 'ml-15 mt-13' : style === '1v1',
+											'ml-10.25 mt-9 text-xs' : style === '14x14x4',
+											'text-[#1b0000]': getSquareColor(square.id) == 'white' && !square.selected, 
+											'text-white	': getSquareColor(square.id) == 'black' && !square.selected,
+											'text-[#801a12]' : getSquareColor(square.id) == 'white' && square.selected,
+											'text-[#bb4232]' : getSquareColor(square.id) == 'black' && square.selected }">
+							<b>{{ square.id.charAt(0) }}</b>
+						</p>
+						<img
+							v-if="square.piece"
+							class="piece"
+							v-bind:class="{ 'boosted-aura':square.piece.isBoostedBool }"
+							:src="IMG_PATHS[square.piece.team + square.piece.type]"
+							:draggable="true"
+							@dragstart="onDragStart($event, square)"/>
+						<p 	class="absolute" 
+							v-if="(square.id.charAt(0) == leftFile) ||
+								(style === '14x14x4' && square.id.charAt(0) == 'd' && 
+								(parseInt(square.id.substring(1)) < 4 || parseInt(square.id.substring(1)) > 11))"
+							v-bind:class="{ 'mr-15 mb-13' : style === '1v1',
+											'mr-10.25 mb-9.5 text-xs' : style === '14x14x4',
+											'ml-1.5' : parseInt(square.id.substring(1)) > 9,
+											'text-[#1b0000]':getSquareColor(square.id) == 'white' && !square.selected, 
+											'text-white':getSquareColor(square.id) == 'black' && !square.selected,
+											'text-[#801a12]' : getSquareColor(square.id) == 'white' && square.selected,
+											'text-[#bb4232]' : getSquareColor(square.id) == 'black' && square.selected }">
+							<b>{{square.id.substring(1)}}</b>
+						</p>
+						<span v-if="square.highlight && !square.piece" class="highlight"
+								v-bind:class="{'w-3.75 h-3.75': style === '1v1', 'w-2.5 h-2.5': style === '14x14x4'}"></span>
+						<span v-if="square.boostedHighlight && !square.piece" class="boostedHighlight"
+								v-bind:class="{'w-3.75 h-3.75': style === '1v1', 'w-2.5 h-2.5': style === '14x14x4'}"></span>
+						<span v-if="localInfo.lastMovesSquares.has(square.id)"
+								class="lastMoveOverlay"></span>
+					</div>
+				</div>
+			</div>
     </div>
 </template>
+
 
 <style scoped>
 
@@ -164,34 +162,6 @@
 		position: relative;
 		z-index: 0;
 	}
-
-	/* .teamSelectedCrosses
-	{
-		--corner-color: rgba(204, 21, 21, 0.7);
-		--corner-thikness: 4px;
-		--corner-lenght: 28%;
-		position: absolute;
-		inset: 0;
-		pointer-events: none;
-		z-index: -1;
-		background:
-        	linear-gradient(var(--corner-color), var(--corner-color)) top left     /var(--corner-lenght) 			var(--corner-thikness) no-repeat,
-			linear-gradient(var(--corner-color), var(--corner-color)) top 			var(--corner-thikness) left		/var(--corner-thikness) calc(var(--corner-lenght) - var(--corner-thikness)) no-repeat,
-			linear-gradient(var(--corner-color), var(--corner-color)) top right    /var(--corner-lenght) 			var(--corner-thikness) no-repeat,
-			linear-gradient(var(--corner-color), var(--corner-color)) top 			var(--corner-thikness) right 	/var(--corner-thikness) calc(var(--corner-lenght) - var(--corner-thikness)) no-repeat,
-			linear-gradient(var(--corner-color), var(--corner-color)) bottom left  /var(--corner-lenght) 			var(--corner-thikness) no-repeat,
-			linear-gradient(var(--corner-color), var(--corner-color)) bottom 		var(--corner-thikness) left		/var(--corner-thikness) calc(var(--corner-lenght) - var(--corner-thikness)) no-repeat,
-			linear-gradient(var(--corner-color), var(--corner-color)) bottom right /var(--corner-lenght) 			var(--corner-thikness) no-repeat,
-			linear-gradient(var(--corner-color), var(--corner-color)) bottom 		var(--corner-thikness) right	/var(--corner-thikness) calc(var(--corner-lenght) - var(--corner-thikness)) no-repeat;
-	} */
-
-	/* .teamSelectedBackground
-	{
-		position: absolute;
-		inset: 0;
-		z-index: -1;
-		background-color: rgba(209, 152, 8, 0.37);
-	} */
 
 	.lastMoveOverlay {
 		position: absolute;
