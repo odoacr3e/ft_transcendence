@@ -113,6 +113,8 @@ export function moveDragClone(event)
 			}
 		};
 		computePosition(cursor, localInfo.dragClone).then(({ x, y }) => {
+			if (!localInfo.dragClone)
+				return;
 			Object.assign(localInfo.dragClone.style, {
 			top: `${y - 40}px`,
 			left: `${x}px`
