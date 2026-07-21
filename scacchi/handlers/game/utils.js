@@ -1,12 +1,22 @@
 // @ts-check
-/** @typedef {import("../../Classes/Chess/match.js").Match} Match*/
-/** @typedef {import("../../Classes/Chess/cursor.js").Cursor} Cursor*/
+
+//SECTION - utils function
+/*
+	list of exports:
+	-	clientBoard:	copies the board and adapts it to the frontend needs.
+	-	paramChecks:	Checks if from/to are valid (used by game functions).
+	-	checkMateAlert:	Notifies that a player has won.
+	-	error:			Sets a response to error, before sending it to frontend.
+	-	normifyRequest:	Modify a request, to adapt it to backend syntax.
+*/
 
 import { Square, copyBoard } from "../../Classes/Chess/chessBoard.js";
 import {Result} from "../../Classes/endPoint/result.js";
 import {jsonParser} from "../../utils/response.js";
 import {coordNormify} from "../../Classes/Chess/cursor.js";
 
+/** @typedef {import("../../Classes/Chess/match.js").Match} Match*/
+/** @typedef {import("../../Classes/Chess/cursor.js").Cursor} Cursor*/
 /** @typedef {Map<String, Square>} Board */
 
 //SECTION - Board manipulation

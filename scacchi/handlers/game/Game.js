@@ -1,5 +1,13 @@
 // @ts-check
 
+//SECTION - boost function
+/*
+	list of exports:
+	-	gameHttpHandler:		Handles game http request/responses
+	-	gameWebSocketHandler:	Handles game websocket events
+	-	error:					USED ONLY BY TERM.JS to display game error
+*/
+
 import {jsonParser, responseFormatter} from "../../utils/response.js";
 import { Result, clientBoard, normifyRequest } from "./utils.js";
 import { move } from "./move.js";
@@ -12,46 +20,16 @@ import {makeTransfiguration} from "./transfiguration.js";
 import { globals } from "../../Classes/Globals/globals.js";
 import { query } from "../../lib/query.js";
 const { createMatch, createUsersMatch } = query.gameQuery;
-import { Match, MatchSettings } from "../../Classes/Chess/match.js";
+import { Match} from "../../Classes/Chess/match.js";
 import { includesOneOf } from "../../utils/string.js";
 import { updateTournament } from "../../websocket/handlers/tournament.js";
 import { roomMessage } from "../../websocket/utils.js";
-import { Room } from "../../Classes/Globals/room.js";
 import { enumSocketState } from "../../Macro/enums.js";
 
 const DEBUG_MATCH = globals.getDebugMatch();
 
-//FIXME - ale: i controlli di gameChecks danno per scontato che:
-//				1.	l'utente che manda le richieste sia un giocatore
-//				2.	che il giocatore mandi richieste SOLO per il proprio colore
-
 /** @typedef {import("express").Request} Request*/
 /** @typedef {import("express").Response} Response*/
-
-/**
- * checks if the request params are valid
- * @param {Request} req
- * @param {Response} res
- * @param {function} next
- * @returns next middleware or an error response
- */
-function gameChecks(req, res, next)
-{
-	if (!req || !req.body)
-		return (error(res, null, 400, "bad request format"));
-	if (!res || !res.status || !res.end || !next)
-		return (error(res, null, 500, "bad response object format"));
-	if (!req.body.type)
-		return (error(res, null, 400, "json must have a string named `type`"));
-	if (req.body.from && typeof(req.body.from) != "string" && req.body.type != "init")
-		return (error(res, null, 400, "param `from` must be of type string"));
-	if (req.body.from && typeof(req.body.to) != "string")
-		return (error(res, null, 400, "param `to` must be of type string"));
-	if (typeof(req.body.type) != "string")
-		return (error(res, null, 400, "param `type` must be of type string"));
-	req.body.type = req.body.type.trim().toLowerCase();
-	next();
-}
 
 //FIXME - attualmente funziona solo con il match di debug
 /**
@@ -294,4 +272,4 @@ function socketError(socket=null, result=null, status=0, msg=null, match=null, r
 	return (result?.log?.status? result.log.status: 500);
 }
 
-export {gameChecks, gameHttpHandler, gameWebSocketHandler, error, move, endTurn, boost, init};
+export {gameHttpHandler, gameWebSocketHandler, error, move, endTurn, boost, init};

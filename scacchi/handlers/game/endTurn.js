@@ -1,5 +1,11 @@
 // @ts-check
 
+//SECTION - boost function
+/*
+	list of exports:
+	-	endTurn:		Ends the turn. Handles the player timer.
+*/
+
 import {MOVEMENT_MIN, MOVEMENT_BONUS_POINT} from "../../Macro/macro.js";
 import {enumNames} from "../../Macro/enums.js";
 import {Match} from "../../Classes/Chess/match.js";
