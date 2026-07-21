@@ -1,4 +1,12 @@
 // @ts-check
+
+//SECTION - move function
+/*
+	list of exports:
+	-	move:		Move a piece. It can lead to a checkMate/endTurn.
+					if boostBool is true and checks succeed, the boost is used. 
+*/
+
 import {MOVEMENT_MIN} from "../../Macro/macro.js";
 import { Chess } from "../../lib/lib.js";
 const {Square} = Chess;
@@ -13,7 +21,8 @@ import { checkMove, checkSecondMove } from "../../GameLogic/checkMove.js";
 /** @typedef {import('../../Classes/Chess/chessBoard.js').Square} Square */
 
 /**
- * 
+ * Move a piece. It can lead to a checkMate/endTurn.
+ * if boostBool is true and checks succeed, the boost is used. 
  * @param {Match} match
  * @param {String} from the piece to move's coords
  * @param {String} to the new piece location's coords

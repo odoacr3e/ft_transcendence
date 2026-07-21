@@ -1,5 +1,12 @@
 // @ts-check
 
+//SECTION - boost function
+/*
+	list of exports:
+	-	boost:		boost a piece.
+					It can lead to checkMate. Ends the turn.
+*/
+
 import {dangerUpdateAll, DangerUpdate} from "../../utils/dangerUpdate.js";
 import {Match} from "../../Classes/Chess/match.js";
 import {error, paramCheck, Result, clientBoard} from "./utils.js";
