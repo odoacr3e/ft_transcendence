@@ -3,7 +3,7 @@
 </script>
     
 <template>
-    <div id="wrap">
+    <div>
         <div class="menu mt-40 relative flex place-items-center">
             <img class="absolute" src="../assets/sword2.png">
             <RouterLink to="/game">
@@ -28,9 +28,9 @@
         </div>
         <div class="menu mt-5 relative flex place-items-center">
             <img class="absolute" src="../assets/sword2.png">
-			<!-- <RouterLink to="/playpage"> -->
-				<b><h2 class="relative text-4xl my-3 ml-2 pl-25 z-0">Statistiche</h2></b>
-			<!-- </RouterLink> -->
+            <!-- <RouterLink to="/playpage"> -->
+                <b><h2 class="relative text-4xl my-3 ml-2 pl-25 z-0">Statistiche</h2></b>
+            <!-- </RouterLink> -->
         </div>
         <div class="menu mt-5 relative flex place-items-center">
             <img class="absolute" src="../assets/sword2.png">
@@ -38,23 +38,9 @@
         </div>
         <LinkFooter/>
     </div>
-
 </template>
 
 <style scoped>
-    #wrap {
-        position: fixed;
-        display: flex;
-        flex-direction: column;
-        justify-self: right;
-        align-items: start;
-        color: rgb(0, 0, 0);
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-        min-height: 100vh;
-        width: 350px;
-        padding-right: 50px;
-        z-index: 100;
-    }
 
     .menu {
         cursor: pointer;
