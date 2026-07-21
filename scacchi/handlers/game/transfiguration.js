@@ -55,7 +55,7 @@ function transfiguration(match, result, coord, newType)
 	square.piece.isBoostedBool = isBoostedBool;
 	DangerUpdate(match, coord);
 	match.history.UpdateTransform(match, square, coord, newType);
-	checkMateCheckAll(match, result);
+	checkMateCheckAll(match, result, match.currentPlayer.team);
 	endTurn(match, false);
 	result.status = 200;
 	result.msg = "OK";

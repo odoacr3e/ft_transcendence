@@ -350,6 +350,8 @@ class Match
 		//@ts-ignore
 		if (!this[player.team])
 			throw (`Delete player: invalid player data`);
+		// this.board.get(player.King).ClearZones();
+		// this.board.get(player.King).piece = null;
 		this.playerNum--;
 		if (!player.prev)
 			return ;

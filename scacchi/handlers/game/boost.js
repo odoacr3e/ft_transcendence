@@ -35,7 +35,7 @@ function boost(match, from)
 	result.status = 200;
 	if (match.boost == BOOSTED_MAX)
 	{
-		checkMateCheckAll(match, result);
+		checkMateCheckAll(match, result, match.currentPlayer.team);
 		endTurn(match, false);
 	}
 	if (prevBoost == "")

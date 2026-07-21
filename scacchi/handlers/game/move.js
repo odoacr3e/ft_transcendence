@@ -46,7 +46,7 @@ function move(match, from, to, boostBool=false)
 	if (!updateChessboard([from, to], result, match, boostBool))
 		return (result);
 	result.status = 200;
-	checkMateCheckAll(match, result);
+	checkMateCheckAll(match, result, match.currentPlayer.team);
 	// @ts-ignore
 	result.board = clientBoard(match);
 	secondMoveBool = checkSecondMove(match, to);

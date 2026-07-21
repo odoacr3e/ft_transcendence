@@ -50,6 +50,7 @@ async function gameHttpHandler(req, res)
 	if (body.type == "init")
 	{
 		result = init(match, body.from);
+		match.cursor.set(match.currentPlayer.King);
 		responseFormatter(match, result, null, null);
 		render(match);
 		globals.matches.set("0", match);

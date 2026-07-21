@@ -60,8 +60,9 @@ function CheckMateCheck(match, kingCoord=match.currentPlayer.King)
  * checks if every active player is in check/staleMate
  * @param {Match} match 
  * @param {Result | null} result
+ * @param {string} team
  */
-function checkMateCheckAll(match, result)
+function checkMateCheckAll(match, result, team)
 {
 	let currTeam;
 
@@ -71,7 +72,8 @@ function checkMateCheckAll(match, result)
 	{
 		if (CheckMateCheck(match))
 		{
-			match.PlayerLost(result);
+			match.PlayerLost(result);//@ts-ignore
+			// match[team].nPoints += 15;
 		}
 		match.endTurn();
 	}
@@ -159,12 +161,16 @@ function isStoppable(match, kingSquare, enemySquareString)
 			if (guardianPiece.type == enumNames.BASTARDS && match.cursor.IsOblique(x) == false)
 				continue ;
 			if (guardianPiece.team != kingPiece.team)
-				continue ;
+			{
+				if  (!match.settings.players.allies || guardianPiece.team != match.currentPlayer.allie)
+					continue ;
+			}
 			//FIXME - CONTROLLO CHE IL DIFENSORE MANGI IN UNA MOSSA (implementare salvataggio due mosse?)
-			let	guardianBoostedSave;
-			let	guardianRegularSave;
+			let	guardianBoostedSave = false;
+			let	guardianRegularSave = false;
 
-			guardianRegularSave = guardianSquare.targetZones.has(match.cursor.square);
+			if (guardianSquare.targetZones.has(match.cursor.square) && square.piece == null)
+				guardianRegularSave = true;
 			for (let [key, val] of guardianSquare.boostedTargetZones)
 			{
 				if (val.has(match.cursor.square))
@@ -364,9 +370,13 @@ function cantMovePiece(match, enemyCoord, enemySquare, kingCoord)
 	let	threatPiece;
 	let	canReachKing = null;
 	let	ignoredCoords;
+	let kingPiece;
 
 	ignoredCoords = new Set();
 	ignoredCoords.add(enemyCoord);
+	kingPiece = match.board.get(kingCoord).piece;
+	if (!kingPiece)
+		throw ('kingPiece null');
 	for (const kingGuardianCoord of enemySquare.dangerZones)
 	{
 		if (kingGuardianCoord == kingCoord)
@@ -376,8 +386,11 @@ function cantMovePiece(match, enemyCoord, enemySquare, kingCoord)
 		guardianPiece = guardianSquare.piece; 
 		if (!guardianPiece)
 			throw ("checkMate, cantMovePiece: guardian piece undefined");
-		if (guardianPiece.team != match.currentPlayer.team)
-			continue ;
+		if (guardianPiece.team != kingPiece.team)
+		{
+			if  (!match.settings.players.allies || guardianPiece.team != match.currentPlayer.allie)
+				continue ;
+		}
 		//checking every guardian danger zone
 		for (const threatCoord of guardianSquare.dangerZones)
 		{
