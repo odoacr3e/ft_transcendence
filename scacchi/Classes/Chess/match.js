@@ -519,6 +519,7 @@ class MatchSettings
 		{
 			number: 2,
 			startPoints: 0,
+			allies: false,
 			teams:
 			{
 				white: "",
@@ -557,7 +558,7 @@ class MatchSettings
 			case (eMatchPresets.ClassicTwoPlayers):
 				return (new MatchSettings(matchPresets.twoPlayer));
 			case (eMatchPresets.ClassicFourPlayers):
-				return (new MatchSettings(matchPresets.fourPlayerWalls));
+				return (new MatchSettings(matchPresets.fourPlayerAllies));
 			case (eMatchPresets.ClassicFreeForAll):
 				return (new MatchSettings(matchPresets.fourPlayerWalls));
 			case (eMatchPresets.NoCornersFourPlayers):
@@ -572,7 +573,8 @@ const matchPresets =
 {
 	twoPlayer: new MatchSettings(),
 	fourPlayer: new MatchSettings(),
-	fourPlayerWalls: new MatchSettings()
+	fourPlayerWalls: new MatchSettings(),
+	fourPlayerAllies: new MatchSettings()
 }
 matchPresets.twoPlayer.presetType = eMatchPresets.ClassicTwoPlayers;
 matchPresets.fourPlayer.presetType = eMatchPresets.ClassicFourPlayers;
@@ -582,5 +584,8 @@ matchPresets.fourPlayer.players.number = 4;
 matchPresets.fourPlayerWalls = structuredClone(matchPresets.fourPlayer);
 matchPresets.fourPlayerWalls.board.corners = true;
 matchPresets.fourPlayerWalls.presetType = eMatchPresets.NoCornersFourPlayers;
+matchPresets.fourPlayerAllies = structuredClone(matchPresets.fourPlayerWalls);
+matchPresets.fourPlayerAllies.players.allies = true;
+matchPresets.fourPlayerAllies.presetType = eMatchPresets.ClassicFourPlayers;
 
 export {Match, Timer, MatchSettings, matchPresets, createMatchId};

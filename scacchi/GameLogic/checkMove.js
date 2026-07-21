@@ -59,7 +59,7 @@ export function checkMove(coords=[], result, match, boostBool)
 				return (true);
 			return (error(result, 403, "you can't eat your team mates"));
 		}
-		if (match.settings.preset == eMatchPresets.ClassicFourPlayers)
+		if (match.settings.players.allies == true)
 		{
 			if (to.piece.team == match.currentPlayer.allie)
 				return (error(result, 403, "you can't eat your allie's pieces"));
