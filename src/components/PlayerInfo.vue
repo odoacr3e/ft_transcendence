@@ -71,7 +71,7 @@
 		padding: 1.5%;
 	}
 
-	/* @property --angle {
+	@property --angle {
 		syntax: '<angle>';
 		inherits: false;
 		initial-value: 0deg;
@@ -123,7 +123,7 @@
 	}
 	.wrap.is-turn::after { opacity: 1; }
 
-	@keyframes frame-spin { to { --angle: 360deg; } } */
+	@keyframes frame-spin { to { --angle: 360deg; } }
 
 	.dim {
 		transition: opacity .4s ease;

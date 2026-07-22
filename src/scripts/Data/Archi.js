@@ -143,7 +143,8 @@ export function updateLocalBoard(changes)
 			oldSquare.boostedTargetZones = newSquare.boostedTargetZones;
 		}
 	});
-	localInfo.lastMovesSquares = movedSquares;
+	if (movedSquares.size > 0)
+		localInfo.lastMovesSquares = movedSquares;
 }
 
 export function updateLocalPlayers(changes) 

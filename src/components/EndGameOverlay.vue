@@ -50,7 +50,7 @@
 <template>
 	<div v-if="showOverlay"
 		class="absolute inset-0 z-20 flex flex-col items-center justify-center
-			gap-6 rounded-2xl backdrop-blur-sm bg-black/50 select-none">
+			gap-6 backdrop-blur-sm bg-black/50 select-none">
 		<img :src="content.img" alt="" :draggable="false" class="w-40 h-40 object-contain drop-shadow-xl">	
 		<h2 class="text-3xl font-bold" :class="content.cls">{{ content.title }}</h2>
 

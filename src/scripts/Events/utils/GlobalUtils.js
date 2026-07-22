@@ -174,7 +174,7 @@ export function usingAbility()
 	const lastUseAbility = lastSquare?.useAbilityBool && lastSquare?.piece.isBoostedBool;
 	const useAbility	 = square.useAbilityBool && square.piece.isBoostedBool;
 
-    return ((localInfo.lastClickedId && (useAbility || lastUseAbility)) || secondTurn);
+    return (localInfo.usingAbility !== "" && ((localInfo.lastClickedId && (useAbility || lastUseAbility)) || secondTurn));
 }
 
 export function updatePrice()
