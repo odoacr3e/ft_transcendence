@@ -10,6 +10,7 @@ import {boardStringify} from "../../test/render.js";
 /**@typedef {import("./match.js").Match} Match*/
 /**@typedef {import("./match.js").MatchSettings} MatchSettings*/
 /**@typedef {import("./chessBoard.js").Square} Square*/
+/**@typedef {import("./Pieces/pieces.js").Piece} Piece*/
 /**@typedef {import("./player.js").Player} Player*/
 
 export class History
@@ -66,7 +67,8 @@ export class History
 			//@ts-ignore
 			delete event.isBoostedBool;
 			if (event.lastLost == null)//@ts-ignore
-				delete event.lastLost;
+				delete event.lastLost;//@ts-ignore
+			delete event.pieceEaten;
 		}
 		if (name)
 		{
@@ -119,6 +121,8 @@ export class HistoryEvent
 		this.lastLost = null;
 		/** @type {Set<number>} */
 		this.loserSet = new Set();
+		/** @type {Piece | null | undefined} */
+		this.pieceEaten = undefined;
 		if (pieceBoosterZones)
 			this.pieceBoosterTargetZones = copyBoostedTargetZones(pieceBoosterZones);
 	}
@@ -149,6 +153,7 @@ function updateMoves(match, square, coords, boostBool=false)
 	if (match.currentPlayer.useBoostBool || boostBool == true)
 		eName = eEvents.MoveBoost;
 	record = new HistoryEvent(this.moves, eName, square.piece?.team, match.board.updates, square.piece?.type, coords[0], coords[1], square.boostedTargetZones, square.piece?.isBoostedBool);
+	record.pieceEaten = match.board.get(coords[2]).piece;
 	this.events.push(record);
 	this.moves += 1;
 }

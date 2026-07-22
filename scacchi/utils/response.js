@@ -141,6 +141,7 @@ function getPlayerData(player, result, num, isPlaying)
 		bonusPointCounter: player.bonusPointCounter,
 		nPieces: player.nPieces,
 		team: player.team,
+		time: player.time,
 		isPlaying: isPlaying,
 	};
 }
