@@ -77,7 +77,7 @@ function responseFormatter(match, result, msg, status)
 	delete result.msg;
 	delete result.status;
 	if (!result.board)
-		delete result.board;
+		result.board = new Map();
 	result.log = log;
 	if (!result.victory)
 		result.victory = match? match.victory: "";
@@ -141,6 +141,7 @@ function getPlayerData(player, result, num, isPlaying)
 		bonusPointCounter: player.bonusPointCounter,
 		nPieces: player.nPieces,
 		team: player.team,
+		time: player.time,
 		isPlaying: isPlaying,
 	};
 }
