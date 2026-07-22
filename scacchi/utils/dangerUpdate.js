@@ -288,29 +288,6 @@ function CheckInfluence(match, coords, castlingBool)
 	}
 }
 
-// //FIXME - incorpare in checkInfluence
-// /**
-//  * 
-//  * @param {Match} match 
-//  * @param {Array<string>} coords 
-//  * @param {Array<Set<string>>} influenceSets the set for every coord
-//  * @param {boolean} castlingBool
-//  */
-// function checkInfluenceSets(match, coords, influenceSets, castlingBool)
-// {
-// 	let	i;
-
-// 	i = 0;
-// 	for (const set of influenceSets)
-// 	{
-// 		for (const influenceCoord of set)
-// 		{
-// 			DangerUpdate(match, influenceCoord, true, castlingBool);
-// 		}
-// 		++i;
-// 	}
-// }
-
 /**
  * if they need an update, it is done in boost order
  * @param {Match} match

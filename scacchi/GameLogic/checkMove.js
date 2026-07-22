@@ -127,7 +127,7 @@ export function checkSecondMove(match, to)
  * @param {boolean} boostBool
  * @returns {boolean}
  */
-function checkBooster(match, result, from, coords, boostBool) // FIXME - da aggiungere check per valchiria: vuole usare boost?
+function checkBooster(match, result, from, coords, boostBool)
 {
 	let	pieceMultipleMoveBool;
 	let	boostedTargetZones;

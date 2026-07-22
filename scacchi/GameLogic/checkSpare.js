@@ -9,7 +9,6 @@
 import { enumNames } from "../Macro/enums.js";
 import { Match } from "../Classes/Chess/match.js";
 
-//FIXME - considerare anche casi con 3/4 team (?)
 /**
  * checks if all player cannot win
  * @param {Match} match 

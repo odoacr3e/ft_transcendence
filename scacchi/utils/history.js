@@ -13,10 +13,8 @@ import {HistoryEvent} from "../Classes/Chess/history.js";
 import {move, boost, endTurn, init, error} from "../handlers/game/Game.js";
 import { boardStringify, render } from "../test/render.js";
 import { makeTransfiguration } from "../handlers/game/transfiguration.js";
-//FIXME - togliere
 import { prisma } from "../lib/prisma.js";
 import { globals } from "../Classes/Globals/globals.js";
-import { clientBoard } from "../handlers/game/utils.js";
 import { jsonParser } from "./response.js";
 import { DEBUG } from "../Macro/macro.js";
 import { Result } from "../Classes/endPoint/result.js";

@@ -16,7 +16,6 @@ import { boost } from "./boost.js";
 import { init } from "./init.js";
 import { render } from "../../test/render.js";
 import {makeTransfiguration} from "./transfiguration.js";
-//FIXME - solo debug
 import { globals } from "../../Classes/Globals/globals.js";
 import { query } from "../../lib/query.js";
 const { createMatch, createUsersMatch } = query.gameQuery;
@@ -31,7 +30,6 @@ const DEBUG_MATCH = globals.getDebugMatch();
 /** @typedef {import("express").Request} Request*/
 /** @typedef {import("express").Response} Response*/
 
-//FIXME - attualmente funziona solo con il match di debug
 /**
  * handler of game POST requests
  * @param {*} req 
@@ -74,7 +72,6 @@ async function gameWebSocketHandler(req, id_user, socketData)
 	let	id;
 	let	user;
 
-	//FIXME - reload e history vanno bene
 	if (!socketData)
 		return (console.error("ERROR: disconnected player not eliminated"), 500);
 	if (!socketData.matchData)

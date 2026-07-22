@@ -12,8 +12,6 @@ import {error, Result} from "../handlers/game/utils.js";
 import {printSwap} from "../test/render.js";
 import { moveCastling } from "./Castling.js";
 
-//FIXME - da mettere alcune funzioni in un utilis
-
 /**
  * 
  * @param {Array<string>} coords

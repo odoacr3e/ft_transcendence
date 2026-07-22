@@ -26,7 +26,7 @@ const HASH_SALT = process.env.HASH_SALT? process.env.HASH_SALT : "10";
 	seed interessanti
 	0:	classic mode
 	1:	trono di spade
-	1057: scacco matto ciao ciao //FIXME - non da scacco matto
+	1057: scacco matto ciao ciao
 	63: scacco matto prevenibile
 */
 const SEED = 0;

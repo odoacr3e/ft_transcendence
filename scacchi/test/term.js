@@ -31,7 +31,6 @@ function mainTerm()
 
 	console.profile();
 	termInit();
-	//FIXME - testing su questa funzione
 	match = globals.getDebugMatch();
 	if (!match)
 		throw ("To use term.js, you need to set the DEBUG macro true");
