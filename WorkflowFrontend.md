@@ -117,34 +117,51 @@ boardConverter()
 		pezzo mosso oppure un evidenziazione sull'ulitmo pezzo mosso
 	✓	avviso di quando devi fare end turn più chiaro
 	✓	implementare reload durante la partita
-	▫	spostamento bottoni
-	▫	display del nome dei giocatori durante la partita
-	▫	Aggiungere bottone per arrendersi evento 'giveup'
-	▫	Aggiornare la pagina di testing su notion e scriverci i trace del back quando crasho
-	▫	schermata di fine partita, e aggiustamenti necessari. c'è una voce victory nella response 	
+	✓	spostamento bottoni
+	✓	display del nome dei giocatori durante la partita
+	✓	Aggiungere bottone per arrendersi evento 'giveup'
+	✓	Aggiornare la pagina di testing su notion e scriverci i trace del back quando crasho
+	✓	schermata di fine partita, e aggiustamenti necessari. c'è una voce victory nella response 	
 		con il colore di chi vince o con draw, stringa
-	▫	implementare il riaccesso ad una partita in corso dopo chiusura della pagina: richiesta su 
+	✓	implementare il riaccesso ad una partita in corso dopo chiusura della pagina: richiesta su 
 		evento websocket 'amiplaying', se risponde true lancio reload, sennò pace.
+	✓	implementare (reload, riaccesso, chiudi e riapri la pagina di gioco)
+		durante la partita
+	✓	implementare segnali visivi relativi ai turni dei giocatori
 	▫ 	feedback quando il re è sotto scacco, (abbiamo bisogno di una flag oppure 
 		usiamo gli enum di errore comuni) {from: coord, mid: coord, to: coord}. devo decidere un messaggio da chiedere a il team back.
 	▫ 	quando fai hover sul bottone per boostare il pezzo sarebbe carino poter avere
 	  	una preview delle target zones rese visibili sulla scacchiera, si può fare 
 	  	una route apposta per chiedere l'update delle target zones di un pezzo specifico
-	▫	implementare (reload, riaccesso, chiudi e riapri la pagina di gioco)
-		durante la partita
 	▫	history delle mosse durante la partita
 	▫	history delle partite
-	▫	implementare segnali visivi relativi ai turni dei giocatori
 	▫ 	refactor di archi nel caso la board non esista
 
 //FIXME - Bugs
-	▫	quando finisci l'esecuzione di una moyour Prisma Client (See: https://pris.ly/d/importing-client)
-backend   | ssa boostata di un pedone e clicchi su un'altro pezzo
+	✓	Delle volte quando finisci una mossa l'immagine del pezzo mosso si sdoppia e rimane lì 
+		per tutta la partita
+	✓	EndTurn pulisce le evidenziazioni delle ultime mosse fatte
+	✓	quando finisci l'esecuzione di una mossa boostata di un pedone 
+		e clicchi su un'altro pezzo
 		dello stesso colore del pedone appena mosso lancia eccezione
-	▫	quando finisci l'esecuzione di una mossa boostata di un pedone e al turno dopo vuoi muovere
-		lo stesso pedone manda eccezione (ma penso sia dovuto al backend)
+	▫	quando finisci l'esecuzione di una mossa boostata di un pedone 
+		e al turno dopo vuoi muovere lo stesso pedone 
+		manda eccezione (ma penso sia dovuto al backend)
 	▫	Il pulsante use ability rimane interagibile e cliccabile anche se il pezzo si è appena
 		mosso senza voler utilizzare l'abilità
+	▫	Bottoni non presenti dopo reload
+	▫	Con il reload si bugga anche il timer
+	▫	Evidenziamento Give Up buttion da ripensare
+	▫	Quandoa fai use ability si creano in contemporanea sia i tondini
+		rossi che gialli sulle stesse caselle
+	▫	Quando ho un pezzo potenziato e diventa il mio turno diventa disponibile l'utilizza
+		abilità anche se selezioni un pezzo non potenziato
+	▫	Quando  hai un pezzo potenziato il prezzo non si aggiorna come si deve
+	✓	Pezzi mangiati avversario invisibili
+	▫	Quando uno dei due finisce il tempo il backend crasha
+	▫	Quando fai una mossa boostata di un pedone se vuoi muovere un pezzo dopo aver 
+		mosso il pedone, che passa dove prima c’era il pedone mi viene fuoir eccezione
+		ma in modi casuali non riesco ancora a capire cosa succede
 
 //TODO FRONTEND - 
 	✓	websocket per lo stato online

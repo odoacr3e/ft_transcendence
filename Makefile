@@ -23,10 +23,10 @@ pull_fe:
 pull: pull_be pull_fe
 
 restore_be:
-	cd backend_dir && gti restore .
+	cd backend_dir && git restore .
 
 restore_fe:
-	cd frontend_dir && gti restore .
+	cd frontend_dir && git restore .
 
 restore: restore_be restore_fe
 
