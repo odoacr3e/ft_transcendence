@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2020",
+    "noEmit": true,
     "module": "commonJS",
     "types": ["node"],
     "skipLibCheck": true,
@@ -10,6 +11,6 @@
     "checkJs": true,
     "allowJs": true
   },
-  "include": ["prisma.config.ts"],
+  "include": ["**/*.js", "**/*.ts"],
   "exclude": ["node_modules", "generated"]
 }

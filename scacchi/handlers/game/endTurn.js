@@ -15,6 +15,8 @@ import {clientBoard} from "../../handlers/game/utils.js";
 import { checkKingDanger } from "../../utils/checkDanger.js";
 import { checkInsuficientResources } from "../../GameLogic/checkSpare.js";
 import { boardStringify } from "../../test/render.js";
+import { globals } from "../../Classes/Globals/globals.js";
+import { Timer }	from "../../Classes/Chess/match.js";
 
 /**
  * goes to the next turn
@@ -52,33 +54,33 @@ function endTurn(match, sendBoardBool=true)
 		return (match.DrawMatch(result));//@ts-ignore
 	else if (match.boardStateMap.get(boardState) < 2)
 		match.boardStateMap.set(boardState, 2);
-	// if (match.timer != null)
-	// {
-	// 	// @ts-ignore
-	// 	clearTimeout(match.timer.timeout);
-	// 	p.time = match.timer.time - (Date.now() - match.timer.start);
-	// }
-	// // console.log("time", p.time);
-	// time = match.currentPlayer.time;
-	// /** @param {string} matchId */
-	// timeout = setTimeout((matchId) =>
-	// {
-	// 	let result;
-	// 	let match = globals.matches.get(matchId);
-	// 	if (!match)
-	// 		throw ("Timer reset: bad matchId " + matchId);
-	// 	result = new Result();
-	// 	// @ts-ignore
-	// 	result = match.PlayerLost(result, match?.currentPlayer.team);
-	// 	if (match.coordToUpdate)
-	// 	{
-	// 		DangerUpdate(match, match.coordToUpdate);
-	// 		match.coordToUpdate = "";
-	// 	}
-	// 	return (result);
-	// }, time, "0");
-	// start = Date.now();
-	// match.timer = new Timer(time, start, timeout);
+	if (match.timer != null)
+	{
+		// @ts-ignore
+		clearTimeout(match.timer.timeout);
+		p.time = match.timer.time - (Date.now() - match.timer.start);
+	}
+	// console.log("time", p.time);
+	time = match.currentPlayer.time;
+	/** @param {string} matchId */
+	timeout = setTimeout((matchId) =>
+	{
+		let result;
+		let match = globals.matches.get(matchId);
+		if (!match)
+			throw ("Timer reset: bad matchId " + matchId);
+		result = new Result();
+		// @ts-ignore
+		result = match.PlayerLost(result, match?.currentPlayer.team);
+		if (match.coordToUpdate)
+		{
+			DangerUpdate(match, match.coordToUpdate);
+			match.coordToUpdate = "";
+		}
+		return (result);
+	}, time, match.id);
+	start = Date.now();
+	match.timer = new Timer(time, start, timeout);
 	console.log(`Now it's ${match.currentPlayer.team} turn.`);
 	result.status = 200;
 	if (sendBoardBool)//@ts-ignore

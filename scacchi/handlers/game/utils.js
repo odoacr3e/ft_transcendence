@@ -14,6 +14,7 @@ import { Square, copyBoard } from "../../Classes/Chess/chessBoard.js";
 import {Result} from "../../Classes/endPoint/result.js";
 import {jsonParser} from "../../utils/response.js";
 import {coordNormify} from "../../Classes/Chess/cursor.js";
+import { trace } from "node:console";
 
 /** @typedef {import("../../Classes/Chess/match.js").Match} Match*/
 /** @typedef {import("../../Classes/Chess/cursor.js").Cursor} Cursor*/
@@ -140,6 +141,7 @@ function modifyBoard(copiedBoard)
  */
 function paramCheck(result, from="ignoreCheck", to="ignoreCheck")
 {
+	console.trace();
 	if (!from)
 		return (error(result, 400, `invalid param from "${from}"`));
 	if (!to)
