@@ -94,10 +94,9 @@ async function gameWebSocketHandler(req, id_user, socketData)
 		result = await gameHandler(match, req);
 	if (result.log.status != 200)
 		return (socketError(socketData.socket, result));
-	console.log(req.type);
 	for (let p of match.history.Last().loserSet)
 	{
-		user = globals.clientMap.get(p); 
+		user = globals.clientMap.get(p);
 		if (user)
 			user.state = enumSocketState.NAVIGATING;
 	}
@@ -201,7 +200,8 @@ async function gameInfoHandler(match, body)
 	if (body.type == "reload")
 	{
 		result.Success();
-		// @ts-ignore
+		// if (match.timer?.start != 0)// @ts-ignore
+		// 	match.currentPlayer.time = match.timer.time - (Date.now() - match.timer.start);// @ts-ignore
 		result.board = clientBoard(match, true, true);
 	}
 	else if (body.type == "history")

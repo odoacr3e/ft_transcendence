@@ -166,6 +166,11 @@ function recreateMatch(match, history, cacheMatchBool=false)
 				result = endTurn(match);
 				continue ;
 			}
+			else if (event.type == eEvents.GiveUp)
+			{//@ts-ignore
+				match.DeletePlayer(match[event.team]);
+				result = new Result().Success();
+			}
 			else
 				continue ;//@ts-ignore
 			if (result.status != 200 && !event.error)

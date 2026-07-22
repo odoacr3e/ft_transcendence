@@ -141,7 +141,6 @@ function modifyBoard(copiedBoard)
  */
 function paramCheck(result, from="ignoreCheck", to="ignoreCheck")
 {
-	console.trace();
 	if (!from)
 		return (error(result, 400, `invalid param from "${from}"`));
 	if (!to)

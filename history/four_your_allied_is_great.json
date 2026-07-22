@@ -13,8 +13,7 @@
       "useBoostBool": false,
       "counter": 0,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "",
@@ -25,8 +24,7 @@
       "useBoostBool": false,
       "counter": 1,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "n5",
@@ -37,8 +35,7 @@
       "useBoostBool": false,
       "counter": 2,
       "updates": {},
-      "error": true,
-      "loserSet": {}
+      "error": true
     },
     {
       "from": "a:",
@@ -49,8 +46,7 @@
       "useBoostBool": false,
       "counter": 3,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "",
@@ -61,8 +57,7 @@
       "useBoostBool": false,
       "counter": 4,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "d=",
@@ -73,8 +68,7 @@
       "useBoostBool": false,
       "counter": 5,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "",
@@ -85,8 +79,7 @@
       "useBoostBool": false,
       "counter": 6,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "n5",
@@ -97,8 +90,7 @@
       "useBoostBool": false,
       "counter": 7,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "",
@@ -109,8 +101,7 @@
       "useBoostBool": false,
       "counter": 8,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "k3",
@@ -121,8 +112,7 @@
       "useBoostBool": false,
       "counter": 9,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "k1",
@@ -133,8 +123,7 @@
       "useBoostBool": false,
       "counter": 10,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "",
@@ -145,8 +134,7 @@
       "useBoostBool": false,
       "counter": 11,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "b6",
@@ -157,8 +145,7 @@
       "useBoostBool": false,
       "counter": 12,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "",
@@ -169,8 +156,7 @@
       "useBoostBool": false,
       "counter": 13,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "d<",
@@ -181,8 +167,7 @@
       "useBoostBool": false,
       "counter": 14,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "",
@@ -193,8 +178,7 @@
       "useBoostBool": false,
       "counter": 15,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "n4",
@@ -205,8 +189,7 @@
       "useBoostBool": false,
       "counter": 16,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "",
@@ -217,8 +200,7 @@
       "useBoostBool": false,
       "counter": 17,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "k1",
@@ -229,8 +211,7 @@
       "useBoostBool": false,
       "counter": 18,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "",
@@ -241,8 +222,7 @@
       "useBoostBool": false,
       "counter": 19,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "a7",
@@ -253,8 +233,7 @@
       "useBoostBool": false,
       "counter": 20,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "",
@@ -265,8 +244,7 @@
       "useBoostBool": false,
       "counter": 21,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "c;",
@@ -277,8 +255,7 @@
       "useBoostBool": false,
       "counter": 22,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "",
@@ -289,8 +266,7 @@
       "useBoostBool": false,
       "counter": 23,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "m;",
@@ -301,8 +277,7 @@
       "useBoostBool": false,
       "counter": 24,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "",
@@ -313,8 +288,7 @@
       "useBoostBool": false,
       "counter": 25,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "l4",
@@ -325,8 +299,7 @@
       "useBoostBool": false,
       "counter": 26,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "",
@@ -337,8 +310,7 @@
       "useBoostBool": false,
       "counter": 27,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "d4",
@@ -349,8 +321,7 @@
       "useBoostBool": false,
       "counter": 28,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "",
@@ -361,8 +332,7 @@
       "useBoostBool": false,
       "counter": 29,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "d>",
@@ -373,8 +343,7 @@
       "useBoostBool": false,
       "counter": 30,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "",
@@ -385,8 +354,7 @@
       "useBoostBool": false,
       "counter": 31,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "l;",
@@ -397,8 +365,7 @@
       "useBoostBool": false,
       "counter": 32,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "",
@@ -409,8 +376,7 @@
       "useBoostBool": false,
       "counter": 33,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "k2",
@@ -421,8 +387,7 @@
       "useBoostBool": false,
       "counter": 34,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "",
@@ -433,8 +398,7 @@
       "useBoostBool": false,
       "counter": 35,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "i9",
@@ -445,8 +409,7 @@
       "useBoostBool": false,
       "counter": 36,
       "updates": {},
-      "error": true,
-      "loserSet": {}
+      "error": true
     },
     {
       "from": "a8",
@@ -457,8 +420,7 @@
       "useBoostBool": false,
       "counter": 37,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "",
@@ -469,8 +431,7 @@
       "useBoostBool": false,
       "counter": 38,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "c:",
@@ -481,8 +442,7 @@
       "useBoostBool": false,
       "counter": 39,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "",
@@ -493,8 +453,7 @@
       "useBoostBool": false,
       "counter": 40,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "k;",
@@ -505,8 +464,7 @@
       "useBoostBool": false,
       "counter": 41,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "",
@@ -517,8 +475,7 @@
       "useBoostBool": false,
       "counter": 42,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "k3",
@@ -529,8 +486,7 @@
       "useBoostBool": false,
       "counter": 43,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "",
@@ -541,8 +497,7 @@
       "useBoostBool": false,
       "counter": 44,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "i9",
@@ -553,8 +508,7 @@
       "useBoostBool": false,
       "counter": 45,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "",
@@ -565,8 +519,7 @@
       "useBoostBool": false,
       "counter": 46,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "e=",
@@ -577,8 +530,7 @@
       "useBoostBool": false,
       "counter": 47,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "",
@@ -589,8 +541,7 @@
       "useBoostBool": false,
       "counter": 48,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "j;",
@@ -601,8 +552,7 @@
       "useBoostBool": false,
       "counter": 49,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "",
@@ -613,8 +563,7 @@
       "useBoostBool": false,
       "counter": 50,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "k4",
@@ -625,8 +574,7 @@
       "useBoostBool": false,
       "counter": 51,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "",
@@ -637,8 +585,7 @@
       "useBoostBool": false,
       "counter": 52,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     },
     {
       "from": "c6",
@@ -649,8 +596,7 @@
       "useBoostBool": false,
       "counter": 53,
       "updates": {},
-      "error": true,
-      "loserSet": {}
+      "error": true
     },
     {
       "from": "a7",
@@ -661,8 +607,7 @@
       "useBoostBool": false,
       "counter": 54,
       "updates": {},
-      "error": true,
-      "loserSet": {}
+      "error": true
     },
     {
       "from": "l9",
@@ -673,8 +618,7 @@
       "useBoostBool": false,
       "counter": 55,
       "updates": {},
-      "error": false,
-      "loserSet": {}
+      "error": false
     }
   ]
 }

@@ -61,7 +61,6 @@ async function testerMain()
 
 await testerMain();
 
-
 async function execAllTests()
 {
 	console.log = () => {};
@@ -327,6 +326,8 @@ async function curlSender(type, from="", to="", cmd=curlCmd)
 	resp = execSync(cmd, {maxBuffer: 1 << 28}).toString();
 	//@ts-ignore
 	json = jsonParser(resp);
+	// console.debug(`cmd: ${cmd}: =>`);
+	// console.debug(json);
 	if (json.log.status != 200)
 	{
 		if (json.log.msg == "Game Error: You need to move first")
@@ -346,8 +347,8 @@ async function curlSender(type, from="", to="", cmd=curlCmd)
  * @param {BackResponse} updates 
  */
 function updateBoard(board, updates)
-{
-	if (!updates || !updates.board)
+{//@ts-ignore
+	if (!updates || !updates.board || updates.ignoreBoard == true)
 		return ;
 	for (const [key, square] of updates.board)
 	{

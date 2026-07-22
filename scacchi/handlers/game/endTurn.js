@@ -70,13 +70,7 @@ function endTurn(match, sendBoardBool=true)
 		if (!match)
 			throw ("Timer reset: bad matchId " + matchId);
 		result = new Result();
-		// @ts-ignore
 		result = match.PlayerLost(result, match?.currentPlayer.team);
-		if (match.coordToUpdate)
-		{
-			DangerUpdate(match, match.coordToUpdate);
-			match.coordToUpdate = "";
-		}
 		return (result);
 	}, time, match.id);
 	start = Date.now();

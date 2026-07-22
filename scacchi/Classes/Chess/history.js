@@ -68,7 +68,8 @@ export class History
 			delete event.isBoostedBool;
 			if (event.lastLost == null)//@ts-ignore
 				delete event.lastLost;//@ts-ignore
-			delete event.pieceEaten;
+			delete event.pieceEaten;//@ts-ignore
+			delete event.loserSet;
 		}
 		if (name)
 		{
@@ -153,7 +154,7 @@ function updateMoves(match, square, coords, boostBool=false)
 	if (match.currentPlayer.useBoostBool || boostBool == true)
 		eName = eEvents.MoveBoost;
 	record = new HistoryEvent(this.moves, eName, square.piece?.team, match.board.updates, square.piece?.type, coords[0], coords[1], square.boostedTargetZones, square.piece?.isBoostedBool);
-	record.pieceEaten = match.board.get(coords[2]).piece;
+	record.pieceEaten = match.board.get(coords[1])?.piece;
 	this.events.push(record);
 	this.moves += 1;
 }
@@ -226,6 +227,27 @@ function updateEndTurn(match)
 	if (!match.currentPlayer.team)
 		throw (`History: invalid currentPlayer team`);
 	record = new HistoryEvent(this.moves, eEvents.EndTurn, match.currentPlayer.team, match.board.updates);
+	this.events.push(record);
+	this.moves += 1;
+}
+
+/**
+ * 
+ * @this {History}
+ * @param {Match} match 
+ * @param {string} team
+ */
+function updateGiveUp(match, team=match.currentPlayer.team)
+{
+	let	record;
+
+	if (!this)
+		throw ("updateMoves must be called inside of History class");
+	if (!match)
+		throw (`History: invalid match`);//@ts-ignore
+	if (!match[team])
+		throw (`History: invalid team ${team}`);
+	record = new HistoryEvent(this.moves, eEvents.GiveUp, team);
 	this.events.push(record);
 	this.moves += 1;
 }

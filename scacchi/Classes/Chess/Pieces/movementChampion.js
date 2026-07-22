@@ -26,7 +26,6 @@ let movementChampion = function (match)
 		return (0);
 	if (piece.pos != startPos)
 	{
-		console.trace();
 		throw (`movementChampion: mismatch: startPos ${startPos}, piece.pos ${piece.pos}`);
 	}
 	for (let {dx, dy} of piece.moveArray)

@@ -19,7 +19,8 @@ const eEvents =
 	MoveBoost: 'moveboost',
 	Boost: 'boost',
 	EndTurn: `endturn`,
-	Transform: 'trans'
+	Transform: 'trans',
+	GiveUp: 'giveup'
 };
 
 const eMatchPresets =

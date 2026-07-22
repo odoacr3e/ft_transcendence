@@ -77,7 +77,11 @@ function responseFormatter(match, result, msg, status)
 	delete result.msg;
 	delete result.status;
 	if (!result.board)
-		result.board = new Map();
+	{
+		result.board = new Map();//@ts-ignore
+		result.ignoreBoard = true;
+	}
+	// delete result.board;
 	result.log = log;
 	if (!result.victory)
 		result.victory = match? match.victory: "";
