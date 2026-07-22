@@ -4,20 +4,19 @@
 /*
 	list of exports:
 	-	checkMateCheckAll: checks if every active player is in check/staleMate
-	//FIXME: spostare in utils!	
-	-	getDirection: 		given two coords, it returns {Δx, Δy}.
 */
 
 import { Chess } from "../lib/lib.js";
-import {Result} from "../Classes/endPoint/result.js";
-import {enumNames} from "../Macro/enums.js";
-import {Match} from "../Classes/Chess/match.js";
-import {isDangerous} from "../utils/checkDanger.js";
-import { movePiece } from "../utils/dangerUpdate.js";
+import { Result } from "../Classes/endPoint/result.js";
+import { enumNames } from "../Macro/enums.js";
+import { Match } from "../Classes/Chess/match.js";
+import { isDangerous } from "../utils/checkDanger.js";
+import { movePiece, getDirection } from "../utils/movePiece.js";
 import { Square } from "../Classes/Chess/chessBoard.js";
 import { pathFinding } from "./pathFinding.js";
 import { simulation } from "./simulation.js";
 import { getLegalMoves } from "./checkLegalMoves.js";
+
 const {preset} = Chess;
 
 /**
@@ -86,32 +85,6 @@ function checkMateCheckAll(match, result, team)
 		return (match.DrawMatch(result), true);
 	}
 	return (false);
-}
-
-/**
- * 
- * @param {Match} match
- * @param {string} kingCoord 
- * @param {string} enemyCoord 
- */
-function getDirection(match, kingCoord, enemyCoord)
-{
-	let rowK, rowE, diffRow;
-	let colK, colE, diffCol;
-
-	match.cursor.square = kingCoord;
-	rowK = match.cursor.getRow();
-	colK = match.cursor.getCol();
-	match.cursor.square = enemyCoord;
-	rowE = match.cursor.getRow();
-	colE = match.cursor.getCol();
-	diffRow = rowK - rowE;
-	diffCol = colK - colE;
-	if (diffRow != 0)
-		diffRow /= Math.abs(diffRow);
-	if (diffCol != 0)
-		diffCol /= Math.abs(diffCol);
-	return ({diffRow, diffCol});
 }
 
 /**
@@ -191,8 +164,7 @@ function isStoppable(match, kingSquare, enemySquareString)
 				match.currentPlayer.guardianPieces.add({coord: x, target: match.cursor.square});
 		}
 		if (!movePiece(match, dir.diffCol, dir.diffRow))
-			return true;//FIXME - stampella: non dovrebbe finire mai qui, eppure succede
-		//throw("isStoppable: getDirection failed");
+			return true;
 	}
 	if (normalSaveBool == true || match.currentPlayer.guardianPieces.size > 0)
 	{
@@ -430,4 +402,4 @@ function cantMovePiece(match, enemyCoord, enemySquare, kingCoord)
 	return (true);
 }
 
-export {checkMateCheckAll, getDirection};
+export {checkMateCheckAll};

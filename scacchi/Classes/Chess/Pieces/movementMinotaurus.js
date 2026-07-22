@@ -25,7 +25,7 @@ let movementMinotaurus = function (match)
 			match.board.get(startPos)?.targetZones.add(match.cursor.square);
 			if (otherPiece != null)
 			{
-				if (otherPiece.team != piece.team) //FIXME - da capire perche' era commentato
+				if (otherPiece.team != piece.team)
 				{
 					berserkMode(startPos, match);
 					match.board.get(startPos).boostedTargetZones.get(match.cursor.square).delete(startPos);

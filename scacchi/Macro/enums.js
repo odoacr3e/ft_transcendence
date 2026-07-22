@@ -25,7 +25,7 @@ const eEvents =
 const eMatchPresets =
 {
 	ClassicTwoPlayers: "1v1",
-	ClassicFourPlayers: "2v2", //TODO - da implementare
+	ClassicFourPlayers: "2v2",
 	ClassicFreeForAll: "1v1v1v1",
 	NoCornersFourPlayers: "14x14x4",
 };

@@ -293,7 +293,7 @@ function copyBoostedTargetZones(src, dest=null)
 		dest = new Map();
 	dest.clear();
 	zones = new Set();
-	for (const [pos, targets] of src) //FIXME - non vengono copiati bene
+	for (const [pos, targets] of src)
 	{
 		zones.clear();
 		for (const bonusPos of targets)

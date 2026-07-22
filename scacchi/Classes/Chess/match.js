@@ -239,8 +239,6 @@ class Match
 		this.UpdateElo(player, false);
 		this.DeletePlayer(player);
 		console.log(player.team, ":haaaaaiiiiii persoooooooooooooooooo!!!!!!!");
-		//FIXME - gestire cosa succede in base a quanti player restano
-		//FIXME - gestire salvataggio nella history
 		this.history.Last().lastLost = player.team;
 		if (result != null)
 		{
@@ -266,8 +264,6 @@ class Match
 		console.log("ed e' un pareggioooooooo!!!!");
 		this.victory = "draw";
 		// console.log("Premi un qualsiasi tasto per concludere...");
-		//FIXME - gestire cosa succede in base a quanti player restano
-		//FIXME - gestire salvataggio nella history
 		tmp = this.currentPlayer;
 		player = tmp.next;
 		for (let x of this.users)
@@ -361,7 +357,6 @@ class Match
 		if (!player.boostedPiece)
 			return ;
 		this.boostPriority.delete(player.team);
-		//FIXME - qui va chiamato DangerUpdate. Farlo pero significa introdurre doppie inclusioni
 		boostedSquare = this.board.get(player.boostedPiece);
 		if (!boostedSquare.piece)
 			throw (`DeletePlayer: invalid boosted piece in ${player.boostedPiece}`);
@@ -425,7 +420,6 @@ class Match
 			throw (`UpdateElo: elo not initializated`);
 		newElo = this.elo.updateRating(player.expectedElo, winBool? 1: 0, player.dbTable.points);
 		console.log(`UpdateElo: user ${player.id} old elo is ${player.dbTable.points}, new is ${newElo}`);
-		//FIXME - query sul db
 		query.usersQuery.updateUserELO(player.id, newElo);
 	}
 }
