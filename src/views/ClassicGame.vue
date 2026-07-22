@@ -1,7 +1,7 @@
 <script setup>
 	import { localMatchState, localInfo, DOMPlayer }	from '@/scripts/Data/Variables';
 	import { onMounted, ref, computed }       			from 'vue';
-	import { askAmIPlaying, reloadMatch }								from '@/scripts/Events/BackLink.js';
+	import { askAmIPlaying, reloadMatch }				from '@/scripts/Events/BackLink.js';
 	import PlayerInfo               					from '../components/PlayerInfo.vue';
 	import ChessBoard               					from '../components/ChessBoard.vue';
 	import ActionButtons								from '../components/ActionButtons.vue';
@@ -24,7 +24,7 @@
 				const playing = await askAmIPlaying();
 				if (!playing)
 				{
-					clearMatchStorage
+					clearMatchStorage();
 					router.push({ name: "playpage"});
 					return;
 				}
@@ -32,7 +32,7 @@
 				const restored = await reloadMatch();				
 				if (!restored || !localMatchState)
 				{
-					clearMatchStorage
+					clearMatchStorage();
 					router.push({ name: "playpage"});
 					return;
 				}

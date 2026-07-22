@@ -63,6 +63,8 @@ export async function requestToBack(fromSquare, toSquare, giveUp)
 		{
 			// console.log("Il backend è stato liberato");
 		}, 1000 * 1);
+		console.log("type: ", type, "from: ", fromSquare, "to: ", toSquare);
+		
 	return new Promise((resolve) => {
 		auth.socket.emit("game", { type, from: fromSquare, to: toSquare }, (result) => {
 			console.log(`request: type: ${type}, from: ${fromSquare}, to:${toSquare}`)

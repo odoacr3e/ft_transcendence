@@ -64,7 +64,7 @@ export async function sendGiveUp()
 {
 	let response;
 
-	response = await requestToBack(null, null, 'giveup');
+	response = await requestToBack(null, null, 'giveUp');
 	if (response)
 	{
 		clearHighlight();
