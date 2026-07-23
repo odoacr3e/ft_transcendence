@@ -14,6 +14,9 @@ import { endTurn } from "./endTurn.js";
 import {checkMateCheckAll} from "../../GameLogic/checkMate.js";
 import { BOOSTED_MAX, MOVEMENT_MIN } from "../../Macro/macro.js";
 import { checkKingDanger } from "../../utils/checkDanger.js";
+import { enumNames } from "../../Macro/enums.js";
+
+/** @typedef {import ('../../Classes/Chess/chessBoard.js').Square} Square  */
 
 /**
  * 
@@ -86,6 +89,7 @@ function tryBoost(match, result, from)
 	match.currentPlayer.boostedPiece = square.piece.pos;
 	match.history.UpdateBoost(match, square, from);
 	DangerUpdate(match, from, false);
+	checkInluenceOfBoost(match, square);
 	match.boost += 1;
 	return (true);
 }
@@ -110,10 +114,39 @@ function fakeBoost(match, from)
 	DangerUpdate(match, from);
 	result.Success();
 	// @ts-ignore
-	result.board = clientBoard(match);
+	result.zones = structuredClone(square.boostedTargetZones);
 	square.piece.isBoostedBool = false;
 	DangerUpdate(match, from);
 	return (result)
+}
+
+/**
+ * 
+ * @param {Match} match 
+ * @param {Square} square 
+ */
+function checkInluenceOfBoost(match, square)
+{
+	let influenceZones;
+	let influenced;
+	let infPiece;
+
+	influenceZones = structuredClone(square.influenceZones);
+	for (let x of influenceZones)
+	{
+		influenced = structuredClone(match.board.influenceMap.get(x));
+		if (!influenced)
+			continue ;
+		for (let y of influenced)
+		{
+			infPiece = match.board.get(y).piece;
+
+			if (!infPiece)
+				continue ;
+			else if (infPiece.type == enumNames.KING)
+				DangerUpdate(match, infPiece.pos);
+		}
+	}
 }
 
 export {boost, fakeBoost}; 
