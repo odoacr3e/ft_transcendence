@@ -333,4 +333,4 @@ function updateBoostedChampions(match, coords)
 	}
 }
 
-export {DangerUpdate, dangerUpdateAll, dangerUpdateMoved, dangerUpdateBastards, movePiece};
+export {DangerUpdate, dangerUpdateAll, dangerUpdateMoved, dangerUpdateBastards, updateBoostedChampions, movePiece};

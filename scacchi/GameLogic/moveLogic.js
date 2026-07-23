@@ -48,7 +48,7 @@ export function updateChessboard(coords=[], result, match, boostBool)
 		if (to.piece.isBoostedBool == true)//@ts-ignore
 			match[to.piece.team].boostedPiece = "";
 	}
-	match.history.UpdateMoves(match, from, coords, boostBool);
+	match.history.UpdateMoves(match, from, coords, result.specialMoves._mask, boostBool);
 	if (result.specialMoves.CheckSniperMove())
 	{
 		to.piece = null;

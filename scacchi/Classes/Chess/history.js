@@ -25,6 +25,7 @@ export class History
 		this.UpdateBoost = updateBoost;
 		this.UpdateEndTurn = updateEndTurn;
 		this.UpdateTransform = updateTransform;
+		this.UpdateGiveUp = updateGiveUp;
 		if (!matchSettings)
 			this.matchSettings = null;
 		else if (matchSettings && matchSettings.presetType)
@@ -113,6 +114,7 @@ export class HistoryEvent
 		this.team = team;
 		this.type = eventType;
 		this.pieceBoosterTargetZones = null;
+		this.specialMoves = 0;
 		this.isBoostedBool = isBoosted;
 		this.useBoostBool = false;
 		this.counter = counter;
@@ -135,9 +137,10 @@ export class HistoryEvent
  * @param {Match} match
  * @param {Square} square 
  * @param {Array<string>} coords 
+ * @param {number} specialMoves
  * @param {boolean} boostBool
  */
-function updateMoves(match, square, coords, boostBool=false)
+function updateMoves(match, square, coords, specialMoves, boostBool=false)
 {
 	let	record;
 	let	eName;
@@ -154,7 +157,8 @@ function updateMoves(match, square, coords, boostBool=false)
 	if (match.currentPlayer.useBoostBool || boostBool == true)
 		eName = eEvents.MoveBoost;
 	record = new HistoryEvent(this.moves, eName, square.piece?.team, match.board.updates, square.piece?.type, coords[0], coords[1], square.boostedTargetZones, square.piece?.isBoostedBool);
-	record.pieceEaten = match.board.get(coords[1])?.piece;
+	record.pieceEaten = match.board._data.get(coords[1])?.piece;
+	record.specialMoves = specialMoves;
 	this.events.push(record);
 	this.moves += 1;
 }
