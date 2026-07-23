@@ -21,7 +21,7 @@ import { checkKingDanger } from "../../utils/checkDanger.js";
  * @param {String} from
  * @returns {Result}
  */
-function boost(match, from)
+function boost(match, from, realBoost=true)
 {
 	let	result;
 	let prevBoost;
@@ -90,4 +90,30 @@ function tryBoost(match, result, from)
 	return (true);
 }
 
-export {boost};
+/**
+ * @param {Match} match
+ * @param {string} from
+ */
+function fakeBoost(match, from)
+{
+	let	result = new Result;
+	let	square;
+
+	if (!from)
+		return (result.Error(`boost: coord from ${from} does not exist`));
+	if (!match.board.has(from) == false)
+		return (result.Error(`boost: coord from ${from} does not exist`));
+	square = match.board.get(from);
+	if (!square.piece)
+		return (result.Error(`boost: there is no piece is ${from}...`));
+	square.piece.isBoostedBool = true;
+	DangerUpdate(match, from);
+	result.Success();
+	// @ts-ignore
+	result.board = clientBoard(match);
+	square.piece.isBoostedBool = false;
+	DangerUpdate(match, from);
+	return (result)
+}
+
+export {boost, fakeBoost}; 
