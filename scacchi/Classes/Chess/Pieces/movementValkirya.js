@@ -22,9 +22,9 @@ let movementValkirya = function (match)
 		while (movePiece(match, dx, dy))
 		{
 			match.board.AddInfluence(startPos, match.cursor.square);
+			match.board.get(match.cursor.square)?.dangerZones.add(startPos);
 			if (maxTarget != 1)
 			{
-				match.board.get(match.cursor.square)?.dangerZones.add(startPos);
 				match.board.get(startPos)?.targetZones.add(match.cursor.square);
 				match.board.AddInfluence(startPos, match.cursor.square);
 				if (match.board.get(match.cursor.square)?.piece)
