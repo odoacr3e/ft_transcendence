@@ -15,6 +15,9 @@ import {Result} from "../../Classes/endPoint/result.js";
 import {jsonParser} from "../../utils/response.js";
 import {coordNormify} from "../../Classes/Chess/cursor.js";
 import { trace } from "node:console";
+import { enumNames } from "../../Macro/enums.js";
+import { DEBUG_CURL } from "../../Macro/macro.js";
+import { isDangerous } from "../../utils/checkDanger.js";
 
 /** @typedef {import("../../Classes/Chess/match.js").Match} Match*/
 /** @typedef {import("../../Classes/Chess/cursor.js").Cursor} Cursor*/
@@ -78,6 +81,15 @@ function copyOnlyBoardUpdates(match)
 	for (const coord of match.board.updates)
 	{
 		square = src.get(coord);
+		if (square.piece?.type == enumNames.KING && !DEBUG_CURL && match)
+		{
+			square = square.Copy();
+			for (let x of square.targetZones)
+			{//@ts-ignore
+				if (isDangerous(match, match?.board.get(x).dangerZones, square.piece.team))
+					square.targetZones.delete(x);
+			}
+		}
 		newBoard.set(coordNormify(coord), new Square(square, coordNormify));
 	}
 	return (newBoard);
