@@ -50,7 +50,7 @@ class Match
 		this.lastMenace = {from: "", mid: "", to: ""};
 		this.boostPriority = new Set;
 		this.playerNum = this.settings.players.number;
-		this.lastLost = "";
+		this.loserSet = new Set();
 		this.victory = "";
 		/** @type {Timer | null} */ this.timer = null;
 		if (this.settings.players.number == 4)
@@ -97,7 +97,7 @@ class Match
 		this.lastMenace = {from: "", mid: "", to: ""};
 		this.boostPriority = new Set;
 		this.playerNum = this.settings.players.number;
-		this.lastLost = "";
+		this.loserSet = new Set();
 		this.victory = "";
 		/** @type {Timer | null} */ this.timer = null;
 		if (this.settings.players.number == 4)
@@ -234,7 +234,6 @@ class Match
 	 */
 	PlayerLost(result, player=this.currentPlayer)
 	{
-		this.lastLost = player.team;
 		this.history.Last().loserSet.add(player.id);
 		this.UpdateElo(player, false);
 		this.DeletePlayer(player);
@@ -345,6 +344,7 @@ class Match
 		//@ts-ignore
 		if (!this[player.team])
 			throw (`Delete player: invalid player data`);
+		this.loserSet.add(player.id);
 		// this.board.get(player.King).ClearZones();
 		// this.board.get(player.King).piece = null;
 		this.playerNum--;

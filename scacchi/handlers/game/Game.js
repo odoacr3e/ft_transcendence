@@ -94,13 +94,13 @@ async function gameWebSocketHandler(req, id_user, socketData)
 		result = await gameHandler(match, req);
 	if (result.log.status != 200)
 		return (socketError(socketData.socket, result));
-	for (let p of match.history.Last().loserSet)
+	for (let p of match.loserSet)
 	{
 		user = globals.clientMap.get(p);
 		if (user)
 			user.state = enumSocketState.NAVIGATING;
 	}
-	match.history.Last().loserSet.clear();
+	match.loserSet.clear();
 	result = jsonParser(result);
 	//@ts-ignore
 	result.type = req.type; //Leo per capire quando la riposta che ci mandate si tratta di una reload

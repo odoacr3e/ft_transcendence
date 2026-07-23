@@ -50,4 +50,5 @@ function cancelMove(match)
 		DangerUpdate(match, coord);
 	}
 	updateBoostedChampions(match, [lastEvent.from, lastEvent.to]);
+	match.history.events.pop();
 }
