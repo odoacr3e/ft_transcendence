@@ -15,7 +15,7 @@ const HISTORY_FILE = "HISTORY.json";
 const HISTORY_DEFAULT = `${HISTORY_PATH}${HISTORY_FILE}`;
 
 //SECTION - timers
-const MATCHTIMER = 10 * 1 * 1000;
+const MATCHTIMER = 15 * 60 * 1000;
 const SOCKET_RECONNECT_TIMER = 3 * 1 * 1000;//3 seconds
 const MATCH_RECONNECT_TIMER = 60 * 1 * 1000;//60 seconds
 const TOURNAMENT_WAIT_TIMER = 60 * 5 * 1000;//5 minutes
