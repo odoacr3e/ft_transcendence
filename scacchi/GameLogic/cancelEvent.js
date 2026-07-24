@@ -6,6 +6,7 @@ import { eEvents, enumNames, enumSpecialMoves } from "../Macro/enums.js";
 import { MOVEMENT_BONUS_POINT } from "../Macro/macro.js";
 import { DangerUpdate, updateBoostedChampions } from "../utils/dangerUpdate.js";
 import { includesOneOf } from "../utils/string.js";
+import { setTimerGame } from "./timer.js";
 
 /** @typedef {import("../Classes/Chess/match.js").Match} Match */
 
@@ -30,6 +31,7 @@ export function cancelEvent(match)
 		errorMsg = cancelEndTurn(match);
 	if (errorMsg)
 		return (new Result().Error(`Cannot cancel: "${errorMsg}"`, 500));
+	setTimerGame(match);
 	while (match.history.events[-1]?.error == true)
 		match.history.events.pop();
 	match.history.events.pop();
@@ -52,7 +54,7 @@ function cancelMove(match, lastEvent)
 		return ("cancelMove: History does not have the updates array");
 	fromSquare = match.board.get(lastEvent.from);
 	toSquare = match.board.get(lastEvent.to);
-	if (!lastEvent.pieceEaten && toSquare.piece)
+	if (!lastEvent.pieceEaten && toSquare.piece && fromSquare.piece)
 		console.warn("cancelMove, warning: info on pieceEaten undefined.");
 	if (lastEvent.specialMoves & enumSpecialMoves.SNIPER && lastEvent.pieceEaten)
 	{
@@ -70,7 +72,7 @@ function cancelMove(match, lastEvent)
 	{
 		fromSquare.piece = toSquare.piece;
 		toSquare.piece = lastEvent.pieceEaten;
-		match.currentPlayer.nPoints += lastEvent.pieceEaten.price;//@ts-ignore
+		match.currentPlayer.nPoints -= lastEvent.pieceEaten.price;//@ts-ignore
 		match[lastEvent.pieceEaten?.team].nPieces -= 1;
 	}
 	else

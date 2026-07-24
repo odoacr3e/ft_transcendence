@@ -17,6 +17,7 @@ import { checkInsuficientResources } from "../../GameLogic/checkSpare.js";
 import { boardStringify } from "../../test/render.js";
 import { globals } from "../../Classes/Globals/globals.js";
 import { Timer }	from "../../Classes/Chess/match.js";
+import { setTimerGame } from "../../GameLogic/timer.js";
 
 /**
  * goes to the next turn
@@ -27,8 +28,6 @@ import { Timer }	from "../../Classes/Chess/match.js";
 function endTurn(match, sendBoardBool=true)
 {
 	let	result;
-	let timeout;
-	let start;
 	let time;
 	let nPieces;
 	let p = match.currentPlayer;
@@ -60,21 +59,7 @@ function endTurn(match, sendBoardBool=true)
 		clearTimeout(match.timer.timeout);
 		p.time = match.timer.time - (Date.now() - match.timer.start);
 	}
-	// console.log("time", p.time);
-	time = match.currentPlayer.time;
-	/** @param {string} matchId */
-	timeout = setTimeout((matchId) =>
-	{
-		let result;
-		let match = globals.matches.get(matchId);
-		if (!match)
-			throw ("Timer reset: bad matchId " + matchId);
-		result = new Result();
-		result = match.PlayerLost(result, match?.currentPlayer.team);
-		return (result);
-	}, time, match.id);
-	start = Date.now();
-	match.timer = new Timer(time, start, timeout);
+	setTimerGame(match);
 	console.log(`Now it's ${match.currentPlayer.team} turn.`);
 	result.status = 200;
 	if (sendBoardBool)//@ts-ignore

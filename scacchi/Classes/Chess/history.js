@@ -4,7 +4,7 @@ import fs from "fs";
 
 import {eTeam, eEvents, eMatchPresets} from "../../Macro/enums.js";
 import {copyBoostedTargetZones} from "./chessBoard.js";
-import {HISTORY_PATH, CHESSBOARD_W, CHESSBOARD_H} from "../../Macro/macro.js";
+import {HISTORY_PATH, CHESSBOARD_W, CHESSBOARD_H, MATCHTIMER} from "../../Macro/macro.js";
 import {boardStringify} from "../../test/render.js";
 
 /**@typedef {import("./match.js").Match} Match*/
@@ -136,6 +136,7 @@ export class HistoryEvent
 		this.loserSet = new Set();
 		/** @type {Piece | null | undefined} */
 		this.pieceEaten = undefined;
+		this.time = MATCHTIMER;
 		if (pieceBoosterZones)
 			this.pieceBoosterTargetZones = copyBoostedTargetZones(pieceBoosterZones);
 	}
@@ -170,6 +171,7 @@ function updateMoves(match, square, coords, specialMoves, boostBool=false)
 	record.pieceEaten = match.board._data.get(coords[1])?.piece;
 	record.specialMoves = specialMoves;
 	record.updates = structuredClone(match.board.updates);
+	record.time = match.currentPlayer.time;
 	this.events.push(record);
 	this.moves += 1;
 }
@@ -195,6 +197,7 @@ function updateBoost(match, square, from)
 	// 	throw (`History: missing piece in square: ${square}`);
 	record = new HistoryEvent(this.moves, eEvents.Boost, square.piece?.team, match.board.updates, square.piece?.type, from);
 	record.updates = structuredClone(match.board.updates);
+	record.time = match.currentPlayer.time;
 	this.events.push(record);
 	this.moves += 1;
 }
@@ -222,6 +225,7 @@ function updateTransform(match, square, from, newType)
 	record = new HistoryEvent(this.moves, eEvents.Transform, square.piece?.team, match.board.updates, newType, from);
 	record.to = newType;
 	record.updates = structuredClone(match.board.updates);
+	record.time = match.currentPlayer.time;
 	this.events.push(record);
 	this.moves += 1;
 }
