@@ -49,7 +49,7 @@ export function routesGame(socket, user)
 		socketData = globals.clientMap.get(user.id_user);
 		match = globals.matches.get(socketData?.matchData?.matchId);
 		if (!match || !match[socketData?.matchData?.team])
-			socket.emit("simulate_boost", new Result().Error("You can't simulate the boost", 403));
+			result = new Result().Error("You can't simulate the boost", 403);
 		else
 		{
 			result = fakeBoost(match, req.from);
@@ -57,7 +57,7 @@ export function routesGame(socket, user)
 			socket.emit("simulate_boost", result);
 		}
 		if (typeof(callback) == 'function')
-			callback(result?.log);
+			callback(result);
 	});
 
 	socket.on("replay_game", async(/** @type {{matchId: number, moveId: number, delBool?: Boolean}}*/req, callback) => 

@@ -63,7 +63,9 @@ function responseFormatter(match, result, msg, status)
 	{
 		formatPlayer(match, result);
 	}
-	if (result && result.msg && result.status)
+	if (result?.log && result.log.status && result.log.msg)
+		log = result.log;
+	else if (result && result.msg && result.status)
 		log = {msg: result.msg, status: result.status};
 	else
 		log = {msg: msg, status: status};

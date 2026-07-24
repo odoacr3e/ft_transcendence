@@ -15,6 +15,7 @@ import {checkMateCheckAll} from "../../GameLogic/checkMate.js";
 import { BOOSTED_MAX, MOVEMENT_MIN } from "../../Macro/macro.js";
 import { checkKingDanger } from "../../utils/checkDanger.js";
 import { enumNames } from "../../Macro/enums.js";
+import { jsonParser } from "../../utils/response.js";
 
 /** @typedef {import ('../../Classes/Chess/chessBoard.js').Square} Square  */
 
@@ -114,7 +115,7 @@ function fakeBoost(match, from)
 	DangerUpdate(match, from);
 	result.Success();
 	// @ts-ignore
-	result.zones = structuredClone(square.boostedTargetZones);
+	result.zones = jsonParser(structuredClone(square.boostedTargetZones));
 	square.piece.isBoostedBool = false;
 	DangerUpdate(match, from);
 	return (result);
