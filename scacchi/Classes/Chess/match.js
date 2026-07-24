@@ -214,17 +214,11 @@ class Match
 		if (this.id != "0")
 			globals.matches.delete(this.id);
 		globals.lastMatchId = "0";
-		if (result != null)
-		{
-			result.msg = "you win!";
-			result.status = 200;
-			result.victory = this.victory;
-			result.specialMoves.SetCheckMate();
-			//@ts-ignore
-			// result.board = clientBoard(this);
-		}
-		else
-			return (new Result());
+		if (!result)
+			result = new Result();
+		result.Success(`${this.currentPlayer.team} won!`);
+		result.victory = this.victory;
+		result.specialMoves.SetCheckMate();
 		return (result);
 	}
 	/**
@@ -239,6 +233,9 @@ class Match
 		this.DeletePlayer(player);
 		console.log(player.team, ":haaaaaiiiiii persoooooooooooooooooo!!!!!!!");
 		this.history.Last().lastLost = player.team;
+		if (!result)
+			result = new Result();
+		result.Success(`${player.team} has lost`);
 		if (result != null)
 		{
 			result.msg = "you lost!!!";
@@ -285,17 +282,13 @@ class Match
 		if (this.id != "0")
 			globals.matches.delete(this.id);
 		globals.lastMatchId = "0";
-		if (result != null)
-		{
-			result.msg = "it's a spare!!!";
-			result.status = 200;
-			result.victory = this.victory;
-			result.specialMoves.SetDraw();
-			//@ts-ignore
-			// result.board = clientBoard(this);
-		}
-		else
-			return (new Result());
+		if (result == null)
+			result = new Result();
+		result.Success("it's a spare!!!");
+		result.victory = this.victory;
+		result.specialMoves.SetDraw();
+		//@ts-ignore
+		// result.board = clientBoard(this);
 		return (result);
 	}
 	/** @param {string} team */
