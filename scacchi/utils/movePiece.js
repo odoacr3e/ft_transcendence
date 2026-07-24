@@ -64,7 +64,7 @@ export function getPieces(match, from, to)
 		return (null);
 	if (!from.piece || !to.piece)
 		return (null);
-	if ((to.piece?.team != from.piece?.team) && !to.piece?.isMovedBool && !to.piece?.isMovedBool)
+	if ((to.piece?.team != from.piece?.team) && !to.piece?.moveCount)
 		return null;
 	if (fromType == enumNames.KING && toType == enumNames.MINOTAURUS)
 	{

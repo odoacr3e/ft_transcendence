@@ -47,7 +47,7 @@ function checkCastling(match, result, to, from)
 		return false;
 	if (isDangerous(match, pieces.kingDanger, pieces.king.team))
 		return false;
-	if (pieces.king.isMovedBool || pieces.mino.isMovedBool)
+	if (pieces.king.moveCount || pieces.mino.moveCount)
 		return false;
 	if (pieces.dir.diffRow != 0 && pieces.dir.diffCol != 0)
 		return false;
@@ -126,8 +126,8 @@ function moveCastling(match, from, to)
 	else
 		throw ("moveCastling: backend has lost the king");
 	match.currentPlayer.castlingArray.clear();
-	pieces.king.isMovedBool = true;
-	pieces.mino.isMovedBool = true;
+	pieces.king.moveCount += 1;
+	pieces.mino.moveCount += 1;
 	DangerUpdate(match, pieces.mino.pos, true, true);
 	DangerUpdate(match, pieces.king.pos, true, true);
 	match.cursor.Restore();

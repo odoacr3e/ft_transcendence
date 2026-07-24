@@ -70,8 +70,8 @@ export function updateChessboard(coords=[], result, match, boostBool)
 			match.boostPriority.delete(match.currentPlayer.team);
 		}
 	}
-	if (to.piece && to.piece.isMovedBool == false)
-		to.piece.isMovedBool = true;
+	if (to.piece)
+		to.piece.moveCount += 1;
 	dangerUpdateMoved(match, coords, true);
 	match.moves++;
 	return (true);

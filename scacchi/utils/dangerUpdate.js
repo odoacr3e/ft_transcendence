@@ -185,7 +185,7 @@ function dangerUpdateBastards(match, dy, dx, piece)
 	addLongBastardInfluence(match, dx, dy, startPos, piece);
 	if (match.board.get(match.cursor.square).wallBool == true)
 		return (match.cursor.Restore(), false);
-	if (!piece.isMovedBool && !match.board.get(match.cursor.square).piece)
+	if (!piece.moveCount && !match.board.get(match.cursor.square).piece)
 	{
 		match.board.get(startPos).targetZones.add(match.cursor.square);
 		// match.board.get(match.cursor.square).dangerZones.add(startPos);
@@ -209,7 +209,7 @@ function addLongBastardInfluence(match, dx, dy, startPos, piece)
 	match.cursor.Restore();
 	match.cursor.moveRow(dy + dy);
 	match.cursor.moveCol(dx + dx);
-	if (!piece.isMovedBool)
+	if (!piece.moveCount)
 		match.board.AddInfluence(startPos, match.cursor.square);
 }
 
@@ -232,19 +232,19 @@ function castlingUpdate(match, startPos, piece, castlingBool)
 	player = match[piece.team];
 	kingCoord = player.King;
 	kingSquare = match.board.get(kingCoord);
-	if (piece.type == enumNames.KING && !piece.isMovedBool)
+	if (piece.type == enumNames.KING && !piece.moveCount)
 	{
 		for (const x of player.castlingArray)
 			kingSquare.targetZones.add(x);
 	}
 	else if (castlingBool == false)
 		return ;
-	else if (piece.type == enumNames.MINOTAURUS && !piece.isMovedBool)
+	else if (piece.type == enumNames.MINOTAURUS && !piece.moveCount)
 	{
 		player.castlingArray.delete(startPos);
 		minoSquare = match.board.get(startPos); 
 		if (minoSquare.targetZones.has(kingCoord) == false || 
-		kingSquare.piece?.isMovedBool || piece.isMovedBool)
+		kingSquare.piece?.moveCount || piece.moveCount)
 		{
 			if (kingSquare.targetZones.has(startPos))
 				match.board.updates.add(kingCoord);

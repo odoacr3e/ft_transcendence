@@ -189,7 +189,7 @@ function boostBastardsUpdates(match, coords, theKING, result)
 					if (match.board.get(squareBastard).targetZones.has(match.cursor.square) && 
 					match.board.get(squareBastard).targetZones.size <= 1)
 						break ;
-					if (piece.isMovedBool)
+					if (piece.moveCount)
 					{
 						if (!square.piece.moveLongRangeDEBUG)
 							break ;

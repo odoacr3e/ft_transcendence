@@ -63,6 +63,8 @@ function cancelMove(match, lastEvent)
 	}
 	if (lastEvent.type == eEvents.MoveBoost && fromSquare.piece)
 		fromSquare.piece.isBoostedBool = true;
+	if (fromSquare.piece)
+		fromSquare.piece.moveCount -= 1;
 	for (const coord of lastEvent.updates)
 	{
 		DangerUpdate(match, coord);

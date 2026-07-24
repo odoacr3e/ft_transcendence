@@ -132,7 +132,7 @@ function modifyBoard(copiedBoard)
 		// @ts-ignore
 		delete (square).piece.moveArray;
 		// @ts-ignore
-		delete (square).piece?.isMovedBool;
+		delete (square).piece?.moveCount;
 		// @ts-ignore
 		delete (square).piece?.multipleMovesBool;
 		// @ts-ignore
