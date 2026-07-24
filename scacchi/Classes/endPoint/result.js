@@ -80,7 +80,7 @@ class Result
 	{
 		this.status = status;
 		this.msg = msg;
-		
+		this.log = {status: this.status, msg: this.msg};
 		return (this);
 	}
 }
