@@ -53,6 +53,7 @@ export function routesGame(socket, user)
 		else
 		{
 			result = fakeBoost(match, req.from);
+			console.log(`fakeBoost response: ${result}`);
 			socket.emit("simulate_boost", result);
 		}
 		if (typeof(callback) == 'function')
