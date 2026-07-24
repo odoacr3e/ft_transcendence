@@ -217,7 +217,7 @@ function print(key)
 		console.log(`square info "${cmd.SQUARE_INFO}"`);
 		console.log(`restoreHistory "${cmd.LOAD_HISTORY}"`);
 		console.log(`gotoKing "${cmd.GOTO_KING}"`);
-		console.log(`cancelMove "${cmd.CANCEL_MOVE}"`);
+		console.log(`cancelEvent "${cmd.CANCEL_EVENT}"`);
 	}
 }
 

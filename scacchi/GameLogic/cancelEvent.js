@@ -15,15 +15,18 @@ import { includesOneOf } from "../utils/string.js";
 export function cancelEvent(match)
 {
 	let	lastEvent;
+	let	errorMsg;
 
 	if (match.history.events.length == 0)
 		return (new Result().Error("Cannot cancel: nothing happened yet", 409));
 	console.log("behold an unthinkable present...");
 	lastEvent = match.history.Last();
 	if (lastEvent.type == eEvents.EndTurn)
-		cancelEndTurn(match, lastEvent);
+		errorMsg = cancelEndTurn(match, lastEvent);
 	else if (includesOneOf(lastEvent.type, eEvents.Move, eEvents.MoveBoost))
-		cancelMove(match, lastEvent);
+		errorMsg = cancelMove(match, lastEvent);
+	if (errorMsg)
+		return (new Result().Error(`Cannot cancel: "${errorMsg}"`, 500));
 	match.history.events.pop();
 	return (new Result().Success());
 }
@@ -39,6 +42,9 @@ function cancelMove(match, lastEvent)
 	let	toSquare;
 	let	tmp;
 
+	console.log(Object.prototype.toString.call(lastEvent.updates));
+	if (!lastEvent.updates || lastEvent.updates.size == 0 || Object.prototype.toString.call(lastEvent.updates) != "[object Set]")
+		return ("cancelMove: History does not have the updates array");
 	fromSquare = match.board.get(lastEvent.from);
 	toSquare = match.board.get(lastEvent.to);
 	if (lastEvent.specialMoves & enumSpecialMoves.SNIPER)

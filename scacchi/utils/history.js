@@ -134,6 +134,7 @@ function recreateMatch(match, history, cacheMatchBool=false)
 {
 	let	result;
 	let	playerNum;
+	let	board;
 
 	if (!match)
 		match = new Match(history.matchSettings);
@@ -147,7 +148,7 @@ function recreateMatch(match, history, cacheMatchBool=false)
 		if (cacheMatchBool == true)
 			cacheMatchState(match);
 		match.historyCreateBool = true;
-		for (const event of history.events)
+		for (let event of history.events)
 		{
 			//@ts-ignore
 			DEBUGEvent = event;
@@ -185,6 +186,13 @@ function recreateMatch(match, history, cacheMatchBool=false)
 			{
 				if (cacheMatchBool == true)
 					cacheMatchState(match);
+				event.updates = new Set();
+				if (result.board)
+				{//@ts-ignore
+					board = result.board.data? result.board.data : Object.keys(result.board);
+					for (const coord of board)
+						event.updates.add(Array.isArray(coord)? coord.at(0) : coord);
+				}
 				DEBUGCounter++;
 			}
 			else
