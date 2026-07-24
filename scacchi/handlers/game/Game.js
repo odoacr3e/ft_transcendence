@@ -24,6 +24,7 @@ import { includesOneOf } from "../../utils/string.js";
 import { updateTournament } from "../../websocket/handlers/tournament.js";
 import { roomMessage } from "../../websocket/utils.js";
 import { enumSocketState } from "../../Macro/enums.js";
+import { saveMatch } from "../../utils/saveMatch.js";
 
 const DEBUG_MATCH = globals.getDebugMatch();
 
@@ -167,23 +168,7 @@ async function gameHandler(match, body)
 	result = responseFormatter(match, result, null, null);
 	render(match);
 	if (match.victory != "" && match.id != "0")
-	{
-		try 
-		{
-			if (match.victory == "draw")
-				throw ("the match ended in a draw");
-			console.log("Salvataggio partita nel database...");
-			await createMatch(match);
-			await createUsersMatch(match);
-			console.log("Successo!");
-		}
-		catch (error)
-		{
-			console.log("Error: ", error);
-		}
-		if (match.tournament)
-			updateTournament(match, match.victory == "draw");
-	}
+		saveMatch(match);
 	return (result);
 }
 

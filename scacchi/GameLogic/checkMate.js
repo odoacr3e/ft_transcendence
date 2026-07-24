@@ -16,8 +16,7 @@ import { Square } from "../Classes/Chess/chessBoard.js";
 import { pathFinding } from "./pathFinding.js";
 import { simulation } from "./simulation.js";
 import { getLegalMoves } from "./checkLegalMoves.js";
-
-const {preset} = Chess;
+import {preset} from "../Classes/Chess/Pieces/preset.js";
 
 /**
  * checks if a player is in checkMate
