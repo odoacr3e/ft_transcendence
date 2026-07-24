@@ -69,6 +69,7 @@ export async function requestToBack(fromSquare, toSquare, opType)
 
 export function reloadMatch()
 {
+	console.log("chiamata di reload!");
 	const auth = useAuthStore();
 	if (!auth.socket)
 		return (Promise.resolve(false));

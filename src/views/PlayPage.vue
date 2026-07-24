@@ -12,6 +12,7 @@
 	const players   = ref(null);
 	const time      = ref(null);
 	const waiting   = ref(false);
+	const reloading = ref(false);
 
 	const canPlay = computed(() => {
 		if (!roomType.value || !players.value)

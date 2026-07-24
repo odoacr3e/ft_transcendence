@@ -101,6 +101,8 @@ export function updateMatchState(nextRaw)
 	const validated = validateReceivedMatch(nextRaw);
 
 	localInfo.victory = nextRaw.victory ?? null;
+	console.log("stampiamoci victory: ", localInfo.victory);
+	
 	checkEndTurn(validated);
 	startLocalMatchState(validated);
 	try 

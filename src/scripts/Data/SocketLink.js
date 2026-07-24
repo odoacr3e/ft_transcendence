@@ -1,42 +1,50 @@
 import { updateMatchState, initLocalMatchState, reloadMatchState }	from "./Archi";
 import { clearHighlight }											from "../Events/utils/HighlightUtils";
-import { localMatchState, MACRO }									from "./Variables";
+import { localInfo, localMatchState, MACRO }									from "./Variables";
 import router 														from "@/router";			
 
 export function listenGameSocket(socket)
 {
 	socket.on("game", (raw) => {
-		console.log("[socket game] ricevuto:", raw.type, "victory:", raw.victory);
+		console.log("{[socket game] ricevuta una riposta} tipo: ", raw.type, "response: ", raw);
 		if (raw.log?.status != 200)
 		{
-			console.log("[socket]: errore -", raw.log?.msg);
+			console.log("[socket game]: errore -", raw.log?.msg);
 			console.log("response: ", raw);	
 			return;
 		}
 		if (raw.id !== undefined)
 		{
-			console.log("ID NEW GAME TROVATO!");
+			console.log("[socket game] ID NEW GAME TROVATO!");
 			initLocalMatchState(raw);
 			router.push( {name: raw.p3 ? "GameFour" : "game"});
 			return;
 		}
 		if (raw.type === "reload")
 		{
-			console.log("[reload] entrato. localMatchstate =", localMatchState);
+			console.log("{socket game [reload]} ricevuto reload. localMatchstate =", localMatchState);
 			if (!localMatchState)
 			{
 				reloadMatchState(raw);
-				console.log("Renderizzo game reloadato");
+				console.log("{socket game [reload]} Renderizzo game reloadato");
 				router.push({ name: "game" });
 			}
 			else
-				console.log("[reload]: Fallimento ricezione");
+				console.log("{socket game [reload]}: Fallimento ricezione");
 			return;
 		}
-		console.log("response type", raw.type);
-		console.log("response: ", raw);
-		if (raw.ignoreBoard || raw.type == "simulate_boost")
+		if (raw.type === "giveup")
+		{
+			console.log("[socket game] -> [giveup]: ricevuto giveup");
+			localInfo.victory = raw.victory;
 			return;
+		}
+		if (raw.type == "simulate_boost")
+		{
+			console.log("{socket game [simu_boost]} payload richiesta simulate boots");
+			return;
+		}
+		console.log("[socket game]: update match");
 		updateMatchState(raw);
 		clearHighlight();
 		if (MACRO.AUDIO)
