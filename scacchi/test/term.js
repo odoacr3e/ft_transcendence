@@ -21,6 +21,7 @@ import { makeTransfiguration } from "../handlers/game/transfiguration.js";
 import { cmd } from "./enumsTest.js";
 import { exec, execSync } from "node:child_process";
 import { cancelEvent } from "../GameLogic/cancelEvent.js";
+import { fakeBoost } from "../handlers/game/boost.js";
 
 /** @typedef {import("../Classes/Chess/match.js").Match} Match*/
 
@@ -181,6 +182,11 @@ process.stdin.on('keypress', (str, key) =>
 			if (lib.include.fs.existsSync(filePath))
 				exec(`ffplay -nodisp -autoexit "${filePath}" || mpg123 "${filePath}" || cvlc --play-and-exit "${filePath}"`);
 		}
+		case (cmd.FAKE_BOOST):
+		{
+			result = fakeBoost(match, match.cursor.square);
+			console.log(result);
+		}
 	}
 	if (includesOneOf(key.name, cmd.MOVEMENTS) && !movePiece(match, dx, dy))
 	{
@@ -218,6 +224,7 @@ function print(key)
 		console.log(`restoreHistory "${cmd.LOAD_HISTORY}"`);
 		console.log(`gotoKing "${cmd.GOTO_KING}"`);
 		console.log(`cancelEvent "${cmd.CANCEL_EVENT}"`);
+		console.log(`show Boost: "${cmd.FAKE_BOOST}"`);
 	}
 }
 

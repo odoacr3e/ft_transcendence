@@ -105,7 +105,7 @@ function fakeBoost(match, from)
 
 	if (!from)
 		return (result.Error(`boost: coord from ${from} does not exist`));
-	if (!match.board.has(from) == false)
+	if (!match.board.has(from))
 		return (result.Error(`boost: coord from ${from} does not exist`));
 	square = match.board.get(from);
 	if (!square.piece)
@@ -117,7 +117,7 @@ function fakeBoost(match, from)
 	result.zones = structuredClone(square.boostedTargetZones);
 	square.piece.isBoostedBool = false;
 	DangerUpdate(match, from);
-	return (result)
+	return (result);
 }
 
 /**

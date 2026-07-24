@@ -52,7 +52,7 @@ export function routesGame(socket, user)
 			socket.emit("simulate_boost", new Result().Error("You can't simulate the boost", 403));
 		else
 		{
-			result = fakeBoost(match, req.from)
+			result = fakeBoost(match, req.from);
 			socket.emit("simulate_boost", result);
 		}
 		if (typeof(callback) == 'function')

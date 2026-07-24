@@ -21,6 +21,7 @@ const cmd =
 	SQUARE_INFO: "i",
 	GOTO_KING: "k",
 	CANCEL_EVENT: "o",
+	FAKE_BOOST: "f",
 	HELP: "h"
 };
 
