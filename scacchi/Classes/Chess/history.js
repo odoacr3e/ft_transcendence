@@ -48,6 +48,16 @@ export class History
 		}
 		return (new HistoryEvent(0, "Empty", "Empty"));
 	}
+	/** @param {string} team */
+	TurnCount(team)
+	{
+		let	i;
+
+		i = 0;
+		for (const event of this.events)
+			i += (event.error == false && event.team == team && event.type == eEvents.EndTurn? 1 : 0);
+		return (i);
+	}
 	/** 
 	 * 
 	 * @param {Match} match 

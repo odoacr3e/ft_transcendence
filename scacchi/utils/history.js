@@ -19,6 +19,7 @@ import { jsonParser } from "./response.js";
 import { DEBUG } from "../Macro/macro.js";
 import { Result } from "../Classes/endPoint/result.js";
 import { initFromStr } from "../handlers/game/init.js";
+import { includesOneOf } from "./string.js";
 
 
 /** @typedef {import ("../Classes/Chess/history.js").History} History */
@@ -154,6 +155,8 @@ function recreateMatch(match, history, cacheMatchBool=false)
 			DEBUGEvent = event;
 			playerNum = match.playerNum;
 			console.log(`History: move number ${event.counter}`);
+			if (event.error == false && includesOneOf(event.type, eEvents.Move, eEvents.MoveBoost))
+				event.pieceEaten = match.board.get(event.to).piece?.Copy();
 			if (event.type == eEvents.Move)
 				result = move(match, event.from, event.to, event.useBoostBool);
 			else if (event.type == eEvents.MoveBoost)
