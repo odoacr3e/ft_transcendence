@@ -31,10 +31,14 @@ export function cancelEvent(match)
 		errorMsg = cancelEndTurn(match);
 	if (errorMsg)
 		return (new Result().Error(`Cannot cancel: "${errorMsg}"`, 500));
-	setTimerGame(match);
 	while (match.history.events[-1]?.error == true)
 		match.history.events.pop();
 	match.history.events.pop();
+	clearTimeout(match.timer?.timeout? match.timer.timeout : undefined);
+	if (match.history.events.length != 0)
+		setTimerGame(match);
+	else
+		match.timer = null;
 	return (new Result().Success());
 }
 
