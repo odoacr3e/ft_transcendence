@@ -1,7 +1,5 @@
 import { localInfo, localBoard, localPlayers }	from "@/scripts/Data/Variables";
-import { resetPrice }							from "@/scripts/Helper/RenderUtils";
 import { PIECES_HIGHLIGHT }						from "@/scripts/Helper/piecesHighlights";
-import { updatePrice }							from "./GlobalUtils";
 
 // UTILS - HIGHLIGHT AND SELECT FUNCTIONS
 
@@ -28,8 +26,7 @@ export function highlightOnClick(event)
 {
 	if (event.target.localName === "img")
 	{
-		updatePrice();
-		if (localInfo.clickedId === localInfo.lastClickedId) 
+		if (localInfo.clickedId === localInfo.lastClickedId)
 		{
 			localBoard.get(localInfo.clickedId).clicked = false;
 			clearHighlight();
@@ -48,7 +45,6 @@ export function highlightOnClick(event)
 	{
 		clearHighlight();
 		localInfo.lastClickedId = null;
-		resetPrice();
 	}
 }
 
@@ -70,7 +66,6 @@ export function highlightOnDrag(event)
 		if (localInfo.savedBoostedMap && localInfo.savedBoostedMap.has(clickedId))
 			localBoard.get(clickedId).boostedHighlight = true;
 		localBoard.get(clickedId).clicked = true;
-		resetPrice();
 		// ciao
 	}
 }
@@ -83,7 +78,6 @@ export function rightClickSelect(event)
 		if (!localInfo.secondMove)
 			localInfo.lastClickedId = null;
 		clearHighlight("highlight");
-		resetPrice();
 		let targetSquare;
 		if (event.target.localName === "img")
 		{
@@ -110,6 +104,8 @@ export function clearHighlight(flag)
 			square.selected = false;
 		if (square.clicked === true && (flag === "clicked" || flag === undefined))
 			square.clicked = false;
+		if (square.boostedHighlight === true && (flag === "boosted"))
+			square.boostedHighlight = false;
 		if ((square.highlight === true || square.boostedHighlight == true)&& (flag === "highlight" || flag === undefined))
 			{
 				square.highlight = false;

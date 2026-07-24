@@ -1,7 +1,7 @@
 <script setup>
 	import { localMatchState, localInfo, DOMPlayer }	from '@/scripts/Data/Variables';
 	import { onMounted, ref, computed }       			from 'vue';
-	import { askAmIPlaying, reloadMatch }				from '@/scripts/Events/BackLink.js';
+	import { reloadMatch }								from '@/scripts/Events/BackLink.js';
 	import PlayerInfo               					from '../components/PlayerInfo.vue';
 	import ChessBoard               					from '../components/ChessBoard.vue';
 	import ActionButtons								from '../components/ActionButtons.vue';
@@ -17,20 +17,12 @@
 	const topP		= computed(() => bottomP.value === 1 ? 2: 1);
 
 	onMounted(async () => {
-		console.log("OnMounted");		
+		console.log("[ClassicGame]: OnMounted");		
 		try{
 			if (!localMatchState) 
 			{
-				const playing = await askAmIPlaying();
-				if (!playing)
-				{
-					clearMatchStorage();
-					router.push({ name: "playpage"});
-					return;
-				}
-
 				const restored = await reloadMatch();				
-				if (!restored || !localMatchState)
+				if (!restored)
 				{
 					clearMatchStorage();
 					router.push({ name: "playpage"});

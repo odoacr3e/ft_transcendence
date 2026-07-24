@@ -3,6 +3,7 @@ import { PIECES_HIGHLIGHT }								from "@/scripts/Helper/piecesHighlights";
 import { computePosition }								from "@floating-ui/dom";
 import { clearHighlight }								from "@/scripts/Events/utils/HighlightUtils.js";
 import { requestToBack }								from "@/scripts/Events/BackLink.js";
+import { useAuthStore } 								from "@/stores/auth.st";
 
 // ANCHOR USER INTERACTION FUNCTIONS
 export function useAbility()
@@ -177,15 +178,37 @@ export function usingAbility()
     return (localInfo.usingAbility !== "" && ((localInfo.lastClickedId && (useAbility || lastUseAbility)) || secondTurn));
 }
 
-export function updatePrice()
+export async function showBoostedMovesHover(fromId)
 {
-	const Piece = localBoard.get(localInfo.clickedId).piece;
-	const Player = localPlayers.values().find(p => p.isPlaying === true);
+	const auth = useAuthStore();
+	if (!auth.socket)
+		return;
 
-	if (Piece.isBoostedBool)
-		localInfo.priceSelected = "This piece is already\nboosted you fool!";
-	else if (Piece.price > Player.nPoints)
-		localInfo.priceSelected = "AHAH! You're too poor\nto buy that!";
-	else
-		localInfo.priceSelected = "Price: " + Piece.price;
+	const response	= await auth.socket.emitWithAck('simulate_boost', { from: fromId, to: "" });
+	const square	= localBoard.get(fromId);
+	if (!square)
+		return;
+	console.log(response);	
+	if (response?.log?.status !== 200)
+	{
+		console.log("[showBoostedMovesHover]: response status != 200!", response);
+		return;
+	}
+	const futureBoostedZones = new Map(
+		Object.entries(response.zones || {}).map(([key, value]) =>
+			[key, new Set(Array.isArray(value) ? value : [])])
+	);
+	localInfo.savedBoostedMap = futureBoostedZones;
+	for (let toHighligh of futureBoostedZones)
+	{
+		for (let Square of toHighligh[1])
+			localBoard.get(Square).boostedHighlight = true;
+	}
+}
+
+export async function showBoostedMovesLeave(fromId)
+{
+	// const square = localBoard.get(fromId);
+	clearHighlight("boosted");
+
 }

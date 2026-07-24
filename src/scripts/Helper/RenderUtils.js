@@ -59,5 +59,3 @@ export function getSquareColor(squareId)
 	const row = parseInt(squareId.substring(1));
 	return (row + col) % 2 === 0 ? "white" : "black";
 }
-
-export function resetPrice() { localInfo.priceSelected = "..."; }

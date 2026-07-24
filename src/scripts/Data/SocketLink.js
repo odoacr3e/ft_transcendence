@@ -22,19 +22,21 @@ export function listenGameSocket(socket)
 		}
 		if (raw.type === "reload")
 		{
-			console.log("[reload] entrato. Localmatchstate =", localMatchState);
+			console.log("[reload] entrato. localMatchstate =", localMatchState);
 			if (!localMatchState)
 			{
 				reloadMatchState(raw);
-				console.log("vado a game");
+				console.log("Renderizzo game reloadato");
 				router.push({ name: "game" });
 			}
 			else
-				console.log("false, tutto rotto non navigo");
+				console.log("[reload]: Fallimento ricezione");
 			return;
 		}
 		console.log("response type", raw.type);
 		console.log("response: ", raw);
+		if (raw.ignoreBoard || raw.type == "simulate_boost")
+			return;
 		updateMatchState(raw);
 		clearHighlight();
 		if (MACRO.AUDIO)

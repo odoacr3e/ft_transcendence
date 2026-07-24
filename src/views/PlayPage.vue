@@ -1,9 +1,10 @@
 <script setup>
-	import AppHeader										from '../components/AppHeader.vue';
-	import { matchMakingOpt }								from '@/scripts/Data/Variables.js';
-	import { eRoomType, eMatchPresets } 					from '@/Common/ENUMS.js';
-	import { useAuthStore } 								from '@/stores/auth.st.js';
-	import { ref, computed, watch, onMounted, onUnmounted }	from 'vue';
+	import AppHeader							from '../components/AppHeader.vue';
+	import { matchMakingOpt }					from '@/scripts/Data/Variables.js';
+	import { eRoomType, eMatchPresets } 		from '@/Common/ENUMS.js';
+	import { useAuthStore } 					from '@/stores/auth.st.js';
+	import { ref, computed, watch, onMounted }	from 'vue';
+	import router								from '@/router';
 
 	const auth      = useAuthStore();
 
@@ -11,7 +12,6 @@
 	const players   = ref(null);
 	const time      = ref(null);
 	const waiting   = ref(false);
-	const reloading = ref(false);
 
 	const canPlay = computed(() => {
 		if (!roomType.value || !players.value)
@@ -37,26 +37,16 @@
 		waiting.value = true;
 	}
 
-	function amIPlaying(playing)
+	async function askAmIPlaying() 
 	{
-		if (playing)
-		{
-			reloading.value = true;
-			waiting.value = true;
-			auth.socket.emit('game', { type: "reload" });	
-		}
-	}
-
-	onMounted(() => {
 		if (!auth.socket)
 			return;
-		auth.socket.once('amiplaying', amIPlaying);
-		auth.socket.emit('amiplaying');
-	});
+		const playing = await auth.socket.emitWithAck('amiplaying');
+		if (playing)
+			router.push({ name: "game" });
+	}
 
-	onUnmounted(() => {
-		auth.socket?.off('amiplaying', amIPlaying);
-	});
+	onMounted(askAmIPlaying);
 </script>
 
 <template>

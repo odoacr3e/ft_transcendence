@@ -1,6 +1,8 @@
 <script setup>
 	import { localInfo, localBoard, localPlayers }				from '@/scripts/Data/Variables.js';
-	import { useAbility, sendEndTurn, shopAbility, sendGiveUp }	from '@/scripts/Events/utils/GlobalUtils';
+	import { useAbility, sendEndTurn, shopAbility, 
+			 sendGiveUp, showBoostedMovesHover,
+			 showBoostedMovesLeave }							from '@/scripts/Events/utils/GlobalUtils';
 	import { computed } 										from 'vue'
 
 	const localPlayer	= computed(() => [...localPlayers.values()].find(p => p.team === localInfo.myTeam) ?? null);
@@ -19,6 +21,19 @@
 									&& !Piece.value.isBoostedBool
 									&& localPlayer.value?.nPoints >= Piece.value?.price
 									&& localInfo.secondTurn);
+
+	const priceMessage = computed(() => {
+		if (!localInfo.lastClickedId)
+			return "...";
+		const piece = localBoard.get(localInfo.lastClickedId)?.piece ?? null;
+		if (!piece)
+			return "...";
+		if (piece.isBoostedBool)
+			return "This piece is already\nboosted you fool!";
+		if (piece.price > (localPlayer.value?.nPoints ?? 0))
+			return "AHAH! You're too poor\nto buy that!";
+		return "Price: " + piece.price;
+	});
 	const canEndTurn = computed(() => myTurn.value && localInfo.secondTurn);
 	const canGiveUp = computed(() => myTurn.value || localInfo.secondTurn);
 </script>
@@ -33,9 +48,11 @@
 		</button>
 		<button class="action bg-emerald-400 hover:bg-emerald-500 flex-col gap-0!"
 			v-bind:class="canBoost ? 'on' : 'off'"
-			@click="shopAbility()">
+			@click="shopAbility()"
+			@mouseenter="showBoostedMovesHover(localInfo.clickedId)"
+			@mouseleave="showBoostedMovesLeave(localInfo.clickedId)">
 			<b>Boost your Piece!</b>
-			<p style="white-space: pre-line" class="text-xs"><i>{{ localInfo.priceSelected }}</i></p>
+			<p style="white-space: pre-line" class="text-xs"><i>{{ priceMessage }}</i></p>
 		</button>
 		<button class="action bg-blue-500 hover:bg-indigo-500"
 			v-bind:class="canEndTurn ? 'on' : 'off'"

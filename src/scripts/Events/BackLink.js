@@ -35,18 +35,13 @@ export async function sendToBackend(fromId, toId, flag)
 	}
 }
 
-export async function requestToBack(fromSquare, toSquare, giveUp)
+export async function requestToBack(fromSquare, toSquare, opType)
 {
 	const auth = useAuthStore();
 	let type;
-	const toPiece = (() => {
-			if (fromSquare && toSquare && localBoard.get(toSquare).piece &&
-				localBoard.get(toSquare).piece.team !== localBoard.get(fromSquare).piece.team)
-				return (localBoard.get(toSquare).piece);
-			else
-				return null;
-		})();
-	if (giveUp === "giveUp")
+	if (opType === "showBoost")
+		{type = "simulate_boost"; toSquare = "";}
+	else if (opType === "giveUp")
 		{type = "giveup"; fromSquare = ""; toSquare = ""; }
 	else if (fromSquare === null && toSquare === null && localInfo.secondTurn)
 		{type = "endturn"; fromSquare = ""; toSquare = ""; }
@@ -59,102 +54,63 @@ export async function requestToBack(fromSquare, toSquare, giveUp)
 	else {type = "move";}
 	let	timeout;
 
-	timeout = setTimeout(() => 
-		{
-			// console.log("Il backend è stato liberato");
-		}, 1000 * 1);
-		console.log("type: ", type, "from: ", fromSquare, "to: ", toSquare);
+	timeout = setTimeout(() => {}, 1000 * 1);
+	console.log("req: type: ", type, "from: ", fromSquare, "to: ", toSquare);
 		
 	return new Promise((resolve) => {
 		auth.socket.emit("game", { type, from: fromSquare, to: toSquare }, (result) => {
 			console.log(`request: type: ${type}, from: ${fromSquare}, to:${toSquare}`)
 			clearTimeout(timeout);
-			if (result?.log?.status === 200 && toPiece)
-				localInfo.capturedP[toPiece.team === "white" ? "black" : "white"][toPiece.type] += 1;
 			resolve(result?.log?.status === 200);
 		});
 
 	});
 }
 
-// sta funzione è una ginata colossale
 export function reloadMatch()
 {
-	console.log("Chiamata di reload!");
 	const auth = useAuthStore();
 	if (!auth.socket)
 		return (Promise.resolve(false));
 
 	return new Promise((resolve) =>
 	{
-		let done = false;
 		let retryId = null;
 
-		const finish = (ok) => {
-			if (done) return;
-			done = true;
-			clearTimeout(hardTimeout);
-			if (retryId) clearInterval(retryId);
-			auth.socket.off("connect", startLoop);
-			resolve(ok);
-		};
-
-		const tryReload = () => {
-			if (done || !auth.socket?.connected) return;
-			console.log("[reload] tentativo emit, socket connesso:", auth.socket.connected);
-			auth.socket.emit("game", { type: "reload", from: "", to: "" }, (result) => {
-				console.log("[reload] ack ricevuto:", result);
-				if (result?.log?.status === 200)
-					finish(true);
+		const emit = () => {
+			console.log("[reload] emit");
+			auth.socket.emit("game", {
+				type: "reload",
+				from: sessionStorage.getItem("match:myTeam"),
+				to: ""
 			});
 		};
 
-		const hardTimeout = setTimeout(() => finish(false), 8000);
-
-		const startLoop = () => {
-			if (done) return;
-			setTimeout(() => {
-				if (done) return;
-				tryReload();
-				retryId = setInterval(tryReload, 1000);
-			}, 1500);
+		const finish = (ok) => {
+			clearTimeout(timeout);
+			clearInterval(retryId);
+			auth.socket.off("game", onResponse);
+			auth.socket.off("connect", start);
+			resolve(ok);
 		};
 
-		if (auth.socket.connected)
-			startLoop();
-		else
-			auth.socket.once("connect", startLoop);
-	});
-}
-
-export function askAmIPlaying()
-{
-	const auth = useAuthStore();
-	if (!auth.socket)
-		return Promise.resolve(false);
-
-	return new Promise((resolve) => {
-		let settled = false;
-		const onReply = (playing) => {
-			if (settled)
-				return;
-			settled = true;
-			clearTimeout(timer);
-			resolve(!!playing);
+		const onResponse = (raw) => {
+			if (raw?.type !== "reload") return;
+			finish(raw?.log?.status === 200);
 		};
-		const timer = setTimeout(() => {
-			if (settled)
-				return;
-			settled = true;
-			auth.socket.off('amiplaying', onReply);
-			resolve(false);
-		}, 3000);
 
-		auth.socket.once('amiplaying', onReply);
-		const emit = () => auth.socket.emit('amiplaying');
-		if (auth.socket.connected)
+		const start = () => {
 			emit();
+			retryId = setInterval(emit, 1000);
+		};
+
+		const timeout = setTimeout(() => finish(false), 6000);
+
+		auth.socket.on("game", onResponse);
+
+		if (auth.socket.connected)
+			start();
 		else
-			auth.socket.once('connect', emit);	
+			auth.socket.once("connect", start);
 	});
 }

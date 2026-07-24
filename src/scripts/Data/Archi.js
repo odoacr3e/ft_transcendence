@@ -24,7 +24,7 @@ import "./SocketLink.js"
 // 	return match;
 // }
 
-export function validateReceivedMatch(rawJson)
+export function  validateReceivedMatch(rawJson)
 {
 	if (!rawJson || typeof rawJson !== "object" || Array.isArray(rawJson))
 		throw new Error("Payload non valido: root deve essere un oggetto.");
@@ -138,6 +138,8 @@ export function updateLocalBoard(changes)
 			);
 			const oldSquare = localBoard.get(squareKey);
 			assignLastMoveSquares(oldSquare, newSquare, movedSquares);
+			if (oldSquare.piece && newSquare.piece && oldSquare.piece.team !== newSquare.piece.team)
+				localInfo.capturedP[newSquare.piece.team][oldSquare.piece.type] += 1;
 			oldSquare.piece = newSquare.piece;
 			oldSquare.targetZones = newSquare.targetZones;
 			oldSquare.boostedTargetZones = newSquare.boostedTargetZones;
