@@ -159,6 +159,7 @@ function updateMoves(match, square, coords, specialMoves, boostBool=false)
 	record = new HistoryEvent(this.moves, eName, square.piece?.team, match.board.updates, square.piece?.type, coords[0], coords[1], square.boostedTargetZones, square.piece?.isBoostedBool);
 	record.pieceEaten = match.board._data.get(coords[1])?.piece;
 	record.specialMoves = specialMoves;
+	record.updates = structuredClone(match.board.updates);
 	this.events.push(record);
 	this.moves += 1;
 }
@@ -183,6 +184,7 @@ function updateBoost(match, square, from)
 	// if (!square.piece)
 	// 	throw (`History: missing piece in square: ${square}`);
 	record = new HistoryEvent(this.moves, eEvents.Boost, square.piece?.team, match.board.updates, square.piece?.type, from);
+	record.updates = structuredClone(match.board.updates);
 	this.events.push(record);
 	this.moves += 1;
 }
@@ -209,6 +211,7 @@ function updateTransform(match, square, from, newType)
 	// 	throw (`History: missing piece in square: ${square}`);
 	record = new HistoryEvent(this.moves, eEvents.Transform, square.piece?.team, match.board.updates, newType, from);
 	record.to = newType;
+	record.updates = structuredClone(match.board.updates);
 	this.events.push(record);
 	this.moves += 1;
 }

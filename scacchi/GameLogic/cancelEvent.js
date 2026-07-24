@@ -1,8 +1,10 @@
 //@ts-ignore
 
+import { HistoryEvent } from "../Classes/Chess/history.js";
 import { Result } from "../Classes/endPoint/result.js";
 import { eEvents, enumSpecialMoves } from "../Macro/enums.js";
 import { DangerUpdate, updateBoostedChampions } from "../utils/dangerUpdate.js";
+import { includesOneOf } from "../utils/string.js";
 
 /** @typedef {import("../Classes/Chess/match.js").Match} Match */
 
@@ -10,17 +12,33 @@ import { DangerUpdate, updateBoostedChampions } from "../utils/dangerUpdate.js";
  * 
  * @param {Match} match 
  */
-function cancelMove(match)
+export function cancelEvent(match)
 {
 	let	lastEvent;
-	let	fromSquare;
-	let	toSquare;
-	let	tmp;
 
 	if (match.history.events.length == 0)
 		return (new Result().Error("Cannot cancel: nothing happened yet", 409));
 	console.log("behold an unthinkable present...");
 	lastEvent = match.history.Last();
+	if (lastEvent.type == eEvents.EndTurn)
+		cancelEndTurn(match, lastEvent);
+	else if (includesOneOf(lastEvent.type, eEvents.Move, eEvents.MoveBoost))
+		cancelMove(match, lastEvent);
+	match.history.events.pop();
+	return (new Result().Success());
+}
+
+/**
+ * 
+ * @param {Match} match 
+ * @param {HistoryEvent} lastEvent 
+ */
+function cancelMove(match, lastEvent)
+{
+	let	fromSquare;
+	let	toSquare;
+	let	tmp;
+
 	fromSquare = match.board.get(lastEvent.from);
 	toSquare = match.board.get(lastEvent.to);
 	if (lastEvent.specialMoves & enumSpecialMoves.SNIPER)
@@ -50,5 +68,14 @@ function cancelMove(match)
 		DangerUpdate(match, coord);
 	}
 	updateBoostedChampions(match, [lastEvent.from, lastEvent.to]);
-	match.history.events.pop();
+}
+
+/**
+ * 
+ * @param {Match} match 
+ * @param {HistoryEvent} lastEvent 
+ */
+function cancelEndTurn(match, lastEvent)
+{//@ts-ignore
+	match.currentPlayer = match[match.currentPlayer.prev];
 }

@@ -19,6 +19,8 @@ import {render, boardStringify} from "./render.js";
 import readline from "node:readline";
 import { makeTransfiguration } from "../handlers/game/transfiguration.js";
 import { cmd } from "./enumsTest.js";
+import { exec, execSync } from "node:child_process";
+import { cancelEvent } from "../GameLogic/cancelEvent.js";
 
 /** @typedef {import("../Classes/Chess/match.js").Match} Match*/
 
@@ -168,6 +170,17 @@ process.stdin.on('keypress', (str, key) =>
 			historyRestore(match, HISTORY_PATH + name);
 			break ;
 		}
+		case (cmd.CANCEL_EVENT):
+		{
+			let	filePath;
+
+			filePath = "./test/re-zero-return-by-death.mp3";
+			result = cancelEvent(match);
+			if (result.status != 200)
+				return (error(null, result));
+			if (lib.include.fs.existsSync(filePath))
+				exec(`ffplay -nodisp -autoexit "${filePath}" || mpg123 "${filePath}" || cvlc --play-and-exit "${filePath}"`);
+		}
 	}
 	if (includesOneOf(key.name, cmd.MOVEMENTS) && !movePiece(match, dx, dy))
 	{
@@ -204,6 +217,7 @@ function print(key)
 		console.log(`square info "${cmd.SQUARE_INFO}"`);
 		console.log(`restoreHistory "${cmd.LOAD_HISTORY}"`);
 		console.log(`gotoKing "${cmd.GOTO_KING}"`);
+		console.log(`cancelMove "${cmd.CANCEL_MOVE}"`);
 	}
 }
 
@@ -281,7 +295,7 @@ function getline(prompt)
 function saveWrongMove(match, result, type)
 {
 	if (type == eEvents.Move || type == eEvents.MoveBoost)
-		match.history.UpdateMoves(match, match.board.get(selected[0]), selected);
+		match.history.UpdateMoves(match, match.board.get(selected[0]), selected, result.specialMoves._mask, type == eEvents.MoveBoost);
 	else if (type == eEvents.Boost)
 		match.history.UpdateBoost(match, match.board.get(selected[0]), selected[0]);
 	else if (type == eEvents.Transform)
