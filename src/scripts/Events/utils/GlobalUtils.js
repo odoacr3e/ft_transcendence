@@ -201,12 +201,16 @@ export async function showBoostedMovesHover(fromId)
 	localInfo.savedBoostedMap = futureBoostedZones;
 	for (let toHighligh of futureBoostedZones)
 	{
-		for (let Square of toHighligh[1])
-			localBoard.get(Square).boostedHighlight = true;
+		for (let id of toHighligh[1])
+		{
+			const square = localBoard.get(id);
+			if (square.piece.team !== localInfo.myTeam)
+				localBoard.get(id).boostedHighlight = true;
+		}
 	}
 }
 
-export async function showBoostedMovesLeave(fromId)
+export async function showBoostedMovesLeave()
 {
 	// const square = localBoard.get(fromId);
 	clearHighlight("boosted");
