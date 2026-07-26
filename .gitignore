@@ -4,3 +4,4 @@ node_modules
 generated/
 public
 .DS_Store
+vault/keys/vault-keys.json

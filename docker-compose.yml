@@ -1,28 +1,5 @@
 
 services:
-  # vault:
-  #   image: hashicorp/vault:latest
-  #   container_name: vault
-  #   restart: unless-stopped
-  #   cap_add:
-  #     - IPC_LOCK
-  #   volumes:
-  #     - ./vault/config/config.hcl:/vault/config/vault.hcl:ro
-  #     - vault-data:/vault/data:rw
-  #     - vault-logs:/vault/logs
-  #     # - ./vault/certs:/vault/certs:ro
-  #   environment:
-  #     - VAULT_ADDR=http://127.0.0.1:8200
-  #     - VAULT_API_ADDR=http://127.0.0.1:8200
-  #   ports:
-  #     - "8200:8200"
-  #   command: server
-  #   healthcheck:
-  #     test: ["CMD", "vault", "status", "-address=https://127.0.0.1:8200", "-tls-skip-verify"]
-  #     interval: 30s
-  #     timeout: 10s
-  #     retries: 3
-  #     start_period: 10s
   nginx:
     image: nginx
     container_name: nginx
@@ -54,6 +31,30 @@ services:
     volumes:
       - ./frontend_dir:/app
       - /app/node_modules
+  vault:
+    container_name: vault
+    build:
+      context: .
+      dockerfile: Dockerfile/Dockerfile.vault
+    restart: unless-stopped
+    cap_add:
+      - IPC_LOCK
+    volumes:
+      - ./vault/keys:/vault/keys
+      - vault-data:/vault/data:rw
+      - vault-logs:/vault/logs
+      # - ./vault/certs:/vault/certs:ro
+    environment:
+      - VAULT_ADDR=http://127.0.0.1:8200
+      - VAULT_API_ADDR=http://127.0.0.1:8200
+    ports:
+      - "8200:8200"
+    healthcheck:
+      test: ["CMD", "vault", "status", "-address=http://127.0.0.1:8200"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
 
 volumes:
   vault-data:

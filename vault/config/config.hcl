@@ -8,6 +8,6 @@ storage "file" {
 	path		= "/vault/data"
 }
 
-api_addr		= "https://vault:8200"
+api_addr		= "http://vault:8200"
 ui				= true
 disable_mlock	= true
