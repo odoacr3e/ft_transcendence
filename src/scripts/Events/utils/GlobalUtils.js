@@ -252,7 +252,7 @@ export function blinkSquares(ids, { times = 3, interval = 300, delay = 300 } = {
 		timers.forEach(clearTimeout);
 		[...ids].forEach(id => {
 			const square = localBoard.get(id);
-			if (!square)
+			if (square)
 				square.selected = false;
 		});
 	};

@@ -116,7 +116,7 @@ export const FILES_TWO = ["a", "b", "c", "d", "e", "f", "g", "h"];
 export const FILES_FOUR = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n"];
 
 export let MACRO = Object ({
-	"AUDIO" : false,
+	"AUDIO" : true,
 });
 
 export const IMG_PATHS = Object.freeze ({

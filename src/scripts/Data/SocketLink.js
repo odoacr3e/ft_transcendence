@@ -11,7 +11,10 @@ export function listenGameSocket(socket)
 		console.log("{[socket game] ricevuta una riposta} tipo: ", raw.type, "response: ", raw);
 
 		if (localInfo.blinking)
+		{
+			localInfo.blinking();
 			localInfo.blinking = null;
+		}
 		if (raw.log?.status != 200)
 		{
 			console.log("[socket game]: errore -", raw.log?.msg);
@@ -20,7 +23,7 @@ export function listenGameSocket(socket)
 			{
 				console.log("[socket game]: è tempo di blinkare!");
 				if (MACRO.AUDIO)
-					new Audio("percorso/audio");
+					new Audio("/src/assets/audios/tette.mp3").play();
 				if (raw.check != undefined)
 				{
 					const threatId = new Set([raw.check.to, raw.check.mid, raw.check.from].filter(Boolean));
