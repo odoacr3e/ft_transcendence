@@ -26,6 +26,7 @@ export class Room
 		this.maxPlayers = max;
 		this.connType = roomType;
 		this.matchType = matchType;
+		this.tournamentId = 0;
 		if (this.connType != enumConnection.TOURNAMENT)
 			throw (`Room: error in connection type ${this.connType}`);
 		

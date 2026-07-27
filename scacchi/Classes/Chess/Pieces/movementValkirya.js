@@ -34,7 +34,6 @@ let movementValkirya = function (match)
 				maxTarget--;
 			if (maxTarget == 0)
 			{
-				match.board.get(match.cursor.square)?.dangerZones.add(startPos);
 				match.board.get(startPos)?.boostedTargetZones.get(startPos)?.add(match.cursor.square);
 				match.board.AddInfluence(startPos, match.cursor.square);
 				break ;
