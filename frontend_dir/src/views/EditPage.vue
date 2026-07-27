@@ -127,17 +127,17 @@
                 text-base bg-[#882a2a] rounded-[7px] text-white hover:bg-linear-to-t from-[#882a2a] to-[#af3d3d]"
                 v-bind:class="{ 'pointer-events-none grayscale': !formData.name && !formData.surname && !formData.username 
                                                              && !formData.nationality && !formData.preset && formData.mfa === user.mfa 
-                                                             && (!avatarFile && !removeAvatar) ,
+                                                             && (!avatarFile && !removeAvatar) && !formData.preferences,
 				                'pointer-events-auto grayscale-0': formData.name || formData.surname || formData.username 
                                                                 || formData.nationality || formData.preset  || formData.mfa !== user.mfa 
-                                                                || avatarFile || (!avatarFile && removeAvatar) }"
+                                                                || avatarFile || (!avatarFile && removeAvatar) || formData.preferences }"
 	        	type="submit" value="Salva le modifiche">
         </div>
         <div class="flex flex-col m-4 ml-2 text-white bg-[#201e1c] rounded-3xl border border-[#4e4e4e8c] w-[110vh]">
             <h2 class="text-2xl m-5 p-2">Informazioni utente
                 <hr class="w-full justify-self-start text-[#4e4e4e8c]">
             </h2>
-            <div class="grid grid-cols-2 grid-rows-3 gap-5 m-5 self-center">
+            <div class="grid grid-cols-2 grid-rows-3 gap-5 m-5 mb-0 self-center">
                 <div>
                     <div class="flex gap-2 mb-2">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mt-1 size-6 text-[#dcdfe4c0]">
@@ -242,7 +242,7 @@
                     </div>
                 </div>
 
-                <div>
+                <div class="col-span-2">
                     <div class="flex gap-2 mb-2">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="mt-1 size-6 text-[#dcdfe4c0]">
                             <path fill-rule="evenodd" d="M2.25 4.125c0-1.036.84-1.875 1.875-1.875h5.25c1.036 0 1.875.84 1.875 1.875V17.25a4.5 4.5 0 1 1-9 0V4.125Zm4.5 14.25a1.125 1.125 0 1 0 0-2.25 1.125 1.125 0 0 0 0 2.25Z" clip-rule="evenodd" />
@@ -250,18 +250,107 @@
                         </svg>
                         <h3 class="text-xl">Tema</h3>
                     </div>
-                    <div class="form flex w-sm mb-3">
-                        <div>
-                            <input size="35" class="pl-2 text-base" type="radio" id="1" value="1" v-model="formData.preferences">
-                            <label for="1">Test1</label>
+                    <div class="flex flex-col p-2.5 justify-self-center w-fit">
+                        <div class="flex gap-10 my-3">
+                            <div class="flex gap-2">
+                                <input size="35" class="pl-2 text-base hidden" type="radio" id="1" value="1" v-model="formData.preferences">
+                                <label for="1" class="flex gap-2 items-center">
+                                    <div class="grid grid-cols-2 grid-rows-2 w-12 h-12 rounded-2xl border-2 border-[#181715e8]">
+                                        <div class="rounded-tl-2xl bg-[#201e1c]"></div>
+                                        <div class="rounded-tr-2xl bg-[#302d2a]"></div>
+                                        <div class="rounded-bl-2xl bg-[#2f1818]"></div>
+                                        <div class="rounded-br-2xl bg-[#882a2a]"></div>
+                                    </div>
+                                    Default
+                                </label>
+                            </div>
+                            <div class="flex gap-2">
+                                <input size="35" class="pl-2 text-base hidden" type="radio" id="2" value="2" v-model="formData.preferences">
+                                <label for="2" class="flex gap-2 items-center">
+                                    <div class="grid grid-cols-2 grid-rows-2 w-12 h-12 rounded-2xl border-2 border-[#181715e8]">
+                                        <div class="rounded-tl-2xl bg-[#1d1d21]"></div>
+                                        <div class="rounded-tr-2xl bg-[#2a2b30]"></div>
+                                        <div class="rounded-bl-2xl bg-[#17252e]"></div>
+                                        <div class="rounded-br-2xl bg-[#2a6287]"></div>
+                                    </div>
+                                    Default
+                                </label>
+                            </div>
+                            <div class="flex gap-2">
+                                <input size="35" class="pl-2 text-base hidden" type="radio" id="3" value="3" v-model="formData.preferences">
+                                <label for="3" class="flex gap-2 items-center">
+                                    <div class="grid grid-cols-2 grid-rows-2 w-12 h-12 rounded-2xl border-2 border-[#181715e8]">
+                                        <div class="rounded-tl-2xl bg-[#1d211f]"></div>
+                                        <div class="rounded-tr-2xl bg-[#2a302d]"></div>
+                                        <div class="rounded-bl-2xl bg-[#182e17]"></div>
+                                        <div class="rounded-br-2xl bg-[#2d872a]"></div>
+                                    </div>
+                                    Default
+                                </label>
+                            </div>
+                            <div class="flex gap-2">
+                                <input size="35" class="pl-2 text-base hidden" type="radio" id="4" value="4" v-model="formData.preferences">
+                                <label for="4" class="flex gap-2 items-center">
+                                    <div class="grid grid-cols-2 grid-rows-2 w-12 h-12 rounded-2xl border-2 border-[#181715e8]">
+                                        <div class="rounded-tl-2xl bg-[#20211d]"></div>
+                                        <div class="rounded-tr-2xl bg-[#2f302a]"></div>
+                                        <div class="rounded-bl-2xl bg-[#2e2917]"></div>
+                                        <div class="rounded-br-2xl bg-[#87712a]"></div>
+                                    </div>
+                                    Default
+                                </label>
+                            </div>
                         </div>
-                        <div>
-                            <input size="35" class="pl-2 text-base" type="radio" id="2" value="2" v-model="formData.preferences">
-                            <label for="2">Test2</label>
-                        </div>
-                        <div>
-                            <input size="35" class="pl-2 text-base" type="radio" id="3" value="3"v-model="formData.preferences">
-                            <label for="3">Test3</label>
+
+                        <div class="flex gap-10 my-3">
+                            <div class="flex gap-2">
+                                <input size="35" class="pl-2 text-base hidden" type="radio" id="5" value="5" v-model="formData.preferences">
+                                <label for="5" class="flex gap-2 items-center">
+                                    <div class="grid grid-cols-2 grid-rows-2 w-12 h-12 rounded-2xl border-2 border-[#181715e8]">
+                                        <div class="rounded-tl-xl bg-[#6b3838]"></div>
+                                        <div class="rounded-tr-xl bg-[#c54444]"></div>
+                                        <div class="rounded-bl-xl bg-[#beb9b5]"></div>
+                                        <div class="rounded-br-xl bg-[#d9d6d3]"></div>
+                                    </div>
+                                    Default
+                                </label>
+                            </div>
+                            <div class="flex gap-2">
+                                <input size="35" class="pl-2 text-base hidden" type="radio" id="6" value="6" v-model="formData.preferences">
+                                <label for="6" class="flex gap-2 items-center">
+                                    <div class="grid grid-cols-2 grid-rows-2 w-12 h-12 rounded-2xl border-2 border-[#181715e8]">
+                                        <div class="rounded-tl-2xl bg-[#37586d]"></div>
+                                        <div class="rounded-tr-2xl bg-[#4494c5]"></div>
+                                        <div class="rounded-bl-2xl bg-[#bebec5]"></div>
+                                        <div class="rounded-br-2xl bg-[#d3d5d9]"></div>
+                                    </div>
+                                    Default
+                                </label>
+                            </div>
+                            <div class="flex gap-2">
+                                <input size="35" class="pl-2 text-base hidden" type="radio" id="7" value="7" v-model="formData.preferences">
+                                <label for="7" class="flex gap-2 items-center">
+                                    <div class="grid grid-cols-2 grid-rows-2 w-12 h-12 rounded-2xl border-2 border-[#181715e8]">
+                                        <div class="rounded-tl-2xl bg-[#396d37]"></div>
+                                        <div class="rounded-tr-2xl bg-[#46c544]"></div>
+                                        <div class="rounded-bl-2xl bg-[#bfc6c2]"></div>
+                                        <div class="rounded-br-2xl bg-[#d4d9d7]"></div>
+                                    </div>
+                                    Default
+                                </label>
+                            </div>
+                            <div class="flex gap-2">
+                                <input size="35" class="pl-2 text-base hidden" type="radio" id="8" value="8" v-model="formData.preferences">
+                                <label for="8" class="flex gap-2 items-center">
+                                    <div class="grid grid-cols-2 grid-rows-2 w-12 h-12 rounded-2xl border-2 border-[#181715e8]">
+                                        <div class="rounded-tl-2xl bg-[#6d6237]"></div>
+                                        <div class="rounded-tr-2xl bg-[#c7a643]"></div>
+                                        <div class="rounded-bl-2xl bg-[#bec0b8]"></div>
+                                        <div class="rounded-br-2xl bg-[#d8d9d3]"></div>
+                                    </div>
+                                    Default
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -277,10 +366,68 @@
             </div>
         </div>
     </form>
+    <!-- <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 500 250" xml:space="preserve">
+        <rect fill="#201e1c" x="0" y="0" width="100" height="220"/>,<rect fill="#302d2a" x="100" y="0" width="100" height="220"/>,<rect fill="#2f1818" x="200" y="0" width="100" height="220"/>,<rect fill="#882a2a" x="300" y="0" width="100" height="220"/>,<rect fill="#af3d3d" x="400" y="0" width="100" height="220"/>
+        <text x="10" y="235" font-family="Arial" font-size="6" alignment-baseline="middle">Exported from Coolors.co</text>
+        <text x="490" y="235" font-family="Arial" font-size="6" alignment-baseline="middle" text-anchor="end">https://coolors.co/201e1c-302d2a-2f1818-882a2a-af3d3d</text>
+    </svg>
+
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 500 250" xml:space="preserve">
+        <rect fill="#1d1d21" x="0" y="0" width="100" height="220"/>,<rect fill="#2a2b30" x="100" y="0" width="100" height="220"/>,<rect fill="#17252e" x="200" y="0" width="100" height="220"/>,<rect fill="#2a6287" x="300" y="0" width="100" height="220"/>,<rect fill="#3e82b0" x="400" y="0" width="100" height="220"/>
+        <text x="10" y="235" font-family="Arial" font-size="6" alignment-baseline="middle">Exported from Coolors.co</text>
+        <text x="490" y="235" font-family="Arial" font-size="6" alignment-baseline="middle" text-anchor="end">https://coolors.co/1d1d21-2a2b30-17252e-2a6287-3e82b0</text>
+    </svg>
+
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 500 250" xml:space="preserve">
+        <rect fill="#1d211f" x="0" y="0" width="100" height="220"/>,<rect fill="#2a302d" x="100" y="0" width="100" height="220"/>,<rect fill="#182e17" x="200" y="0" width="100" height="220"/>,<rect fill="#2d872a" x="300" y="0" width="100" height="220"/>,<rect fill="#41b03e" x="400" y="0" width="100" height="220"/>
+        <text x="10" y="235" font-family="Arial" font-size="6" alignment-baseline="middle">Exported from Coolors.co</text>
+        <text x="490" y="235" font-family="Arial" font-size="6" alignment-baseline="middle" text-anchor="end">https://coolors.co/1d211f-2a302d-182e17-2d872a-41b03e</text>
+    </svg>
+
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 500 250" xml:space="preserve">
+        <rect fill="#20211d" x="0" y="0" width="100" height="220"/>,<rect fill="#2f302a" x="100" y="0" width="100" height="220"/>,<rect fill="#2e2917" x="200" y="0" width="100" height="220"/>,<rect fill="#87712a" x="300" y="0" width="100" height="220"/>,<rect fill="#b0953e" x="400" y="0" width="100" height="220"/>
+        <text x="10" y="235" font-family="Arial" font-size="6" alignment-baseline="middle">Exported from Coolors.co</text>
+        <text x="490" y="235" font-family="Arial" font-size="6" alignment-baseline="middle" text-anchor="end">https://coolors.co/20211d-2f302a-2e2917-87712a-b0953e</text>
+    </svg> -->
+
+
+
+
+    <!-- <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 500 250" xml:space="preserve">
+        <rect fill="#beb9b5" x="0" y="0" width="100" height="220"/>,<rect fill="#d9d6d3" x="100" y="0" width="100" height="220"/>,<rect fill="#6b3838" x="200" y="0" width="100" height="220"/>,<rect fill="#c54444" x="300" y="0" width="100" height="220"/>,<rect fill="#c55959" x="400" y="0" width="100" height="220"/>
+        <text x="10" y="235" font-family="Arial" font-size="6" alignment-baseline="middle">Exported from Coolors.co</text>
+        <text x="490" y="235" font-family="Arial" font-size="6" alignment-baseline="middle" text-anchor="end">https://coolors.co/beb9b5-d9d6d3-6b3838-c54444-c55959</text>
+    </svg> -->
+
+
+    <!-- <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 500 250" xml:space="preserve">
+        <rect fill="#bebec5" x="0" y="0" width="100" height="220"/>,<rect fill="#d3d5d9" x="100" y="0" width="100" height="220"/>,<rect fill="#37586d" x="200" y="0" width="100" height="220"/>,<rect fill="#4494c5" x="300" y="0" width="100" height="220"/>,<rect fill="#5a9bc4" x="400" y="0" width="100" height="220"/>
+        <text x="10" y="235" font-family="Arial" font-size="6" alignment-baseline="middle">Exported from Coolors.co</text>
+        <text x="490" y="235" font-family="Arial" font-size="6" alignment-baseline="middle" text-anchor="end">https://coolors.co/bebec5-d3d5d9-37586d-4494c5-5a9bc4</text>
+    </svg> -->
+
+
+    <!-- <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 500 250" xml:space="preserve">
+        <rect fill="#bfc6c2" x="0" y="0" width="100" height="220"/>,<rect fill="#d4d9d7" x="100" y="0" width="100" height="220"/>,<rect fill="#396d37" x="200" y="0" width="100" height="220"/>,<rect fill="#46c544" x="300" y="0" width="100" height="220"/>,<rect fill="#5dc559" x="400" y="0" width="100" height="220"/>
+        <text x="10" y="235" font-family="Arial" font-size="6" alignment-baseline="middle">Exported from Coolors.co</text>
+        <text x="490" y="235" font-family="Arial" font-size="6" alignment-baseline="middle" text-anchor="end">https://coolors.co/bfc6c2-d4d9d7-396d37-46c544-5dc559</text>
+    </svg> -->
+
+
+    <!-- <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 500 250" xml:space="preserve">
+        <rect fill="#bec0b8" x="0" y="0" width="100" height="220"/>,<rect fill="#d8d9d3" x="100" y="0" width="100" height="220"/>,<rect fill="#6d6237" x="200" y="0" width="100" height="220"/>,<rect fill="#c7a643" x="300" y="0" width="100" height="220"/>,<rect fill="#c5ac59" x="400" y="0" width="100" height="220"/>
+        <text x="10" y="235" font-family="Arial" font-size="6" alignment-baseline="middle">Exported from Coolors.co</text>
+        <text x="490" y="235" font-family="Arial" font-size="6" alignment-baseline="middle" text-anchor="end">https://coolors.co/bec0b8-d8d9d3-6d6237-c7a643-c5ac59</text>
+    </svg> -->
+
 </template>
 
 <style scoped>
-div.form {
+    input:checked + label div {
+        border-color: #dcdfe4c0;
+    }
+
+    div.form {
 		padding: 10px;
 		border-width: 1px;
 		border-radius: 7px;
@@ -310,8 +457,7 @@ div.form {
         opacity: 100%;
     }
 
-    #allert:hover + div
-	{
+    #allert:hover + div {
 		display: inline;
 	}
 

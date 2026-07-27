@@ -5,3 +5,4 @@ generated/
 public
 .DS_Store
 vault/keys/vault-keys.json
+backend_dir/history/HISTORY.json

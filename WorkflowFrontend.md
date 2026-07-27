@@ -162,50 +162,403 @@ backend   | ssa boostata di un pedone e clicchi su un'altro pezzo
 	▫	nome utente in grassetto
 
 
-#test {	  /*hex-code		name					tailwind_code*/
-	color: #201e1c;	/*bg_default*/
+
+//SECTION - Dark-Themes
+
+//ANCHOR - Dark-Red
+#Dark-Red {/*hex-code		name				tailwind_code*/
+	color: #201e1c;		/*bg_default*/
 	color: #181715e8;	/*bord_default*/
-	color: #302d2a;	/*bg_second*/
+	color: #302d2a;		/*bg_second*/
 	color: #4e4e4e8c;	/*bord_second*/
-	color: #181715;	/*bg_darker*/
-	color: #ffffff;	/*text_default*/			/*white*/
-	color: #d4d4d8;	/*text_second*/				/*zinc-300*/
-	color: #71717b;	/*text_third*/				/*zinc-500*/
+	color: #181715;		/*bg_darker*/
+	color: #ffffff;		/*text_default*/		/*white*/
+	color: #d4d4d8;		/*text_second*/			/*zinc-300*/
+	color: #71717b;		/*text_third*/			/*zinc-500*/
 	color: #4e4e4e8c;	/*text_last*/
 	color: #dcdfe4c0;	/*bg_icons*/
 
-	color: #c41c1c;	/*notif_on*/
-	color: #00c950;	/*online*/					/*green-500*/
+	color: #c41c1c;		/*notif_on*/
+	color: #00c950;		/*online*/				/*green-500*/
+	color: #00000033;	/*bg_blur*/				/*black/20*/
+	color: #882a2a;		/*bg_button*/
+	color: #af3d3d;		/*light_button*/
+	color: #d1aaaa;		/*active_button*/
+
+	color: #2f1818cc;	/*bg_error*/			/*[#2f1818]/80*/
+	color: #ffe2e2;		/*text_error*/			/*red-100*/
+	color: #9f07111a;	/*border_error*/		/*red-800/10*/
+	color: #fb2c3633;	/*inset_error*/			/*red-500/20*/
+
+	color: #00a63e;		/*win*/					/*green-600*/
+	color: #f0fdf4e6;	/*bg_win*/				/*green-50/90*/
+	color: #d1d5dc;		/*draw*/				/*gray-300*/
+	color: #d1d5dce6;	/*bg_draw*/				/*gray-300/90*/
+	color: #fb2c36;		/*lose*/				/*red-500*/
+	color: #fef2f2e6;	/*bg_lose*/				/*red-50/90*/
+
+	color: #bedbff;		/*text_tour*/			/*blue-200*/
+	color: #51a2ff1a;	/*bg_tour*/				/*blue-400/10*/
+	color: #2b80ff33;	/*inset_tour*/			/*blue-500/20*/
+	color: #51a2ff33;	/*hover_tour*/			/*blue-400/20*/
+
+	color: #05df721a;	/*bg_accept*/			/*green-400/10*/
+	color: #00c95033;	/*inset_accept*/		/*green-500/20*/
+	color: #ff64671a;	/*bg_reject*/			/*red-400/10*/
+	color: #fb2c3633;	/*inset_reject*/		/*red-500/20*/
+	color: #d1d5dc;		/*text_wait*/			/*gray-300*/
+	color: #e5e7eb1a;	/*bg_wait*/				/*gray-200/10*/
+	color: #d1d5dc33;	/*inset_wait*/			/*gray-300/20*/
+	color: #bedbff;		/*text_friend*/			/*blue-200*/
+	color: #51a2ff1a;	/*bg_friend*/			/*blue-400/10*/
+	color: #2b80ff33;	/*inset_friend*/		/*blue-500/20*/
+};
+
+//ANCHOR - Dark-Blue
+#Dark-Blue {/*hex-code		name				tailwind_code*/
+	color: #1d1d21;		/*bg_default*/
+	color: #16161ae8;	/*bord_default*/
+	color: #2a2b30;		/*bg_second*/
+	color: #4e4e4e8c;	/*bord_second*/
+	color: #16161a;		/*bg_darker*/
+	color: #ffffff;		/*text_default*/			/*white*/
+	color: #d4d4d8;		/*text_second*/				/*zinc-300*/
+	color: #71717b;		/*text_third*/				/*zinc-500*/
+	color: #4e4e4e8c;	/*text_last*/
+	color: #dcdfe4c0;	/*bg_icons*/
+
+	color: #c41c1c;		/*notif_on*/
+	color: #00c950;		/*online*/					/*green-500*/
 	color: #00000033;	/*bg_blur*/					/*black/20*/
-	color: #882a2a;	/*bg_button*/
-	color: #af3d3d;	/*light_button*/
-	color: #d1aaaa;	/*active_button*/
+	color: #2a6287;		/*bg_button*/
+	color: #3e82b0;		/*light_button*/
+	color: #a9c9de;		/*active_button*/
 
-	color: #2f1818cc;	/*bg_error*/				/*[#2f1818]/80*/
-	color: #ffe2e2;	/*text_error*/				/*red-100*/
-	color: #9f07111a;	/*border_error*/			/*red-800/10*/
-	color: #fb2c3633;	/*inset_error*/				/*red-500/20*/
+	color: #17252ecc;	/*bg_error*/				/*[#17252e]/80*/
+	color: #dbeafe;		/*text_error*/				/*blue-100*/
+	color: #193cb81a;	/*border_error*/			/*blue-800/10*/
+	color: #2b80ff33;	/*inset_error*/				/*blue-500/20*/
 
-	color: #00a63e;	/*win*/						/*green-600*/
+	color: #00a63e;		/*win*/						/*green-600*/
 	color: #f0fdf4e6;	/*bg_win*/					/*green-50/90*/
-	color: #d1d5dc;	/*draw*/					/*gray-300*/
+	color: #d1d5dc;		/*draw*/					/*gray-300*/
 	color: #d1d5dce6;	/*bg_draw*/					/*gray-300/90*/
-	color: #fb2c36;	/*lose*/					/*red-500*/
+	color: #fb2c36;		/*lose*/					/*red-500*/
 	color: #fef2f2e6;	/*bg_lose*/					/*red-50/90*/
 
-	color: #bedbff;	/*text_tour*/				/*blue-200*/
-	color: #51a2ff1a;	/*bg_tour*/					/*blue-400/10*/
-	color: #2b80ff33;	/*inset_tour*/				/*blue-500/20*/
-	color: #51a2ff33;	/*hover_tour*/				/*blue-400/20*/
+	color: #bedbff;		/*text_tour*/         		/*blue-200*/
+	color: #51a2ff1a;	/*bg_tour*/			 		/*blue-400/10*/
+	color: #2b80ff33;	/*inset_tour*/        		/*blue-500/20*/
+	color: #51a2ff33;	/*hover_tour*/        		/*blue-400/20*/
 
-	color: #05df721a;	/*bg_accept*/				/*green-400/10*/
-	color: #00c95033;	/*inset_accept*/			/*green-500/20*/
-	color: #ff64671a;	/*bg_reject*/				/*red-400/10*/
-	color: #fb2c3633;	/*inset_reject*/			/*red-500/20*/
-	color: #d1d5dc;	/*text_wait*/				/*gray-300*/
-	color: #e5e7eb1a;	/*bg_wait*/					/*gray-200/10*/
-	color: #d1d5dc33;	/*inset_wait*/				/*gray-300/20*/
-	color: #bedbff;	/*text_friend*/				/*blue-200*/
-	color: #51a2ff1a;	/*bg_friend*/				/*blue-400/10*/
-	color: #2b80ff33;	/*inset_friend*/			/*blue-500/20*/
+	color: #05df721a;	/*bg_accept*/         		/*green-400/10*/
+	color: #00c95033;	/*inset_accept*/      		/*green-500/20*/
+	color: #ff64671a;	/*bg_reject*/         		/*red-400/10*/
+	color: #fb2c3633;	/*inset_reject*/      		/*red-500/20*/
+	color: #d1d5dc;		/*text_wait*/         		/*gray-300*/
+	color: #e5e7eb1a;	/*bg_wait*/			 		/*gray-200/10*/
+	color: #d1d5dc33;	/*inset_wait*/        		/*gray-300/20*/
+	color: #bedbff;		/*text_friend*/       		/*blue-200*/
+	color: #51a2ff1a;	/*bg_friend*/         		/*blue-400/10*/
+	color: #2b80ff33;	/*inset_friend*/      		/*blue-500/20*/
 };
+
+//ANCHOR - Dark-Green
+#Dark-Green {/*hex-code		name				tailwind_code*/
+    color: #1d211f;     /*bg_default*/
+    color: #161917e8;   /*bord_default*/
+    color: #2a302d;     /*bg_second*/
+    color: #4e4e4e8c;   /*bord_second*/
+    color: #161917;     /*bg_darker*/
+    color: #ffffff;     /*text_default*/			/*white*/
+    color: #d4d4d8;     /*text_second*/				/*zinc-300*/
+    color: #71717b;     /*text_third*/				/*zinc-500*/
+    color: #4e4e4e8c;   /*text_last*/
+    color: #dcdfe4c0;   /*bg_icons*/
+
+    color: #c41c1c;     /*notif_on*/
+    color: #00c950;     /*online*/					/*green-500*/
+    color: #00000033;   /*bg_blur*/					/*black/20*/
+    color: #2d872a;     /*bg_button*/
+    color: #41b03e;     /*light_button*/
+    color: #aadba8;     /*active_button*/
+
+    color: #182e17cc;   /*bg_error*/				/*[#182e17]/80*/
+    color: #dcfce7;     /*text_error*/				/*green-100*/
+    color: #0166301a;   /*border_error*/			/*green-800/10*/
+    color: #00c95033;   /*inset_error*/				/*green-500/20*/
+
+    color: #00a63e;     /*win*/						/*green-600*/
+    color: #f0fdf4e6;   /*bg_win*/					/*green-50/90*/
+    color: #d1d5dc;     /*draw*/					/*gray-300*/
+    color: #d1d5dce6;   /*bg_draw*/					/*gray-300/90*/
+    color: #fb2c36;     /*lose*/					/*red-500*/
+    color: #fef2f2e6;   /*bg_lose*/					/*red-50/90*/
+
+    color: #bedbff;     /*text_tour*/				/*blue-200*/
+    color: #51a2ff1a;   /*bg_tour*/					/*blue-400/10*/
+    color: #2b80ff33;   /*inset_tour*/				/*blue-500/20*/
+    color: #51a2ff33;   /*hover_tour*/				/*blue-400/20*/
+
+    color: #05df721a;   /*bg_accept*/				/*green-400/10*/
+    color: #00c95033;   /*inset_accept*/			/*green-500/20*/
+    color: #ff64671a;   /*bg_reject*/				/*red-400/10*/
+    color: #fb2c3633;   /*inset_reject*/			/*red-500/20*/
+    color: #d1d5dc;     /*text_wait*/				/*gray-300*/
+    color: #e5e7eb1a;   /*bg_wait*/					/*gray-200/10*/
+    color: #d1d5dc33;   /*inset_wait*/				/*gray-300/20*/
+    color: #bedbff;     /*text_friend*/				/*blue-200*/
+    color: #51a2ff1a;   /*bg_friend*/				/*blue-400/10*/
+    color: #2b80ff33;   /*inset_friend*/			/*blue-500/20*/
+};
+
+//ANCHOR - Dark-Yellow
+#Dark-Yellow {/*hex-code	name					tailwind_code*/
+    color: #20211d;     /*bg_default*/
+    color: #181916e8;   /*bord_default*/
+    color: #2f302a;     /*bg_second*/
+    color: #4e4e4e8c;   /*bord_second*/
+    color: #181916;     /*bg_darker*/
+    color: #ffffff;     /*text_default*/			/*white*/
+    color: #d4d4d8;     /*text_second*/				/*zinc-300*/
+    color: #71717b;     /*text_third*/				/*zinc-500*/
+    color: #4e4e4e8c;   /*text_last*/
+    color: #dcdfe4c0;   /*bg_icons*/
+
+    color: #c41c1c;     /*notif_on*/
+    color: #00c950;     /*online*/					/*green-500*/
+    color: #00000033;   /*bg_blur*/					/*black/20*/
+    color: #87712a;     /*bg_button*/
+    color: #b0953e;     /*light_button*/
+    color: #dbcfa8;     /*active_button*/
+
+    color: #2e2917cc;   /*bg_error*/				/*[#2e2917]/80*/
+    color: #fef9c2;     /*text_error*/				/*yellow-100*/
+    color: #894b001a;   /*border_error*/			/*yellow-800/10*/
+    color: #f0b00033;   /*inset_error*/				/*yellow-500/20*/
+
+    color: #00a63e;     /*win*/						/*green-600*/
+    color: #f0fdf4e6;   /*bg_win*/					/*green-50/90*/
+    color: #d1d5dc;     /*draw*/					/*gray-300*/
+    color: #d1d5dce6;   /*bg_draw*/					/*gray-300/90*/
+    color: #fb2c36;     /*lose*/					/*red-500*/
+    color: #fef2f2e6;   /*bg_lose*/					/*red-50/90*/
+
+    color: #bedbff;     /*text_tour*/				/*blue-200*/
+    color: #51a2ff1a;   /*bg_tour*/					/*blue-400/10*/
+    color: #2b80ff33;   /*inset_tour*/				/*blue-500/20*/
+    color: #51a2ff33;   /*hover_tour*/				/*blue-400/20*/
+
+    color: #05df721a;   /*bg_accept*/				/*green-400/10*/
+    color: #00c95033;   /*inset_accept*/			/*green-500/20*/
+    color: #ff64671a;   /*bg_reject*/				/*red-400/10*/
+    color: #fb2c3633;   /*inset_reject*/			/*red-500/20*/
+    color: #d1d5dc;     /*text_wait*/				/*gray-300*/
+    color: #e5e7eb1a;   /*bg_wait*/					/*gray-200/10*/
+    color: #d1d5dc33;   /*inset_wait*/				/*gray-300/20*/
+    color: #bedbff;     /*text_friend*/				/*blue-200*/
+    color: #51a2ff1a;   /*bg_friend*/				/*blue-400/10*/
+    color: #2b80ff33;   /*inset_friend*/			/*blue-500/20*/
+};
+
+//!SECTION
+
+//SECTION - Light-Themes
+
+//ANCHOR - Light-Red
+#Light-Red {/*hex-code		name					tailwind_code*/
+    color: #beb9b5;     /*bg_default*/
+    color: #8f8b88e8;   /*bord_default*/
+    color: #d9d6d3;     /*bg_second*/
+    color: #4e4e4e8c;   /*bord_second*/
+    color: #8f8b88;     /*bg_darker*/
+    color: #201e1c;     /*text_default*/			/*carbon-black (?)*/
+    color: #3f3f46;     /*text_second*/				/*zinc-700 (?)*/
+    color: #52525b;     /*text_third*/				/*zinc-600 (?)*/
+    color: #4e4e4e8c;   /*text_last*/
+    color: #3f3f46c0;   /*bg_icons*/				/*zinc-700/75 (?)*/
+
+    color: #c41c1c;     /*notif_on*/
+    color: #00c950;     /*online*/					/*green-500*/
+    color: #00000033;   /*bg_blur*/					/*black/20*/
+    color: #c54444;     /*bg_button*/
+    color: #c55959;     /*light_button*/
+    color: #e2acac;     /*active_button*/
+
+    color: #6b3838cc;   /*bg_error*/				/*[#6b3838]/80*/
+    color: #ffe2e2;     /*text_error*/				/*red-100*/
+    color: #9f07111a;   /*border_error*/			/*red-800/10*/
+    color: #fb2c3633;   /*inset_error*/				/*red-500/20*/
+
+    color: #00a63e;     /*win*/						/*green-600*/
+    color: #f0fdf4e6;   /*bg_win*/					/*green-50/90*/
+    color: #d1d5dc;     /*draw*/					/*gray-300*/
+    color: #d1d5dce6;   /*bg_draw*/					/*gray-300/90*/
+    color: #fb2c36;     /*lose*/					/*red-500*/
+    color: #fef2f2e6;   /*bg_lose*/					/*red-50/90*/
+
+    color: #bedbff;     /*text_tour*/				/*blue-200*/
+    color: #51a2ff1a;   /*bg_tour*/					/*blue-400/10*/
+    color: #2b80ff33;   /*inset_tour*/				/*blue-500/20*/
+    color: #51a2ff33;   /*hover_tour*/				/*blue-400/20*/
+
+    color: #05df721a;   /*bg_accept*/				/*green-400/10*/
+    color: #00c95033;   /*inset_accept*/			/*green-500/20*/
+    color: #ff64671a;   /*bg_reject*/				/*red-400/10*/
+    color: #fb2c3633;   /*inset_reject*/			/*red-500/20*/
+    color: #d1d5dc;     /*text_wait*/				/*gray-300*/
+    color: #e5e7eb1a;   /*bg_wait*/					/*gray-200/10*/
+    color: #d1d5dc33;   /*inset_wait*/				/*gray-300/20*/
+    color: #bedbff;     /*text_friend				/*blue-200*/
+    color: #51a2ff1a;   /*bg_friend*/				/*blue-400/10*/
+    color: #2b80ff33;   /*inset_friend*/			/*blue-500/20*/
+};
+
+//ANCHOR - Light-Blue
+#Light-Blue {/*hex-code		name					tailwind_code*/
+    color: #bebec5;     /*bg_default*/
+    color: #8f8f94e8;   /*bord_default*/
+    color: #d3d5d9;     /*bg_second*/
+    color: #4e4e4e8c;   /*bord_second*/
+    color: #8f8f94;     /*bg_darker*/
+    color: #201e1c;     /*text_default*/			/*carbon-black — invertito per contrasto*/
+    color: #3f3f46;     /*text_second*/				/*zinc-700*/
+    color: #52525b;     /*text_third*/				/*zinc-600*/
+    color: #4e4e4e8c;   /*text_last*/
+    color: #3f3f46c0;   /*bg_icons*/				/*invertito per contrasto*/
+
+    color: #c41c1c;     /*notif_on*/
+    color: #00c950;     /*online*/					/*green-500*/
+    color: #00000033;   /*bg_blur*/					/*black/20*/
+    color: #4494c5;     /*bg_button*/
+    color: #5a9bc4;     /*light_button*/
+    color: #adcde2;     /*active_button*/
+
+    color: #37586dcc;   /*bg_error*/				/*[#37586d]/80*/
+    color: #dbeafe;		/*text_error*/				/*blue-100*/
+	color: #193cb81a;	/*border_error*/			/*blue-800/10*/
+	color: #2b80ff33;	/*inset_error*/				/*blue-500/20*/
+
+    color: #00a63e;     /*win*/						/*green-600*/
+    color: #f0fdf4e6;   /*bg_win*/					/*green-50/90*/
+    color: #d1d5dc;     /*draw*/					/*gray-300*/
+    color: #d1d5dce6;   /*bg_draw*/					/*gray-300/90*/
+    color: #fb2c36;     /*lose*/					/*red-500*/
+    color: #fef2f2e6;   /*bg_lose*/					/*red-50/90*/
+
+    color: #bedbff;     /*text_tour*/				/*blue-200*/
+    color: #51a2ff1a;   /*bg_tour*/					/*blue-400/10*/
+    color: #2b80ff33;   /*inset_tour*/				/*blue-500/20*/
+    color: #51a2ff33;   /*hover_tour*/				/*blue-400/20*/
+
+    color: #05df721a;   /*bg_accept*/				/*green-400/10*/
+    color: #00c95033;   /*inset_accept*/			/*green-500/20*/
+    color: #ff64671a;   /*bg_reject*/				/*red-400/10*/
+    color: #fb2c3633;   /*inset_reject*/			/*red-500/20*/
+    color: #d1d5dc;     /*text_wait*/				/*gray-300*/
+    color: #e5e7eb1a;   /*bg_wait*/					/*gray-200/10*/
+    color: #d1d5dc33;   /*inset_wait*/				/*gray-300/20*/
+    color: #bedbff;     /*text_friend*/				/*blue-200*/
+    color: #51a2ff1a;   /*bg_friend*/				/*blue-400/10*/
+    color: #2b80ff33;   /*inset_friend*/			/*blue-500/20*/
+};
+
+//ANCHOR - Light-Green
+#Light-Green {/*hex-code	name					tailwind_code*/
+    color: #bfc6c2;     /*bg_default*/
+    color: #90968fe8;   /*bord_default*/
+    color: #d4d9d7;     /*bg_second*/
+    color: #4e4e4e8c;   /*bord_second*/
+    color: #90968f;     /*bg_darker*/
+    color: #201e1c;     /*text_default*/			/*carbon-black — invertito per contrasto*/
+    color: #3f3f46;     /*text_second*/				/*zinc-700*/
+    color: #52525b;     /*text_third*/				/*zinc-600*/
+    color: #4e4e4e8c;   /*text_last*/
+    color: #3f3f46c0;   /*bg_icons*/				/*invertito per contrasto*/
+
+    color: #c41c1c;     /*notif_on*/
+    color: #00c950;     /*online*/					/*green-500*/
+    color: #00000033;   /*bg_blur*/					/*black/20*/
+    color: #46c544;     /*bg_button*/
+    color: #5dc559;     /*light_button*/
+    color: #b6e6b4;     /*active_button*/
+
+    color: #396d37cc;   /*bg_error*/				/*[#396d37]/80*/
+    color: #dcfce7;     /*text_error*/				/*green-100*/
+    color: #0166301a;   /*border_error*/			/*green-800/10*/
+    color: #00c95033;   /*inset_error*/				/*green-500/20*/
+
+    color: #00a63e;     /*win*/						/*green-600*/
+    color: #f0fdf4e6;   /*bg_win*/					/*green-50/90*/
+    color: #d1d5dc;     /*draw*/					/*gray-300*/
+    color: #d1d5dce6;   /*bg_draw*/					/*gray-300/90*/
+    color: #fb2c36;     /*lose*/					/*red-500*/
+    color: #fef2f2e6;   /*bg_lose*/					/*red-50/90*/
+
+    color: #bedbff;     /*text_tour*/				/*blue-200*/
+    color: #51a2ff1a;   /*bg_tour*/					/*blue-400/10*/
+    color: #2b80ff33;   /*inset_tour*/				/*blue-500/20*/
+    color: #51a2ff33;   /*hover_tour*/				/*blue-400/20*/
+
+    color: #05df721a;   /*bg_accept*/				/*green-400/10*/
+    color: #00c95033;   /*inset_accept*/			/*green-500/20*/
+    color: #ff64671a;   /*bg_reject*/				/*red-400/10*/
+    color: #fb2c3633;   /*inset_reject*/			/*red-500/20*/
+    color: #d1d5dc;     /*text_wait*/				/*gray-300*/
+    color: #e5e7eb1a;   /*bg_wait*/					/*gray-200/10*/
+    color: #d1d5dc33;   /*inset_wait*/				/*gray-300/20*/
+    color: #bedbff;     /*text_friend*/				/*blue-200*/
+    color: #51a2ff1a;   /*bg_friend*/				/*blue-400/10*/
+    color: #2b80ff33;   /*inset_friend*/			/*blue-500/20*/
+};
+
+//ANCHOR - Light-Yellow
+#Light-Yellow {/*hex-code	name                    tailwind_code*/
+    color: #bec0b8;     /*bg_default*/
+    color: #8f918be8;   /*bord_default*/
+    color: #d8d9d3;     /*bg_second*/
+    color: #4e4e4e8c;   /*bord_second*/
+    color: #8f918b;     /*bg_darker*/
+    color: #201e1c;     /*text_default*/			/*carbon-black — invertito per contrasto*/
+    color: #3f3f46;     /*text_second*/            	/*zinc-700*/
+    color: #52525b;     /*text_third*/             	/*zinc-600*/
+    color: #4e4e4e8c;   /*text_last*/
+    color: #3f3f46c0;   /*bg_icons*/				/*invertito per contrasto*/
+
+    color: #c41c1c;     /*notif_on*/
+    color: #00c950;     /*online*/					/*green-500*/
+    color: #00000033;   /*bg_blur*/					/*black/20*/
+    color: #c7a643;     /*bg_button*/
+    color: #c5ac59;     /*light_button*/
+    color: #e6d6ac;     /*active_button*/
+
+    color: #6d6237cc;   /*bg_error*/                /*[#6d6237]/80*/
+    color: #fef9c2;     /*text_error*/				/*yellow-100*/
+    color: #894b001a;   /*border_error*/			/*yellow-800/10*/
+    color: #f0b00033;   /*inset_error*/				/*yellow-500/20*/
+
+    color: #00a63e;     /*win*/						/*green-600*/
+    color: #f0fdf4e6;   /*bg_win*/					/*green-50/90*/
+    color: #d1d5dc;     /*draw*/					/*gray-300*/
+    color: #d1d5dce6;   /*bg_draw*/					/*gray-300/90*/
+    color: #fb2c36;     /*lose*/					/*red-500*/
+    color: #fef2f2e6;   /*bg_lose*/					/*red-50/90*/
+
+    color: #bedbff;     /*text_tour*/				/*blue-200*/
+    color: #51a2ff1a;   /*bg_tour*/					/*blue-400/10*/
+    color: #2b80ff33;   /*inset_tour*/				/*blue-500/20*/
+    color: #51a2ff33;   /*hover_tour*/				/*blue-400/20*/
+
+    color: #05df721a;   /*bg_accept*/				/*green-400/10*/
+    color: #00c95033;   /*inset_accept*/			/*green-500/20*/
+    color: #ff64671a;   /*bg_reject*/				/*red-400/10*/
+    color: #fb2c3633;   /*inset_reject*/			/*red-500/20*/
+    color: #d1d5dc;     /*text_wait*/				/*gray-300*/
+    color: #e5e7eb1a;   /*bg_wait*/					/*gray-200/10*/
+    color: #d1d5dc33;   /*inset_wait*/				/*gray-300/20*/
+    color: #bedbff;     /*text_friend*/				/*blue-200*/
+    color: #51a2ff1a;   /*bg_friend*/				/*blue-400/10*/
+    color: #2b80ff33;   /*inset_friend*/			/*blue-500/20*/
+};
+
+//!SECTION
