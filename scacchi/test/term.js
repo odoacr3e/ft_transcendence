@@ -181,6 +181,7 @@ process.stdin.on('keypress', (str, key) =>
 				return (error(null, result));
 			if (lib.include.fs.existsSync(filePath))
 				exec(`ffplay -nodisp -autoexit "${filePath}" || mpg123 "${filePath}" || cvlc --play-and-exit "${filePath}"`);
+			break ;
 		}
 		case (cmd.FAKE_BOOST):
 		{

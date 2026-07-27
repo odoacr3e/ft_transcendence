@@ -1,6 +1,7 @@
 //@ts-ignore
 
 import { HistoryEvent } from "../Classes/Chess/history.js";
+import { Piece } from "../Classes/Chess/Pieces/pieces.js";
 import { Result } from "../Classes/endPoint/result.js";
 import { eEvents, enumNames, enumSpecialMoves } from "../Macro/enums.js";
 import { MOVEMENT_BONUS_POINT } from "../Macro/macro.js";
@@ -29,6 +30,10 @@ export function cancelEvent(match)
 		errorMsg = cancelBoost(match, lastEvent);
 	else if (lastEvent.type == eEvents.EndTurn)
 		errorMsg = cancelEndTurn(match);
+	else if (lastEvent.type == eEvents.GiveUp)
+		errorMsg = "giveUp cannot be canceled";
+	else if (lastEvent.type == eEvents.Transform)
+		errorMsg = cancelTransform(match, lastEvent);
 	if (errorMsg)
 		return (new Result().Error(`Cannot cancel: "${errorMsg}"`, 500));
 	while (match.history.events[-1]?.error == true)
@@ -125,4 +130,26 @@ function cancelEndTurn(match)
 	if (match.history.TurnCount(match.currentPlayer.team) % MOVEMENT_BONUS_POINT == 0)
 		match.currentPlayer.nPoints -= 1;//@ts-ignore
 	match.currentPlayer = match[match.currentPlayer.prev];
+}
+
+/**
+ * 
+ * @param {Match} match 
+ * @param {HistoryEvent} lastEvent 
+ */
+function cancelTransform(match, lastEvent)
+{
+	let	square;
+	let	isBoostedBool;
+	let	moveCount;
+
+	square = match.board.get(lastEvent.from);
+	if (!square.piece)
+		return ("cancelBoost: missing coord from");
+	isBoostedBool = square.piece.isBoostedBool;
+	moveCount = square.piece.moveCount;
+	square.piece = new Piece(enumNames.BASTARDS, lastEvent.from, lastEvent.team);
+	square.piece.isBoostedBool = isBoostedBool;
+	square.piece.moveCount = moveCount;
+	DangerUpdate(match, lastEvent.from);
 }

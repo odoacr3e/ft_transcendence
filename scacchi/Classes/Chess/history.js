@@ -42,7 +42,7 @@ export class History
 		i = 0;
 		while (this.events.length != i)
 		{
-			if (this.events[this.events.length - 1 - i].error == false)
+			if (this.events[this.events.length - 1 - i].error != true)
 				return (this.events[this.events.length - 1 - i]);
 			++i;
 		}
@@ -55,7 +55,7 @@ export class History
 
 		i = 0;
 		for (const event of this.events)
-			i += (event.error == false && event.team == team && event.type == eEvents.EndTurn? 1 : 0);
+			i += (event.error != true && event.team == team && event.type == eEvents.EndTurn? 1 : 0);
 		return (i);
 	}
 	/** 
