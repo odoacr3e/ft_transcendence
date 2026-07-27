@@ -282,17 +282,13 @@ class Match
 		if (this.id != "0")
 			globals.matches.delete(this.id);
 		globals.lastMatchId = "0";
-		if (result != null)
-		{
-			result.msg = "it's a spare!!!";
-			result.status = 200;
-			result.victory = this.victory;
-			result.specialMoves.SetDraw();
-			//@ts-ignore
-			// result.board = clientBoard(this);
-		}
-		else
-			return (new Result());
+		if (result == null)
+			result = new Result();
+		result.Success("it's a spare!!!");
+		result.victory = this.victory;
+		result.specialMoves.SetDraw();
+		//@ts-ignore
+		// result.board = clientBoard(this);
 		return (result);
 	}
 	/** @param {string} team */
