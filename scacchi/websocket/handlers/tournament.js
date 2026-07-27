@@ -1,17 +1,59 @@
 // @ts-check
 
-import { createMatchId, Match } from "../../Classes/Chess/match.js";
+import { Match } from "../../Classes/Chess/match.js";
 import { Tournament } from "../../Classes/Chess/tournament.js";
 import { Result } from "../../Classes/endPoint/result.js";
 import { globals } from "../../Classes/Globals/globals.js";
 import { Room } from "../../Classes/Globals/room.js";
+import { SocketInfo } from "../../Classes/Globals/socketInfo.js";
 import { init } from "../../handlers/game/init.js";
 import { query } from "../../lib/query.js";
-import { eMatchPresets } from "../../Macro/enums.js";
-import { roomMessage } from "../utils.js";
-import { sockio } from "../websocket.js";
+import { eMatchPresets, enumSocketState } from "../../Macro/enums.js";
+import { isBusy, roomMessage } from "../utils.js";
 import { bindPlayersToMatch } from "./MatchMaking.js";
 const { tournamentsQuery } = query;
+
+/** @typedef {import("../../Classes/Chess/player").dbUser} dbUser */
+/** @typedef {import("socket.io").Socket} Socket */
+
+
+/**
+ * 
+ * @param {{name: string, maxPlayers: number}} req 
+ * @param {Socket} socket
+ * @param {dbUser} user 
+ */
+export async function createTournamentRoomHandler(req, socket, user)
+{
+	let	socketData;
+	let room;
+	let	result;
+
+	try
+	{
+		socketData = globals.clientMap.get(user.id_user);
+		if (!socketData)
+			throw (`create_tournament: socketData is empty`);
+		if (isBusy(user.id_user) == true)
+			result = new Result().Error("You are already doing something", 400);
+		else
+		{
+			room = new Room(user.id_user, req?.maxPlayers, req?.name);
+			globals.rooms.set(room.cryptId, room);
+			socket.join(room.id);
+			if (socketData)
+				socketData.state = enumSocketState.JOIN_TOURNAMENT;
+			query.tournamentsQuery.createTournament(req.name, user.id_user);
+			result = new Result().Success();//@ts-ignore
+			result.tournament_link = room.cryptId;
+		}
+	}
+	catch (error)
+	{
+		result = new Result().Error(String(error), 500);
+	}
+	return (result);
+}
 
 /**
  * 
@@ -20,12 +62,6 @@ const { tournamentsQuery } = query;
 export async function initTournament(room)
 {
 	let tournament;
-	let	me;
-	let	opponent;
-	let	meId;
-	let	oppoId;
-	let	matchId;
-	let i = 0;
 
 	try
 	{
