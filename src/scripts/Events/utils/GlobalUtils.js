@@ -199,12 +199,21 @@ export async function showBoostedMovesHover(fromId)
 			[key, new Set(Array.isArray(value) ? value : [])])
 	);
 	localInfo.savedBoostedMap = futureBoostedZones;
-	for (let toHighligh of futureBoostedZones)
+	for (let toHighlight of futureBoostedZones)
 	{
-		for (let id of toHighligh[1])
+
+		const isValkirya = localBoard.get(toHighlight[0]).piece.type === "Valkirya";
+		const isJester = localBoard.get(toHighlight[0]).piece.type === "Jester";
+		for (let id of toHighlight[1])
 		{
-			const square = localBoard.get(id);
-			if (square.piece.team !== localInfo.myTeam)
+			const piece = localBoard.get(id)?.piece;
+			const pieceTeam = piece?.team;	
+			if ((isValkirya || isJester) && pieceTeam === localInfo.myTeam)
+			{
+				console.log("vediamo: ", pieceTeam !== localInfo.myTeam);
+				continue;
+			}
+			else
 				localBoard.get(id).boostedHighlight = true;
 		}
 	}
@@ -212,7 +221,39 @@ export async function showBoostedMovesHover(fromId)
 
 export async function showBoostedMovesLeave()
 {
-	// const square = localBoard.get(fromId);
 	clearHighlight("boosted");
+}
 
+export function blinkSquares(ids, { times = 3, interval = 300, delay = 300 } = {})
+{
+	const timers = [];
+
+	[...ids].forEach((id, i) => {
+		const square = localBoard.get(id);
+		if (!square)
+			return;
+
+		timers.push(setTimeout(() => {
+			let toggles = 0;
+			square.selected = true;
+			const blink = setInterval(() => {
+				square.selected = !square.selected;
+				if (++toggles >= times * 2)
+				{
+					clearInterval(blink);
+					square.selected = false;
+				}
+			}, interval);
+			timers.push(blink);
+		}, i * delay));
+	});
+
+	return () => {
+		timers.forEach(clearTimeout);
+		[...ids].forEach(id => {
+			const square = localBoard.get(id);
+			if (!square)
+				square.selected = false;
+		});
+	};
 }

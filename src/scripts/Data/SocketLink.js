@@ -1,16 +1,33 @@
 import { updateMatchState, initLocalMatchState, reloadMatchState }	from "./Archi";
+import { localInfo, localMatchState, MACRO }						from "./Variables";
 import { clearHighlight }											from "../Events/utils/HighlightUtils";
-import { localInfo, localMatchState, MACRO }									from "./Variables";
-import router 														from "@/router";			
+import { eSpecialMoves }											from "@/Common/ENUMS";		
+import { blinkSquares } 											from "../Events/utils/GlobalUtils";
+import router 														from "@/router";
 
 export function listenGameSocket(socket)
 {
 	socket.on("game", (raw) => {
 		console.log("{[socket game] ricevuta una riposta} tipo: ", raw.type, "response: ", raw);
+
+		if (localInfo.blinking)
+			localInfo.blinking = null;
 		if (raw.log?.status != 200)
 		{
 			console.log("[socket game]: errore -", raw.log?.msg);
-			console.log("response: ", raw);	
+			const mask = Number(raw.mask);
+			if (mask & (eSpecialMoves.CHECK | eSpecialMoves.CHECKMATE))
+			{
+				console.log("[socket game]: è tempo di blinkare!");
+				if (MACRO.AUDIO)
+					new Audio("percorso/audio");
+				if (raw.check != undefined)
+				{
+					const threatId = new Set([raw.check.to, raw.check.mid, raw.check.from].filter(Boolean));
+					localInfo.blinking = blinkSquares(threatId, {interval: 650, delay: 650});
+					return;
+				}
+			}
 			return;
 		}
 		if (raw.id !== undefined)
@@ -51,3 +68,26 @@ export function listenGameSocket(socket)
 			new Audio("/src/assets/audios/moving.mp3").play();
 	});
 }
+
+					// versione del blink pre astrazione
+					// let i = 0;
+					// for (let id of threatId)
+					// {
+					// 	setTimeout(() => {
+					// 		// console.log("id: ", id);
+					// 		let toggles = 0;
+					// 		const square = localBoard.get(id);
+					// 		if (!square)
+					// 			return;
+					// 		square.selected = true;
+					// 		const periodicHighlight = setInterval(() => {
+					// 			square.selected = !square.selected;
+					// 			if (++toggles >= 6)
+					// 			{
+					// 				clearInterval(periodicHighlight);
+					// 				square.selected = false;
+					// 			}
+					// 		}, 650);
+					// 	}, i * 650);
+					// 	i++;
+					// }
