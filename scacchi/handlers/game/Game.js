@@ -185,8 +185,9 @@ async function gameInfoHandler(match, body)
 	if (body.type == "reload")
 	{
 		result.Success();
-		if (match.timer?.start != 0)// @ts-ignore
-			match.currentPlayer.time = match.timer.time - (Date.now() - match.timer.start);// @ts-ignore
+		if (match.timer && match.timer.start != 0)
+			match.currentPlayer.time = match.timer.time - (Date.now() - match.timer.start);
+		// @ts-ignore
 		result.board = clientBoard(match, true, true);
 	}
 	else if (body.type == "history")

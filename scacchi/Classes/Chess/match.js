@@ -211,6 +211,8 @@ class Match
 			if (this.FindPlayer(user.team) == true)
 				user.outcome = "Win";
 		}
+		if (this.timer)//@ts-ignore
+			clearTimeout(this.timer.timeout);
 		if (this.id != "0")
 			globals.matches.delete(this.id);
 		globals.lastMatchId = "0";
@@ -275,6 +277,8 @@ class Match
 			tmp = this[player];
 			player = tmp.next;
 		}
+		if (this.timer)//@ts-ignore
+			clearTimeout(this.timer.timeout);
 		this.DeletePlayer(tmp);
 		//@ts-ignore
 		tmp = this[player];

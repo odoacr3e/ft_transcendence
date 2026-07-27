@@ -155,6 +155,7 @@ async function executeEvents(match, history)
 		settings = "0";
 	//@ts-ignore
 	res = await curlSender("init", settings, "", objectCmd);
+	// console.debug(res);
 	updateBoard(match.board, res);
 	backendBoard = await getBackBoard();
 	if (cmpBoard(match.board, backendBoard) == false)
@@ -332,6 +333,11 @@ async function curlSender(type, from="", to="", cmd=curlCmd)
 	{
 		if (json.log.msg == "Game Error: You need to move first")
 			return (json);
+		if (json.log.status == 500)
+		{
+			setError(json.log.msg);
+			throw ("");
+		}
 		console.log(`ERROR(${json.log.status}) => ${json.log.msg}`);//@ts-ignore
 		if (currEvent.error || currEvent.type == "endturn")
 			return (json);
