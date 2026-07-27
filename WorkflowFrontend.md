@@ -131,8 +131,10 @@ boardConverter()
 	✓ 	quando fai hover sul bottone per boostare il pezzo sarebbe carino poter avere
 	  	una preview delle target zones rese visibili sulla scacchiera, si può fare 
 	  	una route apposta per chiedere l'update delle target zones di un pezzo specifico
-	▫ 	feedback quando il re è sotto scacco, (abbiamo bisogno di una flag oppure 
-		usiamo gli enum di errore comuni) {from: coord, mid: coord, to: coord}. devo decidere un messaggio da chiedere a il team back.
+	▫ 	feedback quando il re è sotto scacco
+		✓	blinking e effetto audio quando fai una mossa che metterebbe il re sotto scacco
+		▫	effetto sonoro ed evidenziazione del re quando viene messo sotto scacco
+	▫	Bottone ed evento per chiedere pareggio
 	▫	history delle mosse durante la partita
 	▫	history delle partite
 	▫ 	refactor di archi nel caso la board non esista
@@ -163,6 +165,7 @@ boardConverter()
 	▫	Timer che continua nella schermata di fine gioco
 	▫	Timer che parte da solo prima della prima mossa del bianco
 	▫	Quando fai reload non segna correttamente i turni
+	▫	Ogni volta che entri in playpage si avvia il reload
 	▫	Quando vado a promozione con il pedone si oscura tutta la scacchiera e non va più un cazzo
 
 //TODO FRONTEND - 
