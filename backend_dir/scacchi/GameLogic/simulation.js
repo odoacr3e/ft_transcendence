@@ -10,7 +10,7 @@ import { error } from "../handlers/game/utils.js";
 import { enumNames } from "../Macro/enums.js";
 import { movePiece } from "../utils/dangerUpdate.js";
 import { dangerUpdateMoved } from "../utils/dangerUpdate.js";
-import { isDangerous } from "../utils/checkDanger.js";
+import { isDangerous, checkKingDanger } from "../utils/checkDanger.js";
 
 /** @typedef {import("../Classes/Chess/match").Match} Match*/
 /** @typedef {import("../Classes/Chess/chessBoard.js").Square} Square*/
@@ -61,6 +61,12 @@ export function simulation(coords, match, result=null)
 	dangerBool = isDangerous(match, king.dangerZones, king.piece?.team, true, kingCoord);
 	if (!dangerBool)
 		dangerBool = checkDoubleMoveMate(match, coords, result);
+	if (!dangerBool && match.settings.players.allies)
+	{
+		dangerBool = checkKingDanger(match, match.currentPlayer.ally);
+		if (dangerBool && result)//@ts-ignore
+			result.specialMoves.SetAllyGuardian();
+	}
 	if (!result || result.specialMoves.CheckSniperMove() == 0)
 	{
 		from.piece = to.piece;
@@ -183,7 +189,7 @@ function boostBastardsUpdates(match, coords, theKING, result)
 					if (match.board.get(squareBastard).targetZones.has(match.cursor.square) && 
 					match.board.get(squareBastard).targetZones.size <= 1)
 						break ;
-					if (piece.isMovedBool)
+					if (piece.moveCount)
 					{
 						if (!square.piece.moveLongRangeDEBUG)
 							break ;

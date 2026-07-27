@@ -60,7 +60,7 @@ export async function getAllUserMatches(id_user) {
 		player: um.users.username,
 		opponent: um.matches.users_matches[0]?.users.username || null,
 		result: um.outcome,
-		date: um.matches.end_date.toISOString().split('T')[0],
+		date: um.matches.end_date.toISOString().split('T')[0] || null,
 		// team: um.team,
 		tournament: um.matches.tournaments ? { 
 			id_tournament: um.matches.tournaments.id_tournament,

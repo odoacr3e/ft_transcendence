@@ -19,7 +19,7 @@ class Piece
 		/** @type {string} */   						this.type = preset.type;
 		/** @type {number} */   						this.price = preset.price;
 		/** @type {string} */   						this.team = team;
-		/** @type {boolean} */  						this.isMovedBool = false;
+		/** @type {number} */  							this.moveCount = 0;
 		/** @type {boolean} */  						this.isBoostedBool = false;
 		/** @type {string} */ 							this.pos = pos;
 		/** @type {Function} */ 						this.moveFunction = preset.booster;
@@ -33,7 +33,7 @@ class Piece
 
 		other = new Piece(this.type, this.pos, this.team);
 		other.isBoostedBool = this.isBoostedBool;
-		other.isMovedBool = this.isMovedBool;
+		other.moveCount = this.moveCount;
 		return (other);
 	}
 }
@@ -53,7 +53,7 @@ function copyPiece(other)
 	if (!piece)
 		throw ("Piece, copy: something bad happen");
 	piece.price = other.price;
-	piece.isMovedBool = other.isMovedBool;
+	piece.moveCount = other.moveCount;
 	piece.isBoostedBool = other.isBoostedBool;
 	piece.moveFunction = other.moveFunction;
 	moveArray = [];

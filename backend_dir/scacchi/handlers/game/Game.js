@@ -16,7 +16,6 @@ import { boost } from "./boost.js";
 import { init } from "./init.js";
 import { render } from "../../test/render.js";
 import {makeTransfiguration} from "./transfiguration.js";
-//FIXME - solo debug
 import { globals } from "../../Classes/Globals/globals.js";
 import { query } from "../../lib/query.js";
 const { createMatch, createUsersMatch } = query.gameQuery;
@@ -25,13 +24,13 @@ import { includesOneOf } from "../../utils/string.js";
 import { updateTournament } from "../../websocket/handlers/tournament.js";
 import { roomMessage } from "../../websocket/utils.js";
 import { enumSocketState } from "../../Macro/enums.js";
+import { saveMatch } from "../../utils/saveMatch.js";
 
 const DEBUG_MATCH = globals.getDebugMatch();
 
 /** @typedef {import("express").Request} Request*/
 /** @typedef {import("express").Response} Response*/
 
-//FIXME - attualmente funziona solo con il match di debug
 /**
  * handler of game POST requests
  * @param {*} req 
@@ -50,6 +49,7 @@ async function gameHttpHandler(req, res)
 	if (body.type == "init")
 	{
 		result = init(match, body.from);
+		match.cursor.set(match.currentPlayer.King);
 		responseFormatter(match, result, null, null);
 		render(match);
 		globals.matches.set("0", match);
@@ -73,7 +73,6 @@ async function gameWebSocketHandler(req, id_user, socketData)
 	let	id;
 	let	user;
 
-	//FIXME - reload e history vanno bene
 	if (!socketData)
 		return (console.error("ERROR: disconnected player not eliminated"), 500);
 	if (!socketData.matchData)
@@ -96,14 +95,13 @@ async function gameWebSocketHandler(req, id_user, socketData)
 		result = await gameHandler(match, req);
 	if (result.log.status != 200)
 		return (socketError(socketData.socket, result));
-	console.log(req.type);
-	for (let p of match.history.Last().loserSet)
+	for (let p of match.loserSet)
 	{
-		user = globals.clientMap.get(p); 
+		user = globals.clientMap.get(p);
 		if (user)
 			user.state = enumSocketState.NAVIGATING;
 	}
-	match.history.Last().loserSet.clear();
+	match.loserSet.clear();
 	result = jsonParser(result);
 	//@ts-ignore
 	result.type = req.type; //Leo per capire quando la riposta che ci mandate si tratta di una reload
@@ -170,23 +168,7 @@ async function gameHandler(match, body)
 	result = responseFormatter(match, result, null, null);
 	render(match);
 	if (match.victory != "" && match.id != "0")
-	{
-		try 
-		{
-			if (match.victory == "draw")
-				throw ("the match ended in a draw");
-			console.log("Salvataggio partita nel database...");
-			await createMatch(match);
-			await createUsersMatch(match);
-			console.log("Successo!");
-		}
-		catch (error)
-		{
-			console.log("Error: ", error);
-		}
-		if (match.tournament)
-			updateTournament(match, match.victory == "draw");
-	}
+		saveMatch(match);
 	return (result);
 }
 
@@ -203,6 +185,8 @@ async function gameInfoHandler(match, body)
 	if (body.type == "reload")
 	{
 		result.Success();
+		if (match.timer && match.timer.start != 0)
+			match.currentPlayer.time = match.timer.time - (Date.now() - match.timer.start);
 		// @ts-ignore
 		result.board = clientBoard(match, true, true);
 	}

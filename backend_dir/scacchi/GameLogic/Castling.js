@@ -5,23 +5,18 @@
 	list of exports:
 	-	checkCastling:	checks if a castling move is possible or not.
 	-	moveCastling:	performs a castling move.
-	-	//FIXME - getPieces: spostare in un altro file 
 */
 
-import {enumNames} from "../Macro/enums.js";
 import { Chess } from "../lib/lib.js";
-const {Square, Piece} = Chess;
-import {Match} from "../Classes/Chess/match.js";
-import {getDirection} from "./checkMate.js";
-import {isDangerous} from "../utils/checkDanger.js";
-import {movePiece} from "../utils/dangerUpdate.js";
+import { Match } from "../Classes/Chess/match.js";
+import { isDangerous } from "../utils/checkDanger.js";
+import { movePiece, getPieces } from "../utils/movePiece.js";
 import { Result } from "../Classes/endPoint/result.js";
 import { DangerUpdate } from "../utils/dangerUpdate.js";
 
 /** @typedef {import('../Classes/Chess/Pieces/pieces.js').Piece} Piece */
 /** @typedef {import('../Classes/Chess/chessBoard.js').Square} Square */
 
-/**@typedef {{"king": Piece, "mino": Piece, "dir": { diffRow: number; diffCol: number; }, "kingDanger": Set<string>}} pieces */
 /* 
 stesso team - OK
 non mossi -  OK
@@ -52,7 +47,7 @@ function checkCastling(match, result, to, from)
 		return false;
 	if (isDangerous(match, pieces.kingDanger, pieces.king.team))
 		return false;
-	if (pieces.king.isMovedBool || pieces.mino.isMovedBool)
+	if (pieces.king.moveCount || pieces.mino.moveCount)
 		return false;
 	if (pieces.dir.diffRow != 0 && pieces.dir.diffCol != 0)
 		return false;
@@ -131,48 +126,11 @@ function moveCastling(match, from, to)
 	else
 		throw ("moveCastling: backend has lost the king");
 	match.currentPlayer.castlingArray.clear();
-	pieces.king.isMovedBool = true;
-	pieces.mino.isMovedBool = true;
+	pieces.king.moveCount += 1;
+	pieces.mino.moveCount += 1;
 	DangerUpdate(match, pieces.mino.pos, true, true);
 	DangerUpdate(match, pieces.king.pos, true, true);
 	match.cursor.Restore();
 }
 
-/**
- * 
- * @param {Match} match
- * @param {Square} from 
- * @param {Square} to 
- * @returns 
- */
-function getPieces(match, from, to)
-{
-	let toType;
-	let fromType;
-	let	board;
-	/** @type {pieces}*/let	pieces;
-
-	board = match.board;
-	// @ts-ignore
-	pieces = {};
-	toType = to.piece?.type;
-	fromType = from.piece?.type;
-	if (!toType || !fromType)
-		return (null);
-	if (!from.piece || !to.piece)
-		return (null);
-	if ((to.piece?.team != from.piece?.team) && !to.piece?.isMovedBool && !to.piece?.isMovedBool)
-		return null;
-	if (fromType == enumNames.KING && toType == enumNames.MINOTAURUS)
-	{
-		pieces.king = from.piece;
-		pieces.mino = to.piece;
-	}
-	else
-		return (null);
-	pieces.dir = getDirection(match, pieces.mino.pos, pieces.king.pos);
-	pieces.kingDanger = board.get(pieces.king.pos).dangerZones;
-	return (pieces);
-}
-
-export {checkCastling, moveCastling, getPieces};
+export {checkCastling, moveCastling};

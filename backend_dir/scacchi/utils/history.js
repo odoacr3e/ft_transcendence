@@ -13,14 +13,13 @@ import {HistoryEvent} from "../Classes/Chess/history.js";
 import {move, boost, endTurn, init, error} from "../handlers/game/Game.js";
 import { boardStringify, render } from "../test/render.js";
 import { makeTransfiguration } from "../handlers/game/transfiguration.js";
-//FIXME - togliere
 import { prisma } from "../lib/prisma.js";
 import { globals } from "../Classes/Globals/globals.js";
-import { clientBoard } from "../handlers/game/utils.js";
 import { jsonParser } from "./response.js";
 import { DEBUG } from "../Macro/macro.js";
 import { Result } from "../Classes/endPoint/result.js";
 import { initFromStr } from "../handlers/game/init.js";
+import { includesOneOf } from "./string.js";
 
 
 /** @typedef {import ("../Classes/Chess/history.js").History} History */
@@ -136,6 +135,7 @@ function recreateMatch(match, history, cacheMatchBool=false)
 {
 	let	result;
 	let	playerNum;
+	let	board;
 
 	if (!match)
 		match = new Match(history.matchSettings);
@@ -149,12 +149,14 @@ function recreateMatch(match, history, cacheMatchBool=false)
 		if (cacheMatchBool == true)
 			cacheMatchState(match);
 		match.historyCreateBool = true;
-		for (const event of history.events)
+		for (let event of history.events)
 		{
 			//@ts-ignore
 			DEBUGEvent = event;
 			playerNum = match.playerNum;
 			console.log(`History: move number ${event.counter}`);
+			if (event.error != true && includesOneOf(event.type, eEvents.Move, eEvents.MoveBoost))
+				event.pieceEaten = match.board.get(event.to).piece?.Copy();
 			if (event.type == eEvents.Move)
 				result = move(match, event.from, event.to, event.useBoostBool);
 			else if (event.type == eEvents.MoveBoost)
@@ -167,6 +169,11 @@ function recreateMatch(match, history, cacheMatchBool=false)
 			{
 				result = endTurn(match);
 				continue ;
+			}
+			else if (event.type == eEvents.GiveUp)
+			{//@ts-ignore
+				match.DeletePlayer(match[event.team]);
+				result = new Result().Success();
 			}
 			else
 				continue ;//@ts-ignore
@@ -182,6 +189,13 @@ function recreateMatch(match, history, cacheMatchBool=false)
 			{
 				if (cacheMatchBool == true)
 					cacheMatchState(match);
+				event.updates = new Set();
+				if (result.board)
+				{//@ts-ignore
+					board = result.board.data? result.board.data : Object.keys(result.board);
+					for (const coord of board)
+						event.updates.add(Array.isArray(coord)? coord.at(0) : coord);
+				}
 				DEBUGCounter++;
 			}
 			else

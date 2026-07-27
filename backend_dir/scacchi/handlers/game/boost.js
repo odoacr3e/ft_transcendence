@@ -14,6 +14,10 @@ import { endTurn } from "./endTurn.js";
 import {checkMateCheckAll} from "../../GameLogic/checkMate.js";
 import { BOOSTED_MAX, MOVEMENT_MIN } from "../../Macro/macro.js";
 import { checkKingDanger } from "../../utils/checkDanger.js";
+import { enumNames } from "../../Macro/enums.js";
+import { jsonParser } from "../../utils/response.js";
+
+/** @typedef {import ('../../Classes/Chess/chessBoard.js').Square} Square  */
 
 /**
  * 
@@ -21,7 +25,7 @@ import { checkKingDanger } from "../../utils/checkDanger.js";
  * @param {String} from
  * @returns {Result}
  */
-function boost(match, from)
+function boost(match, from, realBoost=true)
 {
 	let	result;
 	let prevBoost;
@@ -35,7 +39,7 @@ function boost(match, from)
 	result.status = 200;
 	if (match.boost == BOOSTED_MAX)
 	{
-		checkMateCheckAll(match, result);
+		checkMateCheckAll(match, result, match.currentPlayer.team);
 		endTurn(match, false);
 	}
 	if (prevBoost == "")
@@ -86,8 +90,64 @@ function tryBoost(match, result, from)
 	match.currentPlayer.boostedPiece = square.piece.pos;
 	match.history.UpdateBoost(match, square, from);
 	DangerUpdate(match, from, false);
+	checkInluenceOfBoost(match, square);
 	match.boost += 1;
 	return (true);
 }
 
-export {boost};
+/**
+ * @param {Match} match
+ * @param {string} from
+ */
+function fakeBoost(match, from)
+{
+	let	result = new Result;
+	let	square;
+
+	if (!from)
+		return (result.Error(`boost: coord from ${from} does not exist`));
+	if (!match.board.has(from))
+		return (result.Error(`boost: coord from ${from} does not exist`));
+	square = match.board.get(from);
+	if (!square.piece)
+		return (result.Error(`boost: there is no piece is ${from}...`));
+	square.piece.isBoostedBool = true;
+	DangerUpdate(match, from);
+	result.Success();
+	// @ts-ignore
+	result.zones = jsonParser(structuredClone(square.boostedTargetZones));
+	square.piece.isBoostedBool = false;
+	DangerUpdate(match, from);
+	return (result);
+}
+
+/**
+ * 
+ * @param {Match} match 
+ * @param {Square} square 
+ */
+function checkInluenceOfBoost(match, square)
+{
+	let influenceZones;
+	let influenced;
+	let infPiece;
+
+	influenceZones = structuredClone(square.influenceZones);
+	for (let x of influenceZones)
+	{
+		influenced = structuredClone(match.board.influenceMap.get(x));
+		if (!influenced)
+			continue ;
+		for (let y of influenced)
+		{
+			infPiece = match.board.get(y).piece;
+
+			if (!infPiece)
+				continue ;
+			else if (infPiece.type == enumNames.KING)
+				DangerUpdate(match, infPiece.pos);
+		}
+	}
+}
+
+export {boost, fakeBoost}; 

@@ -4,21 +4,19 @@
 /*
 	list of exports:
 	-	checkMateCheckAll: checks if every active player is in check/staleMate
-	//FIXME: spostare in utils!	
-	-	getDirection: 		given two coords, it returns {Δx, Δy}.
 */
 
 import { Chess } from "../lib/lib.js";
-import {Result} from "../Classes/endPoint/result.js";
-import {enumNames} from "../Macro/enums.js";
-import {Match} from "../Classes/Chess/match.js";
-import {isDangerous} from "../utils/checkDanger.js";
-import { movePiece } from "../utils/dangerUpdate.js";
+import { Result } from "../Classes/endPoint/result.js";
+import { enumNames } from "../Macro/enums.js";
+import { Match } from "../Classes/Chess/match.js";
+import { isDangerous } from "../utils/checkDanger.js";
+import { movePiece, getDirection } from "../utils/movePiece.js";
 import { Square } from "../Classes/Chess/chessBoard.js";
 import { pathFinding } from "./pathFinding.js";
 import { simulation } from "./simulation.js";
 import { getLegalMoves } from "./checkLegalMoves.js";
-const {preset} = Chess;
+import {preset} from "../Classes/Chess/Pieces/preset.js";
 
 /**
  * checks if a player is in checkMate
@@ -60,8 +58,9 @@ function CheckMateCheck(match, kingCoord=match.currentPlayer.King)
  * checks if every active player is in check/staleMate
  * @param {Match} match 
  * @param {Result | null} result
+ * @param {string} team
  */
-function checkMateCheckAll(match, result)
+function checkMateCheckAll(match, result, team)
 {
 	let currTeam;
 
@@ -71,7 +70,8 @@ function checkMateCheckAll(match, result)
 	{
 		if (CheckMateCheck(match))
 		{
-			match.PlayerLost(result);
+			match.PlayerLost(result);//@ts-ignore
+			// match[team].nPoints += 15;
 		}
 		match.endTurn();
 	}
@@ -84,32 +84,6 @@ function checkMateCheckAll(match, result)
 		return (match.DrawMatch(result), true);
 	}
 	return (false);
-}
-
-/**
- * 
- * @param {Match} match
- * @param {string} kingCoord 
- * @param {string} enemyCoord 
- */
-function getDirection(match, kingCoord, enemyCoord)
-{
-	let rowK, rowE, diffRow;
-	let colK, colE, diffCol;
-
-	match.cursor.square = kingCoord;
-	rowK = match.cursor.getRow();
-	colK = match.cursor.getCol();
-	match.cursor.square = enemyCoord;
-	rowE = match.cursor.getRow();
-	colE = match.cursor.getCol();
-	diffRow = rowK - rowE;
-	diffCol = colK - colE;
-	if (diffRow != 0)
-		diffRow /= Math.abs(diffRow);
-	if (diffCol != 0)
-		diffCol /= Math.abs(diffCol);
-	return ({diffRow, diffCol});
 }
 
 /**
@@ -128,6 +102,7 @@ function isStoppable(match, kingSquare, enemySquareString)
 	let	guardianPiece;
 	let	kingPiece;
 	let	normalSaveBool = false;
+	let	allyGuardianCoord = "";
 
 	match.currentPlayer.guardianPieces.clear();
 	enemySquare = match.board.get(enemySquareString);
@@ -145,6 +120,7 @@ function isStoppable(match, kingSquare, enemySquareString)
 		return true;
 	while (match.board.get(match.cursor.square)?.piece?.type != enumNames.KING)
 	{
+		allyGuardianCoord = "";
 		square = match.board.get(match.cursor.square);
 		if (!square || !square.dangerZones)
 			continue ;
@@ -159,12 +135,20 @@ function isStoppable(match, kingSquare, enemySquareString)
 			if (guardianPiece.type == enumNames.BASTARDS && match.cursor.IsOblique(x) == false)
 				continue ;
 			if (guardianPiece.team != kingPiece.team)
-				continue ;
+			{
+				if  (!match.settings.players.allies || guardianPiece.team != match.currentPlayer.ally || match.currentPlayer.next != enemySquare.piece?.team)
+					continue ;
+				else
+					allyGuardianCoord = x;
+			}
 			//FIXME - CONTROLLO CHE IL DIFENSORE MANGI IN UNA MOSSA (implementare salvataggio due mosse?)
-			let	guardianBoostedSave;
-			let	guardianRegularSave;
+			let	guardianBoostedSave = false;
+			let	guardianRegularSave = false;
 
-			guardianRegularSave = guardianSquare.targetZones.has(match.cursor.square);
+			if (guardianSquare.targetZones.has(match.cursor.square) && square.piece == null)
+			{
+				guardianRegularSave = true;
+			}
 			for (let [key, val] of guardianSquare.boostedTargetZones)
 			{
 				if (val.has(match.cursor.square))
@@ -175,16 +159,18 @@ function isStoppable(match, kingSquare, enemySquareString)
 			}
 			if (guardianRegularSave)
 				normalSaveBool = true;
-				// return (match.currentPlayer.guardianPieces.clear(), true);
 			if (guardianBoostedSave)
 				match.currentPlayer.guardianPieces.add({coord: x, target: match.cursor.square});
 		}
 		if (!movePiece(match, dir.diffCol, dir.diffRow))
-			return true;//FIXME - stampella: non dovrebbe finire mai qui, eppure succede
-		//throw("isStoppable: getDirection failed");
+			return true;
 	}
 	if (normalSaveBool == true || match.currentPlayer.guardianPieces.size > 0)
+	{
+		if (allyGuardianCoord)//@ts-ignore
+			match[match.currentPlayer.ally].allieGuardianCoord = allyGuardianCoord;
 		return true;
+	}
 	return false;
 }
 
@@ -364,9 +350,14 @@ function cantMovePiece(match, enemyCoord, enemySquare, kingCoord)
 	let	threatPiece;
 	let	canReachKing = null;
 	let	ignoredCoords;
+	let kingPiece;
+	let	allyGuardianCoord = "";
 
 	ignoredCoords = new Set();
 	ignoredCoords.add(enemyCoord);
+	kingPiece = match.board.get(kingCoord).piece;
+	if (!kingPiece)
+		throw ('kingPiece null');
 	for (const kingGuardianCoord of enemySquare.dangerZones)
 	{
 		if (kingGuardianCoord == kingCoord)
@@ -376,8 +367,13 @@ function cantMovePiece(match, enemyCoord, enemySquare, kingCoord)
 		guardianPiece = guardianSquare.piece; 
 		if (!guardianPiece)
 			throw ("checkMate, cantMovePiece: guardian piece undefined");
-		if (guardianPiece.team != match.currentPlayer.team)
-			continue ;
+		if (guardianPiece.team != kingPiece.team)
+		{
+			if  (!match.settings.players.allies || guardianPiece.team != match.currentPlayer.ally || match.currentPlayer.next != enemySquare.piece?.team)
+				continue ;
+			else
+				allyGuardianCoord = kingGuardianCoord;
+		}
 		//checking every guardian danger zone
 		for (const threatCoord of guardianSquare.dangerZones)
 		{
@@ -400,7 +396,9 @@ function cantMovePiece(match, enemyCoord, enemySquare, kingCoord)
 		canReachKing = null;
 		ignoredCoords.delete(kingGuardianCoord);
 	}
+	if (allyGuardianCoord)//@ts-ignore
+		match[match.currentPlayer.ally].allieGuardianCoord = allyGuardianCoord;
 	return (true);
 }
 
-export {checkMateCheckAll, getDirection};
+export {checkMateCheckAll};

@@ -15,6 +15,7 @@ import {checkCastling} from "./Castling.js";
 import { includesOneOf } from "../utils/string.js";
 import { MOVEMENT_MAX } from "../Macro/macro.js";
 import { simulation } from "./simulation.js";
+import { coordNormify } from "../Classes/Chess/cursor.js";
 
 /** @typedef {import("../Classes/Chess/match").Match} Match*/
 /** @typedef {import("../Classes/Chess/chessBoard.js").Square} Square*/
@@ -61,8 +62,8 @@ export function checkMove(coords=[], result, match, boostBool)
 		}
 		if (match.settings.players.allies == true)
 		{
-			if (to.piece.team == match.currentPlayer.allie)
-				return (error(result, 403, "you can't eat your allie's pieces"));
+			if (to.piece.team == match.currentPlayer.ally)
+				return (error(result, 403, "you can't eat your ally's pieces"));
 		}
 	}
 	if (!checkBooster(match, result, from, coords, boostBool))
@@ -71,6 +72,8 @@ export function checkMove(coords=[], result, match, boostBool)
 		return (error(result, 403, "destination not in piece targetZone"));
 	if (!simulation(coords, match, result))
 	{
+		if (result.specialMoves.CheckAllyGuardian())
+			return (error(result, 403, `protect your ally! you can use your ${match.board._data.get(match.currentPlayer.allieGuardianCoord)?.piece?.type} in ${coordNormify(match.currentPlayer.allieGuardianCoord)}`));
 		result.specialMoves.SetKingDanger();
 		return (error(result, 403, "this would put your king in danger"));
 	}
@@ -124,7 +127,7 @@ export function checkSecondMove(match, to)
  * @param {boolean} boostBool
  * @returns {boolean}
  */
-function checkBooster(match, result, from, coords, boostBool) // FIXME - da aggiungere check per valchiria: vuole usare boost?
+function checkBooster(match, result, from, coords, boostBool)
 {
 	let	pieceMultipleMoveBool;
 	let	boostedTargetZones;

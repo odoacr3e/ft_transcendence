@@ -1,11 +1,15 @@
 //@ts-check 
 
+import { callbackify } from "node:util";
 import { Result } from "../../Classes/endPoint/result.js";
 import { globals } from "../../Classes/Globals/globals.js";
-import { gameWebSocketHandler } from "../../handlers/game/Game.js";
+import { boost, gameWebSocketHandler } from "../../handlers/game/Game.js";
 import { enumSocketState } from "../../Macro/enums.js";
 import { historyGetMatchState } from "../../utils/history.js";
 import { isBusy } from "../utils.js";
+import { fakeBoost } from "../../handlers/game/boost.js";
+
+/** @typedef {{from: *, to: *}} */
 
 /** 
  * @param {import("socket.io").Socket} socket
@@ -34,6 +38,26 @@ export function routesGame(socket, user)
 		//NOTE - the callback alerts the frontend that emit is done
 		if (typeof(callback) == "function")
 			callback({log: {status: status}});
+	});
+
+	socket.on("simulate_boost", async(req, callback) => 
+	{
+		let result;
+		let	socketData;
+		let match;
+
+		socketData = globals.clientMap.get(user.id_user);
+		match = globals.matches.get(socketData?.matchData?.matchId);
+		if (!match || !match[socketData?.matchData?.team])
+			result = new Result().Error("You can't simulate the boost", 403);
+		else
+		{
+			result = fakeBoost(match, req.from);
+			console.log(`fakeBoost response: ${result}`);
+			socket.emit("simulate_boost", result);
+		}
+		if (typeof(callback) == 'function')
+			callback(result);
 	});
 
 	socket.on("replay_game", async(/** @type {{matchId: number, moveId: number, delBool?: Boolean}}*/req, callback) => 

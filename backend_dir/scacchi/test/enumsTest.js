@@ -10,7 +10,7 @@ const cmd =
 	A: "left",
 	RIGHT: "right",
 	D: "d",
-	MOVEMENTS: [],
+	MOVEMENTS: [""],
 	TARGET_DANGER_SWITCH: "r",
 	END_TURN: "e",
 	BUY_BOOST: "q",
@@ -20,6 +20,8 @@ const cmd =
 	LOAD_HISTORY: "p",
 	SQUARE_INFO: "i",
 	GOTO_KING: "k",
+	CANCEL_EVENT: "o",
+	FAKE_BOOST: "f",
 	HELP: "h"
 };
 
