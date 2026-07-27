@@ -12,8 +12,6 @@ import {error, Result} from "../handlers/game/utils.js";
 import {printSwap} from "../test/render.js";
 import { moveCastling } from "./Castling.js";
 
-//FIXME - da mettere alcune funzioni in un utilis
-
 /**
  * 
  * @param {Array<string>} coords
@@ -50,7 +48,7 @@ export function updateChessboard(coords=[], result, match, boostBool)
 		if (to.piece.isBoostedBool == true)//@ts-ignore
 			match[to.piece.team].boostedPiece = "";
 	}
-	match.history.UpdateMoves(match, from, coords, boostBool);
+	match.history.UpdateMoves(match, from, coords, result.specialMoves._mask, boostBool);
 	if (result.specialMoves.CheckSniperMove())
 	{
 		to.piece = null;
@@ -72,8 +70,8 @@ export function updateChessboard(coords=[], result, match, boostBool)
 			match.boostPriority.delete(match.currentPlayer.team);
 		}
 	}
-	if (to.piece && to.piece.isMovedBool == false)
-		to.piece.isMovedBool = true;
+	if (to.piece)
+		to.piece.moveCount += 1;
 	dangerUpdateMoved(match, coords, true);
 	match.moves++;
 	return (true);

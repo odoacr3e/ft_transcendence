@@ -37,7 +37,7 @@ let isDangerous = (match, setZones, team, saveInfoBool=false, pieceCoord=match.c
 			return (false);
 		if (match.board.get(x)?.piece?.team != team)
 		{//@ts-ignore
-			if (match.settings.players.allies == true && match.board.get(x)?.piece?.team == match[team].allie)
+			if (match.settings.players.allies == true && match.board.get(x)?.piece?.team == match[team].ally)
 				continue ;
 			dangerCoord = x;
 			break ;
@@ -69,12 +69,18 @@ let isDangerous = (match, setZones, team, saveInfoBool=false, pieceCoord=match.c
 /**
  * checks if the currentPlayer king is in danger.
  * @param {Match} match 
+ * @param {string} team
  */
-function checkKingDanger(match)
+function checkKingDanger(match, team=match.currentPlayer.team)
 {
 	let	kingSquare;
+	let	kingCoord;
 
-	kingSquare = match.board.get(match.currentPlayer.King);
+	//@ts-ignore
+	kingCoord = match[team].King;
+	if (typeof(kingCoord) != "string")
+		return (console.error(`checkKingDanger ${team} does not exist`), false);
+	kingSquare = match.board.get(kingCoord);
 	return (isDangerous(match, kingSquare.dangerZones, match.currentPlayer.team));
 }
 

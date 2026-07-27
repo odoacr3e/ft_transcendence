@@ -19,13 +19,14 @@ const eEvents =
 	MoveBoost: 'moveboost',
 	Boost: 'boost',
 	EndTurn: `endturn`,
-	Transform: 'trans'
+	Transform: 'trans',
+	GiveUp: 'giveup'
 };
 
 const eMatchPresets =
 {
 	ClassicTwoPlayers: "1v1",
-	ClassicFourPlayers: "2v2", //TODO - da implementare
+	ClassicFourPlayers: "2v2",
 	ClassicFreeForAll: "1v1v1v1",
 	NoCornersFourPlayers: "14x14x4",
 };
@@ -162,6 +163,7 @@ const enumSpecialMoves =
 	EATENBASTARD: 1 << 7,
 	CHAMPIONBOOST: 1 << 8,
 	DRAW: 1 << 9,
+	ALLYGUARDIAN: 1 << 10
 }
 
 const kingMovements = 

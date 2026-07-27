@@ -4,12 +4,13 @@ import fs from "fs";
 
 import {eTeam, eEvents, eMatchPresets} from "../../Macro/enums.js";
 import {copyBoostedTargetZones} from "./chessBoard.js";
-import {HISTORY_PATH, CHESSBOARD_W, CHESSBOARD_H} from "../../Macro/macro.js";
+import {HISTORY_PATH, CHESSBOARD_W, CHESSBOARD_H, MATCHTIMER} from "../../Macro/macro.js";
 import {boardStringify} from "../../test/render.js";
 
 /**@typedef {import("./match.js").Match} Match*/
 /**@typedef {import("./match.js").MatchSettings} MatchSettings*/
 /**@typedef {import("./chessBoard.js").Square} Square*/
+/**@typedef {import("./Pieces/pieces.js").Piece} Piece*/
 /**@typedef {import("./player.js").Player} Player*/
 
 export class History
@@ -24,6 +25,7 @@ export class History
 		this.UpdateBoost = updateBoost;
 		this.UpdateEndTurn = updateEndTurn;
 		this.UpdateTransform = updateTransform;
+		this.UpdateGiveUp = updateGiveUp;
 		if (!matchSettings)
 			this.matchSettings = null;
 		else if (matchSettings && matchSettings.presetType)
@@ -40,11 +42,21 @@ export class History
 		i = 0;
 		while (this.events.length != i)
 		{
-			if (this.events[this.events.length - 1 - i].error == false)
+			if (this.events[this.events.length - 1 - i].error != true)
 				return (this.events[this.events.length - 1 - i]);
 			++i;
 		}
 		return (new HistoryEvent(0, "Empty", "Empty"));
+	}
+	/** @param {string} team */
+	TurnCount(team)
+	{
+		let	i;
+
+		i = 0;
+		for (const event of this.events)
+			i += (event.error != true && event.team == team && event.type == eEvents.EndTurn? 1 : 0);
+		return (i);
 	}
 	/** 
 	 * 
@@ -66,7 +78,9 @@ export class History
 			//@ts-ignore
 			delete event.isBoostedBool;
 			if (event.lastLost == null)//@ts-ignore
-				delete event.lastLost;
+				delete event.lastLost;//@ts-ignore
+			delete event.pieceEaten;//@ts-ignore
+			delete event.loserSet;
 		}
 		if (name)
 		{
@@ -110,6 +124,7 @@ export class HistoryEvent
 		this.team = team;
 		this.type = eventType;
 		this.pieceBoosterTargetZones = null;
+		this.specialMoves = 0;
 		this.isBoostedBool = isBoosted;
 		this.useBoostBool = false;
 		this.counter = counter;
@@ -119,6 +134,9 @@ export class HistoryEvent
 		this.lastLost = null;
 		/** @type {Set<number>} */
 		this.loserSet = new Set();
+		/** @type {Piece | null | undefined} */
+		this.pieceEaten = undefined;
+		this.time = MATCHTIMER;
 		if (pieceBoosterZones)
 			this.pieceBoosterTargetZones = copyBoostedTargetZones(pieceBoosterZones);
 	}
@@ -130,9 +148,10 @@ export class HistoryEvent
  * @param {Match} match
  * @param {Square} square 
  * @param {Array<string>} coords 
+ * @param {number} specialMoves
  * @param {boolean} boostBool
  */
-function updateMoves(match, square, coords, boostBool=false)
+function updateMoves(match, square, coords, specialMoves, boostBool=false)
 {
 	let	record;
 	let	eName;
@@ -149,6 +168,10 @@ function updateMoves(match, square, coords, boostBool=false)
 	if (match.currentPlayer.useBoostBool || boostBool == true)
 		eName = eEvents.MoveBoost;
 	record = new HistoryEvent(this.moves, eName, square.piece?.team, match.board.updates, square.piece?.type, coords[0], coords[1], square.boostedTargetZones, square.piece?.isBoostedBool);
+	record.pieceEaten = match.board._data.get(coords[1])?.piece;
+	record.specialMoves = specialMoves;
+	record.updates = structuredClone(match.board.updates);
+	record.time = match.currentPlayer.time;
 	this.events.push(record);
 	this.moves += 1;
 }
@@ -173,6 +196,8 @@ function updateBoost(match, square, from)
 	// if (!square.piece)
 	// 	throw (`History: missing piece in square: ${square}`);
 	record = new HistoryEvent(this.moves, eEvents.Boost, square.piece?.team, match.board.updates, square.piece?.type, from);
+	record.updates = structuredClone(match.board.updates);
+	record.time = match.currentPlayer.time;
 	this.events.push(record);
 	this.moves += 1;
 }
@@ -199,6 +224,8 @@ function updateTransform(match, square, from, newType)
 	// 	throw (`History: missing piece in square: ${square}`);
 	record = new HistoryEvent(this.moves, eEvents.Transform, square.piece?.team, match.board.updates, newType, from);
 	record.to = newType;
+	record.updates = structuredClone(match.board.updates);
+	record.time = match.currentPlayer.time;
 	this.events.push(record);
 	this.moves += 1;
 }
@@ -221,6 +248,27 @@ function updateEndTurn(match)
 	if (!match.currentPlayer.team)
 		throw (`History: invalid currentPlayer team`);
 	record = new HistoryEvent(this.moves, eEvents.EndTurn, match.currentPlayer.team, match.board.updates);
+	this.events.push(record);
+	this.moves += 1;
+}
+
+/**
+ * 
+ * @this {History}
+ * @param {Match} match 
+ * @param {string} team
+ */
+function updateGiveUp(match, team=match.currentPlayer.team)
+{
+	let	record;
+
+	if (!this)
+		throw ("updateMoves must be called inside of History class");
+	if (!match)
+		throw (`History: invalid match`);//@ts-ignore
+	if (!match[team])
+		throw (`History: invalid team ${team}`);
+	record = new HistoryEvent(this.moves, eEvents.GiveUp, team);
 	this.events.push(record);
 	this.moves += 1;
 }

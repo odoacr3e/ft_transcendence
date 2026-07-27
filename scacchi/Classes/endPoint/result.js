@@ -37,6 +37,8 @@ class bitMaskMoves
 	CheckChampionBoostUsed(){return (this._mask & move.CHAMPIONBOOST)};
 	SetDraw(){return (this._mask |= move.DRAW)};
 	CheckDraw(){return (this._mask & move.DRAW)};
+	SetAllyGuardian(){return (this._mask |= move.ALLYGUARDIAN)};
+	CheckAllyGuardian(){return (this._mask & move.ALLYGUARDIAN)};
 }
 
 //SECTION - class Result
@@ -78,7 +80,7 @@ class Result
 	{
 		this.status = status;
 		this.msg = msg;
-		
+		this.log = {status: this.status, msg: this.msg};
 		return (this);
 	}
 }

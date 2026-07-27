@@ -150,6 +150,10 @@ function displayPlayerInfo(board, match)
 		console.log(`Boost NOT used`);
 	if (kingThreat(board, match) == true)
 		console.log(`${player.team} king is threatened💀`);
+	console.log("match: ", match?.timer?.time);
+	console.log("player: ", match.currentPlayer.time);
+	
+	
 }
 
 /**
@@ -158,7 +162,7 @@ function displayPlayerInfo(board, match)
 */
 function kingThreat(board, match)
 {
-	if (isDangerous(match, match.board.get(match.currentPlayer.King)?.dangerZones, match.currentPlayer.team))
+	if (isDangerous(match, match.board._data.get(match.currentPlayer.King)?.dangerZones, match.currentPlayer.team))
 		return (true);
 	return (false);
 }

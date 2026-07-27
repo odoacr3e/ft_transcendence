@@ -45,7 +45,7 @@ export function getLegalMoves(match, team=match.currentPlayer.team)
 		}
 	}
 	for (const [coord, targetSet] of legalMovesMap)
-	{// FIXME - eventualmente controllo per vedere che il re sia al sicuro dopo la mossa
+	{// TODO - eventualmente controllo per vedere che il re sia al sicuro dopo la mossa
 		for (const targetCoord of targetSet)
 			legalMovesArray.push({from: coord, to: targetCoord});
 	}

@@ -15,6 +15,9 @@ import {clientBoard} from "../../handlers/game/utils.js";
 import { checkKingDanger } from "../../utils/checkDanger.js";
 import { checkInsuficientResources } from "../../GameLogic/checkSpare.js";
 import { boardStringify } from "../../test/render.js";
+import { globals } from "../../Classes/Globals/globals.js";
+import { Timer }	from "../../Classes/Chess/match.js";
+import { setTimerGame } from "../../GameLogic/timer.js";
 
 /**
  * goes to the next turn
@@ -25,8 +28,6 @@ import { boardStringify } from "../../test/render.js";
 function endTurn(match, sendBoardBool=true)
 {
 	let	result;
-	let timeout;
-	let start;
 	let time;
 	let nPieces;
 	let p = match.currentPlayer;
@@ -37,7 +38,8 @@ function endTurn(match, sendBoardBool=true)
 	nPieces = match.getPieceNumber();
 	boardState = boardStringify(match, true);
 	if (!updateTurn(match, result))
-		return (result);
+		return (result);//@ts-ignore
+	match[match.currentPlayer.prev].allieGuardianCoord = "";
 	if (match.playerNum == 2 && nPieces <= 4)
 	{
 		if (checkInsuficientResources(match, nPieces))
@@ -51,33 +53,13 @@ function endTurn(match, sendBoardBool=true)
 		return (match.DrawMatch(result));//@ts-ignore
 	else if (match.boardStateMap.get(boardState) < 2)
 		match.boardStateMap.set(boardState, 2);
-	// if (match.timer != null)
-	// {
-	// 	// @ts-ignore
-	// 	clearTimeout(match.timer.timeout);
-	// 	p.time = match.timer.time - (Date.now() - match.timer.start);
-	// }
-	// // console.log("time", p.time);
-	// time = match.currentPlayer.time;
-	// /** @param {string} matchId */
-	// timeout = setTimeout((matchId) =>
-	// {
-	// 	let result;
-	// 	let match = globals.matches.get(matchId);
-	// 	if (!match)
-	// 		throw ("Timer reset: bad matchId " + matchId);
-	// 	result = new Result();
-	// 	// @ts-ignore
-	// 	result = match.PlayerLost(result, match?.currentPlayer.team);
-	// 	if (match.coordToUpdate)
-	// 	{
-	// 		DangerUpdate(match, match.coordToUpdate);
-	// 		match.coordToUpdate = "";
-	// 	}
-	// 	return (result);
-	// }, time, "0");
-	// start = Date.now();
-	// match.timer = new Timer(time, start, timeout);
+	if (match.timer != null)
+	{
+		// @ts-ignore
+		clearTimeout(match.timer.timeout);
+		p.time = match.timer.time - (Date.now() - match.timer.start);
+	}
+	setTimerGame(match);
 	console.log(`Now it's ${match.currentPlayer.team} turn.`);
 	result.status = 200;
 	if (sendBoardBool)//@ts-ignore

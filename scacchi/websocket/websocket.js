@@ -29,7 +29,7 @@ export const sockio = new lib.include.SocketIO(server, {
 	connectionStateRecovery: {} // se il client si disconnette temporaneamente gli arrivano gli eventi alla riconnessione, senza vengono persi
 });
 
-//FIXME - ⚠️senza questo le connessioni websockets non sono sicure!
+//NOTE - ⚠️senza questo le connessioni websockets non sono sicure!
 //NOTE - ⚠️	https://www.youtube.com/watch?v=SgR8NAkQ3cc&themeRefresh=1
 // middleware aunteticazione websocket
 sockio.engine.use(async (req, res, next) => {

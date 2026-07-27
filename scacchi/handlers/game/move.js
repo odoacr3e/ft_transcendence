@@ -9,7 +9,6 @@
 
 import {MOVEMENT_MIN} from "../../Macro/macro.js";
 import { Chess } from "../../lib/lib.js";
-const {Square} = Chess;
 import {Match} from "../../Classes/Chess/match.js";
 import {paramCheck, Result, clientBoard} from "./utils.js";
 import {endTurn} from "./endTurn.js";
@@ -46,7 +45,7 @@ function move(match, from, to, boostBool=false)
 	if (!updateChessboard([from, to], result, match, boostBool))
 		return (result);
 	result.status = 200;
-	checkMateCheckAll(match, result);
+	checkMateCheckAll(match, result, match.currentPlayer.team);
 	// @ts-ignore
 	result.board = clientBoard(match);
 	secondMoveBool = checkSecondMove(match, to);

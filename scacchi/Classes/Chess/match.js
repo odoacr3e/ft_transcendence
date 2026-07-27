@@ -50,7 +50,7 @@ class Match
 		this.lastMenace = {from: "", mid: "", to: ""};
 		this.boostPriority = new Set;
 		this.playerNum = this.settings.players.number;
-		this.lastLost = "";
+		this.loserSet = new Set();
 		this.victory = "";
 		/** @type {Timer | null} */ this.timer = null;
 		if (this.settings.players.number == 4)
@@ -97,7 +97,7 @@ class Match
 		this.lastMenace = {from: "", mid: "", to: ""};
 		this.boostPriority = new Set;
 		this.playerNum = this.settings.players.number;
-		this.lastLost = "";
+		this.loserSet = new Set();
 		this.victory = "";
 		/** @type {Timer | null} */ this.timer = null;
 		if (this.settings.players.number == 4)
@@ -211,20 +211,16 @@ class Match
 			if (this.FindPlayer(user.team) == true)
 				user.outcome = "Win";
 		}
+		if (this.timer)//@ts-ignore
+			clearTimeout(this.timer.timeout);
 		if (this.id != "0")
 			globals.matches.delete(this.id);
 		globals.lastMatchId = "0";
-		if (result != null)
-		{
-			result.msg = "you win!";
-			result.status = 200;
-			result.victory = this.victory;
-			result.specialMoves.SetCheckMate();
-			//@ts-ignore
-			// result.board = clientBoard(this);
-		}
-		else
-			return (new Result());
+		if (!result)
+			result = new Result();
+		result.Success(`${this.currentPlayer.team} won!`);
+		result.victory = this.victory;
+		result.specialMoves.SetCheckMate();
 		return (result);
 	}
 	/**
@@ -234,15 +230,14 @@ class Match
 	 */
 	PlayerLost(result, player=this.currentPlayer)
 	{
-		this.lastLost = player.team;
 		this.history.Last().loserSet.add(player.id);
 		this.UpdateElo(player, false);
 		this.DeletePlayer(player);
 		console.log(player.team, ":haaaaaiiiiii persoooooooooooooooooo!!!!!!!");
-		// console.log("Premi un qualsiasi tasto per concludere...");
-		//FIXME - gestire cosa succede in base a quanti player restano
-		//FIXME - gestire salvataggio nella history
 		this.history.Last().lastLost = player.team;
+		if (!result)
+			result = new Result();
+		result.Success(`${player.team} has lost`);
 		if (result != null)
 		{
 			result.msg = "you lost!!!";
@@ -267,8 +262,6 @@ class Match
 		console.log("ed e' un pareggioooooooo!!!!");
 		this.victory = "draw";
 		// console.log("Premi un qualsiasi tasto per concludere...");
-		//FIXME - gestire cosa succede in base a quanti player restano
-		//FIXME - gestire salvataggio nella history
 		tmp = this.currentPlayer;
 		player = tmp.next;
 		for (let x of this.users)
@@ -284,6 +277,8 @@ class Match
 			tmp = this[player];
 			player = tmp.next;
 		}
+		if (this.timer)//@ts-ignore
+			clearTimeout(this.timer.timeout);
 		this.DeletePlayer(tmp);
 		//@ts-ignore
 		tmp = this[player];
@@ -291,17 +286,13 @@ class Match
 		if (this.id != "0")
 			globals.matches.delete(this.id);
 		globals.lastMatchId = "0";
-		if (result != null)
-		{
-			result.msg = "it's a spare!!!";
-			result.status = 200;
-			result.victory = this.victory;
-			result.specialMoves.SetDraw();
-			//@ts-ignore
-			// result.board = clientBoard(this);
-		}
-		else
-			return (new Result());
+		if (result == null)
+			result = new Result();
+		result.Success("it's a spare!!!");
+		result.victory = this.victory;
+		result.specialMoves.SetDraw();
+		//@ts-ignore
+		// result.board = clientBoard(this);
 		return (result);
 	}
 	/** @param {string} team */
@@ -350,6 +341,9 @@ class Match
 		//@ts-ignore
 		if (!this[player.team])
 			throw (`Delete player: invalid player data`);
+		this.loserSet.add(player.id);
+		// this.board.get(player.King).ClearZones();
+		// this.board.get(player.King).piece = null;
 		this.playerNum--;
 		if (!player.prev)
 			return ;
@@ -360,7 +354,6 @@ class Match
 		if (!player.boostedPiece)
 			return ;
 		this.boostPriority.delete(player.team);
-		//FIXME - qui va chiamato DangerUpdate. Farlo pero significa introdurre doppie inclusioni
 		boostedSquare = this.board.get(player.boostedPiece);
 		if (!boostedSquare.piece)
 			throw (`DeletePlayer: invalid boosted piece in ${player.boostedPiece}`);
@@ -424,7 +417,6 @@ class Match
 			throw (`UpdateElo: elo not initializated`);
 		newElo = this.elo.updateRating(player.expectedElo, winBool? 1: 0, player.dbTable.points);
 		console.log(`UpdateElo: user ${player.id} old elo is ${player.dbTable.points}, new is ${newElo}`);
-		//FIXME - query sul db
 		query.usersQuery.updateUserELO(player.id, newElo);
 	}
 }
