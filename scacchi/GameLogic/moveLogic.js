@@ -36,6 +36,7 @@ export function updateChessboard(coords=[], result, match, boostBool)
 	{
 		from.piece.isBoostedBool = false;
 		match.currentPlayer.boostedPiece = "";
+		match.boostPriority.delete(match.currentPlayer.team);
 	}
 	if (coords[0] == match.currentPlayer.King)
 		match.currentPlayer.King = coords[1];
@@ -64,11 +65,11 @@ export function updateChessboard(coords=[], result, match, boostBool)
 		to.piece.pos = coords[1];
 		if (to.piece.isBoostedBool)
 			match.currentPlayer.boostedPiece = to.piece.pos;
-		else if (boostBool)
-		{
-			match.currentPlayer.boostedPiece = "";
-			match.boostPriority.delete(match.currentPlayer.team);
-		}
+		// else if (boostBool)
+		// {
+		// 	match.currentPlayer.boostedPiece = "";
+		// 	match.boostPriority.delete(match.currentPlayer.team);
+		// }
 	}
 	if (to.piece)
 		to.piece.moveCount += 1;

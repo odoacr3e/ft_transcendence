@@ -8,7 +8,7 @@
 
 import { Square } from "../Classes/Chess/chessBoard.js";
 import { Player } from "../Classes/Chess/player.js";
-import { arrayNamesTransform, enumNames } from "../Macro/enums.js";
+import { arrayNamesDoubleMove, arrayNamesTransform, enumNames } from "../Macro/enums.js";
 import { isDangerous } from "../utils/checkDanger.js";
 import { includesOneOf } from "../utils/string.js";
 
@@ -65,7 +65,7 @@ export function getLegalMoves(match, team=match.currentPlayer.team)
 	boostedSquare = match.board.get(player.boostedPiece);
 	if (!boostedSquare.piece)
 		throw (`getLegalMoves: boosted piece in ${player.boostedPiece} undefined`);
-	if (includesOneOf(boostedSquare.piece.type, enumNames.MINOTAURUS, enumNames.CHAMPION))
+	if (includesOneOf(boostedSquare.piece.type, arrayNamesDoubleMove))
 		return (legalMovesArray);
 	boostedZones = boostedSquare.boostedTargetZones.get(player.boostedPiece);
 	if (!boostedZones)
