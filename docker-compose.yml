@@ -33,9 +33,7 @@ services:
       - /app/node_modules
   vault:
     container_name: vault
-    build:
-      context: .
-      dockerfile: Dockerfile/Dockerfile.vault
+    build: ./vault
     restart: unless-stopped
     cap_add:
       - IPC_LOCK
