@@ -220,3 +220,22 @@ export async function getTournamentResults(id_tournament) {
 		"matches": matches
 	}
 }
+
+export async function deleteUserInTournament(id_tournament, id_user)
+{
+	let	tournament;
+
+	try
+	{
+		tournament = await prisma.tournament_players.findUnique(
+		{
+			where:
+				{ id_tournament_id_user: id_tournament + id_user}
+		});
+		await prisma.tournament_players.delete(id_user);
+	}
+	catch(err)
+	{
+		console.log(`deleteUserInTournament: ${err}`);
+	}
+}

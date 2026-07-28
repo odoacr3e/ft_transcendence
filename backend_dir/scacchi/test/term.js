@@ -22,6 +22,8 @@ import { cmd } from "./enumsTest.js";
 import { exec, execSync } from "node:child_process";
 import { cancelEvent } from "../GameLogic/cancelEvent.js";
 import { fakeBoost } from "../handlers/game/boost.js";
+import { initFromStr } from "../handlers/game/init.js";
+import { MatchSettings } from "../Classes/Chess/match.js";
 
 /** @typedef {import("../Classes/Chess/match.js").Match} Match*/
 
@@ -38,7 +40,7 @@ function mainTerm()
 	if (!match)
 		throw ("To use term.js, you need to set the DEBUG macro true");
 	seed = lib.Macro.SEED;
-	seed = "2v2";
+	seed = "1v1";
 	time = process.hrtime.bigint();
 	init(match, seed);
 	console.log(`time to init: ${(process.hrtime.bigint() - time) / 1000n} microseconds`);

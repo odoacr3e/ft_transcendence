@@ -1,7 +1,9 @@
 //@ts-check
 
 import { eMatchPresets } from "../../Macro/enums.js";
+import { createTournament } from "../../query/tournamentsQuery.js";
 import { rng } from "../../utils/random.js";
+import { createMatchTournament } from "../../websocket/handlers/tournament.js";
 import { globals } from "../Globals/globals.js";
 import { createMatchId } from "./match.js";
 
@@ -30,6 +32,7 @@ export class Tournament
 	constructor (name="", matchType=eMatchPresets.ClassicTwoPlayers, playerNum=8)
 	{
 		this.id = 0;//NOTE - prendiamo da prisma
+		this.adminId = 0;
 		this.name = name;
 		/** @type {OldMatch} */
 		this.oldMatchIds = new Array();
@@ -56,9 +59,23 @@ export class Tournament
 			return (rng(2) == 1? -1: 1);
 		});
 	}
-	initAllMatches()
+	async initAllMatches()
 	{
-		console.log("not implemented");
+		/** @type {Map<number, number>} */
+		let	userIdIndexMap;
+		let	players;
+		let	roundIds;
+		let	match;
+
+		roundIds = this.userIds[this.round];
+		for (let i = 0; i != roundIds.length; i += 2)
+		{
+			players = new Set([roundIds[i], roundIds[i + 1]]);
+			userIdIndexMap = new Map();
+			userIdIndexMap.set(roundIds[i], roundIds[i + 1]);
+			userIdIndexMap.set(roundIds[i + 1], roundIds[i]);
+			match = await createMatchTournament(players, createMatchId(players), this.id, userIdIndexMap);
+		}
 	}
 	/** @param {number} id */
 	addUser(id)
