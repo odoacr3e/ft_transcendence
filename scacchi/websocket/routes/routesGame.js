@@ -34,7 +34,20 @@ export function routesGame(socket, user)
 		let	status;
 
 		socketData = globals.clientMap.get(user.id_user);
-		status = await gameWebSocketHandler(req, user.id_user, socketData);
+		try
+		{
+			status = await gameWebSocketHandler(req, user.id_user, socketData);
+		}
+		catch(err)
+		{
+			let	match;
+
+			//@ts-ignore
+			match = globals.matches.get(socketData?.matchData?.matchId); 
+			if (match)
+				match.history.Log(match, `CRASH_${match.id}`);
+			throw (`routesGame: ${err}`);
+		}
 		//NOTE - the callback alerts the frontend that emit is done
 		if (typeof(callback) == "function")
 			callback({log: {status: status}});

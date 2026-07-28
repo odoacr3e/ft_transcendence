@@ -165,7 +165,8 @@ async function gameHandler(match, body)
 		return (error(null, result, 500, "backend function failed for unknown reasons"), result);
 	if (result.status != 200)
 		return (error(null, result), result);
-	result = responseFormatter(match, result, null, null);
+	result = responseFormatter(match, result, null, null);//@ts-ignore
+	result.type = body.type;
 	render(match);
 	if (match.victory != "" && match.id != "0")
 		saveMatch(match);

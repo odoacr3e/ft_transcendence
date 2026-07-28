@@ -1,17 +1,114 @@
 // @ts-check
 
-import { createMatchId, Match } from "../../Classes/Chess/match.js";
+import { Match } from "../../Classes/Chess/match.js";
 import { Tournament } from "../../Classes/Chess/tournament.js";
 import { Result } from "../../Classes/endPoint/result.js";
 import { globals } from "../../Classes/Globals/globals.js";
 import { Room } from "../../Classes/Globals/room.js";
+import { SocketInfo } from "../../Classes/Globals/socketInfo.js";
 import { init } from "../../handlers/game/init.js";
 import { query } from "../../lib/query.js";
-import { eMatchPresets } from "../../Macro/enums.js";
-import { roomMessage } from "../utils.js";
-import { sockio } from "../websocket.js";
+import { eMatchPresets, enumSocketState } from "../../Macro/enums.js";
+import { isBusy, roomMessage } from "../utils.js";
 import { bindPlayersToMatch } from "./MatchMaking.js";
 const { tournamentsQuery } = query;
+
+/** @typedef {import("../../Classes/Chess/player").dbUser} dbUser */
+/** @typedef {import("socket.io").Socket} Socket */
+
+
+/**
+ * 
+ * @param {{name: string, maxPlayers: number}} req 
+ * @param {Socket} socket
+ * @param {dbUser} user 
+ */
+export async function createTournamentRoomHandler(req, socket, user)
+{
+	let	socketData;
+	let room;
+	let	result;
+
+	try
+	{
+		socketData = globals.clientMap.get(user.id_user);
+		if (!socketData)
+			throw (`create_tournament: socketData is empty`);
+		if (isBusy(user.id_user) == true)
+			result = new Result().Error("You are already doing something", 400);
+		else
+		{
+			room = new Room(user.id_user, req?.maxPlayers, req?.name);
+			globals.rooms.set(room.cryptId, room);
+			socket.join(room.id);
+			if (socketData)
+				socketData.state = enumSocketState.JOIN_TOURNAMENT;
+			room.tournamentId = (await query.tournamentsQuery.createTournament(req.name, user.id_user)).id_tournament;
+			result = new Result().Success();//@ts-ignore
+			result.tournament_pwd = room.cryptId;
+		}
+	}
+	catch (error)
+	{
+		result = new Result().Error(String(error), 500);
+	}
+	return (result);
+}
+
+/**
+ * 
+ * @param {{tournament_pwd: string}} req 
+ * @param {Socket} socket
+ * @param {dbUser} user 
+ */
+export async function joinTournamentRoomHandler(req, socket, user)
+{
+	let	result;
+	let	room;
+	let	socketData;
+
+	room = globals.rooms.get(req?.tournament_pwd);
+	if (!room)
+		result = new Result().Error(`tournament ${req?.tournament_pwd} does not exist`, 400);
+	else if (isBusy(user.id_user) == true)
+		result = new Result().Error("You are already doing something", 400);
+	else
+	{
+		result = room.addPlayer(user.id_user);
+		socket.join(room.id);
+		socketData = globals.clientMap.get(user.id_user);
+		query.tournamentsQuery.addPlayersToTournament(room.tournamentId, [user.id_user]);
+		if (socketData)
+			socketData.state = enumSocketState.JOIN_TOURNAMENT;
+	}
+	if (room && result.status == 200 && room.players.size == room.maxPlayers)
+		initTournament(room);
+	return (result);
+}
+
+/**
+ * 
+ * @param {{tournament_pwd: string}} req 
+ * @param {Socket} socket
+ * @param {dbUser} user 
+ */
+export async function startRoundHandler(req, socket, user)
+{
+	let result;
+	const socketData = globals.clientMap.get(user.id_user);
+
+	if (!socketData || !socketData.tournamentData)
+		return (new Result().Error("Can't find myself or tournament I've joined", 404));
+	const tournament = globals.tournamentMap.get(socketData?.tournamentData?.id);
+	if (!tournament)
+		return (new Result().Error("Tournament doesn't exist", 500));
+	if (tournament.adminId != user.id_user)
+		return (new Result().Error("You must be admin to start the round", 401));
+	await tournament.initAllMatches();
+	result = new Result().Success();
+	roomMessage(`tournament_${tournament.id}`, "start_round", result);
+	return (result);
+}
 
 /**
  * 
@@ -20,17 +117,12 @@ const { tournamentsQuery } = query;
 export async function initTournament(room)
 {
 	let tournament;
-	let	me;
-	let	opponent;
-	let	meId;
-	let	oppoId;
-	let	matchId;
-	let i = 0;
 
 	try
 	{
 		tournament = new Tournament(room.name, room.matchType, room.maxPlayers);
 		tournament.id = (await tournamentsQuery.createTournament(room.name, room.ownerId)).id_tournament;
+		tournament.adminId = room.ownerId;
 		await tournamentsQuery.addPlayersToTournament(tournament.id, Array.from(room.players));
 		globals.tournamentMap.set(tournament.id, tournament);
 		tournament.startUserIds = new Set(room.players);
@@ -118,6 +210,7 @@ export async function updateTournament(match, drawBool)
 			userSet.add(v.id_user);//@ts-ignore
 			userIdIndexMap.set(v.id_user, v.tour_index);
 		});
+		roomMessage(`tournament_${tournament.id}`, "update_tournament", tournament.userIds[tournament.round]);
 		createMatchTournament(userSet, match.id, tournament.id, userIdIndexMap);
 		return ;
 	}
@@ -127,6 +220,7 @@ export async function updateTournament(match, drawBool)
 	matchNum = tournament.userIds[tournament.round].indexOf((match[match.victory].tournament_index));//@ts-ignore
 	tournament.userIds[tournament.round + 1][matchNum / 2] = match[match.victory].tournament_index;
 	tournament.activeMatches--;
+	roomMessage(`tournament_${tournament.id}`, "update_tournament", tournament.userIds[tournament.round]);
 	if (tournament.activeMatches == 0)
 		tournament.nextRound();
 	if (tournament.checkFinish())

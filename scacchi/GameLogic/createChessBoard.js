@@ -13,6 +13,7 @@ import { Enums } from "../lib/lib.js";
 import {dangerUpdateAll} from "../utils/dangerUpdate.js";
 import {Match} from "../Classes/Chess/match.js";
 import { isLowerCase } from "../utils/string.js";
+import { render } from "../test/render.js";
 const {eTeam, enumNames, enumInitNames, getTeamByInitial} = Enums;
 
 /**
@@ -54,6 +55,7 @@ function initSavedBoard(match)
 		++i;
 	}
 	while (match.cursor.moveRow(-1))
+	render(match);
 	dangerUpdateAll(match);
 	match.cursor.Restore();
 }

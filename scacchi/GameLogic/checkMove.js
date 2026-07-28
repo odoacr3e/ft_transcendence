@@ -74,6 +74,11 @@ export function checkMove(coords=[], result, match, boostBool)
 	{
 		if (result.specialMoves.CheckAllyGuardian())
 			return (error(result, 403, `protect your ally! you can use your ${match.board._data.get(match.currentPlayer.allieGuardianCoord)?.piece?.type} in ${coordNormify(match.currentPlayer.allieGuardianCoord)}`));
+		if (match.lastMenace.from != "")
+		{//@ts-ignore
+			result.check = match.lastMenace;
+			match.lastMenace = {from: "", mid: "", to: ""};
+		}
 		result.specialMoves.SetKingDanger();
 		return (error(result, 403, "this would put your king in danger"));
 	}

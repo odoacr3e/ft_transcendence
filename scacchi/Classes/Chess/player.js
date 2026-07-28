@@ -2,6 +2,7 @@
 
 import {MATCHTIMER} from "../../Macro/macro.js";
 import {eTeam, eEvents} from "../../Macro/enums.js";
+import { AI } from "./AI.js";
 
 /** @typedef {import("./match.js").MatchSettings} MatchSettings*/
 /**
@@ -17,8 +18,9 @@ class Player
 	 * 
 	 * @param {string} color 
 	 * @param {MatchSettings} settings 
+	 * @param {string | null} ai
 	*/
-	constructor(color, settings)
+	constructor(color, settings, ai=null)
 	{
 		//SECTION - preset data
 		//@ts-ignore
@@ -51,6 +53,10 @@ class Player
 		this.prev = data.prev;
 		this.ally = data.ally;
 		this.allieGuardianCoord = "";
+		/** @type {AI<null> | null} */
+		this.ai = null;
+		if (ai)
+			this.ai = new AI(ai);
 	}
 }
 
