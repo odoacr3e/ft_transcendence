@@ -51,7 +51,8 @@ function move(match, from, to, boostBool=false)
 	secondMoveBool = checkSecondMove(match, to);
 	if ((match.moves >= MOVEMENT_MIN && !match.currentPlayer.nPoints) && !(secondMoveBool && boostBool) && 
 	!(match.cursor.EdgeCheck(match.currentPlayer.team) && match.board.get(match.cursor.square)?.piece?.type == enumNames.BASTARDS))
-		endTurn(match, false);
+		if (endTurn(match, false).specialMoves.CheckKingDanger())
+			result.specialMoves.SetKingDanger();
 	return (result);
 }
 
