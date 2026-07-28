@@ -13,6 +13,7 @@
 	const	p_bool = ref(false),
 			n_bool = ref(false),
 			popUp = ref(false),
+			tourOpen = ref(null),
 			router = useRouter(),
 			db = ref([]),
 			searchUser = ref(""),
@@ -54,9 +55,30 @@
 		}
 	}
 
-	const closePopup = () => {
-        popUp.value = false;
-    };
+	async function fetchTour(msg) {
+		try
+        {
+            tourOpen.value = (await api.get(`/api/tournaments/${msg.description.slice(msg.description.indexOf('%') + 1)}`)).data.tournament;
+			if (!tourOpen.value) { tourOpen.value = null; }
+        }
+        catch(err) { tourOpen.value = null; }
+		tourOpen.value.msg = msg;
+	}
+
+	async function accpetInvite() {
+		// authStore.socket.emit("join_tournament", 
+		// 	{ tournament_pwd: tourOpen.value.msg.description.slice(tourOpen.value.msg.description.indexOf('|') + 1, tourOpen.value.msg.description.indexOf('%')) }, 
+		// 	(resp) => { 
+		// 		if (resp.log)
+		// 			closePopup();
+		// 			router.push(`/tournament/${tourOpen.value.id_tournament}`);
+		// 	});
+
+		closePopup();
+		router.push(`/tournament/${tourOpen.value.id_tournament}`);
+	}
+
+	const closePopup = () => { popUp.value = false; };
 
 	onMounted(async () => {
 		try {
@@ -66,9 +88,7 @@
 		document.addEventListener('click', handleClickOutside);
     });
 
-	onBeforeUnmount(() => {
-		document.removeEventListener('click', handleClickOutside);
-	});
+	onBeforeUnmount(() => { document.removeEventListener('click', handleClickOutside); });
 </script>
 
 <template>
@@ -137,9 +157,9 @@
 								</RouterLink>
 
 								<div v-if="m.description[0] === ' ' && m.description.includes('torneo')"
-									@click="readMsg(m); n_bool = false; popUp = true;" class="cursor-pointer">
+									@click="readMsg(m); fetchTour(m); n_bool = false; popUp = true;" class="cursor-pointer">
 									<div v-if="m.description[0] === ' '" class="flex gap-1 text-zinc-300 text-sm pt-2.5 pb-1">
-										<p class="hover:underline">{{ m.sender.username }} {{ m.description }}</p>
+										<p class="hover:underline">{{ m.sender.username }} {{ m.description.slice(0, m.description.indexOf('|')) }}</p>
 									</div>
 								</div>
 
@@ -215,10 +235,51 @@
 		</div>
 	</div>
 
-	<div v-if="popUp" class="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-xs px-4" @click.self="closePopup()">
-        <div class="w-full max-w-lg rounded-3xl border border-[#4e4e4e8c] bg-[#201e1c] p-6 text-white shadow-2xl">
-            <!-- qui devo fare un fetch sulla variabile nuova che mi dice se questo utente e' invitato o meno a questo torneo... -->
-		</div>
+	<div v-if="popUp && tourOpen" class="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-xs px-4" @click.self="closePopup()">
+        <div class="w-full max-w-md rounded-3xl border border-[#4e4e4e8c] bg-[#201e1c] p-6 text-white shadow-2xl">
+            <div class="flex items-start justify-between gap-4">
+                <div>
+                    <p class="text-sm uppercase tracking-widest text-blue-200">Torneo</p>
+                    <div class="flex items-center justify-start gap-2 mt-1">
+                        <RouterLink to="/tournaments" class="hover:underline">
+                            <h3 class="text-2xl">{{ tourOpen.name }}</h3>
+                        </RouterLink>
+                        <p class="text-[#4e4e4e8c]">|</p>
+                        <h4 :class="{	'text-green-600' : tourOpen.status === 'open',
+										'text-gray-300' : tourOpen.status === 'ongoing',
+										'text-red-500' : tourOpen.status === 'closed' }">
+							{{ tourOpen.status }}
+						</h4>
+                    </div>
+                    <hr class="w-[192%] justify-self-start text-[#4e4e4e8c] my-1">
+                    <p class="text-sm text-zinc-300 ml-1">Creato il {{ rework_date(tourOpen.created_at) }} da 
+                        <RouterLink :to="{ name: 'user_page', params: { username: tourOpen.created_by.username } }" class="hover:underline">
+                            {{ tourOpen.created_by.username }}
+                        </RouterLink>
+                    </p>
+                </div>
+                <button type="button" class="text-2xl leading-none text-zinc-500 hover:text-white" @click="closePopup()">&times;</button>
+            </div>
+            <div class="mt-6 mb-3 flex flex-col gap-2 justify-self-center items-center text-center">
+                <p>Sei stato invitato al torneo <b>{{ tourOpen.name }}</b> creato da {{ tourOpen.created_by.username }}.<br>Vuoi partecipare?</p>
+				<div v-if="tourOpen.status == 'open'" class="flex gap-10 w-max justify-self-end-safe pt-5">
+					<button class="cursor-pointer rounded-md inset-ring text-lg px-3 p-2.5
+								bg-green-400/10 text-green-500 inset-ring-green-500/20"
+						@click="accpetInvite()">
+						<p>Accetta</p>
+					</button>
+					<button class="cursor-pointer rounded-md inset-ring text-lg px-3 p-2.5
+									bg-red-400/10 text-red-500 inset-ring-red-500/20"
+							@click="closePopup()">
+						<p>Rifiuta</p>
+					</button>
+				</div>
+				<div v-if="tourOpen.status != 'open'" class="rounded-xl border p-5 mt-4 w-full justify-center
+						animate-card inset-ring bg-red-500/10 text-red-100 border-red-800/10 inset-ring-red-500/20">
+					<h2>Invito scaduto</h2>
+				</div>
+            </div>
+        </div>
     </div>
 </template>
 

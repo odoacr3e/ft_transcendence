@@ -29,10 +29,7 @@ onMounted(async () => {
                 <img class="size-27 rounded-full object-cover" :src="top3[0].image ? `${top3[0].image}` : defaultAvatar" @error="handleAvatarError"/>
                 <TagTitle :title="top3[0].title" class="absolute translate-x-102 -translate-y-3"/>
                 <RouterLink :to="{ name: 'user_page', params: { username: top3[0].username } }" class="flex justify-items-center">
-                    <p class="hover:underline mt-3" v-if="top3[0].username.length <= 15">
-                        {{ top3[0].username }}</p>
-                    <p class= "hover:underline mt-3" v-if="top3[0].username.length > 15">
-                        {{ top3[0].username.slice(0, 14) + "..." }}</p>
+                    <p class="hover:underline mt-3">{{ top3[0].username }}</p>
                 </RouterLink>
                 <h3 class="text-xl"><b>1°</b></h3>
             </div>
@@ -42,10 +39,7 @@ onMounted(async () => {
                     <img class="size-22 rounded-full object-cover" :src="top3[1].image ? `${top3[1].image}` : defaultAvatar" @error="handleAvatarError"/>
                     <TagTitle :title="top3[1].title" class="absolute translate-x-52 -translate-y-3"/>
                     <RouterLink :to="{ name: 'user_page', params: { username: top3[1].username } }" class="flex justify-items-center">
-                        <p class="text-white hover:underline mt-3" v-if="top3[1].username.length <= 15">
-                            {{ top3[1].username }}</p>
-                        <p class="text-white hover:underline mt-3" v-if="top3[1].username.length > 15">
-                            {{ top3[1].username.slice(0, 14) + "..." }}</p>
+                        <p class="text-white hover:underline mt-3">{{ top3[1].username }}</p>
                     </RouterLink>
                     <h3 class="text-lg"><b>2°</b></h3>
                 </div>
@@ -54,10 +48,7 @@ onMounted(async () => {
                     <img class="size-22 rounded-full object-cover" :src="top3[2].image ? `${top3[2].image}` : defaultAvatar" @error="handleAvatarError"/>
                     <TagTitle :title="top3[2].title" class="absolute translate-x-52 -translate-y-3"/>
                     <RouterLink :to="{ name: 'user_page', params: { username: top3[2].username } }" class="flex justify-items-center">
-                        <p class="text-white hover:underline mt-3" v-if="top3[2].username.length <= 15">
-                            {{ top3[2].username }}</p>
-                        <p class="text-white hover:underline mt-3" v-if="top3[2].username.length > 15">
-                            {{ top3[2].username.slice(0, 14) + "..." }}</p>
+                        <p class="text-white hover:underline mt-3">{{ top3[2].username }}</p>
                     </RouterLink>
                     <h3 class="text-lg"><b>3°</b></h3>
                 </div>
@@ -70,10 +61,7 @@ onMounted(async () => {
                     <div class="flex m-2 gap-2 items-center">
                         <img class="size-10 rounded-full object-cover" :src="p.image ? `${p.image}` : defaultAvatar" @error="handleAvatarError"/>
                         <RouterLink :to="{ name: 'user_page', params: { username: p.username } }">
-                            <p class="text-white hover:underline" v-if="p.username.length <= 15">
-                                {{ p.username }}</p>
-                            <p class="text-white hover:underline" v-if="p.username.length > 15">
-                                {{ p.username.slice(0, 14) + "..." }}</p>
+                            <p class="text-white hover:underline">{{ p.username }}</p>
                         </RouterLink>
                         <div class="flex items-center gap-1">
                             <TagTitle :title="p.title" class="mt-1"/>

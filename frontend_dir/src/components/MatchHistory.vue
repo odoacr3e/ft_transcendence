@@ -65,7 +65,11 @@
                             <h3 class="text-2xl">{{ selectedT.tournament.name }}</h3>
                         </RouterLink>
                         <p class="text-[#4e4e4e8c]">|</p>
-                        <h4 :class="{ 'text-green-600' : selectedT.tournament.status === 'open' }">{{ selectedT.tournament.status }}</h4>
+                        <h4 :class="{	'text-green-600' : tourOpen.status === 'open',
+										'text-gray-300' : tourOpen.status === 'ongoing',
+										'text-red-500' : tourOpen.status === 'closed' }">
+                            {{ selectedT.tournament.status }}
+                        </h4>
                     </div>
                     <hr class="w-[138%] justify-self-start text-[#4e4e4e8c] my-1">
                     <p class="text-sm text-zinc-300 ml-1">Creato il {{ rework_date(selectedT.tournament.created_at) }} da 

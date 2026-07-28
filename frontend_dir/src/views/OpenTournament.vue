@@ -58,7 +58,7 @@
             {
                 await api.post("/api/notifications", 
                     {	title: "Invito ad un torneo",
-                        description: ` ti ha invitato a partecipare al torneo ${tournament.value?.name}`,
+                        description: ` ti ha invitato a partecipare al torneo ${tournament.value?.name}|${authStore.tourInfo.pwd}%${tournament.value.id_tournament}`,
                         id_receiver: u.id_user });
             }
         }

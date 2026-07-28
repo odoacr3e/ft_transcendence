@@ -76,7 +76,7 @@
                     </div>
                     <p class="text-[#4e4e4e8c]">|</p>
                     <div class="flex gap-2">
-                        <p>N. partite:</p>
+                        <p>Partite:</p>
                         <p>{{ matches.stats.total }}</p>
                     </div>
                 </div>

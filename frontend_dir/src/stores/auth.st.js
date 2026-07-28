@@ -12,7 +12,12 @@ export const useAuthStore = defineStore('auth', {
 		usersOnline: new Set(),
 		msgRecevied: new Set(),
 		preference: null,
-		socket: null
+		socket: null,
+		tourInfo: {
+			pwd: null,
+			status: null,
+			error: null
+		}
 	}),
 
 	getters: 
@@ -126,6 +131,20 @@ export const useAuthStore = defineStore('auth', {
 			catch (err) { this.error = err.message; }
 		},
 
+		createTour(tourName)
+		{
+			this.socket.emit("create_tournament", {name: tourName}, (resp) => {
+				if (resp.log.status == "OK")
+				{
+					this.tourInfo.pwd = resp.tournament_pwd;
+					// this.socket.on('ban_tournament', (resp) => { if (!resp.log) { this.tourInfo.error = resp.log.error; } });
+					// this.socket.on('start_round', (resp) => { if (!resp.log) { this.tourInfo.error = resp.log.error; } });
+					this.socket.on('update_tournament', (resp) => { if (!resp.log) { this.error = resp.log.error; } this.tourInfo.status = resp.round });
+					return (true);
+				}
+			});
+		},
+
 		connectSocket()
 		{
 			if (this.socket) { return; }
@@ -135,7 +154,7 @@ export const useAuthStore = defineStore('auth', {
 
 			this.socket.on('friend:online',		({ userId }) =>	{ this.usersOnline.add(userId); });
 			this.socket.on('friend:offline',	({ userId }) =>	{ this.usersOnline.delete(userId); });
-			this.socket.on(`notification`,		({ msg }) =>	{
+			this.socket.on('notification',		({ msg }) =>	{
 				msg.status = "not read";
 				if (this.msgRecevied.size === 10)
 				{
@@ -160,4 +179,3 @@ export const useAuthStore = defineStore('auth', {
 // NOTE 
 //In Pinia, dentro le actions, 'this' si riferisce sempre allo store.
 // this.token = token sta scrivendo direttamente nello state.
-
