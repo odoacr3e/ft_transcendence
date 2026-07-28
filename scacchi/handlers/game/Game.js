@@ -25,6 +25,7 @@ import { updateTournament } from "../../websocket/handlers/tournament.js";
 import { roomMessage } from "../../websocket/utils.js";
 import { enumSocketState } from "../../Macro/enums.js";
 import { saveMatch } from "../../utils/saveMatch.js";
+import { checkKingDanger } from "../../utils/checkDanger.js";
 
 const DEBUG_MATCH = globals.getDebugMatch();
 
@@ -155,6 +156,8 @@ async function gameHandler(match, body)
 		match.endTurn();
 		if (match.playerNum <= 1)
 			match.CheckMate(result);
+		else if (checkKingDanger(match))
+			result.specialMoves.SetKingDanger();
 	}
 	else
 	{
@@ -198,6 +201,8 @@ async function gameInfoHandler(match, body)
 	}
 	else
 		throw ("gameInfoHandler: invalid type " + body.type);
+	if (checkKingDanger(match))
+		result.specialMoves.SetKingDanger();
 	result = responseFormatter(match, result, null, null);
 	return (result);
 }

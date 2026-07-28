@@ -56,7 +56,8 @@ function transfiguration(match, result, coord, newType)
 	DangerUpdate(match, coord);
 	match.history.UpdateTransform(match, square, coord, newType);
 	checkMateCheckAll(match, result, match.currentPlayer.team);
-	endTurn(match, false);
+	if (endTurn(match, false).specialMoves.CheckKingDanger())
+		result.specialMoves.SetKingDanger();
 	result.status = 200;
 	result.msg = "OK";
 	//@ts-ignore

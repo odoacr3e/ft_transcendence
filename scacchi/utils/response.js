@@ -11,7 +11,7 @@
 import { Match } from "../Classes/Chess/match.js";
 import { Player } from "../Classes/Chess/player.js";
 import { Result } from "../Classes/endPoint/result.js";
-import { eTeam } from "../Macro/enums.js";
+import { enumSpecialMoves, eTeam } from "../Macro/enums.js";
 import { DEBUG_CURL } from "../Macro/macro.js";
 
 /**
@@ -93,7 +93,11 @@ function responseFormatter(match, result, msg, status)
 	result.match = null;
 	delete result.match;
 	if (result.specialMoves)
+	{
 		result.mask = result.specialMoves._mask;
+		if (result.specialMoves.CheckKingDanger() || result.specialMoves.CheckKingCheck())
+			result.giorgi0 = match?.currentPlayer.King;
+	}
 	return (result);
 }
 
