@@ -42,7 +42,7 @@
                                 {{ currentRequest.friend.username.slice(0, 11) + "..." }}</p>
                             <p class="text-white" v-if="currentRequest.friend.username.length <= 12">
                                 {{ currentRequest.friend.username }}</p>
-                            <p class="text-zinc-300 text-sm">Punti: {{ currentRequest.friend.points }}</p>
+                            <p class="text-zinc-300 text-sm">ELO: {{ currentRequest.friend.points }}</p>
                         </div>
                     </RouterLink>
                     <div class="ml-7 self-center">

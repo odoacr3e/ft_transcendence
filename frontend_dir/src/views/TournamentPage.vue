@@ -49,7 +49,7 @@
 
 <template>
     <div class="flex-row z-2 bg-[#181715] text-white rounded-3xl w-[160vh] h-[85vh]">
-        <h2 class=" text-4xl m-5 mb-2">Tornei
+        <h2 class="text-4xl m-5 mb-2">Tornei
             <hr class="w-full text-[#4e4e4e8c] my-2">
         </h2>
         <div class="flex m-3">

@@ -37,7 +37,7 @@
                     <h4 class="text-zinc-500 text-sm self-center">{{ user.email }}</h4>
                 </div>
                 <TagTitle :title="user?.title" class="mt-1"/>
-                <h4 class="text-zinc-300 text-2xl mt-5">Punti: {{ user.points }}</h4>
+                <h4 class="text-zinc-300 text-2xl mt-5">ELO: {{ user.points }}</h4>
             </div>
         </div>
         <div class="flex m-4">

@@ -27,7 +27,7 @@
                         <div class="flex items-center gap-1">
                             <TagTitle :title="besties.friend.title" class="mt-1"/>
                             <p class="text-[#4e4e4e8c]">|</p>
-                            <p class="text-zinc-300 text-sm">Punti: {{ besties.friend.points }}</p>
+                            <p class="text-zinc-300 text-sm">ELO: {{ besties.friend.points }}</p>
                         </div>
                     </div>
                     <button @click.stop.prevent="rejectRequest(besties.friend.id_user)" v-if="removeF"

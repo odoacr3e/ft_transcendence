@@ -252,7 +252,7 @@
                     </div>
                     <div class="flex flex-col p-2.5 justify-self-center w-fit">
                         <div class="flex gap-10 my-3">
-                            <div class="flex gap-2">
+                            <div class="flex gap-2 w-[18vh]">
                                 <input size="35" class="pl-2 text-base hidden" type="radio" id="1" value="1" v-model="formData.preferences">
                                 <label for="1" class="flex gap-2 items-center">
                                     <div class="grid grid-cols-2 grid-rows-2 w-12 h-12 rounded-2xl border-2 border-[#181715e8]">
@@ -261,10 +261,10 @@
                                         <div class="rounded-bl-2xl bg-[#2f1818]"></div>
                                         <div class="rounded-br-2xl bg-[#882a2a]"></div>
                                     </div>
-                                    Default
+                                    Dark-Red
                                 </label>
                             </div>
-                            <div class="flex gap-2">
+                            <div class="flex gap-2 w-[18vh]">
                                 <input size="35" class="pl-2 text-base hidden" type="radio" id="2" value="2" v-model="formData.preferences">
                                 <label for="2" class="flex gap-2 items-center">
                                     <div class="grid grid-cols-2 grid-rows-2 w-12 h-12 rounded-2xl border-2 border-[#181715e8]">
@@ -273,10 +273,10 @@
                                         <div class="rounded-bl-2xl bg-[#17252e]"></div>
                                         <div class="rounded-br-2xl bg-[#2a6287]"></div>
                                     </div>
-                                    Default
+                                    Dark-Blue
                                 </label>
                             </div>
-                            <div class="flex gap-2">
+                            <div class="flex gap-2 w-[18vh]">
                                 <input size="35" class="pl-2 text-base hidden" type="radio" id="3" value="3" v-model="formData.preferences">
                                 <label for="3" class="flex gap-2 items-center">
                                     <div class="grid grid-cols-2 grid-rows-2 w-12 h-12 rounded-2xl border-2 border-[#181715e8]">
@@ -285,10 +285,10 @@
                                         <div class="rounded-bl-2xl bg-[#182e17]"></div>
                                         <div class="rounded-br-2xl bg-[#2d872a]"></div>
                                     </div>
-                                    Default
+                                    Dark-Green
                                 </label>
                             </div>
-                            <div class="flex gap-2">
+                            <div class="flex gap-2 w-[18vh]">
                                 <input size="35" class="pl-2 text-base hidden" type="radio" id="4" value="4" v-model="formData.preferences">
                                 <label for="4" class="flex gap-2 items-center">
                                     <div class="grid grid-cols-2 grid-rows-2 w-12 h-12 rounded-2xl border-2 border-[#181715e8]">
@@ -297,13 +297,13 @@
                                         <div class="rounded-bl-2xl bg-[#2e2917]"></div>
                                         <div class="rounded-br-2xl bg-[#87712a]"></div>
                                     </div>
-                                    Default
+                                    Dark-Yellow
                                 </label>
                             </div>
                         </div>
 
                         <div class="flex gap-10 my-3">
-                            <div class="flex gap-2">
+                            <div class="flex gap-2 w-[18vh]">
                                 <input size="35" class="pl-2 text-base hidden" type="radio" id="5" value="5" v-model="formData.preferences">
                                 <label for="5" class="flex gap-2 items-center">
                                     <div class="grid grid-cols-2 grid-rows-2 w-12 h-12 rounded-2xl border-2 border-[#181715e8]">
@@ -312,10 +312,10 @@
                                         <div class="rounded-bl-xl bg-[#beb9b5]"></div>
                                         <div class="rounded-br-xl bg-[#d9d6d3]"></div>
                                     </div>
-                                    Default
+                                    Light-Red
                                 </label>
                             </div>
-                            <div class="flex gap-2">
+                            <div class="flex gap-2 w-[18vh]">
                                 <input size="35" class="pl-2 text-base hidden" type="radio" id="6" value="6" v-model="formData.preferences">
                                 <label for="6" class="flex gap-2 items-center">
                                     <div class="grid grid-cols-2 grid-rows-2 w-12 h-12 rounded-2xl border-2 border-[#181715e8]">
@@ -324,10 +324,10 @@
                                         <div class="rounded-bl-2xl bg-[#bebec5]"></div>
                                         <div class="rounded-br-2xl bg-[#d3d5d9]"></div>
                                     </div>
-                                    Default
+                                    Light-Blue
                                 </label>
                             </div>
-                            <div class="flex gap-2">
+                            <div class="flex gap-2 w-[18vh]">
                                 <input size="35" class="pl-2 text-base hidden" type="radio" id="7" value="7" v-model="formData.preferences">
                                 <label for="7" class="flex gap-2 items-center">
                                     <div class="grid grid-cols-2 grid-rows-2 w-12 h-12 rounded-2xl border-2 border-[#181715e8]">
@@ -336,10 +336,10 @@
                                         <div class="rounded-bl-2xl bg-[#bfc6c2]"></div>
                                         <div class="rounded-br-2xl bg-[#d4d9d7]"></div>
                                     </div>
-                                    Default
+                                    Light-Green
                                 </label>
                             </div>
-                            <div class="flex gap-2">
+                            <div class="flex gap-2 w-[18vh]">
                                 <input size="35" class="pl-2 text-base hidden" type="radio" id="8" value="8" v-model="formData.preferences">
                                 <label for="8" class="flex gap-2 items-center">
                                     <div class="grid grid-cols-2 grid-rows-2 w-12 h-12 rounded-2xl border-2 border-[#181715e8]">
@@ -348,7 +348,7 @@
                                         <div class="rounded-bl-2xl bg-[#bec0b8]"></div>
                                         <div class="rounded-br-2xl bg-[#d8d9d3]"></div>
                                     </div>
-                                    Default
+                                    Light-Yellow
                                 </label>
                             </div>
                         </div>

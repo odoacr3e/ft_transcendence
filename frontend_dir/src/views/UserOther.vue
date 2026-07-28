@@ -54,7 +54,7 @@
                 </div>
                 <h3 class="text-zinc-300 my-1 text-md self-center">{{ otherUser.name }} {{ otherUser.surname }}</h3>
                 <TagTitle :title="otherUser?.title" class="mt-1"/>
-                <h4 class="mt-5 text-zinc-300 text-2xl justify-self-start">Punti: {{ otherUser.points }}</h4>
+                <h4 class="mt-5 text-zinc-300 text-2xl justify-self-start">ELO: {{ otherUser.points }}</h4>
             </div>
         </div>
         <div class="flex m-4">

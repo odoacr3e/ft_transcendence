@@ -4,6 +4,7 @@ import TournamentPage from '../views/TournamentPage.vue'
 import OpenTournament from '../views/OpenTournament.vue'
 import RegisterPage from '../views/RegisterPage.vue'
 import ClassicGame from '../views/ClassicGame.vue'
+import LeaderBoard from '../views/LeaderBoard.vue'
 import UserOther from '../views/UserOther.vue'
 import UsersList from '../views/UsersList.vue'
 import LoginPage from '../views/LoginPage.vue'
@@ -43,6 +44,12 @@ const routes = [
 		name: 'Tournaments',
 		meta: { requiresAuth: true },
 		component: TournamentPage
+	},
+	{
+		path: '/leaderboard',
+		name: 'Leaderboard',
+		meta: { requiresAuth: true },
+		component: LeaderBoard
 	},
 	{
 		path: '/log',

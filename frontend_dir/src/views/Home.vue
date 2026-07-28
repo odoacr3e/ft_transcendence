@@ -1,9 +1,9 @@
 <script setup>
-	import MenuAppHeader from '../components/MenuHeader.vue'
+	import MenuHeader from '../components/MenuHeader.vue'
 </script>
 
 <template>
-	<MenuAppHeader class="mt-14"/>
+	<MenuHeader/>
 </template>
 
 <style scoped>
