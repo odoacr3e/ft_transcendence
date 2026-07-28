@@ -8,9 +8,11 @@ const DEBUG = true;
 /** @type {boolean} */const DEBUG_WEBSOCKETS = process.env.DEBUG_WEBSOCKETS == "true" ? true : false;
 //@ts-ignore
 /** @type {boolean} */const DEBUG_CURL = process.env.DEBUG_CURL == "true" ? true : false;
+//@ts-ignore
+/** @type {string} */const DEBUG_HISTORY_PATH = process.env.DEBUG_HISTORY_PATH ? process.env.DEBUG_HISTORY_PATH : "./";
 
 //SECTION - history
-const HISTORY_PATH = "../history/";
+const HISTORY_PATH = `${DEBUG_HISTORY_PATH}/`;
 const HISTORY_FILE = "HISTORY.json";
 const HISTORY_DEFAULT = `${HISTORY_PATH}${HISTORY_FILE}`;
 

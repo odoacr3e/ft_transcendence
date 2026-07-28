@@ -88,7 +88,7 @@ function tryBoost(match, result, from)
 	}
 	match.board.updates.add(from);
 	match.boostPriority.add(match.currentPlayer.team);
-	match.currentPlayer.boostedPiece = square.piece.pos;
+	match.currentPlayer.boostedPiece = from;
 	match.history.UpdateBoost(match, square, from);
 	DangerUpdate(match, from, false);
 	checkInluenceOfBoost(match, square);

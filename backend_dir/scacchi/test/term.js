@@ -24,6 +24,7 @@ import { cancelEvent } from "../GameLogic/cancelEvent.js";
 import { fakeBoost } from "../handlers/game/boost.js";
 import { initFromStr } from "../handlers/game/init.js";
 import { MatchSettings } from "../Classes/Chess/match.js";
+import { getLegalMoves } from "../GameLogic/checkLegalMoves.js";
 
 /** @typedef {import("../Classes/Chess/match.js").Match} Match*/
 
@@ -189,6 +190,16 @@ process.stdin.on('keypress', (str, key) =>
 		{
 			result = fakeBoost(match, match.cursor.square);
 			console.log(result);
+			break ;
+		}
+		case (cmd.SHOW_POSSIBILITIES):
+		{
+			let	moves;
+
+			moves = getLegalMoves(match);
+			lib.include.fs.writeFileSync("MOVES", JSON.stringify(moves, null, 2), "utf-8");
+			console.log(`Mosse su file "MOVES". conteggio: ${moves.length}`);
+			break ;
 		}
 	}
 	if (includesOneOf(key.name, cmd.MOVEMENTS) && !movePiece(match, dx, dy))
@@ -228,6 +239,7 @@ function print(key)
 		console.log(`gotoKing "${cmd.GOTO_KING}"`);
 		console.log(`cancelEvent "${cmd.CANCEL_EVENT}"`);
 		console.log(`show Boost: "${cmd.FAKE_BOOST}"`);
+		console.log(`show possibilities: "${cmd.SHOW_POSSIBILITIES}"`);
 	}
 }
 

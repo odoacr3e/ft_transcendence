@@ -22,6 +22,7 @@ const cmd =
 	GOTO_KING: "k",
 	CANCEL_EVENT: "o",
 	FAKE_BOOST: "f",
+	SHOW_POSSIBILITIES: "u",
 	HELP: "h"
 };
 

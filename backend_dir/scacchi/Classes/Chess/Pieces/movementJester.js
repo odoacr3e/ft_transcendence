@@ -51,7 +51,8 @@ let movementJester = function (match)
 			dy -= dy > 0 ? 1: -1;
 		}
 		match.cursor.setCursor(row, col);
-		match.board.get(startPos)?.boostedTargetZones.get(startPos)?.add(match.cursor.square);
+		if (!match.board.get(startPos).targetZones.has(match.cursor.square))
+			match.board.get(startPos)?.boostedTargetZones.get(startPos)?.add(match.cursor.square);
 		match.board.AddInfluence(startPos, match.cursor.square);
 		match.board.get(match.cursor.square)?.dangerZones.add(startPos);
 		match.cursor.square = startPos;
