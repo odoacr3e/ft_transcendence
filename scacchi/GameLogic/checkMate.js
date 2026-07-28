@@ -102,6 +102,7 @@ function isStoppable(match, kingSquare, enemySquareString)
 	let	kingPiece;
 	let	normalSaveBool = false;
 	let	allyGuardianCoord = "";
+	let	influenceCoords;
 
 	match.currentPlayer.guardianPieces.clear();
 	enemySquare = match.board.get(enemySquareString);
@@ -123,16 +124,21 @@ function isStoppable(match, kingSquare, enemySquareString)
 		square = match.board.get(match.cursor.square);
 		if (!square || !square.dangerZones)
 			continue ;
-		for (let x of square.dangerZones)
+		influenceCoords = match.board.influenceMap.get(match.cursor.square);
+		if (!influenceCoords)
+			continue ;
+		for (let x of influenceCoords)
 		{
 			guardianSquare = match.board.get(x);
 			guardianPiece = guardianSquare.piece;
 			if (!guardianPiece)
 				throw (`isStoppable: guardian of ${match.cursor.square} in ${x} missing`);
+			if (guardianPiece.type == enumNames.BASTARDS && !guardianSquare.targetZones.has(match.cursor.square))
+				continue ;
 			if (x == kingSquare)
 				continue ;
-			if (guardianPiece.type == enumNames.BASTARDS && match.cursor.IsOblique(x) == false)
-				continue ;
+			//if (guardianPiece.type == enumNames.BASTARDS && match.cursor.IsOblique(x) == false)
+			//	continue ;
 			if (guardianPiece.team != kingPiece.team)
 			{
 				if  (!match.settings.players.allies || guardianPiece.team != match.currentPlayer.ally || match.currentPlayer.next != enemySquare.piece?.team)
@@ -144,7 +150,7 @@ function isStoppable(match, kingSquare, enemySquareString)
 			let	guardianBoostedSave = false;
 			let	guardianRegularSave = false;
 
-			if (guardianSquare.targetZones.has(match.cursor.square) && square.piece == null)
+			if (guardianSquare.targetZones.has(match.cursor.square) && square.piece == null && !checkDir(match, kingSquare, x, enemySquareString))
 			{
 				guardianRegularSave = true;
 			}
@@ -171,6 +177,51 @@ function isStoppable(match, kingSquare, enemySquareString)
 		return true;
 	}
 	return false;
+}
+
+/**
+ * 
+ * @param {Match} match 
+ * @param {string} king 
+ * @param {string} guard 
+ * @param {string} enemy 
+ */
+function checkDir(match, king, guard, enemy)
+{
+	let rowK, rowE, rowG;
+	let colK, colE, colG;
+	let tmp;
+
+	tmp = match.cursor.square;
+	match.cursor.square = king;
+	rowK = match.cursor.getRow();
+	colK = match.cursor.getCol();
+	match.cursor.square = enemy;
+	rowE = match.cursor.getRow();
+	colE = match.cursor.getCol();
+	match.cursor.square = guard;
+	rowG = match.cursor.getRow();
+	colG = match.cursor.getCol();
+	match.cursor.square = tmp;
+
+	const dKr = rowK - rowE, dKc = colK - colE;
+	const dGr = rowG - rowE, dGc = colG - colE;
+
+	// collinearità (prodotto vettoriale nullo)
+	const cross = dKr * dGc - dKc * dGr;
+	if (cross !== 0) return false;
+
+	// stessa direzione (prodotto scalare positivo)
+	const dot = dKr * dGr + dKc * dGc;
+	if (dot <= 0) return false;
+
+	// guard deve essere strettamente tra enemy e king,
+	// non oltre il re sulla stessa retta
+	const distK2 = dKr * dKr + dKc * dKc;
+	const distG2 = dGr * dGr + dGc * dGc;
+	if (distG2 >= distK2) return false;
+
+	return true;
 }
 
 /**
