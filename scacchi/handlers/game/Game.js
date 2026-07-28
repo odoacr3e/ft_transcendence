@@ -27,8 +27,6 @@ import { enumSocketState } from "../../Macro/enums.js";
 import { saveMatch } from "../../utils/saveMatch.js";
 import { checkKingDanger } from "../../utils/checkDanger.js";
 
-const DEBUG_MATCH = globals.getDebugMatch();
-
 /** @typedef {import("express").Request} Request*/
 /** @typedef {import("express").Response} Response*/
 
@@ -227,7 +225,7 @@ function error(res=null, result=null, status=0, msg=null, renderBool=true)
 	console.log("\x1b[31mGame error\x1b[0m");
 	console.log(`status: ${result.log.status}\nmsg: ${result.log.msg}`);
 	if (renderBool == true)
-		render(DEBUG_MATCH);
+		render(globals.getDebugMatch());
 	if (!res)
 		return (result);
 	if (result.log.status != 0)
@@ -255,7 +253,7 @@ function socketError(socket=null, result=null, status=0, msg=null, match=null, r
 		console.log("\x1b[31mGame error\x1b[0m");
 		console.log(`status: ${result.log.status}\nmsg: ${result.log.msg}`);
 		if (renderBool == true)
-			render(DEBUG_MATCH);
+			render(match);
 	}
 	if (socket)
 		socket.emit("game", jsonParser(result));

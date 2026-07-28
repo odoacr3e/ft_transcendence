@@ -8,6 +8,7 @@ import {HISTORY_PATH} from "../Macro/macro.js";
 import { colors as color } from "./colorsOld.js";
 import { testerEnum as MSG } from "./enumsTest.js";
 import {boardStringify} from "./render.js";
+import { Match } from "../Classes/Chess/match.js";
 
 //@ts-ignore
 /** @typedef {import ("../../history/HISTORY.json")} historyData */
@@ -22,6 +23,7 @@ function testerMain()
 
 	console.debug = console.log;
 	console.log = () => {};
+	globals.matches.set("0", new Match());
 	matchName = process.argv.at(2);
 	if (!matchName)
 		return (execAllTests());

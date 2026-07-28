@@ -58,9 +58,8 @@ function CheckMateCheck(match, kingCoord=match.currentPlayer.King)
  * checks if every active player is in check/staleMate
  * @param {Match} match 
  * @param {Result | null} result
- * @param {string} team
  */
-function checkMateCheckAll(match, result, team)
+function checkMateCheckAll(match, result)
 {
 	let currTeam;
 

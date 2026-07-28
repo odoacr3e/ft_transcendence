@@ -211,8 +211,3 @@ function pushAllLegalTransform(match, player, legalMovesArray, currTurn, destCoo
 // 	yellow: "e1" | null,
 // 	green: "e1" | null,
 // }
-
-// function minMax(match, ai, legalMovesArray, depth, team)
-// {
-
-// }

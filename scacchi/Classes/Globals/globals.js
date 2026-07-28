@@ -127,13 +127,6 @@ class Globals
 		if (!DEBUG)
 			return (null);
 		debugMatch = this.matches.get(TEST_MATCH);
-		if (!debugMatch)
-		{
-			this.matches.set(TEST_MATCH, new Match());
-			debugMatch = this.matches.get(TEST_MATCH);
-		}
-		if (!debugMatch)
-			throw ("No debug match in Globals!");
 		return (debugMatch);
 	}
 	/**

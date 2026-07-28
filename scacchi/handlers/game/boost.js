@@ -39,7 +39,7 @@ function boost(match, from, realBoost=true)
 	result.status = 200;
 	if (match.boost == BOOSTED_MAX)
 	{
-		checkMateCheckAll(match, result, match.currentPlayer.team);
+		checkMateCheckAll(match, result);
 		if (endTurn(match, false).specialMoves.CheckKingDanger())
 			result.specialMoves.SetKingDanger();
 	}

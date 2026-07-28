@@ -153,8 +153,6 @@ function recreateMatch(match, history, cacheMatchBool=false)
 		{
 			//@ts-ignore
 			DEBUGEvent = event;
-			if (event.counter == 34)
-				console.log();
 			playerNum = match.playerNum;
 			console.log(`History: move number ${event.counter}`);
 			if (event.error != true && includesOneOf(event.type, eEvents.Move, eEvents.MoveBoost))
