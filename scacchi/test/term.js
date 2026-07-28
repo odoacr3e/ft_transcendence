@@ -194,8 +194,11 @@ process.stdin.on('keypress', (str, key) =>
 		}
 		case (cmd.SHOW_POSSIBILITIES):
 		{
-			lib.include.fs.writeFileSync("MOVES", JSON.stringify(getLegalMoves(match), null, 2), "utf-8");
-			console.log("Mosse su file `MOVES`");
+			let	moves;
+
+			moves = getLegalMoves(match);
+			lib.include.fs.writeFileSync("MOVES", JSON.stringify(moves, null, 2), "utf-8");
+			console.log(`Mosse su file "MOVES". conteggio: ${moves.length}`);
 			break ;
 		}
 	}

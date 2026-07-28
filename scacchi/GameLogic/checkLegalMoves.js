@@ -8,12 +8,13 @@
 
 import { Square } from "../Classes/Chess/chessBoard.js";
 import { Player } from "../Classes/Chess/player.js";
-import { arrayNames, arrayNamesTransform, enumNames } from "../Macro/enums.js";
+import { arrayNamesTransform, enumNames } from "../Macro/enums.js";
 import { isDangerous } from "../utils/checkDanger.js";
+import { includesOneOf } from "../utils/string.js";
 
 /** @typedef {import("../Classes/Chess/match").Match} Match*/
 /** @typedef {{from: string, to: string}} Move */
-/** @typedef {{move: Move, moveBoost: Move | null, transform: string, boost: string}} Turn */
+/** @typedef {{move: Move | null, moveBoost: Move | null, transform: string, boost: string}} Turn */
 
 
 /**
@@ -29,7 +30,10 @@ export function getLegalMoves(match, team=match.currentPlayer.team)
 	let	legalMovesMap = new Map();
 	/** @type {Array<Turn>} */
 	let	legalMovesArray = new Array();
+	/** @type {Player} */
 	let	player;
+	let	boostedSquare;
+	let	boostedZones;
 
 	for (const [coord, square] of match.board)
 	{
@@ -56,6 +60,18 @@ export function getLegalMoves(match, team=match.currentPlayer.team)
 		for (const targetCoord of targetSet)
 			pushChildMoves(match, player, legalMovesArray, {from: coord, to: targetCoord});
 	}
+	if (!player.boostedPiece)
+		return (legalMovesArray);
+	boostedSquare = match.board.get(player.boostedPiece);
+	if (!boostedSquare.piece)
+		throw (`getLegalMoves: boosted piece in ${player.boostedPiece} undefined`);
+	if (includesOneOf(boostedSquare.piece.type, enumNames.MINOTAURUS, enumNames.CHAMPION))
+		return (legalMovesArray);
+	boostedZones = boostedSquare.boostedTargetZones.get(player.boostedPiece);
+	if (!boostedZones)
+		return (legalMovesArray);
+	for (const targetCoord of boostedZones)
+		pushChildMoves(match, player, legalMovesArray, {from: player.boostedPiece, to: targetCoord}, true);
 	return (legalMovesArray);
 }
 
@@ -68,15 +84,21 @@ export function getLegalMoves(match, team=match.currentPlayer.team)
  * @param {Player} player
  * @param {Array<Turn>} legalMovesArray
  * @param {Move} move
+ * @param {boolean} boostBool
  * */
-function pushChildMoves(match, player, legalMovesArray, move)
+function pushChildMoves(match, player, legalMovesArray, move, boostBool=false)
 {
 	let	currTurn;
 	let	boostedSquare;
 
-	currTurn = {move: move, moveBoost: null, boost: "", transform: ""};
+	if (boostBool == false)
+		currTurn = {move: move, moveBoost: null, boost: "", transform: ""};
+	else
+		currTurn = {move: null, moveBoost: move, boost: "", transform: ""};
 	legalMovesArray.push(currTurn);
 	pushAllLegalBoost(match, player, legalMovesArray, currTurn);
+	if (boostBool == true)
+		return ;
 	pushAllLegalTransform(match, player, legalMovesArray, currTurn, move.to, match.board.get(move.from));
 	// se puoi fare un boost a partire da li
 	boostedSquare = null;
@@ -92,6 +114,10 @@ function pushChildMoves(match, player, legalMovesArray, move)
 		{
 			for (let zone of value)
 			{
+				if (move.from == key || move.to == zone)
+					continue ;
+				if (includesOneOf(boostedSquare.piece.type, enumNames.CHAMPION, enumNames.MINOTAURUS) && move.to != key)
+					continue ;
 				currTurn = {move: move, moveBoost: {from: key, to: zone}, boost: "", transform: ""};
 				legalMovesArray.push(currTurn);
 				pushAllLegalBoost(match, player, legalMovesArray, currTurn);
@@ -105,6 +131,8 @@ function pushChildMoves(match, player, legalMovesArray, move)
 			return ;
 		for (const target of boostedSquare.targetZones)
 		{
+			if (move.from == player.boostedPiece || move.to == target)
+				continue ;
 			currTurn = {move: move, moveBoost: {from: player.boostedPiece, to: target}, boost: "", transform: ""};
 			legalMovesArray.push(currTurn);
 			pushAllLegalBoost(match, player, legalMovesArray, currTurn);
@@ -155,12 +183,14 @@ function pushAllLegalTransform(match, player, legalMovesArray, currTurn, destCoo
 {
 	let	bastardEdgeBool;
 	let	turnWithTransform;
+	let edgeBool;
 
 	match.cursor.Save();
 	match.cursor.set(destCoord);
 	if (!square.piece)
 		throw ("");
-	bastardEdgeBool = square.piece.type == enumNames.BASTARDS && match.cursor.EdgeCheck(player.team);
+	edgeBool = match.cursor.EdgeCheck(player.team);
+	bastardEdgeBool = square.piece.type == enumNames.BASTARDS && edgeBool;
 	match.cursor.Restore();
 	if (!bastardEdgeBool)
 		return ;
