@@ -6,13 +6,15 @@
 	-	getLegalMoves:	returns an array of valid moves for a player
 */
 
+import { Square } from "../Classes/Chess/chessBoard.js";
 import { Player } from "../Classes/Chess/player.js";
-import { enumNames } from "../Macro/enums.js";
+import { arrayNamesTransform, enumNames } from "../Macro/enums.js";
 import { isDangerous } from "../utils/checkDanger.js";
+import { includesOneOf } from "../utils/string.js";
 
 /** @typedef {import("../Classes/Chess/match").Match} Match*/
 /** @typedef {{from: string, to: string}} Move */
-/** @typedef {{move: Move, moveBoost: Move | null, transform: string, boost: string}} Turn */
+/** @typedef {{move: Move | null, moveBoost: Move | null, transform: string, boost: string}} Turn */
 
 
 /**
@@ -28,7 +30,10 @@ export function getLegalMoves(match, team=match.currentPlayer.team)
 	let	legalMovesMap = new Map();
 	/** @type {Array<Turn>} */
 	let	legalMovesArray = new Array();
+	/** @type {Player} */
 	let	player;
+	let	boostedSquare;
+	let	boostedZones;
 
 	for (const [coord, square] of match.board)
 	{
@@ -55,6 +60,18 @@ export function getLegalMoves(match, team=match.currentPlayer.team)
 		for (const targetCoord of targetSet)
 			pushChildMoves(match, player, legalMovesArray, {from: coord, to: targetCoord});
 	}
+	if (!player.boostedPiece)
+		return (legalMovesArray);
+	boostedSquare = match.board.get(player.boostedPiece);
+	if (!boostedSquare.piece)
+		throw (`getLegalMoves: boosted piece in ${player.boostedPiece} undefined`);
+	if (includesOneOf(boostedSquare.piece.type, enumNames.MINOTAURUS, enumNames.CHAMPION))
+		return (legalMovesArray);
+	boostedZones = boostedSquare.boostedTargetZones.get(player.boostedPiece);
+	if (!boostedZones)
+		return (legalMovesArray);
+	for (const targetCoord of boostedZones)
+		pushChildMoves(match, player, legalMovesArray, {from: player.boostedPiece, to: targetCoord}, true);
 	return (legalMovesArray);
 }
 
@@ -67,19 +84,60 @@ export function getLegalMoves(match, team=match.currentPlayer.team)
  * @param {Player} player
  * @param {Array<Turn>} legalMovesArray
  * @param {Move} move
+ * @param {boolean} boostBool
  * */
-function pushChildMoves(match, player, legalMovesArray, move)
+function pushChildMoves(match, player, legalMovesArray, move, boostBool=false)
 {
 	let	currTurn;
+	let	boostedSquare;
 
-	currTurn = {move: move, moveBoost: null, boost: "", transform: ""};
+	if (boostBool == false)
+		currTurn = {move: move, moveBoost: null, boost: "", transform: ""};
+	else
+		currTurn = {move: null, moveBoost: move, boost: "", transform: ""};
 	legalMovesArray.push(currTurn);
 	pushAllLegalBoost(match, player, legalMovesArray, currTurn);
-	pushAllLegalTransform(match, player, legalMovesArray, currTurn, move.to);
+	if (boostBool == true)
+		return ;
+	pushAllLegalTransform(match, player, legalMovesArray, currTurn, move.to, match.board.get(move.from));
 	// se puoi fare un boost a partire da li
-	if (true)
+	boostedSquare = null;
+	if (player.boostedPiece != '')
+		boostedSquare = match.board.get(player.boostedPiece);
+	else
+		return ;
+	if (!boostedSquare?.piece)
+		throw (`pushChildMoves: coord ${player.boostedPiece}, boostedSquare ${boostedSquare} has no piece`);
+	if (match.board.get(move.from).boostedTargetZones.size)
 	{
-		//scorri tutti i moveBoost possibili
+		for (let [key, value] of match.board.get(move.from).boostedTargetZones)
+		{
+			for (let zone of value)
+			{
+				if (move.from == key || move.to == zone)
+					continue ;
+				if (includesOneOf(boostedSquare.piece.type, enumNames.CHAMPION, enumNames.MINOTAURUS) && move.to != key)
+					continue ;
+				currTurn = {move: move, moveBoost: {from: key, to: zone}, boost: "", transform: ""};
+				legalMovesArray.push(currTurn);
+				pushAllLegalBoost(match, player, legalMovesArray, currTurn);
+				pushAllLegalTransform(match, player, legalMovesArray, currTurn, zone, boostedSquare);
+			}
+		}
+	}
+	else if (boostedSquare.piece.type == enumNames.BASTARDS)
+	{
+		if (boostedSquare.boostedTargetZones.get(player.boostedPiece)?.has(move.from) != true)
+			return ;
+		for (const target of boostedSquare.targetZones)
+		{
+			if (move.from == player.boostedPiece || move.to == target)
+				continue ;
+			currTurn = {move: move, moveBoost: {from: player.boostedPiece, to: target}, boost: "", transform: ""};
+			legalMovesArray.push(currTurn);
+			pushAllLegalBoost(match, player, legalMovesArray, currTurn);
+			pushAllLegalTransform(match, player, legalMovesArray, currTurn, target, boostedSquare);
+		}
 	}
 }
 
@@ -119,16 +177,29 @@ function pushAllLegalBoost(match, player, legalMovesArray, currTurn)
  * @param {Array<Turn>} legalMovesArray
  * @param {Turn} currTurn
  * @param {string} destCoord
+ * @param {Square} square
  * */
-function pushAllLegalTransform(match, player, legalMovesArray, currTurn, destCoord)
+function pushAllLegalTransform(match, player, legalMovesArray, currTurn, destCoord, square)
 {
-	// let	bastardEdgeBool;
+	let	bastardEdgeBool;
+	let	turnWithTransform;
+	let edgeBool;
 
-	// match.cursor.Save();
-	// match.cursor.square = destCoord;
-	// bastardEdgeBool = 
-	// 	return (match.cursor.Restore());
-	// match.cursor.Restore();
+	match.cursor.Save();
+	match.cursor.set(destCoord);
+	if (!square.piece)
+		throw ("");
+	edgeBool = match.cursor.EdgeCheck(player.team);
+	bastardEdgeBool = square.piece.type == enumNames.BASTARDS && edgeBool;
+	match.cursor.Restore();
+	if (!bastardEdgeBool)
+		return ;
+	for (const type of arrayNamesTransform)
+	{
+		turnWithTransform = structuredClone(currTurn);
+		turnWithTransform.transform = type;
+		legalMovesArray.push(turnWithTransform);
+	}
 }
 
 // giorgi0:

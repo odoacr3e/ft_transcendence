@@ -57,7 +57,18 @@ const enumNames = {
 	GHOUL: 'Ghoul'
 };
 
+/**
+ * @enum {string}
+ */
+const enumNamesTransform = {
+	CHAMPION: 'Champion',
+	MINOTAURUS: 'Minotaurus',
+	JESTER: 'Jester',
+	VALKIRYA: 'Valkirya'
+};
+
 const arrayNames = Object.values(enumNames);
+const arrayNamesTransform = Object.values(enumNamesTransform);
 
 const enumConnection = 
 {
@@ -174,4 +185,4 @@ const kingMovements =
 	{dx:1, dy:0}, {dx:-1, dy:0},//orizzontale
 ];
 
-export {eTeam, eEvents, eMatchPresets, enumNames, arrayNames, enumInitNames, getInitialOfTeam, enumInitTeam, enumValues, enumSpecialMoves, kingMovements, enumConnection, enumSocketState, getTeamByInitial};
+export {eTeam, eEvents, eMatchPresets, enumNames, arrayNames, arrayNamesTransform, enumInitNames, getInitialOfTeam, enumInitTeam, enumValues, enumSpecialMoves, kingMovements, enumConnection, enumSocketState, getTeamByInitial};
