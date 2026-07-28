@@ -248,7 +248,7 @@ export async function getLeaderboard() {
 				title: true
 			},
 		orderBy: [
-			{ points: 'asc' }, 
+			{ points: 'desc' }, 
 			{ name: 'asc' }
 		],
 		take: 10
