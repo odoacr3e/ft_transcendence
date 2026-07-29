@@ -69,6 +69,7 @@ export function initLocalMatchState(raw)
 	localInfo.matchId = raw.id;
 	localInfo.myTeam = raw.team;
 	localInfo.victory = raw.victory;
+	localInfo.matchStarted = false;	//il timer non parte finché il bianco non ha mosso
 
 	sessionStorage.setItem("match:myTeam", raw.team);
 	sessionStorage.setItem("match:id", raw.id);
@@ -148,7 +149,10 @@ export function updateLocalBoard(changes)
 		}
 	});
 	if (movedSquares.size > 0)
+	{
 		localInfo.lastMovesSquares = movedSquares;
+		localInfo.matchStarted = true;
+	}
 }
 
 export function updateLocalPlayers(changes) 
@@ -182,6 +186,7 @@ export function reloadMatchState(raw)
 	localInfo.myTeam = raw.team ?? sessionStorage.getItem("match:myTeam");
 	localInfo.matchId = sessionStorage.getItem("match:id");
 	localInfo.victory = raw.victory;
+	localInfo.matchStarted = true;	//si rientra a partita in corso: il timer riparte subito
 
 	if (raw.team)
 		sessionStorage.setItem("match:myTeam", raw.team);

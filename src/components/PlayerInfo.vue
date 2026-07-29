@@ -11,7 +11,7 @@
 	});
 	const	player	= computed(() => DOMPlayer(prop.p)),
 			playing	= computed(() => player.value.isPlaying),
-			running	= computed(() => playing.value && !localInfo.victory),
+			running	= computed(() => playing.value && localInfo.matchStarted && !localInfo.victory),
 			up		= prop.pos === 'top',
 			down	= prop.pos === 'bottom',
 			endT	= computed(() => localInfo.secondTurn);
