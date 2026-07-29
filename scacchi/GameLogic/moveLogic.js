@@ -4,6 +4,7 @@
 /*
 	list of exports:
 	-	updateChessBoard:	given a valid move, it updates the chessBoard.
+	-	makeMove:			updates the pieces.
 */
 
 import {dangerUpdateMoved} from "../utils/dangerUpdate.js";
@@ -11,6 +12,7 @@ import {Match} from "../Classes/Chess/match.js";
 import {error, Result} from "../handlers/game/utils.js";
 import {printSwap} from "../test/render.js";
 import { moveCastling } from "./Castling.js";
+import { Square } from "../Classes/Chess/chessBoard.js";
 
 /**
  * 
@@ -19,7 +21,7 @@ import { moveCastling } from "./Castling.js";
  * @param {Match} match
  * @param {boolean} boostBool
  */
-export function updateChessboard(coords=[], result, match, boostBool)
+function updateChessboard(coords=[], result, match, boostBool)
 {
 	let	from;
 	let	to;
@@ -36,10 +38,9 @@ export function updateChessboard(coords=[], result, match, boostBool)
 	{
 		from.piece.isBoostedBool = false;
 		match.currentPlayer.boostedPiece = "";
+		match.boostPriority.delete(match.currentPlayer.team);
 	}
-	if (coords[0] == match.currentPlayer.King)
-		match.currentPlayer.King = coords[1];
-	printSwap(match, coords, from, to);
+	//printSwap(match, coords, from, to);
 	if (to.piece && to.piece.team != from.piece.team)
 	{
 		console.log(`player ${match.currentPlayer.team} + ${to.piece.price}💲`);
@@ -49,6 +50,25 @@ export function updateChessboard(coords=[], result, match, boostBool)
 			match[to.piece.team].boostedPiece = "";
 	}
 	match.history.UpdateMoves(match, from, coords, result.specialMoves._mask, boostBool);
+	makeMove(match, result, coords, from, to);
+	match.moves++;
+	return (true);
+}
+
+/**
+ * 
+ * @param {Match} match
+ * @param {Result} result
+ * @param {Array<string>} coords
+ * @param {Square} from
+ * @param {Square} to
+ */
+function makeMove(match, result, coords, from, to)
+{
+	if (!from.piece)
+		throw (`makeMove: from.piece does not exist: coord ${coords[0]}, ${from}`);
+	if (coords[0] == match.currentPlayer.King)
+		match.currentPlayer.King = coords[1];
 	if (result.specialMoves.CheckSniperMove())
 	{
 		to.piece = null;
@@ -64,15 +84,10 @@ export function updateChessboard(coords=[], result, match, boostBool)
 		to.piece.pos = coords[1];
 		if (to.piece.isBoostedBool)
 			match.currentPlayer.boostedPiece = to.piece.pos;
-		else if (boostBool)
-		{
-			match.currentPlayer.boostedPiece = "";
-			match.boostPriority.delete(match.currentPlayer.team);
-		}
 	}
 	if (to.piece)
 		to.piece.moveCount += 1;
 	dangerUpdateMoved(match, coords, true);
-	match.moves++;
-	return (true);
 }
+
+export {updateChessboard, makeMove};

@@ -67,8 +67,16 @@ const enumNamesTransform = {
 	VALKIRYA: 'Valkirya'
 };
 
+const enumNamesDoubleMove =
+{
+	CHAMPION: 'Champion',
+	MINOTAURUS: 'Minotaurus',
+	BASTARD: "Bastards"
+};
+
 const arrayNames = Object.values(enumNames);
 const arrayNamesTransform = Object.values(enumNamesTransform);
+const arrayNamesDoubleMove = Object.values(enumNamesDoubleMove);
 
 const enumConnection = 
 {
@@ -185,4 +193,11 @@ const kingMovements =
 	{dx:1, dy:0}, {dx:-1, dy:0},//orizzontale
 ];
 
-export {eTeam, eEvents, eMatchPresets, enumNames, arrayNames, arrayNamesTransform, enumInitNames, getInitialOfTeam, enumInitTeam, enumValues, enumSpecialMoves, kingMovements, enumConnection, enumSocketState, getTeamByInitial};
+const AIprofiles = 
+{
+	FIRST_AI: "First"
+}
+
+const AIprofilesArray = Object.values(AIprofiles);
+
+export {eTeam, eEvents, eMatchPresets, enumNames, arrayNames, arrayNamesTransform, arrayNamesDoubleMove, enumInitNames, getInitialOfTeam, enumInitTeam, enumValues, enumSpecialMoves, kingMovements, enumConnection, enumSocketState, getTeamByInitial, AIprofiles, AIprofilesArray};

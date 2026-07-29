@@ -23,7 +23,7 @@ import { includesOneOf } from "../../utils/string.js";
  * @param {string} from 
  * @param {string} to 
  */
-function makeTransfiguration(match, from, to)
+function makeTransfiguration(match, from, to, sendBoardBool=true)
 {
 	let	result;
 
@@ -40,7 +40,7 @@ function makeTransfiguration(match, from, to)
  * @param {string} coord
  * @param {string} newType
  */
-function transfiguration(match, result, coord, newType)
+function transfiguration(match, result, coord, newType, sendBoardBool=true)
 {
 	let	square;
 	let	isBoostedBool;
@@ -55,13 +55,13 @@ function transfiguration(match, result, coord, newType)
 	square.piece.isBoostedBool = isBoostedBool;
 	DangerUpdate(match, coord);
 	match.history.UpdateTransform(match, square, coord, newType);
-	checkMateCheckAll(match, result, match.currentPlayer.team);
+	checkMateCheckAll(match, result);
 	if (endTurn(match, false).specialMoves.CheckKingDanger())
 		result.specialMoves.SetKingDanger();
 	result.status = 200;
 	result.msg = "OK";
-	//@ts-ignore
-	result.board = clientBoard(match);
+	if (sendBoardBool == true)//@ts-ignore
+		result.board = clientBoard(match);
 	return (result);
 }
 

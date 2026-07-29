@@ -1,7 +1,7 @@
 {
   "moves": 112,
   "victory": "",
-  "finalBoard": "| |K| | |M| |J| |\n|B| |B| | | |B|B|\n| | | |V| | |C| |\n| |B| |+B| |B| | |\n| | |B| | |B| | |\n| |B| |V| | | |J|\n|B| | |B| |M| |B|\n| | |M|+C| |K| | |\n",
+  "finalBoard": "| |K| | |M| |J| |\n|B| |B| | | |B|B|\n| | | |V| | |C| |\n| |B| |B| |B| | |\n| | |B| | |B| | |\n| |B| |V| | | |J|\n|B| | |B| |M| |B|\n| | |M|+C| |K| | |\n",
   "matchSettings": {
     "board": {
       "width": 8,
