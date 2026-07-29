@@ -25,7 +25,7 @@ import { jsonParser } from "../../utils/response.js";
  * @param {String} from
  * @returns {Result}
  */
-function boost(match, from, realBoost=true)
+function boost(match, from, realBoost=true, sendBoardBool=true)
 {
 	let	result;
 	let prevBoost;
@@ -45,8 +45,8 @@ function boost(match, from, realBoost=true)
 	}
 	if (prevBoost == "")
 		prevBoost = from;
-	// @ts-ignore
-	result.board = clientBoard(match);
+	if (sendBoardBool == true)// @ts-ignore
+		result.board = clientBoard(match);
 	result.match = match;
 	return (result);
 }

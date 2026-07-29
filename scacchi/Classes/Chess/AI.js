@@ -63,8 +63,10 @@ function getBestTurn(match)
 	/** @type {Array<Eval>} */
 	let bestTurns = new Array();
 	let	bestTurnIdx;
+	let	ai;
 
-	if (!match.currentPlayer.ai)
+	ai = match.currentPlayer.ai;
+	if (!ai)
 		throw (`getBestTurn: you are not a machine!`);
 	arrayTurns = getLegalMoves(match);
 	for (let i = 0; i != arrayTurns.length; i++)
@@ -73,7 +75,7 @@ function getBestTurn(match)
 		if (!execTurn(match, turn))
 			continue ;
 		newTurns = getLegalMoves(match);
-		val.score = minMax(match, match.currentPlayer.ai, newTurns, 3, [turn]);
+		val.score = minMax(match, ai, newTurns, 3, [turn]);
 		val.score = Math.abs(val.score);
 		val.index = i;
 		cancelTurn(match, turn);
@@ -90,7 +92,8 @@ function getBestTurn(match)
 			}
 		}
 	}
-	bestTurnIdx = bestTurns[Math.floor(Math.random() * 100000) % bestTurns.length].index; 
+	bestTurnIdx = bestTurns[Math.floor(Math.random() * 100000) % bestTurns.length].index;
+	console.log(bestTurnIdx);
 	return (arrayTurns[bestTurnIdx]);
 }
 
@@ -108,7 +111,8 @@ function minMax(match, ai, arrayTurns, depth, pastTurns)
 	let	newTurns;
 	let val;
 
-	if ((depth == 0) || checkMateCheckAll(match, null))
+	console.log(depth);
+	if ((depth <= 0) || checkMateCheckAll(match, null))
 		return (evalScore(match, ai, pastTurns));
 	if (match.currentPlayer.team == eTeam.White)
 	{
@@ -120,7 +124,7 @@ function minMax(match, ai, arrayTurns, depth, pastTurns)
 			newTurns = getLegalMoves(match);
 			pastTurns.push(turn);
 			ai.Simulate(match, ai);
-			val = minMax(match, ai, newTurns, --depth, pastTurns);
+			val = minMax(match, ai, newTurns, depth - 1, pastTurns);
 			ai.Cancel(match, ai);
 			pastTurns.pop();
 			maxEval = Math.max(val, maxEval);
@@ -138,7 +142,7 @@ function minMax(match, ai, arrayTurns, depth, pastTurns)
 			newTurns = getLegalMoves(match);
 			pastTurns.push(turn);
 			ai.Simulate(match, ai);
-			val = minMax(match, ai, newTurns, --depth, pastTurns);
+			val = minMax(match, ai, newTurns, depth - 1, pastTurns);
 			ai.Cancel(match, ai);
 			pastTurns.pop();
 			minEval = Math.min(val, minEval);

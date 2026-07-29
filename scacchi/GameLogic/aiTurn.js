@@ -21,36 +21,37 @@ export function AIexecuteTurn(match)
 	let	turn;
 	let	team;
 
+	if (!match.currentPlayer.ai)
+		throw (`AIexecuteTurn: there is no AI`);
+	match.aiSimulation = true;
 	turn = getBestTurn(match);
 	team = match.currentPlayer.team;
 	if (turn.move)
 	{
-		result = move(match, turn.move.from, turn.move.to);
+		result = move(match, turn.move.from, turn.move.to, false, false);
 		sendResult(match, result, eEvents.Move);
 	}
 	if (turn.moveBoost)
 	{
-		result = move(match, turn.moveBoost.from, turn.moveBoost.to, true);
+		result = move(match, turn.moveBoost.from, turn.moveBoost.to, true, false);
 		sendResult(match, result, eEvents.MoveBoost);
-
 	}
 	if (turn.boost)
 	{
-		result = boost(match, turn.boost);
+		result = boost(match, turn.boost, true, false);
 		sendResult(match, result, eEvents.Boost);
-
 	}
 	else if (turn.transform)
 	{//@ts-ignore
-		result = makeTransfiguration(match, turn.moveBoost? turn.moveBoost.to : turn.move?.to, turn.transform);
+		result = makeTransfiguration(match, turn.moveBoost? turn.moveBoost.to : turn.move?.to, turn.transform, false);
 		sendResult(match, result, eEvents.Transform);
-
 	}
 	if (team == match.currentPlayer.team)
 	{
-		result = endTurn(match, true);
+		result = endTurn(match, false);
 		sendResult(match, result, eEvents.EndTurn);
 	}
+	match.aiSimulation = false;
 }
 
 /**

@@ -67,6 +67,7 @@ class Match
 			throw (`Match: eloRank library error during initialization`);
 		/** @type {number | null} */
 		this.tournament = null;
+		this.aiSimulation = false;
 	}
 	/** @param {MatchSettings | string | null} preset*/
 	Reset(preset=null)
@@ -113,6 +114,7 @@ class Match
 			throw (`Match: eloRank library error during initialization`);
 		this.cursor.square = this.currentPlayer.King;
 		this.tournament = null;
+		this.aiSimulation = false;
 	}
 	endTurn()
 	{
@@ -212,6 +214,8 @@ class Match
 	CheckMate(result=null)
 	{
 		console.log("haaaaaiiiiii viiiiiiintoooooooooo!!!!!!!");
+		if (this.aiSimulation == true)
+			return (new Result());
 		this.victory = this.currentPlayer.team;
 		this.history.victory = this.victory;
 		this.UpdateElo(this.currentPlayer, true);
@@ -239,10 +243,12 @@ class Match
 	 */
 	PlayerLost(result, player=this.currentPlayer)
 	{
+		console.log(player.team, ":haaaaaiiiiii persoooooooooooooooooo!!!!!!!");
+		if (this.aiSimulation == true)
+			return (new Result());
 		this.history.Last().loserSet.add(player.id);
 		this.UpdateElo(player, false);
 		this.DeletePlayer(player);
-		console.log(player.team, ":haaaaaiiiiii persoooooooooooooooooo!!!!!!!");
 		this.history.Last().lastLost = player.team;
 		if (!result)
 			result = new Result();
@@ -269,6 +275,8 @@ class Match
 		let tmp;
 
 		console.log("ed e' un pareggioooooooo!!!!");
+		if (this.aiSimulation == true)
+			return (new Result());
 		this.victory = "draw";
 		// console.log("Premi un qualsiasi tasto per concludere...");
 		tmp = this.currentPlayer;

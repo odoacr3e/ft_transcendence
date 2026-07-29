@@ -5,6 +5,7 @@ import { move } from "../handlers/game/move.js";
 import { boost } from "../handlers/game/boost.js";
 import { makeTransfiguration } from "../handlers/game/transfiguration.js";
 import { endTurn } from "../handlers/game/endTurn.js";
+import { eEvents } from "../Macro/enums.js";
 
 /** @typedef {import("../Classes/Chess/match.js").Match} Match*/
 /** @typedef {{from: string, to: string}} Move */
@@ -47,14 +48,10 @@ export function execTurn(match, turn)
  */
 export function cancelTurn(match, turn)
 {
+	if (match.history.Last().type != eEvents.EndTurn)
+		throw ("cancelTurn: last turn is not endTurn");
 	cancelEvent(match);
-	if (turn.transform)
-		cancelEvent(match);
-	if (turn.boost)
-		cancelEvent(match);
-	if (turn.moveBoost)
-		cancelEvent(match);
-	if (turn.move)
+	while (match.history.Last().type != eEvents.EndTurn)
 		cancelEvent(match);
 }
 

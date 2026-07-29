@@ -25,9 +25,10 @@ import { checkMove, checkSecondMove } from "../../GameLogic/checkMove.js";
  * @param {String} from the piece to move's coords
  * @param {String} to the new piece location's coords
  * @param {boolean} boostBool player wants to use a boost?
+ * @param {boolean} renderBoard if the front can display the board
  * @returns {Result}
  */
-function move(match, from, to, boostBool=false)
+function move(match, from, to, boostBool=false, renderBoard=true)
 {
 	let	result;
 	let secondMoveBool = false;
@@ -44,9 +45,9 @@ function move(match, from, to, boostBool=false)
 	if (!updateChessboard([from, to], result, match, boostBool))
 		return (result);
 	result.status = 200;
-	checkMateCheckAll(match, result, match.currentPlayer.team);
-	// @ts-ignore
-	result.board = clientBoard(match);
+	checkMateCheckAll(match, result);
+	if (renderBoard == true)// @ts-ignore
+		result.board = clientBoard(match);
 	secondMoveBool = checkSecondMove(match, to);
 	if ((match.moves >= MOVEMENT_MIN && !match.currentPlayer.nPoints) && !(secondMoveBool && boostBool) && 
 	!(match.cursor.EdgeCheck(match.currentPlayer.team) && match.board.get(match.cursor.square)?.piece?.type == enumNames.BASTARDS))
