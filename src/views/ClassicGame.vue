@@ -1,7 +1,7 @@
 <script setup>
 	import { localMatchState, localInfo, DOMPlayer }	from '@/scripts/Data/Variables';
 	import { onMounted, ref, computed }       			from 'vue';
-	import { reloadMatch }								from '@/scripts/Events/BackLink.js';
+	import { reloadMatch, amIPlaying }					from '@/scripts/Events/BackLink.js';
 	import PlayerInfo               					from '../components/PlayerInfo.vue';
 	import ChessBoard               					from '../components/ChessBoard.vue';
 	import ActionButtons								from '../components/ActionButtons.vue';
@@ -19,9 +19,16 @@
 	onMounted(async () => {
 		console.log("[ClassicGame]: OnMounted");		
 		try{
-			if (!localMatchState) 
+			if (!localMatchState)
 			{
-				const restored = await reloadMatch();				
+				if (!await amIPlaying())
+				{
+					console.log("[ClassicGame]: non sono in partita, niente reload");
+					clearMatchStorage();
+					router.push({ name: "playpage"});
+					return;
+				}
+				const restored = await reloadMatch();
 				if (!restored)
 				{
 					clearMatchStorage();

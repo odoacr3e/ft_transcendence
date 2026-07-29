@@ -182,7 +182,8 @@ boardConverter()
 	✓	pagina di modifica delle info utente
 	✓	reset della password (sia dal login page che dalla pagina utente loggato)
 	✓	dettagli info sui match
-	✓	refactor pagina di gioco, pulsanti con tipi di partite, creazione stanze, sfida amici
+	✓	refactor pagina di gioco, pulsanti con tipi di partite, creazione 
+		stanze, sfida amici
 	✓	websocket per la partita
 	✓	test login e resgiter con OTP e opzioni di toglierlo nelle impostazioni
 	▫	info dei profili per le partitre a 4 [MAVI]

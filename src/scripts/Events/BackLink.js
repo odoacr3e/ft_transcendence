@@ -67,6 +67,25 @@ export async function requestToBack(fromSquare, toSquare, opType)
 	});
 }
 
+/**
+ * Chiede al back se questo client è dentro una partita.
+ * Il payload {} serve a far finire l'ack in seconda posizione lato server.
+ * @returns {Promise<boolean>}
+ */
+export async function amIPlaying()
+{
+	const auth = useAuthStore();
+
+	if (!auth.socket)
+		return (false);
+	try {
+		return (await auth.socket.timeout(3000).emitWithAck('amiplaying', {}) === true);
+	} catch {
+		console.log("[BackLink] -> [amIPlaying]: nessuna risposta dal back");
+		return (false);
+	}
+}
+
 export function reloadMatch()
 {
 	console.log("chiamata di reload!");
@@ -96,8 +115,14 @@ export function reloadMatch()
 		};
 
 		const onResponse = (raw) => {
-			if (raw?.type !== "reload") return;
-			finish(raw?.log?.status === 200);
+			if (raw?.type === "reload")
+				return finish(raw?.log?.status === 200);
+			//le risposte d'errore non hanno type: inutile continuare a riprovare
+			if (raw?.log?.status && raw.log.status !== 200)
+			{
+				console.log("[reload] il back rifiuta:", raw.log.msg);
+				return finish(false);
+			}
 		};
 
 		const start = () => {

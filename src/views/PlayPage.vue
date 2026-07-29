@@ -38,13 +38,19 @@
 		waiting.value = true;
 	}
 
-	async function askAmIPlaying() 
+	async function askAmIPlaying()
 	{
 		if (!auth.socket)
 			return;
-		const playing = await auth.socket.emitWithAck('amiplaying');
-		if (playing)
-			router.push({ name: "game" });
+		try {
+			const playing = await auth.socket.timeout(3000).emitWithAck('amiplaying', {});
+			if (playing)
+				router.push({ name: "game" });
+			else
+				console.log("allora non sto already doing playing eh?");
+		} catch {
+			console.log("[askAmIPlaying]: nessuna risposta dal back, resto in playpage");
+		}
 	}
 
 	onMounted(askAmIPlaying);
