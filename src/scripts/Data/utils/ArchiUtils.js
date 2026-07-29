@@ -1,5 +1,6 @@
-import { computePosition, offset, flip, shift, autoUpdate }	from "@floating-ui/dom"; 
+import { computePosition, offset, flip, shift, autoUpdate }	from "@floating-ui/dom";
 import { localBoard, localInfo, localPlayers, Square } 		from "../Variables";
+import { clearHighlight }									from "@/scripts/Events/utils/HighlightUtils.js";
 
 let stopAutoUpdate = null;
 
@@ -25,11 +26,24 @@ export function checkEndTurn(validated)
 
 	if (curP.name === newCurP.name) { localInfo.secondTurn = true; }
 	else
-	{
-		localInfo.secondTurn = false;
-		localInfo.secondMove = false;
-		localInfo.savedBoostedMap = null;
-	}
+		resetLocalVars();
+}
+
+export function resetLocalVars()
+{
+	localInfo.clickedId			= null;
+	localInfo.lastClickedId		= null;
+	localInfo.usingAbility		= "";
+	localInfo.savedBoostedMap	= null;
+	localInfo.secondTurn		= false;
+	localInfo.secondMove		= false;
+	localInfo.dropDone			= false;
+
+	localBoard.forEach(square => {
+		if (square.useAbilityBool)
+			square.useAbilityBool = false;
+	});
+	clearHighlight();
 }
 
 export function DEBUGSetVisible()

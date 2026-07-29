@@ -90,11 +90,32 @@ export function rightClickSelect(event)
 			console.log(targetSquare.id);
 		}
 
-		if (targetSquare && !targetSquare.selected)
+		//sul re sotto scacco il selected spegnerebbe il rosso: si lascia stare
+		if (!targetSquare || targetSquare.inCheck)
+			return;
+
+		if (!targetSquare.selected)
 			targetSquare.selected = true;
 		else if (targetSquare.selected)
 			targetSquare.selected = false;
 	}
+}
+
+export function setCheckSquare(id)
+{
+	localBoard.forEach(square => {
+		if (square.inCheck === true && square.id !== id)
+			square.inCheck = false;
+	});
+
+	if (!id)
+		return;
+
+	const square = localBoard.get(id);
+	if (square)
+		square.inCheck = true;
+	else
+		console.log("[setCheckSquare]: square non trovato ->", id);
 }
 
 export function clearHighlight(flag)
@@ -102,6 +123,8 @@ export function clearHighlight(flag)
 	localBoard.forEach(square => {
 		if (square.selected === true && (flag === "selected" || flag === undefined))
 			square.selected = false;
+		if (square.inCheck === true && flag === "check")
+			square.inCheck = false;
 		if (square.clicked === true && (flag === "clicked" || flag === undefined))
 			square.clicked = false;
 		if (square.boostedHighlight === true && (flag === "boosted"))

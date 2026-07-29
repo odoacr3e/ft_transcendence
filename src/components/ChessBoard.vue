@@ -41,8 +41,8 @@
 								{'outline-4 outline-[#e2dac5c5] -outline-offset-4': dragOver === square.id},
 								{'selectedBstW': getSquareColor(square.id) == 'white' && (square.boostedHighlight && square.piece)},
 								{'selectedBstB': getSquareColor(square.id) == 'black' && (square.boostedHighlight && square.piece)},
-								{'selectedW': getSquareColor(square.id) == 'white' && (square.selected || square.highlight && square.piece)},
-								{'selectedB': getSquareColor(square.id) == 'black' && (square.selected || square.highlight && square.piece)},
+								{'selectedW': getSquareColor(square.id) == 'white' && (square.selected !== square.inCheck || square.highlight && square.piece)},
+								{'selectedB': getSquareColor(square.id) == 'black' && (square.selected !== square.inCheck || square.highlight && square.piece)},
 								{'pieceClicked': square.piece && square.piece.team === localInfo.myTeam && square.clicked}]"
 						@drop="onDrop($event, square); dragOver = null"
 						@dragover.prevent="dragOver = square.id;">
@@ -52,10 +52,10 @@
 								['a', 'b', 'c', 'l', 'm', 'n'].includes(square.id.charAt(0)))"
 							v-bind:class="{ 'ml-15 mt-13' : style === '1v1',
 											'ml-10.25 mt-9 text-xs' : style === '14x14x4',
-											'text-[#1b0000]': getSquareColor(square.id) == 'white' && !square.selected, 
-											'text-white	': getSquareColor(square.id) == 'black' && !square.selected,
-											'text-[#801a12]' : getSquareColor(square.id) == 'white' && square.selected,
-											'text-[#bb4232]' : getSquareColor(square.id) == 'black' && square.selected }">
+											'text-[#1b0000]': getSquareColor(square.id) == 'white' && square.selected === square.inCheck,
+											'text-white	': getSquareColor(square.id) == 'black' && square.selected === square.inCheck,
+											'text-[#801a12]' : getSquareColor(square.id) == 'white' && square.selected !== square.inCheck,
+											'text-[#bb4232]' : getSquareColor(square.id) == 'black' && square.selected !== square.inCheck }">
 							<b>{{ square.id.charAt(0) }}</b>
 						</p>
 						<img
@@ -72,17 +72,17 @@
 							v-bind:class="{ 'mr-15 mb-13' : style === '1v1',
 											'mr-10.25 mb-9.5 text-xs' : style === '14x14x4',
 											'ml-1.5' : parseInt(square.id.substring(1)) > 9,
-											'text-[#1b0000]':getSquareColor(square.id) == 'white' && !square.selected, 
-											'text-white':getSquareColor(square.id) == 'black' && !square.selected,
-											'text-[#801a12]' : getSquareColor(square.id) == 'white' && square.selected,
-											'text-[#bb4232]' : getSquareColor(square.id) == 'black' && square.selected }">
+											'text-[#1b0000]':getSquareColor(square.id) == 'white' && square.selected === square.inCheck,
+											'text-white':getSquareColor(square.id) == 'black' && square.selected === square.inCheck,
+											'text-[#801a12]' : getSquareColor(square.id) == 'white' && square.selected !== square.inCheck,
+											'text-[#bb4232]' : getSquareColor(square.id) == 'black' && square.selected !== square.inCheck }">
 							<b>{{square.id.substring(1)}}</b>
 						</p>
 						<span v-if="square.highlight && !square.piece" class="highlight"
 								v-bind:class="{'w-3.75 h-3.75': style === '1v1', 'w-2.5 h-2.5': style === '14x14x4'}"></span>
 						<span v-if="square.boostedHighlight && !square.piece" class="boostedHighlight"
 								v-bind:class="{'w-3.75 h-3.75': style === '1v1', 'w-2.5 h-2.5': style === '14x14x4'}"></span>
-						<span v-if="localInfo.lastMovesSquares.has(square.id)"
+						<span v-if="localInfo.lastMovesSquares.has(square.id) && !square.selected && !square.inCheck"
 								class="lastMoveOverlay"></span>
 					</div>
 				</div>

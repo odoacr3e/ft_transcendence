@@ -105,37 +105,74 @@ boardConverter()
 			✓ valkirya
 			✓ campione
 			✓ re
-	✓ 	aura dei pezzi boostati visibile [LEO] 
-	✓ 	end turn, boost e useAbility triggerabili da pulsanti da tastiera [LEO]
+	✓ 	aura dei pezzi boostati visibile 
+	✓ 	end turn, boost e useAbility triggerabili da pulsanti da tastiera
 	✓ 	bottone di potenziamento clickabile solo durante il second turn 
-	▫ 	refactor di archi nel caso la board non esista
 	✓ 	non si dovrebbe poter boostare se non hai ancora mosso nessun pezzo
-	▫ 	feedback quando il re è sotto scacco, (abbiamo bisogno di una flag oppure 
-		usiamo gli enum di errore comuni)
-	✓	Far vedere che pezzo hai selezionato [LEO]
-	▫ 	quando fai hover sul bottone per boostare il pezzo sarebbe carino poter avere
-	  	una preview delle target zones rese visibili sulla scacchiera, si può fare 
-	  	una route apposta per chiedere l'update delle target zones di un pezzo specifico
+	✓	Far vedere che pezzo hai selezionato
 	✓	Si fa fatica a capire di chi è il turno attuale
 	✓	orientamento della scacchiera in base al colore dei pezzi del giocatore
-	✓	orientamento del giocatore in base al giocatore
-	▫	history delle mosse durante la partita
-	▫	utilizzo websocket singolo solo per la partita diverso da websocket 
-		comunicazione server
-	▫	implementare (reload, riaccesso, chiudi e riapri la pagina di gioco) 
-		durante la partita
-	✓	avviso di quando devi fare end turn più chiaro (?)
-	▫	spostamento bottoni
+	✓	orientamento delle info del giocatore in base al giocatore
 	✓	le mosse dell'avversario sono poco visibili, servirebbero delle animazioni sul
 		pezzo mosso oppure un evidenziazione sull'ulitmo pezzo mosso
+	✓	avviso di quando devi fare end turn più chiaro
+	✓	implementare reload durante la partita
+	✓	spostamento bottoni
+	✓	display del nome dei giocatori durante la partita
+	✓	Aggiungere bottone per arrendersi evento 'giveup'
+	✓	Aggiornare la pagina di testing su notion e scriverci i trace del back quando crasho
+	✓	schermata di fine partita, e aggiustamenti necessari. c'è una voce victory nella response 	
+		con il colore di chi vince o con draw, stringa
+	✓	implementare il riaccesso ad una partita in corso dopo chiusura della pagina: richiesta su 
+		evento websocket 'amiplaying', se risponde true lancio reload, sennò pace.
+	✓	implementare (reload, riaccesso, chiudi e riapri la pagina di gioco)
+		durante la partita
+	✓	implementare segnali visivi relativi ai turni dei giocatori
+	✓ 	quando fai hover sul bottone per boostare il pezzo sarebbe carino poter avere
+	  	una preview delle target zones rese visibili sulla scacchiera, si può fare 
+	  	una route apposta per chiedere l'update delle target zones di un pezzo specifico
+	✓ 	feedback quando il re è sotto scacco
+		✓	blinking e effetto audio quando fai una mossa che metterebbe il re sotto scacco
+		✓	effetto sonoro ed evidenziazione del re quando viene messo sotto scacco
+	✓	Bottone ed evento per chiedere pareggio
+	▫	history delle mosse durante la partita
+	▫	re-design dei pezzi
+	▫	history delle partite
+	▫ 	refactor di archi nel caso la board non esista
 
 //FIXME - Bugs
-	▫	quando finisci l'esecuzione di una mossa boostata di un pedone e clicchi su un'altro pezzo
-		dello stesso colore del pedone appena mosso lancia eccezione
-	▫	quando finisci l'esecuzione di una mossa boostata di un pedone e al turno dopo vuoi muovere
-		lo stesso pedone manda eccezione (ma penso sia dovuto al backend)
-	▫	Il pulsante use ability rimane interagibile e cliccabile anche se il pezzo si è appena
-		mosso senza voler utilizzare l'abilità
+	✓	Delle volte quando finisci una mossa l'immagine del pezzo mosso si sdoppia e rimane lì 
+		per tutta la partita
+	✓	EndTurn pulisce le evidenziazioni delle ultime mosse fatte
+	✓	quando finisci l'esecuzione di una mossa boostata di un pedone e clicchi su
+		un'altro pezzo	dello stesso colore del pedone appena mosso lancia eccezione
+	✓	Quando  hai un pezzo potenziato il prezzo non si aggiorna come si deve
+	✓	Pezzi mangiati avversario invisibili
+	✓	Bottoni non presenti dopo reload
+	✓	Con il reload si bugga anche il timer
+	✓	Evidenziamento Give Up buttion da ripensare
+	✓	Quandoa fai use ability si creano in contemporanea sia i tondini
+	✓	Il pulsante use ability rimane interagibile e cliccabile anche 
+		se il pezzo si è appena rossi che gialli sulle stesse caselle
+	✓	Quando ho un pezzo potenziato e diventa il mio turno diventa
+		disponibile l'utilizza abilità anche se selezioni un pezzo non potenziato
+	✓	Timer che continua nella schermata di fine gioco
+	✓	Quando uno dei due finisce il tempo il backend crasha
+	▫	Quando finisci l'esecuzione di una mossa boostata di un pedone e al turno 
+		dopo vuoi muovere lo stesso pedone manda eccezione (ma penso sia dovuto al backend) mosso senza voler utilizzare l'abilità
+	▫	Quando fai una mossa boostata di un pedone se vuoi muovere un pezzo dopo aver 
+		mosso il pedone, che passa dove prima c’era il pedone mi viene fuoir eccezione
+		ma in modi casuali non riesco ancora a capire cosa succede
+	▫	Timer che parte da solo prima della prima mossa del bianco
+	▫	Quando fai reload non segna correttamente i turni
+	▫	Ogni volta che entri in playpage si avvia il reload
+	▫	Quando vado a promozione con il pedone si oscura tutta la scacchiera 
+		e non va più un cazzo
+	▫	Il clicked non dovrebbe stare sotto l'evidenziazione di ultima mossa
+	▫	Le flag clickedId e lastclicked non dovrebbero restare popolate
+	▫	Andare avanti e indietro nelle pagine non funzione quando sei sulla playpage
+	▫	Rimangono i pezzi mangiati il playerinfo anche da una partita all'altra se ne
+		fai una di seguito all'altra
 
 //TODO FRONTEND - 
 	✓	websocket per lo stato online
@@ -146,7 +183,7 @@ boardConverter()
 	✓	reset della password (sia dal login page che dalla pagina utente loggato)
 	✓	dettagli info sui match
 	✓	refactor pagina di gioco, pulsanti con tipi di partite, creazione stanze, sfida amici
-	✓	websocket per la partita [LEO]
+	✓	websocket per la partita
 	✓	test login e resgiter con OTP e opzioni di toglierlo nelle impostazioni
 	▫	info dei profili per le partitre a 4 [MAVI]
 	▫	finire l'editing del profilo
@@ -157,7 +194,7 @@ boardConverter()
 	▫	dettagli info sui match
 
 //NOTE - Testing
-	▫	nome utente in grassetto
+	✓	nome utente in grassetto
 
 
 
@@ -185,3 +222,8 @@ Il frontend carica il file direttamente su uno storage esterno (spesso con un UR
 Nessuna di queste comporta scrivere dentro la cartella del progetto Vue in produzione — sarebbe comunque sbagliato architetturalmente, perché ad ogni nuova build/deploy del frontend quella cartella verrebbe rigenerata e perderesti le immagini caricate dagli utenti.
 Che backend state usando? Così ti scrivo il codice concreto per l'opzione A, che è quella più vicina a quello che avevate in mente.
 		
+
+//NOTE
+La api di reload funziona quando lanciata da connessione socket già stabilita
+Quando schiaccio ctrl+r sembra che la riconnessione non funzioni correttamente e magari
+distruggiamo il websocket male, magari non ci riconnettiamo bene.

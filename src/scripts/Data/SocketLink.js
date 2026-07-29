@@ -1,6 +1,6 @@
 import { updateMatchState, initLocalMatchState, reloadMatchState }	from "./Archi";
 import { localInfo, localMatchState, MACRO }						from "./Variables";
-import { clearHighlight }											from "../Events/utils/HighlightUtils";
+import { clearHighlight, setCheckSquare }							from "../Events/utils/HighlightUtils";
 import { eSpecialMoves }											from "@/Common/ENUMS";		
 import { blinkSquares } 											from "../Events/utils/GlobalUtils";
 import router 														from "@/router";
@@ -46,6 +46,8 @@ export function listenGameSocket(socket)
 			if (!localMatchState)
 			{
 				reloadMatchState(raw);
+				if ((Number(raw.mask) & (eSpecialMoves.CHECK | eSpecialMoves.CHECKMATE)) && raw.giorgi0)
+					setCheckSquare(raw.giorgi0);
 				console.log("{socket game [reload]} Renderizzo game reloadato");
 				router.push({ name: "game" });
 			}
@@ -59,6 +61,11 @@ export function listenGameSocket(socket)
 			localInfo.victory = raw.victory;
 			return;
 		}
+		if (raw.type === "timeout")
+		{
+			console.log("[socket game] -> [timeout]: tempos scaduto");
+			locaInfo.victory = raw.victory;
+		}
 		if (raw.type == "simulate_boost")
 		{
 			console.log("{socket game [simu_boost]} payload richiesta simulate boots");
@@ -69,28 +76,13 @@ export function listenGameSocket(socket)
 		clearHighlight();
 		if (MACRO.AUDIO)
 			new Audio("/src/assets/audios/moving.mp3").play();
+		const inCheck = (Number(raw.mask) & (eSpecialMoves.CHECK | eSpecialMoves.CHECKMATE)) && raw.giorgi0;
+		setCheckSquare(inCheck ? raw.giorgi0 : null);
+		if (inCheck)
+		{
+			console.log("[socket game]: re sotto scacco in", raw.giorgi0);
+			if (MACRO.AUDIO)
+				new Audio("/src/assets/audios/tette.mp3").play();
+		}
 	});
 }
-
-					// versione del blink pre astrazione
-					// let i = 0;
-					// for (let id of threatId)
-					// {
-					// 	setTimeout(() => {
-					// 		// console.log("id: ", id);
-					// 		let toggles = 0;
-					// 		const square = localBoard.get(id);
-					// 		if (!square)
-					// 			return;
-					// 		square.selected = true;
-					// 		const periodicHighlight = setInterval(() => {
-					// 			square.selected = !square.selected;
-					// 			if (++toggles >= 6)
-					// 			{
-					// 				clearInterval(periodicHighlight);
-					// 				square.selected = false;
-					// 			}
-					// 		}, 650);
-					// 	}, i * 650);
-					// 	i++;
-					// }

@@ -11,6 +11,7 @@
 	});
 	const	player	= computed(() => DOMPlayer(prop.p)),
 			playing	= computed(() => player.value.isPlaying),
+			running	= computed(() => playing.value && !localInfo.victory),
 			up		= prop.pos === 'top',
 			down	= prop.pos === 'bottom',
 			endT	= computed(() => localInfo.secondTurn);
@@ -48,7 +49,7 @@
 				<CapturedPieces :player="player"/>
 			</div>
 		</div>
-		<TimerClock :millis="player.time" :go="playing" :team="player.team" class="ml-auto"/>
+		<TimerClock :millis="player.time" :go="running" :team="player.team" class="ml-auto"/>
 	</div>
 </template>
 

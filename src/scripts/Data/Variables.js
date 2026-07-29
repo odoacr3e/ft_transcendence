@@ -25,6 +25,7 @@ export class Square {
 		this.boostedHighlight = false;
 		this.useAbilityBool = false;
 		this.selected = false;
+		this.inCheck = false;
 		this.clicked = false;
 		this.targetZones = new Set(targetZones);
 		this.boostedTargetZones = new Map(boostedTargetZones);
