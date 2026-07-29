@@ -1,6 +1,5 @@
 
 import { prisma } from "../lib/prisma.js";
-import { MatchSettings } from "../Classes/Chess/match.js";
 
 export async function getAllUserTournaments(id_user) {
 	const userTournaments = await prisma.tournament_players.findMany({

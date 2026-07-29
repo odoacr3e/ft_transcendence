@@ -8,7 +8,6 @@
 */
 
 import {MOVEMENT_MIN} from "../../Macro/macro.js";
-import { Chess } from "../../lib/lib.js";
 import {Match} from "../../Classes/Chess/match.js";
 import {paramCheck, Result, clientBoard} from "./utils.js";
 import {endTurn} from "./endTurn.js";

@@ -9,12 +9,11 @@
 */
 
 import { Piece } from "../Classes/Chess/Pieces/pieces.js";
-import { Enums } from "../lib/lib.js";
+import {eTeam, enumNames, enumInitNames, getTeamByInitial} from "../Macro/enums.js";
 import {dangerUpdateAll} from "../utils/dangerUpdate.js";
 import {Match} from "../Classes/Chess/match.js";
 import { isLowerCase } from "../utils/string.js";
 import { render } from "../test/render.js";
-const {eTeam, enumNames, enumInitNames, getTeamByInitial} = Enums;
 
 /**
  * 

@@ -23,7 +23,6 @@ export const PORT = process.env.PORT || 8080;
 export const ALLOWED_URL = process.env.ALLOWED_URL?.split(',') ?? ['http://localhost:5173'];
 
 // SECTION: connections
-import { prisma } from "./prisma.js";
 import { redis } from "./redis.js";
 import crypto from "crypto";
 import { sendEmail, bodyOTP, bodyRegistration } from "./emailSender.js"
@@ -38,28 +37,15 @@ redis.on("error", (stream) =>
 // SECTION - external inclusions
 const include = {http, https, url, fs, multer, sharp, path, express, SocketIO, app, server, parse, cookieParser};
 
-// SECTION - chess classes/objects
-import {Piece} from "../Classes/Chess/Pieces/pieces.js";
-import {Preset, preset} from "../Classes/Chess/Pieces/preset.js";
-import {Cursor} from "../Classes/Chess/cursor.js";
-import {includesOneOf} from "../utils/string.js";
-import {ChessBoard, Square, initBoard, copyBoard, copyBoostedTargetZones} from "../Classes/Chess/chessBoard.js";
-const Chess = {Piece, Preset, preset, ChessBoard, initBoard, copyBoard, copyBoostedTargetZones, Cursor, Square};
-
 // SECTION - macro
 import * as Macro from "../Macro/macro.js";
 
 // SECTION - Enums
 import * as Enums from "../Macro/enums.js";
 
-// SECTION - utils function
-import * as utils from "../utils/dangerUpdate.js";
-let gameUtils = {};
-
 const conn = { redis, crypto, sendEmail, bodyOTP, bodyRegistration };
 const auth = { jwt, cors, passport };
 
-const lib = { include, Chess, Macro, Enums, preset, utils, gameUtils, conn};
+const lib = { include, Macro, Enums, conn, auth};
 
-export { include, Chess, Macro, Enums, preset, utils, gameUtils, conn, auth };
 export default lib;

@@ -1,7 +1,6 @@
 // @ts-check
 import { abort } from "node:process";
 
-
 //SECTION debug
 const DEBUG = true;
 //@ts-ignore

@@ -6,7 +6,6 @@
 	-	checkMateCheckAll: checks if every active player is in check/staleMate
 */
 
-import { Chess } from "../lib/lib.js";
 import { Result } from "../Classes/endPoint/result.js";
 import { enumNames } from "../Macro/enums.js";
 import { Match } from "../Classes/Chess/match.js";
