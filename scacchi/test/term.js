@@ -1,6 +1,6 @@
 //@ts-check
 import {HISTORY_FILE, HISTORY_PATH} from "../Macro/macro.js";
-import {eEvents} from "../Macro/enums.js";
+import {AIprofiles, eEvents} from "../Macro/enums.js";
 import {movePiece} from "../utils/dangerUpdate.js";
 import {includesOneOf} from "../utils/string.js";
 import {historyGetMatchState, historyRestore, historyRestoreFromDb} from "../utils/history.js";
@@ -25,6 +25,7 @@ import { fakeBoost } from "../handlers/game/boost.js";
 import { initFromStr } from "../handlers/game/init.js";
 import { Match, MatchSettings } from "../Classes/Chess/match.js";
 import { getLegalMoves } from "../GameLogic/checkLegalMoves.js";
+import { AI } from "../Classes/Chess/AI.js";
 
 //SECTION - main: inizializza e fa primo render, mette terminale in ascolto
 function mainTerm()
@@ -43,6 +44,7 @@ function mainTerm()
 	seed = "1v1";
 	time = process.hrtime.bigint();
 	init(match, seed);
+	match.NextPlayer().ai = new AI();
 	console.log(`time to init: ${(process.hrtime.bigint() - time) / 1000n} microseconds`);
 	match.cursor.square = match.currentPlayer.King;
 	// edoChampionBug(match);

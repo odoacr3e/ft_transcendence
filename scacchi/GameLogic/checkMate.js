@@ -137,8 +137,6 @@ function isStoppable(match, kingSquare, enemySquareString)
 				continue ;
 			if (x == kingSquare)
 				continue ;
-			//if (guardianPiece.type == enumNames.BASTARDS && match.cursor.IsOblique(x) == false)
-			//	continue ;
 			if (guardianPiece.team != kingPiece.team)
 			{
 				if  (!match.settings.players.allies || guardianPiece.team != match.currentPlayer.ally || match.currentPlayer.next != enemySquare.piece?.team)

@@ -18,6 +18,7 @@ import { boardStringify } from "../../test/render.js";
 import { globals } from "../../Classes/Globals/globals.js";
 import { Timer }	from "../../Classes/Chess/match.js";
 import { setTimerGame } from "../../GameLogic/timer.js";
+import { AIexecuteTurn } from "../../GameLogic/aiTurn.js";
 
 /**
  * goes to the next turn
@@ -66,6 +67,8 @@ function endTurn(match, sendBoardBool=true)
 	result.status = 200;
 	if (sendBoardBool)//@ts-ignore
 		result.board = clientBoard(match);
+	if (match.currentPlayer.ai)
+		AIexecuteTurn(match);
 	return (result);
 }
 

@@ -134,6 +134,15 @@ class Match
 	{
 		this.currentPlayer = this.yellow;
 	}
+	NextPlayer()
+	{
+		/** @type {Player} */
+		let	player;
+
+		//@ts-ignore
+		player = this[this.currentPlayer.next];
+		return (player);
+	}
 	CheckOtherKingsDanger()
 	{
 		/** @type {Player} */let	player;
