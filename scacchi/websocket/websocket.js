@@ -6,11 +6,6 @@
 */
 
 import * as lib from "../lib/lib.js";
-// const { ALLOWED_URL } = lib;
-// const { jwt } = lib.auth;
-// const { redis } = lib.conn;
-// const { parse, server } = lib.include;
-import { globals } from "../Classes/Globals/globals.js";
 import { DEBUG_WEBSOCKETS, MATCH_RECONNECT_TIMER, SOCKET_RECONNECT_TIMER, TOURNAMENT_WAIT_TIMER} from "../Macro/macro.js";
 import { query } from "../lib/query.js";
 import { websocketConnectionHandler, websocketDisconnectionHandler } from "./handlers/connection.js";

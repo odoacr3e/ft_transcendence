@@ -1,6 +1,6 @@
 
-import * as lib from "../lib/lib.js";
-const { path, sharp } = lib.include;
+import path from "path";
+import sharp from 'sharp';
 import fs from 'fs/promises';
 
 
