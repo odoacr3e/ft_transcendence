@@ -131,11 +131,12 @@ boardConverter()
 	✓ 	quando fai hover sul bottone per boostare il pezzo sarebbe carino poter avere
 	  	una preview delle target zones rese visibili sulla scacchiera, si può fare 
 	  	una route apposta per chiedere l'update delle target zones di un pezzo specifico
-	▫ 	feedback quando il re è sotto scacco
+	✓ 	feedback quando il re è sotto scacco
 		✓	blinking e effetto audio quando fai una mossa che metterebbe il re sotto scacco
-		▫	effetto sonoro ed evidenziazione del re quando viene messo sotto scacco
-	▫	Bottone ed evento per chiedere pareggio
+		✓	effetto sonoro ed evidenziazione del re quando viene messo sotto scacco
+	✓	Bottone ed evento per chiedere pareggio
 	▫	history delle mosse durante la partita
+	▫	re-design dei pezzi
 	▫	history delle partite
 	▫ 	refactor di archi nel caso la board non esista
 
@@ -147,26 +148,32 @@ boardConverter()
 		un'altro pezzo	dello stesso colore del pedone appena mosso lancia eccezione
 	✓	Quando  hai un pezzo potenziato il prezzo non si aggiorna come si deve
 	✓	Pezzi mangiati avversario invisibili
-	▫	quando finisci l'esecuzione di una mossa boostata di un pedone e al turno 
-		dopo vuoi muovere lo stesso pedone manda eccezione (ma penso sia dovuto al backend)
-	▫	Il pulsante use ability rimane interagibile e cliccabile anche se il pezzo si è appena
-		mosso senza voler utilizzare l'abilità
-	▫	Bottoni non presenti dopo reload
-	▫	Con il reload si bugga anche il timer
-	▫	Evidenziamento Give Up buttion da ripensare
-	▫	Quandoa fai use ability si creano in contemporanea sia i tondini
-		rossi che gialli sulle stesse caselle
-	▫	Quando ho un pezzo potenziato e diventa il mio turno diventa disponibile l'utilizza
-		abilità anche se selezioni un pezzo non potenziato
+	✓	Bottoni non presenti dopo reload
+	✓	Con il reload si bugga anche il timer
+	✓	Evidenziamento Give Up buttion da ripensare
+	✓	Quandoa fai use ability si creano in contemporanea sia i tondini
+	✓	Il pulsante use ability rimane interagibile e cliccabile anche 
+		se il pezzo si è appena rossi che gialli sulle stesse caselle
+	✓	Quando ho un pezzo potenziato e diventa il mio turno diventa
+		disponibile l'utilizza abilità anche se selezioni un pezzo non potenziato
+	✓	Timer che continua nella schermata di fine gioco
+	▫	Quando finisci l'esecuzione di una mossa boostata di un pedone e al turno 
+		dopo vuoi muovere lo stesso pedone manda eccezione (ma penso sia dovuto al backend) mosso senza voler utilizzare l'abilità
 	▫	Quando uno dei due finisce il tempo il backend crasha
 	▫	Quando fai una mossa boostata di un pedone se vuoi muovere un pezzo dopo aver 
 		mosso il pedone, che passa dove prima c’era il pedone mi viene fuoir eccezione
 		ma in modi casuali non riesco ancora a capire cosa succede
-	▫	Timer che continua nella schermata di fine gioco
 	▫	Timer che parte da solo prima della prima mossa del bianco
 	▫	Quando fai reload non segna correttamente i turni
 	▫	Ogni volta che entri in playpage si avvia il reload
-	▫	Quando vado a promozione con il pedone si oscura tutta la scacchiera e non va più un cazzo
+	▫	Quando vado a promozione con il pedone si oscura tutta la scacchiera 
+		e non va più un cazzo
+	▫	Il clicked non dovrebbe stare sotto l'evidenziazione di ultima mossa
+	▫	Il clicked non dovrebbe stare sotto l'evidenziazione di ultima mossa
+	▫	Le flag clickedId e lastclicked non dovrebbero restare popolate
+	▫	Andare avanti e indietro nelle pagine non funzione quando sei sulla playpage
+	▫	Rimangono i pezzi mangiati il playerinfo anche da una partita all'altra se ne
+		fai una di seguito all'altra
 
 //TODO FRONTEND - 
 	✓	websocket per lo stato online
