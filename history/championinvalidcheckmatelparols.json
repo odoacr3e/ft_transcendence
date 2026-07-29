@@ -1,6 +1,6 @@
 {
   "moves": 5,
-  "victory": "white",
+  "victory": "",
   "finalBoard": "|M|J|V|C|K|V|J|M|\n|B|B|B|B|B| |B|B|\n| | | | | |B| | |\n| | | | | | | |C|\n| | | | | | | | |\n| | | | |B| | | |\n|B|B|B|B| |B|B|B|\n|M|J|V| |K|V|J|M|\n",
   "matchSettings": "1v1",
   "events": [
@@ -67,7 +67,6 @@
       "counter": 4,
       "updates": {},
       "error": false,
-      "lastLost": "black",
       "time": 900000
     }
   ]
