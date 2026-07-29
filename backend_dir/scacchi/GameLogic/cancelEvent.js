@@ -102,6 +102,7 @@ function cancelMove(match, lastEvent)
 		DangerUpdate(match, coord);
 	}
 	updateBoostedChampions(match, [lastEvent.from, lastEvent.to]);
+	match.moves--;
 }
 
 /**

@@ -7,7 +7,6 @@
 	-	moveCastling:	performs a castling move.
 */
 
-import { Chess } from "../lib/lib.js";
 import { Match } from "../Classes/Chess/match.js";
 import { isDangerous } from "../utils/checkDanger.js";
 import { movePiece, getPieces } from "../utils/movePiece.js";

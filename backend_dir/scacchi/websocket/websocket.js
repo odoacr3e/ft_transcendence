@@ -6,11 +6,6 @@
 */
 
 import * as lib from "../lib/lib.js";
-const { ALLOWED_URL } = lib;
-const { jwt } = lib.auth;
-const { redis } = lib.conn;
-const { parse, server } = lib.include;
-import { globals } from "../Classes/Globals/globals.js";
 import { DEBUG_WEBSOCKETS, MATCH_RECONNECT_TIMER, SOCKET_RECONNECT_TIMER, TOURNAMENT_WAIT_TIMER} from "../Macro/macro.js";
 import { query } from "../lib/query.js";
 import { websocketConnectionHandler, websocketDisconnectionHandler } from "./handlers/connection.js";
@@ -20,9 +15,9 @@ import { routesTournament } from "./routes/routesTournaments.js";
 
 /** @typedef {import("../Classes/Globals/socketInfo.js").SocketInfo} Socket */
 
-export const sockio = new lib.include.SocketIO(server, {
+export const sockio = new lib.include.SocketIO(lib.include.server, {
 	cors: {
-		origin: ALLOWED_URL,
+		origin: lib.ALLOWED_URL,
 		methods: ["GET", "POST"],
 		credentials: true
 	},
@@ -40,14 +35,14 @@ sockio.engine.use(async (req, res, next) => {
 	//			permette di avere user fasulli per testare il matchmaking
 	if (DEBUG_WEBSOCKETS == true)
 		return (next());
-	const cookies = parse(req.headers.cookie || "");
+	const cookies = lib.include.parse(req.headers.cookie || "");
 	const token = cookies.jwt_token;
 	if (!token)
 		return next(new Error("User not authorized"));
-	if (await redis.get(`blacklist:${token}`))
+	if (await lib.include.redis.get(`blacklist:${token}`))
 		return next(new Error("User not authorized"));
 	try {
-		req.user = jwt.verify(token, process.env.JWT_SECRET);
+		req.user = lib.auth.jwt.verify(token, process.env.JWT_SECRET);
 	} catch (error) {
 		console.log("error: ", error);
 		return next(new Error("User not authorized"));

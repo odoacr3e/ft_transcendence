@@ -18,6 +18,7 @@ import { boardStringify } from "../../test/render.js";
 import { globals } from "../../Classes/Globals/globals.js";
 import { Timer }	from "../../Classes/Chess/match.js";
 import { setTimerGame } from "../../GameLogic/timer.js";
+import { AIexecuteTurn } from "../../GameLogic/aiTurn.js";
 
 /**
  * goes to the next turn
@@ -60,12 +61,14 @@ function endTurn(match, sendBoardBool=true)
 		p.time = match.timer.time - (Date.now() - match.timer.start);
 	}
 	setTimerGame(match);
-	console.log(`Now it's ${match.currentPlayer.team} turn.`);
+	// console.log(`Now it's ${match.currentPlayer.team} turn.`);
 	if (checkKingDanger(match, match.currentPlayer.team))
 		result.specialMoves.SetKingDanger();
 	result.status = 200;
 	if (sendBoardBool)//@ts-ignore
 		result.board = clientBoard(match);
+	if (match.currentPlayer.ai && match.aiSimulation == false)
+		AIexecuteTurn(match);
 	return (result);
 }
 

@@ -70,8 +70,6 @@ async function websocketDisconnectionHandler(socket, user, friendsId)
 			if (!socketData)
 				throw (`disconnect: socketData is empty`);
 			globals.ClearTimer(user.id_user);
-			socket.removeAllListeners();
-			socket.disconnect();
 			console.log(`User with id ${user.id_user} disconnected`);
 			globals.RemoveFromAllQueues(user.id_user);
 			result = globals.DeletePlayer(socketData.matchData?.matchId, socketData.matchData?.team);

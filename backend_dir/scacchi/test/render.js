@@ -1,11 +1,9 @@
 // @ts-check
 import { Square, ChessBoard} from "../Classes/Chess/chessBoard.js";
-import { getLegalMoves } from "../GameLogic/checkLegalMoves.js";
-import {eTeam, getInitialOfTeam} from "../Macro/enums.js";
+import {eTeam, getInitialOfTeam, enumNames} from "../Macro/enums.js";
 import * as lib from "../lib/lib.js";
 import { isDangerous } from "../utils/checkDanger.js";
 // const {Match} = require("../Classes/Chess/match.js");
-const enumNames = lib.Enums.enumNames;
 import { includesOneOf } from "../utils/string.js";
 
 /** @typedef {import("../Classes/Chess/match.js").Match} Match*/

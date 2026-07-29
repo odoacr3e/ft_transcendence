@@ -25,7 +25,7 @@ import { jsonParser } from "../../utils/response.js";
  * @param {String} from
  * @returns {Result}
  */
-function boost(match, from, realBoost=true)
+function boost(match, from, realBoost=true, sendBoardBool=true)
 {
 	let	result;
 	let prevBoost;
@@ -39,14 +39,14 @@ function boost(match, from, realBoost=true)
 	result.status = 200;
 	if (match.boost == BOOSTED_MAX)
 	{
-		checkMateCheckAll(match, result, match.currentPlayer.team);
+		checkMateCheckAll(match, result);
 		if (endTurn(match, false).specialMoves.CheckKingDanger())
 			result.specialMoves.SetKingDanger();
 	}
 	if (prevBoost == "")
 		prevBoost = from;
-	// @ts-ignore
-	result.board = clientBoard(match);
+	if (sendBoardBool == true)// @ts-ignore
+		result.board = clientBoard(match);
 	result.match = match;
 	return (result);
 }

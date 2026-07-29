@@ -1,5 +1,6 @@
 
 import { prisma } from "../lib/prisma.js";
+import { getUserStats } from "./matchHistoryQuery.js";
 
 export async function getAllUsers() {
 	return await prisma.users.findMany({
@@ -238,7 +239,7 @@ export async function getUserByEmail(email) {
 }
 
 export async function getLeaderboard() {
-	return await prisma.users.findMany({
+	const leaderboard = await prisma.users.findMany({
 		select: {
 				id_user: true,
 				username: true,
@@ -253,6 +254,21 @@ export async function getLeaderboard() {
 		],
 		take: 10
 	});
+	const stats = await getUserStats(leaderboard.map(u => u.id_user));
+	const statsMap = new Map(stats.map(s => [s.id_user, s]));
+	const result = leaderboard.map(user => {
+		const stat = statsMap.get(user.id_user);
+		return {
+			...user,
+			stats: {
+				w: stat?.w ?? 0,
+				d: stat?.d ?? 0,
+				l: stat?.l ?? 0,
+				total: stat?.total ?? 0
+			}
+		};
+	});
+	return result;
 }
 
 /**

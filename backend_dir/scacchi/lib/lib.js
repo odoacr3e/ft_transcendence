@@ -4,7 +4,6 @@ import https from "https";
 import url from "url";
 import fs from "fs";
 import { openSync } from 'fs';
-import path from "path";
 import express from "express";
 import {Server as SocketIO} from "socket.io";
 import jwt from "jsonwebtoken";
@@ -13,17 +12,17 @@ import passport from './passport.js';
 import { parse } from "cookie";
 import cookieParser from 'cookie-parser';
 import multer from 'multer';
+import path from "path";
 import sharp from 'sharp';
 
 // SECTION: vars
 const app = express();
 const server = http.createServer(app);
-export const logfd = openSync("../log", 'a+');
-export const PORT = process.env.PORT || 8080;
-export const ALLOWED_URL = process.env.ALLOWED_URL?.split(',') ?? ['http://localhost'];
+const logfd = openSync("../log", 'a+');
+const PORT = process.env.PORT || 8080;
+const ALLOWED_URL = process.env.ALLOWED_URL?.split(',') ?? ['http://localhost:5173'];
 
 // SECTION: connections
-import { prisma } from "./prisma.js";
 import { redis } from "./redis.js";
 import crypto from "crypto";
 import { sendEmail, bodyOTP, bodyRegistration } from "./emailSender.js"
@@ -36,15 +35,7 @@ redis.on("error", (stream) =>
 });
 
 // SECTION - external inclusions
-const include = {http, https, url, fs, multer, sharp, path, express, SocketIO, app, server, parse, cookieParser};
-
-// SECTION - chess classes/objects
-import {Piece} from "../Classes/Chess/Pieces/pieces.js";
-import {Preset, preset} from "../Classes/Chess/Pieces/preset.js";
-import {Cursor} from "../Classes/Chess/cursor.js";
-import {includesOneOf} from "../utils/string.js";
-import {ChessBoard, Square, initBoard, copyBoard, copyBoostedTargetZones} from "../Classes/Chess/chessBoard.js";
-const Chess = {Piece, Preset, preset, ChessBoard, initBoard, copyBoard, copyBoostedTargetZones, Cursor, Square};
+const include = {http, https, redis, url, fs, multer, sharp, path, express, SocketIO, app, server, parse, cookieParser};
 
 // SECTION - macro
 import * as Macro from "../Macro/macro.js";
@@ -52,14 +43,7 @@ import * as Macro from "../Macro/macro.js";
 // SECTION - Enums
 import * as Enums from "../Macro/enums.js";
 
-// SECTION - utils function
-import * as utils from "../utils/dangerUpdate.js";
-let gameUtils = {};
-
 const conn = { redis, crypto, sendEmail, bodyOTP, bodyRegistration };
 const auth = { jwt, cors, passport };
 
-const lib = { include, Chess, Macro, Enums, preset, utils, gameUtils, conn};
-
-export { include, Chess, Macro, Enums, preset, utils, gameUtils, conn, auth };
-export default lib;
+export { include, Macro, Enums, conn, auth, logfd, PORT, ALLOWED_URL};

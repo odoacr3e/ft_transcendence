@@ -1,5 +1,4 @@
 
-import { count } from "node:console";
 import { prisma } from "../lib/prisma.js";
 
 export async function getAllUserMatches(id_user) {
@@ -87,4 +86,61 @@ export async function getAllUserMatches(id_user) {
 		return counter;
 	}, { w: 0, d: 0, l: 0, total: 0});
 	return ({ matches, stats });
+}
+
+export async function getUserStats(ids_users) {
+	const stats = await prisma.users_matches.groupBy({
+		by: ['id_user', 'outcome'],
+		where: {
+			id_user: {
+				in: ids_users.map(Number)
+			}
+		},
+		_count: {
+			_all: true
+		},
+		orderBy: [
+			{ id_user: 'asc' }
+		]
+	});
+	const users = await prisma.users.findMany({
+		where: {
+			id_user: {
+				in: ids_users.map(Number)
+			}
+		},
+		select: {
+			id_user: true,
+			username: true
+		}
+	});
+	const result = users.map(user => {
+		const userStats = {
+			id_user: user.id_user,
+			username: user.username,
+			w: 0,
+			d: 0,
+			l: 0,
+			total: 0
+		};
+
+		stats.filter(s => s.id_user === user.id_user).forEach(s => {
+			switch (s.outcome) {
+				case 'Win':
+					userStats.w = s._count._all;
+					break;
+				case 'Draw':
+					userStats.d = s._count._all;
+					break;
+				case 'Lose':
+					userStats.l = s._count._all;
+					break;
+			}
+
+			userStats.total += s._count._all;
+		});
+		return userStats;
+	});
+
+	return result;
 }
