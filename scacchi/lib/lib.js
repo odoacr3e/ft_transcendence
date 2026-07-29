@@ -35,7 +35,7 @@ redis.on("error", (stream) =>
 });
 
 // SECTION - external inclusions
-const include = {http, https, url, fs, multer, sharp, path, express, SocketIO, app, server, parse, cookieParser};
+const include = {http, https, redis, url, fs, multer, sharp, path, express, SocketIO, app, server, parse, cookieParser};
 
 // SECTION - macro
 import * as Macro from "../Macro/macro.js";

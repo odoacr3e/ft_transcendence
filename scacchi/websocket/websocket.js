@@ -35,14 +35,14 @@ sockio.engine.use(async (req, res, next) => {
 	//			permette di avere user fasulli per testare il matchmaking
 	if (DEBUG_WEBSOCKETS == true)
 		return (next());
-	const cookies = parse(req.headers.cookie || "");
+	const cookies = lib.include.parse(req.headers.cookie || "");
 	const token = cookies.jwt_token;
 	if (!token)
 		return next(new Error("User not authorized"));
-	if (await redis.get(`blacklist:${token}`))
+	if (await lib.include.redis.get(`blacklist:${token}`))
 		return next(new Error("User not authorized"));
 	try {
-		req.user = jwt.verify(token, process.env.JWT_SECRET);
+		req.user = lib.auth.jwt.verify(token, process.env.JWT_SECRET);
 	} catch (error) {
 		console.log("error: ", error);
 		return next(new Error("User not authorized"));
