@@ -1,7 +1,7 @@
 import { io }				from 'socket.io-client'
 import { authApi }			from '../router/api/auth.api';
 import { defineStore }		from 'pinia';
-import { assignGameSocket } from '@/scripts/Data/SocketLink';
+import { listenGameSocket } from '@/scripts/Data/SocketLink';
 
 export const useAuthStore = defineStore('auth', {
 	state: () => ({
@@ -147,8 +147,14 @@ export const useAuthStore = defineStore('auth', {
 		{
 			if (this.socket) { return; }
 
+			console.log("connessione al socket!");			
 			this.socket = io({ withCredentials: true });
-			assignGameSocket(this.socket);
+			
+			listenGameSocket(this.socket);
+
+			this.socket.on('connect', () => {
+				console.log(`Socket id: ${this.socket.id}`);
+			})
 
 			this.socket.on('friend:online',		({ userId }) =>	{ this.usersOnline.add(userId); });
 			this.socket.on('friend:offline',	({ userId }) =>	{ this.usersOnline.delete(userId); });

@@ -12,9 +12,21 @@
 	});
 	const	player	= computed(() => DOMPlayer(prop.p)),
 			playing	= computed(() => player.value.isPlaying),
+			running	= computed(() => playing.value && localInfo.matchStarted && !localInfo.victory),
 			up		= prop.pos === 'top',
 			down	= prop.pos === 'bottom',
 			endT	= computed(() => localInfo.secondTurn);
+
+	const nameSize = computed(() => {
+		const len = Math.max(
+			DOMPlayer(1)?.name?.length ?? 0,
+			DOMPlayer(2)?.name?.length ?? 0
+		);
+		if (len <= 12)	{ return 'x-large'; }
+		if (len <= 18)	{ return 'large'; }
+		if (len <= 24)	{ return 'medium'; }
+		return 'small';
+	});
 
 	const Piece = computed(() => {
 		if (!localInfo.clickedId) { return null; }
@@ -24,41 +36,33 @@
 
 <template>
 	<div class="wrap"
-		v-bind:class="{'rounded-t-md mb-1':up, 'rounded-b-md mt-1':down}">
-		<img :src="player.image ? `${player.image}` : defaultAvatar" @error="handleAvatarError"
-				alt="User Icon" :draggable="false" class="size-18.75 shrink-0 object-cover"
-			v-bind:class="{'rounded-tl-md':up, 'rounded-bl-md':down}">
+		v-bind:class="{'rounded-t-md mb-1':up, 'rounded-b-md mt-1':down, 'is-turn':playing}">
 
-		<div class="shrink-0">
-			<b><h1 class="max-w-44 overflow-hidden text-ellipsis">{{ player.name }}</h1></b>
+		<img :src="player.image ? `${player.image}` : defaultAvatar" @error="handleAvatarError"
+			alt="User Icon" :draggable="false" class="rounded-full object-cover size-18.75 shrink-0 stretch 0 dim"
+			v-bind:class="{ 'dim-off':!playing }">
+
+		<div class="shrink-0 dim" v-bind:class="{'dim-off':!playing}">
+			<b><h1 class="max-w-56 overflow-hidden text-ellipsis whitespace-nowrap"
+					:style="{ fontSize: nameSize }">{{ player.name }}</h1></b>
 			<div class="flex">
 				<h2>Points: {{ player.nPoints }}</h2>
 				<p class="text-[#4e4e4e8c] mx-2">|</p>
 				<CapturedPieces :player="player"/>
 			</div>
 		</div>
-		<div class="grow flex items-center justify-start gap-2 pr-2">
-			<button class="bg-amber-300 text-sm
-							transition delay-50 duration-300 ease-in-out hover:-translate-y-0.5 hover:scale-105 hover:bg-orange-400"
-					v-bind:class="{ 'grayscale pointer-events-none':(!playing || !Piece || !Piece.isBoostedBool || Piece.team !== player.team || localInfo.secondTurn),
-						'cursor-pointer grayscale-0 pointer-events-auto':(playing && Piece && Piece.isBoostedBool && (Piece.team === player.team) && !localInfo.secondTurn) }"
-				@click="useAbility()" v-if="playing && localInfo.hasBoost">
-				<img src="../assets/boost.png" alt="" :draggable="false" class="size-5">
-				<b>Use Ability!</b>
-			</button>
-			<button class="bg-blue-500 text-sm
-						transition delay-50 duration-300 ease-in-out hover:-translate-y-0.5 hover:scale-105 hover:bg-indigo-500 cursor-pointer"
-				@click="sendEndTurn()" v-if="endT && playing">
-				<img src="../assets/endturn.png" alt="" :draggable="false" class="size-5">
-				<b>End Turn</b>
-			</button>
-		</div>
-		<TimerClock :millis="player.time" :go="playing" :team="player.team"/>
+		<TimerClock :millis="player.time" :go="running" :team="player.team" class="ml-auto"/>
 	</div>
 </template>
 
 <style scoped>
 	.wrap {
+		--frame-thickness: 5px;
+		--frame-dark: #1b0000;
+		--frame-mid: #801a12;
+		--frame-light: #bb4232;
+		--frame-glint: #fff1e6;
+		--frame-speed: 4s;
 		display: flex;
 		flex-direction: row;
 		z-index: 10;
@@ -67,13 +71,74 @@
 		align-self: center;
 		width: 600px;
 		user-select: none;
+		padding: 1.5%;
+	}
+
+	@property --angle {
+		syntax: '<angle>';
+		inherits: false;
+		initial-value: 0deg;
+	}
+
+	.wrap::before,
+	.wrap::after
+	{
+		content: "";
+		position: absolute;
+		inset: 0;
+		box-sizing: border-box;
+		padding: var(--frame-thickness);
+		border-radius: inherit;
+		z-index: 11;
+		pointer-events: none;
+		-webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+		-webkit-mask-composite: xor;
+		mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+		mask-composite: exclude;
+	}
+
+	.wrap::before
+	{
+		background: linear-gradient(135deg,
+			var(--frame-dark) 0%, var(--frame-mid) 18%, var(--frame-light) 32%,
+			var(--frame-dark) 50%, var(--frame-light) 68%,
+			var(--frame-mid) 82%, var(--frame-dark) 100%);
+		filter: grayscale(.75) brightness(.45);
+		transition: filter .4s ease, box-shadow .4s ease;
+	}
+
+	.wrap::after
+	{
+		background: conic-gradient(from var(--angle),
+			transparent 0deg, transparent 265deg,
+			rgba(255, 241, 230, 0) 285deg, var(--frame-glint) 305deg,
+			rgba(255, 241, 230, 0) 325deg, transparent 340deg, transparent 360deg);
+		animation: frame-spin var(--frame-speed) linear infinite;
+		opacity: 0;
+		transition: opacity .4s ease;
+	}
+
+	.wrap.is-turn::before
+	{
+		filter: none;
+		box-shadow: inset 0 0 12px 3px rgba(0, 0, 0, .6),
+					inset 0 0 22px 6px rgba(255, 178, 148, .55);
+	}
+	.wrap.is-turn::after { opacity: 1; }
+
+	@keyframes frame-spin { to { --angle: 360deg; } }
+
+	.dim {
+		transition: opacity .4s ease;
+	}
+	.dim-off {
+		opacity: .4;
 	}
 
 	h1 {
 		color: white;
 		padding: 3px;
 		padding-left: 8px;
-		font-size: x-large;
 	}
 
 	h2 {

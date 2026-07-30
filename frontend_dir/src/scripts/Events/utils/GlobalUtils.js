@@ -3,6 +3,7 @@ import { PIECES_HIGHLIGHT }								from "@/scripts/Helper/piecesHighlights";
 import { computePosition }								from "@floating-ui/dom";
 import { clearHighlight }								from "@/scripts/Events/utils/HighlightUtils.js";
 import { requestToBack }								from "@/scripts/Events/BackLink.js";
+import { useAuthStore } 								from "@/stores/auth.st";
 
 // ANCHOR USER INTERACTION FUNCTIONS
 export function useAbility()
@@ -41,7 +42,7 @@ export function shopAbility()
 				if (MACRO.AUDIO)
 					new Audio("/src/assets/audios/boost.mp3").play(); 
 			}},
-			function(value) {if (!value) { console.log("Mossa non valida"); }}
+			function(value) {if (!value) { console.log("Shop non completato correttamente"); }}
 		);
 }
 
@@ -57,7 +58,22 @@ export async function sendEndTurn()
 			new Audio("/src/assets/audios/endTurn.mp3").play();
 	}
 	else
-		console.log("Mossa non valida");
+		console.log("End turn non mandato correttamente");
+}
+
+export async function sendGiveUp()
+{
+	let response;
+
+	response = await requestToBack(null, null, 'giveUp');
+	if (response)
+	{
+		clearHighlight();
+		if (MACRO.AUDIO)
+			new Audio("vedemmu");
+	}
+	else
+		console.log("Give up non mandato correttamente")
 }
 
 export function upgradeBastard(newType)
@@ -98,6 +114,8 @@ export function moveDragClone(event)
 			}
 		};
 		computePosition(cursor, localInfo.dragClone).then(({ x, y }) => {
+			if (!localInfo.dragClone)
+				return;
 			Object.assign(localInfo.dragClone.style, {
 			top: `${y - 40}px`,
 			left: `${x}px`
@@ -157,18 +175,85 @@ export function usingAbility()
 	const lastUseAbility = lastSquare?.useAbilityBool && lastSquare?.piece.isBoostedBool;
 	const useAbility	 = square.useAbilityBool && square.piece.isBoostedBool;
 
-    return ((localInfo.lastClickedId && (useAbility || lastUseAbility)) || secondTurn);
+    return (localInfo.usingAbility !== "" && ((localInfo.lastClickedId && (useAbility || lastUseAbility)) || secondTurn));
 }
 
-export function updatePrice()
+export async function showBoostedMovesHover(fromId)
 {
-	const Piece = localBoard.get(localInfo.clickedId).piece;
-	const Player = localPlayers.values().find(p => p.isPlaying === true);
+	const auth = useAuthStore();
+	if (!auth.socket)
+		return;
 
-	if (Piece.isBoostedBool)
-		localInfo.priceSelected = "This piece is already\nboosted you fool!";
-	else if (Piece.price > Player.nPoints)
-		localInfo.priceSelected = "AHAH! You're too poor\nto buy that!";
-	else
-		localInfo.priceSelected = "Price: " + Piece.price;
+	const response	= await auth.socket.emitWithAck('simulate_boost', { from: fromId, to: "" });
+	const square	= localBoard.get(fromId);
+	if (!square)
+		return;
+	console.log(response);	
+	if (response?.log?.status !== 200)
+	{
+		console.log("[showBoostedMovesHover]: response status != 200!", response);
+		return;
+	}
+	const futureBoostedZones = new Map(
+		Object.entries(response.zones || {}).map(([key, value]) =>
+			[key, new Set(Array.isArray(value) ? value : [])])
+	);
+	localInfo.savedBoostedMap = futureBoostedZones;
+	for (let toHighlight of futureBoostedZones)
+	{
+
+		const isValkirya = localBoard.get(toHighlight[0]).piece.type === "Valkirya";
+		const isJester = localBoard.get(toHighlight[0]).piece.type === "Jester";
+		for (let id of toHighlight[1])
+		{
+			const piece = localBoard.get(id)?.piece;
+			const pieceTeam = piece?.team;	
+			if ((isValkirya || isJester) && pieceTeam === localInfo.myTeam)
+			{
+				console.log("vediamo: ", pieceTeam !== localInfo.myTeam);
+				continue;
+			}
+			else
+				localBoard.get(id).boostedHighlight = true;
+		}
+	}
+}
+
+export async function showBoostedMovesLeave()
+{
+	clearHighlight("boosted");
+}
+
+export function blinkSquares(ids, { times = 3, interval = 300, delay = 300 } = {})
+{
+	const timers = [];
+
+	[...ids].forEach((id, i) => {
+		const square = localBoard.get(id);
+		if (!square)
+			return;
+
+		timers.push(setTimeout(() => {
+			let toggles = 0;
+			square.selected = true;
+			const blink = setInterval(() => {
+				square.selected = !square.selected;
+				if (++toggles >= times * 2)
+				{
+					clearInterval(blink);
+					square.selected = false;
+				}
+			}, interval);
+			timers.push(blink);
+		}, i * delay));
+	});
+
+	return () => {
+		timers.forEach(clearTimeout);
+		[...ids].forEach(id => {
+			const square = localBoard.get(id);
+			if (square)
+				square.selected = false;
+		});
+	};
 }

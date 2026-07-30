@@ -4,6 +4,8 @@ import { localBoard, localInfo }	from "@/scripts/Data/Variables";
 import { getTarget }				from "./utils/MovementUtils.js";
 // import { MACRO } 					from "@/scripts/Data/Variables";
 import { useAuthStore } from "@/stores/auth.st.js";
+import { sendEndTurn } from "./utils/GlobalUtils.js";
+// import { connect } from "node:http2";
 // import { _jsonReviver }				from "../Data/utils/ArchiUtils.js";
 
 export async function sendToBackend(fromId, toId, flag)
@@ -33,19 +35,15 @@ export async function sendToBackend(fromId, toId, flag)
 	}
 }
 
-export async function requestToBack(fromSquare, toSquare)
+export async function requestToBack(fromSquare, toSquare, opType)
 {
 	const auth = useAuthStore();
 	let type;
-	const toPiece = (() => {
-			if (fromSquare && toSquare && localBoard.get(toSquare).piece &&
-				localBoard.get(toSquare).piece.team !== localBoard.get(fromSquare).piece.team)
-				return (localBoard.get(toSquare).piece);
-			else
-				return null;
-		})();
-
-	if (fromSquare === null && toSquare === null && localInfo.secondTurn)
+	if (opType === "showBoost")
+		{type = "simulate_boost"; toSquare = "";}
+	else if (opType === "giveUp")
+		{type = "giveup"; fromSquare = ""; toSquare = ""; }
+	else if (fromSquare === null && toSquare === null && localInfo.secondTurn)
 		{type = "endturn"; fromSquare = ""; toSquare = ""; }
 	else if (fromSquare && toSquare === null)
 		{type = "boost"; toSquare = ""; }
@@ -53,40 +51,92 @@ export async function requestToBack(fromSquare, toSquare)
 		{type = "trans"; fromSquare = localInfo.goatId; localInfo.goatId = null; }
 	else if (fromSquare && toSquare && ((localInfo.secondMove && localInfo.secondTurn) || localBoard.get(fromSquare).useAbilityBool))
 		{type = "moveboost";}
-	else {type = "move"; }
+	else {type = "move";}
 	let	timeout;
 
-	timeout = setTimeout(() => 
-		{
-			console.log("Il backend è stato liberato");
-		}, 1000 * 1);
+	timeout = setTimeout(() => {}, 1000 * 1);
+	console.log("req: type: ", type, "from: ", fromSquare, "to: ", toSquare);
+		
 	return new Promise((resolve) => {
 		auth.socket.emit("game", { type, from: fromSquare, to: toSquare }, (result) => {
-			// console.log(`request: type: ${type}, from: ${fromSquare}, to:${toSquare}`)
+			console.log(`request: type: ${type}, from: ${fromSquare}, to:${toSquare}`)
 			clearTimeout(timeout);
-			if (result?.log?.status === 200 && toPiece)
-				localInfo.capturedP[toPiece.team === "white" ? "black" : "white"][toPiece.type] += 1;
 			resolve(result?.log?.status === 200);
 		});
 
 	});
 }
 
-export function reloadMatch()
+/**
+ * Chiede al back se questo client è dentro una partita.
+ * Il payload {} serve a far finire l'ack in seconda posizione lato server.
+ * @returns {Promise<boolean>}
+ */
+export async function amIPlaying()
 {
 	const auth = useAuthStore();
+
 	if (!auth.socket)
-		return(Promise.resolve(false));
-	return new Promise((resolve) => 
+		return (false);
+	try {
+		return (await auth.socket.timeout(3000).emitWithAck('amiplaying', {}) === true);
+	} catch {
+		console.log("[BackLink] -> [amIPlaying]: nessuna risposta dal back");
+		return (false);
+	}
+}
+
+export function reloadMatch()
+{
+	console.log("chiamata di reload!");
+	const auth = useAuthStore();
+	if (!auth.socket)
+		return (Promise.resolve(false));
+
+	return new Promise((resolve) =>
 	{
-		let done = false;
-		const timeout = setTimeout(() => { if (!done) {done = true; resolve(false); }}, 5000);
-		auth.socket.emit("game", { type: "reload", from: "", to: ""}, (result) => {
-			if (done)
-				return;
-			done = true;
+		let retryId = null;
+
+		const emit = () => {
+			console.log("[reload] emit");
+			auth.socket.emit("game", {
+				type: "reload",
+				from: sessionStorage.getItem("match:myTeam"),
+				to: ""
+			});
+		};
+
+		const finish = (ok) => {
 			clearTimeout(timeout);
-			resolve(result?.log.status == 200);
-		});
+			clearInterval(retryId);
+			auth.socket.off("game", onResponse);
+			auth.socket.off("connect", start);
+			resolve(ok);
+		};
+
+		const onResponse = (raw) => {
+			if (raw?.type === "reload")
+				return finish(raw?.log?.status === 200);
+			//le risposte d'errore non hanno type: inutile continuare a riprovare
+			if (raw?.log?.status && raw.log.status !== 200)
+			{
+				console.log("[reload] il back rifiuta:", raw.log.msg);
+				return finish(false);
+			}
+		};
+
+		const start = () => {
+			emit();
+			retryId = setInterval(emit, 1000);
+		};
+
+		const timeout = setTimeout(() => finish(false), 6000);
+
+		auth.socket.on("game", onResponse);
+
+		if (auth.socket.connected)
+			start();
+		else
+			auth.socket.once("connect", start);
 	});
 }

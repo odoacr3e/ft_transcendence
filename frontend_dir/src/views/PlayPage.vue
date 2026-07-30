@@ -1,15 +1,17 @@
 <script setup>
-	import { matchMakingOpt }			from '@/scripts/Data/Variables.js';
-	import { eRoomType, eMatchPresets } from '@/Common/ENUMS.js';
-	import { useAuthStore } 			from '@/stores/auth.st.js';
-	import { ref, computed, watch }		from 'vue';
+	import { matchMakingOpt }					from '@/scripts/Data/Variables.js';
+	import { eRoomType } 						from '@/Common/ENUMS.js';
+	import { useAuthStore } 					from '@/stores/auth.st.js';
+	import { ref, computed, watch, onMounted }	from 'vue';
+	import router								from '@/router';
 
-	const auth     = useAuthStore();
+	const auth      = useAuthStore();
 
-	const roomType = ref(null);
-	const players  = ref(null);
-	const time     = ref(null);
-	const waiting  = ref(false);
+	const roomType  = ref(null);
+	const players   = ref(null);
+	const time      = ref(null);
+	const waiting   = ref(false);
+	const reloading = ref(false);
 
 	const canPlay = computed(() => {
 		if (!roomType.value || !players.value)
@@ -24,7 +26,7 @@
 	function sendPlayRequest()
 	{
 		const options = new matchMakingOpt({
-			matchType:		eMatchPresets[players.value],
+			matchType:		players.value,
 			roomType:		eRoomType[roomType.value],
 			matchSettings:	null
 		})
@@ -34,6 +36,23 @@
 		console.log(useAuthStore().username, " ha appena richiesto un matchmaking!");
 		waiting.value = true;
 	}
+
+	async function askAmIPlaying()
+	{
+		if (!auth.socket)
+			return;
+		try {
+			const playing = await auth.socket.timeout(3000).emitWithAck('amiplaying', {});
+			if (playing)
+				router.push({ name: "game" });
+			else
+				console.log("allora non sto already doing playing eh?");
+		} catch {
+			console.log("[askAmIPlaying]: nessuna risposta dal back, resto in playpage");
+		}
+	}
+
+	onMounted(askAmIPlaying);
 </script>
 
 <template>
@@ -93,8 +112,11 @@
 			</div>
 			<div v-else class="flex flex-col items-center justify-center gap-6 py-20">
 				<div class="w-16 h-16 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin"></div>
-				<p class="text-white text-xl tracking-widest">
+				<p v-if="!reloading" class="text-white text-xl tracking-widest">
 					Looking for opponent<span class="dot dot-1">.</span><span class="dot dot-2">.</span><span class="dot dot-3">.</span>
+				</p>
+				<p v-else class="text-white text-xl tracking-widest">
+					Reloading game<span class="dot dot-1">.</span><span class="dot dot-2">.</span><span class="dot dot-3">.</span>
 				</p>
 				<button @click="waiting = false; auth.socket?.emit('cancel_match')"
 						class="text-zinc-400 text-sm hover:text-white cursor-pointer transition-colors border-black border-5 rounded-full p-2 bg-red">

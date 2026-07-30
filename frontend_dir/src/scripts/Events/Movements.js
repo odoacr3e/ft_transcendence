@@ -10,6 +10,8 @@ export function onDragStart(event, square)
 
 	event.dataTransfer.setDragImage(event.target, window.outerWidth, window.outerHeight);
 
+	document.querySelectorAll("#floatingPiece").forEach(node => node.remove());
+
   	localInfo.dragClone = event.target.cloneNode(true);
 	localInfo.dragClone.id = "floatingPiece";
 	localInfo.dragClone.style.top = -200 + "px";

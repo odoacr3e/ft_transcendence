@@ -24,7 +24,7 @@ import "./SocketLink.js"
 // 	return match;
 // }
 
-export function validateReceivedMatch(rawJson)
+export function  validateReceivedMatch(rawJson)
 {
 	if (!rawJson || typeof rawJson !== "object" || Array.isArray(rawJson))
 		throw new Error("Payload non valido: root deve essere un oggetto.");
@@ -68,6 +68,11 @@ export function initLocalMatchState(raw)
 
 	localInfo.matchId = raw.id;
 	localInfo.myTeam = raw.team;
+	localInfo.victory = raw.victory;
+	localInfo.matchStarted = false;	//il timer non parte finché il bianco non ha mosso
+
+	sessionStorage.setItem("match:myTeam", raw.team);
+	sessionStorage.setItem("match:id", raw.id);
 }
 
 export function initLocalPlayers()
@@ -96,8 +101,10 @@ export function updateMatchState(nextRaw)
 {
 	const validated = validateReceivedMatch(nextRaw);
 
+	localInfo.victory = nextRaw.victory ?? null;
+	console.log("stampiamoci victory: ", localInfo.victory);
+	
 	checkEndTurn(validated);
-
 	startLocalMatchState(validated);
 	try 
 	{
@@ -134,12 +141,18 @@ export function updateLocalBoard(changes)
 			);
 			const oldSquare = localBoard.get(squareKey);
 			assignLastMoveSquares(oldSquare, newSquare, movedSquares);
+			if (oldSquare.piece && newSquare.piece && oldSquare.piece.team !== newSquare.piece.team)
+				localInfo.capturedP[newSquare.piece.team][oldSquare.piece.type] += 1;
 			oldSquare.piece = newSquare.piece;
 			oldSquare.targetZones = newSquare.targetZones;
 			oldSquare.boostedTargetZones = newSquare.boostedTargetZones;
 		}
 	});
-	localInfo.lastMovesSquares = movedSquares;
+	if (movedSquares.size > 0)
+	{
+		localInfo.lastMovesSquares = movedSquares;
+		localInfo.matchStarted = true;
+	}
 }
 
 export function updateLocalPlayers(changes) 
@@ -161,3 +174,26 @@ export function updateLocalPlayers(changes)
 	hasBoost(localPlayers.values().find(p => p.isPlaying === true));
 }
 //!SECTION
+
+export function reloadMatchState(raw)
+{
+	const validated = validateReceivedMatch(raw);
+	startLocalMatchState(validated);
+
+	initLocalBoard(localMatchState.board);
+	initLocalPlayers();
+
+	localInfo.myTeam = raw.team ?? sessionStorage.getItem("match:myTeam");
+	localInfo.matchId = sessionStorage.getItem("match:id");
+	localInfo.victory = raw.victory;
+	localInfo.matchStarted = true;	//si rientra a partita in corso: il timer riparte subito
+
+	if (raw.team)
+		sessionStorage.setItem("match:myTeam", raw.team);
+}
+
+export function clearMatchStorage()
+{
+	sessionStorage.removeItem("match:id");
+	sessionStorage.removeItem("match:myTeam");
+}

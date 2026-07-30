@@ -50,6 +50,7 @@ async function moveBastard(fromId, toId, flag)
 			{
 				localInfo.secondMove = false;
 				localInfo.usingAbility = "";
+				localInfo.savedBoostedMap = null;
 			}
 		}
 	}
@@ -117,6 +118,7 @@ async function moveMinoNChamp(fromId, toId, flag)
 				localBoard.get(fromId).useAbilityBool = false;
 				localInfo.secondMove = false;
 				localInfo.usingAbility = "";
+				localInfo.savedBoostedMap = null;
 			}
 		}
 	}

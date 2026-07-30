@@ -59,10 +59,8 @@ export async function globalEvents()
 			if (localInfo.dropDone) { localInfo.dropDone = false; }
 		}, 30);
 
-		if (localInfo.dragClone) {
-			localInfo.dragClone.remove();
-			localInfo.dragClone = null;
-		}
+		document.querySelectorAll("#floatingPiece").forEach(node => node.remove());
+		localInfo.dragClone = null;
 	});
 
 	document.addEventListener("keydown", async function(event)

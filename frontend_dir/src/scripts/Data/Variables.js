@@ -2,7 +2,22 @@
 import { boardConverter, getLocalPlayers }	from "../Helper/RenderUtils.js";
 import { reactive }							from "vue";
 
+/**
+ * @typedef {Object} Piece
+ * @property {string}  type           Tipo del pezzo (es. "King", "Bastards", ...)
+ * @property {string}  team           Squadra del pezzo (es. "white" | "black")
+ * @property {boolean} isBoostedBool  Se il pezzo è potenziato
+ * @property {number}  price          Costo del potenziamento
+ * @property {boolean} dragging       Se il pezzo è in trascinamento
+ */
+
 export class Square {
+	/**
+	 * @param {string}              id
+	 * @param {Piece|null}          piece
+	 * @param {Iterable<string>}    [targetZones]
+	 * @param {Iterable<any>}       [boostedTargetZones]
+	 */
 	constructor(id, piece, targetZones = [], boostedTargetZones = {}) {
 		this.id = id;
 		this.piece = piece;
@@ -10,6 +25,7 @@ export class Square {
 		this.boostedHighlight = false;
 		this.useAbilityBool = false;
 		this.selected = false;
+		this.inCheck = false;
 		this.clicked = false;
 		this.targetZones = new Set(targetZones);
 		this.boostedTargetZones = new Map(boostedTargetZones);
@@ -24,14 +40,16 @@ class metaInfo {
 		this.secondMove = false;
 		this.usingAbility = "";
 		this.hasBoost = false;
-		this.priceSelected = "...";
 		this.savedBoostedMap = null;
 		this.dragClone = null;
 		this.dropDone = false;
 		this.goatId = null;
 		this.matchId = null;
 		this.myTeam = null;
+		this.victory = null;
+		this.matchStarted = false;
 		this.lastMovesSquares = new Set();
+		this.blinking = null;
 		this.capturedP = {	white: { Bastards: 0, Minotaurus: 0, Valkirya: 0, Jester: 0, Champion: 0},
 							black: { Bastards: 0, Minotaurus: 0, Valkirya: 0, Jester: 0, Champion: 0} };
 	}
@@ -44,6 +62,7 @@ export let localInfo = reactive(new metaInfo());
 export let localMatchState = null;
 
 //Globale della scacchiera con tutti i dati delle caselle messa reactive
+/** @type {Map<string, Square>} */
 export let localBoard = reactive(new Map());
 
 //Globale array di giocatori che contiene tutti gli oggetti giocatori validi
@@ -121,7 +140,7 @@ export const DEFAULT_PREF = {
 };
 
 export let MACRO = Object ({
-	"AUDIO" : false,
+	"AUDIO" : true,
 });
 
 export const IMG_PATHS = Object.freeze ({
