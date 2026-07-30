@@ -54,7 +54,7 @@ function endTurn(match, sendBoardBool=true)
 		return (match.DrawMatch(result));//@ts-ignore
 	else if (match.boardStateMap.get(boardState) < 2)
 		match.boardStateMap.set(boardState, 2);
-	if (match.timer != null)
+	if (match.timer != null && match.aiSimulation == false)
 	{
 		// @ts-ignore
 		clearTimeout(match.timer.timeout);

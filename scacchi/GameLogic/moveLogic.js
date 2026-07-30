@@ -43,7 +43,8 @@ function updateChessboard(coords=[], result, match, boostBool)
 	//printSwap(match, coords, from, to);
 	if (to.piece && to.piece.team != from.piece.team)
 	{
-		console.log(`player ${match.currentPlayer.team} + ${to.piece.price}💲`);
+		if (match.aiSimulation == false)
+			console.log(`player ${match.currentPlayer.team} + ${to.piece.price}💲`);
 		match.currentPlayer.nPoints += to.piece.price;//@ts-ignore
 		match[to.piece.team].nPieces -= 1;
 		if (to.piece.isBoostedBool == true)//@ts-ignore

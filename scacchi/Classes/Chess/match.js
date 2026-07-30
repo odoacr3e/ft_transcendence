@@ -274,7 +274,7 @@ class Match
 		let player;
 		let tmp;
 
-		console.log("ed e' un pareggioooooooo!!!!");
+		// console.log("ed e' un pareggioooooooo!!!!");
 		if (this.aiSimulation == true)
 			return (new Result());
 		this.victory = "draw";

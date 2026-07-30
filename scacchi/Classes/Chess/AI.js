@@ -69,6 +69,7 @@ function getBestTurn(match)
 	ai = match.currentPlayer.ai;
 	if (!ai)
 		throw (`getBestTurn: you are not a machine!`);
+	console.log("Calculating best move...");
 	arrayTurns = getLegalMoves(match);
 	for (let i = 0; i != arrayTurns.length; i++)
 	{
@@ -114,7 +115,7 @@ function minMax(match, ai, arrayTurns, depth, pastTurns)
 	let	newTurns;
 	let val;
 
-	console.log(depth);
+	// console.log(depth);
 	if ((depth <= 0) || checkMateCheckAll(match, null))
 		return (evalScore(match, ai, pastTurns));
 	if (match.currentPlayer.team == eTeam.White)

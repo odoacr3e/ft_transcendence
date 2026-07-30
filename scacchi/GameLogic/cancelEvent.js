@@ -22,7 +22,8 @@ export function cancelEvent(match)
 
 	if (match.history.events.length == 0)
 		return (new Result().Error("Cannot cancel: nothing happened yet", 409));
-	console.log("behold an unthinkable present...");
+	if (match.aiSimulation == false)
+		console.log("behold an unthinkable present...");
 	lastEvent = match.history.Last();
 	if (includesOneOf(lastEvent.type, eEvents.Move, eEvents.MoveBoost))
 		errorMsg = cancelMove(match, lastEvent);
