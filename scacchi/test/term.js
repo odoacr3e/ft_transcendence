@@ -45,13 +45,13 @@ function mainTerm()
 	seed = "1v1";
 	time = process.hrtime.bigint();
 	init(match, seed);
-	historyRestore(match, HISTORY_DEFAULT);
-	match.NextPlayer().ai = new AI();
+	// historyRestore(match, HISTORY_DEFAULT);
+	// match.NextPlayer().ai = new AI();
 	console.log(`time to init: ${(process.hrtime.bigint() - time) / 1000n} microseconds`);
 	match.cursor.square = match.currentPlayer.King;
 	// edoChampionBug(match);
 	// move(match, "e2", "e4");
-	// render(match);
+	render(match);
 	return (match);
 }
 

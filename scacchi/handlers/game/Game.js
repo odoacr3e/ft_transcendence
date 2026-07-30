@@ -181,7 +181,7 @@ async function gameHandler(match, body, socketData=null)
  * @param {import("./utils.js").RequestBody} body
  * @param {import("../../Classes/Globals/globals.js").Socket | null} socketData
  */
-async function gameInfoHandler(match, body, socketData)
+async function gameInfoHandler(match, body, socketData=null)
 {
 	let	result;
 
