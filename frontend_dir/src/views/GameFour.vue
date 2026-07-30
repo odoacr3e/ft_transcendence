@@ -17,23 +17,23 @@
 </script>
 
 <template>
-    <div class="flex z-2 bg-[#181715] rounded-3xl">
-        <div class="p-6 bg-[#201e1c] rounded-l-3xl border-r border-[#4e4e4e8c]">
+    <div class="flex z-2 bg-bg-darker rounded-3xl">
+        <div class="p-6 bg-bg-default rounded-l-3xl border-r border-border-second">
             <ChessBoard :style="style"/>
         </div>
         <div class="p-10 flex-col mt-20 w-lg">
             <img :draggable="false" src="../assets/CrownIcon.png" alt="" class="w-30 justify-self-center">
-            <h1 class="text-[200%] mb-1 text-white justify-self-center">Ben tornato</h1>
-            <h4 class="text-[100%] mb-8 text-zinc-300 justify-self-center">Accedi al tuo account</h4>
+            <h1 class="text-[200%] mb-1 text-text-default justify-self-center">Ben tornato</h1>
+            <h4 class="text-[100%] mb-8 text-text-second justify-self-center">Accedi al tuo account</h4>
             
             <div class="m-5 flex flex-row justify-self-center gap-4">
-                <span class="border-b border-[#4e4e4e8c] h-4 w-40"></span>
-                <p class="text-[80%] text-zinc-300 mt-1">oppure</p>
-                <span class="border-b border-[#4e4e4e8c] h-4 w-40"></span>
+                <span class="border-b border-border-second h-4 w-40"></span>
+                <p class="text-[80%] text-text-second mt-1">oppure</p>
+                <span class="border-b border-border-second h-4 w-40"></span>
             </div>
             <div class="justify-self-center">
                 <RouterLink to="/register">
-                    <u><a class="text-[80%] text-[#882a2a] cursor-pointer hover:text-[#af3d3d] active:text-[#d1aaaa]">Registrati</a></u>
+                    <u><a class="text-[80%] text-main-color cursor-pointer hover:text-light-button active:text-active-button">Registrati</a></u>
                 </RouterLink>
             </div>
         </div>

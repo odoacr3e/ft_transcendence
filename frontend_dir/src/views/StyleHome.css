@@ -17,7 +17,7 @@
 	--color-notif-on: var(--current-notif-on);
 	--color-online-on: var(--current-online-on);
 	--color-bg-blur: var(--current-bg-blur);
-	--color-bg-button: var(--current-bg-button);
+	--color-main-color: var(--current-main-color);
 	--color-light-button: var(--current-light-button);
 	--color-active-button: var(--current-active-button);
 
@@ -70,9 +70,11 @@
 	--current-notif-on: #c41c1c;
 	--current-online-on: #00c950;		/*green-500*/
 	--current-bg-blur: #00000033;		/*black/20*/
-	--current-bg-button: #882a2a;
+	--current-main-color: #882a2a;
 	--current-light-button: #af3d3d;
 	--current-active-button: #d1aaaa;
+
+	/*--------------------------------------------------------*/
 
 	--current-bg-error: #2f1818cc;		/*[#2f1818]/80*/
 	--current-text-error: #ffe2e2;		/*red-100*/

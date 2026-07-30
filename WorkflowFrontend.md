@@ -216,7 +216,7 @@ boardConverter()
 	color: #c41c1c;		/*notif_on*/
 	color: #00c950;		/*online*/				/*green-500*/
 	color: #00000033;	/*bg_blur*/				/*black/20*/
-	color: #882a2a;		/*bg_button*/
+	color: #882a2a;		/*main-color*/
 	color: #af3d3d;		/*light_button*/
 	color: #d1aaaa;		/*active_button*/
 
@@ -266,7 +266,7 @@ boardConverter()
 	color: #c41c1c;		/*notif_on*/
 	color: #00c950;		/*online*/					/*green-500*/
 	color: #00000033;	/*bg_blur*/					/*black/20*/
-	color: #2a6287;		/*bg_button*/
+	color: #2a6287;		/*main-color*/
 	color: #3e82b0;		/*light_button*/
 	color: #a9c9de;		/*active_button*/
 
@@ -315,7 +315,7 @@ boardConverter()
     color: #c41c1c;     /*notif_on*/
     color: #00c950;     /*online*/					/*green-500*/
     color: #00000033;   /*bg_blur*/					/*black/20*/
-    color: #2d872a;     /*bg_button*/
+    color: #2d872a;     /*main-color*/
     color: #41b03e;     /*light_button*/
     color: #aadba8;     /*active_button*/
 
@@ -364,7 +364,7 @@ boardConverter()
     color: #c41c1c;     /*notif_on*/
     color: #00c950;     /*online*/					/*green-500*/
     color: #00000033;   /*bg_blur*/					/*black/20*/
-    color: #87712a;     /*bg_button*/
+    color: #87712a;     /*main-color*/
     color: #b0953e;     /*light_button*/
     color: #dbcfa8;     /*active_button*/
 
@@ -417,7 +417,7 @@ boardConverter()
     color: #c41c1c;     /*notif_on*/
     color: #00c950;     /*online*/					/*green-500*/
     color: #00000033;   /*bg_blur*/					/*black/20*/
-    color: #c54444;     /*bg_button*/
+    color: #c54444;     /*main-color*/
     color: #c55959;     /*light_button*/
     color: #e2acac;     /*active_button*/
 
@@ -466,7 +466,7 @@ boardConverter()
     color: #c41c1c;     /*notif_on*/
     color: #00c950;     /*online*/					/*green-500*/
     color: #00000033;   /*bg_blur*/					/*black/20*/
-    color: #4494c5;     /*bg_button*/
+    color: #4494c5;     /*main-color*/
     color: #5a9bc4;     /*light_button*/
     color: #adcde2;     /*active_button*/
 
@@ -515,7 +515,7 @@ boardConverter()
     color: #c41c1c;     /*notif_on*/
     color: #00c950;     /*online*/					/*green-500*/
     color: #00000033;   /*bg_blur*/					/*black/20*/
-    color: #46c544;     /*bg_button*/
+    color: #46c544;     /*main-color*/
     color: #5dc559;     /*light_button*/
     color: #b6e6b4;     /*active_button*/
 
@@ -564,7 +564,7 @@ boardConverter()
     color: #c41c1c;     /*notif_on*/
     color: #00c950;     /*online*/					/*green-500*/
     color: #00000033;   /*bg_blur*/					/*black/20*/
-    color: #c7a643;     /*bg_button*/
+    color: #c7a643;     /*main-color*/
     color: #c5ac59;     /*light_button*/
     color: #e6d6ac;     /*active_button*/
 
