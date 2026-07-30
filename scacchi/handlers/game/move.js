@@ -48,6 +48,8 @@ function move(match, from, to, boostBool=false, renderBoard=true)
 	checkMateCheckAll(match, result);
 	if (renderBoard == true)// @ts-ignore
 		result.board = clientBoard(match);
+	else
+		match.board.updates.clear();
 	secondMoveBool = checkSecondMove(match, to);
 	if ((match.moves >= MOVEMENT_MIN && !match.currentPlayer.nPoints) && !(secondMoveBool && boostBool) && 
 	!(match.cursor.EdgeCheck(match.currentPlayer.team) && match.board.get(match.cursor.square)?.piece?.type == enumNames.BASTARDS))
