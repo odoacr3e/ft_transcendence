@@ -71,8 +71,10 @@ export function initLocalMatchState(raw)
 	localInfo.victory = raw.victory;
 	localInfo.matchStarted = false;	//il timer non parte finché il bianco non ha mosso
 
-	sessionStorage.setItem("match:myTeam", raw.team);
-	sessionStorage.setItem("match:id", raw.id);
+	if (localInfo.myTeam)
+		sessionStorage.setItem("match:myTeam", localInfo.myTeam);
+	if (raw.id !== undefined && raw.id !== null)
+		sessionStorage.setItem("match:id", raw.id);
 }
 
 export function initLocalPlayers()
@@ -188,8 +190,8 @@ export function reloadMatchState(raw)
 	localInfo.victory = raw.victory;
 	localInfo.matchStarted = true;	//si rientra a partita in corso: il timer riparte subito
 
-	if (raw.team)
-		sessionStorage.setItem("match:myTeam", raw.team);
+	if (localInfo.myTeam)
+		sessionStorage.setItem("match:myTeam", localInfo.myTeam);
 }
 
 export function clearMatchStorage()

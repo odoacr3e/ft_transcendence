@@ -27,7 +27,7 @@ export function listenGameSocket(socket)
 				if (raw.check != undefined)
 				{
 					const threatId = new Set([raw.check.to, raw.check.mid, raw.check.from].filter(Boolean));
-					localInfo.blinking = blinkSquares(threatId, {interval: 650, delay: 650});
+					localInfo.blinking = blinkSquares(threatId, {interval: 450, delay: 450});
 					return;
 				}
 			}
@@ -63,8 +63,10 @@ export function listenGameSocket(socket)
 		}
 		if (raw.type === "timeout")
 		{
-			console.log("[socket game] -> [timeout]: tempos scaduto");
-			locaInfo.victory = raw.victory;
+			console.log("[socket game] -> [timeout]: tempo scaduto, victory =", raw.victory);
+			if (raw.victory)
+				localInfo.victory = raw.victory;
+			return;
 		}
 		if (raw.type == "simulate_boost")
 		{
