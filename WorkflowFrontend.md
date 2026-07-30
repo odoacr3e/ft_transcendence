@@ -197,8 +197,8 @@ backend   | ssa boostata di un pedone e clicchi su un'altro pezzo
 	color: #fb2c36;		/*lose*/				/*red-500*/
 	color: #fef2f2e6;	/*bg_lose*/				/*red-50/90*/
 
-	color: #bedbff;		/*text_tour*/			/*blue-200*/
 	color: #51a2ff1a;	/*bg_tour*/				/*blue-400/10*/
+	color: #bedbff;		/*text_tour*/			/*blue-200*/
 	color: #2b80ff33;	/*inset_tour*/			/*blue-500/20*/
 	color: #51a2ff33;	/*hover_tour*/			/*blue-400/20*/
 
@@ -206,8 +206,9 @@ backend   | ssa boostata di un pedone e clicchi su un'altro pezzo
 	color: #00c95033;	/*inset_accept*/		/*green-500/20*/
 	color: #ff64671a;	/*bg_reject*/			/*red-400/10*/
 	color: #fb2c3633;	/*inset_reject*/		/*red-500/20*/
-	color: #d1d5dc;		/*text_wait*/			/*gray-300*/
+
 	color: #e5e7eb1a;	/*bg_wait*/				/*gray-200/10*/
+	color: #d1d5dc;		/*text_wait*/			/*gray-300*/
 	color: #d1d5dc33;	/*inset_wait*/			/*gray-300/20*/
 	color: #bedbff;		/*text_friend*/			/*blue-200*/
 	color: #51a2ff1a;	/*bg_friend*/			/*blue-400/10*/

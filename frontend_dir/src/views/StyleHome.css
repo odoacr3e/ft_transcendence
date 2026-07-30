@@ -1,1 +1,167 @@
 @import "tailwindcss";
+
+/*ANCHOR - Theme*/
+
+@theme {
+	--color-bg-default: var(--current-bg-default);
+	--color-border-default: var(--current-border-default);
+	--color-bg-second: var(--current-bg-second);
+	--color-border-second: var(--current-border-second);
+	--color-bg-darker: var(--current-bg-darker);
+	--color-text-default: var(--current-text-default);
+	--color-text-second: var(--current-text-second);
+	--color-text-third: var(--current-text-third);
+	--color-text-last: var(--current-text-last);
+	--color-bg-icons: var(--current-bg-icons);
+
+	--color-notif-on: var(--current-notif-on);
+	--color-online-on: var(--current-online-on);
+	--color-bg-blur: var(--current-bg-blur);
+	--color-bg-button: var(--current-bg-button);
+	--color-light-button: var(--current-light-button);
+	--color-active-button: var(--current-active-button);
+
+	--color-bg-error: var(--current-bg-error);
+	--color-text-error: var(--current-text-error);
+	--color-border-error: var(--current-border-error);
+	--color-inset-error: var(--current-inset-error);
+
+	--color-text-win: var(--current-win);
+	--color-bg-win: var(--current-bg-win);
+	--color-text-draw: var(--current-draw);
+	--color-bg-draw: var(--current-bg-draw);
+	--color-text-lose: var(--current-lose);
+	--color-bg-lose: var(--current-bg-lose);
+
+	--color-bg-tour: var(--current-bg-tour);
+	--color-text-tour: var(--current-text-tour);
+	--color-inset-tour: var(--current-inset-tour);
+	--color-hover-tour: var(--current-hover-tour);
+
+	--color-bg-accept: var(--current-bg-accept);
+	--color-inset-accept: var(--current-inset-accept);
+	--color-bg-reject: var(--current-bg-reject);
+	--color-inset-reject: var(--current-inset-reject);
+
+	--color-bg-await: var(--current-bg-await);
+	--color-text-await: var(--current-text-await);
+	--color-inset-await: var(--current-inset-await);
+	--color-bg-friend: var(--current-bg-friend);
+	--color-text-friend: var(--current-text-friend);
+	--color-inset-friend: var(--current-inset-friend);
+}
+
+/*SECTION - Dark-Themes*/
+
+/*ANCHOR - Dark-Red*/
+:root,
+[data-theme="DarkRed"] {
+	--current-bg-default: #201e1c;
+	--current-border-default: #181715e8;
+	--current-bg-second: #302d2a;
+	--current-border-second: #4e4e4e8c;
+	--current-bg-darker: #181715;
+	--current-text-default: #ffffff;	/*white*/
+	--current-text-second: #d4d4d8;	/*zinc-300*/
+	--current-text-third: #71717b;		/*zinc-500*/
+	--current-text-last: #4e4e4e8c;
+	--current-bg-icons: #dcdfe4c0;
+
+	--current-notif-on: #c41c1c;
+	--current-online-on: #00c950;		/*green-500*/
+	--current-bg-blur: #00000033;		/*black/20*/
+	--current-bg-button: #882a2a;
+	--current-light-button: #af3d3d;
+	--current-active-button: #d1aaaa;
+
+	--current-bg-error: #2f1818cc;		/*[#2f1818]/80*/
+	--current-text-error: #ffe2e2;		/*red-100*/
+	--current-border-error: #9f07111a;	/*red-800/10*/
+	--current-inset-error: #fb2c3633;	/*red-500/20*/
+
+	--current-win: #00a63e;			/*green-600*/
+	--current-bg-win: #f0fdf4e6;		/*green-50/90*/
+	--current-draw: #d1d5dc;			/*gray-300*/
+	--current-bg-draw: #d1d5dce6;		/*gray-300/90*/
+	--current-lose: #fb2c36;			/*red-500*/
+	--current-bg-lose: #fef2f2e6;		/*red-500/90*/
+
+	--current-bg-tour: #51a2ff1a;		/*blue-400/10*/
+	--current-text-tour: #bedbff;		/*blue-200*/
+	--current-inset-tour: #2b80ff33;	/*blue-500/20*/
+	--current-hover-tour: #51a2ff33;	/*blue-400/20*/
+
+	--current-bg-accept: #05df721a;	/*green-400/10*/
+	--current-inset-accept: #00c95033;	/*green-500/20*/
+	--current-bg-reject: #ff64671a;	/*red-400/10*/
+	--current-inset-reject: #fb2c3633;	/*red-500/20*/
+
+	--current-bg-await: #e5e7eb1a;		/*gray-200/10*/
+	--current-text-await: #d1d5dc;		/*gray-300*/
+	--current-inset-await: #d1d5dc33;	/*gray-300/20*/
+	--current-bg-friend: #51a2ff1a;	/*blue-400/10*/
+	--current-text-friend: #bedbff;	/*blue-200*/
+	--current-inset-friend: #2b80ff33;	/*blue-500/20*/
+}
+
+/*ANCHOR - Dark-Blue*/
+[data-theme="DarkBlue"] {
+  --current-bg-default: #fff7ed;
+  --current-border-default: #fdba74;
+  --current-text-default: #431407;
+  --current-accent: #ea580c;
+}
+
+/*ANCHOR - Dark-Green*/
+[data-theme="DarkGreen"] {
+  --current-bg-default: #ffffff;
+  --current-border-default: #e2e8f0;
+  --current-text-default: #0f172a;
+  --current-accent: #0ea5e9;
+}
+
+/*ANCHOR - Dark-Yellow*/
+[data-theme="DarkYellow"] {
+  --current-bg-default: #fff7ed;
+  --current-border-default: #fdba74;
+  --current-text-default: #431407;
+  --current-accent: #ea580c;
+}
+
+/*!SECTION*/
+
+/*SECTION - Light-Themes*/
+
+/*ANCHOR - Light-Red*/
+[data-theme="LightRed"] {
+  --current-bg-default: #ffffff;
+  --current-border-default: #e2e8f0;
+  --current-text-default: #0f172a;
+  --current-accent: #0ea5e9;
+}
+
+/*ANCHOR - Light-Blue*/
+[data-theme="LightBlue"] {
+  --current-bg-default: #fff7ed;
+  --current-border-default: #fdba74;
+  --current-text-default: #431407;
+  --current-accent: #ea580c;
+}
+
+/*ANCHOR - Light-Green*/
+[data-theme="LightGreen"] {
+  --current-bg-default: #ffffff;
+  --current-border-default: #e2e8f0;
+  --current-text-default: #0f172a;
+  --current-accent: #0ea5e9;
+}
+
+/*ANCHOR - Light-Yellow*/
+[data-theme="LightYellow"] {
+  --current-bg-default: #fff7ed;
+  --current-border-default: #fdba74;
+  --current-text-default: #431407;
+  --current-accent: #ea580c;
+}
+
+/*!SECTION*/
