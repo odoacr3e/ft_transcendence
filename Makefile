@@ -2,22 +2,36 @@ up:
 	docker compose up --build
 
 down:
-	docker compose down
+	docker compose down --remove-orphans
 
 delete:
 	docker system prune -a
 
 re: delete up
 
+setup:
+	git fetch origin backend frontend
+	git worktree prune
+	test -d backend_dir  || git worktree add backend_dir backend
+	test -d frontend_dir || git worktree add frontend_dir frontend
+
 pull_be:
-	git subtree pull --prefix=backend_dir origin backend --squash
+	cd backend_dir && git pull
+
+pull_fe:
+	cd frontend_dir && git pull
+
+pull: pull_be pull_fe
+
+restore_be:
+	cd backend_dir && git restore .
+
+restore_fe:
+	cd frontend_dir && git restore .
+
+restore: restore_be restore_fe
 
 push_fe:
-	git subtree push --prefix=frontend_dir origin frontend
+	cd frontend_dir && commit
 
-# Se vuoi fare un pull da un branch specifico da backend o frontend usa questo comando
-# git subtree pull --prefix=<backend_dir/frontend_dir> origin <branch che vuoi> --squash
-# Se vuoi fare un npm install per fare update dei modules in back o front fai così
-# cd <frontend_dir/backend_dir> && <npm update/npm install>
-
-.PHONY: pull push
+.PHONY: up down delete re setup pull pull_be pull_fe
