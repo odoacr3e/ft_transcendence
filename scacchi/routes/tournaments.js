@@ -31,6 +31,33 @@ tournamentsRouter.get('/', checkJwt, async (req, res) => {
  * @param {import('express').Response} res
  * NOTE: check risultati torneo + partite preso tramite id
 */
+tournamentsRouter.get('/retrieveTournamentMatches', checkJwt, async (req, res) => {
+	try {
+		const tournamentMatches = await tournamentsQuery.retrieveTournamentMatches(req.body);
+		const rounds = ['QF', 'SF', 'F'];
+		const matrix = [];
+		let i = 0;
+		if (tournamentMatches)
+		{
+			for (const m of tournamentMatches) {
+				i = rounds.indexOf(m.round);
+				if (!matrix[i])
+					matrix[i] = new Array();
+				matrix[i].push(m);
+
+			}
+			return (res.status(200).json(jsonResponse.ResponseSuccess({tournamentMatches: matrix[2]})));
+		}
+	} catch (error) {
+		return (res.status(500).json(jsonResponse.ResponseError("Server error ")));
+	}
+})
+
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * NOTE: check risultati torneo + partite preso tramite id
+*/
 tournamentsRouter.get('/:id/results', checkJwt, async (req, res) => {
 	try {
 		const results = await tournamentsQuery.getTournamentResults(req.user.id_user, req.params.id);

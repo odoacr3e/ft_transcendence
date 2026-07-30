@@ -18,7 +18,7 @@ import { render } from "../../test/render.js";
 import {makeTransfiguration} from "./transfiguration.js";
 import { globals } from "../../Classes/Globals/globals.js";
 import { query } from "../../lib/query.js";
-const { createMatch, createUsersMatch } = query.gameQuery;
+const { openMatch, createUsersMatch } = query.gameQuery;
 import { Match} from "../../Classes/Chess/match.js";
 import { includesOneOf } from "../../utils/string.js";
 import { updateTournament } from "../../websocket/handlers/tournament.js";

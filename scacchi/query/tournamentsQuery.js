@@ -166,7 +166,8 @@ export async function updateTournamentStatus(id_tournament, status) {
  * @param {Number} id_tournament 
  * @param {Array<Number>} id_users
  * @returns number of records created
- * NOTE: aggiunge al torneo con id passato gli utenti che hanno id in id_users. Ritorna il numero di record creati 
+ * NOTE: aggiunge al torneo con id passato gli utenti che hanno id in id_users. Ritorna il numero di record creati
+ * NOTE: da richiamare dentro try/catch
  */
 export async function addPlayersToTournament(id_tournament, id_users) {
 	if (!Array.isArray(id_users) || id_users.length === 0)
@@ -207,7 +208,6 @@ export async function getTournamentResults(id_tournament) {
 	});
 	const final = matches.find(m => m.round === 'F');
 	const semifinals = matches.filter(m => m.round === 'SF');
-
 	const first = final?.users_matches.find(um => um.outcome === 'Win')?.users.username;
 	const second = final?.users_matches.find(um => um.outcome === 'Lose')?.users.username;
 	const third = semifinals.map(sf => sf.users_matches.find(um => um.outcome === 'Lose')?.users.username).filter(Boolean); // .filter(Boolean) serve per eliminare valori falsy
@@ -220,21 +220,53 @@ export async function getTournamentResults(id_tournament) {
 	}
 }
 
+export async function retrieveTournamentMatches(id_tournament) {
+	const tournamentMatches = await prisma.matches.findMany({
+		where: {id_tournament: {not: null}},
+		select: {
+			users_matches: {
+				select: {
+					id_match: true,
+					users: {
+						select: {
+							id_user: true,
+							username: true
+						}
+					},
+					outcome: true
+				}
+			},
+			start_date: true,
+			end_date: true,
+			round: true
+		}
+	});
+	return tournamentMatches.map(um => ({
+		id_match: um.users_matches[0].id_match,
+		status: um.end_date === null ? "ongoing" : "finished",
+		victory: um.users_matches[0].outcome === "Win" ? "p1" : "p2",
+		p1: um.users_matches[0].users,
+		p2: um.users_matches[1].users,
+		round: um.round
+	}));
+}
+		
 export async function deleteUserInTournament(id_tournament, id_user)
 {
-	let	tournament;
-
 	try
 	{
-		tournament = await prisma.tournament_players.findUnique(
-		{
-			where:
-				{ id_tournament_id_user: id_tournament + id_user}
+		const tournament = await prisma.tournament_players.delete({
+			where: {
+				id_tournament: id_tournament,
+				id_user: id_user
+			}
 		});
-		await prisma.tournament_players.delete(id_user);
 	}
 	catch(err)
 	{
 		console.log(`deleteUserInTournament: ${err}`);
+		if (error.code === 'P2025')
+			return res.status(404).json(jsonResponse.ResponseError("Tournament or player not found"));
+		return res.status(500).json(jsonResponse.ResponseError("Server error deleting user from tournament"));
 	}
 }

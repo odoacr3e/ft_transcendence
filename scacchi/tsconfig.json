@@ -8,7 +8,7 @@
     "paths": {
       "@prisma/client": ["./generated/prisma"]
     },
-    "checkJs": true,
+    "checkJs": false,
     "allowJs": true
   },
   "include": ["**/*.js", "**/*.ts"],

@@ -11,7 +11,7 @@ import { query } from "../../lib/query.js";
 import { eMatchPresets, enumSocketState } from "../../Macro/enums.js";
 import { isBusy, roomMessage } from "../utils.js";
 import { bindPlayersToMatch } from "./MatchMaking.js";
-const { tournamentsQuery } = query;
+const { tournamentsQuery, gameQuery } = query;
 
 /** @typedef {import("../../Classes/Chess/player").dbUser} dbUser */
 /** @typedef {import("socket.io").Socket} Socket */
@@ -176,6 +176,7 @@ export async function createMatchTournament(players, matchId, tournamentId, user
 	match.tournament = tournamentId;
 	result = init(match, preset);
 	match.settings.room.isRanked = false;
+	await gameQuery.openMatch(match);
 	globals.lastMatchId = matchId;
 	globals.matches.set(globals.lastMatchId, match);
 	//@ts-ignore

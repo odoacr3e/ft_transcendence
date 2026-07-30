@@ -6,17 +6,28 @@ import { prisma } from "../lib/prisma.js";
 /**
  * @param {Match} match 
  */
-export async function createMatch(match) {
+export async function openMatch(match) {
 	const m = await prisma.matches.create({
 		data: {
 			start_date: match.start_date,
 			id_tournament: match.tournament_id,
-			round: match.tournament_round,
-			end_date: new Date().toISOString(),
-			history: match.Log()
+			round: match.tournament_round
 		}
 	});
 	match.id = m.id_match;
+}
+
+/**
+ * @param {Match} match 
+ */
+export async function closeMatch(match) {
+	const m = await prisma.matches.update({
+		data: {
+			end_date: new Date().toISOString(),
+			history: match.Log()
+		},
+		where: { id_match: match.id }
+	});
 }
 
 /**
