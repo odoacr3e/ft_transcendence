@@ -1,13 +1,9 @@
 <script setup>
-	import MenuAppHeader from '../components/MenuHeader.vue'
-	import AppHeader from '../components/AppHeader.vue';
+	import MenuHeader from '../components/MenuHeader.vue'
 </script>
 
 <template>
-	<div class="min-h-15 flex flex-col">
-		<AppHeader/>
-	</div>
-	<MenuAppHeader class="mt-14"/>
+	<MenuHeader/>
 </template>
 
 <style scoped>

@@ -1,9 +1,10 @@
 <script setup>
-	import { DOMPlayer, localBoard, localInfo, IMG_PATHS }	from '@/scripts/Data/Variables';
-	import { useAbility, sendEndTurn }						from '@/scripts/Events/utils/GlobalUtils';
-	import { computed }										from 'vue';
-	import	TimerClock										from "./TimerClock.vue"
-	import	CapturedPieces									from "./CapturedPieces.vue"
+	import { DOMPlayer, localBoard, localInfo }	from '@/scripts/Data/Variables';
+	import { useAbility, sendEndTurn }			from '@/scripts/Events/utils/GlobalUtils';
+	import { defaultAvatar, handleAvatarError }	from '../scripts/Helper/CompUtils';
+	import { computed }							from 'vue';
+	import	TimerClock							from "./TimerClock.vue"
+	import	CapturedPieces						from "./CapturedPieces.vue"
 
 	const prop = defineProps({
   		p: Number,
@@ -37,7 +38,8 @@
 	<div class="wrap"
 		v-bind:class="{'rounded-t-md mb-1':up, 'rounded-b-md mt-1':down, 'is-turn':playing}">
 
-		<img src="../assets/default.png" alt="User Icon" :draggable="false" class="rounded-full object-cover size-18.75 shrink-0 stretch 0 dim"
+		<img :src="player.image ? `${player.image}` : defaultAvatar" @error="handleAvatarError"
+			alt="User Icon" :draggable="false" class="rounded-full object-cover size-18.75 shrink-0 stretch 0 dim"
 			v-bind:class="{ 'dim-off':!playing }">
 
 		<div class="shrink-0 dim" v-bind:class="{'dim-off':!playing}">
@@ -45,7 +47,7 @@
 					:style="{ fontSize: nameSize }">{{ player.name }}</h1></b>
 			<div class="flex">
 				<h2>Points: {{ player.nPoints }}</h2>
-				<p class="text-[#4e4e4e8c] mx-2">|</p>
+				<p class="text-text-last mx-2">|</p>
 				<CapturedPieces :player="player"/>
 			</div>
 		</div>

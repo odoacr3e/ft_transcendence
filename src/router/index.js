@@ -1,18 +1,20 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore }	from '@/stores/auth.st'
-import Home from '../views/Home.vue'
+import TournamentPage from '../views/TournamentPage.vue'
+import OpenTournament from '../views/OpenTournament.vue'
+import RegisterPage from '../views/RegisterPage.vue'
 import ClassicGame from '../views/ClassicGame.vue'
-import PlayPage from '../views/PlayPage.vue'
-import UserMe from '../views/UserMe.vue'
-import EditPage from '../views/EditPage.vue'
+import LeaderBoard from '../views/LeaderBoard.vue'
 import UserOther from '../views/UserOther.vue'
 import UsersList from '../views/UsersList.vue'
-import GameFour from '../views/GameFour.vue'
 import LoginPage from '../views/LoginPage.vue'
-import RegisterPage from '../views/RegisterPage.vue'
 import ChangePwd from '../views/ChangePwd.vue'
+import EditPage from '../views/EditPage.vue'
+import GameFour from '../views/GameFour.vue'
+import PlayPage from '../views/PlayPage.vue'
 import PwdDEBUG from '../views/PwdDEBUG.vue'
-import TournamentPage from '../views/TournamentPage.vue'
+import UserMe from '../views/UserMe.vue'
+import Home from '../views/Home.vue'
 
 const routes = [
 	{
@@ -42,6 +44,12 @@ const routes = [
 		name: 'Tournaments',
 		meta: { requiresAuth: true },
 		component: TournamentPage
+	},
+	{
+		path: '/leaderboard',
+		name: 'Leaderboard',
+		meta: { requiresAuth: true },
+		component: LeaderBoard
 	},
 	{
 		path: '/log',
@@ -92,6 +100,14 @@ const routes = [
 		component: UserOther,
 		meta: { requiresAuth: true },
 		props: (route) => ({ username: String(route.params.username) })
+	},
+	{
+		path: '/tournament/:tournament?',
+		name: 'open_tournament',
+		component: OpenTournament,
+		meta: { requiresAuth: true }, //da aggiungere requisito di essere nel torneo
+		props: (route) => ({ tournament: Number(route.params.tournament) }) //id, PROVVISSORIO
+		// props: (route) => ({ tournament: String(route.params.tournament) })
 	}
 ];
 

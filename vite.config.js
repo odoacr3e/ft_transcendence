@@ -12,24 +12,8 @@ export default defineConfig({
     vueDevTools(),
     tailwindcss()
   ],
-//   server: {
-//     proxy: {
-//       '/api': {
-//         target: 'http://localhost:8080',
-//         changeOrigin: true,
-//       },
-//     },
-//   },
   server: {
-	proxy: {
-    	'/api': {
-    	  target: 'http://localhost:8080',
-    	  changeOrigin: true,
-    	}
-	},
-    host: '10.11.4.3',
-    port: 5173,
-    strictPort: true,
+    allowedHosts: ['edraccan-transcendence.duckdns.org', 'chessz.duckdns.org']
   },
   resolve: {
     alias: {

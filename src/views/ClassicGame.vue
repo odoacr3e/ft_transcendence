@@ -5,7 +5,6 @@
 	import PlayerInfo               					from '../components/PlayerInfo.vue';
 	import ChessBoard               					from '../components/ChessBoard.vue';
 	import ActionButtons								from '../components/ActionButtons.vue';
-	import AppHeader                					from '../components/AppHeader.vue';
 	import EndGameOverlay 								from '@/components/EndGameOverlay.vue';
 	import { clearMatchStorage }						from '@/scripts/Data/Archi.js';
 	import router 										from '@/router';
@@ -44,44 +43,26 @@
 </script>
 
 <template>
-  <div class="min-h-screen flex flex-col">
-        <AppHeader class="z-11"/>
-        <div id="wrap" class="grow">
-            <div class="flex z-2 bg-[#181715] rounded-3xl">
-                <div class="flex items-center px-4" v-if="ready">
-                    <ActionButtons/>
-                </div>
-                <div class="p-6 bg-[#201e1c] rounded-l-3xl border-r border-[#4e4e4e8c]">
-                	<div v-if="ready">
-                    	<PlayerInfo :p="topP" pos="top"/>
-						<div class="relative">
-							<ChessBoard :style="style"/>
-							<EndGameOverlay/>
-						</div>
-						<PlayerInfo :p="bottomP" pos="bottom"/>
-					</div>
-                </div>
-                <div class="p-10 flex-col mt-20 w-lg">
-                </div>
+    <div class="flex z-2 bg-bg-darker rounded-3xl">
+		<div class="flex items-center px-4" v-if="ready">
+            <ActionButtons/>
+        </div>
+        <div class="p-6 bg-default rounded-l-3xl border-r border-border-second">
+          <div v-if="ready">
+            <PlayerInfo :p="topP" pos="top"/>
+            <div class="relative">
+                <ChessBoard :style="style"/>
+                <EndGameOverlay/>
             </div>
+            <PlayerInfo :p="bottomP" pos="bottom"/>
+          </div>
+        </div>
+        <div class="p-10 flex-col mt-20 w-lg">
         </div>
     </div>
 </template>
 
 <style scoped>
-  /* #wrap {
-        display: grid;
-        grid-template-columns: max-content max-content;
-        position: relative;
-        justify-content: center;
-        justify-items: center;
-        align-items: center;
-        z-index: 10;
-        font-size: 110%;
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-        user-select: none;
-    } */
-
     h1, h4 {
         font-family: "Copperplate", Times;
     }

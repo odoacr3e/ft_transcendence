@@ -1,9 +1,16 @@
 import router from '@/router/index.js';
 import { api } from '@/router/api/client';
 
-export function asset(path) {
+function asset(path) {
 	return new URL('../' + path, import.meta.url).href;
 }
+
+export const defaultAvatar = asset('../assets/default.png');
+
+export const handleAvatarError = (event) => {
+    event.target.onerror = null;
+    event.target.src = defaultAvatar;
+};
 
 export async function acceptRequest(id_user)
 {

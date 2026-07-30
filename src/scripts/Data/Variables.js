@@ -117,6 +117,28 @@ export function getRootDiv() {
 export const FILES_TWO = ["a", "b", "c", "d", "e", "f", "g", "h"];
 export const FILES_FOUR = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n"];
 
+export const DEFAULT_PREF = {
+	// base
+	def_bg: "#201e1c", def_bord: "#181715e8", sec_bg: "#302d2a", sec_bord: "#4e4e4e8c", darker_bg: "#181715",
+	main_text: "#ffffff", sec_text: "#d4d4d8", trd_text: "#71717b", last_text: "#4e4e4e8c", bg_icons: "#dcdfe4c0",
+
+	// stato e azioni
+	notif_on: "#c41c1c", online: "#00c950", bg_blur: "00000033", bg_butt: "#882a2a", light_butt: "#af3d3d", active_butt: "#d1aaaa",
+
+	// errore
+	bg_error: "#2f1818cc", text_error: "#ffe2e2", bord_error: "#9f07111a", inset_error: "#fb2c3633",
+
+	// esiti partita
+	win: "#00a63e", bg_win: "#f0fdf4e6", draw: "#d1d5dc", bg_draw: "#d1d5dce6", lose: "#fb2c36", bg_lose: "#fef2f2e6",
+
+	// tornei & amici
+	text_blue: "#bedbff", bg_blue: "#51a2ff1a", inset_blue: "#2b80ff33", hover_blue: "#51a2ff33",
+
+	// richieste
+	bg_accept: "#05df721a", inset_accept: "#00c95033", bg_reject: "#ff64671a", inset_reject: "#fb2c3633",
+	text_wait: "#d1d5dc", bg_wait: "#e5e7eb1a", inset_wait: "#d1d5dc33"
+};
+
 export let MACRO = Object ({
 	"AUDIO" : true,
 });

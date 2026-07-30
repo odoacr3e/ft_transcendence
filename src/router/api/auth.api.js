@@ -18,12 +18,12 @@ export const authApi = {
 		return (resp.data.user);
 	},
 	update:		async (userData) => {
-		const resp = await api.patch('/api/users', userData); // aggiornamento delle info dello user
+		const resp = await api.patch_m('/api/users', userData); // aggiornamento delle info dello user
 		return (resp.data.user);
 	},
 	changePwd:	async (userData) => {
 		const resp = await api.patch('/api/users/loggedUpdatePassword', userData); // aggiornamento della password
-		return (resp);
+		return (resp.data.user);
 	},
 	friendlist:	async () => {
 		const resp = await api.get('/api/friends'); // lista di amici
@@ -32,6 +32,10 @@ export const authApi = {
 	matchlist: async () => {
 		const resp = await api.get('/api/matchesHistory'); // lista degli incontri
 		return (resp.data.matches);
+	},
+	msglist:	async () => {
+		const resp = await api.get('/api/notifications'); // lista delle notifiche
+		return (resp.data.notifications);
 	},
 	tournament:	async () => {
 		const resp = await api.get('/api/tournaments'); // lista degli tornei
