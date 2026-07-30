@@ -12,10 +12,10 @@
 	--color-text-second: var(--current-text-second);
 	--color-text-third: var(--current-text-third);
 	--color-text-last: var(--current-text-last);
-	--color-bg-icons: var(--current-bg-icons);
+	--color-form-icon: var(--current-form-icon);
 
 	--color-notif-on: var(--current-notif-on);
-	--color-online-on: var(--current-online-on);
+	--color-online-accept: var(--current-online-accept);
 	--color-bg-blur: var(--current-bg-blur);
 	--color-main-color: var(--current-main-color);
 	--color-light-button: var(--current-light-button);
@@ -26,16 +26,16 @@
 	--color-border-error: var(--current-border-error);
 	--color-inset-error: var(--current-inset-error);
 
-	--color-text-win: var(--current-win);
+	--color-text-win-open: var(--current-text-win-open);
 	--color-bg-win: var(--current-bg-win);
-	--color-text-draw: var(--current-draw);
+	--color-text-draw-await: var(--current-text-draw-await);
 	--color-bg-draw: var(--current-bg-draw);
 	--color-text-lose: var(--current-lose);
 	--color-bg-lose: var(--current-bg-lose);
 
-	--color-bg-tour: var(--current-bg-tour);
-	--color-text-tour: var(--current-text-tour);
-	--color-inset-tour: var(--current-inset-tour);
+	--color-bg-tour-friend: var(--current-bg-tour-friend);
+	--color-text-tour-friend: var(--current-text-tour-friend);
+	--color-inset-tour-friend: var(--current-inset-tour-friend);
 	--color-hover-tour: var(--current-hover-tour);
 
 	--color-bg-accept: var(--current-bg-accept);
@@ -53,55 +53,62 @@
 
 /*SECTION - Dark-Themes*/
 
+/*da sostituire #ad1e1e36 con qualcosa nella palette*/
+
 /*ANCHOR - Dark-Red*/
 :root,
 [data-theme="DarkRed"] {
-	--current-bg-default: #201e1c;
-	--current-border-default: #181715e8;
-	--current-bg-second: #302d2a;
-	--current-border-second: #4e4e4e8c;
-	--current-bg-darker: #181715;
-	--current-text-default: #ffffff;	/*white*/
-	--current-text-second: #d4d4d8;	/*zinc-300*/
-	--current-text-third: #71717b;		/*zinc-500*/
-	--current-text-last: #4e4e4e8c;
-	--current-bg-icons: #dcdfe4c0;
+/*✓*/	--current-bg-default: #201e1c;
+/*✓*/	--current-border-default: #4e4e4e8c;
+/*✓*/	--current-bg-second: #302d2a;
+/*✓*/	--current-border-second: #181715e8;
+/*✓*/	--current-bg-darker: #181715;
+/*✓*/	--current-text-default: white;
+/*✓*/	--current-text-second: var(--color-zinc-300);		/*#d4d4d8*/ /*NOTE - bg in LoginPage per Google*/
+/*✓*/	--current-text-third: var(--color-zinc-500);		/*#71717b*/ /*NOTE - bg in AppHeader*/
+/*✓*/	--current-text-last: #4e4e4e8c;
+/*✓*/	--current-form-icon: #dcdfe4c0;
 
-	--current-notif-on: #c41c1c;
-	--current-online-on: #00c950;		/*green-500*/
-	--current-bg-blur: #00000033;		/*black/20*/
-	--current-main-color: #882a2a;
-	--current-light-button: #af3d3d;
-	--current-active-button: #d1aaaa;
+/*✓*/	--current-notif-on: #c41c1c;
+/*✓*/	--current-online-accept: var(--color-green-500);	/*#00c950*/ /*NOTE - usato sia per l'online che per text-accept*/
+/*✓*/	--current-bg-blur: #00000033;						/*black/20*/
+/*✓*/	--current-main-color: #882a2a;
+/*✓*/	--current-light-button: #af3d3d;
+/*✓*/	--current-active-button: #d1aaaa;
 
-	--current-bg-error: #2f1818cc;		/*[#2f1818]/80*/
-	--current-text-error: #ffe2e2;		/*red-100*/
-	--current-border-error: #9f07111a;	/*red-800/10*/
-	--current-inset-error: #fb2c3633;	/*red-500/20*/
+/*✓*/	--current-bg-error: #2f1818cc;															/*[#2f1818]/80*/
+/*✓*/	--current-text-error: var(--color-red-100);												/*#ffe2e2*/
+/*✓*/	--current-border-error: color-mix(in srgb, var(--color-red-800) 10%, transparent);		/*red-800/10  /  #9f07111a*/
+/*✓*/	--current-inset-error: color-mix(in srgb, var(--color-red-500) 20%, transparent);		/*red-500/20  /  #fb2c3633*/ /*NOTE - inset-recect e' ugule ma non li fondo perche' le altre palette hanno error diverso e reject uguale a Dark-Red. Devo quindi metterli a mano nelle posizioni giuste.*/
 
-	--current-win: #00a63e;			/*green-600*/
-	--current-bg-win: #f0fdf4e6;		/*green-50/90*/
-	--current-draw: #d1d5dc;			/*gray-300*/
-	--current-bg-draw: #d1d5dce6;		/*gray-300/90*/
-	--current-lose: #fb2c36;			/*red-500*/
-	--current-bg-lose: #fef2f2e6;		/*red-500/90*/
+/*✓*/	--current-text-win-open: var(--color-green-600);		/*#00a63e*/ /*NOTE - usato sia per le vittorie che per gli open*/
+/*▫*/	--current-bg-win: #f0fdf4e6;		/*green-50/90*/ /*NOTE - per ora praticamente inutile, una call, da controllare!!!*/
+/*✓*/	--current-text-draw-await: var(--color-gray-300);		/*#d1d5dc*/ /*NOTE - usato sia per le patte, per gli ongoing e per gli await. Attenta a quando usano l'opacita' per altri elementi*/
+/*▫*/	--current-bg-draw: #d1d5dce6;		/*gray-300/90*/ /*NOTE - per ora praticamente inutile, una call, da controllare!!!*/
+/*✓*/	--current-lose: var(--color-red-500);					/*#fb2c36*/ /*NOTE - usato sia per le sconfitte, i close e gli offline. Attenta a quando usano l'opacita' per altri elementi*/
+/*▫*/	--current-bg-lose: #fef2f2e6;		/*red-50/90*/ /*NOTE - per ora praticamente inutile, una call, da controllare!!!*/
 
-	--current-bg-tour: #51a2ff1a;		/*blue-400/10*/
-	--current-text-tour: #bedbff;		/*blue-200*/
-	--current-inset-tour: #2b80ff33;	/*blue-500/20*/
-	--current-hover-tour: #51a2ff33;	/*blue-400/20*/
 
-	--current-bg-accept: #05df721a;	/*green-400/10*/
-	--current-inset-accept: #00c95033;	/*green-500/20*/
-	--current-bg-reject: #ff64671a;	/*red-400/10*/
-	--current-inset-reject: #fb2c3633;	/*red-500/20*/
 
-	--current-bg-await: #e5e7eb1a;		/*gray-200/10*/
-	--current-text-await: #d1d5dc;		/*gray-300*/
-	--current-inset-await: #d1d5dc33;	/*gray-300/20*/
-	--current-bg-friend: #51a2ff1a;	/*blue-400/10*/
-	--current-text-friend: #bedbff;	/*blue-200*/
-	--current-inset-friend: #2b80ff33;	/*blue-500/20*/
+
+
+
+/*✓*/	--current-bg-tour-friend: color-mix(in srgb, var(--color-blue-400) 10%, transparent);		/*blue-400/10  /  #51a2ff1a*/ /*NOTE - usato sia come bg per tour e per friends*/
+/*✓*/	--current-text-tour-friend: var(--color-blue-200);		/*#bedbff*/ /*NOTE - usato sia come text per tour e per friends*/
+/*✓*/	--current-inset-tour-friend: color-mix(in srgb, var(--color-blue-500) 20%, transparent);	/*blue-500/20 / #2b80ff33*/ /*NOTE - usato sia come inset per tour e per friends*/
+/*▫*/	--current-hover-tour: #51a2ff33;	/*blue-400/20*/ /*NOTE - per ora praticamente inutile, una call, da controllare!!!*/
+
+/*✓*/	--current-bg-accept: color-mix(in srgb, var(--color-green-400) 10%, transparent);			/*green-400/10  /  #05df721a*/
+/*✓*/	--current-inset-accept: color-mix(in srgb, var(--color-green-500) 20%, transparent);		/*green-500/20  /  #00c95033*/
+/*✓*/	--current-bg-reject: color-mix(in srgb, var(--color-red-400) 10%, transparent);				/*red-400/10  /  #ff64671a*/
+/*✓*/	--current-inset-reject: color-mix(in srgb, var(--color-red-500) 20%, transparent);		/*red-500/20  /  #fb2c3633*/ /*NOTE - Da mettere a mano nella posizione giusta. ATTENTA! Anche come border nell'hover per l'email e la nazionalita' nelle impostazioni*/
+
+/*▫*/	--current-bg-await: #e5e7eb1a;		/*gray-200/10*/ /*NOTE - per ora praticamente inutile, una call, da controllare!!!*/
+/*▫*/	/*--current-text-await: #d1d5dc;*/		/*gray-300*/
+/*▫*/	--current-inset-await: #d1d5dc33;	/*gray-300/20*/ /*NOTE - per ora praticamente inutile, una call, da controllare!!!*/
+/*▫*/	/*--current-bg-friend: #51a2ff1a;*/	/*blue-400/10*/
+/*▫*/	/*--current-text-friend: #bedbff;*/	/*blue-200*/
+/*▫*/	/*--current-inset-friend: #2b80ff33;*/	/*blue-500/20*/
 }
 
 /*ANCHOR - Dark-Blue*/

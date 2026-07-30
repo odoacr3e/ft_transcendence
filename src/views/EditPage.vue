@@ -200,7 +200,7 @@
                         <h3 class="text-xl">Email</h3>
                     </div>
                     <div class="p-2.5 border rounded-[7px] border-[#4e4e4e8c] text-[#dcdfe4c0] justify-self-center flex w-sm mb-3
-                                transition-colors duration-200 hover:bg-[#ad1e1e36] hover:border-[#eb2c2c2a]" id="email">
+                                transition-colors duration-200 hover:bg-[#ad1e1e36] hover:border-red-500/20" id="email">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 absolute translate-x-42 opacity-0 transition-opacity duration-250">
                           <path fill-rule="evenodd" d="M12 1.5a5.25 5.25 0 0 0-5.25 5.25v3a3 3 0 0 0-3 3v6.75a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3v-6.75a3 3 0 0 0-3-3v-3c0-2.9-2.35-5.25-5.25-5.25Zm3.75 8.25v-3a3.75 3.75 0 1 0-7.5 0v3h7.5Z" clip-rule="evenodd" />
                         </svg>
@@ -216,7 +216,7 @@
                         <h3 class="text-xl">Nazionalità</h3>
                     </div>
                     <div class="p-2.5 border rounded-[7px] border-[#4e4e4e8c] text-[#dcdfe4c0] justify-self-center flex w-sm mb-3
-                                transition-colors duration-200 hover:bg-[#ad1e1e36] hover:border-[#eb2c2c2a]" id="email">
+                                transition-colors duration-200 hover:bg-[#ad1e1e36] hover:border-red-500/20" id="email">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 absolute translate-x-42 opacity-0 transition-opacity duration-250">
                           <path fill-rule="evenodd" d="M12 1.5a5.25 5.25 0 0 0-5.25 5.25v3a3 3 0 0 0-3 3v6.75a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3v-6.75a3 3 0 0 0-3-3v-3c0-2.9-2.35-5.25-5.25-5.25Zm3.75 8.25v-3a3.75 3.75 0 1 0-7.5 0v3h7.5Z" clip-rule="evenodd" />
                         </svg>
@@ -355,7 +355,7 @@
                     </div>
                 </div>
             </div>
-            <div v-if="!user.setpwd" class="flex items-center mt-auto px-5 p-2 rounded-b-3xl text-[80%] border bg-red-500/10 text-red-100 border-red-800/10 inset-ring-red-500/20">
+            <div v-if="!user.setpwd" class="flex items-center mt-auto px-5 p-2 rounded-b-3xl text-[80%] border bg-[#2f1818]/80 text-red-100 border-red-800/10 inset-ring-red-500/20">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-red-100 mr-2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
                 </svg>

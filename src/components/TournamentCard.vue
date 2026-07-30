@@ -7,7 +7,7 @@
 </script>
 
 <template>
-    <div v-for="games in tournaments" :key="games.id_tournament" class="bg-[#4e4e4e8c] p-5 pb-3 rounded-3xl w-fit h-full shrink-0">
+    <div v-for="games in tournaments" :key="games.id_tournament" class="bg-[#302d2a] p-5 pb-3 rounded-3xl w-fit h-full shrink-0">
         <div class="flex items-center justify-start gap-2">
             <RouterLink :to="{ name: 'open_tournament', params: { tournament: games.id_tournament } }"
                     class="hover:underline">
