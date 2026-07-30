@@ -75,13 +75,13 @@ function getBestTurn(match)
 		const turn = arrayTurns[i];
 		if (!execTurn(match, turn))
 			continue ;
-		render(match);
+		// render(match);
 		newTurns = getLegalMoves(match);
 		val.score = minMax(match, ai, newTurns, 2, [turn]);
 		val.score = Math.abs(val.score);
 		val.index = i;
 		cancelTurn(match, turn);
-		render(match);
+		// render(match);
 		if (bestTurns.length <= 1)
 			bestTurns.push(val);
 		for (let i = 0; i != bestTurns.length; i++)
@@ -124,7 +124,7 @@ function minMax(match, ai, arrayTurns, depth, pastTurns)
 		{
 			if (execTurn(match, turn) == false)
 				continue ;
-			render(match);
+			// render(match);
 			newTurns = getLegalMoves(match);
 			pastTurns.push(turn);
 			ai.Simulate(match, ai);
@@ -133,7 +133,7 @@ function minMax(match, ai, arrayTurns, depth, pastTurns)
 			pastTurns.pop();
 			maxEval = Math.max(val, maxEval);
 			cancelTurn(match, turn);
-			render(match);
+			// render(match);
 		}
 		return (maxEval);
 	}
@@ -144,7 +144,7 @@ function minMax(match, ai, arrayTurns, depth, pastTurns)
 		{
 			if (execTurn(match, turn) == false)
 				continue ;
-			render(match);
+			// render(match);
 			newTurns = getLegalMoves(match);
 			pastTurns.push(turn);
 			ai.Simulate(match, ai);
@@ -153,7 +153,7 @@ function minMax(match, ai, arrayTurns, depth, pastTurns)
 			pastTurns.pop();
 			minEval = Math.min(val, minEval);
 			cancelTurn(match, turn);
-			render(match);
+			// render(match);
 		}
 		return (minEval);
 	}

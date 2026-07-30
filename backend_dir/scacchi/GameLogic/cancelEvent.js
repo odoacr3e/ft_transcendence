@@ -137,14 +137,14 @@ function cancelEndTurn(match)
 	// nTurn = match.history.TurnCount(match.currentPlayer.team);
 	// if (nTurn % MOVEMENT_BONUS_POINT == 0)
 	// 	match.currentPlayer.nPoints -= 1;
+	//@ts-ignore
+	match.currentPlayer = match[match.currentPlayer.prev];
 	match.currentPlayer.bonusPointCounter--;
 	if (match.currentPlayer.bonusPointCounter == -1)
 	{
 		match.currentPlayer.bonusPointCounter = MOVEMENT_BONUS_POINT - 1;
 		match.currentPlayer.nPoints -= 1;
 	}
-	//@ts-ignore
-	match.currentPlayer = match[match.currentPlayer.prev];
 	for (let i = 0; i != match.history.events.length; i++)
 	{
 		if (match.history.events[match.history.events.length - 2 - i].type == eEvents.EndTurn)
