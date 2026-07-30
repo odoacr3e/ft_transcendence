@@ -21,8 +21,8 @@
 		tournaments.value = await authApi.tournament();
 	});
 
-	const openTour = computed(() => tournaments.value.filter((t) => t.status === 'open'));
-	const closeTour = computed(() => tournaments.value.filter((t) => t.status === 'close'));
+	const openTour = computed(() => tournaments.value.filter((t) => t.status === 'open' || t.status === 'ongoing' ));
+	const closeTour = computed(() => tournaments.value.filter((t) => t.status === 'closed'));
 
 	async function submitFirstForm()
 	{
@@ -42,13 +42,16 @@
 
 		try
 		{
-		    const resp = await api.post("/api/tournaments", fd);
-		    if (resp.status === "success")
+		    const respA = await api.post("/api/tournaments", fd);
+		    if (respA.status === "success")
 		    {
+				const respB = await api.post("/api/tournaments/addPlayers", {id_tournament: respA.data.tournament.id_tournament, id_users: [user.value.id_user]});
+				if (respB.status === "success") {
 		        router.push({
 		        name: "open_tournament",
-		        params: { tournament: resp.data.tournament.id_tournament }
+					params: { tournament: respA.data.tournament.id_tournament }
 		        });
+				}
 		    }
 		    else { error.value = true; }
 		}
@@ -65,14 +68,16 @@
 			<div>
 				<div class="p-3 my-2 mb-4 mx-2 w-[120vh] h-[36vh] bg-[#201e1c] rounded-3xl border border-[#4e4e4e8c]">
 					<h3 class=" text-2xl m-2 ">In corso...</h3>
-					<div v-if="openTour.length" class="flex" :class="openTour.length > 5 ? 'max-w-[155vh] overflow-x-auto' : ''">
+					<div v-if="openTour.length"  class="flex gap-4 h-65"
+						:class="openTour.length > 2 ? 'overflow-x-scroll snap-x snap-mandatory scroll-smooth pb-2 scrollbar-custom' : ''">
 						<TournamentCard :tournaments="openTour"/>
 					</div>
 					<p v-if="!openTour.length" class="flex h-[80%] w-full items-center justify-center text-center">Nessun torneo</p>
 				</div>
 				<div class="p-3 my-2 mt-4 mx-2 w-[120vh] h-[36vh] bg-[#201e1c] rounded-3xl border border-[#4e4e4e8c]">
 					<h3 class=" text-2xl m-2">Conclusi</h3>
-					<div v-if="closeTour.length" class="flex" :class="closeTour.length > 2 ? 'max-w-115 overflow-x-auto' : ''">
+					<div v-if="openTour.length" class="flex gap-4 h-65"
+						:class="closeTour.length > 2 ? 'overflow-x-scroll snap-x snap-mandatory scroll-smooth pb-2 scrollbar-custom' : ''">
 						<TournamentCard :tournaments="closeTour"/>
 					</div>
 					<p v-if="!closeTour.length" class="flex h-[80%] w-full items-center justify-center text-center">Nessun torneo</p>

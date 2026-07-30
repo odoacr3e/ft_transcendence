@@ -8,7 +8,7 @@
 
 <template>
 	<BackGround/>
-	<div class="min-h-screen flex flex-col">
+	<div class="min-h-screen flex flex-col overflow-hidden">
 		<AppHeader class="z-11"/>
 		<div class="grow wrap" :class="{ 'other' : route.name !== 'home', 'home' : route.name === 'home' }">
 			<router-view/>

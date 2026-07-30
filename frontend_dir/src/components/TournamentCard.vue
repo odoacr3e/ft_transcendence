@@ -7,14 +7,19 @@
 </script>
 
 <template>
-    <div v-for="games in tournaments" class="bg-[#4e4e4e8c] p-5 pb-3 rounded-3xl w-min-fit">
+    <div v-for="games in tournaments" :key="games.id_tournament" class="bg-[#4e4e4e8c] p-5 pb-3 rounded-3xl w-fit h-full shrink-0">
         <div class="flex items-center justify-start gap-2">
-            <h2 class="text-2xl">{{ games.name }}</h2>
+            <RouterLink :to="{ name: 'open_tournament', params: { tournament: games.id_tournament } }"
+                    class="hover:underline">
+                    <h2 class="text-2xl">{{ games.name }}</h2>
+            </RouterLink>
             <p class="text-[#4e4e4e8c]">|</p>
-            <h3 :class="{ 'text-green-600' : games.status === 'open' }">{{ games.status }}</h3>
+            <h3 :class="{   'text-green-600' : games.status === 'open',
+							'text-gray-300' : games.status === 'ongoing',
+							'text-red-500' : games.status === 'closed' }">{{ games.status }}</h3>
         </div>
         <p class="justify-start text-sm text-zinc-300">{{ rework_date(games.created_at) }}</p>
-        <div class="mt-4 mb-2">
+        <div class="my-2 max-w-105 min-w-95">
             <p>Creatore del torneo: 
                 <RouterLink :to="{ name: 'user_page', params: { username: games.created_by.username } }"
                         class="hover:underline">

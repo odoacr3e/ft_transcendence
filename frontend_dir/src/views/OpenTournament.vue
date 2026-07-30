@@ -9,33 +9,33 @@
 
     const   tournament = ref(null),
             friends = ref(null),
-            invites = ref(new Set()),
-            players = ref(new Set()),
+            invites = ref([]),
+            players = ref([]),
             searchUser = ref(""),
             searchList = ref(null),
+			admin = ref(null),
             authStore = useAuthStore(),
-            { user } = storeToRefs(authStore);
-
-    const route = useRoute()
+            { user } = storeToRefs(authStore),
+            route = useRoute()
 
     onMounted(async () => {
         try
         {
             friends.value = await authApi.friendlist();
             tournament.value = (await api.get(`/api/tournaments/${route.params.tournament}`)).data.tournament;
+
+			admin.value = user.value.username === tournament.value?.created_by.username;
+			players.value = tournament.value.players;
+
+			authStore.socket.on("join_tournament", async ({resp}) => {
+				if (resp.log)
+					tournament.value = (await api.get(`/api/tournaments/${route.params.tournament}`)).data.tournament;
+			});
         }
         catch(err) {}
-        
-        players.value.add(user.value);
     });
 
-    function addToArry(id)
-    {
-        if (invites.value.has(id))
-            invites.value.delete(id);
-        else if (invites.value.size < 7)
-            invites.value.add(id);
-    }
+    function findUser(list, id_user) { return list.find(u => u.id_user === id_user); }
 
     async function search()
     {
@@ -49,6 +49,16 @@
         }
         catch { searchList.value = null; }
     }
+
+    function addToArry(user) {
+	    if (findUser(players.value, user.id_user)) return;
+
+	    const existing = findUser(invites.value, user.id_user);
+	    if (existing)
+	        invites.value.splice(invites.value.indexOf(existing), 1);
+	    else if (invites.value.length < 7)
+	        invites.value.push(user);
+	}
 
     async function inviteUsers()
     {
@@ -64,6 +74,10 @@
         }
         catch(err) { console.log(err); }
     }
+
+	async function startTour() {
+		authStore.socket.emit('start_round');
+	}
 </script>
 
 <template>
@@ -76,7 +90,7 @@
         </div>
         <hr class="w-full justify-self-start text-[#4e4e4e8c]">
         <div class="flex">
-            <div class="border-r border-[#4e4e4e8c]">
+            <div v-if="admin" class="border-r border-[#4e4e4e8c]">
                 <div class="p-2 pr-5 mt-2 items-center w-[60vh]">
                     <h2 class="text-2xl ml-4">Invita i tuoi amici</h2>
                     <div class="p-8 grid grid-cols-4 gap-6 w-full" :class="friends?.length > 5 ? 'max-h-[25vh] overflow-y-auto' : ''">
@@ -84,8 +98,9 @@
                             <img :src="u.friend.image ? `${u.friend.image}` : defaultAvatar" @error="handleAvatarError" :draggable="false"
                                 alt="" class="size-22 rounded-t-md place-self-center object-cover bg-linear-to-t from-[#882a2a] to-[#201e1c]">
                             <div class="py-2 grid grid-cols-1 border-[#4e4e4e8c] border-b-2 border-x-2 rounded-b-md w-full justify-items-center"
-                                :class="{   'bg-[#302d2a]' : invites.has(u.friend),
-                                            'bg-[#181715]' : !invites.has(u.friend) }">
+                                :class="{   'bg-[#302d2a]' : findUser(invites, u.friend.id_user),
+                                            'bg-[#181715]' : !findUser(invites, u.friend.id_user),
+											'bg-green-400/10' : findUser(players, u.friend.id_user) }">
                                 <h3 class="text-white text-sm" v-if="u.friend.username.length > 8">{{ u.friend.username.slice(0, 7) + "..."}}</h3>
                                 <h3 class="text-white text-sm" v-if="u.friend.username.length <= 8">{{ u.friend.username }}</h3>
                             </div>
@@ -105,8 +120,9 @@
                             <img :src="u.image ? `${u.image}` : defaultAvatar" @error="handleAvatarError" :draggable="false"
                                 alt="" class="size-22 rounded-t-md place-self-center object-cover bg-linear-to-t from-[#882a2a] to-[#201e1c]">
                             <div class="py-2 grid grid-cols-1 border-[#4e4e4e8c] border-b-2 border-x-2 rounded-b-md w-full justify-items-center"
-                                :class="{   'bg-[#302d2a]' : invites.has(u),
-                                            'bg-[#181715]' : !invites.has(u) }">
+                                :class="{   'bg-[#302d2a]' : findUser(invites, u.id_user),
+                                            'bg-[#181715]' : !findUser(invites, u.id_user),
+											'bg-green-400/10' : findUser(players, u.id_user) }">
                                 <h3 class="text-white text-sm" v-if="u.username.length > 8">{{ u.username.slice(0, 7) + "..."}}</h3>
                                 <h3 class="text-white text-sm" v-if="u.username.length <= 8">{{ u.username }}</h3>
                             </div>
@@ -114,33 +130,36 @@
                     </div>
                 </div>
             </div>
-            <div class="my-4 mx-8 h-[68vh] w-[77vh] bg-[#181715] text-white rounded-3xl border border-[#4e4e4e8c]">
+
+            <div class="my-4 mx-8 h-[68vh] w-full bg-[#181715] text-white rounded-3xl border border-[#4e4e4e8c]">
                 <div class="p-4">
                     <div>
                         <div class="flex justify-between">
-                            <h2 class="text-2xl m-3">Giocatori:</h2>
-                            <form @submit.prevent="" method="post" enctype="application/json" class="text-white items-center">
+                            <h2 class="m-3" :class="{ 'text-3xl' : !admin, 'text-2xl' : admin }">
+								Giocatori:     ({{ players.length }}/8)</h2>
+                            <form v-if="admin" @submit.prevent="startTour()" method="post" enctype="application/json" class="text-white items-center">
                                 <input id="submit" class="h-fit self-center transition-opacity w-fit p-3 m-2 mr-5 text-base bg-[#882a2a] rounded-[7px] text-white hover:bg-linear-to-t from-[#882a2a] to-[#af3d3d]"
-                                        type="submit" value="Inizia il torneo!" :class="{ 'opacity-100 duration-250 cursor-pointer pointer-events-auto' : players.size === 8, 'pointer-events-none opacity-0' : players.size < 8 }">
+                                        type="submit" value="Inizia il torneo!" :class="{ 'opacity-100 duration-250 cursor-pointer pointer-events-auto' : players.length === 8, 'pointer-events-none opacity-0' : players.length < 8 }">
                             </form>
                         </div>
                         <div class="grid grid-cols-2 grid-rows-1" 
-                            :class="{   'grid-rows-4' : players.size == 8 || players.size == 7, 'grid-rows-3' : players.size == 6 || players.size == 5, 
-                                        'grid-rows-2' : players.size == 4 || players.size == 3 }">
-                            <div v-for="p in players" class="flex m-3 items-center">
+                            :class="{   'grid-rows-4' : players.length == 8 || players.length == 7, 
+										'grid-rows-3' : players.length == 6 || players.length == 5, 
+                                        'grid-rows-2' : players.length == 4 || players.length == 3 }">
+                            <div v-for="p in players" class="flex m-3 items-center" :class="{ 'justify-center' : !admin }">
                                     <img :src="p.image ? `${p.image}` : defaultAvatar" @error="handleAvatarError" :draggable="false"
-                                        alt="" class="size-15 rounded-full object-cover mx-2">
-                                    <div>
+                                        alt="" class="rounded-full object-cover mx-2" :class="{ 'size-25' : !admin, 'size-15' : admin }">
+                                    <div :class="{ 'text-2xl mx-2' : !admin, 'text-md' : admin }">
                                         <p>{{ p.username }}</p>
-                                        <p v-if="p.username !== tournament.created_by.username">Pronto!</p>
-                                        <p v-if="p.username === tournament.created_by.username">Admin</p>
+                                        <p v-if="p.username != tournament.created_by.username">Pronto!</p>
+                                        <p v-if="p.username == tournament.created_by.username">Admin</p>
                                     </div>
                             </div>
                         </div>
                     </div>
-                    <div>
+                    <div v-if="admin">
                         <div class="flex justify-between">
-                            <h2 class="text-2xl m-3">Invitati:     ({{ invites.size + 1 }}/8)</h2>
+                            <h2 class="text-2xl m-3">Invitati:</h2>
                             <button @click="inviteUsers()" class="h-fit self-center transition-opacity w-25 p-2 m-2 mr-5 text-base bg-[#882a2a] rounded-[7px] text-white hover:bg-linear-to-t from-[#882a2a] to-[#af3d3d]">
                                 <p>Invita!</p>
                             </button>

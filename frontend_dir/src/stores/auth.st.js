@@ -133,13 +133,11 @@ export const useAuthStore = defineStore('auth', {
 
 		createTour(tourName)
 		{
-			this.socket.emit("create_tournament", {name: tourName}, (resp) => {
+			this.socket.emit("create_tournament", {name: tourName}, ({resp}) => {
 				if (resp.log.status == "OK")
 				{
 					this.tourInfo.pwd = resp.tournament_pwd;
-					// this.socket.on('ban_tournament', (resp) => { if (!resp.log) { this.tourInfo.error = resp.log.error; } });
-					// this.socket.on('start_round', (resp) => { if (!resp.log) { this.tourInfo.error = resp.log.error; } });
-					this.socket.on('update_tournament', (resp) => { if (!resp.log) { this.error = resp.log.error; } this.tourInfo.status = resp.round });
+					this.socket.on('update_tournament', ({resp}) => { if (!resp.log) { this.error = resp.log.error; } this.tourInfo.status = resp.round });
 					return (true);
 				}
 			});

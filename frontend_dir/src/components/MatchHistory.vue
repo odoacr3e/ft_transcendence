@@ -19,7 +19,7 @@
 
 <template>
     <div v-for="(game, index) in matches.slice().reverse()" :key="game.id_usermatch" class="ml-2">
-        <div class="flex my-3.25 ml-2 w-full">
+        <div class="flex my-3.25 w-full">
             <div class="size-13 rounded-full items-center inline-flex text-lg"
                 v-bind:class="{ 'bg-green-50/90 text-green-600' : game.result === 'Win',
                                 'bg-red-50/90 text-red-500' : game.result === 'Lose',
@@ -30,7 +30,7 @@
                     <path v-if="game.result === 'Draw'" stroke-linecap="round" stroke-linejoin="round" d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
                 </svg>
             </div>
-            <div class="text-white mx-2 w-fit">
+            <div class="text-white mx-2 w-[35%]">
                 <div class="flex gap-1">
                     <p>VS.</p>
                     <RouterLink :to="{ name: 'user_page', params: { username: game.opponent } }"
@@ -52,7 +52,7 @@
                 <p class="uppercase tracking-widest text-sm">Torneo</p>
             </div>
         </div>
-        <hr v-if="index !== matches.length - 1" class="text-[#4e4e4e80] border-dashed">
+        <hr v-if="index !== matches.length - 1" class="text-[#4e4e4e80] border-dashed w-full">
     </div>
 
     <div v-if="selectedT" class="fixed inset-0 z-25 flex items-center justify-center bg-black/20 backdrop-blur-xs px-4" @click.self="closeTournamentPopup">
@@ -65,9 +65,9 @@
                             <h3 class="text-2xl">{{ selectedT.tournament.name }}</h3>
                         </RouterLink>
                         <p class="text-[#4e4e4e8c]">|</p>
-                        <h4 :class="{	'text-green-600' : tourOpen.status === 'open',
-										'text-gray-300' : tourOpen.status === 'ongoing',
-										'text-red-500' : tourOpen.status === 'closed' }">
+                        <h4 :class="{	'text-green-600' : selectedT.tournament.status === 'open',
+										'text-gray-300' : selectedT.tournament.status === 'ongoing',
+										'text-red-500' : selectedT.tournament.status === 'closed' }">
                             {{ selectedT.tournament.status }}
                         </h4>
                     </div>
