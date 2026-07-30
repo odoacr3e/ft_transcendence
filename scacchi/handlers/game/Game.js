@@ -121,13 +121,14 @@ async function gameWebSocketHandler(req, id_user, socketData)
  * handler of websockets and http request
  * @param {import("../../Classes/Chess/match.js").Match} match
  * @param {import("./utils.js").RequestBody} body
+ * @param {import("../../Classes/Globals/globals.js").Socket | null} socketData
  */
-async function gameHandler(match, body)
+async function gameHandler(match, body, socketData=null)
 {
 	let	result;
 
 	if (includesOneOf(body.type, "reload", "history"))
-		return (gameInfoHandler(match, body));
+		return (gameInfoHandler(match, body, socketData));
 	result = new Result();
 	console.clear();
 	if (match.victory != "")
@@ -178,8 +179,9 @@ async function gameHandler(match, body)
  * handler of game info request
  * @param {import("../../Classes/Chess/match.js").Match} match
  * @param {import("./utils.js").RequestBody} body
+ * @param {import("../../Classes/Globals/globals.js").Socket | null} socketData
  */
-async function gameInfoHandler(match, body)
+async function gameInfoHandler(match, body, socketData)
 {
 	let	result;
 
@@ -191,6 +193,13 @@ async function gameInfoHandler(match, body)
 			match.currentPlayer.time = match.timer.time - (Date.now() - match.timer.start);
 		// @ts-ignore
 		result.board = clientBoard(match, true, true);
+		if (socketData?.matchData?.team == match.currentPlayer.team && match.moves != 0)//@ts-ignore
+			result.secondMove = true;
+		else//@ts-ignore
+			result.secondMove = false;
+		result.team = socketData?.matchData?.team;
+		if (result.team == undefined)
+			result.team = "spectating";
 	}
 	else if (body.type == "history")
 	{

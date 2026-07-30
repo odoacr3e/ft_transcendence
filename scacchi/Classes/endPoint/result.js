@@ -58,6 +58,7 @@ class Result
 									this.usedBoost = false;
 									this.victory = "";
 									this.specialMoves = new bitMaskMoves();
+/** @type {string | undefined} */	this.team = undefined;
 		/** @type {Match | null} */	this.match = null;
 
 		if (!other)
