@@ -22,11 +22,14 @@ export function routesGame(socket, user)
 	socket.on("amiplaying", async(req, callback) =>
 	{
 		let	socketData;
-	
+		let	isPlaying;
+
+		if (!callback && typeof(req) == "function") //questo serve perchè io da frontend non mando mai callback come argomento
+			callback = req;
 		socketData = globals.clientMap.get(user.id_user);
-		socket.emit("amiplaying", socketData?.state == enumSocketState.PLAYING);
+		isPlaying = socketData?.state == enumSocketState.PLAYING;
 		if (typeof(callback) == "function")
-			callback({log: {status: status}});
+			callback(isPlaying);
 	});
 
 	socket.on("game", async(/** @type {{from: *, to: *, type: string}}*/req, callback) =>
