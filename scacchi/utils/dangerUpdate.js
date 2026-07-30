@@ -150,6 +150,8 @@ function dangerUpdateBastards(match, dy, dx, piece)
 
 	if (piece.type != enumNames.BASTARDS)
 		return true;
+	// if (match.aiSimulation == true)
+	// 	return true;
 	//@ts-ignore
 	if (!bastardMove[piece.team])
 		throw ("dangerUpdateBastards: unknown piece team");
