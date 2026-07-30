@@ -28,7 +28,7 @@
         <div v-if="currentRequest" class="grid grid-flow-col">
             <button @click="goPrev" v-bind:class="{'hidden' : friendReq.length <= 1, 'inline' : friendReq.length > 1 }"
                 :disabled="!currentRequest"
-                class="justify-self-start text-text-second self-center cursor-pointer">
+                class="justify-self-start text-zinc-300 self-center cursor-pointer">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
                 </svg>
@@ -38,17 +38,17 @@
                     <RouterLink :to="{ name: 'user_page', params: { username: currentRequest.friend.username } }" class="flex">
                         <img class="size-13 rounded-full object-cover" :src="currentRequest.friend.image ? `${currentRequest.friend.image}` : defaultAvatar" @error="handleAvatarError"/>
                         <div class="mx-2">
-                            <p class="text-text-default" v-if="currentRequest.friend.username.length > 12">
+                            <p class="text-white" v-if="currentRequest.friend.username.length > 12">
                                 {{ currentRequest.friend.username.slice(0, 11) + "..." }}</p>
-                            <p class="text-text-default" v-if="currentRequest.friend.username.length <= 12">
+                            <p class="text-white" v-if="currentRequest.friend.username.length <= 12">
                                 {{ currentRequest.friend.username }}</p>
-                            <p class="text-text-second text-sm">ELO: {{ currentRequest.friend.points }}</p>
+                            <p class="text-zinc-300 text-sm">ELO: {{ currentRequest.friend.points }}</p>
                         </div>
                     </RouterLink>
                     <div class="ml-7 self-center">
                         <button @click="acceptRequest(currentRequest.friend.id_user)"
                             class="p-1.25 cursor-pointer justify-self-end-safe rounded-l-md inset-ring 
-                                bg-green-400/10 text-online-on inset-ring-green-500/20">
+                                bg-green-400/10 text-green-500 inset-ring-green-500/20">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
                             </svg>
@@ -65,7 +65,7 @@
 
             <button @click="goNext" v-bind:class="{'hidden' : friendReq.length <= 1, 'inline' : friendReq.length > 1 }"
                 :disabled="!currentRequest"
-                class="justify-self-end text-text-second self-center cursor-pointer">
+                class="justify-self-end text-zinc-300 self-center cursor-pointer">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
                 </svg>
@@ -73,7 +73,7 @@
             </button>
         </div>
         <div v-if="!currentRequest" class="flex justify-center">
-            <p class="text-text-default self-center mt-5">Nessuna richiesta in attesa</p>
+            <p class="text-white self-center mt-5">Nessuna richiesta in attesa</p>
         </div>
     </div>
 </template>

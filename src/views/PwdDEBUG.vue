@@ -21,18 +21,18 @@
 </script>
 
 <template>
-	<div class="flex flex-col z-2 bg-bg-darker rounded-3xl w-[70vh] h-[65vh]">
+	<div class="flex flex-col z-2 bg-[#181715] rounded-3xl w-[70vh] h-[65vh]">
 		<div class="flex flex-col mt-15">
-			<h2 class="text-text-default text-3xl self-center mb-1">Cambia password</h2>
-			<h2 class="text-main-color text-3xl self-center">[DEBUG]</h2>
-			<div class="text-sm my-4 items-center self-center justify-self-center text-text-default flex flex-col">
+			<h2 class="text-white text-3xl self-center mb-1">Cambia password</h2>
+			<h2 class="text-[#882a2a] text-3xl self-center">[DEBUG]</h2>
+			<div class="text-sm my-4 items-center self-center justify-self-center text-white flex flex-col">
 				<p>Questa pagina è ad uso esclusivo del team di sviluppo per</p>
 				<p>facilitare la fase di debug di questo progetto.</p>
 				<p>Se vedi questa pagina a lavoro completo</p>
 				<p>vuol dire che qualcuno qui se n'è dimenticato...</p>
 			</div>
 		</div>
-		<form @submit.prevent="submitForm" method="post" enctype="application/json" class="text-text-default self-center flex flex-col mt-7">
+		<form @submit.prevent="submitForm" method="post" enctype="application/json" class="text-white self-center flex flex-col mt-7">
 			<div class="form flex w-sm m-4 mb-2" :class="{ 'animate-shake': error }" @animationend="error = false">
 				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
 					<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
@@ -53,14 +53,14 @@
 					</svg>
 				</button>
 			</div>
-			<div class="text-xs mx-5 self-center justify-self-center text-main-color" 
-				:class="{ 'transition-colors duration-200 text-active-button': error, 'transition-colors duration-200 text-main-color': !error, }" 
+			<div class="text-xs mx-5 self-center justify-self-center text-[#882a2a]" 
+				:class="{ 'transition-colors duration-200 text-[#d1aaaa]': error, 'transition-colors duration-200 text-[#882a2a]': !error, }" 
 				@animationend="error = false">
 				<p>Ricorda, la password deve avere almeno 8 caratteri, un numero,</p>
 				<p> una maiuscola, una minuscola e un carattere speciale ($,%,#...)</p>
 			</div>
 			<input id="submit" class="cursor-pointer justify-self-center w-sm p-3 text-base self-center mt-6
-							bg-main-color rounded-[7px] text-text-default hover:bg-linear-to-t from-main-color to-light-button"
+							bg-[#882a2a] rounded-[7px] text-white hover:bg-linear-to-t from-[#882a2a] to-[#af3d3d]"
 					v-bind:class="{'pointer-events-none grayscale': !formData.password || !formData.username,
 						'pointer-events-auto grayscale-0 ': formData.password && formData.username}"
 					type="submit" value="Salva le modifiche">

@@ -334,7 +334,7 @@
 				<p class="text-sm whitespace-pre-line" v-if="error.email[1]">{{ error_msg.email }}</p>
 				<p class="text-sm whitespace-pre-line" v-if="error.password[1]">{{ error_msg.password }}</p>
 				<RouterLink to="/log" v-if="error.clone[1]">
-                    <u><a class="text-sm cursor-pointer hover:text-light-button active:text-active-button">Vuoi accedere?</a></u>
+                    <u><a class="text-sm cursor-pointer hover:text-[#af3d3d] active:text-[#d1aaaa]">Vuoi accedere?</a></u>
                 </RouterLink>
 			</div>
 		</div>
@@ -342,7 +342,7 @@
 
 
 	<div class="justify-self-center justify-items-center mt-3">
-		<form @submit.prevent="submitForm" method="post" enctype="application/json" class="text-text-default" target="_blank">
+		<form @submit.prevent="submitForm" method="post" enctype="application/json" class="text-white" target="_blank">
 			<div class="form flex w-sm mb-3">
 				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
 					<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
@@ -386,7 +386,7 @@
 				</svg>
 				<input placeholder="Nazionalita'" list="country" size="35" class="pl-2 text-base" type="text" v-model="formData.nationality">
 			</div>
-			<input id="submit" class="cursor-pointer justify-self-center w-sm mt-1.5 p-3 text-base bg-main-color rounded-[7px] text-text-default hover:bg-linear-to-t from-main-color to-light-button"
+			<input id="submit" class="cursor-pointer justify-self-center w-sm mt-1.5 p-3 text-base bg-[#882a2a] rounded-[7px] text-white hover:bg-linear-to-t from-[#882a2a] to-[#af3d3d]"
 					v-bind:class="{'pointer-events-none grayscale': !formData.name || !formData.surname || !formData.username || !formData.email || !formData.password || !formData.nationality,
 						'pointer-events-auto grayscale-0 ': formData.name && formData.surname && formData.username && formData.email && formData.password && formData.nationality }"
 					type="submit" value="Registrati">

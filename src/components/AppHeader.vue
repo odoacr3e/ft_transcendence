@@ -108,18 +108,18 @@
 		</RouterLink>
 	</datalist>
 
-	<div class="grid grid-cols-3 z-11 w-lvw h-15 bg-bg-default border-b border-border-default justify-center" v-bind="$attrs">
+	<div class="grid grid-cols-3 z-11 w-lvw h-15 bg-[#201e1c] border-b border-[#181715e8] justify-center" v-bind="$attrs">
 		<RouterLink to="/" id="button" class="w-fit">
 			<div class="flex justify-self-start">
 				<img src="../assets/CrownIcon.png" alt="" class="place-self-center size-15 ml-3" :draggable="false">
-				<h1 class="text-text-default text-4xl place-self-center">ChessZ</h1>
+				<h1 class="text-white text-4xl place-self-center">ChessZ</h1>
 			</div>
 		</RouterLink>
-		<div class="flex bg-bg-second w-[150%] justify-self-center rounded-4xl h-11 self-center content-center border border-border-second overflow-hidden">
+		<div class="flex bg-[#302d2a] w-[150%] justify-self-center rounded-4xl h-11 self-center content-center border border-[#4e4e4e8c] overflow-hidden">
 			<img src="../assets/search.png" alt="" class="size-7 self-center ml-3" :draggable="false">
 			<form @submit.prevent="goToUser">
 				<input v-model="searchUser" type="search" name="searchBar" id="searchBar" placeholder="Cerca" autocomplete="off"
-					class="justify-self-center rounded-4xl h-10 w-235 pl-3 text-text-default"
+					class="justify-self-center rounded-4xl h-10 w-235 pl-3 text-white"
 					:list="searchUser ? 'users' : null">
 			</form>
 		</div>
@@ -131,8 +131,8 @@
 					:aria-expanded="n_bool"
 					aria-haspopup="true">
 					<div v-if="authStore.msgRecevied && Array.from(authStore.msgRecevied).find(m => m.status === 'not_read') !== undefined">
-						<span class="absolute inline-flex translate-x-5.5 -translate-y-3.5 size-3 animate-ping rounded-full bg-notif-on opacity-75"></span>
-						<span class="absolute justify-self-end translate-x-5.5 -translate-y-3.5 size-3 rounded-full bg-notif-on"></span>
+						<span class="absolute inline-flex translate-x-5.5 -translate-y-3.5 size-3 animate-ping rounded-full bg-[#c41c1c] opacity-75"></span>
+						<span class="absolute justify-self-end translate-x-5.5 -translate-y-3.5 size-3 rounded-full bg-[#c41c1c]"></span>
 					</div>
 					<img src="../assets/bell.png" alt="" class="mr-4 size-9 place-self-center" :draggable="false">
 				</button>
@@ -144,50 +144,50 @@
 					leave-active-class="transition ease-in duration-100"
 					leave-from-class="opacity-100 scale-100"
 					leave-to-class="opacity-0 scale-70">
-					<div v-if="n_bool" class="mt-1.25 px-2 absolute bg-bg-darker border border-border-default w-76.5"
+					<div v-if="n_bool" class="mt-1.25 px-2 absolute bg-[#181715] border border-[#181715e8] w-76.5"
 						:class="authStore.msgRecevied.size > 3 ? 'w-79 max-h-[40vh] overflow-y-auto' : ''">
 						<div v-if="authStore.msgRecevied" v-for="m in [...authStore.msgRecevied].reverse()"
-							class="bg-bg-default p-2 my-2 rounded-sm text-text-default">
+							class="bg-[#201e1c] p-2 my-2 rounded-sm text-white">
 							<div class="flex gap-2 pb-1 items-center">
 								<span class="py-1 block size-2 rounded-full"
-									:class="{	'bg-notif-on' : m.status === 'not_read',
+									:class="{	'bg-[#c41c1c]' : m.status === 'not_read',
 												'bg-zinc-500' : m.status === 'read' }"/>
 								<h3 class="text-md">{{ m.title }}</h3>
-								<p class="text-text-last">|</p>
-								<p class="text-xs text-text-third">{{ rework_date(m.creation_date) }}</p>
+								<p class="text-[#4e4e4e8c]">|</p>
+								<p class="text-xs text-zinc-500">{{ rework_date(m.creation_date) }}</p>
 							</div>
-							<hr class="w-full justify-self-start text-text-last">
+							<hr class="w-full justify-self-start text-[#4e4e4e8c]">
 							<div class="items-end">
 								<RouterLink v-if="m.description[0] === ' ' && m.description.includes('amicizia')" :to="{ name: 'user_page', params: { username: m.sender.username } }"
 									@click="readMsg(m)">
-									<div v-if="m.description[0] === ' '" class="flex gap-1 text-text-second text-sm pt-2.5 pb-1">
+									<div v-if="m.description[0] === ' '" class="flex gap-1 text-zinc-300 text-sm pt-2.5 pb-1">
 										<p class="hover:underline">{{ m.sender.username }} {{ m.description }}</p>
 									</div>
 								</RouterLink>
 
 								<div v-if="m.description[0] === ' ' && m.description.includes('torneo')"
 									@click="readMsg(m); fetchTour(m); n_bool = false; popUp = true;" class="cursor-pointer">
-									<div v-if="m.description[0] === ' '" class="flex gap-1 text-text-second text-sm pt-2.5 pb-1">
+									<div v-if="m.description[0] === ' '" class="flex gap-1 text-zinc-300 text-sm pt-2.5 pb-1">
 										<p class="hover:underline">{{ m.sender.username }} {{ m.description.slice(0, m.description.indexOf('|')) }}</p>
 									</div>
 								</div>
 
 								<div v-if="m.description[0] !== ' '">
-									<p class="text-text-second text-sm pt-2.5 pb-1">{{ m.description }}</p>
+									<p class="text-zinc-300 text-sm pt-2.5 pb-1">{{ m.description }}</p>
 									<div class="ml-auto -mt-3.5 flex gap-1 h-fit w-fit" v-if="m.sender">
-										<p class="text-xs text-text-third">
+										<p class="text-xs text-zinc-500">
 											da</p>
 										<RouterLink :to="{ name: 'user_page', params: { username: m.sender.username } }">
-											<p class="text-xs text-text-third hover:underline" v-if="m.sender.username.length <= 10">
+											<p class="text-xs text-zinc-500 hover:underline" v-if="m.sender.username.length <= 10">
 												{{ m.sender.username }}</p>
-											<p class="text-xs text-text-third hover:underline" v-if="m.sender.username.length > 10">
+											<p class="text-xs text-zinc-500 hover:underline" v-if="m.sender.username.length > 10">
 												{{ m.sender.username.slice(0, 9) + "..." }}</p>
 										</RouterLink>
 									</div>
 								</div>
 							</div>
 						</div>
-						<div v-if="!authStore.msgRecevied.size" class="flex p-2 my-2 rounded-sm text-text-default">
+						<div v-if="!authStore.msgRecevied.size" class="flex p-2 my-2 rounded-sm text-white">
 							<p class="mx-auto">Nessuna notifica</p>
 						</div>
 					</div>	
@@ -200,12 +200,12 @@
 					@click="p_bool = !p_bool"
 					:aria-expanded="p_bool"
 					aria-haspopup="true">
-					<h2 class="text-text-default text-lg place-self-center mr-2">{{ user.username }}</h2>
+					<h2 class="text-white text-lg place-self-center mr-2">{{ user.username }}</h2>
 					<img
 						:src="user.image ? `${user.image}` : defaultAvatar" @error="handleAvatarError" :draggable="false"
 						class="size-12 rounded-full place-self-center mr-1 object-cover">
 					<svg
-						class="size-4 text-text-default transition-transform duration-200"
+						class="size-4 text-white transition-transform duration-200"
 						:class="{ 'rotate-180': p_bool }"
 						viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 						<path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/>
@@ -219,15 +219,15 @@
 					leave-active-class="transition ease-in duration-100"
 					leave-from-class="opacity-100 scale-100"
 					leave-to-class="opacity-0 scale-70">
-					<div v-if="p_bool" class="mt-1.25 p-2 absolute right-0 bg-bg-darker origin-top border border-border-default min-w-full">
+					<div v-if="p_bool" class="mt-1.25 p-2 absolute right-0 bg-[#181715] origin-top border border-[#181715e8] min-w-full">
 						<RouterLink to="/me" @click="p_bool = false">
-							<p class="text-text-default hover:underline">Profilo</p>
+							<p class="text-white hover:underline">Profilo</p>
 						</RouterLink>
-						<hr class="w-full justify-self-start text-text-last">
+						<hr class="w-full justify-self-start text-[#4e4e4e8c]">
 						<RouterLink to="/me/edit" @click="p_bool = false">
-							<p class="text-text-default hover:underline">Impostazioni</p>
+							<p class="text-white hover:underline">Impostazioni</p>
 						</RouterLink>
-						<hr class="w-full justify-self-start text-text-last">
+						<hr class="w-full justify-self-start text-[#4e4e4e8c]">
 						<button @click="submitForm(); p_bool = false" class="cursor-pointer text-[#f1f5f7] hover:underline">
 							Logout
 						</button>
@@ -238,14 +238,14 @@
  
 		<div v-if="user === null" class="justify-self-end place-self-center">
 			<RouterLink to="/log" class="flex mr-3">
-				<button class="flex cursor-pointer w-25 justify-center p-2 text-base bg-main-color rounded-[7px] text-text-default
-								hover:bg-linear-to-t from-main-color to-light-button">Accedi</button>
+				<button class="flex cursor-pointer w-25 justify-center p-2 text-base bg-[#882a2a] rounded-[7px] text-white
+								hover:bg-linear-to-t from-[#882a2a] to-[#af3d3d]">Accedi</button>
 			</RouterLink>
 		</div>
 	</div>
 
-	<div v-if="popUp && tourOpen" class="fixed inset-0 z-50 flex items-center justify-center bg-bg-blur backdrop-blur-xs px-4" @click.self="closePopup()">
-        <div class="w-full max-w-md rounded-3xl border border-border-second bg-bg-default p-6 text-text-default shadow-2xl">
+	<div v-if="popUp && tourOpen" class="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-xs px-4" @click.self="closePopup()">
+        <div class="w-full max-w-md rounded-3xl border border-[#4e4e4e8c] bg-[#201e1c] p-6 text-white shadow-2xl">
             <div class="flex items-start justify-between gap-4">
                 <div>
                     <p class="text-sm uppercase tracking-widest text-blue-200">Torneo</p>
@@ -253,27 +253,27 @@
                         <RouterLink to="/tournaments" class="hover:underline">
                             <h3 class="text-2xl">{{ tourOpen.name }}</h3>
                         </RouterLink>
-                        <p class="text-text-last">|</p>
+                        <p class="text-[#4e4e4e8c]">|</p>
                         <h4 :class="{	'text-green-600' : tourOpen.status === 'open',
 										'text-gray-300' : tourOpen.status === 'ongoing',
 										'text-red-500' : tourOpen.status === 'closed' }">
 							{{ tourOpen.status }}
 						</h4>
                     </div>
-                    <hr class="w-[192%] justify-self-start text-text-last my-1">
-                    <p class="text-sm text-text-second ml-1">Creato il {{ rework_date(tourOpen.created_at) }} da 
+                    <hr class="w-[192%] justify-self-start text-[#4e4e4e8c] my-1">
+                    <p class="text-sm text-zinc-300 ml-1">Creato il {{ rework_date(tourOpen.created_at) }} da 
                         <RouterLink :to="{ name: 'user_page', params: { username: tourOpen.created_by.username } }" class="hover:underline">
                             {{ tourOpen.created_by.username }}
                         </RouterLink>
                     </p>
                 </div>
-                <button type="button" class="text-2xl leading-none text-text-third hover:text-text-default" @click="closePopup()">&times;</button>
+                <button type="button" class="text-2xl leading-none text-zinc-500 hover:text-white" @click="closePopup()">&times;</button>
             </div>
             <div class="mt-6 mb-3 flex flex-col gap-2 justify-self-center items-center text-center">
                 <p>Sei stato invitato al torneo <b>{{ tourOpen.name }}</b> creato da {{ tourOpen.created_by.username }}.<br>Vuoi partecipare?</p>
 				<div v-if="tourOpen.status == 'open'" class="flex gap-10 w-max justify-self-end-safe pt-5">
 					<button class="cursor-pointer rounded-md inset-ring text-lg px-3 p-2.5
-								bg-green-400/10 text-online-on inset-ring-green-500/20"
+								bg-green-400/10 text-green-500 inset-ring-green-500/20"
 						@click="accpetInvite()">
 						<p>Accetta</p>
 					</button>

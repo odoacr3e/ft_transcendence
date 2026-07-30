@@ -3,19 +3,19 @@
 </script>
 
 <template>
-    <div class="flex z-2 bg-bg-darker rounded-3xl">
-        <div class="p-3 bg-bg-default rounded-l-3xl border-r border-border-second">
+    <div class="flex z-2 bg-[#181715] rounded-3xl">
+        <div class="p-3 bg-[#201e1c] rounded-l-3xl border-r border-[#4e4e4e8c]">
             <img :draggable="false" src="../assets/KingSketch.png" alt="">
         </div>
         <div class="p-10 flex-col mt-8 w-lg">
             <img :draggable="false" src="../assets/CrownIcon.png" alt="" class="w-30 justify-self-center">
-            <h1 class="text-[200%] mb-1 text-text-default justify-self-center">Ben tornato</h1>
-            <h4 class="text-[100%] mb-8 text-text-second justify-self-center">Accedi al tuo account</h4>
+            <h1 class="text-[200%] mb-1 text-white justify-self-center">Ben tornato</h1>
+            <h4 class="text-[100%] mb-8 text-zinc-300 justify-self-center">Accedi al tuo account</h4>
             <LoginForm/>
             <div class="m-4 flex flex-row justify-self-center gap-4">
-                <span class="border-b border-border-second h-4 w-40"></span>
-                <p class="text-[80%] text-text-second mt-1">oppure</p>
-                <span class="border-b border-border-second h-4 w-40"></span>
+                <span class="border-b border-[#4e4e4e8c] h-4 w-40"></span>
+                <p class="text-[80%] text-zinc-300 mt-1">oppure</p>
+                <span class="border-b border-[#4e4e4e8c] h-4 w-40"></span>
             </div>
             <div class="flex flex-col justify-self-center items-center justify-cente">
                 <a href="/auth/google_login" class="cursor-pointer w-full p-3 px-22 flex gap-2
@@ -23,10 +23,10 @@
                         <img src="../assets/google-icon.svg" alt="google-icon" class="size-6">
                         Continua con Google
                 </a>
-				<div class="flex gap-2 mt-5 text-[80%] text-text-second">
+				<div class="flex gap-2 mt-5 text-[80%] text-zinc-300">
 					<p>Non hai ancora un account?</p>
 					<RouterLink to="/register">
-						<u class=" text-main-color cursor-pointer hover:text-light-button active:text-active-button">Registrati</u>
+						<u class=" text-[#882a2a] cursor-pointer hover:text-[#af3d3d] active:text-[#d1aaaa]">Registrati</u>
 					</RouterLink>
 				</div>
             </div>

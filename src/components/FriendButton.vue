@@ -49,7 +49,7 @@
 
 <template>
 	<button class="flex w-max p-2.5 pl-4 gap-3 cursor-pointer rounded-md inset-ring justify-self-end-safe
-					 bg-green-400/10 text-online-on inset-ring-green-500/20"
+					 bg-green-400/10 text-green-500 inset-ring-green-500/20"
 			@click="sendRequest()"
 			v-if="state === 'Manda amicizia'">
 			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -62,7 +62,7 @@
 
 	<div class="w-max justify-self-end-safe" v-if="state ===  'Accetta'">
 		<button class="cursor-pointer rounded-l-md inset-ring p-2.5
-					bg-green-400/10 text-online-on inset-ring-green-500/20"
+					bg-green-400/10 text-green-500 inset-ring-green-500/20"
 			@click="acceptRequest(user.id_user)">
 			<p>Accetta</p>
 		</button>

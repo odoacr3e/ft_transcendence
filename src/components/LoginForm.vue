@@ -116,7 +116,7 @@
 		</div>
 	</div>
 	<div class="justify-self-center justify-items-center">
-		<form @submit.prevent="submitForm" method="post" enctype="application/json" class="text-text-default">
+		<form @submit.prevent="submitForm" method="post" enctype="application/json" class="text-white">
 			<div class="form flex w-sm mb-5" :class="{ 'animate-shake': error }" @animationend="error = false">
 				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
 					<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
@@ -140,23 +140,23 @@
 					</button>
 				</div>
 				<RouterLink to="/DEBUG/pwd">
-					<u><a class="justify-self-center text-[80%] text-main-color cursor-pointer hover:text-light-button active:text-active-button">Password dimenticata?</a></u>
+					<u><a class="justify-self-center text-[80%] text-[#882a2a] cursor-pointer hover:text-[#af3d3d] active:text-[#d1aaaa]">Password dimenticata?</a></u>
                 </RouterLink>
 			</div>
-			<input id="submit" class="cursor-pointer justify-self-center w-sm mt-1.5 p-3 text-base bg-main-color rounded-[7px] text-text-default hover:bg-linear-to-t from-main-color to-light-button"
+			<input id="submit" class="cursor-pointer justify-self-center w-sm mt-1.5 p-3 text-base bg-[#882a2a] rounded-[7px] text-white hover:bg-linear-to-t from-[#882a2a] to-[#af3d3d]"
 					v-bind:class="{'pointer-events-none grayscale': !formData.username || !formData.password,
 						'pointer-events-auto grayscale-0 ': formData.username && formData.password }"        
 					type="submit" value="Accedi">
 		</form>
 	</div>
 
-	<div v-if="popup" class="fixed inset-0 z-50 flex items-center justify-center bg-bg-blur backdrop-blur-xs px-4">
-        <div class="w-full max-w-lg rounded-3xl border border-border-second bg-bg-default p-6 text-text-default shadow-2xl">
+	<div v-if="popup" class="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-xs px-4">
+        <div class="w-full max-w-lg rounded-3xl border border-[#4e4e4e8c] bg-[#201e1c] p-6 text-white shadow-2xl">
             <div class="flex items-start justify-between gap-4">
-                <p class="text-sm uppercase tracking-widest text-text-second">Autenticazione OTP</p>
-				<button type="button" class="text-2xl leading-none text-zinc-400 hover:text-text-default" @click="closePopup">&times;</button>
+                <p class="text-sm uppercase tracking-widest text-zinc-300">Autenticazione OTP</p>
+				<button type="button" class="text-2xl leading-none text-zinc-400 hover:text-white" @click="closePopup">&times;</button>
             </div>
-			<hr class="w-[90%] justify-self-start text-text-last mt-1 mb-2">
+			<hr class="w-[90%] justify-self-start text-[#4e4e4e8c] mt-1 mb-2">
 			<div class="justify-self-center mt-4">
 				<p class="text-sm justify-self-center">Inserisci le il codice che ti e' stato mandato via email.</p>
 				<p class="text-sm justify-self-center mb-2">Scadra' in {{ resp.data.Expiration }}.</p>
@@ -169,7 +169,7 @@
 						</div>
 					</div>
 					<input id="submit" type="submit" value="Accedi"
-						class="cursor-pointer justify-self-center w-full my-3 p-3 text-base bg-main-color rounded-[7px] text-text-default hover:bg-linear-to-t from-main-color to-light-button"
+						class="cursor-pointer justify-self-center w-full my-3 p-3 text-base bg-[#882a2a] rounded-[7px] text-white hover:bg-linear-to-t from-[#882a2a] to-[#af3d3d]"
 						:class="{	'pointer-events-none grayscale': otpValues.some(v => !v), 
 									'pointer-events-auto grayscale-0': otpValues.every(v => v) }">
 				</form>
