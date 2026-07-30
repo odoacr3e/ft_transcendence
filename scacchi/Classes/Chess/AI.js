@@ -168,11 +168,16 @@ function minMax(match, ai, arrayTurns, depth, pastTurns)
  */
 function evalScore(match, ai, turns)
 {
+	let	score;
+
 	if (checkKingDanger(match))
 		return (-Infinity);
 	else if (checkKingDanger(match, match.currentPlayer.next))
 		return (+Infinity);
-	return (ai.Eval(match, ai, turns));
+	score = ai.Eval(match, ai, turns);
+	if (match.currentPlayer.team == eTeam.Black)
+		score = -score;
+	return (score);
 }
 
 // /**

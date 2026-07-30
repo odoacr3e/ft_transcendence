@@ -81,7 +81,7 @@ function checkKingDanger(match, team=match.currentPlayer.team)
 	if (typeof(kingCoord) != "string")
 		return (console.error(`checkKingDanger ${team} does not exist`), false);
 	kingSquare = match.board.get(kingCoord);
-	return (isDangerous(match, kingSquare.dangerZones, match.currentPlayer.team));
+	return (isDangerous(match, kingSquare.dangerZones, team));
 }
 
 export {isDangerous, checkKingDanger};
