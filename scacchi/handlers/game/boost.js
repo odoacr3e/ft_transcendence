@@ -25,11 +25,13 @@ import { jsonParser } from "../../utils/response.js";
  * @param {String} from
  * @returns {Result}
  */
-function boost(match, from, realBoost=true, sendBoardBool=true)
+function boost(match, from, realBoost=true)
 {
 	let	result;
 	let prevBoost;
 
+	if (from == "a7")
+		console.log("cazzi");
 	result = new Result();
 	if (!paramCheck(result, from))
 		return (result);
@@ -44,9 +46,8 @@ function boost(match, from, realBoost=true, sendBoardBool=true)
 			result.specialMoves.SetKingDanger();
 	}
 	if (prevBoost == "")
-		prevBoost = from;
-	if (sendBoardBool == true)// @ts-ignore
-		result.board = clientBoard(match);
+		prevBoost = from;//@ts-ignore
+	result.board = clientBoard(match);
 	result.match = match;
 	return (result);
 }

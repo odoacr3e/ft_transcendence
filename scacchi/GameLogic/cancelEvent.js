@@ -69,7 +69,7 @@ function cancelMove(match, lastEvent)
 	if (lastEvent.specialMoves & enumSpecialMoves.SNIPER && lastEvent.pieceEaten)
 	{
 		toSquare.piece = lastEvent.pieceEaten;
-		match.currentPlayer.nPoints += lastEvent.pieceEaten.price;//@ts-ignore
+		match.currentPlayer.nPoints -= lastEvent.pieceEaten.price;//@ts-ignore
 		match[lastEvent.pieceEaten?.team].nPieces -= 1;
 	}
 	else if (lastEvent.specialMoves & enumSpecialMoves.CASTLING)
@@ -124,6 +124,7 @@ function cancelBoost(match, lastEvent)
 		return ("cancelBoost: missing coord from");
 	match.currentPlayer.nPoints += square.piece.price;
 	square.piece.isBoostedBool = false;
+	match.currentPlayer.boostedPiece = '';
 	DangerUpdate(match, lastEvent.from);
 }
 
@@ -150,7 +151,7 @@ function cancelEndTurn(match)
 	{
 		if (match.history.events[match.history.events.length - 2 - i].type == eEvents.EndTurn)
 			break ;
-		if (match.history.events[match.history.events.length - 2 - i].type == eEvents.Move || match.history.events[-1 - i].type == eEvents.MoveBoost)
+		if (match.history.events[match.history.events.length - 2 - i].type == eEvents.Move || match.history.events[match.history.events.length - 2 - i].type == eEvents.MoveBoost)
 			match.moves++;
 	}
 }

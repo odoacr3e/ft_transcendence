@@ -170,7 +170,12 @@ function pushAllLegalBoost(match, player, legalMovesArray, currTurn)
 		if (square.piece.price > player.nPoints)
 			continue ;
 		turnWithBoost = structuredClone(currTurn);
-		turnWithBoost.boost = coord;
+		if (coord != turnWithBoost.move?.from && coord != turnWithBoost.moveBoost?.from)
+			turnWithBoost.boost = coord;
+		else if (turnWithBoost.moveBoost)
+			turnWithBoost.boost = turnWithBoost.moveBoost.to;
+		else //@ts-ignore
+			turnWithBoost.boost = turnWithBoost.move.to;
 		legalMovesArray.push(turnWithBoost);
 	}
 }

@@ -1,0 +1,25 @@
+	for (const x of startArray)
+	{
+		let square = match.board.get(x);
+		let dir = getDirection(match, x, dest);
+		let found = false;
+
+		for (let move of square.piece?.moveArray)
+		{
+			if (move.dx == dir.diffRow && move.dy == dir.diffCol)
+			{
+				found = true;
+				break ;
+			}
+		}
+		if (!found)
+			continue ;
+		match.cursor.Save();
+		while (movePiece(match, dir.diffCol, dir.diffRow))
+		{
+			if (match.board.get(match.cursor.square).piece && match.board.get(match.cursor.square).piece?.pos == x)
+				return x;
+		}
+	}
+	return (null);
+}
