@@ -75,8 +75,8 @@ function checkMateCheckAll(match, result)
 	}
 	// @ts-ignore
 	if (match.playerNum == 1)
-		return (match.CheckMate(result), true);
-	if (getLegalMoves(match, match.currentPlayer.next).length == 0)
+		return (match.CheckMate(result), true);//@ts-ignore
+	if (getLegalMoves(match, match.currentPlayer.next, false) == true)
 	{
 		console.log("szechuan...");
 		return (match.DrawMatch(result), true);

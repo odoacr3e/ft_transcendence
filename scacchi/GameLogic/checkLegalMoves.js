@@ -22,8 +22,9 @@ import { includesOneOf } from "../utils/string.js";
  * the array elements are formatted as: {from: coord, to: coord}.
  * @param {Match} match 
  * @param {string} team
+ * @returns {Array<Turn>}
  * */
-export function getLegalMoves(match, team=match.currentPlayer.team)
+export function getLegalMoves(match, team=match.currentPlayer.team, infoBool=true)
 {
 	let	targetSquare;
 	/** @type {Map<string, Set<string>>} */
@@ -49,11 +50,16 @@ export function getLegalMoves(match, team=match.currentPlayer.team)
 				if (isDangerous(match, targetSquare.dangerZones, square.piece?.team))
 					continue ;
 			}
+			if (infoBool == false)//@ts-ignore
+				return (false);
 			if (legalMovesMap.has(coord) == false)
 				legalMovesMap.set(coord, new Set());
 			legalMovesMap.get(coord)?.add(targetCoord);
 		}
-	}//@ts-ignore
+	}
+	if (infoBool == false)//@ts-ignore
+		return (true);
+	//@ts-ignore
 	player = match[team];
 	for (const [coord, targetSet] of legalMovesMap)
 	{// TODO - eventualmente controllo per vedere che il re sia al sicuro dopo la mossa

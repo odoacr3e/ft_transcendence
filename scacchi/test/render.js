@@ -47,7 +47,6 @@ function render(match=null, selected=[], TargetDangerSwitch="", silentBool=false
 	}
 	while (match.cursor.moveRow(-1))
 	match.cursor.set(coords.player);
-	// console.log(getLegalMoves(match));
 	console.log(buffer);
 	console.log(match.yellow.King, match.red.King, match.blue.King, match.green.King);
 }
