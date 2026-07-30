@@ -41,6 +41,7 @@ let DangerUpdate = (match, pos=null, ignoreBoostChampsBool=true, castlingBool=fa
 	piece = match.board.get(match.cursor.square).piece;
 	if (piece == null)
 		return (match.cursor.Restore());
+	piece.pos = pos;
 	for (let {dx, dy} of piece.moveArray)
 	{
 		if (piece.type == enumNames.BASTARDS)
