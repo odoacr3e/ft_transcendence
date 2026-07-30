@@ -34,6 +34,7 @@ function mainTerm()
 	let	seed;
 	let	time;
 
+	console.time();
 	console.profile();
 	termInit();
 	globals.matches.set("0", new Match());
@@ -48,7 +49,8 @@ function mainTerm()
 	console.log(`time to init: ${(process.hrtime.bigint() - time) / 1000n} microseconds`);
 	match.cursor.square = match.currentPlayer.King;
 	// edoChampionBug(match);
-	render(match);
+	move(match, "e2", "e4");
+	// render(match);
 	return (match);
 }
 

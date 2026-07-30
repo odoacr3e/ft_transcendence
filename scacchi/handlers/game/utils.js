@@ -31,13 +31,15 @@ import { isDangerous } from "../../utils/checkDanger.js";
  * @param {Match} match
  * @param {boolean} copyAll if false copies only updates, else copy all
  * @param {boolean} avoidReset if true, avoid resetting the update array 
- * @returns {Object} a regular Object is returned. JSON does not support Map
+ * @returns {Object | null} a regular Object is returned. JSON does not support Map
  */
 function clientBoard(match, copyAll=false, avoidReset=false)
 {
 	let	src;
 	let	dest;
 
+	if (match.aiSimulation == true)
+		return (match.board.updates.clear(), null);
 	src = match.board._data;
 	if (copyAll == true)
 		dest = copyBoard(src, null, match);

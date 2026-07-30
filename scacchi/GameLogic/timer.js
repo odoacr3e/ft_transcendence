@@ -15,7 +15,9 @@ export function setTimerGame(match)
 	let timeout;
 	let start;
 	let time;
-	
+
+	if (match.aiSimulation == true)
+		return ;
 	time = match.currentPlayer.time;
 	/** @param {string} matchId */
 	timeout = setTimeout((matchId) =>
