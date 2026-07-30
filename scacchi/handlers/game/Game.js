@@ -85,13 +85,13 @@ async function gameWebSocketHandler(req, id_user, socketData)
 	id = match.id;
 	req = normifyRequest(match.cursor, req);
 	if (includesOneOf(req.type, "reload", "history"))
-		result = await gameInfoHandler(match, req);
+		result = await gameInfoHandler(match, req, socketData);
 	else if (match.currentPlayer.team != socketData.matchData?.team)
 		return (socketError(socketData.socket, null, 401, "Socket: it's not your turn, mr.greedy cheeta"));
 	else if (!req.type)
 		return (socketError(socketData.socket, null, 403, "Socket: missing param type in request"));
 	else
-		result = await gameHandler(match, req);
+		result = await gameHandler(match, req, socketData);
 	if (result.log.status != 200)
 		return (socketError(socketData.socket, result));
 	for (let p of match.loserSet)
