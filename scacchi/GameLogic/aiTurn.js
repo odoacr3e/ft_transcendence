@@ -40,7 +40,7 @@ export function AIexecuteTurn(match)
 	}
 	if (turn.boost)
 	{
-		result = boost(match, turn.boost, true, false);
+		result = boost(match, turn.boost, true);
 		sendResult(match, result, eEvents.Boost);
 	}
 	else if (turn.transform)
@@ -54,10 +54,10 @@ export function AIexecuteTurn(match)
 		sendResult(match, result, eEvents.EndTurn);
 	}
 	render(match);
-	console.profileEnd();
-	console.log(`Killo processo.`);
-	console.log(`Time: ${console.timeEnd()}`);
-	process.exit(0);
+	// console.profileEnd();
+	// console.log(`Killo processo.`);
+	// console.log(`Time: ${console.timeEnd()}`);
+	// process.exit(0);
 }
 
 /**

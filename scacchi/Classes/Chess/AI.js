@@ -73,6 +73,7 @@ function getBestTurn(match)
 	arrayTurns = getLegalMoves(match);
 	for (let i = 0; i != arrayTurns.length; i++)
 	{
+		console.log(`Turns: ${i}/${arrayTurns.length}`);
 		const turn = arrayTurns[i];
 		if (!execTurn(match, turn))
 			continue ;
@@ -96,6 +97,7 @@ function getBestTurn(match)
 			}
 		}
 	}
+	console.log(`Turns: ${arrayTurns.length}/${arrayTurns.length}`);
 	bestTurnIdx = bestTurns[Math.floor(Math.random() * 100000) % bestTurns.length].index;
 	console.log(bestTurnIdx);
 	return (arrayTurns[bestTurnIdx]);
@@ -111,7 +113,7 @@ function getBestTurn(match)
  * @returns 
  */
 function minMax(match, ai, arrayTurns, depth, pastTurns)
-{
+{//@ts-ignore
 	let	newTurns;
 	let val;
 
@@ -126,9 +128,12 @@ function minMax(match, ai, arrayTurns, depth, pastTurns)
 			if (execTurn(match, turn) == false)
 				continue ;
 			// render(match);
-			newTurns = getLegalMoves(match);
+			if (depth != 1)
+				newTurns = getLegalMoves(match);
+			// else
+			// 	console.log(arrayTurns.length);
 			pastTurns.push(turn);
-			ai.Simulate(match, ai);
+			ai.Simulate(match, ai);//@ts-ignore
 			val = minMax(match, ai, newTurns, depth - 1, pastTurns);
 			ai.Cancel(match, ai);
 			pastTurns.pop();
@@ -146,9 +151,12 @@ function minMax(match, ai, arrayTurns, depth, pastTurns)
 			if (execTurn(match, turn) == false)
 				continue ;
 			// render(match);
-			newTurns = getLegalMoves(match);
+			if (depth != 1)
+				newTurns = getLegalMoves(match);
+			// else
+			// 	console.log(arrayTurns.length);
 			pastTurns.push(turn);
-			ai.Simulate(match, ai);
+			ai.Simulate(match, ai);//@ts-ignore
 			val = minMax(match, ai, newTurns, depth - 1, pastTurns);
 			ai.Cancel(match, ai);
 			pastTurns.pop();

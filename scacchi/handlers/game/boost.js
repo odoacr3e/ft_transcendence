@@ -30,8 +30,6 @@ function boost(match, from, realBoost=true)
 	let	result;
 	let prevBoost;
 
-	if (from == "a7")
-		console.log("cazzi");
 	result = new Result();
 	if (!paramCheck(result, from))
 		return (result);

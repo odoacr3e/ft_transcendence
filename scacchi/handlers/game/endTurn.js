@@ -92,7 +92,8 @@ function updateTurn(match, result)
 		return (error(result, 403, "You need to move first"));
 	if (player.bonusPointCounter == MOVEMENT_BONUS_POINT - 1)
 	{
-		console.log("⚖️Punti bonus concessi⚖️");
+		if (match.aiSimulation == false)
+			console.log("⚖️Punti bonus concessi⚖️");
 		player.nPoints += 1;
 		player.bonusPointCounter = 0;
 	}
@@ -100,7 +101,6 @@ function updateTurn(match, result)
 		player.bonusPointCounter += 1;
 	if (match.currentPlayer.boostedPiece != "" && match.board.get(match.currentPlayer.boostedPiece).piece?.type == enumNames.BASTARDS)
 	{
-		console.log();
 		DangerUpdate(match, match.currentPlayer.boostedPiece);
 		match.board.updates.add(match.currentPlayer.boostedPiece);
 	}

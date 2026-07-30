@@ -1,5 +1,5 @@
 //@ts-check
-import {HISTORY_FILE, HISTORY_PATH} from "../Macro/macro.js";
+import {HISTORY_DEFAULT, HISTORY_FILE, HISTORY_PATH} from "../Macro/macro.js";
 import {AIprofiles, eEvents} from "../Macro/enums.js";
 import {movePiece} from "../utils/dangerUpdate.js";
 import {includesOneOf} from "../utils/string.js";
@@ -45,11 +45,12 @@ function mainTerm()
 	seed = "1v1";
 	time = process.hrtime.bigint();
 	init(match, seed);
+	historyRestore(match, HISTORY_DEFAULT);
 	match.NextPlayer().ai = new AI();
 	console.log(`time to init: ${(process.hrtime.bigint() - time) / 1000n} microseconds`);
 	match.cursor.square = match.currentPlayer.King;
 	// edoChampionBug(match);
-	move(match, "e2", "e4");
+	// move(match, "e2", "e4");
 	// render(match);
 	return (match);
 }
