@@ -19,6 +19,8 @@ export function AI_first_eval(match, ai, turns)
 	let	boostedPiece;
 	let	otherBoostedPiece;
 	let	score;
+	let	lastTurn;
+	let	square;
 
 	nextPlayer = match.NextPlayer();
 	//1)	differenza punti
@@ -34,5 +36,33 @@ export function AI_first_eval(match, ai, turns)
 	//4)	PIU quanto minaccio il re avversario
 	if (checkKingDanger(match, nextPlayer.team))
 		score += match.board.get(nextPlayer.King).dangerZones.size * 10;
+	if (score != 0)
+		return (score);
+	lastTurn = turns[turns.length - 1];
+	if (lastTurn?.move)
+	{
+		square = match.board.get(lastTurn.move.to);
+		score += square.targetZones.size;
+		for (const coord of square.dangerZones)
+		{
+			if (match.board.get(coord).piece?.team != square.piece?.team)
+				score -= 1;
+			else
+				score += 1;
+		}
+	}
+	lastTurn = turns[turns.length - 2];
+	if (lastTurn?.move)
+	{
+		square = match.board.get(lastTurn.move.to);
+		score -= square.targetZones.size;
+		for (const coord of square.dangerZones)
+		{
+			if (match.board.get(coord).piece?.team != square.piece?.team)
+				score += 1;
+			else
+				score -= 1;
+		}
+	}
 	return (score);
 }
