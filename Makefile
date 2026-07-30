@@ -11,6 +11,7 @@ re: delete up
 
 setup:
 	git fetch origin backend frontend
+	git worktree prune
 	test -d backend_dir  || git worktree add backend_dir backend
 	test -d frontend_dir || git worktree add frontend_dir frontend
 
