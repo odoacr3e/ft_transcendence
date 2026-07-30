@@ -103,7 +103,11 @@ function cancelMove(match, lastEvent)
 	}
 	updateBoostedChampions(match, [lastEvent.from, lastEvent.to]);
 	match.moves--;
-}
+	if (match.board.get(lastEvent.to).piece?.type == enumNames.BASTARDS || lastEvent.pieceEaten != null)
+		match.spareCountDown = 0;
+	else
+		++match.spareCountDown;
+	}
 
 /**
  * 
@@ -128,9 +132,26 @@ function cancelBoost(match, lastEvent)
  */
 function cancelEndTurn(match)
 {
-	if (match.history.TurnCount(match.currentPlayer.team) % MOVEMENT_BONUS_POINT == 0)
-		match.currentPlayer.nPoints -= 1;//@ts-ignore
+	// let nTurn;
+
+	// nTurn = match.history.TurnCount(match.currentPlayer.team);
+	// if (nTurn % MOVEMENT_BONUS_POINT == 0)
+	// 	match.currentPlayer.nPoints -= 1;
+	match.currentPlayer.bonusPointCounter--;
+	if (match.currentPlayer.bonusPointCounter == -1)
+	{
+		match.currentPlayer.bonusPointCounter = MOVEMENT_BONUS_POINT - 1;
+		match.currentPlayer.nPoints -= 1;
+	}
+	//@ts-ignore
 	match.currentPlayer = match[match.currentPlayer.prev];
+	for (let i = 0; i != match.history.events.length; i++)
+	{
+		if (match.history.events[match.history.events.length - 2 - i].type == eEvents.EndTurn)
+			break ;
+		if (match.history.events[match.history.events.length - 2 - i].type == eEvents.Move || match.history.events[-1 - i].type == eEvents.MoveBoost)
+			match.moves++;
+	}
 }
 
 /**
