@@ -366,60 +366,6 @@
             </div>
         </div>
     </form>
-    <!-- <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 500 250" xml:space="preserve">
-        <rect fill="#201e1c" x="0" y="0" width="100" height="220"/>,<rect fill="#302d2a" x="100" y="0" width="100" height="220"/>,<rect fill="#2f1818" x="200" y="0" width="100" height="220"/>,<rect fill="#882a2a" x="300" y="0" width="100" height="220"/>,<rect fill="#af3d3d" x="400" y="0" width="100" height="220"/>
-        <text x="10" y="235" font-family="Arial" font-size="6" alignment-baseline="middle">Exported from Coolors.co</text>
-        <text x="490" y="235" font-family="Arial" font-size="6" alignment-baseline="middle" text-anchor="end">https://coolors.co/201e1c-302d2a-2f1818-882a2a-af3d3d</text>
-    </svg>
-
-    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 500 250" xml:space="preserve">
-        <rect fill="#1d1d21" x="0" y="0" width="100" height="220"/>,<rect fill="#2a2b30" x="100" y="0" width="100" height="220"/>,<rect fill="#17252e" x="200" y="0" width="100" height="220"/>,<rect fill="#2a6287" x="300" y="0" width="100" height="220"/>,<rect fill="#3e82b0" x="400" y="0" width="100" height="220"/>
-        <text x="10" y="235" font-family="Arial" font-size="6" alignment-baseline="middle">Exported from Coolors.co</text>
-        <text x="490" y="235" font-family="Arial" font-size="6" alignment-baseline="middle" text-anchor="end">https://coolors.co/1d1d21-2a2b30-17252e-2a6287-3e82b0</text>
-    </svg>
-
-    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 500 250" xml:space="preserve">
-        <rect fill="#1d211f" x="0" y="0" width="100" height="220"/>,<rect fill="#2a302d" x="100" y="0" width="100" height="220"/>,<rect fill="#182e17" x="200" y="0" width="100" height="220"/>,<rect fill="#2d872a" x="300" y="0" width="100" height="220"/>,<rect fill="#41b03e" x="400" y="0" width="100" height="220"/>
-        <text x="10" y="235" font-family="Arial" font-size="6" alignment-baseline="middle">Exported from Coolors.co</text>
-        <text x="490" y="235" font-family="Arial" font-size="6" alignment-baseline="middle" text-anchor="end">https://coolors.co/1d211f-2a302d-182e17-2d872a-41b03e</text>
-    </svg>
-
-    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 500 250" xml:space="preserve">
-        <rect fill="#20211d" x="0" y="0" width="100" height="220"/>,<rect fill="#2f302a" x="100" y="0" width="100" height="220"/>,<rect fill="#2e2917" x="200" y="0" width="100" height="220"/>,<rect fill="#87712a" x="300" y="0" width="100" height="220"/>,<rect fill="#b0953e" x="400" y="0" width="100" height="220"/>
-        <text x="10" y="235" font-family="Arial" font-size="6" alignment-baseline="middle">Exported from Coolors.co</text>
-        <text x="490" y="235" font-family="Arial" font-size="6" alignment-baseline="middle" text-anchor="end">https://coolors.co/20211d-2f302a-2e2917-87712a-b0953e</text>
-    </svg> -->
-
-
-
-
-    <!-- <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 500 250" xml:space="preserve">
-        <rect fill="#beb9b5" x="0" y="0" width="100" height="220"/>,<rect fill="#d9d6d3" x="100" y="0" width="100" height="220"/>,<rect fill="#6b3838" x="200" y="0" width="100" height="220"/>,<rect fill="#c54444" x="300" y="0" width="100" height="220"/>,<rect fill="#c55959" x="400" y="0" width="100" height="220"/>
-        <text x="10" y="235" font-family="Arial" font-size="6" alignment-baseline="middle">Exported from Coolors.co</text>
-        <text x="490" y="235" font-family="Arial" font-size="6" alignment-baseline="middle" text-anchor="end">https://coolors.co/beb9b5-d9d6d3-6b3838-c54444-c55959</text>
-    </svg> -->
-
-
-    <!-- <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 500 250" xml:space="preserve">
-        <rect fill="#bebec5" x="0" y="0" width="100" height="220"/>,<rect fill="#d3d5d9" x="100" y="0" width="100" height="220"/>,<rect fill="#37586d" x="200" y="0" width="100" height="220"/>,<rect fill="#4494c5" x="300" y="0" width="100" height="220"/>,<rect fill="#5a9bc4" x="400" y="0" width="100" height="220"/>
-        <text x="10" y="235" font-family="Arial" font-size="6" alignment-baseline="middle">Exported from Coolors.co</text>
-        <text x="490" y="235" font-family="Arial" font-size="6" alignment-baseline="middle" text-anchor="end">https://coolors.co/bebec5-d3d5d9-37586d-4494c5-5a9bc4</text>
-    </svg> -->
-
-
-    <!-- <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 500 250" xml:space="preserve">
-        <rect fill="#bfc6c2" x="0" y="0" width="100" height="220"/>,<rect fill="#d4d9d7" x="100" y="0" width="100" height="220"/>,<rect fill="#396d37" x="200" y="0" width="100" height="220"/>,<rect fill="#46c544" x="300" y="0" width="100" height="220"/>,<rect fill="#5dc559" x="400" y="0" width="100" height="220"/>
-        <text x="10" y="235" font-family="Arial" font-size="6" alignment-baseline="middle">Exported from Coolors.co</text>
-        <text x="490" y="235" font-family="Arial" font-size="6" alignment-baseline="middle" text-anchor="end">https://coolors.co/bfc6c2-d4d9d7-396d37-46c544-5dc559</text>
-    </svg> -->
-
-
-    <!-- <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 500 250" xml:space="preserve">
-        <rect fill="#bec0b8" x="0" y="0" width="100" height="220"/>,<rect fill="#d8d9d3" x="100" y="0" width="100" height="220"/>,<rect fill="#6d6237" x="200" y="0" width="100" height="220"/>,<rect fill="#c7a643" x="300" y="0" width="100" height="220"/>,<rect fill="#c5ac59" x="400" y="0" width="100" height="220"/>
-        <text x="10" y="235" font-family="Arial" font-size="6" alignment-baseline="middle">Exported from Coolors.co</text>
-        <text x="490" y="235" font-family="Arial" font-size="6" alignment-baseline="middle" text-anchor="end">https://coolors.co/bec0b8-d8d9d3-6d6237-c7a643-c5ac59</text>
-    </svg> -->
-
 </template>
 
 <style scoped>

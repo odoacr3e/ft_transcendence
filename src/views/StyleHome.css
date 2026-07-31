@@ -30,7 +30,7 @@
 	--color-bg-win: var(--current-bg-win);
 	--color-text-draw-await: var(--current-text-draw-await);
 	--color-bg-draw: var(--current-bg-draw);
-	--color-text-lose: var(--current-lose);
+	--color-text-lose-closed: var(--current-text-lose-closed);
 	--color-bg-lose: var(--current-bg-lose);
 
 	--color-bg-tour-friend: var(--current-bg-tour-friend);
@@ -63,7 +63,7 @@
 /*✓*/	--current-bg-second: #302d2a;
 /*✓*/	--current-border-second: #181715e8;
 /*✓*/	--current-bg-darker: #181715;
-/*✓*/	--current-text-default: white;
+/*✓*/	--current-text-default: white;						/*NOTE - usato anche nei border editpage bg editpage*/
 /*✓*/	--current-text-second: var(--color-zinc-300);		/*#d4d4d8*/ /*NOTE - bg in LoginPage per Google*/
 /*✓*/	--current-text-third: var(--color-zinc-500);		/*#71717b*/ /*NOTE - bg in AppHeader*/
 /*✓*/	--current-text-last: #4e4e4e8c;
@@ -85,13 +85,8 @@
 /*▫*/	--current-bg-win: #f0fdf4e6;		/*green-50/90*/ /*NOTE - per ora praticamente inutile, una call, da controllare!!!*/
 /*✓*/	--current-text-draw-await: var(--color-gray-300);		/*#d1d5dc*/ /*NOTE - usato sia per le patte, per gli ongoing e per gli await. Attenta a quando usano l'opacita' per altri elementi*/
 /*▫*/	--current-bg-draw: #d1d5dce6;		/*gray-300/90*/ /*NOTE - per ora praticamente inutile, una call, da controllare!!!*/
-/*✓*/	--current-lose: var(--color-red-500);					/*#fb2c36*/ /*NOTE - usato sia per le sconfitte, i close e gli offline. Attenta a quando usano l'opacita' per altri elementi*/
+/*✓*/	--current-text-lose-closed: var(--color-red-500);					/*#fb2c36*/ /*NOTE - usato sia per le sconfitte, i close e gli offline. Attenta a quando usano l'opacita' per altri elementi*/
 /*▫*/	--current-bg-lose: #fef2f2e6;		/*red-50/90*/ /*NOTE - per ora praticamente inutile, una call, da controllare!!!*/
-
-
-
-
-
 
 /*✓*/	--current-bg-tour-friend: color-mix(in srgb, var(--color-blue-400) 10%, transparent);		/*blue-400/10  /  #51a2ff1a*/ /*NOTE - usato sia come bg per tour e per friends*/
 /*✓*/	--current-text-tour-friend: var(--color-blue-200);		/*#bedbff*/ /*NOTE - usato sia come text per tour e per friends*/
@@ -113,62 +108,396 @@
 
 /*ANCHOR - Dark-Blue*/
 [data-theme="DarkBlue"] {
-  --current-bg-default: #fff7ed;
-  --current-border-default: #fdba74;
-  --current-text-default: #431407;
-  --current-accent: #ea580c;
+--current-bg-default: #1d1d21;
+--current-border-default: #4e4e4e8c;			/*NOTE - SAME*/
+--current-bg-second: #2a2b30;
+--current-border-second: #16161ae8;
+--current-bg-darker: #16161a;
+--current-text-default: white;					/*NOTE - SAME*/
+--current-text-second: var(--color-zinc-300);	/*NOTE - SAME*/
+--current-text-third: var(--color-zinc-500);	/*NOTE - SAME*/
+--current-text-last: #4e4e4e8c;				/*NOTE - SAME*/
+--current-form-icon: #dcdfe4c0;				/*NOTE - SAME*/
+
+--current-notif-on: #c41c1c;					/*NOTE - SAME*/
+--current-online-accept: var(--color-green-500);	/*NOTE - SAME*/
+--current-bg-blur: #00000033;						/*NOTE - SAME*/
+--current-main-color: #2a6287;
+--current-light-button: #3e82b0;
+--current-active-button: #a9c9de;
+
+--current-bg-error: #17252ecc;
+--current-text-error: var(--color-blue-100);
+--current-border-error: color-mix(in srgb, var(--color-blue-800) 10%, transparent);
+--current-inset-error: color-mix(in srgb, var(--color-blue-500) 20%, transparent);
+
+
+/*NOTE - SAME*/
+--current-text-win-open: var(--color-green-600);
+--current-bg-win: #f0fdf4e6;
+--current-text-draw-await: var(--color-gray-300);
+--current-bg-draw: #d1d5dce6;
+--current-text-lose-closed: var(--color-red-500);
+--current-bg-lose: #fef2f2e6;
+
+--current-bg-tour-friend: color-mix(in srgb, var(--color-blue-400) 10%, transparent);
+--current-text-tour-friend: var(--color-blue-200);
+--current-inset-tour-friend: color-mix(in srgb, var(--color-blue-500) 20%, transparent);
+--current-hover-tour: #51a2ff33;	/*blue-400/20*/
+
+--current-bg-accept: color-mix(in srgb, var(--color-green-400) 10%, transparent);
+--current-inset-accept: color-mix(in srgb, var(--color-green-500) 20%, transparent);
+--current-bg-reject: color-mix(in srgb, var(--color-red-400) 10%, transparent);
+--current-inset-reject: color-mix(in srgb, var(--color-red-500) 20%, transparent);
+
+--current-bg-await: #e5e7eb1a;		/*gray-200/10*/
+--current-inset-await: #d1d5dc33;	/*gray-300/20*/
 }
 
 /*ANCHOR - Dark-Green*/
 [data-theme="DarkGreen"] {
-  --current-bg-default: #ffffff;
-  --current-border-default: #e2e8f0;
-  --current-text-default: #0f172a;
-  --current-accent: #0ea5e9;
+--current-bg-default: #1d211f;
+--current-border-default: #4e4e4e8c;			/*NOTE - SAME*/
+--current-bg-second: #2a302d;
+--current-border-second: #161917e8;
+--current-bg-darker: #161917;
+--current-text-default: white;					/*NOTE - SAME*/
+--current-text-second: var(--color-zinc-300);	/*NOTE - SAME*/
+--current-text-third: var(--color-zinc-500);	/*NOTE - SAME*/
+--current-text-last: #4e4e4e8c;				/*NOTE - SAME*/
+--current-form-icon: #dcdfe4c0;				/*NOTE - SAME*/
+
+--current-notif-on: #c41c1c;					/*NOTE - SAME*/
+--current-online-accept: var(--color-green-500);	/*NOTE - SAME*/
+--current-bg-blur: #00000033;						/*NOTE - SAME*/
+--current-main-color: #2d872a;
+--current-light-button: #41b03e;
+--current-active-button: #aadba8;
+
+--current-bg-error: #182e17cc;
+--current-text-error: var(--color-green-100);
+--current-border-error: color-mix(in srgb, var(--color-green-800) 10%, transparent);
+--current-inset-error: color-mix(in srgb, var(--color-green-500) 20%, transparent);
+
+
+/*NOTE - SAME*/
+--current-text-win-open: var(--color-green-600);
+--current-bg-win: #f0fdf4e6;
+--current-text-draw-await: var(--color-gray-300);
+--current-bg-draw: #d1d5dce6;
+--current-text-lose-closed: var(--color-red-500);
+--current-bg-lose: #fef2f2e6;
+
+--current-bg-tour-friend: color-mix(in srgb, var(--color-blue-400) 10%, transparent);
+--current-text-tour-friend: var(--color-blue-200);
+--current-inset-tour-friend: color-mix(in srgb, var(--color-blue-500) 20%, transparent);
+--current-hover-tour: #51a2ff33;	/*blue-400/20*/
+
+--current-bg-accept: color-mix(in srgb, var(--color-green-400) 10%, transparent);
+--current-inset-accept: color-mix(in srgb, var(--color-green-500) 20%, transparent);
+--current-bg-reject: color-mix(in srgb, var(--color-red-400) 10%, transparent);
+--current-inset-reject: color-mix(in srgb, var(--color-red-500) 20%, transparent);
+
+--current-bg-await: #e5e7eb1a;		/*gray-200/10*/
+--current-inset-await: #d1d5dc33;	/*gray-300/20*/
 }
 
 /*ANCHOR - Dark-Yellow*/
 [data-theme="DarkYellow"] {
-  --current-bg-default: #fff7ed;
-  --current-border-default: #fdba74;
-  --current-text-default: #431407;
-  --current-accent: #ea580c;
+--current-bg-default: #20211d;
+--current-border-default: #4e4e4e8c;			/*NOTE - SAME*/
+--current-bg-second: #2f302a;
+--current-border-second: #181916e8;
+--current-bg-darker: #181916;
+--current-text-default: white;					/*NOTE - SAME*/
+--current-text-second: var(--color-zinc-300);	/*NOTE - SAME*/
+--current-text-third: var(--color-zinc-500);	/*NOTE - SAME*/
+--current-text-last: #4e4e4e8c;				/*NOTE - SAME*/
+--current-form-icon: #dcdfe4c0;				/*NOTE - SAME*/
+
+--current-notif-on: #c41c1c;					/*NOTE - SAME*/
+--current-online-accept: var(--color-green-500);	/*NOTE - SAME*/
+--current-bg-blur: #00000033;						/*NOTE - SAME*/
+--current-main-color: #87712a;
+--current-light-button: #b0953e;
+--current-active-button: #dbcfa8;
+
+--current-bg-error: #2e2917cc;
+--current-text-error: var(--color-yellow-100);
+--current-border-error: color-mix(in srgb, var(--color-yellow-800) 10%, transparent);
+--current-inset-error: color-mix(in srgb, var(--color-yellow-500) 20%, transparent);
+
+
+/*NOTE - SAME*/
+--current-text-win-open: var(--color-green-600);
+--current-bg-win: #f0fdf4e6;
+--current-text-draw-await: var(--color-gray-300);
+--current-bg-draw: #d1d5dce6;
+--current-text-lose-closed: var(--color-red-500);
+--current-bg-lose: #fef2f2e6;
+
+--current-bg-tour-friend: color-mix(in srgb, var(--color-blue-400) 10%, transparent);
+--current-text-tour-friend: var(--color-blue-200);
+--current-inset-tour-friend: color-mix(in srgb, var(--color-blue-500) 20%, transparent);
+--current-hover-tour: #51a2ff33;	/*blue-400/20*/
+
+--current-bg-accept: color-mix(in srgb, var(--color-green-400) 10%, transparent);
+--current-inset-accept: color-mix(in srgb, var(--color-green-500) 20%, transparent);
+--current-bg-reject: color-mix(in srgb, var(--color-red-400) 10%, transparent);
+--current-inset-reject: color-mix(in srgb, var(--color-red-500) 20%, transparent);
+
+--current-bg-await: #e5e7eb1a;		/*gray-200/10*/
+--current-inset-await: #d1d5dc33;	/*gray-300/20*/
 }
 
-/*!SECTION*/
+/*!SECTION */
 
 /*SECTION - Light-Themes*/
 
 /*ANCHOR - Light-Red*/
 [data-theme="LightRed"] {
-  --current-bg-default: #ffffff;
-  --current-border-default: #e2e8f0;
-  --current-text-default: #0f172a;
-  --current-accent: #0ea5e9;
+--current-bg-default: #beb9b5;
+--current-border-default: #4e4e4e8c;			/*NOTE - SAME*/
+--current-bg-second: #d9d6d3;
+--current-border-second: #8f8b88e8;
+--current-bg-darker: #8f8b88;
+--current-text-default: #201e1c;
+--current-text-second: var(--color-zinc-700);	/*NOTE - ? #3f3f46*/
+--current-text-third: var(--color-zinc-600);	/*NOTE - ? #52525b*/
+--current-text-last: #4e4e4e8c;				/*NOTE - SAME*/
+--current-form-icon: #3f3f46c0;
+
+--current-notif-on: #c41c1c;					/*NOTE - SAME*/
+--current-online-accept: var(--color-green-500);	/*NOTE - SAME*/
+--current-bg-blur: #00000033;						/*NOTE - SAME*/
+--current-main-color: #c54444;
+--current-light-button: #c55959;
+--current-active-button: #e2acac;
+
+--current-bg-error: #6b3838cc;
+--current-text-error: var(--color-red-100);
+--current-border-error: color-mix(in srgb, var(--color-red-800) 10%, transparent);
+--current-inset-error: color-mix(in srgb, var(--color-red-500) 20%, transparent);
+
+
+/*NOTE - SAME*/
+--current-text-win-open: var(--color-green-600);
+--current-bg-win: #f0fdf4e6;
+--current-text-draw-await: var(--color-gray-300);
+--current-bg-draw: #d1d5dce6;
+--current-text-lose-closed: var(--color-red-500);
+--current-bg-lose: #fef2f2e6;
+
+--current-bg-tour-friend: color-mix(in srgb, var(--color-blue-400) 10%, transparent);
+--current-text-tour-friend: var(--color-blue-200);
+--current-inset-tour-friend: color-mix(in srgb, var(--color-blue-500) 20%, transparent);
+--current-hover-tour: #51a2ff33;	/*blue-400/20*/
+
+--current-bg-accept: color-mix(in srgb, var(--color-green-400) 10%, transparent);
+--current-inset-accept: color-mix(in srgb, var(--color-green-500) 20%, transparent);
+--current-bg-reject: color-mix(in srgb, var(--color-red-400) 10%, transparent);
+--current-inset-reject: color-mix(in srgb, var(--color-red-500) 20%, transparent);
+
+--current-bg-await: #e5e7eb1a;		/*gray-200/10*/
+--current-inset-await: #d1d5dc33;	/*gray-300/20*/
 }
 
 /*ANCHOR - Light-Blue*/
 [data-theme="LightBlue"] {
-  --current-bg-default: #fff7ed;
-  --current-border-default: #fdba74;
-  --current-text-default: #431407;
-  --current-accent: #ea580c;
+--current-bg-default: #bebec5;
+--current-border-default: #4e4e4e8c;			/*NOTE - SAME*/
+--current-bg-second: #d3d5d9;
+--current-border-second: #8f8f94e8;
+--current-bg-darker: #8f8f94;
+--current-text-default: #201e1c;			    /*NOTE - SAME*/
+--current-text-second: var(--color-zinc-700);	/*NOTE - ? #3f3f46*/
+--current-text-third: var(--color-zinc-600);	/*NOTE - ? #52525b*/
+--current-text-last: #4e4e4e8c;				/*NOTE - SAME*/
+--current-form-icon: #3f3f46c0;                 /*NOTE - SAME*/
+
+--current-notif-on: #c41c1c;					/*NOTE - SAME*/
+--current-online-accept: var(--color-green-500);	/*NOTE - SAME*/
+--current-bg-blur: #00000033;						/*NOTE - SAME*/
+--current-main-color: #4494c5;
+--current-light-button: #5a9bc4;
+--current-active-button: #adcde2;
+
+--current-bg-error: #37586dcc;
+--current-text-error: var(--color-blue-100);
+--current-border-error: color-mix(in srgb, var(--color-blue-800) 10%, transparent);
+--current-inset-error: color-mix(in srgb, var(--color-blue-500) 20%, transparent);
+
+
+/*NOTE - SAME*/
+--current-text-win-open: var(--color-green-600);
+--current-bg-win: #f0fdf4e6;
+--current-text-draw-await: var(--color-gray-300);
+--current-bg-draw: #d1d5dce6;
+--current-text-lose-closed: var(--color-red-500);
+--current-bg-lose: #fef2f2e6;
+
+--current-bg-tour-friend: color-mix(in srgb, var(--color-blue-400) 10%, transparent);
+--current-text-tour-friend: var(--color-blue-200);
+--current-inset-tour-friend: color-mix(in srgb, var(--color-blue-500) 20%, transparent);
+--current-hover-tour: #51a2ff33;	/*blue-400/20*/
+
+--current-bg-accept: color-mix(in srgb, var(--color-green-400) 10%, transparent);
+--current-inset-accept: color-mix(in srgb, var(--color-green-500) 20%, transparent);
+--current-bg-reject: color-mix(in srgb, var(--color-red-400) 10%, transparent);
+--current-inset-reject: color-mix(in srgb, var(--color-red-500) 20%, transparent);
+
+--current-bg-await: #e5e7eb1a;		/*gray-200/10*/
+--current-inset-await: #d1d5dc33;	/*gray-300/20*/
 }
 
 /*ANCHOR - Light-Green*/
 [data-theme="LightGreen"] {
-  --current-bg-default: #ffffff;
-  --current-border-default: #e2e8f0;
-  --current-text-default: #0f172a;
-  --current-accent: #0ea5e9;
+--current-bg-default: #bfc6c2;
+--current-border-default: #4e4e4e8c;			/*NOTE - SAME*/
+--current-bg-second: #d4d9d7;
+--current-border-second: #90968fe8;
+--current-bg-darker: #90968f;
+--current-text-default: #201e1c;			    /*NOTE - SAME*/
+--current-text-second: var(--color-zinc-700);	/*NOTE - ? #3f3f46*/
+--current-text-third: var(--color-zinc-600);	/*NOTE - ? #52525b*/
+--current-text-last: #4e4e4e8c;				/*NOTE - SAME*/
+--current-form-icon: #3f3f46c0;                 /*NOTE - SAME*/
+
+--current-notif-on: #c41c1c;					/*NOTE - SAME*/
+--current-online-accept: var(--color-green-500);	/*NOTE - SAME*/
+--current-bg-blur: #00000033;						/*NOTE - SAME*/
+--current-main-color: #46c544;
+--current-light-button: #5dc559;
+--current-active-button: #b6e6b4;
+
+--current-bg-error: #396d37cc;
+--current-text-error: var(--color-green-100);
+--current-border-error: color-mix(in srgb, var(--color-green-800) 10%, transparent);
+--current-inset-error: color-mix(in srgb, var(--color-green-500) 20%, transparent);
+
+
+/*NOTE - SAME*/
+--current-text-win-open: var(--color-green-600);
+--current-bg-win: #f0fdf4e6;
+--current-text-draw-await: var(--color-gray-300);
+--current-bg-draw: #d1d5dce6;
+--current-text-lose-closed: var(--color-red-500);
+--current-bg-lose: #fef2f2e6;
+
+--current-bg-tour-friend: color-mix(in srgb, var(--color-blue-400) 10%, transparent);
+--current-text-tour-friend: var(--color-blue-200);
+--current-inset-tour-friend: color-mix(in srgb, var(--color-blue-500) 20%, transparent);
+--current-hover-tour: #51a2ff33;	/*blue-400/20*/
+
+--current-bg-accept: color-mix(in srgb, var(--color-green-400) 10%, transparent);
+--current-inset-accept: color-mix(in srgb, var(--color-green-500) 20%, transparent);
+--current-bg-reject: color-mix(in srgb, var(--color-red-400) 10%, transparent);
+--current-inset-reject: color-mix(in srgb, var(--color-red-500) 20%, transparent);
+
+--current-bg-await: #e5e7eb1a;		/*gray-200/10*/
+--current-inset-await: #d1d5dc33;	/*gray-300/20*/
 }
 
 /*ANCHOR - Light-Yellow*/
 [data-theme="LightYellow"] {
-  --current-bg-default: #fff7ed;
-  --current-border-default: #fdba74;
-  --current-text-default: #431407;
-  --current-accent: #ea580c;
+--current-bg-default: #bec0b8;
+--current-border-default: #4e4e4e8c;			/*NOTE - SAME*/
+--current-bg-second: #d8d9d3;
+--current-border-second: #8f918be8;
+--current-bg-darker: #8f918b;
+--current-text-default: #201e1c;			    /*NOTE - SAME*/
+--current-text-second: var(--color-zinc-700);	/*NOTE - ? #3f3f46*/
+--current-text-third: var(--color-zinc-600);	/*NOTE - ? #52525b*/
+--current-text-last: #4e4e4e8c;				/*NOTE - SAME*/
+--current-form-icon: #3f3f46c0;                 /*NOTE - SAME*/
+
+--current-notif-on: #c41c1c;					/*NOTE - SAME*/
+--current-online-accept: var(--color-green-500);	/*NOTE - SAME*/
+--current-bg-blur: #00000033;						/*NOTE - SAME*/
+--current-main-color: #c7a643;
+--current-light-button: #c5ac59;
+--current-active-button: #e6d6ac;
+
+--current-bg-error: #6d6237cc;
+--current-text-error: var(--color-yellow-100);
+--current-border-error: color-mix(in srgb, var(--color-yellow-800) 10%, transparent);
+--current-inset-error: color-mix(in srgb, var(--color-yellow-500) 20%, transparent);
+
+
+/*NOTE - SAME*/
+--current-text-win-open: var(--color-green-600);
+--current-bg-win: #f0fdf4e6;
+--current-text-draw-await: var(--color-gray-300);
+--current-bg-draw: #d1d5dce6;
+--current-text-lose-closed: var(--color-red-500);
+--current-bg-lose: #fef2f2e6;
+
+--current-bg-tour-friend: color-mix(in srgb, var(--color-blue-400) 10%, transparent);
+--current-text-tour-friend: var(--color-blue-200);
+--current-inset-tour-friend: color-mix(in srgb, var(--color-blue-500) 20%, transparent);
+--current-hover-tour: #51a2ff33;	/*blue-400/20*/
+
+--current-bg-accept: color-mix(in srgb, var(--color-green-400) 10%, transparent);
+--current-inset-accept: color-mix(in srgb, var(--color-green-500) 20%, transparent);
+--current-bg-reject: color-mix(in srgb, var(--color-red-400) 10%, transparent);
+--current-inset-reject: color-mix(in srgb, var(--color-red-500) 20%, transparent);
+
+--current-bg-await: #e5e7eb1a;		/*gray-200/10*/
+--current-inset-await: #d1d5dc33;	/*gray-300/20*/
 }
 
-/*!SECTION*/
+/*!SECTION */
+
+
+/*ANCHOR - Paletes*/
+/*
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 500 250" xml:space="preserve">
+    <rect fill="#201e1c" x="0" y="0" width="100" height="220"/>,<rect fill="#302d2a" x="100" y="0" width="100" height="220"/>,<rect fill="#2f1818" x="200" y="0" width="100" height="220"/>,<rect fill="#882a2a" x="300" y="0" width="100" height="220"/>,<rect fill="#af3d3d" x="400" y="0" width="100" height="220"/>
+    <text x="10" y="235" font-family="Arial" font-size="6" alignment-baseline="middle">Exported from Coolors.co</text>
+    <text x="490" y="235" font-family="Arial" font-size="6" alignment-baseline="middle" text-anchor="end">https://coolors.co/201e1c-302d2a-2f1818-882a2a-af3d3d</text>
+</svg>
+
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 500 250" xml:space="preserve">
+    <rect fill="#1d1d21" x="0" y="0" width="100" height="220"/>,<rect fill="#2a2b30" x="100" y="0" width="100" height="220"/>,<rect fill="#17252e" x="200" y="0" width="100" height="220"/>,<rect fill="#2a6287" x="300" y="0" width="100" height="220"/>,<rect fill="#3e82b0" x="400" y="0" width="100" height="220"/>
+    <text x="10" y="235" font-family="Arial" font-size="6" alignment-baseline="middle">Exported from Coolors.co</text>
+    <text x="490" y="235" font-family="Arial" font-size="6" alignment-baseline="middle" text-anchor="end">https://coolors.co/1d1d21-2a2b30-17252e-2a6287-3e82b0</text>
+</svg>
+
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 500 250" xml:space="preserve">
+    <rect fill="#1d211f" x="0" y="0" width="100" height="220"/>,<rect fill="#2a302d" x="100" y="0" width="100" height="220"/>,<rect fill="#182e17" x="200" y="0" width="100" height="220"/>,<rect fill="#2d872a" x="300" y="0" width="100" height="220"/>,<rect fill="#41b03e" x="400" y="0" width="100" height="220"/>
+    <text x="10" y="235" font-family="Arial" font-size="6" alignment-baseline="middle">Exported from Coolors.co</text>
+    <text x="490" y="235" font-family="Arial" font-size="6" alignment-baseline="middle" text-anchor="end">https://coolors.co/1d211f-2a302d-182e17-2d872a-41b03e</text>
+</svg>
+
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 500 250" xml:space="preserve">
+    <rect fill="#20211d" x="0" y="0" width="100" height="220"/>,<rect fill="#2f302a" x="100" y="0" width="100" height="220"/>,<rect fill="#2e2917" x="200" y="0" width="100" height="220"/>,<rect fill="#87712a" x="300" y="0" width="100" height="220"/>,<rect fill="#b0953e" x="400" y="0" width="100" height="220"/>
+    <text x="10" y="235" font-family="Arial" font-size="6" alignment-baseline="middle">Exported from Coolors.co</text>
+    <text x="490" y="235" font-family="Arial" font-size="6" alignment-baseline="middle" text-anchor="end">https://coolors.co/20211d-2f302a-2e2917-87712a-b0953e</text>
+</svg>
+
+
+
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 500 250" xml:space="preserve">
+    <rect fill="#beb9b5" x="0" y="0" width="100" height="220"/>,<rect fill="#d9d6d3" x="100" y="0" width="100" height="220"/>,<rect fill="#6b3838" x="200" y="0" width="100" height="220"/>,<rect fill="#c54444" x="300" y="0" width="100" height="220"/>,<rect fill="#c55959" x="400" y="0" width="100" height="220"/>
+    <text x="10" y="235" font-family="Arial" font-size="6" alignment-baseline="middle">Exported from Coolors.co</text>
+    <text x="490" y="235" font-family="Arial" font-size="6" alignment-baseline="middle" text-anchor="end">https://coolors.co/beb9b5-d9d6d3-6b3838-c54444-c55959</text>
+</svg>
+
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 500 250" xml:space="preserve">
+    <rect fill="#bebec5" x="0" y="0" width="100" height="220"/>,<rect fill="#d3d5d9" x="100" y="0" width="100" height="220"/>,<rect fill="#37586d" x="200" y="0" width="100" height="220"/>,<rect fill="#4494c5" x="300" y="0" width="100" height="220"/>,<rect fill="#5a9bc4" x="400" y="0" width="100" height="220"/>
+    <text x="10" y="235" font-family="Arial" font-size="6" alignment-baseline="middle">Exported from Coolors.co</text>
+    <text x="490" y="235" font-family="Arial" font-size="6" alignment-baseline="middle" text-anchor="end">https://coolors.co/bebec5-d3d5d9-37586d-4494c5-5a9bc4</text>
+</svg>
+
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 500 250" xml:space="preserve">
+    <rect fill="#bfc6c2" x="0" y="0" width="100" height="220"/>,<rect fill="#d4d9d7" x="100" y="0" width="100" height="220"/>,<rect fill="#396d37" x="200" y="0" width="100" height="220"/>,<rect fill="#46c544" x="300" y="0" width="100" height="220"/>,<rect fill="#5dc559" x="400" y="0" width="100" height="220"/>
+    <text x="10" y="235" font-family="Arial" font-size="6" alignment-baseline="middle">Exported from Coolors.co</text>
+    <text x="490" y="235" font-family="Arial" font-size="6" alignment-baseline="middle" text-anchor="end">https://coolors.co/bfc6c2-d4d9d7-396d37-46c544-5dc559</text>
+</svg>
+
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 500 250" xml:space="preserve">
+    <rect fill="#bec0b8" x="0" y="0" width="100" height="220"/>,<rect fill="#d8d9d3" x="100" y="0" width="100" height="220"/>,<rect fill="#6d6237" x="200" y="0" width="100" height="220"/>,<rect fill="#c7a643" x="300" y="0" width="100" height="220"/>,<rect fill="#c5ac59" x="400" y="0" width="100" height="220"/>
+    <text x="10" y="235" font-family="Arial" font-size="6" alignment-baseline="middle">Exported from Coolors.co</text>
+    <text x="490" y="235" font-family="Arial" font-size="6" alignment-baseline="middle" text-anchor="end">https://coolors.co/bec0b8-d8d9d3-6d6237-c7a643-c5ac59</text>
+</svg>
+*/
