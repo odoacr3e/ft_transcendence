@@ -50,17 +50,10 @@ export async function globalEvents()
 		moveDragClone(event);
 	});
 
-	ROOT_DIV.addEventListener("dragend", function(event) 
+	ROOT_DIV.addEventListener("dragend", function() 
 	{
 		clearHighlight("clicked");
-		setTimeout(() => {
-			if (event.target.classList.contains("piece") && !localInfo.dropDone)
-				event.target.style.visibility = "visible";
-			if (localInfo.dropDone) { localInfo.dropDone = false; }
-		}, 30);
-
-		document.querySelectorAll("#floatingPiece").forEach(node => node.remove());
-		localInfo.dragClone = null;
+		localInfo.drag = null;
 	});
 
 	document.addEventListener("keydown", async function(event)

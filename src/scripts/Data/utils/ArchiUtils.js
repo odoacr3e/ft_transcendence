@@ -37,25 +37,13 @@ export function resetLocalVars()
 	localInfo.savedBoostedMap	= null;
 	localInfo.secondTurn		= false;
 	localInfo.secondMove		= false;
-	localInfo.dropDone			= false;
+	localInfo.drag				= null;
 
 	localBoard.forEach(square => {
 		if (square.useAbilityBool)
 			square.useAbilityBool = false;
 	});
 	clearHighlight();
-}
-
-export function DEBUGSetVisible()
-{
-	localBoard.forEach((square , key) => {
-		if (square.piece)
-		{
-			const DOMPiece = document.getElementById(key).getElementsByClassName("piece")[0];
-			if (DOMPiece && DOMPiece.style.visibility === "hidden")
-				DOMPiece.style.visibility = "visible";
-		}
-	});
 }
 
 export function checkUpgrade()

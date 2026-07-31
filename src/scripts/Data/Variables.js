@@ -41,8 +41,7 @@ class metaInfo {
 		this.usingAbility = "";
 		this.hasBoost = false;
 		this.savedBoostedMap = null;
-		this.dragClone = null;
-		this.dropDone = false;
+		this.drag = null;
 		this.goatId = null;
 		this.matchId = null;
 		this.myTeam = null;

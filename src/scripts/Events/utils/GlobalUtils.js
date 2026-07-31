@@ -1,6 +1,5 @@
 import { localInfo, localBoard, localPlayers, MACRO }	from "@/scripts/Data/Variables";
 import { PIECES_HIGHLIGHT }								from "@/scripts/Helper/piecesHighlights";
-import { computePosition }								from "@floating-ui/dom";
 import { clearHighlight }								from "@/scripts/Events/utils/HighlightUtils.js";
 import { requestToBack }								from "@/scripts/Events/BackLink.js";
 import { useAuthStore } 								from "@/stores/auth.st";
@@ -94,34 +93,10 @@ export function upgradeBastard(newType)
 
 export function moveDragClone(event)
 {
-	if (event.target.classList.contains("piece"))
-	{
-		if (event.clientX === 0 && event.clientY === 0) 
-			return;
-
-		const cursor = {
-			getBoundingClientRect() {
-				return {
-					width: 0,
-					height: 0,
-					x: event.clientX,
-					y: event.clientY,
-					left: event.clientX,
-					right: event.clientX,
-					top: event.clientY,
-					bottom: event.clientY
-				};
-			}
-		};
-		computePosition(cursor, localInfo.dragClone).then(({ x, y }) => {
-			if (!localInfo.dragClone)
-				return;
-			Object.assign(localInfo.dragClone.style, {
-			top: `${y - 40}px`,
-			left: `${x}px`
-			});
-		});
-	}
+	if (!localInfo.drag || (event.clientX === 0 && event.clientY === 0))
+		return;
+	localInfo.drag.x = event.clientX;
+	localInfo.drag.y = event.clientY;
 }
 
 export function checkPermision(event)

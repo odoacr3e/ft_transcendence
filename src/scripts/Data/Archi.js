@@ -1,7 +1,7 @@
 import { initLocalBoard, localMatchState, localBoard,  
 		 localPlayers, startLocalMatchState, 
 		 localInfo}										from "./Variables.js";
-import { checkEndTurn, hasBoost, DEBUGSetVisible, 
+import { checkEndTurn, hasBoost, 
 		 checkUpgrade, assignLastMoveSquares }			from "./utils/ArchiUtils.js";
 import "./SocketLink.js"
 
@@ -84,6 +84,7 @@ export function initLocalPlayers()
 
 export function updateMatchState(nextRaw)
 {
+	localInfo.drag = null;
 	const validated = validateReceivedMatch(nextRaw);
 
 	localInfo.victory = nextRaw.victory ?? null;
@@ -95,7 +96,6 @@ export function updateMatchState(nextRaw)
 	{
 		if (validated.board)
 			updateLocalBoard(validated);
-		DEBUGSetVisible();
 		checkUpgrade();
 		updateLocalPlayers(validated);
 	} 
@@ -172,10 +172,7 @@ export function reloadMatchState(raw)
 	localInfo.matchId		= sessionStorage.getItem("match:id");
 	localInfo.victory		= raw.victory;
 	localInfo.matchStarted	= true;
-	localInfo.secondTurn	= raw.secondMove ?? false;
-
-	console.log("Vediamo: ", localBoard.get(raw.usedBoost).boostedTargetZones);
-	
+	localInfo.secondTurn	= raw.secondMove ?? false;	
 
 	if (localInfo.myTeam)
 		sessionStorage.setItem("match:myTeam", localInfo.myTeam);
