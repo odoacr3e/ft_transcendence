@@ -7,23 +7,6 @@ import "./SocketLink.js"
 
 //SECTION - INIT FUNCTIONS
 
-// export async function loadReceivedMatch(style) 
-// {
-// 	const response = await fetch("http://localhost:8080/api/game",
-// 	{
-// 		method: "POST",
-// 		headers: { "Content-Type": "application/json" },
-// 		body: JSON.stringify({ type: "init", from: style, to: "0" })
-// 	});
-
-// 	if (!response.ok)
-// 		throw new Error(`Impossibile caricare /match.json: ${response.status}`);
-// 	const match = await response.json();
-// 	// const match = await JSON.parse(response.body, _jsonReviver);
-// 	// console.log(`responde: ${JSON.stringify(match)}`)
-// 	return match;
-// }
-
 export function  validateReceivedMatch(rawJson)
 {
 	if (!rawJson || typeof rawJson !== "object" || Array.isArray(rawJson))
@@ -185,10 +168,14 @@ export function reloadMatchState(raw)
 	initLocalBoard(localMatchState.board);
 	initLocalPlayers();
 
-	localInfo.myTeam = raw.team ?? sessionStorage.getItem("match:myTeam");
-	localInfo.matchId = sessionStorage.getItem("match:id");
-	localInfo.victory = raw.victory;
-	localInfo.matchStarted = true;	//si rientra a partita in corso: il timer riparte subito
+	localInfo.myTeam		= raw.team ?? sessionStorage.getItem("match:myTeam");	
+	localInfo.matchId		= sessionStorage.getItem("match:id");
+	localInfo.victory		= raw.victory;
+	localInfo.matchStarted	= true;
+	localInfo.secondTurn	= raw.secondMove ?? false;
+
+	console.log("Vediamo: ", localBoard.get(raw.usedBoost).boostedTargetZones);
+	
 
 	if (localInfo.myTeam)
 		sessionStorage.setItem("match:myTeam", localInfo.myTeam);

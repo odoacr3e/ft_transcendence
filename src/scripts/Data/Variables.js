@@ -140,7 +140,7 @@ export const DEFAULT_PREF = {
 };
 
 export let MACRO = Object ({
-	"AUDIO" : true,
+	"AUDIO" : false,
 });
 
 export const IMG_PATHS = Object.freeze ({
