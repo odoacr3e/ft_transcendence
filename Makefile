@@ -13,7 +13,7 @@ down:
 delete:
 	docker system prune -a -f
 
-re: delete up
+re: down delete up
 
 setup:
 	@printf '\033[1;31mATTENZIONE\033[0m: $(DIRS) verranno cancellate e ricreate.\n'
@@ -34,6 +34,8 @@ setup_leo: setup
 #menate su menate
 own:
 	$(AS_ROOT) chown -R $$(id -u):$$(id -g) .
+
+setupnrun: setup up
 
 pull:
 	@for d in $(DIRS); do git -C $$d pull; done
