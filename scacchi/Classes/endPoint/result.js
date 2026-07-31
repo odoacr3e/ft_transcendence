@@ -55,7 +55,7 @@ class Result
 		/** @type {string | null} */this.msg = "OK";
 		/**	@type {*} */			this.log = {}; 
 		/** @type {Board | null} */	this.board = null;
-									this.usedBoost = false;
+	/** @type {boolean | string} */	this.usedBoost = false;
 									this.victory = "";
 									this.specialMoves = new bitMaskMoves();
 /** @type {string | undefined} */	this.team = undefined;

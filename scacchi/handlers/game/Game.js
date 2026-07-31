@@ -26,6 +26,7 @@ import { roomMessage } from "../../websocket/utils.js";
 import { enumSocketState } from "../../Macro/enums.js";
 import { saveMatch } from "../../utils/saveMatch.js";
 import { checkKingDanger } from "../../utils/checkDanger.js";
+import { reload } from "./reload.js";
 
 /** @typedef {import("express").Request} Request*/
 /** @typedef {import("express").Response} Response*/
@@ -54,6 +55,7 @@ async function gameHttpHandler(req, res)
 		globals.matches.set("0", match);
 	}
 	else
+		// result = await gameHandler(match, body, {matchData: {team: "white"}});
 		result = await gameHandler(match, body);
 	res.status(result.log.status).json(result);
 }
@@ -188,18 +190,7 @@ async function gameInfoHandler(match, body, socketData=null)
 	result = new Result();
 	if (body.type == "reload")
 	{
-		result.Success();
-		if (match.timer && match.timer.start != 0)
-			match.currentPlayer.time = match.timer.time - (Date.now() - match.timer.start);
-		// @ts-ignore
-		result.board = clientBoard(match, true, true);
-		if (socketData?.matchData?.team == match.currentPlayer.team && match.moves != 0)//@ts-ignore
-			result.secondMove = true;
-		else//@ts-ignore
-			result.secondMove = false;
-		result.team = socketData?.matchData?.team;
-		if (result.team == undefined)
-			result.team = "spectating";
+		reload(match, result, socketData);
 	}
 	else if (body.type == "history")
 	{
