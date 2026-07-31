@@ -69,7 +69,7 @@ async function execAllTests()
 	{
 		rateSuccess.tests++;
 		currMatch = file;
-		if (file.includes("todo"))
+		if (file.includes("todo") || file.includes("TODO"))
 		{
 			testerTodo();
 			continue ;

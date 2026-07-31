@@ -49,7 +49,7 @@ function execAllTests()
 	for (const file of fs.readdirSync(HISTORY_PATH))
 	{
 		currMatch = file;
-		if (file.includes("todo"))
+		if (file.includes("todo") || file.includes("TODO"))
 		{
 			testerTodo();
 			continue ;
