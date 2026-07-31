@@ -193,6 +193,9 @@ boardConverter()
 	✓	dettagli info sui match
 	▫	update delle preferenze di colore degli utenti [MAVI]
 	▫	info dei profili per le partitre a 4
+	▫	pagina della lore
+	▫	reworkare il design delle pagine di gioco appena sono pronte
+	▫	reattività delle pagine
 
 //NOTE - Testing
 	✓	nome utente in grassetto

@@ -26,12 +26,16 @@
 	--color-border-error: var(--current-border-error);
 	--color-inset-error: var(--current-inset-error);
 
+	
+	/*SAME*/
 	--color-text-win-open: var(--current-text-win-open);
 	--color-bg-win: var(--current-bg-win);
-	--color-text-draw-await: var(--current-text-draw-await);
-	--color-bg-draw: var(--current-bg-draw);
 	--color-text-lose-closed: var(--current-text-lose-closed);
 	--color-bg-lose: var(--current-bg-lose);
+	--color-text-draw-await: var(--current-text-draw-await);
+	--color-bg-draw: var(--current-bg-draw);
+	--color-bg-await: var(--current-bg-await);
+	--color-inset-await: var(--current-inset-await);
 
 	--color-bg-tour-friend: var(--current-bg-tour-friend);
 	--color-text-tour-friend: var(--current-text-tour-friend);
@@ -42,14 +46,29 @@
 	--color-inset-accept: var(--current-inset-accept);
 	--color-bg-reject: var(--current-bg-reject);
 	--color-inset-reject: var(--current-inset-reject);
-
-	--color-bg-await: var(--current-bg-await);
-	--color-text-await: var(--current-text-await);
-	--color-inset-await: var(--current-inset-await);
-	--color-bg-friend: var(--current-bg-friend);
-	--color-text-friend: var(--current-text-friend);
-	--color-inset-friend: var(--current-inset-friend);
 }
+
+/* 
+	--color-text-win-open: var(--color-green-600);
+	--color-bg-win: color-mix(in srgb, var(--color-green-50) 90%, transparent);
+	--color-text-lose-closed: var(--color-red-500);
+	--color-bg-lose: color-mix(in srgb, var(--color-red-50) 90%, transparent);
+	--color-text-draw-await: var(--color-gray-300);
+	--color-bg-draw: color-mix(in srgb, var(--color-gray-300) 90%, transparent);
+	--color-bg-await: color-mix(in srgb, var(--color-gray-200) 10%, transparent);
+	--color-inset-await: color-mix(in srgb, var(--color-gray-300) 20%, transparent);
+
+	--color-bg-tour-friend: color-mix(in srgb, var(--color-blue-400) 10%, transparent);
+	--color-text-tour-friend: var(--color-blue-200);
+	--color-inset-tour-friend: color-mix(in srgb, var(--color-blue-500) 20%, transparent);
+	--color-hover-tour: color-mix(in srgb, var(--color-blue-400) 20%, transparent);
+
+	--color-bg-accept: color-mix(in srgb, var(--color-green-400) 10%, transparent);
+	--color-inset-accept: color-mix(in srgb, var(--color-green-500) 20%, transparent);
+	--color-bg-reject: color-mix(in srgb, var(--color-red-400) 10%, transparent);
+	--color-inset-reject: color-mix(in srgb, var(--color-red-500) 20%, transparent);
+*/
+
 
 /*SECTION - Dark-Themes*/
 
@@ -58,70 +77,65 @@
 /*ANCHOR - Dark-Red*/
 :root,
 [data-theme="DarkRed"] {
-/*✓*/	--current-bg-default: #201e1c;
-/*✓*/	--current-border-default: #4e4e4e8c;
-/*✓*/	--current-bg-second: #302d2a;
-/*✓*/	--current-border-second: #181715e8;
-/*✓*/	--current-bg-darker: #181715;
-/*✓*/	--current-text-default: white;						/*NOTE - usato anche nei border editpage bg editpage*/
-/*✓*/	--current-text-second: var(--color-zinc-300);		/*#d4d4d8*/ /*NOTE - bg in LoginPage per Google*/
-/*✓*/	--current-text-third: var(--color-zinc-500);		/*#71717b*/ /*NOTE - bg in AppHeader*/
-/*✓*/	--current-text-last: #4e4e4e8c;
-/*✓*/	--current-form-icon: #dcdfe4c0;
+--current-bg-default: #201e1c;
+--current-border-default: #4e4e4e8c;
+--current-bg-second: #302d2a;
+--current-border-second: #181715e8;
+--current-bg-darker: #181715;
+--current-text-default: white;						/*NOTE - usato anche nei border editpage bg editpage*/
+--current-text-second: var(--color-zinc-300);		/*#d4d4d8*/ /*NOTE - bg in LoginPage per Google*/
+--current-text-third: var(--color-zinc-500);		/*#71717b*/ /*NOTE - bg in AppHeader*/
+--current-text-last: #4e4e4e8c;
+--current-form-icon: #dcdfe4c0;
 
-/*✓*/	--current-notif-on: #c41c1c;
-/*✓*/	--current-online-accept: var(--color-green-500);	/*#00c950*/ /*NOTE - usato sia per l'online che per text-accept*/
-/*✓*/	--current-bg-blur: #00000033;						/*black/20*/
-/*✓*/	--current-main-color: #882a2a;
-/*✓*/	--current-light-button: #af3d3d;
-/*✓*/	--current-active-button: #d1aaaa;
+--current-notif-on: #c41c1c;
+--current-online-accept: var(--color-green-500);	/*#00c950*/ /*NOTE - usato sia per l'online che per text-accept*/
+--current-bg-blur: #00000033;						/*black/20*/
+--current-main-color: #882a2a;
+--current-light-button: #af3d3d;
+--current-active-button: #d1aaaa;
 
-/*✓*/	--current-bg-error: #2f1818cc;															/*[#2f1818]/80*/
-/*✓*/	--current-text-error: var(--color-red-100);												/*#ffe2e2*/
-/*✓*/	--current-border-error: color-mix(in srgb, var(--color-red-800) 10%, transparent);		/*red-800/10  /  #9f07111a*/
-/*✓*/	--current-inset-error: color-mix(in srgb, var(--color-red-500) 20%, transparent);		/*red-500/20  /  #fb2c3633*/ /*NOTE - inset-recect e' ugule ma non li fondo perche' le altre palette hanno error diverso e reject uguale a Dark-Red. Devo quindi metterli a mano nelle posizioni giuste.*/
+--current-bg-error: #2f1818cc;																/*[#2f1818]/80*/
+--current-text-error: var(--color-red-100);													/*#ffe2e2*/
+--current-border-error: color-mix(in srgb, var(--color-red-800) 10%, transparent);			/*#9f07111a*/
+--current-inset-error: color-mix(in srgb, var(--color-red-500) 20%, transparent);			/*#fb2c3633*/ /*NOTE - inset-recect e' ugule ma non li fondo perche' le altre palette hanno error diverso e reject uguale a Dark-Red. Devo quindi metterli a mano nelle posizioni giuste.*/
 
-/*✓*/	--current-text-win-open: var(--color-green-600);		/*#00a63e*/ /*NOTE - usato sia per le vittorie che per gli open*/
-/*▫*/	--current-bg-win: #f0fdf4e6;		/*green-50/90*/ /*NOTE - per ora praticamente inutile, una call, da controllare!!!*/
-/*✓*/	--current-text-draw-await: var(--color-gray-300);		/*#d1d5dc*/ /*NOTE - usato sia per le patte, per gli ongoing e per gli await. Attenta a quando usano l'opacita' per altri elementi*/
-/*▫*/	--current-bg-draw: #d1d5dce6;		/*gray-300/90*/ /*NOTE - per ora praticamente inutile, una call, da controllare!!!*/
-/*✓*/	--current-text-lose-closed: var(--color-red-500);					/*#fb2c36*/ /*NOTE - usato sia per le sconfitte, i close e gli offline. Attenta a quando usano l'opacita' per altri elementi*/
-/*▫*/	--current-bg-lose: #fef2f2e6;		/*red-50/90*/ /*NOTE - per ora praticamente inutile, una call, da controllare!!!*/
+--current-text-win-open: var(--color-green-600);											/*#00a63e*/ /*NOTE - usato sia per le vittorie che per gli open*/
+--current-bg-win: color-mix(in srgb, var(--color-green-50) 90%, transparent);				/*#f0fdf4e6*/
+--current-text-lose-closed: var(--color-red-500);											/*#fb2c36*/ /*NOTE - usato sia per le sconfitte, i close e gli offline. Attenta a quando usano l'opacita' per altri elementi*/
+--current-bg-lose: color-mix(in srgb, var(--color-red-50) 90%, transparent);				/*#fef2f2e6*/
+--current-text-draw-await: var(--color-gray-300);											/*#d1d5dc*/ /*NOTE - usato sia per le patte, per gli ongoing e per gli await. Attenta a quando usano l'opacita' per altri elementi*/
+--current-bg-draw: color-mix(in srgb, var(--color-gray-300) 90%, transparent);				/*#d1d5dce6*/
+--current-bg-await: color-mix(in srgb, var(--color-gray-200) 10%, transparent);				/*#e5e7eb1a*/
+--current-inset-await: color-mix(in srgb, var(--color-gray-300) 20%, transparent);			/*#d1d5dc33*/
 
-/*✓*/	--current-bg-tour-friend: color-mix(in srgb, var(--color-blue-400) 10%, transparent);		/*blue-400/10  /  #51a2ff1a*/ /*NOTE - usato sia come bg per tour e per friends*/
-/*✓*/	--current-text-tour-friend: var(--color-blue-200);		/*#bedbff*/ /*NOTE - usato sia come text per tour e per friends*/
-/*✓*/	--current-inset-tour-friend: color-mix(in srgb, var(--color-blue-500) 20%, transparent);	/*blue-500/20 / #2b80ff33*/ /*NOTE - usato sia come inset per tour e per friends*/
-/*▫*/	--current-hover-tour: #51a2ff33;	/*blue-400/20*/ /*NOTE - per ora praticamente inutile, una call, da controllare!!!*/
+--current-bg-tour-friend: color-mix(in srgb, var(--color-blue-400) 10%, transparent);		/*#51a2ff1a*/	/*NOTE - usato sia come bg per tour e per friends*/
+--current-text-tour-friend: var(--color-blue-200);											/*#bedbff*/ 				/*NOTE - usato sia come text per tour e per friends*/
+--current-inset-tour-friend: color-mix(in srgb, var(--color-blue-500) 20%, transparent);	/*#2b80ff33*/	/*NOTE - usato sia come inset per tour e per friends*/
+--current-hover-tour: color-mix(in srgb, var(--color-blue-400) 20%, transparent);			/*#51a2ff33*/
 
-/*✓*/	--current-bg-accept: color-mix(in srgb, var(--color-green-400) 10%, transparent);			/*green-400/10  /  #05df721a*/
-/*✓*/	--current-inset-accept: color-mix(in srgb, var(--color-green-500) 20%, transparent);		/*green-500/20  /  #00c95033*/
-/*✓*/	--current-bg-reject: color-mix(in srgb, var(--color-red-400) 10%, transparent);				/*red-400/10  /  #ff64671a*/
-/*✓*/	--current-inset-reject: color-mix(in srgb, var(--color-red-500) 20%, transparent);		/*red-500/20  /  #fb2c3633*/ /*NOTE - Da mettere a mano nella posizione giusta. ATTENTA! Anche come border nell'hover per l'email e la nazionalita' nelle impostazioni*/
-
-/*▫*/	--current-bg-await: #e5e7eb1a;		/*gray-200/10*/ /*NOTE - per ora praticamente inutile, una call, da controllare!!!*/
-/*▫*/	/*--current-text-await: #d1d5dc;*/		/*gray-300*/
-/*▫*/	--current-inset-await: #d1d5dc33;	/*gray-300/20*/ /*NOTE - per ora praticamente inutile, una call, da controllare!!!*/
-/*▫*/	/*--current-bg-friend: #51a2ff1a;*/	/*blue-400/10*/
-/*▫*/	/*--current-text-friend: #bedbff;*/	/*blue-200*/
-/*▫*/	/*--current-inset-friend: #2b80ff33;*/	/*blue-500/20*/
+--current-bg-accept: color-mix(in srgb, var(--color-green-400) 10%, transparent);			/*#05df721a*/
+--current-inset-accept: color-mix(in srgb, var(--color-green-500) 20%, transparent);		/*#00c95033*/
+--current-bg-reject: color-mix(in srgb, var(--color-red-400) 10%, transparent);				/*#ff64671a*/
+--current-inset-reject: color-mix(in srgb, var(--color-red-500) 20%, transparent);			/*#fb2c3633*/ /*NOTE - Da mettere a mano nella posizione giusta. ATTENTA! Anche come border nell'hover per l'email e la nazionalita' nelle impostazioni*/
 }
 
 /*ANCHOR - Dark-Blue*/
 [data-theme="DarkBlue"] {
 --current-bg-default: #1d1d21;
---current-border-default: #4e4e4e8c;			/*NOTE - SAME*/
+--current-border-default: #4e4e4e8c;			/*SAME*/
 --current-bg-second: #2a2b30;
 --current-border-second: #16161ae8;
 --current-bg-darker: #16161a;
---current-text-default: white;					/*NOTE - SAME*/
---current-text-second: var(--color-zinc-300);	/*NOTE - SAME*/
---current-text-third: var(--color-zinc-500);	/*NOTE - SAME*/
---current-text-last: #4e4e4e8c;				/*NOTE - SAME*/
---current-form-icon: #dcdfe4c0;				/*NOTE - SAME*/
+--current-text-default: white;					/*SAME*/
+--current-text-second: var(--color-zinc-300);	/*SAME*/
+--current-text-third: var(--color-zinc-500);	/*SAME*/
+--current-text-last: #4e4e4e8c;				/*SAME*/
+--current-form-icon: #dcdfe4c0;				/*SAME*/
 
---current-notif-on: #c41c1c;					/*NOTE - SAME*/
---current-online-accept: var(--color-green-500);	/*NOTE - SAME*/
---current-bg-blur: #00000033;						/*NOTE - SAME*/
+--current-notif-on: #c41c1c;					/*SAME*/
+--current-online-accept: var(--color-green-500);	/*SAME*/
+--current-bg-blur: #00000033;						/*SAME*/
 --current-main-color: #2a6287;
 --current-light-button: #3e82b0;
 --current-active-button: #a9c9de;
@@ -132,44 +146,43 @@
 --current-inset-error: color-mix(in srgb, var(--color-blue-500) 20%, transparent);
 
 
-/*NOTE - SAME*/
+/*SAME*/
 --current-text-win-open: var(--color-green-600);
---current-bg-win: #f0fdf4e6;
---current-text-draw-await: var(--color-gray-300);
---current-bg-draw: #d1d5dce6;
+--current-bg-win: color-mix(in srgb, var(--color-green-50) 90%, transparent);
 --current-text-lose-closed: var(--color-red-500);
---current-bg-lose: #fef2f2e6;
+--current-bg-lose: color-mix(in srgb, var(--color-red-50) 90%, transparent);
+--current-text-draw-await: var(--color-gray-300);
+--current-bg-draw: color-mix(in srgb, var(--color-gray-300) 90%, transparent);
+--current-bg-await: color-mix(in srgb, var(--color-gray-200) 10%, transparent);
+--current-inset-await: color-mix(in srgb, var(--color-gray-300) 20%, transparent);
 
 --current-bg-tour-friend: color-mix(in srgb, var(--color-blue-400) 10%, transparent);
 --current-text-tour-friend: var(--color-blue-200);
 --current-inset-tour-friend: color-mix(in srgb, var(--color-blue-500) 20%, transparent);
---current-hover-tour: #51a2ff33;	/*blue-400/20*/
+--current-hover-tour: color-mix(in srgb, var(--color-blue-400) 20%, transparent);
 
 --current-bg-accept: color-mix(in srgb, var(--color-green-400) 10%, transparent);
 --current-inset-accept: color-mix(in srgb, var(--color-green-500) 20%, transparent);
 --current-bg-reject: color-mix(in srgb, var(--color-red-400) 10%, transparent);
 --current-inset-reject: color-mix(in srgb, var(--color-red-500) 20%, transparent);
-
---current-bg-await: #e5e7eb1a;		/*gray-200/10*/
---current-inset-await: #d1d5dc33;	/*gray-300/20*/
 }
 
 /*ANCHOR - Dark-Green*/
 [data-theme="DarkGreen"] {
 --current-bg-default: #1d211f;
---current-border-default: #4e4e4e8c;			/*NOTE - SAME*/
+--current-border-default: #4e4e4e8c;			/*SAME*/
 --current-bg-second: #2a302d;
 --current-border-second: #161917e8;
 --current-bg-darker: #161917;
---current-text-default: white;					/*NOTE - SAME*/
---current-text-second: var(--color-zinc-300);	/*NOTE - SAME*/
---current-text-third: var(--color-zinc-500);	/*NOTE - SAME*/
---current-text-last: #4e4e4e8c;				/*NOTE - SAME*/
---current-form-icon: #dcdfe4c0;				/*NOTE - SAME*/
+--current-text-default: white;					/*SAME*/
+--current-text-second: var(--color-zinc-300);	/*SAME*/
+--current-text-third: var(--color-zinc-500);	/*SAME*/
+--current-text-last: #4e4e4e8c;				/*SAME*/
+--current-form-icon: #dcdfe4c0;				/*SAME*/
 
---current-notif-on: #c41c1c;					/*NOTE - SAME*/
---current-online-accept: var(--color-green-500);	/*NOTE - SAME*/
---current-bg-blur: #00000033;						/*NOTE - SAME*/
+--current-notif-on: #c41c1c;					/*SAME*/
+--current-online-accept: var(--color-green-500);	/*SAME*/
+--current-bg-blur: #00000033;						/*SAME*/
 --current-main-color: #2d872a;
 --current-light-button: #41b03e;
 --current-active-button: #aadba8;
@@ -180,44 +193,43 @@
 --current-inset-error: color-mix(in srgb, var(--color-green-500) 20%, transparent);
 
 
-/*NOTE - SAME*/
+/*SAME*/
 --current-text-win-open: var(--color-green-600);
---current-bg-win: #f0fdf4e6;
---current-text-draw-await: var(--color-gray-300);
---current-bg-draw: #d1d5dce6;
+--current-bg-win: color-mix(in srgb, var(--color-green-50) 90%, transparent);
 --current-text-lose-closed: var(--color-red-500);
---current-bg-lose: #fef2f2e6;
+--current-bg-lose: color-mix(in srgb, var(--color-red-50) 90%, transparent);
+--current-text-draw-await: var(--color-gray-300);
+--current-bg-draw: color-mix(in srgb, var(--color-gray-300) 90%, transparent);
+--current-bg-await: color-mix(in srgb, var(--color-gray-200) 10%, transparent);
+--current-inset-await: color-mix(in srgb, var(--color-gray-300) 20%, transparent);
 
 --current-bg-tour-friend: color-mix(in srgb, var(--color-blue-400) 10%, transparent);
 --current-text-tour-friend: var(--color-blue-200);
 --current-inset-tour-friend: color-mix(in srgb, var(--color-blue-500) 20%, transparent);
---current-hover-tour: #51a2ff33;	/*blue-400/20*/
+--current-hover-tour: color-mix(in srgb, var(--color-blue-400) 20%, transparent);
 
 --current-bg-accept: color-mix(in srgb, var(--color-green-400) 10%, transparent);
 --current-inset-accept: color-mix(in srgb, var(--color-green-500) 20%, transparent);
 --current-bg-reject: color-mix(in srgb, var(--color-red-400) 10%, transparent);
 --current-inset-reject: color-mix(in srgb, var(--color-red-500) 20%, transparent);
-
---current-bg-await: #e5e7eb1a;		/*gray-200/10*/
---current-inset-await: #d1d5dc33;	/*gray-300/20*/
 }
 
 /*ANCHOR - Dark-Yellow*/
 [data-theme="DarkYellow"] {
 --current-bg-default: #20211d;
---current-border-default: #4e4e4e8c;			/*NOTE - SAME*/
+--current-border-default: #4e4e4e8c;			/*SAME*/
 --current-bg-second: #2f302a;
 --current-border-second: #181916e8;
 --current-bg-darker: #181916;
---current-text-default: white;					/*NOTE - SAME*/
---current-text-second: var(--color-zinc-300);	/*NOTE - SAME*/
---current-text-third: var(--color-zinc-500);	/*NOTE - SAME*/
---current-text-last: #4e4e4e8c;				/*NOTE - SAME*/
---current-form-icon: #dcdfe4c0;				/*NOTE - SAME*/
+--current-text-default: white;					/*SAME*/
+--current-text-second: var(--color-zinc-300);	/*SAME*/
+--current-text-third: var(--color-zinc-500);	/*SAME*/
+--current-text-last: #4e4e4e8c;				/*SAME*/
+--current-form-icon: #dcdfe4c0;				/*SAME*/
 
---current-notif-on: #c41c1c;					/*NOTE - SAME*/
---current-online-accept: var(--color-green-500);	/*NOTE - SAME*/
---current-bg-blur: #00000033;						/*NOTE - SAME*/
+--current-notif-on: #c41c1c;					/*SAME*/
+--current-online-accept: var(--color-green-500);	/*SAME*/
+--current-bg-blur: #00000033;						/*SAME*/
 --current-main-color: #87712a;
 --current-light-button: #b0953e;
 --current-active-button: #dbcfa8;
@@ -228,26 +240,25 @@
 --current-inset-error: color-mix(in srgb, var(--color-yellow-500) 20%, transparent);
 
 
-/*NOTE - SAME*/
+/*SAME*/
 --current-text-win-open: var(--color-green-600);
---current-bg-win: #f0fdf4e6;
---current-text-draw-await: var(--color-gray-300);
---current-bg-draw: #d1d5dce6;
+--current-bg-win: color-mix(in srgb, var(--color-green-50) 90%, transparent);
 --current-text-lose-closed: var(--color-red-500);
---current-bg-lose: #fef2f2e6;
+--current-bg-lose: color-mix(in srgb, var(--color-red-50) 90%, transparent);
+--current-text-draw-await: var(--color-gray-300);
+--current-bg-draw: color-mix(in srgb, var(--color-gray-300) 90%, transparent);
+--current-bg-await: color-mix(in srgb, var(--color-gray-200) 10%, transparent);
+--current-inset-await: color-mix(in srgb, var(--color-gray-300) 20%, transparent);
 
 --current-bg-tour-friend: color-mix(in srgb, var(--color-blue-400) 10%, transparent);
 --current-text-tour-friend: var(--color-blue-200);
 --current-inset-tour-friend: color-mix(in srgb, var(--color-blue-500) 20%, transparent);
---current-hover-tour: #51a2ff33;	/*blue-400/20*/
+--current-hover-tour: color-mix(in srgb, var(--color-blue-400) 20%, transparent);
 
 --current-bg-accept: color-mix(in srgb, var(--color-green-400) 10%, transparent);
 --current-inset-accept: color-mix(in srgb, var(--color-green-500) 20%, transparent);
 --current-bg-reject: color-mix(in srgb, var(--color-red-400) 10%, transparent);
 --current-inset-reject: color-mix(in srgb, var(--color-red-500) 20%, transparent);
-
---current-bg-await: #e5e7eb1a;		/*gray-200/10*/
---current-inset-await: #d1d5dc33;	/*gray-300/20*/
 }
 
 /*!SECTION */
@@ -257,19 +268,19 @@
 /*ANCHOR - Light-Red*/
 [data-theme="LightRed"] {
 --current-bg-default: #beb9b5;
---current-border-default: #4e4e4e8c;			/*NOTE - SAME*/
+--current-border-default: #4e4e4e8c;			/*SAME*/
 --current-bg-second: #d9d6d3;
 --current-border-second: #8f8b88e8;
 --current-bg-darker: #8f8b88;
 --current-text-default: #201e1c;
---current-text-second: var(--color-zinc-700);	/*NOTE - ? #3f3f46*/
---current-text-third: var(--color-zinc-600);	/*NOTE - ? #52525b*/
---current-text-last: #4e4e4e8c;				/*NOTE - SAME*/
+--current-text-second: var(--color-zinc-700);	/*? #3f3f46*/
+--current-text-third: var(--color-zinc-600);	/*? #52525b*/
+--current-text-last: #4e4e4e8c;				/*SAME*/
 --current-form-icon: #3f3f46c0;
 
---current-notif-on: #c41c1c;					/*NOTE - SAME*/
---current-online-accept: var(--color-green-500);	/*NOTE - SAME*/
---current-bg-blur: #00000033;						/*NOTE - SAME*/
+--current-notif-on: #c41c1c;					/*SAME*/
+--current-online-accept: var(--color-green-500);	/*SAME*/
+--current-bg-blur: #00000033;						/*SAME*/
 --current-main-color: #c54444;
 --current-light-button: #c55959;
 --current-active-button: #e2acac;
@@ -280,44 +291,43 @@
 --current-inset-error: color-mix(in srgb, var(--color-red-500) 20%, transparent);
 
 
-/*NOTE - SAME*/
+/*SAME*/
 --current-text-win-open: var(--color-green-600);
---current-bg-win: #f0fdf4e6;
---current-text-draw-await: var(--color-gray-300);
---current-bg-draw: #d1d5dce6;
+--current-bg-win: color-mix(in srgb, var(--color-green-50) 90%, transparent);
 --current-text-lose-closed: var(--color-red-500);
---current-bg-lose: #fef2f2e6;
+--current-bg-lose: color-mix(in srgb, var(--color-red-50) 90%, transparent);
+--current-text-draw-await: var(--color-gray-300);
+--current-bg-draw: color-mix(in srgb, var(--color-gray-300) 90%, transparent);
+--current-bg-await: color-mix(in srgb, var(--color-gray-200) 10%, transparent);
+--current-inset-await: color-mix(in srgb, var(--color-gray-300) 20%, transparent);
 
 --current-bg-tour-friend: color-mix(in srgb, var(--color-blue-400) 10%, transparent);
 --current-text-tour-friend: var(--color-blue-200);
 --current-inset-tour-friend: color-mix(in srgb, var(--color-blue-500) 20%, transparent);
---current-hover-tour: #51a2ff33;	/*blue-400/20*/
+--current-hover-tour: color-mix(in srgb, var(--color-blue-400) 20%, transparent);
 
 --current-bg-accept: color-mix(in srgb, var(--color-green-400) 10%, transparent);
 --current-inset-accept: color-mix(in srgb, var(--color-green-500) 20%, transparent);
 --current-bg-reject: color-mix(in srgb, var(--color-red-400) 10%, transparent);
 --current-inset-reject: color-mix(in srgb, var(--color-red-500) 20%, transparent);
-
---current-bg-await: #e5e7eb1a;		/*gray-200/10*/
---current-inset-await: #d1d5dc33;	/*gray-300/20*/
 }
 
 /*ANCHOR - Light-Blue*/
 [data-theme="LightBlue"] {
 --current-bg-default: #bebec5;
---current-border-default: #4e4e4e8c;			/*NOTE - SAME*/
+--current-border-default: #4e4e4e8c;			/*SAME*/
 --current-bg-second: #d3d5d9;
 --current-border-second: #8f8f94e8;
 --current-bg-darker: #8f8f94;
---current-text-default: #201e1c;			    /*NOTE - SAME*/
---current-text-second: var(--color-zinc-700);	/*NOTE - ? #3f3f46*/
---current-text-third: var(--color-zinc-600);	/*NOTE - ? #52525b*/
---current-text-last: #4e4e4e8c;				/*NOTE - SAME*/
---current-form-icon: #3f3f46c0;                 /*NOTE - SAME*/
+--current-text-default: #201e1c;			    /*SAME*/
+--current-text-second: var(--color-zinc-700);	/*? #3f3f46*/
+--current-text-third: var(--color-zinc-600);	/*? #52525b*/
+--current-text-last: #4e4e4e8c;				/*SAME*/
+--current-form-icon: #3f3f46c0;                 /*SAME*/
 
---current-notif-on: #c41c1c;					/*NOTE - SAME*/
---current-online-accept: var(--color-green-500);	/*NOTE - SAME*/
---current-bg-blur: #00000033;						/*NOTE - SAME*/
+--current-notif-on: #c41c1c;					/*SAME*/
+--current-online-accept: var(--color-green-500);	/*SAME*/
+--current-bg-blur: #00000033;						/*SAME*/
 --current-main-color: #4494c5;
 --current-light-button: #5a9bc4;
 --current-active-button: #adcde2;
@@ -328,44 +338,43 @@
 --current-inset-error: color-mix(in srgb, var(--color-blue-500) 20%, transparent);
 
 
-/*NOTE - SAME*/
+/*SAME*/
 --current-text-win-open: var(--color-green-600);
---current-bg-win: #f0fdf4e6;
---current-text-draw-await: var(--color-gray-300);
---current-bg-draw: #d1d5dce6;
+--current-bg-win: color-mix(in srgb, var(--color-green-50) 90%, transparent);
 --current-text-lose-closed: var(--color-red-500);
---current-bg-lose: #fef2f2e6;
+--current-bg-lose: color-mix(in srgb, var(--color-red-50) 90%, transparent);
+--current-text-draw-await: var(--color-gray-300);
+--current-bg-draw: color-mix(in srgb, var(--color-gray-300) 90%, transparent);
+--current-bg-await: color-mix(in srgb, var(--color-gray-200) 10%, transparent);
+--current-inset-await: color-mix(in srgb, var(--color-gray-300) 20%, transparent);
 
 --current-bg-tour-friend: color-mix(in srgb, var(--color-blue-400) 10%, transparent);
 --current-text-tour-friend: var(--color-blue-200);
 --current-inset-tour-friend: color-mix(in srgb, var(--color-blue-500) 20%, transparent);
---current-hover-tour: #51a2ff33;	/*blue-400/20*/
+--current-hover-tour: color-mix(in srgb, var(--color-blue-400) 20%, transparent);
 
 --current-bg-accept: color-mix(in srgb, var(--color-green-400) 10%, transparent);
 --current-inset-accept: color-mix(in srgb, var(--color-green-500) 20%, transparent);
 --current-bg-reject: color-mix(in srgb, var(--color-red-400) 10%, transparent);
 --current-inset-reject: color-mix(in srgb, var(--color-red-500) 20%, transparent);
-
---current-bg-await: #e5e7eb1a;		/*gray-200/10*/
---current-inset-await: #d1d5dc33;	/*gray-300/20*/
 }
 
 /*ANCHOR - Light-Green*/
 [data-theme="LightGreen"] {
 --current-bg-default: #bfc6c2;
---current-border-default: #4e4e4e8c;			/*NOTE - SAME*/
+--current-border-default: #4e4e4e8c;			/*SAME*/
 --current-bg-second: #d4d9d7;
 --current-border-second: #90968fe8;
 --current-bg-darker: #90968f;
---current-text-default: #201e1c;			    /*NOTE - SAME*/
---current-text-second: var(--color-zinc-700);	/*NOTE - ? #3f3f46*/
---current-text-third: var(--color-zinc-600);	/*NOTE - ? #52525b*/
---current-text-last: #4e4e4e8c;				/*NOTE - SAME*/
---current-form-icon: #3f3f46c0;                 /*NOTE - SAME*/
+--current-text-default: #201e1c;			    /*SAME*/
+--current-text-second: var(--color-zinc-700);	/*? #3f3f46*/
+--current-text-third: var(--color-zinc-600);	/*? #52525b*/
+--current-text-last: #4e4e4e8c;				/*SAME*/
+--current-form-icon: #3f3f46c0;                 /*SAME*/
 
---current-notif-on: #c41c1c;					/*NOTE - SAME*/
---current-online-accept: var(--color-green-500);	/*NOTE - SAME*/
---current-bg-blur: #00000033;						/*NOTE - SAME*/
+--current-notif-on: #c41c1c;					/*SAME*/
+--current-online-accept: var(--color-green-500);	/*SAME*/
+--current-bg-blur: #00000033;						/*SAME*/
 --current-main-color: #46c544;
 --current-light-button: #5dc559;
 --current-active-button: #b6e6b4;
@@ -376,44 +385,43 @@
 --current-inset-error: color-mix(in srgb, var(--color-green-500) 20%, transparent);
 
 
-/*NOTE - SAME*/
+/*SAME*/
 --current-text-win-open: var(--color-green-600);
---current-bg-win: #f0fdf4e6;
---current-text-draw-await: var(--color-gray-300);
---current-bg-draw: #d1d5dce6;
+--current-bg-win: color-mix(in srgb, var(--color-green-50) 90%, transparent);
 --current-text-lose-closed: var(--color-red-500);
---current-bg-lose: #fef2f2e6;
+--current-bg-lose: color-mix(in srgb, var(--color-red-50) 90%, transparent);
+--current-text-draw-await: var(--color-gray-300);
+--current-bg-draw: color-mix(in srgb, var(--color-gray-300) 90%, transparent);
+--current-bg-await: color-mix(in srgb, var(--color-gray-200) 10%, transparent);
+--current-inset-await: color-mix(in srgb, var(--color-gray-300) 20%, transparent);
 
 --current-bg-tour-friend: color-mix(in srgb, var(--color-blue-400) 10%, transparent);
 --current-text-tour-friend: var(--color-blue-200);
 --current-inset-tour-friend: color-mix(in srgb, var(--color-blue-500) 20%, transparent);
---current-hover-tour: #51a2ff33;	/*blue-400/20*/
+--current-hover-tour: color-mix(in srgb, var(--color-blue-400) 20%, transparent);
 
 --current-bg-accept: color-mix(in srgb, var(--color-green-400) 10%, transparent);
 --current-inset-accept: color-mix(in srgb, var(--color-green-500) 20%, transparent);
 --current-bg-reject: color-mix(in srgb, var(--color-red-400) 10%, transparent);
 --current-inset-reject: color-mix(in srgb, var(--color-red-500) 20%, transparent);
-
---current-bg-await: #e5e7eb1a;		/*gray-200/10*/
---current-inset-await: #d1d5dc33;	/*gray-300/20*/
 }
 
 /*ANCHOR - Light-Yellow*/
 [data-theme="LightYellow"] {
 --current-bg-default: #bec0b8;
---current-border-default: #4e4e4e8c;			/*NOTE - SAME*/
+--current-border-default: #4e4e4e8c;			/*SAME*/
 --current-bg-second: #d8d9d3;
 --current-border-second: #8f918be8;
 --current-bg-darker: #8f918b;
---current-text-default: #201e1c;			    /*NOTE - SAME*/
---current-text-second: var(--color-zinc-700);	/*NOTE - ? #3f3f46*/
---current-text-third: var(--color-zinc-600);	/*NOTE - ? #52525b*/
---current-text-last: #4e4e4e8c;				/*NOTE - SAME*/
---current-form-icon: #3f3f46c0;                 /*NOTE - SAME*/
+--current-text-default: #201e1c;			    /*SAME*/
+--current-text-second: var(--color-zinc-700);	/*? #3f3f46*/
+--current-text-third: var(--color-zinc-600);	/*? #52525b*/
+--current-text-last: #4e4e4e8c;				/*SAME*/
+--current-form-icon: #3f3f46c0;                 /*SAME*/
 
---current-notif-on: #c41c1c;					/*NOTE - SAME*/
---current-online-accept: var(--color-green-500);	/*NOTE - SAME*/
---current-bg-blur: #00000033;						/*NOTE - SAME*/
+--current-notif-on: #c41c1c;					/*SAME*/
+--current-online-accept: var(--color-green-500);	/*SAME*/
+--current-bg-blur: #00000033;						/*SAME*/
 --current-main-color: #c7a643;
 --current-light-button: #c5ac59;
 --current-active-button: #e6d6ac;
@@ -424,26 +432,25 @@
 --current-inset-error: color-mix(in srgb, var(--color-yellow-500) 20%, transparent);
 
 
-/*NOTE - SAME*/
+/*SAME*/
 --current-text-win-open: var(--color-green-600);
---current-bg-win: #f0fdf4e6;
---current-text-draw-await: var(--color-gray-300);
---current-bg-draw: #d1d5dce6;
+--current-bg-win: color-mix(in srgb, var(--color-green-50) 90%, transparent);
 --current-text-lose-closed: var(--color-red-500);
---current-bg-lose: #fef2f2e6;
+--current-bg-lose: color-mix(in srgb, var(--color-red-50) 90%, transparent);
+--current-text-draw-await: var(--color-gray-300);
+--current-bg-draw: color-mix(in srgb, var(--color-gray-300) 90%, transparent);
+--current-bg-await: color-mix(in srgb, var(--color-gray-200) 10%, transparent);
+--current-inset-await: color-mix(in srgb, var(--color-gray-300) 20%, transparent);
 
 --current-bg-tour-friend: color-mix(in srgb, var(--color-blue-400) 10%, transparent);
 --current-text-tour-friend: var(--color-blue-200);
 --current-inset-tour-friend: color-mix(in srgb, var(--color-blue-500) 20%, transparent);
---current-hover-tour: #51a2ff33;	/*blue-400/20*/
+--current-hover-tour: color-mix(in srgb, var(--color-blue-400) 20%, transparent);
 
 --current-bg-accept: color-mix(in srgb, var(--color-green-400) 10%, transparent);
 --current-inset-accept: color-mix(in srgb, var(--color-green-500) 20%, transparent);
 --current-bg-reject: color-mix(in srgb, var(--color-red-400) 10%, transparent);
 --current-inset-reject: color-mix(in srgb, var(--color-red-500) 20%, transparent);
-
---current-bg-await: #e5e7eb1a;		/*gray-200/10*/
---current-inset-await: #d1d5dc33;	/*gray-300/20*/
 }
 
 /*!SECTION */
