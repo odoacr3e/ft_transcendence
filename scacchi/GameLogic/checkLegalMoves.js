@@ -8,7 +8,7 @@
 
 import { Square } from "../Classes/Chess/chessBoard.js";
 import { Player } from "../Classes/Chess/player.js";
-import { arrayNamesDoubleMove, arrayNamesTransform, enumNames } from "../Macro/enums.js";
+import { arrayNamesDoubleMove, enumNames } from "../Macro/enums.js";
 import { isDangerous } from "../utils/checkDanger.js";
 import { includesOneOf } from "../utils/string.js";
 
@@ -150,6 +150,9 @@ function pushChildMoves(match, player, legalMovesArray, move, boostBool=false)
 /**
  * returns an array of valid moves for a player.
  * the array elements are formatted as: {from: coord, to: coord}.
+ * TO OPTIMIZE AI speed, boosts are considered only when:
+ * 1)	player has no boosted piece;
+ * 2)	only the most expensive boost is considered
  * @param {Match} match 
  * @param {Player} player
  * @param {Array<Turn>} legalMovesArray
@@ -157,8 +160,11 @@ function pushChildMoves(match, player, legalMovesArray, move, boostBool=false)
  * */
 function pushAllLegalBoost(match, player, legalMovesArray, currTurn)
 {
-	let	turnWithBoost;
+	/** @type {{coord: string, price: number} | null} */
+	let	bestBoost = null;
 
+	if (!player.boostedPiece)
+		return ;
 	if (player.nPoints == 0)
 		return ;
 	for (const [coord, square] of match.board)
@@ -169,15 +175,38 @@ function pushAllLegalBoost(match, player, legalMovesArray, currTurn)
 			continue ;
 		if (square.piece.price > player.nPoints)
 			continue ;
-		turnWithBoost = structuredClone(currTurn);
-		if (coord != turnWithBoost.move?.from && coord != turnWithBoost.moveBoost?.from)
-			turnWithBoost.boost = coord;
-		else if (turnWithBoost.moveBoost)
-			turnWithBoost.boost = turnWithBoost.moveBoost.to;
-		else //@ts-ignore
-			turnWithBoost.boost = turnWithBoost.move.to;
-		legalMovesArray.push(turnWithBoost);
+		if (!bestBoost || square.piece.price > bestBoost.price)
+			bestBoost = {coord: coord, price: square.piece.price};
+		else if (square.piece.type == enumNames.JESTER && square.piece.moveCount == 0)
+			pushOneBoost(bestBoost.coord, legalMovesArray, currTurn);
 	}
+	if (!bestBoost)
+		return ;
+	pushOneBoost(bestBoost.coord, legalMovesArray, currTurn);
+}
+
+/**
+ * returns an array of valid moves for a player.
+ * the array elements are formatted as: {from: coord, to: coord}.
+ * TO OPTIMIZE AI speed, boosts are considered only when:
+ * 1)	player has no boosted piece;
+ * 2)	only the most expensive boost is considered
+ * @param {string} coord
+ * @param {Array<Turn>} legalMovesArray
+ * @param {Turn} currTurn
+ * */
+function pushOneBoost(coord, legalMovesArray, currTurn)
+{
+	let	turnWithBoost;
+
+	turnWithBoost = structuredClone(currTurn);
+	if (coord != turnWithBoost.move?.from && coord != turnWithBoost.moveBoost?.from)
+		turnWithBoost.boost = coord;
+	else if (turnWithBoost.moveBoost)
+		turnWithBoost.boost = turnWithBoost.moveBoost.to;
+	else //@ts-ignore
+		turnWithBoost.boost = turnWithBoost.move.to;
+	legalMovesArray.push(turnWithBoost);
 }
 
 /**
@@ -205,12 +234,16 @@ function pushAllLegalTransform(match, player, legalMovesArray, currTurn, destCoo
 	match.cursor.Restore();
 	if (!bastardEdgeBool)
 		return ;
-	for (const type of arrayNamesTransform)
-	{
-		turnWithTransform = structuredClone(currTurn);
-		turnWithTransform.transform = type;
-		legalMovesArray.push(turnWithTransform);
-	}
+	//NOTE - AI prova a transformare solo in champion
+	turnWithTransform = structuredClone(currTurn);
+	turnWithTransform.transform = enumNames.CHAMPION;
+	legalMovesArray.push(turnWithTransform);
+	// for (const type of arrayNamesTransform)
+	// {
+	// 	turnWithTransform = structuredClone(currTurn);
+	// 	turnWithTransform.transform = type;
+	// 	legalMovesArray.push(turnWithTransform);
+	// }
 }
 
 // giorgi0:

@@ -48,7 +48,7 @@ function endTurn(match, sendBoardBool=true)
 	}
 	if (match.spareCountDown == 50 * match.playerNum)
 		return (match.DrawMatch(result));
-	if (!match.boardStateMap.has(boardState))
+	if (!match.boardStateMap.has(boardState) && match.aiSimulation == false)
 		match.boardStateMap.set(boardState, 1);//@ts-ignore
 	else if (match.boardStateMap.get(boardState) >= 2)
 		return (match.DrawMatch(result));//@ts-ignore

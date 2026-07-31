@@ -14,6 +14,7 @@ import { MATCHTIMER } from "../../Macro/macro.js";
 import { globals } from "../Globals/globals.js";
 import EloRank from "elo-rank";
 import { query } from "../../lib/query.js";
+import { render } from "../../test/render.js";
 
 /** @typedef {import("../Globals/Queue.js").QueueNode} QueueNode*/
 
@@ -244,6 +245,7 @@ class Match
 	PlayerLost(result, player=this.currentPlayer)
 	{
 		console.log(player.team, ":haaaaaiiiiii persoooooooooooooooooo!!!!!!!");
+		render(this);
 		if (this.aiSimulation == true)
 			return (new Result());
 		this.history.Last().loserSet.add(player.id);
@@ -274,7 +276,8 @@ class Match
 		let player;
 		let tmp;
 
-		// console.log("ed e' un pareggioooooooo!!!!");
+		console.log("ed e' un pareggioooooooo!!!!");
+		render(this);
 		if (this.aiSimulation == true)
 			return (new Result());
 		this.victory = "draw";

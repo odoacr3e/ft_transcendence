@@ -46,7 +46,12 @@ function mainTerm()
 	time = process.hrtime.bigint();
 	init(match, seed);
 	// historyRestore(match, HISTORY_DEFAULT);
-	// match.NextPlayer().ai = new AI();
+	move(match, "e2", "e4");
+	move(match, "g8", "f6");
+	move(match, "e4", "e5");
+	move(match, "h8", "g8");
+	match.NextPlayer().ai = new AI();
+	move(match, "e5", "f6");
 	console.log(`time to init: ${(process.hrtime.bigint() - time) / 1000n} microseconds`);
 	match.cursor.square = match.currentPlayer.King;
 	// edoChampionBug(match);

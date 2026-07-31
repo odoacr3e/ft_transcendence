@@ -344,4 +344,22 @@ function boardOtherInfo(match)
 	return buffer;
 }
 
+// /** @param {Match} match */
+// function boardHash(match)
+// {
+// 	let	hash;
+// 	let	squareHash;
+// 	let	counter;
+
+// 	hash = 0;
+// 	counter = -1;
+// 	for (const [key, square] of match.board)
+// 	{
+// 		++counter;
+// 		squareHash = 0;
+
+// 		if (!square.piece)
+// 	}
+// }
+
 export {render, printSwap, boardStringify};

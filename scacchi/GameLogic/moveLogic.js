@@ -40,7 +40,8 @@ function updateChessboard(coords=[], result, match, boostBool)
 		match.currentPlayer.boostedPiece = "";
 		match.boostPriority.delete(match.currentPlayer.team);
 	}
-	//printSwap(match, coords, from, to);
+	if (match.aiSimulation == false)
+		printSwap(match, coords, from, to);
 	if (to.piece && to.piece.team != from.piece.team)
 	{
 		if (match.aiSimulation == false)
