@@ -11,6 +11,7 @@ import { enumNames } from "../Macro/enums.js";
 import { movePiece } from "../utils/dangerUpdate.js";
 import { dangerUpdateMoved } from "../utils/dangerUpdate.js";
 import { isDangerous, checkKingDanger } from "../utils/checkDanger.js";
+import { getLegalMoves } from "./checkLegalMoves.js";
 
 /** @typedef {import("../Classes/Chess/match").Match} Match*/
 /** @typedef {import("../Classes/Chess/chessBoard.js").Square} Square*/
@@ -80,6 +81,26 @@ export function simulation(coords, match, result=null)
 	if (tmpSquare)
 		match.board.set(coords[1], tmpSquare);
 	return (!dangerBool);
+}
+
+/**
+ * 
+ * @param {Match} match 
+ * @param {string} team 
+ */
+export function simulationGlobal(match, team=match.currentPlayer.team)
+{
+	let	legalMovesArray;
+
+	legalMovesArray = getLegalMoves(match, team, true);
+	for (const turn of legalMovesArray)
+	{
+		if (turn.move && simulation([turn.move.from, turn.move.to], match))
+			return (true);
+		else if (turn.moveBoost && simulation([turn.moveBoost.from, turn.moveBoost.to], match))
+			return (true);
+	}
+	return (false);
 }
 
 //SECTION - utils

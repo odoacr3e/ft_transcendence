@@ -2,15 +2,14 @@
   "seed": 0,
   "events": [
     {
-      "from": "b1",
-      "to": "c3",
-      "movedPiece": "Jester",
+      "from": "e2",
+      "to": "e4",
+      "movedPiece": "Bastards",
       "team": "white",
       "type": "move",
-      "pieceBoosterTargetZones": {},
-      "isBoostedBool": false,
       "useBoostBool": false,
-      "counter": 0
+      "counter": 0,
+      "updates": {}
     },
     {
       "from": "",
@@ -18,21 +17,19 @@
       "movedPiece": "",
       "team": "white",
       "type": "endturn",
-      "pieceBoosterTargetZones": null,
-      "isBoostedBool": false,
       "useBoostBool": false,
-      "counter": 1
+      "counter": 1,
+      "updates": {}
     },
     {
-      "from": "c7",
-      "to": "c6",
+      "from": "d7",
+      "to": "d5",
       "movedPiece": "Bastards",
       "team": "black",
       "type": "move",
-      "pieceBoosterTargetZones": {},
-      "isBoostedBool": false,
       "useBoostBool": false,
-      "counter": 2
+      "counter": 2,
+      "updates": {}
     },
     {
       "from": "",
@@ -40,55 +37,53 @@
       "movedPiece": "",
       "team": "black",
       "type": "endturn",
-      "pieceBoosterTargetZones": null,
-      "isBoostedBool": false,
       "useBoostBool": false,
-      "counter": 3
+      "counter": 3,
+      "updates": {}
     },
     {
-      "from": "c3",
-      "to": "b5",
-      "movedPiece": "Jester",
-      "team": "white",
-      "type": "move",
-      "pieceBoosterTargetZones": {},
-      "isBoostedBool": false,
-      "useBoostBool": false,
-      "counter": 4
-    },
-    {
-      "from": "",
-      "to": "",
-      "team": "white",
-      "type": "endturn",
-      "useBoostBool": false,
-      "counter": 5
-    },
-    {
-      "from": "c6",
-      "to": "b5",
+      "from": "e4",
+      "to": "d5",
       "movedPiece": "Bastards",
-      "team": "black",
+      "team": "white",
       "type": "move",
-      "pieceBoosterTargetZones": {},
-      "isBoostedBool": false,
       "useBoostBool": false,
-      "counter": 6
+      "counter": 4,
+      "updates": {}
     },
     {
-      "from": "g8",
+      "from": "b2",
       "to": "",
-      "movedPiece": "Jester",
-      "team": "black",
+      "movedPiece": "Bastards",
+      "team": "white",
       "type": "boost",
-      "pieceBoosterTargetZones": null,
-      "isBoostedBool": false,
       "useBoostBool": false,
-      "counter": 7,
-	  "lastLost": "white"
+      "counter": 5,
+      "updates": {}
+    },
+    {
+      "from": "",
+      "to": "",
+      "movedPiece": "",
+      "team": "white",
+      "type": "endturn",
+      "useBoostBool": false,
+      "counter": 6,
+      "updates": {}
+    },
+    {
+      "from": "d8",
+      "to": "d5",
+      "movedPiece": "Champion",
+      "team": "black",
+      "type": "move",
+      "useBoostBool": false,
+      "counter": 8,
+      "updates": {},
+      "error": false
     }
   ],
-  "moves": 8,
-  "victory": "black",
-  "finalBoard": "|M|J|V|C|K|V|+J|M|\n|B|B| |B|B|B|B|B|\n| | | | | | | | |\n| |B| | | | | | |\n| | | | | | | | |\n| | | | | | | | |\n|B|B|B|B|B|B|B|B|\n|M| |V|C|K|V|J|M|\n"
+  "moves": 9,
+  "victory": "",
+  "finalBoard": "|M|J|V| |K|V|J|M|\n|B|B|B| |B|B|B|B|\n| | | | | | | | |\n| | | |C| | | | |\n| | | | | | | | |\n| | | | | | | | |\n|B|+B|B|B| |B|B|B|\n|M|J|V|C|K|V|J|M|\n"
 }

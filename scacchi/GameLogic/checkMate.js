@@ -13,7 +13,7 @@ import { isDangerous } from "../utils/checkDanger.js";
 import { movePiece, getDirection } from "../utils/movePiece.js";
 import { Square } from "../Classes/Chess/chessBoard.js";
 import { pathFinding } from "./pathFinding.js";
-import { simulation } from "./simulation.js";
+import { simulation, simulationGlobal } from "./simulation.js";
 import { getLegalMoves } from "./checkLegalMoves.js";
 import {preset} from "../Classes/Chess/Pieces/preset.js";
 
@@ -165,7 +165,7 @@ function isStoppable(match, kingSquare, enemySquareString)
 				match.currentPlayer.guardianPieces.add({coord: x, target: match.cursor.square});
 		}
 		if (!movePiece(match, dir.diffCol, dir.diffRow))
-			return true;
+			return simulationGlobal(match, match.currentPlayer.team);
 	}
 	if (normalSaveBool == true || match.currentPlayer.guardianPieces.size > 0)
 	{
