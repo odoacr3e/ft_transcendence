@@ -6,6 +6,7 @@ RUN apk add --no-cache jq
 
 COPY ./scripts/entrypoint.sh /entrypoint.sh
 COPY ./config/config.hcl /vault/config/config.hcl
+COPY ./policies/backend-policy.hcl /vault/policies/backend-policy.hcl
 
 RUN chmod +x /entrypoint.sh
 
