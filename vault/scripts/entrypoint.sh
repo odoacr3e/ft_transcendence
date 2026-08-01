@@ -60,6 +60,22 @@ else
 vault write auth/approle/role/backend-role token_policies="backend-policy" token_ttl=1h token_max_ttl=4h
 echo "AppRole connected to backend-policy ..."
 
+# creating roleID
+ROLE_ID_FILE="/vault/shared/role-id"
+ROLE_ID=$(vault read -format=json auth/approle/role/backend-role/role-id | jq -r '.data.role_id')
+echo "$ROLE_ID" > "$ROLE_ID_FILE"
+echo "RoleID generated ..."
+
+# creating secretID only if it's not first time running
+SECRET_ID_FILE="/vault/shared/secret-id"
+if [ ! -f "$SECRET_ID_FILE" ]; then
+	echo "First run: generating new SecretID ..."
+	SECRET_ID=$(vault write -format=json -f auth/approle/role/backend-role/secret-id | jq -r '.data.secret_id')
+	echo "$SECRET_ID" > "$SECRET_ID_FILE"
+	echo "SecretID generated ..."
+else
+	echo "SecretID already exists, skipping generation ..."
+fi
 
 echo "Vault is ready!"
 wait $VAULT_PID

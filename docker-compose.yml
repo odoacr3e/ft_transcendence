@@ -17,7 +17,10 @@ services:
       dockerfile: Dockerfile/Dockerfile.be
     env_file:
       - .env
+    environment:
+      - VAULT_ADDR=http://vault:8200
     volumes:
+      - vault-shared:/vault/shared
       - ./backend_dir/scacchi:/app
       - /app/node_modules
   frontend:
@@ -39,6 +42,7 @@ services:
       - ./vault/keys:/vault/keys
       - vault-data:/vault/data:rw
       - vault-logs:/vault/logs
+      - vault-shared:/vault/shared
       # - ./vault/certs:/vault/certs:ro
     environment:
       - VAULT_ADDR=http://127.0.0.1:8200
@@ -57,3 +61,4 @@ volumes:
     driver: local
   vault-logs:
     driver: local
+  vault-shared:
