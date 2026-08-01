@@ -5,7 +5,7 @@ CLEAN_IMG  = alpine
 AS_ROOT    = docker run --rm -v "$$PWD:/w" -w /w $(CLEAN_IMG)
 
 up:
-	docker compose up --build
+	docker compose up --build --no-attach vault
 
 down:
 	docker compose down --remove-orphans

@@ -3,9 +3,7 @@ services:
   nginx:
     image: nginx
     container_name: nginx
-    build:
-      context: .
-      dockerfile: Dockerfile/Dockerfile.nginx
+    build: ./nginx
     ports:
       - "8000:80"
     depends_on:
