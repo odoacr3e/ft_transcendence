@@ -38,23 +38,25 @@ if [ "$SEALED" = "true" ] && [ -f "$KEYFILE" ]; then
 fi
 
 # enabling kv-v2 version for secrets
-export TOKEN=$(jq -r '.root_token' '/vault/keys/vault-keys.json')
+export VAULT_TOKEN=$(jq -r '.root_token' '/vault/keys/vault-keys.json')
 if ! vault secrets list -format=json | jq -e '.["secret/"]' > /dev/null 2>&1; then
 	vault secrets enable -path=secret kv-v2
 	echo "kv-v2 version enabled ..."
 else
 	echo "secret/ already enabled, skipping ..."
+fi
 
 # writing policies
 vault policy write backend-policy /vault/policies/backend-policy.hcl
 echo "backend-policy uploaded and written ..."
 
 # enabling AppRole
-if ! vault secrets list -format=json | jq -e '.["approle/"]' > /dev/null 2>&1; then
+if ! vault auth list -format=json | jq -e '.["approle/"]' > /dev/null 2>&1; then
 	vault auth enable approle
 	echo "AppRole enabled ..."
 else
 	echo "approle/ already enabled, skipping ..."
+fi
 
 # connecting AppRole to backend policy
 vault write auth/approle/role/backend-role token_policies="backend-policy" token_ttl=1h token_max_ttl=4h
