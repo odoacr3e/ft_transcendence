@@ -25,17 +25,17 @@
 </script>
 
 <template>
-    <div class="flex flex-col z-2 bg-[#181715] rounded-3xl w-[70vh] h-[70vh]">
-        <h2 class="text-white text-3xl self-center m-9">Cambia password</h2>
-        <div class="flex flex-col justify-center w-fit px-8 py-5 mb-6 mx-auto bg-[#201e1c] rounded-3xl border border-[#4e4e4e8c]">
+    <div class="flex flex-col z-2 bg-bg-darker rounded-3xl w-[70vh] h-[70vh]">
+        <h2 class="text-text-default text-3xl self-center m-9">Cambia password</h2>
+        <div class="flex flex-col justify-center w-fit px-8 py-5 mb-6 mx-auto bg-bg-default rounded-3xl border border-border-default">
             <img :src="user.image ? `${user.image}` : defaultAvatar" @error="handleAvatarError"
                     alt="" class="size-35 rounded-full m-5 mx-auto object-cover">
-            <h3 class="text-white text-2xl self-center">{{ user.username }}</h3>
-            <h4 class="text-zinc-300 text-md self-center">{{ user.name }} {{ user.surname }}</h4>
-            <h5 class="text-zinc-500 text-sm self-center">{{ user.nationality }}</h5>
+            <h3 class="text-text-default text-2xl self-center">{{ user.username }}</h3>
+            <h4 class="text-text-second text-md self-center">{{ user.name }} {{ user.surname }}</h4>
+            <h5 class="text-text-third text-sm self-center">{{ user.nationality }}</h5>
         </div>
-        <form @submit.prevent="submitForm" method="post" enctype="application/json" class="text-white self-center flex flex-col">
-	    	<div class="form flex w-sm m-4 mb-2" :class="{ 'animate-shake': error }" @animationend="error = false">
+        <form @submit.prevent="submitForm" method="post" enctype="application/json" class="text-text-default self-center flex flex-col">
+	    	<div class="form border-border-default text-form-icon flex w-sm m-4 mb-2" :class="{ 'animate-shake': error }" @animationend="error = false">
 	    		<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
 	    			<path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
 	    		</svg>
@@ -49,14 +49,14 @@
 	    			</svg>
 	    		</button>
 	    	</div>
-            <div class="text-xs mx-5 self-center justify-self-center text-[#882a2a]" 
-                :class="{ 'transition-colors duration-200 text-[#c46b6b]': error, 'transition-colors duration-200 text-[#882a2a]': !error, }" 
+            <div class="text-xs mx-5 self-center justify-self-center text-main-color" 
+                :class="{ 'transition-colors duration-200 text-text-error': error, 'transition-colors duration-200 text-main-color': !error, }" 
                 @animationend="error = false">
                 <p>Ricorda, la password deve avere almeno 8 caratteri, un numero,</p>
                 <p> una maiuscola, una minuscola e un carattere speciale ($,%,#...)</p>
             </div>
 	    	<input id="submit" class="cursor-pointer justify-self-center w-sm p-3 text-base self-center mt-6
-                            bg-[#882a2a] rounded-[7px] text-white hover:bg-linear-to-t from-[#882a2a] to-[#af3d3d]"
+                            bg-main-color rounded-[7px] text-text-default hover:bg-linear-to-t from-main-color to-light-button"
 	    			v-bind:class="{'pointer-events-none grayscale': !formData.password,
 	    				'pointer-events-auto grayscale-0 ': formData.password }"
 	    			type="submit" value="Salva le modifiche">
@@ -69,8 +69,6 @@
 		padding: 15px;
 		border-width: 1px;
 		border-radius: 7px;
-		border-color: #4e4e4e8c;
-		color: #dcdfe4c0;
 		justify-self: center;
 	}
 

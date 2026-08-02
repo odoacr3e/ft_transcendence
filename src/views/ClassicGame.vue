@@ -43,11 +43,11 @@
 </script>
 
 <template>
-    <div class="flex z-2 bg-[#181715] rounded-3xl">
+    <div class="flex z-2 bg-bg-darker rounded-3xl">
         <div class="flex items-center px-4" v-if="ready">
             <ActionButtons/>
         </div>
-        <div class="p-6 bg-[#201e1c] rounded-l-3xl border-r border-[#4e4e4e8c]">
+        <div class="p-6 bg-bg-default rounded-l-3xl border-r border-border-default">
           <div v-if="ready">
             <PlayerInfo :p="topP" pos="top"/>
             <div class="relative">
