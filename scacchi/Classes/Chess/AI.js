@@ -77,8 +77,6 @@ function getBestTurn(match)
 	{
 		console.log(`Turns: ${i}/${arrayTurns.length}`);
 		const turn = arrayTurns[i];
-		if (turn.move?.from == "d7" && turn.move?.to == "e6")
-			console.log("");
 		if (!execTurn(match, turn))
 			continue ;
 		// render(match);
@@ -146,6 +144,7 @@ function minMax(match, ai, arrayTurns, depth, pastTurns)
 			// else
 			// 	console.log(arrayTurns.length);
 			pastTurns.push(turn);
+			// console.log(turn);
 			ai.Simulate(match, ai);//@ts-ignore
 			val = minMax(match, ai, newTurns, depth - 1, pastTurns);
 			ai.Cancel(match, ai);
@@ -171,6 +170,7 @@ function minMax(match, ai, arrayTurns, depth, pastTurns)
 			// else
 			// 	console.log(arrayTurns.length);
 			pastTurns.push(turn);
+			// console.log(turn);
 			ai.Simulate(match, ai);//@ts-ignore
 			val = minMax(match, ai, newTurns, depth - 1, pastTurns);
 			ai.Cancel(match, ai);

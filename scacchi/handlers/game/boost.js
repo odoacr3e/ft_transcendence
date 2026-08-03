@@ -25,7 +25,7 @@ import { jsonParser } from "../../utils/response.js";
  * @param {String} from
  * @returns {Result}
  */
-function boost(match, from, realBoost=true)
+function boost(match, from)
 {
 	let	result;
 

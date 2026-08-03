@@ -93,7 +93,7 @@ function cancelMove(match, lastEvent)
 	if (lastEvent.type == eEvents.MoveBoost && fromSquare.piece)
 	{
 		fromSquare.piece.isBoostedBool = true;
-		match.currentPlayer.boostedPiece = lastEvent.from;//FIXME - attenzione al pedone
+		match.currentPlayer.boostedPiece = lastEvent.prevBoost;
 	}
 	if (fromSquare.piece)
 	{

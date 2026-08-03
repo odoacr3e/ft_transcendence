@@ -173,6 +173,7 @@ function updateMoves(match, square, coords, specialMoves, boostBool=false)
 	record.specialMoves = specialMoves;
 	record.updates = structuredClone(match.board.updates);
 	record.time = match.currentPlayer.time;
+	record.prevBoost = match.currentPlayer.boostedPiece;
 	this.events.push(record);
 	this.moves += 1;
 }

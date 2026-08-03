@@ -312,6 +312,8 @@ function updateBoostedChampions(match, coords)
 		piece = match.board.get(x).piece;
 		if (!piece && x == coords[0])
 			piece = match.board.get(coords[1]).piece;
+		else if (!piece && x == coords[1])
+			piece = match.board.get(coords[0]).piece;
 		if (!piece)
 			throw (`updateBoostedChampions: piece in ${x} does not exist`);
 		if (piece.type != enumNames.CHAMPION || piece.isBoostedBool == false)
