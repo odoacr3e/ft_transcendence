@@ -1,5 +1,5 @@
 
-import * as lib from "./lib";
+import * as lib from "./lib.js";
 const { fs } = lib.include;
 
 const VAULT_ADDR = 'http://vault:8200'
