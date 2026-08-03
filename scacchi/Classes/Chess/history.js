@@ -137,6 +137,7 @@ export class HistoryEvent
 		/** @type {Piece | null | undefined} */
 		this.pieceEaten = undefined;
 		this.time = MATCHTIMER;
+		this.prevBoost = "";
 		if (pieceBoosterZones)
 			this.pieceBoosterTargetZones = copyBoostedTargetZones(pieceBoosterZones);
 	}
@@ -198,6 +199,7 @@ function updateBoost(match, square, from)
 	record = new HistoryEvent(this.moves, eEvents.Boost, square.piece?.team, match.board.updates, square.piece?.type, from);
 	record.updates = structuredClone(match.board.updates);
 	record.time = match.currentPlayer.time;
+	record.prevBoost = match.currentPlayer.boostedPiece;
 	this.events.push(record);
 	this.moves += 1;
 }

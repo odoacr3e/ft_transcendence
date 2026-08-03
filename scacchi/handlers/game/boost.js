@@ -28,12 +28,10 @@ import { jsonParser } from "../../utils/response.js";
 function boost(match, from, realBoost=true)
 {
 	let	result;
-	let prevBoost;
 
 	result = new Result();
 	if (!paramCheck(result, from))
 		return (result);
-	prevBoost = match.currentPlayer.boostedPiece;
 	if (!tryBoost(match, result, from))
 		return (result);
 	result.status = 200;
@@ -43,8 +41,7 @@ function boost(match, from, realBoost=true)
 		if (endTurn(match, false).specialMoves.CheckKingDanger())
 			result.specialMoves.SetKingDanger();
 	}
-	if (prevBoost == "")
-		prevBoost = from;//@ts-ignore
+	//@ts-ignore
 	result.board = clientBoard(match);
 	result.match = match;
 	return (result);
@@ -87,8 +84,8 @@ function tryBoost(match, result, from)
 	}
 	match.board.updates.add(from);
 	match.boostPriority.add(match.currentPlayer.team);
-	match.currentPlayer.boostedPiece = from;
 	match.history.UpdateBoost(match, square, from);
+	match.currentPlayer.boostedPiece = from;
 	DangerUpdate(match, from, false);
 	checkInluenceOfBoost(match, square);
 	match.boost += 1;

@@ -127,7 +127,12 @@ function cancelBoost(match, lastEvent)
 		return ("cancelBoost: missing coord from");
 	match.currentPlayer.nPoints += square.piece.price;
 	square.piece.isBoostedBool = false;
-	match.currentPlayer.boostedPiece = '';
+	match.currentPlayer.boostedPiece = lastEvent.prevBoost;
+	if (lastEvent.prevBoost)
+	{
+		match.board.get(lastEvent.prevBoost).piece.isBoostedBool == true;
+		DangerUpdate(match, lastEvent.prevBoost);
+	}
 	DangerUpdate(match, lastEvent.from);
 }
 
