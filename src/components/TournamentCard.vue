@@ -1,9 +1,11 @@
 <script setup>
     import { rework_date } from '../scripts/Helper/CompUtils';
-
-    const prop = defineProps({
-  	    	tournaments: Array
-	    });
+    import { useI18n } from 'vue-i18n';
+    
+    const   { t } = useI18n(),
+            prop = defineProps({
+  	    	    tournaments: Array
+	        });
 </script>
 
 <template>
@@ -20,14 +22,14 @@
         </div>
         <p class="justify-start text-sm text-zinc-300">{{ rework_date(games.created_at) }}</p>
         <div class="my-2 max-w-105 min-w-95">
-            <p>Creatore del torneo: 
+            <p>{{ t('tournaments.creator') }} 
                 <RouterLink :to="{ name: 'user_page', params: { username: games.created_by.username } }"
                         class="hover:underline">
                     {{ games.created_by.username }}
                 </RouterLink>
             </p>
             <hr class="w-full text-[#4e4e4e8c] my-2">
-            <p>Giocatori:</p>
+            <p>{{ t('common.players') }}:</p>
             <div class="grid grid-cols-2 text-sm text-zinc-300">
                 <p v-for="(player, index) in games.players" :key="index">
                     <RouterLink :to="{ name: 'user_page', params: { username: player.username } }"

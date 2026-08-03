@@ -4,9 +4,11 @@ import { defaultAvatar, handleAvatarError } from '../scripts/Helper/CompUtils';
 import { ref, onMounted } from 'vue';
 import { useAuthStore } from "../stores/auth.st";
 import { storeToRefs }  from 'pinia';
+import { useI18n }      from 'vue-i18n';
 import { api }          from '../router/api/client';
 
-const   lBoard = ref([]),
+const   { t } = useI18n(),
+        lBoard = ref([]),
         top3 = ref(null),
         last7 = ref(null),
         authStore = useAuthStore(),
@@ -32,7 +34,7 @@ onMounted(async () => {
 
 <template>
     <div class="flex flex-col z-2 pb-1 bg-[#181715] rounded-3xl w-[90vh] h-fit text-white">
-        <h2 class="text-3xl px-6 py-4 font-semibold self-center">Top 10 giocatori</h2>
+        <h2 class="text-3xl px-6 py-4 font-semibold self-center">{{ t('leaderBoard.title') }}</h2>
         <div class="flex flex-col mx-4 mb-1 p-2 bg-[#201e1c] rounded-3xl border border-[#4e4e4e8c]">
             <div v-if="top3" class="justify-items-center justify-self-center -mb-7">
                 <p class="text-zinc-300">{{ top3[0].points }}</p>
@@ -44,7 +46,7 @@ onMounted(async () => {
                 </RouterLink>
                 <div class="flex gap-2">
                     <p class="text-green-600">{{ winRate(top3[0].stats.w, top3[0].stats.total) }}%</p>
-                    su {{ top3[0].stats.total }}
+                    {{ t('leaderBoard.outOf', { games: top3[0].stats.total }) }}
                 </div>
             </div>
             <div class="grid grid-rows-1 grid-cols-2" :class=" top ? '-mt-15' : '-mt-7'">
@@ -58,7 +60,7 @@ onMounted(async () => {
                     </RouterLink>
                     <div class="flex gap-2">
                         <p class="text-green-600">{{ winRate(top3[1].stats.w, top3[1].stats.total) }}%</p>
-                        su {{ top3[1].stats.total }}
+                        {{ t('leaderBoard.outOf', { games: top3[1].stats.total }) }}
                     </div>
                 </div>
                 <div v-if="top3" class="justify-items-center">
@@ -71,7 +73,7 @@ onMounted(async () => {
                     </RouterLink>
                     <div class="flex gap-2">
                         <p class="text-green-600">{{ winRate(top3[2].stats.w, top3[2].stats.total) }}%</p>
-                        su {{ top3[2].stats.total }}
+                        {{ t('leaderBoard.outOf', { games: top3[2].stats.total }) }}
                     </div>
                 </div>
             </div>
@@ -88,7 +90,7 @@ onMounted(async () => {
                         <div class="flex items-center gap-1">
                             <TagTitle :title="p.title" class="mt-1"/>
                             <p class="text-[#4e4e4e8c]">|</p>
-                            <div class="flex gap-2 text-zinc-300"><p class="text-green-600">{{ winRate(p.stats.w, p.stats.total) }}%</p>su {{ p.stats.total }}</div>
+                            <div class="flex gap-2 text-zinc-300"><p class="text-green-600">{{ winRate(p.stats.w, p.stats.total) }}%</p>{{ t('leaderBoard.outOf', { games: p.stats.total }) }}</div>
                             <p class="text-[#4e4e4e8c]">|</p>
                             <p class="text-zinc-300 text-sm">ELO: {{ p.points }}</p>
                         </div>
