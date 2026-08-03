@@ -55,5 +55,3 @@ export function cancelTurn(match, turn)
 		cancelEvent(match);
 }
 
-//SECTION - utils
-

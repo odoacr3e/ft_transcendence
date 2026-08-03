@@ -51,6 +51,8 @@ export class AI
 // 	turns.sort((x, y) => {x.score - y.score});
 // }
 
+//SECTION - 
+
 /**
  * 
  * @param {Match} match 
@@ -75,6 +77,8 @@ function getBestTurn(match)
 	{
 		console.log(`Turns: ${i}/${arrayTurns.length}`);
 		const turn = arrayTurns[i];
+		if (turn.move?.from == "d7" && turn.move?.to == "e6")
+			console.log("");
 		if (!execTurn(match, turn))
 			continue ;
 		// render(match);

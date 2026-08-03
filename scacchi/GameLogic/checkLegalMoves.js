@@ -103,9 +103,9 @@ function pushChildMoves(match, player, legalMovesArray, move, boostBool=false)
 		currTurn = {move: null, moveBoost: move, boost: "", transform: ""};
 	legalMovesArray.push(currTurn);
 	pushAllLegalBoost(match, player, legalMovesArray, currTurn);
+	pushAllLegalTransform(match, player, legalMovesArray, currTurn, move.to, match.board.get(move.from));
 	if (boostBool == true)
 		return ;
-	pushAllLegalTransform(match, player, legalMovesArray, currTurn, move.to, match.board.get(move.from));
 	// se puoi fare un boost a partire da li
 	boostedSquare = null;
 	if (player.boostedPiece != '')
@@ -163,7 +163,7 @@ function pushAllLegalBoost(match, player, legalMovesArray, currTurn)
 	/** @type {{coord: string, price: number} | null} */
 	let	bestBoost = null;
 
-	if (!player.boostedPiece)
+	if (player.boostedPiece)
 		return ;
 	if (player.nPoints == 0)
 		return ;
