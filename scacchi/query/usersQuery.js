@@ -201,8 +201,7 @@ export async function getUserWithPwd (user) {
 					colors: true,
 				}
 			},
-			mfa: true,
-			
+			mfa: true
 		},
 		where: {
 			OR: [
@@ -216,6 +215,7 @@ export async function getUserWithPwd (user) {
 		name: u.name,
 		surname: u.surname,
 		username: u.username,
+		password: u.password,
 		setpwd: u.password !== null, 
 		email: u.email,
 		image: u.image,

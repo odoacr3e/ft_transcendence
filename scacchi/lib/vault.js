@@ -2,7 +2,7 @@
 import * as lib from "./lib";
 const { fs } = lib.include;
 
-const VAULT_ADDR = process.env.VAULT_ADDR || 'http://vault:8200'
+const VAULT_ADDR = 'http://vault:8200'
 const PATH_ROLE_ID = '/vault/shared/role-id';
 const PATH_SECRET_ID = '/vault/shared/secret-id';
 
