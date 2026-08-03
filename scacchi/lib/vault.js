@@ -1,6 +1,5 @@
 
-import * as lib from "./lib.js";
-const { fs } = lib.include;
+import fs from 'fs';
 
 const VAULT_ADDR = 'http://vault:8200'
 const PATH_ROLE_ID = '/vault/shared/role-id';

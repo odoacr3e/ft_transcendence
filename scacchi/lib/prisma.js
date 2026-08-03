@@ -1,15 +1,18 @@
 
 import { PrismaClient } from "../generated/prisma/index.js";
 import { PrismaPg } from "@prisma/adapter-pg";
-// import dotenv from "dotenv";
 import { log } from "../utils/log.js";
+import * as lib from "./lib.js";
+import dotenv from "dotenv";
 import { loadSecretsFromVault } from './vault.js';
 
-await loadSecretsFromVault();
+const VAULT_VAR = false;
+if (VAULT_VAR)
+	await loadSecretsFromVault();
+else
+	dotenv.config();
 
-dotenv.config();
 log.header('ft_transcendence', '1.0.0');
-
 log.db("Setting up Prisma client...");
 
 /** @type { PrismaClient } */
