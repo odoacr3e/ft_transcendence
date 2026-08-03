@@ -1,8 +1,11 @@
 
 import { PrismaClient } from "../generated/prisma/index.js";
 import { PrismaPg } from "@prisma/adapter-pg";
-import dotenv from "dotenv";
+// import dotenv from "dotenv";
 import { log } from "../utils/log.js";
+import { loadSecretsFromVault } from './vault.js';
+
+await loadSecretsFromVault();
 
 dotenv.config();
 log.header('ft_transcendence', '1.0.0');

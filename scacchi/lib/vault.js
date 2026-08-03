@@ -23,4 +23,20 @@ async function appRoleLogin(roleId, secretId) {
 	return val.auth.client_token;
 }
 
+async function getSecrets(token, path) {
+	const res = await fetch(`${VAULT_ADDR}/v1/secret/data/${path}`, {
+		headers: { 'X-Vault-Token': token }
+	});
+	if (!res.ok)
+		throw new Error(`Failed to read secret ${path}: ${res.status}`);
+	const vals = await res.json();
+	return vals.data.data;
+}
 
+export async function loadSecretsFromVault() {
+	const { roleId, secretId } = retrieveCredentials();
+	const token = appRoleLogin(roleId, secretId);
+	const secrets = await getSecrets(token, 'backend');
+	Object.assign(process.env, secrets);
+	console.log('Secrets loaded from Vault');
+}
