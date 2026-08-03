@@ -14,7 +14,7 @@ function retrieveCredentials() {
 async function appRoleLogin(roleId, secretId) {
 	const res = await fetch(`${VAULT_ADDR}/v1/auth/approle/login`, {
 		method: 'POST',
-		body: JSON.stringify({ roleId: roleId, secretId: secretId })
+		body: JSON.stringify({ role_id: roleId, secret_id: secretId })
 	});
 	if (!res.ok)
 		throw new Error(`Vault login failed: ${res.status} ${await res.text()}`);
