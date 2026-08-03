@@ -8,6 +8,13 @@ if [ ! -f "$ENV_FILE" ]; then
   exit 1
 fi
 
+VAULT_TOKEN=$(jq -r '.root_token' './vault/keys/vault-keys.json')
+ 
+if [ -z "$VAULT_TOKEN" ] || [ "$VAULT_TOKEN" = "null" ]; then
+  echo "Impossibile estrarre root_token da $VAULT_KEYS_FILE (chiave assente o file malformato)" >&2
+  exit 1
+fi
+
 ARGS=""
 while IFS='=' read -r key value; do
   case "$key" in
@@ -20,4 +27,8 @@ while IFS='=' read -r key value; do
   ARGS="$ARGS $key='$value'"
 done < "$ENV_FILE"
 
-echo "vault kv put secret/backend$ARGS"
+VAULT_CMD=$(echo "vault login $VAULT_TOKEN && vault kv put secret/backend$ARGS")
+
+docker exec -e VAULT_TOKEN="$VAULT_TOKEN" vault sh -c "$VAULT_CMD"
+
+# echo $VAULT_CMD
