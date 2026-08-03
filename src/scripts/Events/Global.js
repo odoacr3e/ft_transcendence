@@ -19,12 +19,20 @@ export async function globalEvents()
 
 	ROOT_DIV.addEventListener("click", async function(event) 
 	{
-		if (!checkPermision(event))	{ clearHighlight(); return; }
+		console.log("entrato");
+		if (!checkPermision(event))
+		{
+			console.log("primo esc");
+			clearHighlight(); 
+			return;
+		}	
 		console.log(`CID: ${localInfo.clickedId}, LCID: ${localInfo.lastClickedId}`);
 		if (checkForHighlightMove()) 
 		{
+			console.log("dentro check");
 			if (usingAbility())
 			{
+				console.log("dentro using");
 				console.log(`Boosted Piece: ${localInfo.usingAbility}`);
 				await PIECES_ABILITY[localInfo.usingAbility](localInfo.lastClickedId, localInfo.clickedId, "click");
 				return;

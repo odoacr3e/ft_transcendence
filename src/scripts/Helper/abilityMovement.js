@@ -22,12 +22,12 @@ async function moveBastard(fromId, toId, flag)
 		const result = await sendToBackend(fromId, toId, true);
 		if (result)
 		{
-			setHighlightTrue(boostedZones, "boosted", "both");
-			localInfo.savedBoostedMap = boostedZones;
-			localInfo.secondMove = true;
+			beginPendingAbility({
+				pieceType:	localInfo.usingAbility,
+				zones:		boostedZones,
+				focusId:	flag === "click" ? toId : null,	
+			})
 			localBoard.get(fromId).useAbilityBool = false;
-			if (flag === "click")
-				localInfo.lastClickedId = toId;
 		}
 		else
 		{
@@ -87,13 +87,13 @@ async function moveMinoNChamp(fromId, toId, flag)
 		const result = await sendToBackend(fromId, toId, true);
 		if (result)
 		{
-			setHighlightTrue(boostedZones, "boosted", "both");
-			localInfo.savedBoostedMap = boostedZones;
-			localInfo.secondMove = true;
-			localBoard.get(toId).useAbilityBool = true;
-			localBoard.get(fromId).useAbilityBool = false;
-			if (flag === "click")
-				localInfo.lastClickedId = toId;
+			beginPendingAbility({
+				pieceType:	localInfo.usingAbility,
+				zones:		boostedZones,
+				anchorId:	toId,
+				focusId:	flag === "click" ? toId : null,
+			})
+			localBoard.get(fromId).usingAbility = false;
 		}
 		else
 		{
@@ -163,4 +163,24 @@ function boostHlOnClick()
 	}
 }
 
-export { PIECES_ABILITY };
+function beginPendingAbility({pieceType, zones, anchorId = null, focusId = null})
+{
+	if (!pieceType || !zones || !zones.size === 0)
+		return (false);
+
+	localInfo.usingAbility		= pieceType;
+	localInfo.secondMove		= true;
+	localInfo.savedBoostedMap	= zones;
+
+	const anchorSquare = localBoard.get(anchorId);
+
+	if (anchorId && anchorSquare)
+		anchorSquare.useAbilityBool = true;
+	if (focusId)
+		localInfo.lastClickedId = focusId;
+
+	setHighlightTrue(zones, "boosted", "both");
+	return (true);
+}
+
+export { PIECES_ABILITY, beginPendingAbility };

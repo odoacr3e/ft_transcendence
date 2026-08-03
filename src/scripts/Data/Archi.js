@@ -4,6 +4,7 @@ import { initLocalBoard, localMatchState, localBoard,
 import { checkEndTurn, hasBoost, 
 		 checkUpgrade, assignLastMoveSquares }			from "./utils/ArchiUtils.js";
 import "./SocketLink.js"
+import { beginPendingAbility } from "../Helper/abilityMovement.js";
 
 //SECTION - INIT FUNCTIONS
 
@@ -168,14 +169,38 @@ export function reloadMatchState(raw)
 	initLocalBoard(localMatchState.board);
 	initLocalPlayers();
 
-	localInfo.myTeam		= raw.team ?? sessionStorage.getItem("match:myTeam");	
-	localInfo.matchId		= sessionStorage.getItem("match:id");
-	localInfo.victory		= raw.victory;
-	localInfo.matchStarted	= true;
-	localInfo.secondTurn	= raw.secondMove ?? false;	
+	localInfo.myTeam			= raw.team ?? sessionStorage.getItem("match:myTeam");	
+	localInfo.matchId			= sessionStorage.getItem("match:id");
+	localInfo.victory			= raw.victory;
+	localInfo.matchStarted		= true;
+	localInfo.secondTurn		= raw.secondMove ?? false;
+
+	restorePendingAbility(raw);
 
 	if (localInfo.myTeam)
 		sessionStorage.setItem("match:myTeam", localInfo.myTeam);
+}
+
+function restorePendingAbility(raw)
+{
+	const anchorId	= raw.usedBoost || null;
+	const zones		= Object.values(raw.oldBoosted || {})[0];
+	const pieceType	= anchorId ? localBoard.get(anchorId)?.piece?.type : null;
+
+	if (!anchorId || !pieceType || !Array.isArray(zones) || zones.length === 0)
+	{
+		localInfo.usingAbility		= "";
+		localInfo.secondMove		= false;
+		localInfo.savedBoostedMap 	= null;
+		return;
+	}
+
+	beginPendingAbility({
+		pieceType,
+		zones:		new Set(zones),
+		anchorId:	pieceType === "Bastards" ? null : anchorId,
+		focusId:	anchorId,
+	})
 }
 
 export function clearMatchStorage()

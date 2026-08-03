@@ -135,6 +135,7 @@ boardConverter()
 		✓	blinking e effetto audio quando fai una mossa che metterebbe il re sotto scacco
 		✓	effetto sonoro ed evidenziazione del re quando viene messo sotto scacco
 	✓	Bottone ed evento per chiedere pareggio
+	▫	Barra di caricamento durante il loading delle partite
 	▫	history delle mosse durante la partita
 	▫	re-design dei pezzi
 	▫	history delle partite
@@ -166,13 +167,14 @@ boardConverter()
 	▫	Quando fai una mossa boostata di un pedone se vuoi muovere un pezzo dopo aver 
 		mosso il pedone, che passa dove prima c’era il pedone mi viene fuoir eccezione
 		ma in modi casuali non riesco ancora a capire cosa succede
-	▫	Quando fai reload non segna correttamente i turni
-	▫	Ogni volta che entri in playpage si avvia il reload
-	▫	Quando vado a promozione con il pedone si oscura tutta la scacchiera 
-		e non va più un cazzo
+	✓	Quando fai reload non segna correttamente i turni
+	✓	Ogni volta che entri in playpage si avvia il reload
+	✓	Quando vado a promozione con il pedone si oscura tutta la scacchiera 
+		e non va
 	▫	Andare avanti e indietro nelle pagine non funzione quando sei sulla playpage
 	▫	Rimangono i pezzi mangiati il playerinfo anche da una partita all'altra se ne
 		fai una di seguito all'altra
+	▫	Quando tocca all'avversario se clicchi sui suoi pezzi puoi vedere le loro targetzones	
 
 //TODO FRONTEND - 
 	✓	websocket per lo stato online

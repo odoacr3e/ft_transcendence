@@ -29,23 +29,6 @@ export function checkEndTurn(validated)
 		resetLocalVars();
 }
 
-export function resetLocalVars()
-{
-	localInfo.clickedId			= null;
-	localInfo.lastClickedId		= null;
-	localInfo.usingAbility		= "";
-	localInfo.savedBoostedMap	= null;
-	localInfo.secondTurn		= false;
-	localInfo.secondMove		= false;
-	localInfo.drag				= null;
-
-	localBoard.forEach(square => {
-		if (square.useAbilityBool)
-			square.useAbilityBool = false;
-	});
-	clearHighlight();
-}
-
 export function checkUpgrade()
 {
 	const	curP = localPlayers.values().find(p => p.isPlaying === true);
@@ -145,4 +128,22 @@ export function resolveMyTeam(rawTeam)
 		return(stored);
 	console.error("[resolveMyTeam]: myTeam non determinabile", {rawTeam, stored});
 	return (null);
+}
+
+export function resetLocalVars()
+{
+	localInfo.clickedId			= null;
+	localInfo.lastClickedId		= null;
+	localInfo.usingAbility		= "";
+	localInfo.savedBoostedMap	= null;
+	localInfo.secondTurn		= false;
+	localInfo.secondMove		= false;
+	localInfo.drag				= null;
+	localInfo.capturedP			= null;
+
+	localBoard.forEach(square => {
+		if (square.useAbilityBool)
+			square.useAbilityBool = false;
+	});
+	clearHighlight();
 }

@@ -101,10 +101,13 @@ export function moveDragClone(event)
 
 export function checkPermision(event)
 {
-	if (event.target.localName === "div")	{ localInfo.clickedId = event.target.id; }
-	else									{ localInfo.clickedId = event.target.parentNode.id; }
+	if (event.target.localName === "div")
+		localInfo.clickedId = event.target.id;
+	else									
+		localInfo.clickedId = event.target.parentNode.id;
 	
-	if (localInfo.clickedId === "" || localInfo.clickedId === "board") { return (false) };
+	if (localInfo.clickedId === "" || localInfo.clickedId === "board")
+		return (false);
 
 	const Square  = localBoard.get(localInfo.clickedId);
 	const Piece   = Square.piece;
@@ -143,14 +146,13 @@ export function checkForHighlightMove()
 
 export function usingAbility()
 {
-    const lastSquare  = localBoard.get(localInfo.lastClickedId);
-    const square      = localBoard.get(localInfo.clickedId);
-	const secondTurn = localInfo.secondTurn;
+	const lastSquare  = localBoard.get(localInfo.lastClickedId);
+	const square      = localBoard.get(localInfo.clickedId);
 
 	const lastUseAbility = lastSquare?.useAbilityBool && lastSquare?.piece.isBoostedBool;
 	const useAbility	 = square.useAbilityBool && square.piece.isBoostedBool;
 
-    return (localInfo.usingAbility !== "" && ((localInfo.lastClickedId && (useAbility || lastUseAbility)) || secondTurn));
+	return (localInfo.usingAbility !== "" && ((localInfo.lastClickedId && (useAbility || lastUseAbility)) || localInfo.secondTurn));
 }
 
 export async function showBoostedMovesHover(fromId)

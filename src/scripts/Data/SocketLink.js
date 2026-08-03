@@ -27,7 +27,7 @@ export function listenGameSocket(socket)
 				if (raw.check != undefined)
 				{
 					const threatId = new Set([raw.check.to, raw.check.mid, raw.check.from].filter(Boolean));
-					localInfo.blinking = blinkSquares(threatId, {interval: 450, delay: 450});
+					localInfo.blinking = blinkSquares(threatId, {interval: 450, delay: 600});
 					return;
 				}
 			}

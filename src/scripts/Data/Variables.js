@@ -19,38 +19,79 @@ export class Square {
 	 * @param {Iterable<any>}       [boostedTargetZones]
 	 */
 	constructor(id, piece, targetZones = [], boostedTargetZones = {}) {
-		this.id = id;
-		this.piece = piece;
-		this.highlight = false;
-		this.boostedHighlight = false;
-		this.useAbilityBool = false;
-		this.selected = false;
-		this.inCheck = false;
-		this.clicked = false;
-		this.targetZones = new Set(targetZones);
-		this.boostedTargetZones = new Map(boostedTargetZones);
+		this.id 				= id;
+		this.piece 				= piece;
+		this.highlight			= false;
+		this.boostedHighlight	= false;
+		this.useAbilityBool		= false;	
+		this.selected			= false;
+		this.inCheck			= false;
+		this.clicked			= false;
+		this.targetZones		= new Set(targetZones);
+		this.boostedTargetZones	= new Map(boostedTargetZones);
 	}
 }
 
+/**
+ * @typedef {Object} DragInfo
+ * @property {string}  src         Path dell'immagine del pezzo trascinato
+ * @property {number}  size        Lato in px del pezzo trascinato
+ * @property {number}  x           Coordinata X del cursore
+ * @property {number}  y           Coordinata Y del cursore
+ * @property {string}  from        Id della casella di partenza
+ * @property {boolean} [hideSource] Se nascondere il pezzo nella casella di partenza
+ */
+
+/**
+ * @typedef {Object} CapturedCount
+ * @property {number} Bastards
+ * @property {number} Minotaurus
+ * @property {number} Valkirya
+ * @property {number} Jester
+ * @property {number} Champion
+ */
+
+/**
+ * Stato locale dell'interazione dello user con la board (non viene mandato al backend).
+ *
+ * @property {string|null}						clickedId			Id della casella cliccata adesso
+ * @property {string|null}						lastClickedId		Id della casella cliccata in precedenza
+ * @property {boolean}							secondTurn			Se il giocatore ha ancora la seconda parte del turno
+ * @property {boolean}							secondMove			Se la mossa in corso è la seconda del turno
+ * @property {string}							usingAbility		Tipo del pezzo che sta usando l'abilità ("" = nessuna)
+ * @property {boolean}							hasBoost			Se c'è almeno un pezzo potenziabile in board
+ * @property {Map<string, Set<string>>|null}	savedBoostedMap		Zone di movimento potenziato salvate per la seconda mossa
+ * @property {string|null}						state				Stato della partita lato client (es. "classic" | "reload")
+ * @property {DragInfo|null}					drag				Info del pezzo attualmente trascinato
+ * @property {string|null}						goatId				Id della casella del Bastards da promuovere
+ * @property {string|null}						matchId				Id della partita in corso
+ * @property {string|null}						myTeam				Squadra del giocatore locale (es. "white" | "black")
+ * @property {string|null}						victory				Squadra vincitrice, null se la partita è in corso
+ * @property {boolean}							matchStarted 		Se la partita è iniziata (il timer parte alla prima mossa del bianco)
+ * @property {Set<string>}						lastMovesSquares	Id delle caselle coinvolte nell'ultima mossa
+ * @property {Function|null}					blinking 			Callback per fermare il lampeggio delle caselle sotto scacco
+ * @property {Object<string, CapturedCount>} 	capturedP			Pezzi catturati, contati per squadra e per tipo
+ */
 class metaInfo {
 	constructor() {
-		this.clickedId = null;
-		this.lastClickedId = null;
-		this.secondTurn = false;
-		this.secondMove = false;
-		this.usingAbility = "";
-		this.hasBoost = false;
-		this.savedBoostedMap = null;
-		this.drag = null;
-		this.goatId = null;
-		this.matchId = null;
-		this.myTeam = null;
-		this.victory = null;
-		this.matchStarted = false;
-		this.lastMovesSquares = new Set();
-		this.blinking = null;
-		this.capturedP = {	white: { Bastards: 0, Minotaurus: 0, Valkirya: 0, Jester: 0, Champion: 0},
-							black: { Bastards: 0, Minotaurus: 0, Valkirya: 0, Jester: 0, Champion: 0} };
+		this.clickedId			= null;
+		this.lastClickedId		= null;
+		this.secondTurn			= false;
+		this.secondMove			= false;
+		this.usingAbility		= "";
+		this.hasBoost			= false;
+		this.savedBoostedMap	= null;
+		this.state				= null;
+		this.drag				= null;
+		this.goatId				= null;
+		this.matchId			= null;
+		this.myTeam				= null;
+		this.victory			= null;
+		this.matchStarted		= false;
+		this.lastMovesSquares	= new Set();
+		this.blinking			= null;
+		this.capturedP			= {	white: { Bastards: 0, Minotaurus: 0, Valkirya: 0, Jester: 0, Champion: 0},
+									black: { Bastards: 0, Minotaurus: 0, Valkirya: 0, Jester: 0, Champion: 0} };
 	}
 }
 
