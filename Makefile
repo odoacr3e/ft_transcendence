@@ -45,4 +45,9 @@ pull:
 restore:
 	@for d in $(DIRS); do git -C $$d restore .; done
 
+vault_setup:
+	@chmod +x retrieve_env_for_vault.sh
+	@./retrieve_env_for_vault.sh
+	@printf '\033[1;32m✓ Operazione completata !\033[0m\n\n'
+
 .PHONY: up down delete re setup setup_leo own pull restore
