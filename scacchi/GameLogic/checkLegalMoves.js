@@ -163,7 +163,7 @@ function pushAllLegalBoost(match, player, legalMovesArray, currTurn)
 	/** @type {{coord: string, price: number} | null} */
 	let	bestBoost = null;
 
-	if (player.boostedPiece)
+	if (!player.boostedPiece)
 		return ;
 	if (player.nPoints == 0)
 		return ;

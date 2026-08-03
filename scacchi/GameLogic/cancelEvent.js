@@ -94,6 +94,7 @@ function cancelMove(match, lastEvent)
 	{
 		fromSquare.piece.isBoostedBool = true;
 		match.currentPlayer.boostedPiece = lastEvent.prevBoost;
+		console.log(`Event: ${lastEvent}, prevBoost: ${lastEvent.prevBoost}`);
 	}
 	if (fromSquare.piece)
 	{
@@ -127,6 +128,7 @@ function cancelBoost(match, lastEvent)
 		return ("cancelBoost: missing coord from");
 	match.currentPlayer.nPoints += square.piece.price;
 	square.piece.isBoostedBool = false;
+	console.log(`boosted => ${match.currentPlayer.boostedPiece}, prev: ${lastEvent.prevBoost}`);
 	match.currentPlayer.boostedPiece = lastEvent.prevBoost;
 	if (lastEvent.prevBoost)
 	{
