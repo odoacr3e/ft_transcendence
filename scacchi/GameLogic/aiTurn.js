@@ -40,7 +40,7 @@ export function AIexecuteTurn(match)
 	}
 	if (turn.boost)
 	{
-		result = boost(match, turn.boost, true);
+		result = boost(match, turn.boost);
 		sendResult(match, result, eEvents.Boost);
 	}
 	else if (turn.transform)

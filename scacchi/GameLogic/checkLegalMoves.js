@@ -162,8 +162,10 @@ function pushAllLegalBoost(match, player, legalMovesArray, currTurn)
 {
 	/** @type {{coord: string, price: number} | null} */
 	let	bestBoost = null;
+	let	to;
+	let	from;
 
-	if (!player.boostedPiece)
+	if (player.boostedPiece)
 		return ;
 	if (player.nPoints == 0)
 		return ;
@@ -174,6 +176,12 @@ function pushAllLegalBoost(match, player, legalMovesArray, currTurn)
 		if (square.piece.team != player.team)
 			continue ;
 		if (square.piece.price > player.nPoints)
+			continue ;
+		from = currTurn.move? currTurn.move.from : currTurn.moveBoost?.from;
+		to = currTurn.moveBoost? currTurn.moveBoost.to : currTurn.move?.to;
+		if (coord == from)
+			continue ;
+		if (coord == player.boostedPiece || (coord == to && from == player.boostedPiece))
 			continue ;
 		if (!bestBoost || square.piece.price > bestBoost.price)
 			bestBoost = {coord: coord, price: square.piece.price};

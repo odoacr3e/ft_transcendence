@@ -102,6 +102,8 @@ function cancelMove(match, lastEvent)
 		if (fromSquare.piece.type == enumNames.KING)
 			match.currentPlayer.King = lastEvent.from;
 	}
+	if (match.currentPlayer.boostedPiece == lastEvent.to)
+		match.currentPlayer.boostedPiece = lastEvent.from;
 	for (const coord of lastEvent.updates)
 	{
 		DangerUpdate(match, coord);
@@ -128,7 +130,6 @@ function cancelBoost(match, lastEvent)
 		return ("cancelBoost: missing coord from");
 	match.currentPlayer.nPoints += square.piece.price;
 	square.piece.isBoostedBool = false;
-	console.log(`boosted => ${match.currentPlayer.boostedPiece}, prev: ${lastEvent.prevBoost}`);
 	match.currentPlayer.boostedPiece = lastEvent.prevBoost;
 	if (lastEvent.prevBoost)
 	{

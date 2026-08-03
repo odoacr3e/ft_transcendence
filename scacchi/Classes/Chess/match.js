@@ -27,7 +27,7 @@ class Match
 		let	w;
 		let	h;
 	
-		if (!preset && !this.settings)
+		if (!preset)
 			this.settings = new MatchSettings(matchPresets.twoPlayer);
 		else
 			this.settings = new MatchSettings(preset);
