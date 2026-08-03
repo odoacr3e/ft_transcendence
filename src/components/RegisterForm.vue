@@ -1,16 +1,18 @@
 <script setup>
+	import { ref, reactive }	from 'vue';
 	import { useAuthStore } from "../stores/auth.st";
 	import { useRouter }	from 'vue-router';
-	import { ref, reactive }			from 'vue';
+	import { useI18n }		from 'vue-i18n';
 
-	const formData = ref({
-		name: '',
-		surname: '',
-		email: '',
-		username: '',
-		password: '',
-		nationality: ''
-	});
+    const { t, locale } = useI18n({ useScope: 'global' }),
+			formData = ref({
+				name: '',
+				surname: '',
+				email: '',
+				username: '',
+				password: '',
+				nationality: ''
+			});
 	const	auth = useAuthStore(),
 			visible = ref(false),
 			error = reactive({
@@ -20,13 +22,10 @@
 				password: [false, false],
 			}),
 			error_msg = {
-				clone: "Esiste gia' un utente\ncon queste credenziali",
-				username: "Lo username deve avere\nalmeno 4 caratteri",
-				email: "Controlla di aver\ninserito un email valida",
-				password: "La password deve avere:\n\
-							- almeno 8 caratteri\n- un numero\n\
-							- una maiuscola\n- una minuscola\n\
-							- un carattere speciale ($,%,#...)"
+				clone: t('login.err.clone'),
+				username: t('login.err.username'),
+				email: t('login.err.email'),
+				password: t('login.err.password')
 			},
 			router = useRouter();
 	let		resp = ref(null);
@@ -319,22 +318,24 @@
 		</svg>
 		<div class="hidden -translate-x-25 p-3 animate-pop flex-col items-center text-center
 				gap-2.5 absolute rounded-xl border inset-ring bg-[#2f1818]/80 text-red-100 border-red-800/10 inset-ring-red-500/20"
-			:class="{	'translate-y-24.5 -translate-x-52 inline' : error.clone[1], 
+			:class="{	'translate-y-24.5 -translate-x-52 inline' : error.clone[1] && locale == 'it',
+						'translate-y-24.5 -translate-x-57 inline' : error.clone[1] && locale == 'en',
 						'translate-y-24.5 -translate-x-55' : error.username[1], 
-						'translate-y-39 -translate-x-52' : error.email[1],
+						'translate-y-39 -translate-x-52' : error.email[1] && locale == 'it',
+						'translate-y-39 -translate-x-57' : error.email[1] && locale == 'en',
 						'translate-y-53.5 -translate-x-69' : error.password[1],
 			}">	
 			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-red-100 self-center mx-auto">
 				<path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
 			</svg>
 			<div>
-				<h2>Credenziali errate</h2>
+				<h2>{{ t('login.err.title') }}</h2>
 				<p class="text-sm whitespace-pre-line" v-if="error.username[1]">{{ error_msg.username }}</p>
 				<p class="text-sm whitespace-pre-line" v-if="error.clone[1]">{{ error_msg.clone }}</p>
 				<p class="text-sm whitespace-pre-line" v-if="error.email[1]">{{ error_msg.email }}</p>
 				<p class="text-sm whitespace-pre-line" v-if="error.password[1]">{{ error_msg.password }}</p>
 				<RouterLink to="/log" v-if="error.clone[1]">
-                    <u><a class="text-sm cursor-pointer hover:text-[#af3d3d] active:text-[#d1aaaa]">Vuoi accedere?</a></u>
+                    <u><a class="text-sm cursor-pointer hover:text-[#af3d3d] active:text-[#d1aaaa]">{{ t('header.login') }}</a></u>
                 </RouterLink>
 			</div>
 		</div>
@@ -347,19 +348,19 @@
 				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
 					<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
 				</svg>
-				<input placeholder="Nome" size="35" class="pl-2 text-base" autofocus="true" type="text" v-model="formData.name">
+				<input :placeholder="t('login.val.name')" size="35" class="pl-2 text-base" autofocus="true" type="text" v-model="formData.name">
 			</div>
 			<div class="form flex w-sm mb-3">
 				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
 					<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
 				</svg>
-				<input placeholder="Cognome" size="35" class="pl-2 text-base" type="text" v-model="formData.surname">
+				<input :placeholder="t('login.val.surname')" size="35" class="pl-2 text-base" type="text" v-model="formData.surname">
 			</div>
 			<div class="form flex w-sm mb-3" :class="{ 'animate-shake': error.username[0] }" @animationend="error.username[0] = false">
 				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
 					<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
 				</svg>
-				<input placeholder="Nome utente" size="35" class="pl-2 text-base" type="text" v-model="formData.username">
+				<input placeholder="Username" size="35" class="pl-2 text-base" type="text" v-model="formData.username">
 			</div>
 			<div class="form flex w-sm mb-3" :class="{ 'animate-shake': error.email[0] }" @animationend="error.email[0] = false">
 				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -384,12 +385,12 @@
 				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.6" stroke="currentColor" class="size-6">
 					<path stroke-linecap="round" stroke-linejoin="round" d="m20.893 13.393-1.135-1.135a2.252 2.252 0 0 1-.421-.585l-1.08-2.16a.414.414 0 0 0-.663-.107.827.827 0 0 1-.812.21l-1.273-.363a.89.89 0 0 0-.738 1.595l.587.39c.59.395.674 1.23.172 1.732l-.2.2c-.212.212-.33.498-.33.796v.41c0 .409-.11.809-.32 1.158l-1.315 2.191a2.11 2.11 0 0 1-1.81 1.025 1.055 1.055 0 0 1-1.055-1.055v-1.172c0-.92-.56-1.747-1.414-2.089l-.655-.261a2.25 2.25 0 0 1-1.383-2.46l.007-.042a2.25 2.25 0 0 1 .29-.787l.09-.15a2.25 2.25 0 0 1 2.37-1.048l1.178.236a1.125 1.125 0 0 0 1.302-.795l.208-.73a1.125 1.125 0 0 0-.578-1.315l-.665-.332-.091.091a2.25 2.25 0 0 1-1.591.659h-.18c-.249 0-.487.1-.662.274a.931.931 0 0 1-1.458-1.137l1.411-2.353a2.25 2.25 0 0 0 .286-.76m11.928 9.869A9 9 0 0 0 8.965 3.525m11.928 9.868A9 9 0 1 1 8.965 3.525" />
 				</svg>
-				<input placeholder="Nazionalita'" list="country" size="35" class="pl-2 text-base" type="text" v-model="formData.nationality">
+				<input :placeholder="t('login.val.nationality')" list="country" size="35" class="pl-2 text-base" type="text" v-model="formData.nationality">
 			</div>
 			<input id="submit" class="cursor-pointer justify-self-center w-sm mt-1.5 p-3 text-base bg-[#882a2a] rounded-[7px] text-white hover:bg-linear-to-t from-[#882a2a] to-[#af3d3d]"
 					v-bind:class="{'pointer-events-none grayscale': !formData.name || !formData.surname || !formData.username || !formData.email || !formData.password || !formData.nationality,
 						'pointer-events-auto grayscale-0 ': formData.name && formData.surname && formData.username && formData.email && formData.password && formData.nationality }"
-					type="submit" value="Registrati">
+					type="submit" :value="t('login.signIn')">
 		</form>
 	</div>
 </template>

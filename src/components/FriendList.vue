@@ -1,9 +1,11 @@
 <script setup>
     import TagTitle from './TagTitle.vue';
     import StatusOnline from './StatusOnline.vue';
-    import { computed } from 'vue';
     import { defaultAvatar, rejectRequest, handleAvatarError } from '../scripts/Helper/CompUtils';
+    import { computed } from 'vue';
+    import { useI18n }  from 'vue-i18n';
 
+    const { t } = useI18n();
     const prop = defineProps({
   	    	friendlist: Array,
             removeF: Boolean
@@ -32,7 +34,7 @@
                     </div>
                     <button @click.stop.prevent="rejectRequest(besties.friend.id_user)" v-if="removeF"
                                 class="h-[80%] p-1.25 px-2 mr-1 ml-auto cursor-pointer self-center rounded-md inset-ring text-sm
-                                    bg-red-400/10 text-red-500 inset-ring-red-500/20">Elimina amicizia</button>
+                                    bg-red-400/10 text-red-500 inset-ring-red-500/20">{{ t('userPage.removeFriend') }}</button>
                 </div>
             </RouterLink>
             <hr v-if="index !== visibleFriendlist.length - 1" class="text-[#4e4e4e8c] border-dashed">

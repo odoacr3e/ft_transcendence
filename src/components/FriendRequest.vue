@@ -1,6 +1,9 @@
 <script setup>
     import { defaultAvatar, handleAvatarError, acceptRequest, rejectRequest } from '../scripts/Helper/CompUtils';
     import { computed, ref } from 'vue';
+    import { useI18n }  from 'vue-i18n';
+
+    const { t } = useI18n();
     const prop = defineProps({
   	    	friendReq: Array,
             user: Object
@@ -73,7 +76,7 @@
             </button>
         </div>
         <div v-if="!currentRequest" class="flex justify-center">
-            <p class="text-white self-center mt-5">Nessuna richiesta in attesa</p>
+            <p class="text-white self-center mt-5">{{ t('userPage.pendingRequest') }}</p>
         </div>
     </div>
 </template>

@@ -8,14 +8,16 @@
     import { useAuthStore } from "../stores/auth.st";
     import { storeToRefs }  from 'pinia';
     import { ref, watch }   from 'vue';
+    import { useI18n }      from 'vue-i18n';
     import { api }          from '../router/api/client';
 
-    const authStore = useAuthStore();
-	const { user } = storeToRefs(authStore);
-    const prop = defineProps({
-  	    	username: String
-	    });
-	const friends = ref(null), matches = ref(null), otherUser = ref(null);
+    const   { t } = useI18n(),
+            authStore = useAuthStore(),
+	        { user } = storeToRefs(authStore),
+            prop = defineProps({
+  	    	    username: String
+	        }),
+	        friends = ref(null), matches = ref(null), otherUser = ref(null);
 
     async function loadUserData(username) {
         if (!username) {
@@ -52,45 +54,45 @@
                     <h2 class="text-white text-3xl">{{ otherUser.username }}</h2>
                     <FriendButton :user="otherUser" v-if="otherUser.username !== user.username"/>
                 </div>
-                <h3 class="text-zinc-300 my-1 text-md self-center">{{ otherUser.name }} {{ otherUser.surname }}</h3>
+                <h3 class="text-zinc-300 text-md -mt-0.5 self-center">{{ otherUser.name }} {{ otherUser.surname }}</h3>
                 <TagTitle :title="otherUser?.title" class="mt-1"/>
                 <h4 class="mt-5 text-zinc-300 text-2xl justify-self-start">ELO: {{ otherUser.points }}</h4>
             </div>
         </div>
         <div class="flex m-4">
             <div class="w-[60%] m-2 p-2 h-[50vh] bg-[#201e1c] rounded-3xl border border-[#4e4e4e8c]">
-                <h2 class="text-white text-xl m-1">Lista di amici</h2>
+                <h2 class="text-white text-xl m-1">{{ t('userPage.friendList') }}</h2>
                 <hr class="w-full justify-self-start text-[#4e4e4e8c]">
-                <div v-if="friends" class="my-2" :class="friends.length > 5 ? 'max-h-[43vh] overflow-y-auto' : ''">
+                <div v-if="friends" :class="friends.length > 5 ? 'max-h-[44.5vh] overflow-y-auto' : ''">
                     <FriendList :friendlist="friends" :remove-f="false"/>
                 </div>
             </div>
-            <div class="w-full m-2 p-2 h-auto bg-[#201e1c] rounded-3xl border border-[#4e4e4e8c]">
-                <h2 class="text-white text-xl m-1">Cronologia delle partite</h2>
+            <div class="w-full m-2 p-2 h-[50vh] bg-[#201e1c] rounded-3xl border border-[#4e4e4e8c]">
+                <h2 class="text-white text-xl m-1">{{ t('userPage.matchHistory') }}</h2>
                 <hr class="w-full justify-self-start text-[#4e4e4e8c]">
-                <div v-if="matches?.stats" class="flex gap-3 m-2 text-sm text-white justify-self-center">
+                <div v-if="matches?.stats" class="flex gap-2 m-2 text-sm text-white justify-self-center">
                     <div class="flex gap-2">
-                        <p>Vittorie:</p>
+                        <p>{{ t('common.win', 2) }}:</p>
                         <p class="text-green-600">{{ matches.stats.w }}</p>
                     </div>
                     <p class="text-[#4e4e4e8c]">|</p>
                     <div class="flex gap-2">
-                        <p>Patte:</p>
+                        <p>{{ t('common.draw', 2) }}:</p>
                         <p class="text-gray-300">{{ matches.stats.d }}</p>
                     </div>
                     <p class="text-[#4e4e4e8c]">|</p>
                     <div class="flex gap-2">
-                        <p>Sconfitte:</p>
+                        <p>{{ t('common.lose', 2) }}:</p>
                         <p class="text-red-500">{{ matches.stats.l }}</p>
                     </div>
                     <p class="text-[#4e4e4e8c]">|</p>
                     <div class="flex gap-2">
-                        <p>N. partite:</p>
+                        <p>{{ t('common.game', 2) }}:</p>
                         <p>{{ matches.stats.total }}</p>
                     </div>
                 </div>
                 <hr class="w-full justify-self-start text-[#4e4e4e8c]">
-                <div v-if="matches" :class="matches.matches.length > 4 ? 'max-h-[40vh] overflow-y-auto' : ''">
+                <div v-if="matches" :class="matches.matches.length > 4 ? 'max-h-[40.5vh] overflow-y-auto' : ''">
                     <MatchHistory :matches="matches.matches"/>
                 </div>
             </div>

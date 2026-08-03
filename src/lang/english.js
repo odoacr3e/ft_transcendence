@@ -1,5 +1,3 @@
-import LeaderBoard from "@/views/LeaderBoard.vue";
-
 export const english = {
     messages: {
         common: {
@@ -8,7 +6,14 @@ export const english = {
             tournament: "Tournament | Tournaments",
             accept: "Accept",
             reject: "Reject",
-            by: "by"
+            pending: "Pending...",
+            friend: "Friend | Friends",
+            win: "Win | Wins",
+            lose: "Defeat | Defeats",
+            draw: "Draw | Draws",
+            game: "Game | Games",
+            by: "by",
+            or: "or"
         },
         header: {
             inv: {
@@ -29,6 +34,40 @@ export const english = {
             lBoard: "Leader Board",
             codex: "Codex"
         },
+        login: {
+            val: {
+                name: "Name",
+                surname: "Surname",
+                nationality: "Nationality",
+                theme: "Theme"
+            },
+            OTP: {
+                auth: "OTP Authentication",
+                desc: "Enter the code sent to you by email.",
+                exp: "It'll expire in {date}",
+                on: "On",
+                off: "Off"
+            },
+            err: {
+                title: "Wrong credentials",
+                wrong: "Incorrect username or password.",
+                tooMany: 'Too many attempts made.',
+                clone: "A user with these\ncredentials already exists",
+				username: "The username must be\nat least 4 characters long",
+				email: "Please make sure you\nhave entered a valid email",
+				password: "The password must contain:\n\
+                            - at least 8 characters\n- a number\n\
+                            - an uppercase letter\n- a lowercase letter\n\
+                            - a special character ($, %, #...)"
+            },
+            welcome: "Welcome!",
+            wellback: "Welcome back!",
+            signIn: "Sign in",
+            forgot: "Forgot password?",
+            loginAcc: "@:header.login with your account",
+            missingAcc: "Don't have an account yet?",
+            google: "Continue with Google"
+        },
         leaderBoard: {
             title: "Top 10 @.lower:common.players",
             outOf: "out of {games}",
@@ -39,7 +78,23 @@ export const english = {
             creator: "Creator of the @.lower:{'common.tournament'}:",
             button: "Create",
             ongoing: "Ongoing...",
-            closed: "Closed"
+            closed: "Closed",
+            noTour: "No @.lower:common.tournament"
+        },
+        userPage: {
+            edit: {
+                infoU: "User's info",
+                changeAvatar: "Change avatar",
+                removeAvatar: "Remove avatar",
+                changePwd: "Change password",
+                saveChanges: "Save changes"
+            },
+            friendList: "Friends list",
+            removeFriend: "Remove @.lower:common.friend",
+            friendRequest: "@:common.friend requests",
+            pendingRequest: "No pending requests",
+            matchHistory: "Match history",
+            sendRequest: "Send @.lower:common.friend request"
         }
 
     }

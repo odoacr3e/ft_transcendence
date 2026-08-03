@@ -85,7 +85,7 @@ onMounted(async () => {
                     <div class="flex gap-2 items-center" :class=" top ? 'm-1.5' : 'm-2'">
                         <img class="size-10 rounded-full object-cover" :src="p.image ? `${p.image}` : defaultAvatar" @error="handleAvatarError"/>
                         <RouterLink :to="{ name: 'user_page', params: { username: p.username } }">
-                            <p class="text-white hover:underline">{{ p.username }}</p>
+                            <p class="text-white hover:underline" :class="p.username == user.username ? 'font-semibold' : ''">{{ p.username }}</p>
                         </RouterLink>
                         <div class="flex items-center gap-1">
                             <TagTitle :title="p.title" class="mt-1"/>
