@@ -2,34 +2,23 @@
 	import BackGround from './components/BackGround.vue';
 	import AppHeader from './components/AppHeader.vue';
 	import { useAuthStore } from './stores/auth.st.js';
+	import { storeToRefs }	from 'pinia';
 	import { useRoute } from 'vue-router'
 	import { watch } from 'vue'
 
 	const	route = useRoute();
 
-	const THEME_MAP = {
-	  DarkRed: 'dark-red',
-	  DarkBlue: 'dark-blue',
-	  DarkGreen: 'dark-green',
-	  DarkYellow: 'dark-yellow',
-	  LightRed: 'light-red',
-	  LightBlue: 'light-blue',
-	  LightGreen: 'light-green',
-	  LightYellow: 'light-yellow'
-	}
-
 	function useTheme() {
 		const authStore = useAuthStore();
 		const { user } = storeToRefs(authStore);
- 		watch( () => user.preference, (newPreference) => {
-				const themeKey = THEME_MAP[newPreference] ?? 'default';
-				document.documentElement.setAttribute('data-theme', themeKey);
+ 		watch( () => user.value?.preferences?.name, (newTheme) => {
+				document.documentElement.setAttribute('data-theme', newTheme ?? 'default');
 			},
 			{ immediate: true }
 		);
 	}
 
-	//useTheme();
+	useTheme();
 </script>
 
 <template>

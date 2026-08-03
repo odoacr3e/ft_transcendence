@@ -76,7 +76,7 @@
         if (formData.value.username)    { fd.append('username', formData.value.username); }
         if (formData.value.nationality) { fd.append('nationality', formData.value.nationality); }
         if (formData.value.mfa !== user.value.mfa) { fd.append('mfa', formData.value.mfa); }
-        // if (formData.value.preferences) { fd.append('preferences', formData.value.preferences); }
+        if (formData.value.preferences) { fd.append('preferences', formData.value.preferences); }
         
         if (formData.value.preset) { fd.append('preset', formData.value.preset); }
         else

@@ -76,7 +76,7 @@
 
 /*ANCHOR - Dark-Red*/
 :root,
-[data-theme="DarkRed"] {
+[data-theme="dark-red"] {
 --current-bg-default: #201e1c;
 --current-border-default: #4e4e4e8c;
 --current-bg-second: #302d2a;
@@ -121,7 +121,7 @@
 }
 
 /*ANCHOR - Dark-Blue*/
-[data-theme="DarkBlue"] {
+[data-theme="dark-blue"] {
 --current-bg-default: #1d1d21;
 --current-border-default: #4e4e4e8c;			/*SAME*/
 --current-bg-second: #2a2b30;
@@ -168,7 +168,7 @@
 }
 
 /*ANCHOR - Dark-Green*/
-[data-theme="DarkGreen"] {
+[data-theme="dark-green"] {
 --current-bg-default: #1d211f;
 --current-border-default: #4e4e4e8c;			/*SAME*/
 --current-bg-second: #2a302d;
@@ -215,7 +215,7 @@
 }
 
 /*ANCHOR - Dark-Yellow*/
-[data-theme="DarkYellow"] {
+[data-theme="dark-yellow"] {
 --current-bg-default: #20211d;
 --current-border-default: #4e4e4e8c;			/*SAME*/
 --current-bg-second: #2f302a;
@@ -266,7 +266,7 @@
 /*SECTION - Light-Themes*/
 
 /*ANCHOR - Light-Red*/
-[data-theme="LightRed"] {
+[data-theme="light-red"] {
 --current-bg-default: #beb9b5;
 --current-border-default: #4e4e4e8c;			/*SAME*/
 --current-bg-second: #d9d6d3;
@@ -313,7 +313,7 @@
 }
 
 /*ANCHOR - Light-Blue*/
-[data-theme="LightBlue"] {
+[data-theme="light-blue"] {
 --current-bg-default: #bebec5;
 --current-border-default: #4e4e4e8c;			/*SAME*/
 --current-bg-second: #d3d5d9;
@@ -360,7 +360,7 @@
 }
 
 /*ANCHOR - Light-Green*/
-[data-theme="LightGreen"] {
+[data-theme="light-green"] {
 --current-bg-default: #bfc6c2;
 --current-border-default: #4e4e4e8c;			/*SAME*/
 --current-bg-second: #d4d9d7;
@@ -407,7 +407,7 @@
 }
 
 /*ANCHOR - Light-Yellow*/
-[data-theme="LightYellow"] {
+[data-theme="light-yellow"] {
 --current-bg-default: #bec0b8;
 --current-border-default: #4e4e4e8c;			/*SAME*/
 --current-bg-second: #d8d9d3;
