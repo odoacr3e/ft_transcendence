@@ -26,6 +26,7 @@ setup:
 	git worktree prune; \
 	git fetch origin backend frontend; \
 	git worktree add backend_dir backend; \
+	cp .env ./backend_dir/scacchi
 	git worktree add frontend_dir $(FRONTEND_BRANCH)
 
 setup_leo: FRONTEND_BRANCH = frontGame
