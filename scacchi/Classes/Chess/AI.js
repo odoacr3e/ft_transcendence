@@ -1,7 +1,7 @@
 //@ts-check
 
 import { getLegalMoves } from "../../GameLogic/checkLegalMoves.js";
-import { checkMateCheckAll } from "../../GameLogic/checkMate.js";
+import { checkLostAll, checkMateCheckAll } from "../../GameLogic/checkMate.js";
 import { AIprofilesArray, eTeam } from "../../Macro/enums.js";
 import { render } from "../../test/render.js";
 import { cancelTurn, execTurn } from "../../utils/AI.js";
@@ -80,19 +80,24 @@ function getBestTurn(match)
 		// render(match);
 		newTurns = getLegalMoves(match);
 		val.score = minMax(match, ai, newTurns, 2, [turn]);
-		val.score = Math.abs(val.score);
+		// val.score = Math.abs(val.score);
 		val.index = i;
 		cancelTurn(match, turn);
 		// render(match);
 		if (bestTurns.length <= 1)
-			bestTurns.push(val);
+			bestTurns.push({score: val.score, index: val.index});
 		for (let i = 0; i != bestTurns.length; i++)
 		{
 			const x = bestTurns[i];
 
-			if (val.score > x.score)
+			if (match.currentPlayer.team == eTeam.Black && val.score < x.score)
 			{
-				bestTurns[i] = val;
+				bestTurns[i] = {score: val.score, index: val.index};
+				break ;
+			}
+			else if (match.currentPlayer.team != eTeam.Black && val.score > x.score)
+			{
+				bestTurns[i] = {score: val.score, index: val.index};
 				break ;
 			}
 		}
@@ -116,10 +121,14 @@ function minMax(match, ai, arrayTurns, depth, pastTurns)
 {//@ts-ignore
 	let	newTurns;
 	let val;
+	let	lostTeam;
 
 	// console.log(depth);
-	if ((depth <= 0) || checkMateCheckAll(match, null))
+	if ((depth <= 0))
 		return (evalScore(match, ai, pastTurns));
+	lostTeam = checkLostAll(match);
+	if (lostTeam)
+		return (evalScore(match, ai, pastTurns, lostTeam));
 	if (match.currentPlayer.team == eTeam.White)
 	{
 		let maxEval = -Infinity;
@@ -139,6 +148,8 @@ function minMax(match, ai, arrayTurns, depth, pastTurns)
 			pastTurns.pop();
 			maxEval = Math.max(val, maxEval);
 			cancelTurn(match, turn);
+			if (maxEval == +Infinity)
+				break ;
 			// render(match);
 		}
 		return (maxEval);
@@ -162,6 +173,8 @@ function minMax(match, ai, arrayTurns, depth, pastTurns)
 			pastTurns.pop();
 			minEval = Math.min(val, minEval);
 			cancelTurn(match, turn);
+			if (minEval == -Infinity)
+				break ;
 			// render(match);
 		}
 		return (minEval);
@@ -173,66 +186,21 @@ function minMax(match, ai, arrayTurns, depth, pastTurns)
  * @param {Match} match 
  * @param {AI<null>} ai 
  * @param {Array<Turn>} turns 
+ * @param {string} lostTeam
  * @returns 
  */
-function evalScore(match, ai, turns)
+function evalScore(match, ai, turns, lostTeam="")
 {
 	let	score;
 
-	if (checkKingDanger(match))
-		return (-Infinity);
-	else if (checkKingDanger(match, match.currentPlayer.next))
-		return (+Infinity);
+	if (lostTeam == match.currentPlayer.team)
+		return (match.currentPlayer.team == eTeam.Black? +Infinity : -Infinity);
+	else if (lostTeam)
+		return (match.currentPlayer.team == eTeam.Black? -Infinity : +Infinity);
 	score = ai.Eval(match, ai, turns);
 	if (match.currentPlayer.team == eTeam.Black)
 		score = -score;
 	return (score);
 }
-
-// /**
-//  * 
-//  * @param {Match} match 
-//  * @param {AI<null>} ai 
-//  * @param {Array<Turn>} arrayTurns 
-//  * @param {number} depth 
-//  * @returns 
-//  */
-// function minMax(match, ai, arrayTurns, depth)
-// {
-// 	let	newTurns;
-// 	/**  */
-// 	let val;
-
-// 	if ((depth == 0) || checkMateCheckAll(match, null))
-// 		return (ai.Eval());
-// 	if (match.currentPlayer.team == eTeam.White)
-// 	{
-// 		let maxEval = -Infinity;
-// 		for (const turn of arrayTurns)
-// 		{
-// 			if (execTurn(match, turn) == false)
-// 				continue ;
-// 			newTurns = getLegalMoves(match);
-// 			val = minMax(match, ai, newTurns, --depth);
-// 			maxEval = Math.max(val, maxEval);
-// 			cancelTurn(match, turn);
-// 		}
-// 		return (maxEval);
-// 	}
-// 	else
-// 	{
-// 		let minEval = +Infinity;
-// 		for (const turn of arrayTurns)
-// 		{
-// 			if (execTurn(match, turn) == false)
-// 				continue ;
-// 			newTurns = getLegalMoves(match);
-// 			val = minMax(match, ai, newTurns, --depth);
-// 			minEval = Math.min(val, minEval);
-// 			cancelTurn(match, turn);
-// 		}
-// 		return (minEval);
-// 	}
-// }
 
 export {getBestTurn};

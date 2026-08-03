@@ -4,6 +4,7 @@
 /*
 	list of exports:
 	-	checkMateCheckAll: checks if every active player is in check/staleMate
+	-	checkLostAll: checks if someone has lost (without deleting the player)
 */
 
 import { Result } from "../Classes/endPoint/result.js";
@@ -16,6 +17,7 @@ import { pathFinding } from "./pathFinding.js";
 import { simulation, simulationGlobal } from "./simulation.js";
 import { getLegalMoves } from "./checkLegalMoves.js";
 import {preset} from "../Classes/Chess/Pieces/preset.js";
+import { render } from "../test/render.js";
 
 /**
  * checks if a player is in checkMate
@@ -82,6 +84,31 @@ function checkMateCheckAll(match, result)
 		return (match.DrawMatch(result), true);
 	}
 	return (false);
+}
+
+/**
+ * checks if someone has lost (without deleting the player)
+ * @param {Match} match 
+ */
+function checkLostAll(match)
+{
+	let	lostTeam;
+	let	currTeam;
+
+	lostTeam = "";
+	currTeam = match.currentPlayer.team;
+	do
+	{
+		if (CheckMateCheck(match))
+		{
+			console.log(match.currentPlayer.team, ":haaaaaiiiiii persoooooooooooooooooo!!!!!!!");
+			render(match);
+			lostTeam = match.currentPlayer.team;
+		}
+		match.endTurn();
+	}
+	while (currTeam != match.currentPlayer.team)
+	return (lostTeam);
 }
 
 /**
@@ -448,4 +475,4 @@ function cantMovePiece(match, enemyCoord, enemySquare, kingCoord)
 	return (true);
 }
 
-export {checkMateCheckAll};
+export {checkMateCheckAll, checkLostAll};
