@@ -182,7 +182,7 @@ export async function getUserByUsername (username) {
 }
 
 export async function getUserWithPwd (user) {
-	return await prisma.users.findFirst({
+	const u = await prisma.users.findFirst({
 		select: {
 			id_user: true,
 			name: true,
@@ -201,7 +201,8 @@ export async function getUserWithPwd (user) {
 					colors: true,
 				}
 			},
-			mfa: true
+			mfa: true,
+			
 		},
 		where: {
 			OR: [
@@ -209,6 +210,20 @@ export async function getUserWithPwd (user) {
 				{ email: String(user) }
 			]
 		}
+	});
+	return ({
+		id_user: u.id_user,
+		name: u.name,
+		surname: u.surname,
+		username: u.username,
+		setpwd: u.password !== null, 
+		email: u.email,
+		image: u.image,
+		nationality: u.nationality,
+		points: u.points,
+		title: u.title,
+		preferences: u.preferences,
+		mfa: u.mfa
 	});
 }
 
