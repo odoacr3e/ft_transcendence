@@ -120,7 +120,6 @@ model users_matches {
 model preferences {
   id_preference Int     @id @default(autoincrement())
   name          String  @db.VarChar(250)
-  description   String
   users         users[]
 }
 

@@ -16,9 +16,8 @@ export async function getAllUsers() {
 			title: true,
 			preferences: {
 				select: {
-					name: true,
-					description: true,
-					colors: true,
+					id_preference: true,
+					name: true
 				}
 			}
 		},
@@ -43,9 +42,8 @@ export async function getMe(id) {
 			title: true,
 			preferences: {
 				select: {
-					name: true,
-					description: true,
-					colors: true,
+					id_preference: true,
+					name: true
 				}
 			},
 			mfa: true
@@ -84,9 +82,8 @@ export async function getUserByGoogleId(google_id) {
 			title: true,
 			preferences: {
 				select: {
-					name: true,
-					description: true,
-					colors: true,
+					id_preference: true,
+					name: true
 				}
 			},
 			mfa: true
@@ -109,9 +106,8 @@ export async function getUserById(id) {
 			title: true,
 			preferences: {
 				select: {
-					name: true,
-					description: true,
-					colors: true,
+					id_preference: true,
+					name: true
 				}
 			}
 		},
@@ -137,9 +133,8 @@ export async function findUserByUsername(username) {
 			title: true,
 			preferences: {
 				select: {
-					name: true,
-					description: true,
-					colors: true,
+					id_preference: true,
+					name: true
 				}
 			}
 		},
@@ -169,9 +164,8 @@ export async function getUserByUsername (username) {
 				title: true,
 				preferences: {
 					select: {
-						name: true,
-						description: true,
-						colors: true,
+						id_preference: true,
+						name: true
 					}
 				}
 			},
@@ -196,9 +190,8 @@ export async function getUserWithPwd (user) {
 			title: true,
 			preferences: {
 				select: {
-					name: true,
-					description: true,
-					colors: true,
+					id_preference: true,
+					name: true
 				}
 			},
 			mfa: true
@@ -317,9 +310,8 @@ export async function createUser(name, surname, username, password, email, natio
 			title: true,
 			preferences: {
 				select: {
-					name: true,
-					description: true,
-					colors: true,
+					id_preference: true,
+					name: true
 				}
 			},
 			mfa: true
@@ -370,9 +362,8 @@ export async function updateUserFieldsById(id, data) {
 			title: true,
 			preferences: {
 				select: {
-					name: true,
-					description: true,
-					colors: true,
+					id_preference: true,
+					name: true
 				}
 			},
 			mfa: true
@@ -396,9 +387,8 @@ export async function updateUserPasswordByUsername(username, password) {
 			title: true,
 			preferences: {
 				select: {
-					name: true,
-					description: true,
-					colors: true,
+					id_preference: true,
+					name: true
 				}
 			}
 		}
@@ -421,9 +411,8 @@ export async function updateUserPasswordById(id_user, password) {
 			title: true,
 			preferences: {
 				select: {
-					name: true,
-					description: true,
-					colors: true,
+					id_preference: true,
+					name: true
 				}
 			},
 			mfa: true
