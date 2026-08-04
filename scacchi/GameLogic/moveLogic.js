@@ -34,6 +34,7 @@ function updateChessboard(coords=[], result, match, boostBool)
 	{
 		return (error(result, 500, "from | to bug in moveFunction"));
 	}
+	match.history.UpdateMoves(match, from, coords, result.specialMoves._mask, boostBool);
 	if (result.usedBoost == true)
 	{
 		from.piece.isBoostedBool = false;
@@ -42,7 +43,6 @@ function updateChessboard(coords=[], result, match, boostBool)
 	}
 	if (match.aiSimulation == false)
 		printSwap(match, coords, from, to);
-	match.history.UpdateMoves(match, from, coords, result.specialMoves._mask, boostBool);
 	if (to.piece && to.piece.team != from.piece.team)
 	{
 		if (match.aiSimulation == false)

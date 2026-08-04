@@ -47,7 +47,7 @@ function move(match, from, to, boostBool=false)
 	checkMateCheckAll(match, result);//@ts-ignore
 	result.board = clientBoard(match);
 	secondMoveBool = checkSecondMove(match, to);
-	if ((match.moves >= MOVEMENT_MIN && !match.currentPlayer.nPoints) && !(secondMoveBool && boostBool) && 
+	if ((match.moves >= MOVEMENT_MIN && !match.currentPlayer.nPoints) && !(secondMoveBool || boostBool) && 
 	!(match.cursor.EdgeCheck(match.currentPlayer.team) && match.board.get(match.cursor.square)?.piece?.type == enumNames.BASTARDS))
 		if (endTurn(match, false).specialMoves.CheckKingDanger())
 			result.specialMoves.SetKingDanger();

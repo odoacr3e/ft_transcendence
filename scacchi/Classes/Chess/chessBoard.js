@@ -135,7 +135,8 @@ class ChessBoard
 		val = this._data.get(key);
 		if (!val)
 		{
-			throw (`ChessBoard: invalid position ${key}, stack: ${""/*console.trace()*/}`);
+			console.trace();
+			throw (`ChessBoard: invalid position ${key}`);
 		}
 		return (val);
 	}

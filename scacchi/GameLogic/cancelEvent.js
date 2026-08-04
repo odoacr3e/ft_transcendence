@@ -37,7 +37,7 @@ export function cancelEvent(match)
 		errorMsg = cancelTransform(match, lastEvent);
 	if (errorMsg)
 		return (new Result().Error(`Cannot cancel: "${errorMsg}"`, 500));
-	while (match.history.events[-1]?.error == true)
+	while (match.history.events[match.history.events.length - 1]?.error == true)
 		match.history.events.pop();
 	match.history.events.pop();
 	clearTimeout(match.timer?.timeout? match.timer.timeout : undefined);
@@ -56,6 +56,7 @@ export function cancelEvent(match)
 function cancelMove(match, lastEvent)
 {
 	let	fromSquare;
+	let	boostedSquare;
 	let	toSquare;
 	let	tmp;
 
@@ -92,9 +93,12 @@ function cancelMove(match, lastEvent)
 	}
 	if (lastEvent.type == eEvents.MoveBoost && fromSquare.piece)
 	{
-		fromSquare.piece.isBoostedBool = true;
+		boostedSquare = fromSquare;
+		if (lastEvent.prevBoost != lastEvent.to)
+			boostedSquare = match.board.get(lastEvent.prevBoost);
+		boostedSquare.piece.isBoostedBool = true;
 		match.currentPlayer.boostedPiece = lastEvent.prevBoost;
-		console.log(`Event: ${lastEvent}, prevBoost: ${lastEvent.prevBoost}`);
+		// console.log(`Event: ${lastEvent}, prevBoost: ${lastEvent.prevBoost}`);
 	}
 	if (fromSquare.piece)
 	{
@@ -133,7 +137,7 @@ function cancelBoost(match, lastEvent)
 	match.currentPlayer.boostedPiece = lastEvent.prevBoost;
 	if (lastEvent.prevBoost)
 	{
-		match.board.get(lastEvent.prevBoost).piece.isBoostedBool == true;
+		match.board.get(lastEvent.prevBoost).piece.isBoostedBool = true;
 		DangerUpdate(match, lastEvent.prevBoost);
 	}
 	DangerUpdate(match, lastEvent.from);
@@ -146,6 +150,7 @@ function cancelBoost(match, lastEvent)
 function cancelEndTurn(match)
 {
 	// let nTurn;
+	let	oldEvent;
 
 	// nTurn = match.history.TurnCount(match.currentPlayer.team);
 	// if (nTurn % MOVEMENT_BONUS_POINT == 0)
@@ -160,9 +165,12 @@ function cancelEndTurn(match)
 	}
 	for (let i = 0; i != match.history.events.length; i++)
 	{
-		if (match.history.events[match.history.events.length - 2 - i].type == eEvents.EndTurn)
+		oldEvent = match.history.events[match.history.events.length - 2 - i];
+		if (!oldEvent)
+			break ; 
+		if (oldEvent.type == eEvents.EndTurn)
 			break ;
-		if (match.history.events[match.history.events.length - 2 - i].type == eEvents.Move || match.history.events[match.history.events.length - 2 - i].type == eEvents.MoveBoost)
+		if (oldEvent.type == eEvents.Move || oldEvent.type == eEvents.MoveBoost)
 			match.moves++;
 	}
 }

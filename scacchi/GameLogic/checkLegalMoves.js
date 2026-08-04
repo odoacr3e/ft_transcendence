@@ -66,18 +66,18 @@ export function getLegalMoves(match, team=match.currentPlayer.team, infoBool=tru
 		for (const targetCoord of targetSet)
 			pushChildMoves(match, player, legalMovesArray, {from: coord, to: targetCoord});
 	}
-	if (!player.boostedPiece)
-		return (legalMovesArray);
-	boostedSquare = match.board.get(player.boostedPiece);
-	if (!boostedSquare.piece)
-		throw (`getLegalMoves: boosted piece in ${player.boostedPiece} undefined`);
-	if (includesOneOf(boostedSquare.piece.type, arrayNamesDoubleMove))
-		return (legalMovesArray);
-	boostedZones = boostedSquare.boostedTargetZones.get(player.boostedPiece);
-	if (!boostedZones)
-		return (legalMovesArray);
-	for (const targetCoord of boostedZones)
-		pushChildMoves(match, player, legalMovesArray, {from: player.boostedPiece, to: targetCoord}, true);
+	// if (!player.boostedPiece)
+	// 	return (legalMovesArray);
+	// boostedSquare = match.board.get(player.boostedPiece);
+	// if (!boostedSquare.piece)
+	// 	throw (`getLegalMoves: boosted piece in ${player.boostedPiece} undefined`);
+	// if (includesOneOf(boostedSquare.piece.type, arrayNamesDoubleMove))
+	// 	return (legalMovesArray);
+	// boostedZones = boostedSquare.boostedTargetZones.get(player.boostedPiece);
+	// if (!boostedZones)
+	// 	return (legalMovesArray);
+	// for (const targetCoord of boostedZones)
+	// 	pushChildMoves(match, player, legalMovesArray, {from: player.boostedPiece, to: targetCoord}, true);
 	return (legalMovesArray);
 }
 
@@ -126,7 +126,7 @@ function pushChildMoves(match, player, legalMovesArray, move, boostBool=false)
 					continue ;
 				currTurn = {move: move, moveBoost: {from: key, to: zone}, boost: "", transform: ""};
 				legalMovesArray.push(currTurn);
-				pushAllLegalBoost(match, player, legalMovesArray, currTurn);
+				pushAllLegalBoost(match, player, legalMovesArray, currTurn, true);
 				pushAllLegalTransform(match, player, legalMovesArray, currTurn, zone, boostedSquare);
 			}
 		}
@@ -141,7 +141,7 @@ function pushChildMoves(match, player, legalMovesArray, move, boostBool=false)
 				continue ;
 			currTurn = {move: move, moveBoost: {from: player.boostedPiece, to: target}, boost: "", transform: ""};
 			legalMovesArray.push(currTurn);
-			pushAllLegalBoost(match, player, legalMovesArray, currTurn);
+			pushAllLegalBoost(match, player, legalMovesArray, currTurn, true);
 			pushAllLegalTransform(match, player, legalMovesArray, currTurn, target, boostedSquare);
 		}
 	}
@@ -157,17 +157,24 @@ function pushChildMoves(match, player, legalMovesArray, move, boostBool=false)
  * @param {Player} player
  * @param {Array<Turn>} legalMovesArray
  * @param {Turn} currTurn
+ * @param {boolean} usedBoostBool
  * */
-function pushAllLegalBoost(match, player, legalMovesArray, currTurn)
+function pushAllLegalBoost(match, player, legalMovesArray, currTurn, usedBoostBool=false)
 {
 	/** @type {{coord: string, price: number} | null} */
 	let	bestBoost = null;
-	let	to;
+	let	points;
 	let	from;
+	let	to;
+	let	toPiece;
 
-	if (player.boostedPiece)
+	if (player.boostedPiece && usedBoostBool == false)
 		return ;
-	if (player.nPoints == 0)
+	from = currTurn.move? currTurn.move.from : currTurn.moveBoost?.from;
+	to = currTurn.moveBoost? currTurn.moveBoost.to : currTurn.move?.to;//@ts-ignore
+	toPiece = match.board.get(to).piece;
+	points = player.nPoints + (toPiece ? toPiece?.price : 0); 
+	if (points == 0)
 		return ;
 	for (const [coord, square] of match.board)
 	{
@@ -175,10 +182,8 @@ function pushAllLegalBoost(match, player, legalMovesArray, currTurn)
 			continue ;
 		if (square.piece.team != player.team)
 			continue ;
-		if (square.piece.price > player.nPoints)
+		if (square.piece.price > points)
 			continue ;
-		from = currTurn.move? currTurn.move.from : currTurn.moveBoost?.from;
-		to = currTurn.moveBoost? currTurn.moveBoost.to : currTurn.move?.to;
 		if (coord == from)
 			continue ;
 		if (coord == player.boostedPiece || (coord == to && from == player.boostedPiece))
@@ -186,7 +191,11 @@ function pushAllLegalBoost(match, player, legalMovesArray, currTurn)
 		if (!bestBoost || square.piece.price > bestBoost.price)
 			bestBoost = {coord: coord, price: square.piece.price};
 		else if (square.piece.type == enumNames.JESTER && square.piece.moveCount == 0)
+		{
+			if (currTurn.move?.from == "d1" && currTurn.move.to == "d8")
+				console.log("BREAKPOINT");
 			pushOneBoost(bestBoost.coord, legalMovesArray, currTurn);
+		}
 	}
 	if (!bestBoost)
 		return ;

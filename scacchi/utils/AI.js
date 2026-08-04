@@ -12,6 +12,7 @@ import { render } from "../test/render.js";
 /** @typedef {{from: string, to: string}} Move */
 /** @typedef {{move: Move | null, moveBoost: Move | null, transform: string, boost: string}} Turn */
 
+let DEB = 0;
 
 /**
  * 
@@ -37,8 +38,10 @@ export function execTurn(match, turn)
 	}
 	if (turn.boost && (result = boost(match, turn.boost)).status != 200)
 	{
-		render(match);
-		throw (`execTurn: boost's function has failed : ${result.msg}`); // @ts-ignore
+		DEB++;
+		console.log(`BOOST ERROR N. ${DEB} => ${turn}`);
+		//render(match);
+		//throw (`execTurn: boost's function has failed : ${result.msg}`); // @ts-ignore
 	}
 	toCoord = turn.moveBoost ? turn.moveBoost.to : turn.move?.to;
 	if (turn.transform && makeTransfiguration(match, toCoord, turn.transform).status != 200)

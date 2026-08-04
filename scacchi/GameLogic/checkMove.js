@@ -102,6 +102,8 @@ export function checkSecondMove(match, to)
 	tmp = match.cursor.square;
 	match.cursor.set(to);
 	type = match.board.get(to)?.piece?.type;
+	if ((type == enumNames.CHAMPION || type == enumNames.MINOTAURUS || type == enumNames.BASTARDS) && match.board.get(to)?.piece?.isBoostedBool == true)
+		return true;
 	for (let {dx, dy} of new Preset(enumNames.KING).movement)
 	{
 		if (movePiece(match, dy, dx))
@@ -116,8 +118,6 @@ export function checkSecondMove(match, to)
 		match.cursor.set(to);
 	}
 	match.cursor.set(tmp);
-	if ((type == enumNames.CHAMPION || type == enumNames.MINOTAURUS || type == enumNames.BASTARDS) && match.board.get(to)?.piece?.isBoostedBool == true)
-		return true;
 	return false;
 }
 
