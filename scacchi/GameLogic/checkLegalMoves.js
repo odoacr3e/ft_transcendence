@@ -33,8 +33,6 @@ export function getLegalMoves(match, team=match.currentPlayer.team, infoBool=tru
 	let	legalMovesArray = new Array();
 	/** @type {Player} */
 	let	player;
-	let	boostedSquare;
-	let	boostedZones;
 
 	for (const [coord, square] of match.board)
 	{
@@ -66,18 +64,6 @@ export function getLegalMoves(match, team=match.currentPlayer.team, infoBool=tru
 		for (const targetCoord of targetSet)
 			pushChildMoves(match, player, legalMovesArray, {from: coord, to: targetCoord});
 	}
-	// if (!player.boostedPiece)
-	// 	return (legalMovesArray);
-	// boostedSquare = match.board.get(player.boostedPiece);
-	// if (!boostedSquare.piece)
-	// 	throw (`getLegalMoves: boosted piece in ${player.boostedPiece} undefined`);
-	// if (includesOneOf(boostedSquare.piece.type, arrayNamesDoubleMove))
-	// 	return (legalMovesArray);
-	// boostedZones = boostedSquare.boostedTargetZones.get(player.boostedPiece);
-	// if (!boostedZones)
-	// 	return (legalMovesArray);
-	// for (const targetCoord of boostedZones)
-	// 	pushChildMoves(match, player, legalMovesArray, {from: player.boostedPiece, to: targetCoord}, true);
 	return (legalMovesArray);
 }
 
@@ -192,9 +178,7 @@ function pushAllLegalBoost(match, player, legalMovesArray, currTurn, usedBoostBo
 			bestBoost = {coord: coord, price: square.piece.price};
 		else if (square.piece.type == enumNames.JESTER && square.piece.moveCount == 0)
 		{
-			if (currTurn.move?.from == "d1" && currTurn.move.to == "d8")
-				console.log("BREAKPOINT");
-			pushOneBoost(bestBoost.coord, legalMovesArray, currTurn);
+			pushOneBoost(coord, legalMovesArray, currTurn);
 		}
 	}
 	if (!bestBoost)
@@ -262,13 +246,3 @@ function pushAllLegalTransform(match, player, legalMovesArray, currTurn, destCoo
 	// 	legalMovesArray.push(turnWithTransform);
 	// }
 }
-
-// giorgi0:
-// {
-// 	white: "e1" | null,
-// 	black: "e1" | null,
-// 	red: "e1" | null,
-// 	blue: "e1" | null,
-// 	yellow: "e1" | null,
-// 	green: "e1" | null,
-// }

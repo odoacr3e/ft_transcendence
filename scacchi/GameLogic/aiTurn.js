@@ -12,6 +12,8 @@ import { roomMessage } from "../websocket/utils.js";
 
 /** @typedef {import("../Classes/Chess/match").Match} Match */
 
+let	DEBUG_turn;
+
 /**
  * 
  * @param {Match} match 
@@ -26,8 +28,16 @@ export function AIexecuteTurn(match)
 		throw (`AIexecuteTurn: there is no AI`);
 	match.aiSimulation = true;
 	turn = getBestTurn(match);
+	DEBUG_turn = turn;
 	match.aiSimulation = false;
 	team = match.currentPlayer.team;
+	if (match.currentPlayer.ai?.defeatStatus == 1)
+	{
+		result = new Result().Success(`😭Pareggiamo please senpai😭`);
+		console.log(result.msg);
+		roomMessage(`Match_${match.id}`, "gameDraw", result);
+		match.currentPlayer.ai.defeatStatus = 2;
+	}
 	if (turn.move)
 	{
 		result = move(match, turn.move.from, turn.move.to, false);
@@ -66,7 +76,7 @@ export function AIexecuteTurn(match)
  * @param {Result} result 
  * @param {string} type
  */
-function sendResult(match, result, type)
+function sendResult(match, result, type="")
 {
 	if (result.status != 200)
 		throw (`AIExecuteTurn: ${type} failed.`);

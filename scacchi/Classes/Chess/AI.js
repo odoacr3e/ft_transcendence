@@ -31,6 +31,7 @@ export class AI
 		if (!profile)
 			profile = AIprofilesArray[i];
 		this.profile = profile;
+		this.defeatStatus = 0;
 		console.log(`A new opponent has spawned: ${profile}... fear its power!`);
 		AIProfileConstructor(this);
 	}
@@ -73,6 +74,8 @@ function getBestTurn(match)
 		throw (`getBestTurn: you are not a machine!`);
 	console.log("Calculating best move...");
 	arrayTurns = getLegalMoves(match);
+	if (ai.defeatStatus != 0)
+		return (arrayTurns[0]);
 	for (let i = 0; i != arrayTurns.length; i++)
 	{
 		console.log(`Turns: ${i}/${arrayTurns.length}`);
@@ -86,6 +89,10 @@ function getBestTurn(match)
 		val.index = i;
 		cancelTurn(match, turn);
 		// render(match);
+		if (match.currentPlayer.team == eTeam.Black && val.score == +Infinity)
+			continue ;
+		else if (match.currentPlayer.team == eTeam.White && val.score == -Infinity)
+			continue ;
 		if (bestTurns.length <= 1)
 			bestTurns.push({score: val.score, index: val.index});
 		for (let i = 0; i != bestTurns.length; i++)
@@ -105,9 +112,14 @@ function getBestTurn(match)
 		}
 	}
 	console.log(`Turns: ${arrayTurns.length}/${arrayTurns.length}`);
-	bestTurnIdx = bestTurns[Math.floor(Math.random() * 100000) % bestTurns.length].index;
+	if (bestTurns.length == 0)
+	{//@ts-ignore
+		ai.defeatStatus = 1;
+		return (arrayTurns[0]);
+	}
+	bestTurnIdx = bestTurns[Math.floor(Math.random() * 100000) % bestTurns.length];
 	console.log(bestTurnIdx);
-	return (arrayTurns[bestTurnIdx]);
+	return (arrayTurns[bestTurnIdx.index]);
 }
 
 /**
