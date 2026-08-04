@@ -12,7 +12,7 @@ import { roomMessage } from "../websocket/utils.js";
 
 /** @typedef {import("../Classes/Chess/match").Match} Match */
 
-let	DEBUG_turn;
+let	DEBUG_turn = {};
 
 /**
  * 
@@ -85,6 +85,6 @@ export function AIexecuteTurn(match)
 function sendResult(match, result, type="")
 {
 	if (result.status != 200)
-		throw (`AIExecuteTurn: ${type} failed.`);
+		throw (`AIExecuteTurn: ${type} failed. Info: ${JSON.stringify(DEBUG_turn, null, 2)}`);
 	roomMessage(`Match_${match.id}`, "game", result);
 }

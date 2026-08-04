@@ -49,7 +49,8 @@ function mainTerm()
 	// move(match, "g8", "f6");
 	// move(match, "e4", "e5");
 	// move(match, "h8", "g8");
-	historyRestore(match, HISTORY_DEFAULT);
+	// if (lib.include.fs.existsSync(HISTORY_DEFAULT))
+	// 	historyRestore(match, HISTORY_DEFAULT);
 	match.NextPlayer().ai = new AI();
 	// move(match, "e5", "f6");
 	console.log(`time to init: ${(process.hrtime.bigint() - time) / 1000n} microseconds`);
@@ -179,6 +180,7 @@ process.stdin.on('keypress', (str, key) =>
 			if (!name)
 				name = HISTORY_FILE;
 			historyRestore(match, HISTORY_PATH + name);
+			match.NextPlayer().ai = new AI();
 			break ;
 		}
 		case (cmd.CANCEL_EVENT):
