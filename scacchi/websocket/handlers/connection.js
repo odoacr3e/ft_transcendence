@@ -83,6 +83,7 @@ async function websocketDisconnectionHandler(socket, user, friendsId)
 				if (friendSock)
 					sockio.to(friendSock.socket.id).emit('friend:offline', { userId: user.id_user });
 			}
+			socket.emit("rip");//NOTE - avvisa frontend che socket e morto
 		}, getReconnectTime(socketData.state)));
 })}
 
