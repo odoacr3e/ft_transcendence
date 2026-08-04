@@ -175,8 +175,6 @@ function minMax(match, ai, arrayTurns, depth, pastTurns)
 		let minEval = +Infinity;
 		for (const turn of arrayTurns)
 		{
-			if (turn.move?.from == "b7" && turn.move.to == "b5" && turn.moveBoost?.from == "a7" && turn.moveBoost.to == "a6")
-				console.log("BREAKPOINT");
 			if (execTurn(match, turn) == false)
 				continue ;
 			// render(match);

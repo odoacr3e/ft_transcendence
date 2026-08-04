@@ -29,7 +29,7 @@ export function AIexecuteTurn(match)
 		throw (`AIexecuteTurn: there is no AI`);
 	match.aiSimulation = true;
 	turn = getBestTurn(match);
-	render(match);
+	// render(match);
 	DEBUG_turn = turn;
 	match.aiSimulation = false;
 	team = match.currentPlayer.team;

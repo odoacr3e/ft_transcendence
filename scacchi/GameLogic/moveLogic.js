@@ -41,6 +41,8 @@ function updateChessboard(coords=[], result, match, boostBool)
 		match.currentPlayer.boostedPiece = "";
 		match.boostPriority.delete(match.currentPlayer.team);
 	}
+	else if (coords[0] == match.currentPlayer.boostedPiece)
+		match.currentPlayer.boostedPiece = coords[1];
 	if (match.aiSimulation == false)
 		printSwap(match, coords, from, to);
 	if (to.piece && to.piece.team != from.piece.team)
