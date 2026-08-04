@@ -121,7 +121,6 @@ model preferences {
   id_preference Int     @id @default(autoincrement())
   name          String  @db.VarChar(250)
   description   String
-  colors        Json
   users         users[]
 }
 
