@@ -12,7 +12,7 @@ export const OAuthRouter = lib.include.express.Router();
 function passportHandler(req, res, next) {
 	passport.authenticate('google', {session: false}, (err, user) => {
 		if (err) {
-			console.log("Error: ", error);
+			console.log("Error: ", err);
 			return res.status(500).json(jsonResponse.ResponseError("Server error checking for user"));
 		}
 		if (!user)
