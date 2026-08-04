@@ -3,12 +3,14 @@
     import FriendList       from '../components/FriendList.vue';
     import MatchHistory     from '../components/MatchHistory.vue';
     import FriendRequest    from '../components/FriendRequest.vue';
-    import { ref, onMounted }   from 'vue';
     import { defaultAvatar, handleAvatarError }    from '../scripts/Helper/CompUtils';
+    import { ref, onMounted }   from 'vue';
     import { useAuthStore }     from "../stores/auth.st";
     import { storeToRefs }      from 'pinia';
+    import { useI18n }          from 'vue-i18n';
     import { authApi }          from '../router/api/auth.api';
-
+    
+    const { t } = useI18n();
 	const friends = ref(null), matches = ref(null), fReq = ref([]);
     const authStore = useAuthStore();
 	const { user } = storeToRefs(authStore);
@@ -43,45 +45,45 @@
         <div class="flex m-4">
             <div class=" m-2 w-full">
                 <div class="w-full p-2 mb-2 h-[35vh] bg-bg-default rounded-3xl border border-border-default">
-                    <h2 class="text-text-default text-xl m-1">Lista di amici</h2>
+                    <h2 class="text-text-default text-xl m-1">{{ t('userPage.friendList') }}</h2>
                     <hr class="w-full justify-self-start text-text-last">
-                    <div v-if="friends" :class="friends.length > 3 ? 'max-h-[29vh] overflow-y-auto' : ''">
+                    <div v-if="friends" :class="friends.length > 3 ? 'max-h-[29.5vh] overflow-y-auto' : ''">
                         <FriendList :friendlist="friends" :remove-f="true"/>
                     </div>
                 </div>
                 <div class="w-full p-2 h-[15vh] bg-bg-default rounded-3xl border border-border-default">
-                    <h2 class="text-text-default text-xl m-1">Richieste d'amicizia 
+                    <h2 class="text-text-default text-xl m-1">{{ t('userPage.friendRequest') }} 
                         <span v-if="fReq.length > 0" class="text-xs absolute rounded-full px-1.25 bg-notif-on">{{ fReq.length }}</span></h2>
                     <hr class="w-full justify-self-start text-text-last">
                     <FriendRequest :friendReq="fReq" :user="user"/>
                 </div>
             </div>
-            <div class="w-full m-2 p-2 h-auto bg-bg-default rounded-3xl border border-border-default">
-                <h2 class="text-text-default text-xl m-1">Cronologia delle partite</h2>
+            <div class="w-full m-2 p-2 h-[51vh] bg-bg-default rounded-3xl border border-border-default">
+                <h2 class="text-text-default text-xl m-1">{{ t('userPage.matchHistory') }}</h2>
                 <hr class="w-full justify-self-start text-text-last">
-                <div v-if="matches" class="flex gap-3 m-2 text-sm text-text-default justify-self-center">
+                <div v-if="matches" class="flex gap-2 m-2 text-sm text-text-default justify-self-center">
                     <div class="flex gap-2">
-                        <p>Vittorie:</p>
+                        <p>{{ t('common.win', 2) }}:</p>
                         <p class="text-text-win-open">{{ matches.stats.w }}</p>
                     </div>
                     <p class="text-text-last">|</p>
                     <div class="flex gap-2">
-                        <p>Patte:</p>
+                        <p>{{ t('common.draw', 2) }}:</p>
                         <p class="text-text-draw-await">{{ matches.stats.d }}</p>
                     </div>
                     <p class="text-text-last">|</p>
                     <div class="flex gap-2">
-                        <p>Sconfitte:</p>
+                        <p>{{ t('common.lose', 2) }}:</p>
                         <p class="text-text-lose-closed">{{ matches.stats.l }}</p>
                     </div>
                     <p class="text-text-last">|</p>
                     <div class="flex gap-2">
-                        <p>Partite:</p>
+                        <p>{{ t('common.game', 2) }}:</p>
                         <p>{{ matches.stats.total }}</p>
                     </div>
                 </div>
                 <hr class="w-full justify-self-start text-text-last">
-                <div v-if="matches" :class="matches.matches.length > 4 ? 'max-h-[40vh] overflow-y-auto' : ''">
+                <div v-if="matches" :class="matches.matches.length > 4 ? 'max-h-[41.5vh] overflow-y-auto' : ''">
                     <MatchHistory :matches="matches.matches"/>
                 </div>
             </div>

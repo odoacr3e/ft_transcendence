@@ -2,9 +2,11 @@
     import TagTitle from '../components/TagTitle.vue';
     import { defaultAvatar, handleAvatarError }    from '../scripts/Helper/CompUtils';
     import { ref, watch }       from 'vue';
+    import { useI18n }          from 'vue-i18n';
     import { api }              from '../router/api/client';
-
-	const   prop = defineProps({
+    
+    const { t } = useI18n(),
+	prop = defineProps({
 	    query: {
 	    	type: String,
 	    	default: ''
@@ -29,10 +31,11 @@
 
 <template>
     <div class="flex flex-col z-2 bg-bg-default rounded-3xl mt-10">
-        <h2 class="text-text-default text-2xl mx-7.5 mt-7.5" v-if="query.length > 11">
-            {{ db.length }} utenti trovati per "<b>{{ query.slice(0, 10) + "..." }}</b>"<hr class="text-text-last"></h2>
-        <h2 class="text-text-default text-2xl mx-7.5 mt-7.5" v-if="query.length <= 11">
-            {{ db.length }} utenti trovati per "<b>{{ query }}</b>"<hr class="text-text-last"></h2>
+        <div class="text-text-default text-2xl mx-7.5 mt-7.5">
+            <h2 v-if="query.length > 11" v-html="$t('menu.userList', { nUser: db.length, search: query.slice(0, 10) + '...' })"></h2>
+            <h2 v-if="query.length <= 11" v-html="$t('menu.userList', { nUser: db.length, search: query })"></h2>
+            <hr class="text-text-last self-center w-auto">
+        </div>
         <div class="p-8 grid grid-cols-4 gap-10 w-full" :class="db.length > 8 ? 'max-h-[75vh] overflow-y-auto' : ''">
             <div v-for="user in db" v-if="db" class="grid grid-cols-1 w-fit">
                 <RouterLink :to="{ name: 'user_page', params: { username: user.username } }">

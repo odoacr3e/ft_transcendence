@@ -1,7 +1,9 @@
 <script setup>
     import { ref } from 'vue';
     import { rework_date } from '../scripts/Helper/CompUtils';
+    import { useI18n } from 'vue-i18n';
 
+    const { t } = useI18n();
     const prop = defineProps({
   	    	matches: Array,
 	    });
@@ -49,7 +51,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 0 1 3 3h-15a3 3 0 0 1 3-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 0 1-.982-3.172M9.497 14.25a7.454 7.454 0 0 0 .981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 0 0 7.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M7.73 9.728a6.726 6.726 0 0 0 2.748 1.35m8.272-6.842V4.5c0 2.108-.966 3.99-2.48 5.228m2.48-5.492a46.32 46.32 0 0 1 2.916.52 6.003 6.003 0 0 1-5.395 4.972m0 0a6.726 6.726 0 0 1-2.749 1.35m0 0a6.772 6.772 0 0 1-3.044 0" />
                 </svg>
-                <p class="uppercase tracking-widest text-sm">Torneo</p>
+                <p class="uppercase tracking-widest text-sm">{{ t('common.tournament', 1) }}</p>
             </div>
         </div>
         <hr v-if="index !== matches.length - 1" class="text-text-last border-dashed w-full">
@@ -59,7 +61,7 @@
         <div class="w-full max-w-md rounded-3xl border border-border-default bg-bg-default p-6 text-text-default shadow-2xl">
             <div class="flex items-start justify-between gap-4">
                 <div>
-                    <p class="text-sm uppercase tracking-widest text-text-tour-friend">Torneo</p>
+                    <p class="text-sm uppercase tracking-widest text-text-tour-friend">{{ t('common.tournament', 1) }}</p>
                     <div class="flex items-center justify-start gap-2 mt-1">
                         <RouterLink to="/tournaments" class="hover:underline">
                             <h3 class="text-2xl">{{ selectedT.tournament.name }}</h3>
@@ -72,7 +74,7 @@
                         </h4>
                     </div>
                     <hr class="w-[138%] justify-self-start text-text-last my-1">
-                    <p class="text-sm text-text-second ml-1">Creato il {{ rework_date(selectedT.tournament.created_at) }} da 
+                    <p class="text-sm text-text-second ml-1">{{ t('header.inv.creation', {date: rework_date(selectedT.tournament.created_at)}) }}
                         <RouterLink :to="{ name: 'user_page', params: { username: selectedT.tournament.creator.username } }" class="hover:underline">
                             {{ selectedT.tournament.creator.username }}
                         </RouterLink>

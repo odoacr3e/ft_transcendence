@@ -4,21 +4,25 @@
 	import { useAuthStore }	from "../stores/auth.st";
 	import { storeToRefs }	from 'pinia';
 	import { useRouter }	from 'vue-router';
+	import { useI18n }		from 'vue-i18n';
 	import { api }			from '../router/api/client';
-
+	
 	defineOptions({ inheritAttrs: false });
-
+	
+	const { t, locale } = useI18n({ useScope: 'global' });
 	const authStore = useAuthStore();
 	const { user } = storeToRefs(authStore);
 	const	p_bool = ref(false),
 			n_bool = ref(false),
+			l_bool = ref(false),
 			popUp = ref(false),
 			tourOpen = ref(null),
 			router = useRouter(),
 			db = ref([]),
 			searchUser = ref(""),
 			p_dropdown = ref(null),
-			n_dropdown = ref(null);
+			n_dropdown = ref(null),
+			lang_dropdown = ref(null);
 
 	async function submitForm() {
         const authStore = useAuthStore();
@@ -42,6 +46,9 @@
 
 		if (n_dropdown.value && !n_dropdown.value.contains(e.target))
 			n_bool.value = false;
+
+		if (lang_dropdown.value && !lang_dropdown.value.contains(e.target))
+			l_bool.value = false;
 	}
 
 	async function readMsg(msg)
@@ -118,8 +125,8 @@
 		<div class="flex bg-bg-second w-[150%] justify-self-center rounded-4xl h-11 self-center content-center border border-border-default overflow-hidden">
 			<img src="../assets/search.png" alt="" class="size-7 self-center ml-3" :draggable="false">
 			<form @submit.prevent="goToUser">
-				<input v-model="searchUser" type="search" name="searchBar" id="searchBar" placeholder="Cerca" autocomplete="off"
-					class="justify-self-center rounded-4xl h-10 w-235 pl-3 text-text-default"
+				<input v-model="searchUser" type="search" name="searchBar" id="searchBar" :placeholder="t('common.search')" autocomplete="off"
+					class="justify-self-center rounded-4xl h-10 w-235 pl-3 pt-1 text-text-default"
 					:list="searchUser ? 'users' : null">
 			</form>
 		</div>
@@ -176,7 +183,7 @@
 									<p class="text-text-second text-sm pt-2.5 pb-1">{{ m.description }}</p>
 									<div class="ml-auto -mt-3.5 flex gap-1 h-fit w-fit" v-if="m.sender">
 										<p class="text-xs text-text-third">
-											da</p>
+											{{ t('common.by') }}</p>
 										<RouterLink :to="{ name: 'user_page', params: { username: m.sender.username } }">
 											<p class="text-xs text-text-third hover:underline" v-if="m.sender.username.length <= 10">
 												{{ m.sender.username }}</p>
@@ -188,7 +195,7 @@
 							</div>
 						</div>
 						<div v-if="!authStore.msgRecevied.size" class="flex p-2 my-2 rounded-sm text-text-default">
-							<p class="mx-auto">Nessuna notifica</p>
+							<p class="mx-auto">{{ t('header.zeroNotif') }}</p>
 						</div>
 					</div>	
 				</Transition>
@@ -221,15 +228,42 @@
 					leave-to-class="opacity-0 scale-70">
 					<div v-if="p_bool" class="mt-1.25 p-2 absolute right-0 bg-bg-darker origin-top border border-border-second min-w-full">
 						<RouterLink to="/me" @click="p_bool = false">
-							<p class="text-text-default hover:underline">Profilo</p>
+							<p class="text-text-default hover:underline">{{ t('header.profile') }}</p>
 						</RouterLink>
 						<hr class="w-full justify-self-start text-text-last">
 						<RouterLink to="/me/edit" @click="p_bool = false">
-							<p class="text-text-default hover:underline">Impostazioni</p>
+							<p class="text-text-default hover:underline">{{ t('header.settings') }}</p>
 						</RouterLink>
 						<hr class="w-full justify-self-start text-text-last">
+						<div class="relative" ref="lang_dropdown">
+							<button
+								type="button"
+								class="flex w-full items-center justify-between gap-3 text-text-default hover:underline"
+								@click="l_bool = !l_bool"
+								:aria-expanded="l_bool"
+								aria-haspopup="listbox">
+								<span>{{ locale === 'it' ? 'Italiano' : 'English' }}</span>
+								<svg class="size-3 transition-transform duration-200" :class="{ 'rotate-180': l_bool }" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+									<path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/>
+								</svg>
+							</button>
+							<Transition
+								class="origin-top-right"
+								enter-active-class="transition ease-out duration-150"
+								enter-from-class="opacity-0 scale-70"
+								enter-to-class="opacity-100 scale-100"
+								leave-active-class="transition ease-in duration-100"
+								leave-from-class="opacity-100 scale-100"
+								leave-to-class="opacity-0 scale-70">
+								<div v-if="l_bool" class="absolute right-full top-0 mr-2 min-w-28 rounded-md border border-border-second bg-bg-darker p-1 shadow-lg">
+									<button type="button" class="block w-full rounded px-3 py-1.5 text-left text-text-default hover:bg-bg-default" @click="locale = 'en'; l_bool = false">English</button>
+									<button type="button" class="block w-full rounded px-3 py-1.5 text-left text-text-default hover:bg-bg-default" @click="locale = 'it'; l_bool = false">Italiano</button>
+								</div>
+							</Transition>
+						</div>
+						<hr class="w-full justify-self-start text-text-last">
 						<button @click="submitForm(); p_bool = false" class="cursor-pointer text-text-default hover:underline">
-							Logout
+							{{ t('header.logout') }}
 						</button>
 					</div>
 				</Transition>
@@ -239,7 +273,7 @@
 		<div v-if="user === null" class="justify-self-end place-self-center">
 			<RouterLink to="/log" class="flex mr-3">
 				<button class="flex cursor-pointer w-25 justify-center p-2 text-base bg-main-color rounded-[7px] text-text-default
-								hover:bg-linear-to-t from-main-color to-light-button">Accedi</button>
+								hover:bg-linear-to-t from-main-color to-light-button">{{ t('header.login') }}</button>
 			</RouterLink>
 		</div>
 	</div>
@@ -248,7 +282,7 @@
         <div class="w-full max-w-md rounded-3xl border border-border-default bg-bg-default p-6 text-text-default shadow-2xl">
             <div class="flex items-start justify-between gap-4">
                 <div>
-                    <p class="text-sm uppercase tracking-widest text-text-tour-friend">Torneo</p>
+                    <p class="text-sm uppercase tracking-widest text-text-tour-friend">{{ t('common.tournament', 1) }}</p>
                     <div class="flex items-center justify-start gap-2 mt-1">
                         <RouterLink to="/tournaments" class="hover:underline">
                             <h3 class="text-2xl">{{ tourOpen.name }}</h3>
@@ -261,7 +295,7 @@
 						</h4>
                     </div>
                     <hr class="w-[192%] justify-self-start text-text-last my-1">
-                    <p class="text-sm text-text-second ml-1">Creato il {{ rework_date(tourOpen.created_at) }} da 
+                    <p class="text-sm text-text-second ml-1">{{ t('header.inv.creation', {date: rework_date(tourOpen.created_at)}) }}
                         <RouterLink :to="{ name: 'user_page', params: { username: tourOpen.created_by.username } }" class="hover:underline">
                             {{ tourOpen.created_by.username }}
                         </RouterLink>
@@ -270,17 +304,17 @@
                 <button type="button" class="text-2xl leading-none text-text-third hover:text-text-default" @click="closePopup()">&times;</button>
             </div>
             <div class="mt-6 mb-3 flex flex-col gap-2 justify-self-center items-center text-center">
-                <p>Sei stato invitato al torneo <b>{{ tourOpen.name }}</b> creato da {{ tourOpen.created_by.username }}.<br>Vuoi partecipare?</p>
+				 <p v-html="$t('header.inv.desc', {tourName: tourOpen.name, tourCreator: tourOpen.created_by.username})"></p>
 				<div v-if="tourOpen.status == 'open'" class="flex gap-10 w-max justify-self-end-safe pt-5">
 					<button class="cursor-pointer rounded-md inset-ring text-lg px-3 p-2.5
 								bg-bg-accept text-online-accept inset-ring-inset-accept"
 						@click="accpetInvite()">
-						<p>Accetta</p>
+						<p>{{ t('common.accept') }}</p>
 					</button>
 					<button class="cursor-pointer rounded-md inset-ring text-lg px-3 p-2.5
 									bg-bg-reject text-text-lose-closed inset-ring-inset-reject"
 							@click="rejectInvite(); closePopup()">
-						<p>Rifiuta</p>
+						<p>{{ t('common.reject') }}</p>
 					</button>
 				</div>
 				<div v-if="tourOpen.status != 'open'" class="flex gap-3 rounded-xl border p-5 mt-4 w-full justify-center
@@ -289,7 +323,7 @@
 					  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
 					  <path d="M4.285 12.433a.5.5 0 0 0 .683-.183A3.5 3.5 0 0 1 8 10.5c1.295 0 2.426.703 3.032 1.75a.5.5 0 0 0 .866-.5A4.5 4.5 0 0 0 8 9.5a4.5 4.5 0 0 0-3.898 2.25.5.5 0 0 0 .183.683M7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5m4 0c0 .828-.448 1.5-1 1.5s-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5"/>
 					</svg>
-					<h2>Invito scaduto</h2>
+					<h2>{{ t('header.inv.expired') }}</h2>
 				</div>
             </div>
         </div>

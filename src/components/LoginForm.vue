@@ -2,8 +2,10 @@
 	import { useAuthStore }	from "../stores/auth.st";
 	import { useRouter }	from 'vue-router';
 	import { ref }			from 'vue';
+	import { useI18n } from 'vue-i18n';
 
-	const	formData = ref({
+    const	{ t } = useI18n(),
+			formData = ref({
 			  username: '',
 			  password: ''
 			}),
@@ -26,7 +28,7 @@
 			popup.value = true;
 			otpData.value.id_user = resp.value.data.id_user;
 		}
-		else	{ error.value = true; error_card.value = true; error_msg.value = 'Controlla username e password e riprova.'; }
+		else	{ error.value = true; error_card.value = true; error_msg.value = t('login.err.wrong'); }
 	}
 
 	async function submitOtp()
@@ -40,7 +42,7 @@
 			popup.value = false;
 			error.value = true;
 			error_card.value = true;
-			error_msg.value = 'Fatti troppi tentativi.';
+			error_msg.value = t('login.err.tooMany');
 		}
 	}
 
@@ -111,7 +113,7 @@
 			<path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
 		</svg>
 		<div>
-			<h2>Credenziali errate</h2>
+			<h2>{{ t('login.err.title') }}</h2>
 			<p class="text-sm">{{ error_msg }}</p>
 		</div>
 	</div>
@@ -121,7 +123,7 @@
 				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
 					<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
 				</svg>
-				<input placeholder="Username o email" size="35" class="pl-2 text-base" autofocus="true" type="text" v-model="formData.username">
+				<input :placeholder="'Username ' + t('common.or', 1) + ' email'" size="35" class="pl-2 text-base" autofocus="true" type="text" v-model="formData.username">
 			</div>
 			<div class="mb-4.5">
 				<div class="form border-border-default text-form-icon flex w-sm mb-0.5" :class="{ 'animate-shake': error }" @animationend="error = false">
@@ -140,26 +142,26 @@
 					</button>
 				</div>
 				<RouterLink to="/DEBUG/pwd">
-					<u><a class="justify-self-center text-[80%] text-main-color cursor-pointer hover:text-light-button active:text-active-button">Password dimenticata?</a></u>
+					<u><a class="justify-self-center text-[80%] text-main-color cursor-pointer hover:text-light-button active:text-active-button">{{ t('login.forgot') }}</a></u>
                 </RouterLink>
 			</div>
 			<input id="submit" class="cursor-pointer justify-self-center w-sm mt-1.5 p-3 text-base bg-main-color rounded-[7px] text-text-default hover:bg-linear-to-t from-main-color to-light-button"
 					v-bind:class="{'pointer-events-none grayscale': !formData.username || !formData.password,
 						'pointer-events-auto grayscale-0 ': formData.username && formData.password }"        
-					type="submit" value="Accedi">
+					type="submit" :value="t('header.login')">
 		</form>
 	</div>
 
 	<div v-if="popup" class="fixed inset-0 z-50 flex items-center justify-center bg-bg-blur backdrop-blur-xs px-4">
         <div class="w-full max-w-lg rounded-3xl border border-border-default bg-bg-default p-6 text-text-default shadow-2xl">
             <div class="flex items-start justify-between gap-4">
-                <p class="text-sm uppercase tracking-widest text-text-second">Autenticazione OTP</p>
-				<button type="button" class="text-2xl leading-none text-zinc-400 hover:text-text-default" @click="closePopup">&times;</button>
+                <p class="text-sm uppercase tracking-widest text-text-second">{{ t('login.OTP.auth') }}</p>
+				<button type="button" class="text-2xl leading-none text-zinc-400 hover:text-text-default" @click="closePopup">&times;</button> <!--FIXME - zinc-400-->
             </div>
 			<hr class="w-[90%] justify-self-start text-text-last mt-1 mb-2">
 			<div class="justify-self-center mt-4">
-				<p class="text-sm justify-self-center">Inserisci le il codice che ti e' stato mandato via email.</p>
-				<p class="text-sm justify-self-center mb-2">Scadra' in {{ resp.data.Expiration }}.</p>
+				<p class="text-sm justify-self-center">{{ t('login.OTP.desc') }}</p>
+				<p class="text-sm justify-self-center mb-2">{{ t('login.OTP.auth', {date: resp.data.Expiration}) }}</p>
 				<form @submit.prevent="submitOtp" class="justify-self-center">
 					<div class="flex">
 						<div v-for="(digit, index) in otpValues" :key="`otp-${index}`" class="otp" id="otpContainer">

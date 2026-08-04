@@ -4,8 +4,10 @@
     import { useAuthStore }     from "../stores/auth.st";
     import { storeToRefs }      from 'pinia';
     import { useRouter }	    from 'vue-router';
+    import { useI18n }          from 'vue-i18n';
 
-    const   authStore = useAuthStore(),
+    const   { t } = useI18n(),
+            authStore = useAuthStore(),
 	        { user } = storeToRefs(authStore),
             formData = ref({
 	        	name: '',
@@ -104,12 +106,12 @@
                     class="hidden" @change="handleAvatarChange">
                 <label for="avatar-input" class="absolute inset-0 size-50 flex flex-col items-center justify-center rounded-full
                     bg-bg-blur opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-                    <p class="text-text-default">Cambia foto</p>
+                    <p class="text-text-default">{{ t('userPage.edit.changeAvatar') }}</p>
                     <p class="text-text-default text-xl leading-none">+</p>
                 </label>
             </div>
             <button type="button" class="mx-auto" @click="handleAvatarRemove">
-                <u><a class="text-sm cursor-pointer text-main-color hover:text-light-button active:text-active-button">Elimina avatar</a></u>
+                <u><a class="text-sm cursor-pointer text-main-color hover:text-light-button active:text-active-button">{{ t('userPage.edit.removeAvatar') }}</a></u>
             </button>
             <div class="flex flex-col gap-3 mt-5 mx-2.5">
                 <div class="flex w-full justify-evenly my-0.5">
@@ -121,7 +123,7 @@
                 <!-- altri 4 preset-->
             </div>
             <RouterLink to="/me/edit/pwd" class="mx-auto mt-54">
-                <u><a class="text-sm cursor-pointer text-main-color hover:text-light-button active:text-active-button">Cambia password</a></u>
+                <u><a class="text-sm cursor-pointer text-main-color hover:text-light-button active:text-active-button">{{ t('userPage.edit.changePwd') }}</a></u>
             </RouterLink>
             <input id="submit" class="cursor-pointer w-[90%] mt-auto mb-6 self-center p-3 
                 text-base bg-main-color rounded-[7px] text-text-default hover:bg-linear-to-t from-main-color to-light-button"
@@ -131,10 +133,10 @@
 				                'pointer-events-auto grayscale-0': formData.name || formData.surname || formData.username 
                                                                 || formData.nationality || formData.preset  || formData.mfa !== user.mfa 
                                                                 || avatarFile || (!avatarFile && removeAvatar) || formData.preferences }"
-	        	type="submit" value="Salva le modifiche">
+	        	type="submit" :value="t('userPage.edit.saveChanges')">
         </div>
         <div class="flex flex-col m-4 ml-2 text-text-default bg-bg-default rounded-3xl border border-border-default w-[110vh]">
-            <h2 class="text-2xl m-5 p-2">Informazioni utente
+            <h2 class="text-2xl m-5 p-2">{{ t('userPage.edit.infoU') }}
                 <hr class="w-full justify-self-start text-text-last">
             </h2>
             <div class="grid grid-cols-2 grid-rows-3 gap-5 m-5 mb-0 self-center">
@@ -143,7 +145,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mt-1 size-6 text-form-icon">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                         </svg>
-                        <h3 class="text-xl">Nome</h3>
+                        <h3 class="text-xl">{{ t('login.val.name') }}</h3>
                     </div>
                     <div class="form border-border-default text-form-icon flex w-sm mb-3">
                         <input :placeholder="user.name" size="35" class="pl-2 text-base" autofocus="true" type="text" v-model="formData.name">
@@ -155,7 +157,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mt-1 size-6 text-form-icon">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                         </svg>
-                        <h3 class="text-xl">Cognome</h3>
+                        <h3 class="text-xl">{{ t('login.val.surname') }}</h3>
                     </div>
                     <div class="form border-border-default text-form-icon flex w-sm mb-3">
                         <input :placeholder="user.surname" size="35" class="pl-2 text-base" type="text" v-model="formData.surname">
@@ -180,10 +182,9 @@
 	                		<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-text-error self-center mx-auto">
 	                			<path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
 	                		</svg>
-	                		<div>
-	                			<h2>Credenziali errate</h2>
-	                			<p class="text-sm">Lo username deve avere</p>
-                                <p class="text-sm">almeno 4 caratteri</p>
+	                		<div class="w-45">
+	                			<h2>{{ t('login.err.title') }}</h2>
+                                <p class="text-sm">{{ t('login.err.username') }}</p>
 	                		</div>
 	                	</div>
 	                </div>
@@ -213,7 +214,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.6" stroke="currentColor" class="mt-1 size-6 text-form-icon">
                             <path stroke-linecap="round" stroke-linejoin="round" d="m20.893 13.393-1.135-1.135a2.252 2.252 0 0 1-.421-.585l-1.08-2.16a.414.414 0 0 0-.663-.107.827.827 0 0 1-.812.21l-1.273-.363a.89.89 0 0 0-.738 1.595l.587.39c.59.395.674 1.23.172 1.732l-.2.2c-.212.212-.33.498-.33.796v.41c0 .409-.11.809-.32 1.158l-1.315 2.191a2.11 2.11 0 0 1-1.81 1.025 1.055 1.055 0 0 1-1.055-1.055v-1.172c0-.92-.56-1.747-1.414-2.089l-.655-.261a2.25 2.25 0 0 1-1.383-2.46l.007-.042a2.25 2.25 0 0 1 .29-.787l.09-.15a2.25 2.25 0 0 1 2.37-1.048l1.178.236a1.125 1.125 0 0 0 1.302-.795l.208-.73a1.125 1.125 0 0 0-.578-1.315l-.665-.332-.091.091a2.25 2.25 0 0 1-1.591.659h-.18c-.249 0-.487.1-.662.274a.931.931 0 0 1-1.458-1.137l1.411-2.353a2.25 2.25 0 0 0 .286-.76m11.928 9.869A9 9 0 0 0 8.965 3.525m11.928 9.868A9 9 0 1 1 8.965 3.525" />
                         </svg>
-                        <h3 class="text-xl">Nazionalità</h3>
+                        <h3 class="text-xl">{{ t('login.val.nationality') }}</h3>
                     </div>
                     <div class="p-2.5 border rounded-[7px] border-border-default text-form-icon justify-self-center flex w-sm mb-3
                                 transition-colors duration-200 hover:bg-[#ad1e1e36] hover:border-inset-reject" id="email">
@@ -229,15 +230,15 @@
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.6" stroke="currentColor" class="mt-1 size-6 text-form-icon">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z" />
                         </svg>
-                        <h3 class="text-xl">Autenticazione via OTP</h3>
+                        <h3 class="text-xl">{{ t('login.OTP.auth') }}</h3>
                     </div>
                     <div class="flex w-sm mb-3 p-2.5 justify-self-center">
                         <label class="inline-flex items-center me-5 cursor-pointer">
                           <input type="checkbox" class="sr-only peer" v-model="formData.mfa">
-                          <span class="select-none me-3 text-sm font-medium text-heading">Disattivato</span>
+                          <span class="select-none me-3 text-sm font-medium text-heading">{{ t('login.OTP.off') }}</span>
                           <div class="relative w-9 h-5 bg-neutral-quaternary rounded-full bg-bg-darker
                                 peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:inset-s-0.5 after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-main-color"></div>
-                          <span class="select-none ms-3 text-sm font-medium text-heading">Attivato</span>
+                          <span class="select-none ms-3 text-sm font-medium text-heading">{{ t('login.OTP.on') }}</span>
                         </label>
                     </div>
                 </div>
@@ -248,7 +249,7 @@
                             <path fill-rule="evenodd" d="M2.25 4.125c0-1.036.84-1.875 1.875-1.875h5.25c1.036 0 1.875.84 1.875 1.875V17.25a4.5 4.5 0 1 1-9 0V4.125Zm4.5 14.25a1.125 1.125 0 1 0 0-2.25 1.125 1.125 0 0 0 0 2.25Z" clip-rule="evenodd" />
                             <path d="M10.719 21.75h9.156c1.036 0 1.875-.84 1.875-1.875v-5.25c0-1.036-.84-1.875-1.875-1.875h-.14l-8.742 8.743c-.09.089-.18.175-.274.257ZM12.738 17.625l6.474-6.474a1.875 1.875 0 0 0 0-2.651L15.5 4.787a1.875 1.875 0 0 0-2.651 0l-.1.099V17.25c0 .126-.003.251-.01.375Z" />
                         </svg>
-                        <h3 class="text-xl">Tema</h3>
+                        <h3 class="text-xl">{{ t('login.val.theme') }}</h3>
                     </div>
                     <div class="flex flex-col p-2.5 justify-self-center w-fit">
                         <div class="flex gap-10 my-3">
@@ -261,7 +262,7 @@
                                         <div class="rounded-bl-2xl bg-[#2f1818]"></div>
                                         <div class="rounded-br-2xl bg-[#882a2a]"></div>
                                     </div>
-                                    Dark-Red
+                                    Dark Red
                                 </label>
                             </div>
                             <div class="flex gap-2 w-[18vh]">
@@ -273,7 +274,7 @@
                                         <div class="rounded-bl-2xl bg-[#17252e]"></div>
                                         <div class="rounded-br-2xl bg-[#2a6287]"></div>
                                     </div>
-                                    Dark-Blue
+                                    Dark Blue
                                 </label>
                             </div>
                             <div class="flex gap-2 w-[18vh]">
@@ -285,7 +286,7 @@
                                         <div class="rounded-bl-2xl bg-[#182e17]"></div>
                                         <div class="rounded-br-2xl bg-[#2d872a]"></div>
                                     </div>
-                                    Dark-Green
+                                    Dark Green
                                 </label>
                             </div>
                             <div class="flex gap-2 w-[18vh]">
@@ -297,7 +298,7 @@
                                         <div class="rounded-bl-2xl bg-[#2e2917]"></div>
                                         <div class="rounded-br-2xl bg-[#87712a]"></div>
                                     </div>
-                                    Dark-Yellow
+                                    Dark Yellow
                                 </label>
                             </div>
                         </div>
@@ -312,7 +313,7 @@
                                         <div class="rounded-bl-xl bg-[#beb9b5]"></div>
                                         <div class="rounded-br-xl bg-[#d9d6d3]"></div>
                                     </div>
-                                    Light-Red
+                                    Light Red
                                 </label>
                             </div>
                             <div class="flex gap-2 w-[18vh]">
@@ -324,7 +325,7 @@
                                         <div class="rounded-bl-2xl bg-[#bebec5]"></div>
                                         <div class="rounded-br-2xl bg-[#d3d5d9]"></div>
                                     </div>
-                                    Light-Blue
+                                    Light Blue
                                 </label>
                             </div>
                             <div class="flex gap-2 w-[18vh]">
@@ -336,7 +337,7 @@
                                         <div class="rounded-bl-2xl bg-[#bfc6c2]"></div>
                                         <div class="rounded-br-2xl bg-[#d4d9d7]"></div>
                                     </div>
-                                    Light-Green
+                                    Light Green
                                 </label>
                             </div>
                             <div class="flex gap-2 w-[18vh]">
@@ -348,7 +349,7 @@
                                         <div class="rounded-bl-2xl bg-[#bec0b8]"></div>
                                         <div class="rounded-br-2xl bg-[#d8d9d3]"></div>
                                     </div>
-                                    Light-Yellow
+                                    Light Yellow
                                 </label>
                             </div>
                         </div>
