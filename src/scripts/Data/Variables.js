@@ -81,7 +81,6 @@ class metaInfo {
 		this.usingAbility		= "";
 		this.hasBoost			= false;
 		this.savedBoostedMap	= null;
-		this.state				= null;
 		this.drag				= null;
 		this.goatId				= null;
 		this.matchId			= null;
@@ -113,10 +112,13 @@ export const DOMBoard = () => boardConverter();
 
 export const DOMPlayer = (p) => getLocalPlayers(p);
 
+export const emptyCapturedPieces = () => ({Bastards: 0, Minotaurus: 0, Valkirya: 0, Jester: 0, Champion: 0}); 
+
 // Funzioni setter per aggiornare le variabili globali
 export function startLocalMatchState(newMatchState) {
 	localMatchState = newMatchState;
 }
+
 
 //inizializzazione della variabile localBoard utilizzando la variabile board presente in LocalMatchState
 export function initLocalBoard(boardData)

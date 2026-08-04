@@ -47,7 +47,7 @@ export function initLocalMatchState(raw)
 	const validated = validateReceivedMatch(raw);
 	startLocalMatchState(validated);
 
-	initLocalBoard(localMatchState.board);
+	initLocalBoard(localMatchState?.board);
 	initLocalPlayers();
 
 	localInfo.matchId = raw.id;

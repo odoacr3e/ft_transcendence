@@ -20,7 +20,7 @@ export function useAbility()
 	else 
 	{ 
 		square.useAbilityBool = true;
-		localInfo.usingAbility = square.piece.type;
+		localInfo.usingAbility = square.piece?.type ? square.piece.type : "";
 		if (MACRO.AUDIO)
 			new Audio("/src/assets/audios/useAbility.mp3").play();
 		console.log(`who the fuck i am: ${localInfo.usingAbility}`);

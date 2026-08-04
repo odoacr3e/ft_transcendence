@@ -4,6 +4,7 @@ import { clearHighlight, setCheckSquare }							from "../Events/utils/HighlightU
 import { eSpecialMoves }											from "@/Common/ENUMS";		
 import { blinkSquares } 											from "../Events/utils/GlobalUtils";
 import router 														from "@/router";
+import { resetLocalVars } 											from "./utils/ArchiUtils";
 
 export function listenGameSocket(socket)
 {
@@ -28,6 +29,7 @@ export function listenGameSocket(socket)
 				{
 					const threatId = new Set([raw.check.to, raw.check.mid, raw.check.from].filter(Boolean));
 					localInfo.blinking = blinkSquares(threatId, {interval: 450, delay: 600});
+					resetLocalVars();
 					return;
 				}
 			}
@@ -59,6 +61,7 @@ export function listenGameSocket(socket)
 		{
 			console.log("[socket game] -> [giveup]: ricevuto giveup");
 			localInfo.victory = raw.victory;
+			resetLocalVars();
 			return;
 		}
 		if (raw.type === "timeout")
@@ -66,6 +69,7 @@ export function listenGameSocket(socket)
 			console.log("[socket game] -> [timeout]: tempo scaduto, victory =", raw.victory);
 			if (raw.victory)
 				localInfo.victory = raw.victory;
+			resetLocalVars();
 			return;
 		}
 		if (raw.type == "simulate_boost")
