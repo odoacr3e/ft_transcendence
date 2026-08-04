@@ -61,4 +61,5 @@ sockio.on('connection', async (socket) =>
 	routesGame(socket, user);
 	routesTournament(socket, user);
 	websocketDisconnectionHandler(socket, user, friendsId);
+	socket.emit('ready');
 });
