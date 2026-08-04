@@ -166,7 +166,7 @@ function updateMoves(match, square, coords, specialMoves, boostBool=false)
 	// if (!square.piece)
 	// 	throw (`History: missing piece in square: ${square}`);
 	eName = eEvents.Move;
-	if (match.currentPlayer.useBoostBool || boostBool == true)
+	if (boostBool == true)
 		eName = eEvents.MoveBoost;
 	record = new HistoryEvent(this.moves, eName, square.piece?.team, match.board.updates, square.piece?.type, coords[0], coords[1], square.boostedTargetZones, square.piece?.isBoostedBool);
 	record.pieceEaten = match.board._data.get(coords[1])?.piece;
