@@ -13,6 +13,7 @@ export const useAuthStore = defineStore('auth', {
 		msgRecevied: new Set(),
 		preference: null,
 		socket: null,
+		socketReady: false,
 		tourInfo: {
 			pwd: null,
 			status: null,
@@ -153,8 +154,10 @@ export const useAuthStore = defineStore('auth', {
 			listenGameSocket(this.socket);
 
 			this.socket.on('connect', () => {
-				console.log(`Socket id: ${this.socket.id}`);
+				console.log(`[auth.st] -> [connectSocket]: Ricevuto connect: Socket id: ${this.socket.id}`);
 			})
+			this.socket.on('ready', 			() => { this.socketReady = true; });
+			this.socket.on('disconnect', 		() => { this.socketReady = false; });
 
 			this.socket.on('friend:online',		({ userId }) =>	{ this.usersOnline.add(userId); });
 			this.socket.on('friend:offline',	({ userId }) =>	{ this.usersOnline.delete(userId); });

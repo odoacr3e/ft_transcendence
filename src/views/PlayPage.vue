@@ -1,9 +1,10 @@
 <script setup>
-	import { matchMakingOpt }					from '@/scripts/Data/Variables.js';
+	import { ePlaying, matchMakingOpt }					from '@/scripts/Data/Variables.js';
 	import { eRoomType } 						from '@/Common/ENUMS.js';
 	import { useAuthStore } 					from '@/stores/auth.st.js';
 	import { ref, computed, watch, onMounted }	from 'vue';
 	import router								from '@/router';
+import { amIPlaying } from '@/scripts/Events/BackLink';
 
 	const auth      = useAuthStore();
 
@@ -41,15 +42,13 @@
 	{
 		if (!auth.socket)
 			return;
-		try {
-			const playing = await auth.socket.timeout(3000).emitWithAck('amiplaying', {});
-			if (playing)
-				router.push({ name: "game" });
-			else
-				console.log("allora non sto already doing playing eh?");
-		} catch {
-			console.log("[askAmIPlaying]: nessuna risposta dal back, resto in playpage");
-		}
+
+		const playing = await amIPlaying();
+		
+		if (playing === ePlaying.YES)
+			router.push({ name: "game" });
+		else
+			console.log("allora non sto already doing playing eh?");
 	}
 
 	onMounted(askAmIPlaying);

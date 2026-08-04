@@ -185,6 +185,8 @@ export let MACRO = Object ({
 	"AUDIO" : false,
 });
 
+export const ePlaying = Object.freeze({ YES: "yes", NO: "no", UNKNOWN: "unknown" });
+
 export const IMG_PATHS = Object.freeze ({
 	"whiteKing" : new URL("../../assets/pieces/white/king.png", import.meta.url).href,
 	"whiteChampion" : new URL("../../assets/pieces/white/queen.png", import.meta.url).href,

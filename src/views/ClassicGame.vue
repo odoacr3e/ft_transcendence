@@ -1,6 +1,6 @@
 <script setup>
-	import { localMatchState, localInfo, DOMPlayer }	from '@/scripts/Data/Variables';
-	import { onMounted, ref, computed }       			from 'vue';
+	import { localMatchState, localInfo, DOMPlayer, ePlaying }	from '@/scripts/Data/Variables';
+	import { onMounted, ref, computed, KeepAlive, onUnmounted }       			from 'vue';
 	import { reloadMatch, amIPlaying }					from '@/scripts/Events/BackLink.js';
 	import PlayerInfo               					from '../components/PlayerInfo.vue';
 	import ChessBoard               					from '../components/ChessBoard.vue';
@@ -10,28 +10,50 @@
 	import router 										from '@/router';
 	import GameFour										from './GameFour.vue';
 
-	const ready		= ref(false);
-	const style		= ref("1v1");
-	const bottomP	= computed(() => DOMPlayer(2)?.team === localInfo.myTeam ? 2 : 1);
-	const topP		= computed(() => bottomP.value === 1 ? 2: 1);
+	const	ready		= ref(false);
+	const	style		= ref("1v1");
+	const	bottomP		= computed(() => DOMPlayer(2)?.team === localInfo.myTeam ? 2 : 1);
+	const	topP		= computed(() => bottomP.value === 1 ? 2: 1);
+	let		alive		= true;
 
 	onMounted(async () => {
 		console.log("[ClassicGame]: OnMounted");		
 		try{
 			if (!localMatchState)
 			{
-				if (!await amIPlaying())
+				const playing = await amIPlaying();
+
+				if (!alive)
+					return;
+
+				if (localMatchState)
 				{
-					console.log("[ClassicGame]: non sono in partita, niente reload");
-					clearMatchStorage();
-					router.push({ name: "playpage"});
+					ready.value = true;
 					return;
 				}
+
+				if (playing === ePlaying.NO)
+				{
+					console.log("[ClassicGame]: non sono in partita, reloaddami sta ciola");
+					clearMatchStorage();
+					router.push({ name: "playpage" });
+					return;
+				}
+				if (playing === ePlaying.UNKNOWN)
+				{
+					console.log("[ClassicGame]: stato incerto, back ma che combini?");
+					router.push({ name: "playpage" });
+					return;
+				}
+
 				const restored = await reloadMatch();
-				if (!restored)
+
+				if (!alive)
+					return
+				if (!localMatchState && !restored)
 				{
 					clearMatchStorage();
-					router.push({ name: "playpage"});
+					router.push({ name: "playpage" });
 					return;
 				}
 			}
@@ -40,6 +62,8 @@
 			console.log(`${err}`);
 		}
 	})
+
+	onUnmounted(() => { alive = false });
 </script>
 
 <template>

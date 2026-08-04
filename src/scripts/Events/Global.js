@@ -49,9 +49,12 @@ export async function globalEvents()
 
 	ROOT_DIV.addEventListener("dragstart", function(event)
 	{
-		if ((localInfo.secondMove && localInfo.savedBoostedMap && 
-			localInfo.savedBoostedMap.has(event.target.parentNode.id)) || !localInfo.secondTurn)
+		if (((localInfo.secondMove && localInfo.savedBoostedMap && 
+			localInfo.savedBoostedMap.has(event.target.parentNode.id)) || !localInfo.secondTurn) && localBoard.get(event.target.parentNode.id)?.piece?.team === localInfo.myTeam)
+			{
+				console.log("sono qui");				
 				highlightOnDrag(event);
+			}
 	});
 
 	ROOT_DIV.addEventListener("drag", function(event) {

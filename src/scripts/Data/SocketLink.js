@@ -50,11 +50,9 @@ export function listenGameSocket(socket)
 				reloadMatchState(raw);
 				if ((Number(raw.mask) & (eSpecialMoves.CHECK | eSpecialMoves.CHECKMATE)) && raw.giorgi0)
 					setCheckSquare(raw.giorgi0);
-				console.log("{socket game [reload]} Renderizzo game reloadato");
-				router.push({ name: "game" });
 			}
 			else
-				console.log("{socket game [reload]}: Fallimento ricezione");
+				console.log("{socket game [reload]}:state già presente nel controllo sul mounted");
 			return;
 		}
 		if (raw.type === "giveup")

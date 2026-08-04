@@ -1,37 +1,21 @@
-import { localBoard, localInfo }	from "@/scripts/Data/Variables";
-// import { updateMatchState }			from "@/scripts/Data/Archi";
-// import { clearHighlight }			from "@/scripts/Events/utils/HighlightUtils.js";
+import { ePlaying, localBoard, localInfo }	from "@/scripts/Data/Variables";
 import { getTarget }				from "./utils/MovementUtils.js";
-// import { MACRO } 					from "@/scripts/Data/Variables";
-import { useAuthStore } from "@/stores/auth.st.js";
-import { sendEndTurn } from "./utils/GlobalUtils.js";
-// import { connect } from "node:http2";
-// import { _jsonReviver }				from "../Data/utils/ArchiUtils.js";
+import { useAuthStore }				from "@/stores/auth.st.js";
+import { Socket } from "socket.io-client";
 
 export async function sendToBackend(fromId, toId, flag)
 {
-	// console.log("[sendToBackend]: Entrato in STB");
-	
 	const	TargetZone = getTarget(fromId, toId);
 
 	if (fromId && fromId !== toId && TargetZone)
 	{
-		// console.log("[sendToBackend]: Entrato nell'if di STB");
-		
 		const promise = await requestToBack(fromId, toId);
 		if (promise)
-		{
-			// clearHighlight();
-			// if (MACRO.AUDIO)
-			// 	new Audio("/src/assets/audios/moving.mp3").play();
-			// console.log("[sendToBackend]: Mossa valida!");
-			if (flag) { return (true); }
-		}
+			if (flag)
+				return (true);
 		else
-		{
-			// console.log("[sendToBackend]: Mossa non valida");
-			if (flag) { return (false); }
-		}
+			if (flag)
+				return (false);
 	}
 }
 
@@ -67,22 +51,51 @@ export async function requestToBack(fromSquare, toSquare, opType)
 	});
 }
 
+function waitForSocketToBeReady(ms = 5000)
+{
+	const auth = useAuthStore();
+	if (!auth.socket)
+		return;
+
+	if (auth.socket.connected)
+		return (Promise.resolve(true));
+
+	return new Promise((resolve) => {
+		const done = (ok) => {
+			clearTimeout(timer);
+			auth.socket.off('ready', onReady);
+			resolve(ok);
+		}
+		const onReady = () => done(true);
+		const timer = setTimeout(() => done(false), ms);
+		auth.socket.once('ready', onReady);
+	});
+}
+
 /**
  * Chiede al back se questo client è dentro una partita.
  * Il payload {} serve a far finire l'ack in seconda posizione lato server.
- * @returns {Promise<boolean>}
+ * @returns {Promise<"yes"|"no"|"unknown">}
  */
 export async function amIPlaying()
 {
 	const auth = useAuthStore();
 
 	if (!auth.socket)
-		return (false);
+		return (ePlaying.UNKNOWN);
+	
+	if (!await waitForSocketToBeReady())
+	{
+		console.log("[BackLink] -> [amIPlaying]: socket mai connesso");
+		return (ePlaying.UNKNOWN);
+	}
 	try {
-		return (await auth.socket.timeout(3000).emitWithAck('amiplaying', {}) === true);
-	} catch {
+		const resp = await auth.socket.timeout(3000).emitWithAck("amiplaying", {});
+		return (resp === true ? ePlaying.YES : ePlaying.NO);
+	}
+	catch {
 		console.log("[BackLink] -> [amIPlaying]: nessuna risposta dal back");
-		return (false);
+		return (ePlaying.UNKNOWN);
 	}
 }
 
@@ -96,6 +109,7 @@ export function reloadMatch()
 	return new Promise((resolve) =>
 	{
 		let retryId = null;
+		let done	= false;
 
 		const emit = () => {
 			console.log("[reload] emit");
@@ -107,6 +121,9 @@ export function reloadMatch()
 		};
 
 		const finish = (ok) => {
+			if (done)
+				return;
+			done = true;
 			clearTimeout(timeout);
 			clearInterval(retryId);
 			auth.socket.off("game", onResponse);
@@ -126,8 +143,13 @@ export function reloadMatch()
 		};
 
 		const start = () => {
+			let tries = 0;
 			emit();
-			retryId = setInterval(emit, 1000);
+			retryId = setInterval(() => {
+				if(++tries >= 4)
+					return (finish(false));
+				emit();
+			}, 1000);
 		};
 
 		const timeout = setTimeout(() => finish(false), 6000);

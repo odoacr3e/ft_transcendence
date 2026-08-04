@@ -162,19 +162,20 @@ boardConverter()
 	✓	Il clicked non dovrebbe stare sotto l'evidenziazione di ultima mossa
 	✓	Le flag clickedId e lastclicked non dovrebbero restare popolate
 	✓	Timer che parte da solo prima della prima mossa del bianco
+	✓	Quando fai reload non segna correttamente i turni
+	✓	Ogni volta che entri in playpage si avvia il reload
+	✓	Quando vado a promozione con il pedone si oscura tutta la scacchiera 
+		e non va
+	✓	Rimangono i pezzi mangiati il playerinfo anche da una partita all'altra se ne
+		fai una di seguito all'altra
+	✓	Quando tocca all'avversario se clicchi sui suoi pezzi puoi vedere le loro targetzones	
+	✓	Quando tocca all'avversario se trascini sui suoi pezzi puoi vedere le loro targetzones
 	▫	Quando finisci l'esecuzione di una mossa boostata di un pedone e al turno 
 		dopo vuoi muovere lo stesso pedone manda eccezione (ma penso sia dovuto al backend) mosso senza voler utilizzare l'abilità
 	▫	Quando fai una mossa boostata di un pedone se vuoi muovere un pezzo dopo aver 
 		mosso il pedone, che passa dove prima c’era il pedone mi viene fuoir eccezione
 		ma in modi casuali non riesco ancora a capire cosa succede
-	✓	Quando fai reload non segna correttamente i turni
-	✓	Ogni volta che entri in playpage si avvia il reload
-	✓	Quando vado a promozione con il pedone si oscura tutta la scacchiera 
-		e non va
-	▫	Andare avanti e indietro nelle pagine non funzione quando sei sulla playpage
-	▫	Rimangono i pezzi mangiati il playerinfo anche da una partita all'altra se ne
-		fai una di seguito all'altra
-	▫	Quando tocca all'avversario se clicchi sui suoi pezzi puoi vedere le loro targetzones	
+	▫	Andare avanti e indietro nelle pagine non funziona quando sei sulla playpage
 
 //TODO FRONTEND - 
 	✓	websocket per lo stato online

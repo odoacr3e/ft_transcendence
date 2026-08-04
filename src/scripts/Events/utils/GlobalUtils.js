@@ -110,14 +110,16 @@ export function checkPermision(event)
 		return (false);
 
 	const Square  = localBoard.get(localInfo.clickedId);
-	const Piece   = Square.piece;
-	const Player  = localPlayers.values().find(p => p.isPlaying === true);
+	const Piece   = Square?.piece;
 
-	if (Square.highlight || Square.boostedHighlight) 
+	if (Square?.highlight || Square?.boostedHighlight) 
 		return (true);
 
-	if (Piece && Piece.team != Player.team) { localInfo.lastClickedId = null; return false; }
-
+	if (Piece && Piece.team != localInfo.myTeam)
+	{
+		localInfo.lastClickedId = null;
+		return false;
+	}
 	return (true);
 }
 
