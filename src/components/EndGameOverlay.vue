@@ -41,7 +41,7 @@
 		startLocalMatchState(null);
 	}
 
-	function playAgain() { leaveMatch(); router.push({name: 'playpage'}); }
+	function playAgain() { leaveMatch(); router.replace({name: 'playpage'}); }
 	function goHome() { leaveMatch(); router.push({name: 'home'}); }
 	function watchBoard() { dismissed.value = true; }
 	function reopen() { dismissed.value = false; }

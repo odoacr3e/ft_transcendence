@@ -1,10 +1,10 @@
 <script setup>
-	import { ePlaying, matchMakingOpt }					from '@/scripts/Data/Variables.js';
+	import { ePlaying, matchMakingOpt }			from '@/scripts/Data/Variables.js';
 	import { eRoomType } 						from '@/Common/ENUMS.js';
 	import { useAuthStore } 					from '@/stores/auth.st.js';
-	import { ref, computed, watch, onMounted }	from 'vue';
+	import { ref, computed, watch, onMounted, onUnmounted }	from 'vue';
 	import router								from '@/router';
-import { amIPlaying } from '@/scripts/Events/BackLink';
+	import { amIPlaying } 						from '@/scripts/Events/BackLink';
 
 	const auth      = useAuthStore();
 
@@ -13,6 +13,7 @@ import { amIPlaying } from '@/scripts/Events/BackLink';
 	const time      = ref(null);
 	const waiting   = ref(false);
 	const reloading = ref(false);
+	let	  alive		= true;
 
 	const canPlay = computed(() => {
 		if (!roomType.value || !players.value)
@@ -44,14 +45,18 @@ import { amIPlaying } from '@/scripts/Events/BackLink';
 			return;
 
 		const playing = await amIPlaying();
-		
+
+		if (!alive)
+			return;
+
 		if (playing === ePlaying.YES)
 			router.push({ name: "game" });
 		else
-			console.log("allora non sto already doing playing eh?");
+			console.log("[playPage]: allora non sto already doing playing eh?");
 	}
 
 	onMounted(askAmIPlaying);
+	onUnmounted(() => { alive = false });
 </script>
 
 <template>

@@ -39,7 +39,7 @@ export function listenGameSocket(socket)
 		{
 			console.log("[socket game] ID NEW GAME TROVATO!");
 			initLocalMatchState(raw);
-			router.push( {name: raw.p3 ? "GameFour" : "game"});
+			router.replace( {name: raw.p3 ? "GameFour" : "game"});
 			return;
 		}
 		if (raw.type === "reload")

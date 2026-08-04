@@ -19,10 +19,8 @@ export async function globalEvents()
 
 	ROOT_DIV.addEventListener("click", async function(event) 
 	{
-		console.log("entrato");
 		if (!checkPermision(event))
 		{
-			console.log("primo esc");
 			clearHighlight(); 
 			return;
 		}	
@@ -32,7 +30,6 @@ export async function globalEvents()
 			console.log("dentro check");
 			if (usingAbility())
 			{
-				console.log("dentro using");
 				console.log(`Boosted Piece: ${localInfo.usingAbility}`);
 				await PIECES_ABILITY[localInfo.usingAbility](localInfo.lastClickedId, localInfo.clickedId, "click");
 				return;

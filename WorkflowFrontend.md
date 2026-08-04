@@ -135,7 +135,7 @@ boardConverter()
 		✓	blinking e effetto audio quando fai una mossa che metterebbe il re sotto scacco
 		✓	effetto sonoro ed evidenziazione del re quando viene messo sotto scacco
 	✓	Bottone ed evento per chiedere pareggio
-	▫	Barra di caricamento durante il loading delle partite
+	✓	Barra di caricamento durante il loading delle partite
 	▫	history delle mosse durante la partita
 	▫	re-design dei pezzi
 	▫	history delle partite
@@ -170,12 +170,12 @@ boardConverter()
 		fai una di seguito all'altra
 	✓	Quando tocca all'avversario se clicchi sui suoi pezzi puoi vedere le loro targetzones	
 	✓	Quando tocca all'avversario se trascini sui suoi pezzi puoi vedere le loro targetzones
+	✓	Andare avanti e indietro nelle pagine non funziona quando sei sulla playpage
 	▫	Quando finisci l'esecuzione di una mossa boostata di un pedone e al turno 
 		dopo vuoi muovere lo stesso pedone manda eccezione (ma penso sia dovuto al backend) mosso senza voler utilizzare l'abilità
 	▫	Quando fai una mossa boostata di un pedone se vuoi muovere un pezzo dopo aver 
 		mosso il pedone, che passa dove prima c’era il pedone mi viene fuoir eccezione
 		ma in modi casuali non riesco ancora a capire cosa succede
-	▫	Andare avanti e indietro nelle pagine non funziona quando sei sulla playpage
 
 //TODO FRONTEND - 
 	✓	websocket per lo stato online

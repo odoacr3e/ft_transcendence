@@ -36,13 +36,13 @@
 				{
 					console.log("[ClassicGame]: non sono in partita, reloaddami sta ciola");
 					clearMatchStorage();
-					router.push({ name: "playpage" });
+					router.replace({ name: "playpage" });
 					return;
 				}
 				if (playing === ePlaying.UNKNOWN)
 				{
 					console.log("[ClassicGame]: stato incerto, back ma che combini?");
-					router.push({ name: "playpage" });
+					router.replace({ name: "playpage" });
 					return;
 				}
 
@@ -53,8 +53,8 @@
 				if (!localMatchState && !restored)
 				{
 					clearMatchStorage();
-					router.push({ name: "playpage" });
-					return;
+					router.replace({ name: "playpage" });
+					return
 				}
 			}
 			ready.value = true;
@@ -72,17 +72,22 @@
             <ActionButtons/>
         </div>
         <div class="p-6 bg-[#201e1c] rounded-l-3xl border-r border-[#4e4e4e8c]">
-          <div v-if="ready">
-            <PlayerInfo :p="topP" pos="top"/>
-            <div class="relative">
-                <ChessBoard :style="style"/>
-                <EndGameOverlay/>
-            </div>
+        	<div v-if="ready">
+        		<PlayerInfo :p="topP" pos="top"/>
+        	<div class="relative">
+            	<ChessBoard :style="style"/>
+            	<EndGameOverlay/>
+        	</div>
             <PlayerInfo :p="bottomP" pos="bottom"/>
-          </div>
-        </div>
-        <div class="p-10 flex-col mt-20 w-lg">
-        </div>
+        	</div>
+			<div v-else class="flex flex-col items-center justify-center gap-6 py-20">
+				<div class="w-16 h-16 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin"></div>
+				<p  class="text-white text-xl tracking-widest">
+					Loading<span class="dot dot-1">.</span><span class="dot dot-2">.</span><span class="dot dot-3">.</span>
+				</p>
+        	</div>
+		</div>
+        <div class="p-10 flex-col mt-20 w-lg"/>
     </div>
 </template>
 

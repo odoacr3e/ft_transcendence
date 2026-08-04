@@ -15,6 +15,8 @@ import PlayPage from '../views/PlayPage.vue'
 import PwdDEBUG from '../views/PwdDEBUG.vue'
 import UserMe from '../views/UserMe.vue'
 import Home from '../views/Home.vue'
+import { ePlaying, localMatchState } from '@/scripts/Data/Variables.js'
+import { amIPlaying } from '@/scripts/Events/BackLink.js'
 
 const routes = [
 	{
@@ -25,6 +27,15 @@ const routes = [
 	{
 		path: '/game',
 		name: 'game',
+		meta: { requiresAuth: true },
+		beforeEnter: async () => {
+			if (localMatchState)
+				return (true);
+			const playing = await amIPlaying();
+			if (playing !== ePlaying.YES)
+				return { name: 'playpage' };
+			return true;
+		},
 		component: ClassicGame
 	},
 	{
