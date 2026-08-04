@@ -87,7 +87,9 @@ export const italian = {
                 changeAvatar: "Cambia avatar",
                 removeAvatar: "Elimina avatar",
                 changePwd: "Cambia password",
-                saveChanges: "Salva le modifiche"
+                newPwd: "Nuova password",
+                saveChanges: "Salva le modifiche",
+                desc: "La password deve avere almeno 8 caratteri, un numero, una maiuscola, una minuscola e un carattere speciale ($,%,#...)"
             },
             friendList: "Lista di amici",
             removeFriend: "Elimina amicizia",

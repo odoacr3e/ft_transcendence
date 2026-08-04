@@ -158,7 +158,7 @@
 							<div class="flex gap-2 pb-1 items-center">
 								<span class="py-1 block size-2 rounded-full"
 									:class="{	'bg-notif-on' : m.status === 'not_read',
-												'bg-zinc-500' : m.status === 'read' }"/>
+												'bg-zinc-500' : m.status === 'read' }"/> <!--NOTE ✓-->
 								<h3 class="text-md">{{ m.title }}</h3>
 								<p class="text-text-last">|</p>
 								<p class="text-xs text-text-third">{{ rework_date(m.creation_date) }}</p>

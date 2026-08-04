@@ -87,7 +87,9 @@ export const english = {
                 changeAvatar: "Change avatar",
                 removeAvatar: "Remove avatar",
                 changePwd: "Change password",
-                saveChanges: "Save changes"
+                newPwd: "New password",
+                saveChanges: "Save changes",
+                desc: "The password must contain at least 8 characters, a number, an uppercase and a lowercase letter and a special character ($,%,#...)"
             },
             friendList: "Friends list",
             removeFriend: "Remove @.lower:common.friend",

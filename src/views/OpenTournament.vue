@@ -98,9 +98,8 @@
                             <img :src="u.friend.image ? `${u.friend.image}` : defaultAvatar" @error="handleAvatarError" :draggable="false"
                                 alt="" class="size-22 rounded-t-md place-self-center object-cover bg-linear-to-t from-main-color to-bg-default">
                             <div class="py-2 grid grid-cols-1 border-border-default border-b-2 border-x-2 rounded-b-md w-full justify-items-center"
-                                :class="{   'bg-bg-second' : findUser(invites, u.friend.id_user),
-                                            'bg-bg-darker' : !findUser(invites, u.friend.id_user),
-											'bg-bg-accept' : findUser(players, u.friend.id_user) }"> <!--FIXME - bg-accept qua non funziona...-->
+                                :class="findUser(players, u.friend.id_user) ? 'bg-bg-accept'
+                                        : findUser(invites, u.friend.id_user) ? 'bg-bg-second' : 'bg-bg-darker'">
                                 <h3 class="text-text-default text-sm" v-if="u.friend.username.length > 8">{{ u.friend.username.slice(0, 7) + "..."}}</h3>
                                 <h3 class="text-text-default text-sm" v-if="u.friend.username.length <= 8">{{ u.friend.username }}</h3>
                             </div>
@@ -120,9 +119,8 @@
                             <img :src="u.image ? `${u.image}` : defaultAvatar" @error="handleAvatarError" :draggable="false"
                                 alt="" class="size-22 rounded-t-md place-self-center object-cover bg-linear-to-t from-main-color to-bg-default">
                             <div class="py-2 grid grid-cols-1 border-border-default border-b-2 border-x-2 rounded-b-md w-full justify-items-center"
-                                :class="{   'bg-bg-second' : findUser(invites, u.id_user),
-                                            'bg-bg-darker' : !findUser(invites, u.id_user),
-											'bg-bg-accept' : findUser(players, u.id_user) }">
+                                :class="findUser(players, u.id_user) ? 'bg-bg-accept'
+                                        : findUser(invites, u.id_user) ? 'bg-bg-second' : 'bg-bg-darker'">
                                 <h3 class="text-text-default text-sm" v-if="u.username.length > 8">{{ u.username.slice(0, 7) + "..."}}</h3>
                                 <h3 class="text-text-default text-sm" v-if="u.username.length <= 8">{{ u.username }}</h3>
                             </div>

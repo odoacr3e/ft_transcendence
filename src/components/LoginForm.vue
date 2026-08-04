@@ -156,7 +156,7 @@
         <div class="w-full max-w-lg rounded-3xl border border-border-default bg-bg-default p-6 text-text-default shadow-2xl">
             <div class="flex items-start justify-between gap-4">
                 <p class="text-sm uppercase tracking-widest text-text-second">{{ t('login.OTP.auth') }}</p>
-				<button type="button" class="text-2xl leading-none text-zinc-400 hover:text-text-default" @click="closePopup">&times;</button> <!--FIXME - zinc-400-->
+				<button type="button" class="text-2xl leading-none text-text-third hover:text-text-default" @click="closePopup">&times;</button>
             </div>
 			<hr class="w-[90%] justify-self-start text-text-last mt-1 mb-2">
 			<div class="justify-self-center mt-4">

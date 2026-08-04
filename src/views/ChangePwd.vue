@@ -3,9 +3,11 @@
     import { useAuthStore }	from "../stores/auth.st";
     import { storeToRefs }	from 'pinia';
 	import { useRouter }	from 'vue-router';
+	import { useI18n }		from 'vue-i18n';
     import { ref }			from 'vue';
 	
-    const   formData = ref({
+    const	{ t } = useI18n(),
+    	   formData = ref({
 	              password: ''
 	            }),
             authStore = useAuthStore(),
@@ -26,8 +28,8 @@
 
 <template>
     <div class="flex flex-col z-2 bg-bg-darker rounded-3xl w-[70vh] h-[70vh]">
-        <h2 class="text-text-default text-3xl self-center m-9">Cambia password</h2>
-        <div class="flex flex-col justify-center w-fit px-8 py-5 mb-6 mx-auto bg-bg-default rounded-3xl border border-border-default">
+        <h2 class="text-text-default text-3xl self-center m-9">{{ t('userPage.edit.changePwd') }}</h2>
+        <div class="flex flex-col justify-center w-fit px-8 py-5 mb-4 mx-auto bg-bg-default rounded-3xl border border-border-default">
             <img :src="user.image ? `${user.image}` : defaultAvatar" @error="handleAvatarError"
                     alt="" class="size-35 rounded-full m-5 mx-auto object-cover">
             <h3 class="text-text-default text-2xl self-center">{{ user.username }}</h3>
@@ -35,13 +37,13 @@
             <h5 class="text-text-third text-sm self-center">{{ user.nationality }}</h5>
         </div>
         <form @submit.prevent="submitForm" method="post" enctype="application/json" class="text-text-default self-center flex flex-col">
-	    	<div class="form border-border-default text-form-icon flex w-sm m-4 mb-2" :class="{ 'animate-shake': error }" @animationend="error = false">
+	    	<div class="form self-center border-border-default text-form-icon flex w-102 m-4 mb-0" :class="{ 'animate-shake': error }" @animationend="error = false">
 	    		<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
 	    			<path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
 	    		</svg>
-	    		<input placeholder="Nuova password" size="31" class="pl-2 text-base" v-model="formData.password"
+	    		<input :placeholder="t('userPage.edit.newPwd')" size="31" class="pl-2 text-base" v-model="formData.password"
 	    				:type="visible ? 'text' : 'password'">
-	    		<button type="button" @click="show()" class="ml-3">
+	    		<button type="button" @click="show()" class="ml-7">
 	    			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
 	    				<path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 8.155 7.36 5.5 12 5.5c4.638 0 8.573 2.655 9.963 6.428.07.207.07.431 0 .639C20.577 15.845 16.64 18.5 12 18.5c-4.638 0-8.573-2.655-9.963-6.428Z" />
 	    				<path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
@@ -49,17 +51,16 @@
 	    			</svg>
 	    		</button>
 	    	</div>
-            <div class="text-xs mx-5 self-center justify-self-center text-main-color" 
+            <div class="text-xs mx-5 mb-4 mt-1 self-center justify-self-center text-main-color" 
                 :class="{ 'transition-colors duration-200 text-text-error': error, 'transition-colors duration-200 text-main-color': !error, }" 
                 @animationend="error = false">
-                <p>Ricorda, la password deve avere almeno 8 caratteri, un numero,</p>
-                <p> una maiuscola, una minuscola e un carattere speciale ($,%,#...)</p>
+				<p class="w-102 text-center">{{ t('userPage.edit.desc') }}</p>
             </div>
-	    	<input id="submit" class="cursor-pointer justify-self-center w-sm p-3 text-base self-center mt-6
+	    	<input id="submit" class="cursor-pointer justify-self-center w-sm p-3 text-base self-center mt-4
                             bg-main-color rounded-[7px] text-text-default hover:bg-linear-to-t from-main-color to-light-button"
 	    			v-bind:class="{'pointer-events-none grayscale': !formData.password,
 	    				'pointer-events-auto grayscale-0 ': formData.password }"
-	    			type="submit" value="Salva le modifiche">
+	    			type="submit" :value="t('userPage.edit.saveChanges')">
 	    </form>
     </div>
 </template>

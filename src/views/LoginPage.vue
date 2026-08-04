@@ -22,7 +22,7 @@
             </div>
             <div class="flex flex-col justify-self-center items-center justify-cente">
                 <a href="/auth/google_login" class="cursor-pointer w-full p-3 px-22 flex gap-2
-                        text-base bg-zinc-300 rounded-[7px] text-gray-700 hover:bg-linear-to-t from-zinc-300 to-zinc-100">
+                        text-base bg-zinc-300 rounded-[7px] text-gray-700 hover:bg-linear-to-t from-zinc-300 to-zinc-100">  <!--NOTE ✓-->
                         <img src="../assets/google-icon.svg" alt="google-icon" class="size-6">
                         {{ t('login.google') }}
                 </a>

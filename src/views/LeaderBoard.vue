@@ -82,14 +82,15 @@ onMounted(async () => {
             <div v-for="(p, index) in last7">
                 <div class="flex items-center px-4">
                     <h3 class="ml-3" :class="{'mr-2' : index == 6, 'mr-5' : index != 6 }"><b>{{ index + 4 }}°</b></h3>
-                    <div class="flex gap-2 items-center" :class=" top ? 'm-1.5' : 'm-2'">
-                        <img class="size-10 rounded-full object-cover" :src="p.image ? `${p.image}` : defaultAvatar" @error="handleAvatarError"/>
-                        <RouterLink :to="{ name: 'user_page', params: { username: p.username } }">
-                            <p class="text-text-default hover:underline" :class="p.username == user.username ? 'font-semibold' : ''">{{ p.username }}</p>
-                        </RouterLink>
-                        <div class="flex items-center gap-1">
-                            <TagTitle :title="p.title" class="mt-1"/>
-                            <p class="text-text-last">|</p>
+                    <div class="grid grid-cols-2 gap-2 items-center" :class=" top ? 'm-1.5' : 'm-2'">
+                        <div class="flex items-center gap-2 w-78 min-w-fit">
+                            <img class="size-10 rounded-full object-cover" :src="p.image ? `${p.image}` : defaultAvatar" @error="handleAvatarError"/>
+                            <RouterLink :to="{ name: 'user_page', params: { username: p.username } }">
+                                <p class="text-text-default hover:underline" :class="p.username == user.username ? 'font-semibold' : ''">{{ p.username }}</p>
+                            </RouterLink>
+                            <TagTitle :title="p.title"/>
+                        </div>
+                        <div class="flex items-center justify-end-safe gap-1 w-full">
                             <div class="flex gap-2 text-text-second"><p class="text-text-win-open">{{ winRate(p.stats.w, p.stats.total) }}%</p>{{ t('leaderBoard.outOf', { games: p.stats.total }) }}</div>
                             <p class="text-text-last">|</p>
                             <p class="text-text-second text-sm">ELO: {{ p.points }}</p>
