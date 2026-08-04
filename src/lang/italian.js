@@ -19,7 +19,11 @@ export const italian = {
             inv: {
                 creation: "Creato il {date} @:common.by",
                 desc: "Sei stato invitato al @.lower:common.tournament <b>{tourName}</b> creato @:common.by {tourCreator}.<br>Vuoi partecipare?",
-                expired: "Invito scaduto"
+                expired: "Invito scaduto",
+                friendTitle: "Richiesta di amicizia",
+                tourTitle: "Invito ad un torneo",
+                friendNotif : "{sender} ti ha inviato una richiesta di amicizia",
+                tourNotif: "{sender} ti ha invitato a partecipare al @.lower:common.tournament {tour}"
             },
             zeroNotif: "Nessuna notifica",
             profile: "Profilo",

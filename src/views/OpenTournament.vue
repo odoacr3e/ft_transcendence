@@ -67,8 +67,8 @@
             for (const u of invites.value.values())
             {
                 await api.post("/api/notifications", 
-                    {	title: "Invito ad un torneo",
-                        description: ` ti ha invitato a partecipare al torneo ${tournament.value?.name}|${authStore.tourInfo.pwd}%${tournament.value.id_tournament}`,
+                    {	title: "T",
+                        description: ` ${tournament.value?.name}|${authStore.tourInfo.pwd}%${tournament.value.id_tournament}`,
                         id_receiver: u.id_user });
             }
         }

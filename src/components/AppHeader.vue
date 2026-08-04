@@ -41,14 +41,9 @@
 	}
 
 	function handleClickOutside(e) {
-		if (p_dropdown.value && !p_dropdown.value.contains(e.target))
-			p_bool.value = false;
-
-		if (n_dropdown.value && !n_dropdown.value.contains(e.target))
-			n_bool.value = false;
-
-		if (lang_dropdown.value && !lang_dropdown.value.contains(e.target))
-			l_bool.value = false;
+		if (p_dropdown.value && !p_dropdown.value.contains(e.target))		{ p_bool.value = false; }
+		if (n_dropdown.value && !n_dropdown.value.contains(e.target))		{ n_bool.value = false; }
+		if (lang_dropdown.value && !lang_dropdown.value.contains(e.target))	{ l_bool.value = false; }
 	}
 
 	async function readMsg(msg)
@@ -56,15 +51,14 @@
 		if (msg.status === "not_read")
 		{
 			msg.status = 'read';
-			try
-			{ await api.patch("/api/notifications", { id_notification: Number(msg.id_notification) }); }
+			try {
+				await api.patch("/api/notifications", { id_notification: Number(msg.id_notification) }); }
 			catch(err) { console.log(err); }
 		}
 	}
 
 	async function fetchTour(msg) {
-		try
-        {
+		try {
             tourOpen.value = (await api.get(`/api/tournaments/${msg.description.slice(msg.description.indexOf('%') + 1)}`)).data.tournament;
 			if (!tourOpen.value) { tourOpen.value = null; }
         }
@@ -83,8 +77,7 @@
 
 		//solo per test
 		try {
-			await api.post("/api/tournaments/addPlayers", {id_tournament: tourOpen.value.id_tournament, id_users: [user.value.id_user]});
-		}
+			await api.post("/api/tournaments/addPlayers", {id_tournament: tourOpen.value.id_tournament, id_users: [user.value.id_user]}); }
 		catch(err) { console.log(err); }
 		closePopup();
 		router.push(`/tournament/${tourOpen.value.id_tournament}`);
@@ -98,9 +91,8 @@
 
 	onMounted(async () => {
 		try {
-			if (user.value)
-				db.value = (await api.get("/api/users")).data.users;
-		} catch (error) { console.log("user non loggato, impossibile fare fetch su db");}
+			if (user.value) { db.value = (await api.get("/api/users")).data.users; } }
+		catch (error) { console.log("user non loggato, impossibile fare fetch su db");}
 		document.addEventListener('click', handleClickOutside);
     });
 
@@ -159,23 +151,25 @@
 								<span class="py-1 block size-2 rounded-full"
 									:class="{	'bg-notif-on' : m.status === 'not_read',
 												'bg-zinc-500' : m.status === 'read' }"/> <!--NOTE ✓-->
-								<h3 class="text-md">{{ m.title }}</h3>
+								<h3 v-if="m.description[0] === ' ' && m.title === 'F'" class="text-md">{{ t('header.inv.friendTitle') }}</h3>
+								<h3 v-if="m.description[0] === ' ' && m.title === 'T'" class="text-md">{{ t('header.inv.tourTitle') }}</h3>
+								<h3 v-if="m.title !== 'F' && m.title !== 'T'" class="text-md">{{ m.title }}</h3>
 								<p class="text-text-last">|</p>
 								<p class="text-xs text-text-third">{{ rework_date(m.creation_date) }}</p>
 							</div>
 							<hr class="w-full justify-self-start text-text-last">
 							<div class="items-end">
-								<RouterLink v-if="m.description[0] === ' ' && m.description.includes('amicizia')" :to="{ name: 'user_page', params: { username: m.sender.username } }"
+								<RouterLink v-if="m.description[0] === ' ' && m.title === 'F'" :to="{ name: 'user_page', params: { username: m.sender.username } }"
 									@click="readMsg(m)">
-									<div v-if="m.description[0] === ' '" class="flex gap-1 text-text-second text-sm pt-2.5 pb-1">
-										<p class="hover:underline">{{ m.sender.username }} {{ m.description }}</p>
+									<div class="flex gap-1 text-text-second text-sm pt-2.5 pb-1">
+										<p class="hover:underline">{{ t('header.inv.friendNotif', {sender: m.sender.username}) }}</p>
 									</div>
 								</RouterLink>
 
-								<div v-if="m.description[0] === ' ' && m.description.includes('torneo')"
+								<div v-if="m.description[0] === ' ' && m.title === 'T'"
 									@click="readMsg(m); fetchTour(m); n_bool = false; popUp = true;" class="cursor-pointer">
-									<div v-if="m.description[0] === ' '" class="flex gap-1 text-text-second text-sm pt-2.5 pb-1">
-										<p class="hover:underline">{{ m.sender.username }} {{ m.description.slice(0, m.description.indexOf('|')) }}</p>
+									<div class="flex gap-1 text-text-second text-sm pt-2.5 pb-1">
+										<p class="hover:underline">{{ t('header.inv.tourNotif', {sender: m.sender.username, tour: m.description.slice(1, m.description.indexOf('|'))}) }}</p>
 									</div>
 								</div>
 

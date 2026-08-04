@@ -19,7 +19,11 @@ export const english = {
             inv: {
                 creation: "Created {date} @:common.by",
                 desc: "You've been invited to the <b>{tourName}</b> @.lower:common.tournament created @:common.by {tourCreator}.<br>Would you like to participate?",
-                expired: "Invitation no longer valid"
+                expired: "Invitation no longer valid",
+                friendTitle: "@:common.friend request",
+                tourTitle: "@:common.tournament invitation",
+                friendNotif : "{sender} sent you a @.lower:common.friend request",
+                tourNotif: "{sender} has invited you to participate in the {tour} @.lower:common.tournament"
             },
             zeroNotif: "No notifications",
             profile: "Profile",
