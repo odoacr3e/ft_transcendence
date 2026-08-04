@@ -79,10 +79,11 @@ function getBestTurn(match)
 	for (let i = 0; i != arrayTurns.length; i++)
 	{
 		console.log(`Turns: ${i}/${arrayTurns.length}`);
+		render(match);
 		const turn = arrayTurns[i];
 		if (!execTurn(match, turn))
 			continue ;
-		// render(match);
+		render(match);
 		newTurns = getLegalMoves(match);
 		val.score = minMax(match, ai, newTurns, 2, [turn]);
 		// val.score = Math.abs(val.score);
@@ -174,6 +175,8 @@ function minMax(match, ai, arrayTurns, depth, pastTurns)
 		let minEval = +Infinity;
 		for (const turn of arrayTurns)
 		{
+			if (turn.move?.from == "b7" && turn.move.to == "b5" && turn.moveBoost?.from == "a7" && turn.moveBoost.to == "a6")
+				console.log("BREAKPOINT");
 			if (execTurn(match, turn) == false)
 				continue ;
 			// render(match);

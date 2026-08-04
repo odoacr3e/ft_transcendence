@@ -89,37 +89,66 @@ export function checkMove(coords=[], result, match, boostBool)
  * checks if a second move is possible.
  * used to pass the turn automatically when needed.
  * @param {Match} match 
- * @param {string} to 
+ * @param {Array<string>} coords 
  */
-export function checkSecondMove(match, to)
+export function checkSecondMove(match, coords)
 {
-	let tmp;
-	let piece;
+	let boostedPiece;
 	let type;
+	let	diff;
 
 	if (match.playerNum <= 1)
 		return (false);
-	tmp = match.cursor.square;
-	match.cursor.set(to);
-	type = match.board.get(to)?.piece?.type;
-	if ((type == enumNames.CHAMPION || type == enumNames.MINOTAURUS || type == enumNames.BASTARDS) && match.board.get(to)?.piece?.isBoostedBool == true)
+	type = match.board.get(coords[1])?.piece?.type;
+	if ((type == enumNames.CHAMPION || type == enumNames.MINOTAURUS || type == enumNames.BASTARDS) && match.board.get(coords[1])?.piece?.isBoostedBool == true)
 		return true;
-	for (let {dx, dy} of new Preset(enumNames.KING).movement)
-	{
-		if (movePiece(match, dy, dx))
-		{
-			piece = match.board.get(match.cursor.square)?.piece;
-			if (piece?.type == enumNames.BASTARDS && piece.isBoostedBool == true)
-			{
-				match.cursor.set(tmp);
-				return true;
-			}
-		}
-		match.cursor.set(to);
-	}
-	match.cursor.set(tmp);
+	if (!match.currentPlayer.boostedPiece)
+		return false;
+	boostedPiece = match.board.get(match.currentPlayer.boostedPiece).piece;
+	if (!boostedPiece)
+		throw (`checkSecondMove: invalid boosted piece. Player: ${JSON.stringify(match.currentPlayer, null, 2)}`);
+	if (boostedPiece.type != enumNames.BASTARDS)
+		return false;
+	diff = match.cursor.Diff(coords[0], match.currentPlayer.boostedPiece);
+	if (diff.col <= 1 && diff.row <= 1)
+		return true;
 	return false;
 }
+
+// /**
+//  * checks if a second move is possible.
+//  * used to pass the turn automatically when needed.
+//  * @param {Match} match 
+//  * @param {Array<string>} coords 
+//  */
+// export function checkSecondMove(match, coords)
+// {
+// 	let piece;
+// 	let type;
+
+// 	if (match.playerNum <= 1)
+// 		return (false);
+// 	type = match.board.get(coords[1])?.piece?.type;
+// 	if ((type == enumNames.CHAMPION || type == enumNames.MINOTAURUS || type == enumNames.BASTARDS) && match.board.get(to)?.piece?.isBoostedBool == true)
+// 		return true;
+// 	match.cursor.Save();
+// 	match.cursor.set(coords[1]);
+// 	for (let {dx, dy} of new Preset(enumNames.KING).movement)
+// 	{
+// 		if (movePiece(match, dy, dx))
+// 		{
+// 			piece = match.board.get(match.cursor.square)?.piece;
+// 			if (piece?.type == enumNames.BASTARDS && piece.isBoostedBool == true)
+// 			{
+// 				match.cursor.Restore();
+// 				return true;
+// 			}
+// 		}
+// 		match.cursor.set(coords[1]);
+// 	}
+// 	match.cursor.Restore();
+// 	return false;
+// }
 
 //SECTION - utils
 

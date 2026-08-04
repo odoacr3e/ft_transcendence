@@ -50,7 +50,7 @@ function endTurn(match, sendBoardBool=true)
 		return (match.DrawMatch(result));
 	if (!match.boardStateMap.has(boardState) && match.aiSimulation == false)
 		match.boardStateMap.set(boardState, 1);//@ts-ignore
-	else if (match.boardStateMap.get(boardState) >= 2)
+	else if (match.boardStateMap.get(boardState) >= 2 && match.aiSimulation == false)
 		return (match.DrawMatch(result));//@ts-ignore
 	else if (match.boardStateMap.get(boardState) < 2)
 		match.boardStateMap.set(boardState, 2);

@@ -23,19 +23,19 @@ export function AIexecuteTurn(match)
 	let	result;
 	let	turn;
 	let	team;
+	let	aiDefeatBool = false;
 
 	if (!match.currentPlayer.ai)
 		throw (`AIexecuteTurn: there is no AI`);
 	match.aiSimulation = true;
 	turn = getBestTurn(match);
+	render(match);
 	DEBUG_turn = turn;
 	match.aiSimulation = false;
 	team = match.currentPlayer.team;
 	if (match.currentPlayer.ai?.defeatStatus == 1)
 	{
-		result = new Result().Success(`😭Pareggiamo please senpai😭`);
-		console.log(result.msg);
-		roomMessage(`Match_${match.id}`, "gameDraw", result);
+		aiDefeatBool = true;
 		match.currentPlayer.ai.defeatStatus = 2;
 	}
 	if (turn.move)
@@ -64,6 +64,12 @@ export function AIexecuteTurn(match)
 		sendResult(match, result, eEvents.EndTurn);
 	}
 	render(match);
+	if (aiDefeatBool)
+	{
+		result = new Result().Success(`😭Pareggiamo please senpai😭`);
+		console.log(result.msg);
+		roomMessage(`Match_${match.id}`, "gameDraw", result);
+	}
 	// console.profileEnd();
 	// console.log(`Killo processo.`);
 	// console.log(`Time: ${console.timeEnd()}`);
