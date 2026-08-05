@@ -1,6 +1,6 @@
 DIRS := backend_dir frontend_dir
 FRONTEND_BRANCH = frontend
-#ma perchè tutte ste menate per cancellare dei file?
+# ma perchè tutte ste menate per cancellare dei file?
 CLEAN_IMG  = alpine
 AS_ROOT    = docker run --rm -v "$$PWD:/w" -w /w $(CLEAN_IMG)
 
