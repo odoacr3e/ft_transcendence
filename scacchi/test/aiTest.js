@@ -188,6 +188,7 @@ function fail(msg, err)
 		err = JSON.stringify(err, null, 2);
 	if (typeof(msg) != "string")
 		msg = JSON.stringify(err, null, 2);
+	currMatchData.timer = null;
 	let	log = 
 	{
 		game: err,
