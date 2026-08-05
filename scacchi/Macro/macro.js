@@ -1,5 +1,6 @@
 // @ts-check
-import { abort } from "node:process";
+import { abort } from "node:process";//@ts-ignore
+import aiSpeech from '../Classes/Chess/AIprofiles/speech.json' with { type: 'json' };
 
 //SECTION debug
 const DEBUG = true;
@@ -9,11 +10,28 @@ const DEBUG = true;
 /** @type {boolean} */const DEBUG_CURL = process.env.DEBUG_CURL == "true" ? true : false;
 //@ts-ignore
 /** @type {string} */const DEBUG_HISTORY_PATH = process.env.DEBUG_HISTORY_PATH ? process.env.DEBUG_HISTORY_PATH : "./";
+//@ts-ignore
+/** @type {string} */const DEBUG_AI_PROFILE_PATH = process.env.DEBUG_AI_PROFILE_PATH ? process.env.DEBUG_AI_PROFILE_PATH : "./scacchi/Classes/Chess/AIprofiles/";
 
 //SECTION - history
 const HISTORY_PATH = `${DEBUG_HISTORY_PATH}/`;
 const HISTORY_FILE = "HISTORY.json";
 const HISTORY_DEFAULT = `${HISTORY_PATH}${HISTORY_FILE}`;
+
+//SECTION - AI
+const AI_PROFILE_PATH = DEBUG_AI_PROFILE_PATH;
+
+/** @typedef {keyof typeof aiSpeech} EventType */
+
+/**
+ * Enum for AI events based on speech.json
+ * Object =>	{[k, v]}
+ * @type {{ [K in EventType]: K }}
+ */
+// @ts-ignore
+export const AI_EVENTS = Object.fromEntries(
+  Object.keys(aiSpeech).map((key) => [key, key])
+);
 
 //SECTION - timers
 const MATCHTIMER = 15 * 60 * 1000;
@@ -72,4 +90,4 @@ function error(text)
 	abort();
 }
 
-export { macroReset, DEBUG, DEBUG_WEBSOCKETS, DEBUG_CURL, HISTORY_FILE, HISTORY_DEFAULT, HISTORY_PATH, CHESSBOARD_H, CHESSBOARD_W, MOVEMENT_MIN, MOVEMENT_MAX, MOVEMENT_BONUS_POINT, BOOSTED_MAX, HASH_SALT, SEED, MATCHTIMER, SOCKET_RECONNECT_TIMER, MATCH_RECONNECT_TIMER, TOURNAMENT_WAIT_TIMER};
+export { macroReset, DEBUG, DEBUG_WEBSOCKETS, DEBUG_CURL, HISTORY_FILE, HISTORY_DEFAULT, HISTORY_PATH, AI_PROFILE_PATH, CHESSBOARD_H, CHESSBOARD_W, MOVEMENT_MIN, MOVEMENT_MAX, MOVEMENT_BONUS_POINT, BOOSTED_MAX, HASH_SALT, SEED, MATCHTIMER, SOCKET_RECONNECT_TIMER, MATCH_RECONNECT_TIMER, TOURNAMENT_WAIT_TIMER};

@@ -12,10 +12,11 @@ import {Match} from "../../Classes/Chess/match.js";
 import {error, paramCheck, Result, clientBoard} from "./utils.js";
 import { endTurn } from "./endTurn.js";
 import {checkMateCheckAll} from "../../GameLogic/checkMate.js";
-import { BOOSTED_MAX, MOVEMENT_MIN } from "../../Macro/macro.js";
+import { AI_EVENTS, BOOSTED_MAX, MOVEMENT_MIN } from "../../Macro/macro.js";
 import { checkKingDanger } from "../../utils/checkDanger.js";
 import { enumNames } from "../../Macro/enums.js";
 import { jsonParser } from "../../utils/response.js";
+import { aiSpeech } from "../../Classes/Chess/AIprofiles/speech.js";
 
 /** @typedef {import ('../../Classes/Chess/chessBoard.js').Square} Square  */
 
@@ -35,6 +36,8 @@ function boost(match, from)
 	if (!tryBoost(match, result, from))
 		return (result);
 	result.status = 200;
+	aiSpeech(match, AI_EVENTS.applyBoostMe);
+	aiSpeech(match, AI_EVENTS.applyBoostOppo, false);
 	if (match.boost == BOOSTED_MAX)
 	{
 		checkMateCheckAll(match, result);

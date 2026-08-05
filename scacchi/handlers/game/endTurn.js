@@ -6,7 +6,7 @@
 	-	endTurn:		Ends the turn. Handles the player timer.
 */
 
-import {MOVEMENT_MIN, MOVEMENT_BONUS_POINT} from "../../Macro/macro.js";
+import {MOVEMENT_MIN, MOVEMENT_BONUS_POINT, AI_EVENTS} from "../../Macro/macro.js";
 import {enumNames} from "../../Macro/enums.js";
 import {Match} from "../../Classes/Chess/match.js";
 import {error, Result, checkMateAlert} from "./utils.js";
@@ -19,6 +19,7 @@ import { globals } from "../../Classes/Globals/globals.js";
 import { Timer }	from "../../Classes/Chess/match.js";
 import { setTimerGame } from "../../GameLogic/timer.js";
 import { AIexecuteTurn } from "../../GameLogic/aiTurn.js";
+import { aiSpeech } from "../../Classes/Chess/AIprofiles/speech.js";
 
 /**
  * goes to the next turn
@@ -63,7 +64,11 @@ function endTurn(match, sendBoardBool=true)
 	setTimerGame(match);
 	// console.log(`Now it's ${match.currentPlayer.team} turn.`);
 	if (checkKingDanger(match, match.currentPlayer.team))
+	{
 		result.specialMoves.SetKingDanger();
+		aiSpeech(match, AI_EVENTS.checkMe);
+		aiSpeech(match, AI_EVENTS.checkOppo, false);
+	}
 	result.status = 200;
 	if (sendBoardBool)//@ts-ignore
 		result.board = clientBoard(match);
@@ -90,6 +95,8 @@ function updateTurn(match, result)
 	player = match.currentPlayer;
 	if (match.moves < MOVEMENT_MIN)
 		return (error(result, 403, "You need to move first"));
+	aiSpeech(match, AI_EVENTS.endTurnMe);
+	aiSpeech(match, AI_EVENTS.endTurnMe, false);
 	if (player.bonusPointCounter == MOVEMENT_BONUS_POINT - 1)
 	{
 		if (match.aiSimulation == false)

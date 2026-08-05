@@ -61,46 +61,49 @@
 	],
 	"transformOppo":
 	[
-		""
+		"un campione in piu non ti fara vincere"
 	],
 	"applyBoostMe": 
 	[
-		""
+		"adesso faccio sul serio!",
+		"Beccati questo! Vai, $VAR1!"
 	],
 	"applyBoostOppo": 
 	[
-		""
+		"Che te ne fai di quel $VAR1? Non farmi perdere tempo!"
 	],
 	"useBoostMe": 
 	[
-		""
+		"Uso il potenziamento."
 	],
 	"useBoostOppo": 
 	[
-		""
+		"Non mi ha fatto nulla!"
 	],
 	"eatWithBoostMe": 
 	[
-		""
+		"E il momento! Vai, $VAR1! DISINTEGRA!",
+		"Prendi questo! vai, $VAR1!"
 	],
 	"eatWithBoostOppo": 
 	[
-		""
+		"Posso vincere anche senza di lui! Hai sprecato il potenziamento!",
+		"Mmm. Non ti montare la testa."
 	],
 	"checkWithBoostMe": 
 	[
-		""
+		"Col potere di $VAR1, metto il tuo re sotto minaccia!"
 	],
 	"checkWithBoostOppo": 
 	[
-		""
+		"Come hai fatto?? Il mio re.. Sotto minaccia?!"
 	],
 	"castlingMe": 
 	[
-		""
+		"E il momento.. CASTLING!"
 	],
 	"castlingOppo": 
 	[
-		""
+		"Mmm. Forse sai il fatto tuo.."
 	]
 }

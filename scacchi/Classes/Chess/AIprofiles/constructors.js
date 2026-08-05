@@ -1,7 +1,9 @@
 //@ts-check
 
+import fs from "fs";
 import { AIprofiles, AIprofilesArray } from "../../../Macro/enums.js";
-import { AI_first_eval } from "./theFirstOne/eval.js";
+import { AI_first_eval } from "./First/eval.js";
+import { AI_PROFILE_PATH } from "../../../Macro/macro.js";
 
 /** @typedef {import("../AI.js").AI<*>} AI*/
 
@@ -25,6 +27,30 @@ function AIProfileConstructor(ai)
 		default :
 			throw (`AI profile ${ai.profile} not recognized.`);
 	}
+	setSpeechFile(ai);
+}
+
+//SECTION - utils
+
+/**
+ * 
+ * @param {AI} ai 
+ */
+function setSpeechFile(ai)
+{
+	let	path;
+	let	buffer;
+	let	data;
+
+	path = `${AI_PROFILE_PATH}/${ai.profile}/speech.json`;
+	if (fs.existsSync(path) == false)
+	{
+		console.warn(`AI ${ai.profile} has no speech file`);
+		return ;
+	}
+	buffer = fs.readFileSync(path, "utf-8");
+	data = JSON.parse(buffer);
+	ai.speechJSON = data;
 }
 
 export {AIProfileCheck, AIProfileConstructor};

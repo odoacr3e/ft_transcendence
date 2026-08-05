@@ -4,7 +4,7 @@ import fs from "fs";
 import {Cursor} from "./cursor.js";
 import {eTeam, eMatchPresets} from "../../Macro/enums.js";
 import {Square, initBoard, copyBoard, copyBoostedTargetZones, ChessBoard} from "./chessBoard.js";
-import {HISTORY_PATH, CHESSBOARD_W, CHESSBOARD_H} from "../../Macro/macro.js";
+import {HISTORY_PATH, CHESSBOARD_W, CHESSBOARD_H, AI_EVENTS} from "../../Macro/macro.js";
 import {Result} from "../endPoint/result.js";
 import {Player} from "./player.js";
 import { isDangerous } from "../../utils/checkDanger.js";
@@ -15,6 +15,7 @@ import { globals } from "../Globals/globals.js";
 import EloRank from "elo-rank";
 import { query } from "../../lib/query.js";
 import { render } from "../../test/render.js";
+import { aiSpeech } from "./AIprofiles/speech.js";
 
 /** @typedef {import("../Globals/Queue.js").QueueNode} QueueNode*/
 
@@ -69,6 +70,8 @@ class Match
 		/** @type {number | null} */
 		this.tournament = null;
 		this.aiSimulation = false;
+		this.aiMove = false;
+		this.aiBool = false;
 	}
 	/** @param {MatchSettings | string | null} preset*/
 	Reset(preset=null)
@@ -116,6 +119,8 @@ class Match
 		this.cursor.square = this.currentPlayer.King;
 		this.tournament = null;
 		this.aiSimulation = false;
+		this.aiMove = false;
+		this.aiBool = false;
 	}
 	endTurn()
 	{
@@ -226,6 +231,7 @@ class Match
 		console.log("haaaaaiiiiii viiiiiiintoooooooooo!!!!!!!");
 		if (this.aiSimulation == true)
 			return (new Result());
+		aiSpeech(this, AI_EVENTS.checkMateMe);
 		this.victory = this.currentPlayer.team;
 		this.history.victory = this.victory;
 		this.UpdateElo(this.currentPlayer, true);
@@ -257,6 +263,7 @@ class Match
 		render(this);
 		if (this.aiSimulation == true)
 			return (new Result());
+		aiSpeech(this, AI_EVENTS.checkMateOppo);
 		this.history.Last().loserSet.add(player.id);
 		this.UpdateElo(player, false);
 		this.DeletePlayer(player);

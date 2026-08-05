@@ -44,7 +44,7 @@ function updateChessboard(coords=[], result, match, boostBool)
 	else if (coords[0] == match.currentPlayer.boostedPiece)
 		match.currentPlayer.boostedPiece = coords[1];
 	if (match.aiSimulation == false)
-		printSwap(match, coords, from, to);
+		printSwap(match, coords, from, to, result);
 	if (to.piece && to.piece.team != from.piece.team)
 	{
 		if (match.aiSimulation == false)

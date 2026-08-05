@@ -55,7 +55,7 @@ function roomMessage(roomName, eventType, result)
 {
 	if (!roomName || !eventType || !result)
 		return ;
-	sockio.to(roomName).emit(`${eventType}`, responseFormatter(null, result, null, null));
+	sockio.to(roomName).emit(`${eventType}`, result);
 }
 
 export {getReconnectTime, isBusy, roomMessage};

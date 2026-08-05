@@ -182,7 +182,8 @@ const enumSpecialMoves =
 	EATENBASTARD: 1 << 7,
 	CHAMPIONBOOST: 1 << 8,
 	DRAW: 1 << 9,
-	ALLYGUARDIAN: 1 << 10
+	ALLYGUARDIAN: 1 << 10,
+	USEDBOOST: 1 << 11
 }
 
 const kingMovements = 

@@ -1,11 +1,10 @@
 //@ts-check
 
 import { getLegalMoves } from "../../GameLogic/checkLegalMoves.js";
-import { checkLostAll, checkMateCheckAll } from "../../GameLogic/checkMate.js";
+import { checkLostAll } from "../../GameLogic/checkMate.js";
 import { AIprofilesArray, eTeam } from "../../Macro/enums.js";
 import { render } from "../../test/render.js";
 import { cancelTurn, execTurn } from "../../utils/AI.js";
-import { checkKingDanger } from "../../utils/checkDanger.js";
 import { AIProfileConstructor } from "./AIprofiles/constructors.js";
 
 /** @typedef {import("./match.js").Match} Match*/
@@ -31,6 +30,8 @@ export class AI
 		if (!profile)
 			profile = AIprofilesArray[i];
 		this.profile = profile;
+		/** @type {null | import("./AIprofiles/speech.json")} */
+		this.speechJSON = null;
 		this.defeatStatus = 0;
 		console.log(`A new opponent has spawned: ${profile}... fear its power!`);
 		AIProfileConstructor(this);
@@ -52,7 +53,7 @@ export class AI
 // 	turns.sort((x, y) => {x.score - y.score});
 // }
 
-//SECTION - 
+//SECTION - utils
 
 /**
  * 

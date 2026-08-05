@@ -4,7 +4,7 @@ import fs from "fs";
 //SECTION - backend cute stuff >3
 import { globals } from "../Classes/Globals/globals.js";
 import { historyRestore } from "../utils/history.js";
-import {HISTORY_PATH} from "../Macro/macro.js";
+import {AI_PROFILE_PATH, HISTORY_PATH} from "../Macro/macro.js";
 import { testerEnum as MSG } from "./enumsTest.js";
 import { Match } from "../Classes/Chess/match.js";
 import { includesOneOf } from "../utils/string.js";
@@ -14,7 +14,7 @@ import { init } from "../handlers/game/init.js";
 import { boardStringify, render } from "./render.js";
 import { jsonParser } from "../utils/response.js";
 
-const TEST_PATH = `${HISTORY_PATH}/../history/`;
+const TEST_PATH = `${HISTORY_PATH}`;
 const iaMsg =
 [
 	"think...",
@@ -109,13 +109,12 @@ function execTest(matchPath=null)
 		currMatchData = match;
 		match.currentPlayer.ai = new AI();
 		match.NextPlayer().ai = new AI();
+		match.aiBool = true;
 		i = 0;
 		while (!match.victory)
 		{
-			console.clear();
 			console.debug(`Executing test "${currMatch}", move ${i++}`);
 			render(match, [], "", false, console.debug);
-			console.debug(iaMsg[Math.trunc((Math.random() * 10000)) % (iaMsg.length - 1)]);
 			AIexecuteTurn(match);
 		}
 		console.debug(`${match.victory} has won.`);

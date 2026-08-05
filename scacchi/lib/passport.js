@@ -2,7 +2,7 @@
 import { query } from './query.js';
 import passport  from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
-const  { usersQuery } = query;
+import * as usersQuery from "../query/usersQuery.js";
 
 /**
  * @typedef {import('passport-google-oauth20').Profile} profile

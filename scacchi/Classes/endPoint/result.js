@@ -39,6 +39,8 @@ class bitMaskMoves
 	CheckDraw(){return (this._mask & move.DRAW)};
 	SetAllyGuardian(){return (this._mask |= move.ALLYGUARDIAN)};
 	CheckAllyGuardian(){return (this._mask & move.ALLYGUARDIAN)};
+	SetBoostUsed(){return (this._mask |= move.USEDBOOST)};
+	CheckBoostUsed(){return (this._mask & move.USEDBOOST)};
 }
 
 //SECTION - class Result

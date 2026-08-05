@@ -1,9 +1,10 @@
 // @ts-check
+import { aiSpeech } from "../Classes/Chess/AIprofiles/speech.js";
 import { Square, ChessBoard} from "../Classes/Chess/chessBoard.js";
+import { Result } from "../Classes/endPoint/result.js";
 import {eTeam, getInitialOfTeam, enumNames} from "../Macro/enums.js";
-import * as lib from "../lib/lib.js";
+import { AI_EVENTS } from "../Macro/macro.js";
 import { isDangerous } from "../utils/checkDanger.js";
-// const {Match} = require("../Classes/Chess/match.js");
 import { includesOneOf } from "../utils/string.js";
 
 /** @typedef {import("../Classes/Chess/match.js").Match} Match*/
@@ -173,8 +174,9 @@ function kingThreat(board, match)
  * @param {Array<string>} coords 
  * @param {Square} from 
  * @param {Square} to 
+ * @param {Result | null} result
  */
-function printSwap(match, coords, from, to)
+function printSwap(match, coords, from, to, result=null)
 {
 	let	fromType;
 	let	toType;
@@ -199,6 +201,42 @@ function printSwap(match, coords, from, to)
 	toString = match.cursor.Normify();
 	printer(`from ${fromString} to ${toString}`);
 	match.cursor.Restore();
+	if (toType == enumNames.CHAMPION)
+	{
+		aiSpeech(match, AI_EVENTS.lostChampionOppo);
+		aiSpeech(match, AI_EVENTS.lostChampionMe, false);
+	}//something was eaten
+	else if (toType != "Square")
+	{
+		if (result?.specialMoves.CheckBoostUsed())
+		{
+			aiSpeech(match, AI_EVENTS.eatWithBoostMe, [toType]);
+			aiSpeech(match, AI_EVENTS.eatWithBoostOppo, [toType], false);
+		}
+		else
+		{
+			aiSpeech(match, AI_EVENTS.eatPiece, [toType]);
+			aiSpeech(match, AI_EVENTS.eatenPiece, [toType], false);
+		}
+	}
+	else if (result?.specialMoves.CheckCastling())
+	{
+		aiSpeech(match, AI_EVENTS.castlingMe);
+		aiSpeech(match, AI_EVENTS.castlingOppo, false);
+	}//nothing was eaten
+	else
+	{
+		if (result?.specialMoves.CheckBoostUsed())
+		{
+			aiSpeech(match, AI_EVENTS.useBoostMe);
+			aiSpeech(match, AI_EVENTS.useBoostOppo, false);
+		}
+		else
+		{
+			aiSpeech(match, AI_EVENTS.moveMe, [toType]);
+			aiSpeech(match, AI_EVENTS.moveOppo, [toType], false);
+		}
+	}
 }
 
 /**
@@ -365,4 +403,4 @@ function boardOtherInfo(match)
 // 	}
 // }
 
-export {render, printSwap, boardStringify};
+export {render, getDotColor, printSwap, boardStringify};
