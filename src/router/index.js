@@ -9,6 +9,7 @@ import UserOther from '../views/UserOther.vue'
 import UsersList from '../views/UsersList.vue'
 import LoginPage from '../views/LoginPage.vue'
 import ChangePwd from '../views/ChangePwd.vue'
+import CodexPage from '../views/CodexPage.vue'
 import EditPage from '../views/EditPage.vue'
 import GameFour from '../views/GameFour.vue'
 import PlayPage from '../views/PlayPage.vue'
@@ -50,6 +51,12 @@ const routes = [
 		name: 'Leaderboard',
 		meta: { requiresAuth: true },
 		component: LeaderBoard
+	},
+	{
+		path: '/codex',
+		name: 'Codex',
+		meta: { requiresAuth: true },
+		component: CodexPage
 	},
 	{
 		path: '/log',

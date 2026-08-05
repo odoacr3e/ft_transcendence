@@ -192,8 +192,8 @@ boardConverter()
 	✓	re-design della home
 	✓	dettagli info sui match
 	✓	update delle preferenze di colore degli utenti
-	▫	pagina della lore [MAVI]
-	▫	reworkare i temi chiari
+	✓	pagina della lore
+	▫	reworkare i temi chiari [MAVI]
 	▫	reworkare il design delle pagine di gioco appena sono pronte
 	▫	info dei profili per le partitre a 4
 	▫	reattività delle pagine
