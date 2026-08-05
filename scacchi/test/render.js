@@ -8,24 +8,27 @@ import { includesOneOf } from "../utils/string.js";
 
 /** @typedef {import("../Classes/Chess/match.js").Match} Match*/
 
+let printer=console.log
+
 /**
  * @param {Match | null} match 
  * @param {Array<String>} selected which positions are selected
  * @param {String} TargetDangerSwitch Valid value: "Target", "Danger", "None" 
  * @param {boolean} silentBool  
  */
-function render(match=null, selected=[], TargetDangerSwitch="", silentBool=false)
+function render(match=null, selected=[], TargetDangerSwitch="", silentBool=false, printFunc=console.log)
 {
 	let buffer;
 	let	board;
 	let	coords;
 	let	square;
 
+	printer = printFunc;
 	if (match)
 		board = match.board;
 	else
 	{
-		console.log("no match!");
+		printer("no match!");
 		return ;
 	}
 	coords = getCoords(match);
@@ -47,8 +50,8 @@ function render(match=null, selected=[], TargetDangerSwitch="", silentBool=false
 	}
 	while (match.cursor.moveRow(-1))
 	match.cursor.set(coords.player);
-	console.log(buffer);
-	console.log(match.yellow.King, match.red.King, match.blue.King, match.green.King);
+	printer(buffer);
+	printer(match.yellow.King, match.red.King, match.blue.King, match.green.King);
 }
 
 /**
@@ -135,20 +138,20 @@ function displayPlayerInfo(board, match)
 		return ;
 	player = match.currentPlayer;
 	col = getDotColor(match.currentPlayer.team);
-	console.log(`It's ${col} turn.`);
-	console.log(`points: ${player.nPoints}💲, bonus: ${player.bonusPointCounter}⚖️`);
+	printer(`It's ${col} turn.`);
+	printer(`points: ${player.nPoints}💲, bonus: ${player.bonusPointCounter}⚖️`);
 	if (match.currentPlayer.boostedPiece)
-		console.log(`Boosted piece: ${match.currentPlayer.boostedPiece}`);
+		printer(`Boosted piece: ${match.currentPlayer.boostedPiece}`);
 	if (match.lastMenace.from)
-		console.log(`⚠️: ${match.lastMenace.from} => ${match.lastMenace.mid} => ${match.lastMenace.to}`);
+		printer(`⚠️: ${match.lastMenace.from} => ${match.lastMenace.mid} => ${match.lastMenace.to}`);
 	if (match.currentPlayer.useBoostBool == true)
-		console.log(`Ready to use boost!`);
+		printer(`Ready to use boost!`);
 	else
-		console.log(`Boost NOT used`);
+		printer(`Boost NOT used`);
 	if (kingThreat(board, match) == true)
-		console.log(`${player.team} king is threatened💀`);
-	console.log("match: ", match?.timer?.time);
-	console.log("player: ", match.currentPlayer.time);
+		printer(`${player.team} king is threatened💀`);
+	printer("match: ", match?.timer?.time);
+	printer("player: ", match.currentPlayer.time);
 	
 	
 }
@@ -188,13 +191,13 @@ function printSwap(match, coords, from, to)
 		toType = "Square";
 	else
 		toType = `\x1b[33m${toType}\x1b[0m`;
-	console.log(`SWAP ${fromType} with ${toType}`);
+	printer(`SWAP ${fromType} with ${toType}`);
 	match.cursor.Save();
 	match.cursor.set(coords[0]);
 	fromString = match.cursor.Normify();
 	match.cursor.set(coords[1]);
 	toString = match.cursor.Normify();
-	console.log(`from ${fromString} to ${toString}`);
+	printer(`from ${fromString} to ${toString}`);
 	match.cursor.Restore();
 }
 

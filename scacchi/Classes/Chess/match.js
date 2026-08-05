@@ -146,6 +146,15 @@ class Match
 		player = this[this.currentPlayer.next];
 		return (player);
 	}
+	PrevPlayer()
+	{
+		/** @type {Player} */
+		let	player;
+
+		//@ts-ignore
+		player = this[this.currentPlayer.prev];
+		return (player);
+	}
 	CheckOtherKingsDanger()
 	{
 		/** @type {Player} */let	player;

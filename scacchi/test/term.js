@@ -119,13 +119,13 @@ process.stdin.on('keypress', (str, key) =>
 				TargetDangerSwitch = "None";
 			break ;
 		case (cmd.END_TURN) :
-			result = endTurn(match);
+			result = execEvent(match, eEvents.EndTurn);
 			if (result.status != 200)
 				return (saveWrongMove(match, result, eEvents.EndTurn));
 			break ;
 		case (cmd.BUY_BOOST) :
 			selected[0] = match.cursor.square;
-			result = boost(match, match.cursor.square);
+			result = execEvent(match, eEvents.Boost);
 			if (result.status != 200)
 				return (saveWrongMove(match, result, eEvents.Boost));
 			selected = [];
@@ -139,7 +139,7 @@ process.stdin.on('keypress', (str, key) =>
 			if (selected.length == 2)
 			{
 				console.clear();
-				let	result = move(match, selected[0], selected[1], match.currentPlayer.useBoostBool);
+				let	result = execEvent(match, eEvents.Move);
 				if (result.status != 200 && match.currentPlayer.useBoostBool == true)
 					return (saveWrongMove(match, result, eEvents.MoveBoost));
 				else if (result.status != 200)
@@ -149,7 +149,7 @@ process.stdin.on('keypress', (str, key) =>
 			break ;
 		case (cmd.TRANSFORM):
 			newType = getline("insert new piece type");
-			result = makeTransfiguration(match, match.cursor.square, newType);
+			result = execEvent(match, eEvents.Transform, newType);
 			selected[0] = match.cursor.square;
 			if (result.status != 200)
 				return (saveWrongMove(match, result, eEvents.Transform));
@@ -188,7 +188,7 @@ process.stdin.on('keypress', (str, key) =>
 			let	filePath;
 
 			filePath = "./test/re-zero-return-by-death.mp3";
-			result = cancelEvent(match);
+			result = execEvent(match, "cancel");
 			if (result.status != 200)
 				return (error(null, result));
 			if (lib.include.fs.existsSync(filePath))
@@ -220,6 +220,41 @@ process.stdin.on('keypress', (str, key) =>
 });
 
 //SECTION - utils
+
+/**
+ * 
+ * @param {Match} match 
+ * @param {string} eventType 
+ * @param {string} newPieceType 
+ */
+function execEvent(match, eventType, newPieceType="")
+{
+	try
+	{
+		switch (eventType)
+		{
+			case (eEvents.Move): case (eEvents.MoveBoost):
+				return (move(match, selected[0], selected[1], match.currentPlayer.useBoostBool));
+			case (eEvents.Boost):
+				return (boost(match, match.cursor.square));
+			case (eEvents.EndTurn):
+				return (endTurn(match));
+			case (eEvents.Transform):
+				return (makeTransfiguration(match, match.cursor.square, newPieceType));
+			case ("cancel"):
+				return (cancelEvent(match));
+			default:
+				throw (`eventType ${eventType} unknown`);
+		}
+	}
+	catch(err)
+	{
+		console.error(err);
+		console.profileEnd();
+		termCleanup("y");
+	}
+	process.exit(1);
+}
 
 /**
  * 

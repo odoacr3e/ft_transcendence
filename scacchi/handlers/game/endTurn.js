@@ -67,7 +67,7 @@ function endTurn(match, sendBoardBool=true)
 	result.status = 200;
 	if (sendBoardBool)//@ts-ignore
 		result.board = clientBoard(match);
-	if (match.currentPlayer.ai && match.aiSimulation == false)
+	if (match.currentPlayer.ai && match.aiSimulation == false && !match.PrevPlayer().ai)
 		AIexecuteTurn(match);
 	return (result);
 }

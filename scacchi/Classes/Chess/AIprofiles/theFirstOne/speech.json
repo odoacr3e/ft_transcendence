@@ -1,0 +1,106 @@
+{
+	"eatPiece": 
+	[
+		"bono il pezzo, grazie",
+		"gnam gnam"
+	],
+	"eatenPiece": 
+	[
+		"NOOOO! il mio $VAR1!",
+		"non gasarti troppo adesso"
+	],
+	"lostChampionMe":
+	[
+		"COME OSI!"
+	],
+	"lostChampionOppo":
+	[
+		"e finita. Arrenditi. ",
+		"il tuo campione e caduto.. e presto lo sara anche il tuo re."
+	],
+	"moveMe":
+	[
+		"Ecco qua!",
+		"MOVIMENTO"
+	],
+	"checkMe": 
+	[
+		"non pensare di aver vinto",
+		"AH SI?? COME TI PERMETTI?!"
+	],
+	"checkOppo": 
+	[
+		"non avevi visto questa mossa, eh?",
+		"THUNDER CROSS SPLIT ATTACK!",
+		"E FINITA JOTARO!"
+	],
+	"checkMateMe": 
+	[
+		"... Come ho fatto a perdere contro di te??",
+		"non pensare di aver vinto! ...cosa? ho perso?? Impossibile!"
+	],
+	"checkMateOppo": 
+	[
+		"EZ.",
+		"EAZY.",
+		"easy.",
+		"izy."
+	],
+	"endTurnMe":
+	[
+		"PASSO."
+	],
+	"endTurnOppo":
+	[
+		""
+	],
+	"transformMe":
+	[
+		"EMERGI, $VAR1! DISINTEGRA I TUOI NEMICI!",
+		"adesso ti faccio vedere io."
+	],
+	"transformOppo":
+	[
+		""
+	],
+	"applyBoostMe": 
+	[
+		""
+	],
+	"applyBoostOppo": 
+	[
+		""
+	],
+	"useBoostMe": 
+	[
+		""
+	],
+	"useBoostOppo": 
+	[
+		""
+	],
+	"eatWithBoostMe": 
+	[
+		""
+	],
+	"eatWithBoostOppo": 
+	[
+		""
+	],
+	"checkWithBoostMe": 
+	[
+		""
+	],
+	"checkWithBoostOppo": 
+	[
+		""
+	],
+	"castlingMe": 
+	[
+		""
+	],
+	"castlingOppo": 
+	[
+		""
+	]
+}
