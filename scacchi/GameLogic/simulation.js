@@ -23,9 +23,10 @@ import { getLegalMoves } from "./checkLegalMoves.js";
  * @param {Array<String>} coords
  * @param {Match} match
  * @param {Result | null} result
- * @returns 
+ * @param {Array<string> | null} otherCoords
+ * @returns {boolean}
  */
-export function simulation(coords, match, result=null)
+export function simulation(coords, match, result=null, otherCoords=null)
 {
 	let tmpPiece = null;
 	let tmpSquare = null;
@@ -62,6 +63,8 @@ export function simulation(coords, match, result=null)
 	dangerBool = isDangerous(match, king.dangerZones, king.piece?.team, true, kingCoord);
 	if (!dangerBool)
 		dangerBool = checkDoubleMoveMate(match, coords, result);
+	if (!dangerBool && otherCoords)
+		dangerBool = simulation(otherCoords, match, result);
 	if (!dangerBool && match.settings.players.allies)
 	{
 		dangerBool = checkKingDanger(match, match.currentPlayer.ally);
@@ -95,9 +98,11 @@ export function simulationGlobal(match, team=match.currentPlayer.team)
 	legalMovesArray = getLegalMoves(match, team, true);
 	for (const turn of legalMovesArray)
 	{
-		if (turn.move && simulation([turn.move.from, turn.move.to], match))
+		if (turn.move && turn.moveBoost && simulation([turn.move.from, turn.move.to], match, null, [turn.moveBoost.from, turn.moveBoost.to]))
 			return (true);
-		else if (turn.moveBoost && simulation([turn.moveBoost.from, turn.moveBoost.to], match))
+		else if (turn.move && !turn.moveBoost && simulation([turn.move.from, turn.move.to], match))
+			return (true);
+		else if (!turn.move && turn.moveBoost && simulation([turn.moveBoost.from, turn.moveBoost.to], match))
 			return (true);
 	}
 	return (false);
