@@ -11,7 +11,7 @@ import { isDangerous } from "../../utils/checkDanger.js";
 import { DangerUpdate } from "../../utils/dangerUpdate.js";
 import { History } from "./history.js";
 import { MATCHTIMER } from "../../Macro/macro.js"; 
-import { globals } from "../Globals/globals.js";
+import { globals } from "../Globals/globals.js";//@ts-ignore
 import EloRank from "elo-rank";
 import { query } from "../../lib/query.js";
 import { render } from "../../test/render.js";
@@ -231,7 +231,6 @@ class Match
 		console.log("haaaaaiiiiii viiiiiiintoooooooooo!!!!!!!");
 		if (this.aiSimulation == true)
 			return (new Result());
-		aiSpeech(this, AI_EVENTS.checkMateMe);
 		this.victory = this.currentPlayer.team;
 		this.history.victory = this.victory;
 		this.UpdateElo(this.currentPlayer, true);

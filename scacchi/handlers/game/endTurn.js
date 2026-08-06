@@ -67,7 +67,6 @@ function endTurn(match, sendBoardBool=true)
 	{
 		result.specialMoves.SetKingDanger();
 		aiSpeech(match, AI_EVENTS.checkMe);
-		aiSpeech(match, AI_EVENTS.checkOppo, false);
 	}
 	result.status = 200;
 	if (sendBoardBool)//@ts-ignore

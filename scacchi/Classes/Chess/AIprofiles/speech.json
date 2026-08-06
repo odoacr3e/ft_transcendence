@@ -1,9 +1,9 @@
 {
-	"eatPiece": 
+	"eatenPieceMe": 
 	[
 		"OK"
 	],
-	"eatenPiece": 
+	"eatenPieceOppo": 
 	[
 		"OK"
 	],

@@ -155,7 +155,7 @@ export async function initTournament(room)
 	OK-	aspettare entrambi pronti
 	OK-	appena entrambi pronti: match
 	OK-	quando finisce match, aggiornare torneo db
-	10-	quando finisce match, aggiornare torneo oggetto
+	OK-	quando finisce match, aggiornare torneo oggetto
 */
 
 /**

@@ -204,37 +204,31 @@ function printSwap(match, coords, from, to, result=null)
 	if (toType == enumNames.CHAMPION)
 	{
 		aiSpeech(match, AI_EVENTS.lostChampionOppo);
-		aiSpeech(match, AI_EVENTS.lostChampionMe, false);
 	}//something was eaten
 	else if (toType != "Square")
 	{
 		if (result?.specialMoves.CheckBoostUsed())
 		{
 			aiSpeech(match, AI_EVENTS.eatWithBoostMe, [toType]);
-			aiSpeech(match, AI_EVENTS.eatWithBoostOppo, [toType], false);
 		}
 		else
 		{
-			aiSpeech(match, AI_EVENTS.eatPiece, [toType]);
-			aiSpeech(match, AI_EVENTS.eatenPiece, [toType], false);
+			aiSpeech(match, AI_EVENTS.eatenPieceMe, [toType]);
 		}
 	}
 	else if (result?.specialMoves.CheckCastling())
 	{
 		aiSpeech(match, AI_EVENTS.castlingMe);
-		aiSpeech(match, AI_EVENTS.castlingOppo, false);
 	}//nothing was eaten
 	else
 	{
 		if (result?.specialMoves.CheckBoostUsed())
 		{
 			aiSpeech(match, AI_EVENTS.useBoostMe);
-			aiSpeech(match, AI_EVENTS.useBoostOppo, false);
 		}
 		else
 		{
 			aiSpeech(match, AI_EVENTS.moveMe, [toType]);
-			aiSpeech(match, AI_EVENTS.moveOppo, [toType], false);
 		}
 	}
 }

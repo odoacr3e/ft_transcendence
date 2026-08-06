@@ -37,7 +37,6 @@ function boost(match, from)
 		return (result);
 	result.status = 200;
 	aiSpeech(match, AI_EVENTS.applyBoostMe);
-	aiSpeech(match, AI_EVENTS.applyBoostOppo, false);
 	if (match.boost == BOOSTED_MAX)
 	{
 		checkMateCheckAll(match, result);

@@ -53,7 +53,6 @@ function transfiguration(match, result, coord, newType, sendBoardBool=true)
 	if (CheckTransfiguration(match, result, square.piece, newType) == false)
 		return (result);
 	aiSpeech(match, AI_EVENTS.transformMe);
-	aiSpeech(match, AI_EVENTS.transformOppo, false);
 	isBoostedBool = square.piece.isBoostedBool;
 	square.piece = new Piece(newType, square.piece.pos, square.piece.team);
 	square.piece.isBoostedBool = isBoostedBool;

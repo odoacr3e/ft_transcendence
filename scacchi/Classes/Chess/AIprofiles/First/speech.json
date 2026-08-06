@@ -1,13 +1,13 @@
 {
-	"eatPiece": 
-	[
-		"bono il pezzo, grazie",
-		"gnam gnam"
-	],
-	"eatenPiece": 
+	"eatenPieceMe": 
 	[
 		"NOOOO! il mio $VAR1!",
 		"non gasarti troppo adesso"
+	],
+	"eatenPieceOppo": 
+	[
+		"bono il $VAR1, grazie",
+		"gnam gnam"
 	],
 	"lostChampionMe":
 	[
