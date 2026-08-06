@@ -7,7 +7,7 @@
 }
 ``
 
-## Update Champion
+## ✅Update Champion
 
 ``json
 {
@@ -39,7 +39,7 @@
 
 ## boost already boost piece
 
-## Cancel turn
+## ✅Cancel turn
 
 ``json
 {
