@@ -50,11 +50,14 @@ function isBusy(userId)
  * @param {string | undefined} roomName the name of the room
  * @param {string | undefined} eventType the name of the event to emit
  * @param {*} result the object to emit
+ * @param {boolean} gameFormatBool
  */
-function roomMessage(roomName, eventType, result)
+function roomMessage(roomName, eventType, result, gameFormatBool=false)
 {
 	if (!roomName || !eventType || !result)
 		return ;
+	if (gameFormatBool)
+		result = responseFormatter(null, result, null, null);
 	sockio.to(roomName).emit(`${eventType}`, result);
 }
 

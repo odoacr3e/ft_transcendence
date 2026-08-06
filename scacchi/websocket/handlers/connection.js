@@ -73,9 +73,11 @@ async function websocketDisconnectionHandler(socket, user, friendsId)
 			console.log(`User with id ${user.id_user} disconnected`);
 			globals.RemoveFromAllQueues(user.id_user);
 			result = globals.DeletePlayer(socketData.matchData?.matchId, socketData.matchData?.team);
-			roomMessage(socketData.matchData?.matchId, `game`, result);
+			if (socketData.matchData)
+				roomMessage(`match_${socketData.matchData.matchId}`, `game`, result);
 			result = globals.LeaveRoom(socketData, user.id_user);
-			roomMessage(socketData.roomData?.id, "leave_room", result);
+			if (socketData.roomData)
+				roomMessage(`room_${socketData.roomData.id}`, "leave_room", result);
 			globals.clientMap.delete(user.id_user);
 			for (const id of friendsId)
 			{
