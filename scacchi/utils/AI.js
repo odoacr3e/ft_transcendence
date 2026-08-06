@@ -1,4 +1,4 @@
-//@ts-ignore
+//@ts-check
 
 import { cancelEvent } from "../GameLogic/cancelEvent.js";
 import { move } from "../handlers/game/move.js";
@@ -13,7 +13,7 @@ import { jsonParser } from "./response.js";
 /** @typedef {{from: string, to: string}} Move */
 /** @typedef {{move: Move | null, moveBoost: Move | null, transform: string, boost: string}} Turn */
 
-let DEB = 0;
+let	DEB = 0;
 
 /**
  * 
@@ -39,11 +39,10 @@ export function execTurn(match, turn)
 	}
 	if (turn.boost && (result = boost(match, turn.boost)).status != 200)
 	{
-		DEB++;
 		console.log(`BOOST ERROR N. ${DEB} => ${turn}`);
 		//render(match);
 		//throw (`execTurn: boost's function has failed : ${result.msg}`); // @ts-ignore
-	}
+	}//@ts-ignore
 	toCoord = turn.moveBoost ? turn.moveBoost.to : turn.move?.to;
 	if (turn.transform && makeTransfiguration(match, toCoord, turn.transform).status != 200)
 		throw (`execTurn: transfiguration has failed`);

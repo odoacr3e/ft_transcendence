@@ -170,7 +170,6 @@ function isStoppable(match, kingSquare, enemySquareString)
 				else
 					allyGuardianCoord = x;
 			}
-			//FIXME - CONTROLLO CHE IL DIFENSORE MANGI IN UNA MOSSA (implementare salvataggio due mosse?)
 			let	guardianBoostedSave = false;
 			let	guardianRegularSave = false;
 
@@ -189,7 +188,9 @@ function isStoppable(match, kingSquare, enemySquareString)
 			if (guardianRegularSave)
 				normalSaveBool = true;
 			if (guardianBoostedSave)
+			{
 				match.currentPlayer.guardianPieces.add({coord: x, target: match.cursor.square});
+			}
 		}
 		if (!movePiece(match, dir.diffCol, dir.diffRow))
 			return simulationGlobal(match, match.currentPlayer.team);

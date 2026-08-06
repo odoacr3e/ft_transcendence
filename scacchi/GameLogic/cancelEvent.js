@@ -67,6 +67,7 @@ function cancelMove(match, lastEvent)
 	toSquare = match.board.get(lastEvent.to);
 	if (!lastEvent.pieceEaten && toSquare.piece && fromSquare.piece)
 		console.warn("cancelMove, warning: info on pieceEaten undefined.");
+	match.currentPlayer.guardianPieces.clear();
 	if (lastEvent.specialMoves & enumSpecialMoves.SNIPER && lastEvent.pieceEaten)
 	{
 		toSquare.piece = lastEvent.pieceEaten;
