@@ -140,6 +140,7 @@ export class HistoryEvent
 		this.prevBoost = "";
 		if (pieceBoosterZones)
 			this.pieceBoosterTargetZones = copyBoostedTargetZones(pieceBoosterZones);
+		this.aiSimulation = false;
 	}
 }
 
@@ -174,6 +175,7 @@ function updateMoves(match, square, coords, specialMoves, boostBool=false)
 	record.updates = structuredClone(match.board.updates);
 	record.time = match.currentPlayer.time;
 	record.prevBoost = match.currentPlayer.boostedPiece;
+	record.aiSimulation = match.aiSimulation;
 	this.events.push(record);
 	this.moves += 1;
 }
@@ -201,6 +203,7 @@ function updateBoost(match, square, from)
 	record.updates = structuredClone(match.board.updates);
 	record.time = match.currentPlayer.time;
 	record.prevBoost = match.currentPlayer.boostedPiece;
+	record.aiSimulation = match.aiSimulation;
 	this.events.push(record);
 	this.moves += 1;
 }
@@ -229,6 +232,7 @@ function updateTransform(match, square, from, newType)
 	record.to = newType;
 	record.updates = structuredClone(match.board.updates);
 	record.time = match.currentPlayer.time;
+	record.aiSimulation = match.aiSimulation;
 	this.events.push(record);
 	this.moves += 1;
 }
@@ -251,6 +255,7 @@ function updateEndTurn(match)
 	if (!match.currentPlayer.team)
 		throw (`History: invalid currentPlayer team`);
 	record = new HistoryEvent(this.moves, eEvents.EndTurn, match.currentPlayer.team, match.board.updates);
+	record.aiSimulation = match.aiSimulation;
 	this.events.push(record);
 	this.moves += 1;
 }

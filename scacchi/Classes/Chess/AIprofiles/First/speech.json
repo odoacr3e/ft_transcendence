@@ -52,7 +52,10 @@
 	],
 	"endTurnOppo":
 	[
-		""
+		"IT'S MY TURN! I DRAW A CARD!",
+		"ah, tocca a me? Menomale, mi stavo addormentando!",
+		"con calma eh... disgraziato, non ho tutto il giorno",
+		"PESCATA LUCENTE!"
 	],
 	"transformMe":
 	[

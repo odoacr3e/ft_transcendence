@@ -1,6 +1,7 @@
 // @ts-check
 
 import { eMatchPresets } from "../Macro/enums.js";
+import { render } from "../test/render.js";
 
 //SECTION - checkDanger function
 /*
@@ -61,6 +62,7 @@ let isDangerous = (match, setZones, team, saveInfoBool=false, pieceCoord=match.c
 			match.lastMenace = {from: dangerCoord, mid: midPos, to: pieceCoord};
 			return true;
 		}
+		render(match);
 		throw (`isDangerous, menace save: invalid targets`);
 	}
 	return true;

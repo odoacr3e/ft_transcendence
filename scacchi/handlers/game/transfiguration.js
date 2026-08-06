@@ -11,7 +11,7 @@ import { Match } from "../../Classes/Chess/match.js";
 import {error, paramCheck, Result, clientBoard} from "./utils.js";
 import {endTurn} from "./endTurn.js";
 import {checkMateCheckAll} from "../../GameLogic/checkMate.js";
-import { DangerUpdate } from "../../utils/dangerUpdate.js";
+import { DangerUpdate, updateBoostedChampions } from "../../utils/dangerUpdate.js";
 import { Piece } from "../../Classes/Chess/Pieces/pieces.js";
 import { checkKingDanger } from "../../utils/checkDanger.js";
 import { enumNames, arrayNames } from "../../Macro/enums.js";
@@ -57,6 +57,8 @@ function transfiguration(match, result, coord, newType, sendBoardBool=true)
 	square.piece = new Piece(newType, square.piece.pos, square.piece.team);
 	square.piece.isBoostedBool = isBoostedBool;
 	DangerUpdate(match, coord);
+	if (isBoostedBool == true && newType == enumNames.CHAMPION)
+		updateBoostedChampions(match, []);
 	match.history.UpdateTransform(match, square, coord, newType);
 	checkMateCheckAll(match, result);
 	if (endTurn(match, false).specialMoves.CheckKingDanger())

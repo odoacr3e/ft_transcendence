@@ -318,6 +318,8 @@ class Match
 		//@ts-ignore
 		tmp = this[player];
 		player = tmp.next;
+		this.currentPlayer.next = this.currentPlayer.team;
+		this.currentPlayer.prev = this.currentPlayer.team;
 		if (this.id != "0")
 			globals.matches.delete(this.id);
 		globals.lastMatchId = "0";

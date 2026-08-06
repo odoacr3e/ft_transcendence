@@ -95,7 +95,6 @@ function updateTurn(match, result)
 	if (match.moves < MOVEMENT_MIN)
 		return (error(result, 403, "You need to move first"));
 	aiSpeech(match, AI_EVENTS.endTurnMe);
-	aiSpeech(match, AI_EVENTS.endTurnMe, false);
 	if (player.bonusPointCounter == MOVEMENT_BONUS_POINT - 1)
 	{
 		if (match.aiSimulation == false)
