@@ -4,7 +4,7 @@ import fs from "fs";
 //SECTION - backend cute stuff >3
 import { globals } from "../Classes/Globals/globals.js";
 import { historyRestore } from "../utils/history.js";
-import {AI_PROFILE_PATH, HISTORY_PATH} from "../Macro/macro.js";
+import {AI_PROFILE_PATH, HISTORY_DEFAULT, HISTORY_FILE, HISTORY_PATH} from "../Macro/macro.js";
 import { testerEnum as MSG } from "./enumsTest.js";
 import { Match } from "../Classes/Chess/match.js";
 import { includesOneOf } from "../utils/string.js";
@@ -71,7 +71,7 @@ function execAllTests()
 	for (const file of fs.readdirSync(TEST_PATH))
 	{
 		currMatch = file;
-		if (includesOneOf(file, "todo", "TODO", "four"))
+		if (includesOneOf(file, "todo", "TODO", HISTORY_FILE, "four"))
 		{
 			testerTodo();
 			continue ;
@@ -159,7 +159,10 @@ function testerFail(msg="", err="")
  */
 function testerTodo()
 {
-	console.debug(`${currMatch}: ${MSG.RESULT_TODO}`);
+	if (currMatch == HISTORY_FILE)
+		console.debug(`${currMatch}: ${MSG.RESULT_IGNORED}`);
+	else
+		console.debug(`${currMatch}: ${MSG.RESULT_TODO}`);
 }
 
 /**

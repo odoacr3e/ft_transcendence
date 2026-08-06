@@ -4,11 +4,12 @@ import fs from "fs";
 //SECTION - backend cute stuff >3
 import { globals } from "../Classes/Globals/globals.js";
 import { historyRestore } from "../utils/history.js";
-import {HISTORY_PATH} from "../Macro/macro.js";
+import {HISTORY_FILE, HISTORY_PATH} from "../Macro/macro.js";
 import { colors as color } from "./colorsOld.js";
 import { testerEnum as MSG } from "./enumsTest.js";
 import {boardStringify} from "./render.js";
 import { Match } from "../Classes/Chess/match.js";
+import { includesOneOf } from "../utils/string.js";
 
 //@ts-ignore
 /** @typedef {import ("../../history/HISTORY.json")} historyData */
@@ -49,7 +50,7 @@ function execAllTests()
 	for (const file of fs.readdirSync(HISTORY_PATH))
 	{
 		currMatch = file;
-		if (file.includes("todo") || file.includes("TODO"))
+		if (includesOneOf(file, "todo", "TODO", HISTORY_FILE))
 		{
 			testerTodo();
 			continue ;
@@ -132,7 +133,10 @@ function testerFail(msg, p1="", p2="")
  */
 function testerTodo()
 {
-	console.debug(`${currMatch}: ${MSG.RESULT_TODO}`);
+	if (currMatch == HISTORY_FILE)
+		console.debug(`${currMatch}: ${MSG.RESULT_IGNORED}`);
+	else
+		console.debug(`${currMatch}: ${MSG.RESULT_TODO}`);
 }
 
 /**
