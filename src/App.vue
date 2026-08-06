@@ -13,6 +13,7 @@
 		const { user } = storeToRefs(authStore);
  		watch( () => user.value?.preferences?.name, (newTheme) => {
 				document.documentElement.setAttribute('data-theme', newTheme ?? 'default');
+				localStorage.setItem('data-theme', newTheme ?? 'default');
 			},
 			{ immediate: true }
 		);
