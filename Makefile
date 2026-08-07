@@ -41,6 +41,7 @@ setupnrun: setup up
 
 pull:
 	@for d in $(DIRS); do git -C $$d pull; done
+	@git pull;
 
 restore:
 	@for d in $(DIRS); do git -C $$d restore .; done
