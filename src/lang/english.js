@@ -103,9 +103,12 @@ export const english = {
             sendRequest: "Send @.lower:common.friend request"
         },
         codex: {
+            title: "Their powers",
+            move: "Movements",
+            ability: "Special ability",
             king: {
                 name:   "The King",
-                quote:  "'Black or White' they ask. I've got better things to do.",
+                quote:  "\"'Black or White' they ask. I've got better things to do.\"",
                 lore:   "Sons of the old Red King, the twins Black and White has lived a comfortable life, without the worries of ordinary peons.\
 	                    After the death of the Red King caused by a bee's sting, there were little to no instructions for the heir to the throne, and\
 	                    the twins started to childishly bicker like two spoiled kids.\
@@ -122,7 +125,7 @@ export const english = {
             },
             champ: {
                 name:   "The Champion",
-                quote:  "...",
+                quote:  "\"...\"",
                 lore:   "The Champions are not only the King's personal knights, but also a true emblem of strength.\
                         They're tall, fast, deadly and men of few words. Every true knight dreams to earn one day this title and they \
 	                    usually joust and fight in tournaments and warfares to prove themselves worthy.\
@@ -135,73 +138,73 @@ export const english = {
                 move:   "The Champion can move in any direction, diagonally or in a cross, and at any distant they want.",
                 ability: {
                     name:   "Vow",
-                    desc:   "After their turn, the Champion can move a second time as long as they end up in an endanged square.",
+                    desc:   "After their turn, the Champion can move a second time as long as they don't end up in an endanged square.",
                     cost:   "10"
                 }
             },
             mino: {
-                name:   "Il Minotauro",
-                quote:  "Mostri del cazzo creati da altri mostri del cazzo.",
-                lore:   "I Minotauri sono abomini creati sotto diretto ordine del Re Rosso.\
-	                    Sono i risultati degli esperimenti che univano la manipolazione genetica tramite imbreeding, praticata da secoli \
-	                    su cani, cavalli, piante e, in casi più specifichi, anche su certi individui, e la magia del sangue proveniente dalle terre dell'est.\
-	                    Questi esperimenti diedero vita a delle chimere con un corpo da uomo, zoccoli e testa da toro.\
-	                    Il piano iniziale era quello di usarli come ..., tuttavia la loro straordinaria forza li rese un ottimo intrattenimento per i reali.\
-	                    La loro aggressività è dovuta al fatto che i primi casi di ibridi riusciti erano affetti da un grave caso di schizzofrenia,\
-	                    dovuta alla loro spiccata paraidolia, che gli provoca continue emicranie. \
-	                    Per questo sono soliti caricare a testa bassa qualsiasi cosa sia davanti a loro.",
-                move:   "Il Minotauro si muove a croce caricando il loro bersaglio.",
+                name:   "The Minotaur",
+                quote:  "\"Damn monsters made up by some other damn monsters.\"",
+                lore:   "Minotaurs are monstrosities created under the direct orders of the Red King.\
+                        They are the outcome of various experiment which joined genetic manipulation thruogh embreeding - used for centuries \
+                        on dogs, horses, plants and, in some particular cases, on men too - and the blood's alchemy of the distant east lands.\
+	                    These experiment birthed beasts with a human body, hooves and a bull's head.\
+	                    Originally they were meant to ..., but their incredible strength made them a perfect entertainment for the royal families.\
+	                    Their overaggressive trait has its roots in the firsts successful hybrids which suffered from a serious schizophrenia,\
+	                    caused by their hyper-paraidolia, which also constantly caused them migraines. \
+	                    Therefore they use their head to charge anyone or anything in front of them.",
+                move:   "The Minotaur can move in a cross by charging their enemy.",
                 ability: {
                     name:   "Berserk",
-                    desc:   "Questa abilità permette ad un Minotauro di attaccare un altro bersaglio dopo aver catturato un pezzo.",
+                    desc:   "After taking down an enemy's piece, the Minotaur can attack for a second time another foe.",
                     cost:   "5"
                 }
             },
             jester: {
-                name:   "Il Giullare",
-                quote:  "Cosa fanno i giullari quando nessuno li guarda? Ti ascoltano.",
-                lore:   "Se hai intenzione di dare un banchetto, i Giullari non possono mancare.\
-	                    Li vedrai spesso scappare a zig-zag evitando i sassi lanciati dai bambini grassottelli di qualche sir o lord.\
-	                    Le loro vesti sgargianti e troppo strette mettevano anche il Re Blu di buon umore.\
-	                    Aveva ancora un largo sorriso quando i Giullari recapitarono la sua testa al Re Rosso.\
-	                    Fuori dalle corti nessuno si sognerebbe mai di rivolgere loro neanche uno sguardo.\
-	                    Molte madri del regno giurano di aver visto alcuni di loro rubare la loro prole dopo il parto. Ma sono solo storielle...\
-	                    Oltre il mare vengono chiamati \"Gli occhi del Rosso\".",
-                move:   "Il Giullare si muove ad L, 2 caselle in una direzione e 1 nella direzione perependicolare alla prima.",
+                name:   "The Jester",
+                quote:  "\"What do the jesters do when no one is looking? They listen.\"",
+                lore:   "If you plan to organaize a banquet, the Jesters have to be there too.\
+                        You'll see them wriggle away avoiding stones thronw by fat little childen of lords or sirs.\
+	                    Their flossy and too-thight garment can make anyone in a good mood, even the Blue King. \
+	                    He still had a broad grin when the Jesters delivered his head to the Red King.\
+	                    Outside of the palaces no one wuold ever even look at them.\
+	                    Many mothers of the kingdom swear to have seen one of them took their newborn after their birth.\
+	                    Across the sea their called \"The Red King's eyes\".",
+                move:   "The Jester can move in a L shape, 2 squares in one direction and 1square in the direction perpendicular to the first.",
                 ability: {
-                    name:   "Scherzo",
-                    desc:   "Il Giullare può usare lo spazio a suo piacimento, uscire dalla scacchiera e rientrare dalla parte opposta.",
+                    name:   "Dirty Trick",
+                    desc:   "The Jester can use space as they pleases, exiting the chessboard and returning to the opposite side.",
                     cost:   "5"
                 }
             },
             valk: {
-                name:   "La Valchiria",
-                quote:  "Le donne non devono stare sul campo di battaglia, a meno che non siano ladre, puttane o valchirie.",
-                lore:   "Le Valchirie nascono come un gruppo di donne sopravissute alla Grande Guerra che ha devastato le regioni occidentali, lasciando campi un tempo rigogliosi pieni zeppi di cadaveri.\
-	                    Le Valchirie si organizzarono in una società matriarcale che vaga di battaglia in battaglia per dare asilo ai sopravvissuti.\
-	                    I contrasti con gruppi mercenari erano frequenti, fu per questo che svilupparono un nuova branca della medicina, grazie anche all'aiuto della magia oscura.\
-	                    Queste tecniche permisero loro di usare i morti per tappezzare le proprie ferite, cosa che fece perdere di vista la loro missione orginiraria.\
-	                    Da sopravvissute che erano sono diventate dei macabri ammassi di carne alla ricerca di corpi da usare nei loro rituali.",
-                move:   "La Valchiria si muove in diagonale.",
+                name:   "The Valkyrie",
+                quote:  "\"Le donne non devono stare sul campo di battaglia, a meno che non siano ladre, puttane o valchirie.\"",
+                lore:   "Valkyries originated as a gruop of women who survived the Great War which destroyed the west lands, turning once blooming fields into graveyards.\
+                        Valkyries organized themself in a matriarchal society which roam from a battlefield to another helping the survivors.\
+	                    Quarrels and disputes with mercenaries happened often, this brouth them to develop a new branch of medicine, with the help of black magic.\
+	                    This new practice allowed them to use the dead to heal their wounds, but it made them lose their wits and their original goal.\
+	                    Born as survivors, now they've become a morbid pile of dead meat in search of new bodies to use in their rituals.",
+                move:   "The Valkyrie can move diagonally.",
                 ability: {
-                    name:   "Lancio",
-                    desc:   "La Valchiria può lanciare il suo giavelotto abbattendo i pezzi nemici, potendone saltare anche uno, senza doversi muovere.",
+                    name:   "Hurl",
+                    desc:   "The Valkyrie can throw their javelin striking the enemy without moving. They can also skip a piece if it's in the way!",
                     cost:   "3"
                 }
             },
             bastard: {
-                name:   "I Bastardi",
-                quote:  "Non avere pietà di loro. Sono solo dei bastardi, dopotutto.",
-                lore:   "I figli bastardi dei principi, avuti probabilmente da qualche puttana o da qualche figlia libertina di un lord minore, \
-                        per sua volontà o per far ottenere un favore al padre. All'inizio della guerra i Bastardi sono stati costretti a schierarsi \
-                        ed a prendere le armi in farvore del loro \"padre\", anche se per molti è difficile dire chi sia dei due. Per loro è più importante \
-                        la prospettiva di un futuro roseo in cui vengono ricompensati per il loro coraggio, nella remota possibilità che non vengano catturati, fatti a pezzi o entrambe.\
-                        In qualunque caso nessuno ne sentirà la mancanza.",
-                move:   "I Bastardi si muovono di una casella in avanti, o di 2 se non si sono mai mossi, e possono mangiare 1 pezzo in diagonale davanti a loro.\
-	                    Arrivati alla fine della scacchiera i Bastardi possono trasformarsi in un pezzo qualsiasi.",
+                name:   "The Bastards",
+                quote:  "\"Don't have pity on them. They're only some bastards afterall.\"",
+                lore:   "The bastard children of the royals, born from a whore or licentious daughter of some minor lord, \
+                        by her own decision or just to to do his father a favour. With the start of the war they were forced to take side \
+                        and forearm for their own \"father\", even if for many it's difficult to say which of the two he is. But for these Bastards the only \
+                        important thing is the prospect of a bright future where they're rewarded for their bravery, a future where they're not captured, torn to pieces or both.\
+                        In any case no one will miss them.",
+                move:   "The Bastards can move 1 square forward - or 2 if it's their first time moving - and can attack an enemy piece if it's in front of them diagonally.\
+                        When they reach the oder side of the chessboard they can become any other piece.",
                 ability: {
-                    name:   "Investitura",
-                    desc:   "I Bastardi che vengono investiti della carica di lord (minore) possono comandare ai pezzi adiacenti di muoversi al loro comando, anche se solo dopo di loro.",
+                    name:   "Investiture",
+                    desc:   "The Bastards who are assigned the tittle of (minor) lord can command the other pieces near them to move as they please, but only after their turn.",
                     cost:   "1"
                 }
             }

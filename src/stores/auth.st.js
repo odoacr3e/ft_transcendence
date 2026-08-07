@@ -137,8 +137,9 @@ export const useAuthStore = defineStore('auth', {
 				if (resp.log.status == "OK")
 				{
 					this.tourInfo.pwd = resp.tournament_pwd;
+					this.socket.off('update_tournament'); //meglio metterla in una funziona a fine torneo
 					this.socket.on('update_tournament', ({resp}) => { if (!resp.log) { this.error = resp.log.error; } this.tourInfo.status = resp.round });
-					return (true);
+					return (resp);
 				}
 			});
 		},

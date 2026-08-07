@@ -30,7 +30,8 @@
 	{
 		// if (formData.value.name.includes('%') || formData.value.name.includes('|')) { error.value = true; return; }
 
-		// if (authStore.createTour(formData.value.name))
+		// const resp = authStore.createTour(formData.value.name);
+		// if (resp)
 		// 	router.push({
 		// 		name: "open_tournament",
 		// 		params: { tournament: resp.data.tournament.id_tournament }

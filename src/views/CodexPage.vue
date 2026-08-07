@@ -38,14 +38,14 @@
                         border-border-default overflow-hidden absolute bottom-0 w-full z-12 transition-colors ease-in-out">
                 <div class="grid transition-all duration-400 ease-in-out" :class="bool ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'">
                     <div class="overflow-hidden">
-                        <div class="py-3 pt-1">
-                            <h2 class="text-text-default text-2xl font-semibold">Come si muove</h2>
+                        <div class="py-2 pt-1">
+                            <h2 class="text-text-default text-2xl font-semibold mb-1">{{ t('codex.move') }}</h2>
                             <p class="text-text-second">{{ t('codex.' + array[select] + '.move') }}</p>
                         </div>
                         <hr class="w-full justify-self-start text-text-last my-4">
-                        <div class="py-3 mb-2">
-                            <div class="flex text-text-default font-semibold">
-                                <h2 class="text-2xl">La sua abilità - {{ t('codex.' + array[select] + '.ability.name') }}</h2>
+                        <div class="py-2 mb-2">
+                            <div class="flex text-text-default font-semibold mb-1">
+                                <h2 class="text-2xl">{{ t('codex.ability') }} - {{ t('codex.' + array[select] + '.ability.name') }}</h2>
                                 <div class="flex self-center ml-auto gap-2">
                                     <p class="text-xl">{{ t('codex.' + array[select] + '.ability.cost') }}</p>
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
@@ -64,7 +64,7 @@
                     <svg class="text-text-default self-center size-8 transition-transform duration-200" :class="{ 'rotate-180': !bool }" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
-                    <h2 class="text-text-default text-2xl font-semibold">Le sue abilità</h2>
+                    <h2 class="text-text-default text-2xl font-semibold">{{ t('codex.title') }}</h2>
                 </div>
             </div>
         </div>

@@ -103,9 +103,12 @@ export const italian = {
             sendRequest: "Manda amicizia"
         },
         codex: {
+            title: "Le sue abilità",
+            move: "Come si muove",
+            ability: "Abilità speciale",
             king: {
                 name:   "Il Sovrano",
-                quote:  "'Bianco o Nero' mi chiedono. Ho di meglio da fare.",
+                quote:  "\"'Bianco o Nero' mi chiedono. Ho di meglio da fare.\"",
                 lore:   "Figli del vecchio Re Rosso, i gemelli Bianco e Nero hanno vissuto una vita agiata, senza le frivole preoccupazioni dei semplici.\
 	                    Dopo che il Re Rosso morì per la puntura di un'ape, non vennero lasciate chiare indicazioni per un erede e\
 	                    i due si catapultarono in battibecchi degni dei bambini più viziati.\
@@ -122,7 +125,7 @@ export const italian = {
             },
             champ: {
                 name:   "Il Campione",
-                quote:  "...",
+                quote:  "\"...\"",
                 lore:   "I Campioni non sono solo valorosi guerrieri scelti dal Re come scorta, ma sono dei veri e propri simboli di forza.\
 	                    Alti, veloci, letali e decisamente di poche parole, ogni cavaliere che si rispetti ha questo titolo come ambizione e spesso\
 	                    giostrano e combattono in tornei e guerriglie per dimostrarsi degni. \
@@ -141,7 +144,7 @@ export const italian = {
             },
             mino: {
                 name:   "Il Minotauro",
-                quote:  "Mostri del cazzo creati da altri mostri del cazzo.",
+                quote:  "\"Mostri del cazzo creati da altri mostri del cazzo.\"",
                 lore:   "I Minotauri sono abomini creati sotto diretto ordine del Re Rosso.\
 	                    Sono i risultati degli esperimenti che univano la manipolazione genetica tramite imbreeding, praticata da secoli \
 	                    su cani, cavalli, piante e, in casi più specifichi, anche su certi individui, e la magia del sangue proveniente dalle terre dell'est.\
@@ -159,15 +162,15 @@ export const italian = {
             },
             jester: {
                 name:   "Il Giullare",
-                quote:  "Cosa fanno i giullari quando nessuno li guarda? Ti ascoltano.",
+                quote:  "\"Cosa fanno i giullari quando nessuno li guarda? Ti ascoltano.\"",
                 lore:   "Se hai intenzione di dare un banchetto, i Giullari non possono mancare.\
 	                    Li vedrai spesso scappare a zig-zag evitando i sassi lanciati dai bambini grassottelli di qualche sir o lord.\
 	                    Le loro vesti sgargianti e troppo strette mettevano anche il Re Blu di buon umore.\
 	                    Aveva ancora un largo sorriso quando i Giullari recapitarono la sua testa al Re Rosso.\
 	                    Fuori dalle corti nessuno si sognerebbe mai di rivolgere loro neanche uno sguardo.\
-	                    Molte madri del regno giurano di aver visto alcuni di loro rubare la loro prole dopo il parto. Ma sono solo storielle...\
+	                    Molte madri del regno giurano di aver visto alcuni di loro rubare la loro prole dopo il parto.\
 	                    Oltre il mare vengono chiamati \"Gli occhi del Rosso\".",
-                move:   "Il Giullare si muove ad L, 2 caselle in una direzione e 1 nella direzione perependicolare alla prima.",
+                move:   "Il Giullare si muove ad L, 2 caselle in una direzione e 1 nella direzione perpendicolare alla prima.",
                 ability: {
                     name:   "Scherzo",
                     desc:   "Il Giullare può usare lo spazio a suo piacimento, uscire dalla scacchiera e rientrare dalla parte opposta.",
@@ -176,11 +179,11 @@ export const italian = {
             },
             valk: {
                 name:   "La Valchiria",
-                quote:  "Le donne non devono stare sul campo di battaglia, a meno che non siano ladre, puttane o valchirie.",
+                quote:  "\"Le donne non devono stare sul campo di battaglia, a meno che non siano ladre, puttane o valchirie.\"",
                 lore:   "Le Valchirie nascono come un gruppo di donne sopravissute alla Grande Guerra che ha devastato le regioni occidentali, lasciando campi un tempo rigogliosi pieni zeppi di cadaveri.\
 	                    Le Valchirie si organizzarono in una società matriarcale che vaga di battaglia in battaglia per dare asilo ai sopravvissuti.\
 	                    I contrasti con gruppi mercenari erano frequenti, fu per questo che svilupparono un nuova branca della medicina, grazie anche all'aiuto della magia oscura.\
-	                    Queste tecniche permisero loro di usare i morti per tappezzare le proprie ferite, cosa che fece perdere di vista la loro missione orginiraria.\
+	                    Queste tecniche permise loro di usare i morti per tappezzare le proprie ferite, cosa che fece perdere di vista la loro missione orginiraria.\
 	                    Da sopravvissute che erano sono diventate dei macabri ammassi di carne alla ricerca di corpi da usare nei loro rituali.",
                 move:   "La Valchiria si muove in diagonale.",
                 ability: {
@@ -191,7 +194,7 @@ export const italian = {
             },
             bastard: {
                 name:   "I Bastardi",
-                quote:  "Non avere pietà di loro. Sono solo dei bastardi, dopotutto.",
+                quote:  "\"Non avere pietà di loro. Sono solo dei bastardi, dopotutto.\"",
                 lore:   "I figli bastardi dei principi, avuti probabilmente da qualche puttana o da qualche figlia libertina di un lord minore, \
                         per sua volontà o per far ottenere un favore al padre. All'inizio della guerra i Bastardi sono stati costretti a schierarsi \
                         ed a prendere le armi in farvore del loro \"padre\", anche se per molti è difficile dire chi sia dei due. Per loro è più importante \
