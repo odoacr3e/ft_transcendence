@@ -65,7 +65,10 @@ let DangerUpdate = (match, pos=null, ignoreBoostChampsBool=true, castlingBool=fa
 	if (ignoreBoostChampsBool && piece.type == enumNames.CHAMPION && piece.isBoostedBool)
 		return (match.cursor.Restore());
 	if (piece.isBoostedBool == true)
+	{//@ts-ignore
+		match[piece.team].boostedPiece = pos;
 		piece.moveFunction(match);
+	}
 	castlingUpdate(match, startPos, piece, castlingBool);
 	match.board.get(pos).targetZones.delete(pos);
 	match.board.get(pos).dangerZones.delete(pos);

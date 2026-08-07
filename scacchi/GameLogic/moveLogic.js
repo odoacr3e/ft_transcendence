@@ -14,6 +14,8 @@ import {printSwap, render} from "../test/render.js";
 import { moveCastling } from "./Castling.js";
 import { Square } from "../Classes/Chess/chessBoard.js";
 
+let	DEB = 0;
+
 /**
  * 
  * @param {Array<string>} coords
@@ -34,6 +36,9 @@ function updateChessboard(coords=[], result, match, boostBool)
 	{
 		return (error(result, 500, "from | to bug in moveFunction"));
 	}
+	DEB++;
+	if (DEB == 186336)
+		console.log("BREAKPOINT");
 	if (boostBool == true && result.usedBoost == false)
 		boostBool = false;
 	if (boostBool == true && !match.currentPlayer.boostedPiece)
