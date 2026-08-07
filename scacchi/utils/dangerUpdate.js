@@ -294,7 +294,7 @@ function CheckInfluence(match, coords, castlingBool)
  * @param {Match} match
  * @param {Array<string>} coords
  */
-function updateBoostedChampions(match, coords)
+function updateBoostedChampions(match, coords=["", ""])
 {
 	let arr;
 	let	piece;

@@ -69,8 +69,11 @@ class Match
 			throw (`Match: eloRank library error during initialization`);
 		/** @type {number | null} */
 		this.tournament = null;
+		//is AI simulating a move?
 		this.aiSimulation = false;
+		//when AI finishes simulating and makes the real turn
 		this.aiMove = false;
+		//if any of the players is an AI
 		this.aiBool = false;
 	}
 	/** @param {MatchSettings | string | null} preset*/

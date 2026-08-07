@@ -10,7 +10,7 @@
 import {dangerUpdateMoved} from "../utils/dangerUpdate.js";
 import {Match} from "../Classes/Chess/match.js";
 import {error, Result} from "../handlers/game/utils.js";
-import {printSwap} from "../test/render.js";
+import {printSwap, render} from "../test/render.js";
 import { moveCastling } from "./Castling.js";
 import { Square } from "../Classes/Chess/chessBoard.js";
 
@@ -34,6 +34,10 @@ function updateChessboard(coords=[], result, match, boostBool)
 	{
 		return (error(result, 500, "from | to bug in moveFunction"));
 	}
+	if (boostBool == true && result.usedBoost == false)
+		boostBool = false;
+	if (boostBool == true && !match.currentPlayer.boostedPiece)
+		throw (`updateChessboard: boostedPiece does not exist in moveBoost`);
 	match.history.UpdateMoves(match, from, coords, result.specialMoves._mask, boostBool);
 	if (result.usedBoost == true)
 	{

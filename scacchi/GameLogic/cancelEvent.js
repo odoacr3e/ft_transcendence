@@ -1,4 +1,4 @@
-//@ts-ignore
+//@ts-check
 
 import { HistoryEvent } from "../Classes/Chess/history.js";
 import { Piece } from "../Classes/Chess/Pieces/pieces.js";
@@ -62,7 +62,7 @@ function cancelMove(match, lastEvent)
 
 	// console.log(Object.prototype.toString.call(lastEvent.updates));
 	if (!lastEvent.updates || lastEvent.updates.size == 0 || Object.prototype.toString.call(lastEvent.updates) != "[object Set]")
-		return ("cancelMove: History does not have the updates array");
+		return (console.error("cancelMove: History does not have the updates array"));
 	fromSquare = match.board.get(lastEvent.from);
 	toSquare = match.board.get(lastEvent.to);
 	if (!lastEvent.pieceEaten && toSquare.piece && fromSquare.piece)
@@ -96,7 +96,13 @@ function cancelMove(match, lastEvent)
 	{
 		boostedSquare = fromSquare;
 		if (lastEvent.prevBoost != lastEvent.to)
+		{
+			if (!lastEvent.prevBoost)
+				throw (`cancelMove: prevBoost not defined`);
 			boostedSquare = match.board.get(lastEvent.prevBoost);
+		}
+		if (!boostedSquare.piece)
+			throw (`cancelMove: boostedPiece does not exist, in ${boostedSquare}`);
 		boostedSquare.piece.isBoostedBool = true;
 		match.currentPlayer.boostedPiece = lastEvent.prevBoost;
 		// console.log(`Event: ${lastEvent}, prevBoost: ${lastEvent.prevBoost}`);
@@ -129,6 +135,7 @@ function cancelMove(match, lastEvent)
 function cancelBoost(match, lastEvent)
 {
 	let	square;
+	let	prevPiece;
 
 	square = match.board.get(lastEvent.from);
 	if (!square.piece)
@@ -138,8 +145,13 @@ function cancelBoost(match, lastEvent)
 	match.currentPlayer.boostedPiece = lastEvent.prevBoost;
 	if (lastEvent.prevBoost)
 	{
-		match.board.get(lastEvent.prevBoost).piece.isBoostedBool = true;
+		prevPiece = match.board.get(lastEvent.prevBoost).piece;
+		if (!prevPiece)
+			throw (`cancelBoost: prevPiece does not exist: ${lastEvent}`);
+		prevPiece.isBoostedBool = true;
 		DangerUpdate(match, lastEvent.prevBoost);
+		if (prevPiece.type == enumNames.CHAMPION)
+			updateBoostedChampions(match);
 	}
 	DangerUpdate(match, lastEvent.from);
 }
