@@ -84,6 +84,8 @@ function cancelMove(match, lastEvent)
 	{
 		fromSquare.piece = toSquare.piece;
 		toSquare.piece = lastEvent.pieceEaten;
+		if (toSquare.piece.isBoostedBool)//@ts-ignore
+			match[lastEvent.pieceEaten?.team].boostedPiece = lastEvent.to;
 		match.currentPlayer.nPoints -= lastEvent.pieceEaten.price;//@ts-ignore
 		match[lastEvent.pieceEaten?.team].nPieces += 1;
 	}

@@ -10,6 +10,7 @@
 */
 
 import { enumNames} from "../Macro/enums.js";
+import { render } from "../test/render.js";
 import { movePiece } from "./movePiece.js";
 
 /**@typedef {import("../Classes/Chess/match.js").Match} Match*/
@@ -301,7 +302,6 @@ function updateBoostedChampions(match, coords=["", ""])
 {
 	let arr;
 	let	piece;
-	let	needUpdateBool;
 	let	boostedChampsCoords;
 
 	arr = match.GetBoostedPieceCoords(true, true);
@@ -309,7 +309,6 @@ function updateBoostedChampions(match, coords=["", ""])
 		return ;
 	boostedChampsCoords = [];
 	//check if at least one boosted champion needs a refresh
-	needUpdateBool = false;
 	for (const x of arr)
 	{
 		piece = match.board.get(x).piece;
@@ -318,15 +317,14 @@ function updateBoostedChampions(match, coords=["", ""])
 		else if (!piece && x == coords[1])
 			piece = match.board.get(coords[0]).piece;
 		if (!piece)
+		{
+			render(match);
 			throw (`updateBoostedChampions: piece in ${x} does not exist`);
+		}
 		if (piece.type != enumNames.CHAMPION || piece.isBoostedBool == false)
 			continue ;
 		boostedChampsCoords.push(x);
-		if (match.board.updates.has(x) == true)
-			needUpdateBool = true;
 	}
-	if (needUpdateBool == false && boostedChampsCoords.length < 2)
-		return ;
 	//resets all one of them
 	for (const x of boostedChampsCoords)
 	{

@@ -7,7 +7,7 @@
 }
 ``
 
-## ✅Update Champion
+## Update Champion
 
 ``json
 {
@@ -27,7 +27,7 @@
 }
 ``
 
-## Boost failed
+## ✅Boost failed
 
 ``json
 {
@@ -39,12 +39,22 @@
 
 ## boost already boost piece
 
-## ✅Cancel turn
+## Cancel turn
 
 ``json
 {
   "game": "fresh 1: \u001b[31m[KO]\u001b[0m",
   "board": "|bM|bJ|bV| |bK|bV|bJ|bM|\n| |bB|bB|bB| |bB|bB|bB|\n| | | | |bB| | | |\n| | |bC| | | | | |\n|bB| |wJ| | | | | |\n| |wB| |wB| | | | |\n|+wB| |wB| |wB|wB|wB|wB|\n|wM| |wV|wC|wK|wV|wJ|wM|\n|00|",
   "info": "cancelTurn: last turn is not endTurn:{\n  \"move\": {\n    \"from\": \"a5\",\n    \"to\": \"a4\"\n  },\n  \"moveBoost\": null,\n  \"boost\": \"\",\n  \"transform\": \"\"\n}
+}
+``
+
+## Trasfiguration failed
+
+``json
+{
+  "game": "bugboostbastard.json: \u001b[31m[KO]\u001b[0m",
+  "board": "|bM| | | |wB|wC| |bM|\n|+bB|bB| | | |bB| |bB|\n|bC| |bJ|bK| | |bB| |\n| |bB| | | | | | |\n| | | | | | | | |\n|wJ| | | | | | | |\n|wB|wB|wB|wB| |wB|wB|wB|\n| |wM|wV|wK| | |+wJ|wM|\n|00|",
+  "info": "execTurn: transfiguration has failed",
 }
 ``

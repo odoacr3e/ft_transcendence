@@ -36,9 +36,6 @@ function updateChessboard(coords=[], result, match, boostBool)
 	{
 		return (error(result, 500, "from | to bug in moveFunction"));
 	}
-	DEB++;
-	if (DEB == 186336)
-		console.log("BREAKPOINT");
 	if (boostBool == true && result.usedBoost == false)
 		boostBool = false;
 	if (boostBool == true && !match.currentPlayer.boostedPiece)
@@ -65,6 +62,8 @@ function updateChessboard(coords=[], result, match, boostBool)
 		if (to.piece.isBoostedBool == true)//@ts-ignore
 			match[to.piece.team].boostedPiece = "";
 	}
+	// else if (to.piece && to.piece.team == from.piece.team)
+
 	makeMove(match, result, coords, from, to);
 	match.moves++;
 	return (true);

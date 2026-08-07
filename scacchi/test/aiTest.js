@@ -15,16 +15,6 @@ import { boardStringify, render } from "./render.js";
 import { jsonParser } from "../utils/response.js";
 
 const TEST_PATH = `${HISTORY_PATH}`;
-const iaMsg =
-[
-	"think...",
-	"think harder...",
-	"fa schiuma ma non e sapone, cosa e?",
-	"chiunque se la vedra con me sara sconfitto!",
-	"sono incredibile!",
-	"strabiliante",
-	"pescata lucente!"
-];
 
 //@ts-ignore
 /** @typedef {import ("../../history/HISTORY.json")} historyData */

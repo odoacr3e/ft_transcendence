@@ -17,6 +17,7 @@ import { checkKingDanger } from "../../utils/checkDanger.js";
 import { enumNames } from "../../Macro/enums.js";
 import { jsonParser } from "../../utils/response.js";
 import { aiSpeech } from "../../Classes/Chess/AIprofiles/speech.js";
+import { render } from "../../test/render.js";
 
 /** @typedef {import ('../../Classes/Chess/chessBoard.js').Square} Square  */
 
@@ -61,6 +62,11 @@ function tryBoost(match, result, from)
 	let	square;
 	let	tmp;
 
+	if (match.history.moves == 259186)
+	{
+		render(match);
+		console.log("BREAKPOINT");
+	}
 	if (match.boost >= BOOSTED_MAX || match.moves < MOVEMENT_MIN)
 		return (error(result, 403, "You can't boost now"));
 	if (checkKingDanger(match) == true)

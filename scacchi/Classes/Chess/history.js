@@ -171,6 +171,8 @@ function updateMoves(match, square, coords, specialMoves, boostBool=false)
 		eName = eEvents.MoveBoost;
 	record = new HistoryEvent(this.moves, eName, square.piece?.team, match.board.updates, square.piece?.type, coords[0], coords[1], square.boostedTargetZones, square.piece?.isBoostedBool);
 	record.pieceEaten = match.board._data.get(coords[1])?.piece;
+	if (record.pieceEaten)
+		record.pieceEaten = record.pieceEaten.Copy();
 	record.specialMoves = specialMoves;
 	record.updates = structuredClone(match.board.updates);
 	record.time = match.currentPlayer.time;
