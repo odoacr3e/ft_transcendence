@@ -42,6 +42,8 @@ function updateChessboard(coords=[], result, match, boostBool)
 	if (result.usedBoost == true)
 	{
 		from.piece.isBoostedBool = false;
+		if (match.currentPlayer.boostedPiece != coords[0])//@ts-ignore
+			match.board.get(match.currentPlayer.boostedPiece).piece.isBoostedBool = false;
 		match.currentPlayer.boostedPiece = "";
 		match.boostPriority.delete(match.currentPlayer.team);
 	}

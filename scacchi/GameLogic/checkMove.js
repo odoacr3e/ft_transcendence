@@ -115,41 +115,6 @@ export function checkSecondMove(match, coords)
 	return false;
 }
 
-// /**
-//  * checks if a second move is possible.
-//  * used to pass the turn automatically when needed.
-//  * @param {Match} match 
-//  * @param {Array<string>} coords 
-//  */
-// export function checkSecondMove(match, coords)
-// {
-// 	let piece;
-// 	let type;
-
-// 	if (match.playerNum <= 1)
-// 		return (false);
-// 	type = match.board.get(coords[1])?.piece?.type;
-// 	if ((type == enumNames.CHAMPION || type == enumNames.MINOTAURUS || type == enumNames.BASTARDS) && match.board.get(to)?.piece?.isBoostedBool == true)
-// 		return true;
-// 	match.cursor.Save();
-// 	match.cursor.set(coords[1]);
-// 	for (let {dx, dy} of new Preset(enumNames.KING).movement)
-// 	{
-// 		if (movePiece(match, dy, dx))
-// 		{
-// 			piece = match.board.get(match.cursor.square)?.piece;
-// 			if (piece?.type == enumNames.BASTARDS && piece.isBoostedBool == true)
-// 			{
-// 				match.cursor.Restore();
-// 				return true;
-// 			}
-// 		}
-// 		match.cursor.set(coords[1]);
-// 	}
-// 	match.cursor.Restore();
-// 	return false;
-// }
-
 //SECTION - utils
 
 /**
@@ -268,8 +233,8 @@ function checkDoubleBastardMove(match, result, coords)
 		if (match.cursor.square == other)
 		{
 			result.usedBoost = true;
-			bastardSquare.piece.isBoostedBool = false;
-			from.piece.isBoostedBool = false;
+			// bastardSquare.piece.isBoostedBool = false;
+			// from.piece.isBoostedBool = false;
 			match.cursor.set(tmpCursor);
 			match.board.updates.add(bastardNewCoord);
 			return true;

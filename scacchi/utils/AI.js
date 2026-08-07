@@ -39,7 +39,7 @@ export function execTurn(match, turn)
 	}
 	if (turn.boost && (result = boost(match, turn.boost)).status != 200)
 	{
-		console.log(`BOOST ERROR N. ${DEB} => ${turn}`);
+		console.error(`BOOST ERROR N. ${DEB++} => {${result.msg}: ${turn}`);
 		//render(match);
 		//throw (`execTurn: boost's function has failed : ${result.msg}`); // @ts-ignore
 	}//@ts-ignore
