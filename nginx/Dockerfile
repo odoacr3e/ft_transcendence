@@ -10,7 +10,6 @@ RUN rm /etc/nginx/conf.d/default.conf && \
     -out /etc/nginx/ssl/server.crt \
     -subj "/C=IT/ST=Italy/L=Rome/O=LocalDev/OU=Dev/CN=localhost"
 
-# COPY ./conf/nginx.prod.conf /etc/nginx/conf.d/default.conf
-COPY ./conf/nginx.dev.conf /etc/nginx/conf.d/default.conf
+COPY ./conf/nginx.prod.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80 443
