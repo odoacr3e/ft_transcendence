@@ -58,3 +58,17 @@
   "info": "execTurn: transfiguration has failed",
 }
 ``
+
+##doubleSave
+
+Trace
+    at ChessBoard.get (file:///home/alerusso/ft_transcendence/scacchi/Classes/Chess/chessBoard.js:138:12)
+    at doubleSave (file:///home/alerusso/ft_transcendence/scacchi/GameLogic/checkMate.js:317:22)
+    at CheckMateCheck (file:///home/alerusso/ft_transcendence/scacchi/GameLogic/checkMate.js:45:26)
+    at checkMateCheckAll (file:///home/alerusso/ft_transcendence/scacchi/GameLogic/checkMate.js:71:7)
+    at move (file:///home/alerusso/ft_transcendence/scacchi/handlers/game/move.js:53:2)
+    at execTurn (file:///home/alerusso/ft_transcendence/scacchi/utils/AI.js:32:19)
+    at minMax (file:///home/alerusso/ft_transcendence/scacchi/Classes/Chess/AI.js:179:8)
+    at minMax (file:///home/alerusso/ft_transcendence/scacchi/Classes/Chess/AI.js:163:10)
+    at getBestTurn (file:///home/alerusso/ft_transcendence/scacchi/Classes/Chess/AI.js:89:15)
+    at AIexecuteTurn (file:///home/alerusso/ft_transcendence/scacchi/GameLogic/aiTurn.js:31:9)
