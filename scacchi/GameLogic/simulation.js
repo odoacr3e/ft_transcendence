@@ -86,27 +86,28 @@ export function simulation(coords, match, result=null, otherCoords=null)
 	return (!dangerBool);
 }
 
-/**
- * 
- * @param {Match} match 
- * @param {string} team 
- */
-export function simulationGlobal(match, team=match.currentPlayer.team)
-{
-	let	legalMovesArray;
+//FIXME - unused
+// /**
+//  * 
+//  * @param {Match} match 
+//  * @param {string} team 
+//  */
+// export function simulationGlobal(match, team=match.currentPlayer.team)
+// {
+// 	let	legalMovesArray;
 
-	legalMovesArray = getLegalMoves(match, team, true);
-	for (const turn of legalMovesArray)
-	{
-		if (turn.move && turn.moveBoost && simulation([turn.move.from, turn.move.to], match, null, [turn.moveBoost.from, turn.moveBoost.to]))
-			return (true);
-		else if (turn.move && !turn.moveBoost && simulation([turn.move.from, turn.move.to], match))
-			return (true);
-		else if (!turn.move && turn.moveBoost && simulation([turn.moveBoost.from, turn.moveBoost.to], match))
-			return (true);
-	}
-	return (false);
-}
+// 	legalMovesArray = getLegalMoves(match, team, true);
+// 	for (const turn of legalMovesArray)
+// 	{
+// 		if (turn.move && turn.moveBoost && simulation([turn.move.from, turn.move.to], match, null, [turn.moveBoost.from, turn.moveBoost.to]))
+// 			return (true);
+// 		else if (turn.move && !turn.moveBoost && simulation([turn.move.from, turn.move.to], match))
+// 			return (true);
+// 		else if (!turn.move && turn.moveBoost && simulation([turn.moveBoost.from, turn.moveBoost.to], match))
+// 			return (true);
+// 	}
+// 	return (false);
+// }
 
 //SECTION - utils
 

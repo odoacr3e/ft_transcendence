@@ -115,14 +115,14 @@ function checkLostAll(match)
  * Checks if a piece that is menacing the king can be eaten
  * @param {Match} match
  * @param {string} kingSquare 
- * @param {string} enemySquareString 
+ * @param {string} enemyCoord 
+ * @param {Square | null} enemySquare
  * @returns {boolean} 
  */
-function isStoppable(match, kingSquare, enemySquareString)
+function isStoppable(match, kingSquare, enemyCoord, enemySquare=null)
 {
 	let	square;
 	let	dir;
-	let	enemySquare;
 	let	guardianSquare;
 	let	guardianPiece;
 	let	kingPiece;
@@ -131,7 +131,8 @@ function isStoppable(match, kingSquare, enemySquareString)
 	let	influenceCoords;
 
 	match.currentPlayer.guardianPieces.clear();
-	enemySquare = match.board.get(enemySquareString);
+	if (!enemySquare)
+		enemySquare = match.board.get(enemyCoord);
 	kingPiece = match.board.get(kingSquare).piece;
 	if (!enemySquare || !kingPiece)
 		throw ("given to isStoppable an invalid position");
@@ -139,9 +140,9 @@ function isStoppable(match, kingSquare, enemySquareString)
 	enemySquare.piece?.type == enumNames.BASTARDS || 
 	(enemySquare.piece?.type == enumNames.VALKIRYA && 
 	enemySquare.piece?.isBoostedBool == true) ||
-	match.board.get(kingSquare)?.targetZones.has(enemySquareString))
+	match.board.get(kingSquare)?.targetZones.has(enemyCoord))
 		return false;
-	dir = getDirection(match, kingSquare, enemySquareString);
+	dir = getDirection(match, kingSquare, enemyCoord);
 	if (!movePiece(match, dir.diffCol, dir.diffRow))
 		return true;
 	while (match.board.get(match.cursor.square)?.piece?.type != enumNames.KING)
@@ -173,7 +174,7 @@ function isStoppable(match, kingSquare, enemySquareString)
 			let	guardianBoostedSave = false;
 			let	guardianRegularSave = false;
 
-			if (guardianSquare.targetZones.has(match.cursor.square) && square.piece == null && !checkDir(match, kingSquare, x, enemySquareString))
+			if (guardianSquare.targetZones.has(match.cursor.square) && square.piece == null && !checkDir(match, kingSquare, x, enemyCoord))
 			{
 				guardianRegularSave = true;
 			}
@@ -193,7 +194,11 @@ function isStoppable(match, kingSquare, enemySquareString)
 			}
 		}
 		if (!movePiece(match, dir.diffCol, dir.diffRow))
-			return simulationGlobal(match, match.currentPlayer.team);
+		{
+			if (enemySquare.boostedTargetZones.has(match.cursor.square) == false)
+				return (true);
+			return (isStoppable(match, kingSquare, match.cursor.square, enemySquare));
+		}
 	}
 	if (normalSaveBool == true || match.currentPlayer.guardianPieces.size > 0)
 	{
