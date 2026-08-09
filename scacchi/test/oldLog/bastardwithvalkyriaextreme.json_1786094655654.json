@@ -1,6 +1,557 @@
 {
   "game": "bastardwithvalkyriaextreme.json: \u001b[31m[KO]\u001b[0m",
-  "board": "| | | | | | | |bK|\n| | | | | | | | |\n| | | | | |bV| | |\n| | | | |+bB| | | |\n| | | | | | | | |\n| | | | | | | | |\n| |wB| | | | | | |\n|wK| | | | | | | |\n|00|",
-  "info": "AIExecuteTurn: move failed. Info: {\n  \"move\": {\n    \"from\": \"a1\",\n    \"to\": \"b1\"\n  },\n  \"moveBoost\": null,\n  \"boost\": \"\",\n  \"transform\": \"\"\n}",
-  "matchData": "{\n  \"settings\": {\n    \"board\": {\n      \"width\": 8,\n      \"heigth\": 8,\n      \"seed\": 92364118,\n      \"start\": \"| | | | | | | |K|\\n| | | | | | | | |\\n| | | | | |V| | |\\n| | | | |+B| | | |\\n| | | | | | | | |\\n| | | | | | | | |\\n| |B| | | | | | |\\n|K| | | | | | | |\\n\",\n      \"corners\": false\n    },\n    \"players\": {\n      \"number\": 2,\n      \"startPoints\": 0,\n      \"teams\": {\n        \"white\": \"\",\n        \"black\": \"\",\n        \"yellow\": \"\",\n        \"red\": \"\",\n        \"blue\": \"\",\n        \"green\": \"\"\n      }\n    },\n    \"room\": {\n      \"isRanked\": false\n    },\n    \"presetType\": null\n  },\n  \"white\": {\n    \"dbTable\": null,\n    \"matchId\": \"0\",\n    \"id\": 0,\n    \"expectedElo\": null,\n    \"nPoints\": 0,\n    \"bonusPointCounter\": 0,\n    \"useBoostBool\": false,\n    \"nPieces\": 16,\n    \"King\": \"a1\",\n    \"boostedPiece\": \"\",\n    \"guardianPieces\": {},\n    \"castlingArray\": {},\n    \"time\": 900000,\n    \"team\": \"white\",\n    \"next\": \"black\",\n    \"prev\": \"black\",\n    \"ally\": \"white\",\n    \"allieGuardianCoord\": \"\",\n    \"ai\": {\n      \"profile\": \"First\",\n      \"speechJSON\": {\n        \"eatenPieceMe\": [\n          \"NOOOO! il mio $VAR1!\",\n          \"non gasarti troppo adesso\"\n        ],\n        \"eatenPieceOppo\": [\n          \"bono il $VAR1, grazie\",\n          \"gnam gnam\"\n        ],\n        \"lostChampionMe\": [\n          \"COME OSI!\"\n        ],\n        \"lostChampionOppo\": [\n          \"e finita. Arrenditi. \",\n          \"il tuo campione e caduto.. e presto lo sara anche il tuo re.\"\n        ],\n        \"moveMe\": [\n          \"Ecco qua!\",\n          \"MOVIMENTO\"\n        ],\n        \"checkMe\": [\n          \"non pensare di aver vinto\",\n          \"AH SI?? COME TI PERMETTI?!\"\n        ],\n        \"checkOppo\": [\n          \"non avevi visto questa mossa, eh?\",\n          \"THUNDER CROSS SPLIT ATTACK!\",\n          \"E FINITA JOTARO!\"\n        ],\n        \"checkMateMe\": [\n          \"... Come ho fatto a perdere contro di te??\",\n          \"non pensare di aver vinto! ...cosa? ho perso?? Impossibile!\"\n        ],\n        \"checkMateOppo\": [\n          \"EZ.\",\n          \"EAZY.\",\n          \"easy.\",\n          \"izy.\"\n        ],\n        \"endTurnMe\": [\n          \"PASSO.\"\n        ],\n        \"endTurnOppo\": [\n          \"IT'S MY TURN! I DRAW A CARD!\",\n          \"ah, tocca a me? Menomale, mi stavo addormentando!\",\n          \"con calma eh... disgraziato, non ho tutto il giorno\",\n          \"PESCATA LUCENTE!\"\n        ],\n        \"transformMe\": [\n          \"EMERGI, $VAR1! DISINTEGRA I TUOI NEMICI!\",\n          \"adesso ti faccio vedere io.\"\n        ],\n        \"transformOppo\": [\n          \"un campione in piu non ti fara vincere\"\n        ],\n        \"applyBoostMe\": [\n          \"adesso faccio sul serio!\",\n          \"Beccati questo! Vai, $VAR1!\"\n        ],\n        \"applyBoostOppo\": [\n          \"Che te ne fai di quel $VAR1? Non farmi perdere tempo!\"\n        ],\n        \"useBoostMe\": [\n          \"Uso il potenziamento.\"\n        ],\n        \"useBoostOppo\": [\n          \"Non mi ha fatto nulla!\"\n        ],\n        \"eatWithBoostMe\": [\n          \"E il momento! Vai, $VAR1! DISINTEGRA!\",\n          \"Prendi questo! vai, $VAR1!\"\n        ],\n        \"eatWithBoostOppo\": [\n          \"Posso vincere anche senza di lui! Hai sprecato il potenziamento!\",\n          \"Mmm. Non ti montare la testa.\"\n        ],\n        \"checkWithBoostMe\": [\n          \"Col potere di $VAR1, metto il tuo re sotto minaccia!\"\n        ],\n        \"checkWithBoostOppo\": [\n          \"Come hai fatto?? Il mio re.. Sotto minaccia?!\"\n        ],\n        \"castlingMe\": [\n          \"E il momento.. CASTLING!\"\n        ],\n        \"castlingOppo\": [\n          \"Mmm. Forse sai il fatto tuo..\"\n        ]\n      },\n      \"defeatStatus\": 0\n    }\n  },\n  \"black\": {\n    \"dbTable\": null,\n    \"matchId\": \"0\",\n    \"id\": 0,\n    \"expectedElo\": null,\n    \"nPoints\": 0,\n    \"bonusPointCounter\": 0,\n    \"useBoostBool\": false,\n    \"nPieces\": 16,\n    \"King\": \"h8\",\n    \"boostedPiece\": \"e5\",\n    \"guardianPieces\": {},\n    \"castlingArray\": {},\n    \"time\": 900000,\n    \"team\": \"black\",\n    \"next\": \"white\",\n    \"prev\": \"white\",\n    \"ally\": \"black\",\n    \"allieGuardianCoord\": \"\",\n    \"ai\": {\n      \"profile\": \"First\",\n      \"speechJSON\": {\n        \"eatenPieceMe\": [\n          \"NOOOO! il mio $VAR1!\",\n          \"non gasarti troppo adesso\"\n        ],\n        \"eatenPieceOppo\": [\n          \"bono il $VAR1, grazie\",\n          \"gnam gnam\"\n        ],\n        \"lostChampionMe\": [\n          \"COME OSI!\"\n        ],\n        \"lostChampionOppo\": [\n          \"e finita. Arrenditi. \",\n          \"il tuo campione e caduto.. e presto lo sara anche il tuo re.\"\n        ],\n        \"moveMe\": [\n          \"Ecco qua!\",\n          \"MOVIMENTO\"\n        ],\n        \"checkMe\": [\n          \"non pensare di aver vinto\",\n          \"AH SI?? COME TI PERMETTI?!\"\n        ],\n        \"checkOppo\": [\n          \"non avevi visto questa mossa, eh?\",\n          \"THUNDER CROSS SPLIT ATTACK!\",\n          \"E FINITA JOTARO!\"\n        ],\n        \"checkMateMe\": [\n          \"... Come ho fatto a perdere contro di te??\",\n          \"non pensare di aver vinto! ...cosa? ho perso?? Impossibile!\"\n        ],\n        \"checkMateOppo\": [\n          \"EZ.\",\n          \"EAZY.\",\n          \"easy.\",\n          \"izy.\"\n        ],\n        \"endTurnMe\": [\n          \"PASSO.\"\n        ],\n        \"endTurnOppo\": [\n          \"IT'S MY TURN! I DRAW A CARD!\",\n          \"ah, tocca a me? Menomale, mi stavo addormentando!\",\n          \"con calma eh... disgraziato, non ho tutto il giorno\",\n          \"PESCATA LUCENTE!\"\n        ],\n        \"transformMe\": [\n          \"EMERGI, $VAR1! DISINTEGRA I TUOI NEMICI!\",\n          \"adesso ti faccio vedere io.\"\n        ],\n        \"transformOppo\": [\n          \"un campione in piu non ti fara vincere\"\n        ],\n        \"applyBoostMe\": [\n          \"adesso faccio sul serio!\",\n          \"Beccati questo! Vai, $VAR1!\"\n        ],\n        \"applyBoostOppo\": [\n          \"Che te ne fai di quel $VAR1? Non farmi perdere tempo!\"\n        ],\n        \"useBoostMe\": [\n          \"Uso il potenziamento.\"\n        ],\n        \"useBoostOppo\": [\n          \"Non mi ha fatto nulla!\"\n        ],\n        \"eatWithBoostMe\": [\n          \"E il momento! Vai, $VAR1! DISINTEGRA!\",\n          \"Prendi questo! vai, $VAR1!\"\n        ],\n        \"eatWithBoostOppo\": [\n          \"Posso vincere anche senza di lui! Hai sprecato il potenziamento!\",\n          \"Mmm. Non ti montare la testa.\"\n        ],\n        \"checkWithBoostMe\": [\n          \"Col potere di $VAR1, metto il tuo re sotto minaccia!\"\n        ],\n        \"checkWithBoostOppo\": [\n          \"Come hai fatto?? Il mio re.. Sotto minaccia?!\"\n        ],\n        \"castlingMe\": [\n          \"E il momento.. CASTLING!\"\n        ],\n        \"castlingOppo\": [\n          \"Mmm. Forse sai il fatto tuo..\"\n        ]\n      },\n      \"defeatStatus\": 0\n    }\n  },\n  \"red\": {\n    \"dbTable\": null,\n    \"matchId\": \"0\",\n    \"id\": 0,\n    \"expectedElo\": null,\n    \"nPoints\": 0,\n    \"bonusPointCounter\": 0,\n    \"useBoostBool\": false,\n    \"nPieces\": 16,\n    \"King\": \"\",\n    \"boostedPiece\": \"\",\n    \"guardianPieces\": {},\n    \"castlingArray\": {},\n    \"time\": 900000,\n    \"team\": \"red\",\n    \"next\": \"green\",\n    \"prev\": \"blue\",\n    \"ally\": \"yellow\",\n    \"allieGuardianCoord\": \"\",\n    \"ai\": null\n  },\n  \"blue\": {\n    \"dbTable\": null,\n    \"matchId\": \"0\",\n    \"id\": 0,\n    \"expectedElo\": null,\n    \"nPoints\": 0,\n    \"bonusPointCounter\": 0,\n    \"useBoostBool\": false,\n    \"nPieces\": 16,\n    \"King\": \"\",\n    \"boostedPiece\": \"\",\n    \"guardianPieces\": {},\n    \"castlingArray\": {},\n    \"time\": 900000,\n    \"team\": \"blue\",\n    \"next\": \"red\",\n    \"prev\": \"yellow\",\n    \"ally\": \"green\",\n    \"allieGuardianCoord\": \"\",\n    \"ai\": null\n  },\n  \"green\": {\n    \"dbTable\": null,\n    \"matchId\": \"0\",\n    \"id\": 0,\n    \"expectedElo\": null,\n    \"nPoints\": 0,\n    \"bonusPointCounter\": 0,\n    \"useBoostBool\": false,\n    \"nPieces\": 16,\n    \"King\": \"\",\n    \"boostedPiece\": \"\",\n    \"guardianPieces\": {},\n    \"castlingArray\": {},\n    \"time\": 900000,\n    \"team\": \"green\",\n    \"next\": \"yellow\",\n    \"prev\": \"red\",\n    \"ally\": \"blue\",\n    \"allieGuardianCoord\": \"\",\n    \"ai\": null\n  },\n  \"yellow\": {\n    \"dbTable\": null,\n    \"matchId\": \"0\",\n    \"id\": 0,\n    \"expectedElo\": null,\n    \"nPoints\": 0,\n    \"bonusPointCounter\": 0,\n    \"useBoostBool\": false,\n    \"nPieces\": 16,\n    \"King\": \"\",\n    \"boostedPiece\": \"\",\n    \"guardianPieces\": {},\n    \"castlingArray\": {},\n    \"time\": 900000,\n    \"team\": \"yellow\",\n    \"next\": \"blue\",\n    \"prev\": \"green\",\n    \"ally\": \"red\",\n    \"allieGuardianCoord\": \"\",\n    \"ai\": null\n  },\n  \"users\": [],\n  \"board\": {\n    \"_data\": {},\n    \"updates\": {},\n    \"width\": 8,\n    \"heigth\": 8,\n    \"influenceMap\": {}\n  },\n  \"cursor\": {\n    \"square\": \"b2\",\n    \"_save_pos\": \"b2\",\n    \"_w\": 8,\n    \"_h\": 8\n  },\n  \"moves\": 1,\n  \"boost\": 0,\n  \"history\": {\n    \"moves\": 288,\n    \"victory\": \"\",\n    \"finalBoard\": \"\",\n    \"matchSettings\": {\n      \"board\": {\n        \"width\": 8,\n        \"heigth\": 8,\n        \"seed\": 92364118,\n        \"start\": \"| | | | | | | |K|\\n| | | | | | | | |\\n| | | | | |V| | |\\n| | | | |+B| | | |\\n| | | | | | | | |\\n| | | | | | | | |\\n| |B| | | | | | |\\n|K| | | | | | | |\\n\",\n        \"corners\": false\n      },\n      \"players\": {\n        \"number\": 2,\n        \"startPoints\": 0,\n        \"teams\": {\n          \"white\": \"\",\n          \"black\": \"\",\n          \"yellow\": \"\",\n          \"red\": \"\",\n          \"blue\": \"\",\n          \"green\": \"\"\n        }\n      },\n      \"room\": {\n        \"isRanked\": false\n      },\n      \"presetType\": null\n    },\n    \"events\": []\n  },\n  \"historyCreateBool\": false,\n  \"currentPlayer\": {\n    \"dbTable\": null,\n    \"matchId\": \"0\",\n    \"id\": 0,\n    \"expectedElo\": null,\n    \"nPoints\": 0,\n    \"bonusPointCounter\": 0,\n    \"useBoostBool\": false,\n    \"nPieces\": 16,\n    \"King\": \"a1\",\n    \"boostedPiece\": \"\",\n    \"guardianPieces\": {},\n    \"castlingArray\": {},\n    \"time\": 900000,\n    \"team\": \"white\",\n    \"next\": \"black\",\n    \"prev\": \"black\",\n    \"ally\": \"white\",\n    \"allieGuardianCoord\": \"\",\n    \"ai\": {\n      \"profile\": \"First\",\n      \"speechJSON\": {\n        \"eatenPieceMe\": [\n          \"NOOOO! il mio $VAR1!\",\n          \"non gasarti troppo adesso\"\n        ],\n        \"eatenPieceOppo\": [\n          \"bono il $VAR1, grazie\",\n          \"gnam gnam\"\n        ],\n        \"lostChampionMe\": [\n          \"COME OSI!\"\n        ],\n        \"lostChampionOppo\": [\n          \"e finita. Arrenditi. \",\n          \"il tuo campione e caduto.. e presto lo sara anche il tuo re.\"\n        ],\n        \"moveMe\": [\n          \"Ecco qua!\",\n          \"MOVIMENTO\"\n        ],\n        \"checkMe\": [\n          \"non pensare di aver vinto\",\n          \"AH SI?? COME TI PERMETTI?!\"\n        ],\n        \"checkOppo\": [\n          \"non avevi visto questa mossa, eh?\",\n          \"THUNDER CROSS SPLIT ATTACK!\",\n          \"E FINITA JOTARO!\"\n        ],\n        \"checkMateMe\": [\n          \"... Come ho fatto a perdere contro di te??\",\n          \"non pensare di aver vinto! ...cosa? ho perso?? Impossibile!\"\n        ],\n        \"checkMateOppo\": [\n          \"EZ.\",\n          \"EAZY.\",\n          \"easy.\",\n          \"izy.\"\n        ],\n        \"endTurnMe\": [\n          \"PASSO.\"\n        ],\n        \"endTurnOppo\": [\n          \"IT'S MY TURN! I DRAW A CARD!\",\n          \"ah, tocca a me? Menomale, mi stavo addormentando!\",\n          \"con calma eh... disgraziato, non ho tutto il giorno\",\n          \"PESCATA LUCENTE!\"\n        ],\n        \"transformMe\": [\n          \"EMERGI, $VAR1! DISINTEGRA I TUOI NEMICI!\",\n          \"adesso ti faccio vedere io.\"\n        ],\n        \"transformOppo\": [\n          \"un campione in piu non ti fara vincere\"\n        ],\n        \"applyBoostMe\": [\n          \"adesso faccio sul serio!\",\n          \"Beccati questo! Vai, $VAR1!\"\n        ],\n        \"applyBoostOppo\": [\n          \"Che te ne fai di quel $VAR1? Non farmi perdere tempo!\"\n        ],\n        \"useBoostMe\": [\n          \"Uso il potenziamento.\"\n        ],\n        \"useBoostOppo\": [\n          \"Non mi ha fatto nulla!\"\n        ],\n        \"eatWithBoostMe\": [\n          \"E il momento! Vai, $VAR1! DISINTEGRA!\",\n          \"Prendi questo! vai, $VAR1!\"\n        ],\n        \"eatWithBoostOppo\": [\n          \"Posso vincere anche senza di lui! Hai sprecato il potenziamento!\",\n          \"Mmm. Non ti montare la testa.\"\n        ],\n        \"checkWithBoostMe\": [\n          \"Col potere di $VAR1, metto il tuo re sotto minaccia!\"\n        ],\n        \"checkWithBoostOppo\": [\n          \"Come hai fatto?? Il mio re.. Sotto minaccia?!\"\n        ],\n        \"castlingMe\": [\n          \"E il momento.. CASTLING!\"\n        ],\n        \"castlingOppo\": [\n          \"Mmm. Forse sai il fatto tuo..\"\n        ]\n      },\n      \"defeatStatus\": 0\n    }\n  },\n  \"lastMenace\": {\n    \"from\": \"\",\n    \"mid\": \"\",\n    \"to\": \"\"\n  },\n  \"boostPriority\": {},\n  \"playerNum\": 2,\n  \"loserSet\": {},\n  \"victory\": \"\",\n  \"timer\": null,\n  \"start_date\": \"2026-08-07T09:24:15.606Z\",\n  \"tournament_id\": null,\n  \"tournament_round\": null,\n  \"spareCountDown\": 3,\n  \"boardStateMap\": {},\n  \"elo\": {\n    \"k\": 32\n  },\n  \"tournament\": null,\n  \"aiSimulation\": false,\n  \"aiMove\": false,\n  \"aiBool\": true\n}"
+  "board": "| | | | | | | |bK|
+| | | | | | | | |
+| | | | | |bV| | |
+| | | | |+bB| | | |
+| | | | | | | | |
+| | | | | | | | |
+| |wB| | | | | | |
+|wK| | | | | | | |
+|00|",
+  "info": "AIExecuteTurn: move failed. Info: {
+  \"move\": {
+    \"from\": \"a1\",
+    \"to\": \"b1\"
+  },
+  \"moveBoost\": null,
+  \"boost\": \"\",
+  \"transform\": \"\"
+}",
+  "matchData": "{
+  \"settings\": {
+    \"board\": {
+      \"width\": 8,
+      \"heigth\": 8,
+      \"seed\": 92364118,
+      \"start\": \"| | | | | | | |K|\
+| | | | | | | | |\
+| | | | | |V| | |\
+| | | | |+B| | | |\
+| | | | | | | | |\
+| | | | | | | | |\
+| |B| | | | | | |\
+|K| | | | | | | |\
+\",
+      \"corners\": false
+    },
+    \"players\": {
+      \"number\": 2,
+      \"startPoints\": 0,
+      \"teams\": {
+        \"white\": \"\",
+        \"black\": \"\",
+        \"yellow\": \"\",
+        \"red\": \"\",
+        \"blue\": \"\",
+        \"green\": \"\"
+      }
+    },
+    \"room\": {
+      \"isRanked\": false
+    },
+    \"presetType\": null
+  },
+  \"white\": {
+    \"dbTable\": null,
+    \"matchId\": \"0\",
+    \"id\": 0,
+    \"expectedElo\": null,
+    \"nPoints\": 0,
+    \"bonusPointCounter\": 0,
+    \"useBoostBool\": false,
+    \"nPieces\": 16,
+    \"King\": \"a1\",
+    \"boostedPiece\": \"\",
+    \"guardianPieces\": {},
+    \"castlingArray\": {},
+    \"time\": 900000,
+    \"team\": \"white\",
+    \"next\": \"black\",
+    \"prev\": \"black\",
+    \"ally\": \"white\",
+    \"allieGuardianCoord\": \"\",
+    \"ai\": {
+      \"profile\": \"First\",
+      \"speechJSON\": {
+        \"eatenPieceMe\": [
+          \"NOOOO! il mio $VAR1!\",
+          \"non gasarti troppo adesso\"
+        ],
+        \"eatenPieceOppo\": [
+          \"bono il $VAR1, grazie\",
+          \"gnam gnam\"
+        ],
+        \"lostChampionMe\": [
+          \"COME OSI!\"
+        ],
+        \"lostChampionOppo\": [
+          \"e finita. Arrenditi. \",
+          \"il tuo campione e caduto.. e presto lo sara anche il tuo re.\"
+        ],
+        \"moveMe\": [
+          \"Ecco qua!\",
+          \"MOVIMENTO\"
+        ],
+        \"checkMe\": [
+          \"non pensare di aver vinto\",
+          \"AH SI?? COME TI PERMETTI?!\"
+        ],
+        \"checkOppo\": [
+          \"non avevi visto questa mossa, eh?\",
+          \"THUNDER CROSS SPLIT ATTACK!\",
+          \"E FINITA JOTARO!\"
+        ],
+        \"checkMateMe\": [
+          \"... Come ho fatto a perdere contro di te??\",
+          \"non pensare di aver vinto! ...cosa? ho perso?? Impossibile!\"
+        ],
+        \"checkMateOppo\": [
+          \"EZ.\",
+          \"EAZY.\",
+          \"easy.\",
+          \"izy.\"
+        ],
+        \"endTurnMe\": [
+          \"PASSO.\"
+        ],
+        \"endTurnOppo\": [
+          \"IT'S MY TURN! I DRAW A CARD!\",
+          \"ah, tocca a me? Menomale, mi stavo addormentando!\",
+          \"con calma eh... disgraziato, non ho tutto il giorno\",
+          \"PESCATA LUCENTE!\"
+        ],
+        \"transformMe\": [
+          \"EMERGI, $VAR1! DISINTEGRA I TUOI NEMICI!\",
+          \"adesso ti faccio vedere io.\"
+        ],
+        \"transformOppo\": [
+          \"un campione in piu non ti fara vincere\"
+        ],
+        \"applyBoostMe\": [
+          \"adesso faccio sul serio!\",
+          \"Beccati questo! Vai, $VAR1!\"
+        ],
+        \"applyBoostOppo\": [
+          \"Che te ne fai di quel $VAR1? Non farmi perdere tempo!\"
+        ],
+        \"useBoostMe\": [
+          \"Uso il potenziamento.\"
+        ],
+        \"useBoostOppo\": [
+          \"Non mi ha fatto nulla!\"
+        ],
+        \"eatWithBoostMe\": [
+          \"E il momento! Vai, $VAR1! DISINTEGRA!\",
+          \"Prendi questo! vai, $VAR1!\"
+        ],
+        \"eatWithBoostOppo\": [
+          \"Posso vincere anche senza di lui! Hai sprecato il potenziamento!\",
+          \"Mmm. Non ti montare la testa.\"
+        ],
+        \"checkWithBoostMe\": [
+          \"Col potere di $VAR1, metto il tuo re sotto minaccia!\"
+        ],
+        \"checkWithBoostOppo\": [
+          \"Come hai fatto?? Il mio re.. Sotto minaccia?!\"
+        ],
+        \"castlingMe\": [
+          \"E il momento.. CASTLING!\"
+        ],
+        \"castlingOppo\": [
+          \"Mmm. Forse sai il fatto tuo..\"
+        ]
+      },
+      \"defeatStatus\": 0
+    }
+  },
+  \"black\": {
+    \"dbTable\": null,
+    \"matchId\": \"0\",
+    \"id\": 0,
+    \"expectedElo\": null,
+    \"nPoints\": 0,
+    \"bonusPointCounter\": 0,
+    \"useBoostBool\": false,
+    \"nPieces\": 16,
+    \"King\": \"h8\",
+    \"boostedPiece\": \"e5\",
+    \"guardianPieces\": {},
+    \"castlingArray\": {},
+    \"time\": 900000,
+    \"team\": \"black\",
+    \"next\": \"white\",
+    \"prev\": \"white\",
+    \"ally\": \"black\",
+    \"allieGuardianCoord\": \"\",
+    \"ai\": {
+      \"profile\": \"First\",
+      \"speechJSON\": {
+        \"eatenPieceMe\": [
+          \"NOOOO! il mio $VAR1!\",
+          \"non gasarti troppo adesso\"
+        ],
+        \"eatenPieceOppo\": [
+          \"bono il $VAR1, grazie\",
+          \"gnam gnam\"
+        ],
+        \"lostChampionMe\": [
+          \"COME OSI!\"
+        ],
+        \"lostChampionOppo\": [
+          \"e finita. Arrenditi. \",
+          \"il tuo campione e caduto.. e presto lo sara anche il tuo re.\"
+        ],
+        \"moveMe\": [
+          \"Ecco qua!\",
+          \"MOVIMENTO\"
+        ],
+        \"checkMe\": [
+          \"non pensare di aver vinto\",
+          \"AH SI?? COME TI PERMETTI?!\"
+        ],
+        \"checkOppo\": [
+          \"non avevi visto questa mossa, eh?\",
+          \"THUNDER CROSS SPLIT ATTACK!\",
+          \"E FINITA JOTARO!\"
+        ],
+        \"checkMateMe\": [
+          \"... Come ho fatto a perdere contro di te??\",
+          \"non pensare di aver vinto! ...cosa? ho perso?? Impossibile!\"
+        ],
+        \"checkMateOppo\": [
+          \"EZ.\",
+          \"EAZY.\",
+          \"easy.\",
+          \"izy.\"
+        ],
+        \"endTurnMe\": [
+          \"PASSO.\"
+        ],
+        \"endTurnOppo\": [
+          \"IT'S MY TURN! I DRAW A CARD!\",
+          \"ah, tocca a me? Menomale, mi stavo addormentando!\",
+          \"con calma eh... disgraziato, non ho tutto il giorno\",
+          \"PESCATA LUCENTE!\"
+        ],
+        \"transformMe\": [
+          \"EMERGI, $VAR1! DISINTEGRA I TUOI NEMICI!\",
+          \"adesso ti faccio vedere io.\"
+        ],
+        \"transformOppo\": [
+          \"un campione in piu non ti fara vincere\"
+        ],
+        \"applyBoostMe\": [
+          \"adesso faccio sul serio!\",
+          \"Beccati questo! Vai, $VAR1!\"
+        ],
+        \"applyBoostOppo\": [
+          \"Che te ne fai di quel $VAR1? Non farmi perdere tempo!\"
+        ],
+        \"useBoostMe\": [
+          \"Uso il potenziamento.\"
+        ],
+        \"useBoostOppo\": [
+          \"Non mi ha fatto nulla!\"
+        ],
+        \"eatWithBoostMe\": [
+          \"E il momento! Vai, $VAR1! DISINTEGRA!\",
+          \"Prendi questo! vai, $VAR1!\"
+        ],
+        \"eatWithBoostOppo\": [
+          \"Posso vincere anche senza di lui! Hai sprecato il potenziamento!\",
+          \"Mmm. Non ti montare la testa.\"
+        ],
+        \"checkWithBoostMe\": [
+          \"Col potere di $VAR1, metto il tuo re sotto minaccia!\"
+        ],
+        \"checkWithBoostOppo\": [
+          \"Come hai fatto?? Il mio re.. Sotto minaccia?!\"
+        ],
+        \"castlingMe\": [
+          \"E il momento.. CASTLING!\"
+        ],
+        \"castlingOppo\": [
+          \"Mmm. Forse sai il fatto tuo..\"
+        ]
+      },
+      \"defeatStatus\": 0
+    }
+  },
+  \"red\": {
+    \"dbTable\": null,
+    \"matchId\": \"0\",
+    \"id\": 0,
+    \"expectedElo\": null,
+    \"nPoints\": 0,
+    \"bonusPointCounter\": 0,
+    \"useBoostBool\": false,
+    \"nPieces\": 16,
+    \"King\": \"\",
+    \"boostedPiece\": \"\",
+    \"guardianPieces\": {},
+    \"castlingArray\": {},
+    \"time\": 900000,
+    \"team\": \"red\",
+    \"next\": \"green\",
+    \"prev\": \"blue\",
+    \"ally\": \"yellow\",
+    \"allieGuardianCoord\": \"\",
+    \"ai\": null
+  },
+  \"blue\": {
+    \"dbTable\": null,
+    \"matchId\": \"0\",
+    \"id\": 0,
+    \"expectedElo\": null,
+    \"nPoints\": 0,
+    \"bonusPointCounter\": 0,
+    \"useBoostBool\": false,
+    \"nPieces\": 16,
+    \"King\": \"\",
+    \"boostedPiece\": \"\",
+    \"guardianPieces\": {},
+    \"castlingArray\": {},
+    \"time\": 900000,
+    \"team\": \"blue\",
+    \"next\": \"red\",
+    \"prev\": \"yellow\",
+    \"ally\": \"green\",
+    \"allieGuardianCoord\": \"\",
+    \"ai\": null
+  },
+  \"green\": {
+    \"dbTable\": null,
+    \"matchId\": \"0\",
+    \"id\": 0,
+    \"expectedElo\": null,
+    \"nPoints\": 0,
+    \"bonusPointCounter\": 0,
+    \"useBoostBool\": false,
+    \"nPieces\": 16,
+    \"King\": \"\",
+    \"boostedPiece\": \"\",
+    \"guardianPieces\": {},
+    \"castlingArray\": {},
+    \"time\": 900000,
+    \"team\": \"green\",
+    \"next\": \"yellow\",
+    \"prev\": \"red\",
+    \"ally\": \"blue\",
+    \"allieGuardianCoord\": \"\",
+    \"ai\": null
+  },
+  \"yellow\": {
+    \"dbTable\": null,
+    \"matchId\": \"0\",
+    \"id\": 0,
+    \"expectedElo\": null,
+    \"nPoints\": 0,
+    \"bonusPointCounter\": 0,
+    \"useBoostBool\": false,
+    \"nPieces\": 16,
+    \"King\": \"\",
+    \"boostedPiece\": \"\",
+    \"guardianPieces\": {},
+    \"castlingArray\": {},
+    \"time\": 900000,
+    \"team\": \"yellow\",
+    \"next\": \"blue\",
+    \"prev\": \"green\",
+    \"ally\": \"red\",
+    \"allieGuardianCoord\": \"\",
+    \"ai\": null
+  },
+  \"users\": [],
+  \"board\": {
+    \"_data\": {},
+    \"updates\": {},
+    \"width\": 8,
+    \"heigth\": 8,
+    \"influenceMap\": {}
+  },
+  \"cursor\": {
+    \"square\": \"b2\",
+    \"_save_pos\": \"b2\",
+    \"_w\": 8,
+    \"_h\": 8
+  },
+  \"moves\": 1,
+  \"boost\": 0,
+  \"history\": {
+    \"moves\": 288,
+    \"victory\": \"\",
+    \"finalBoard\": \"\",
+    \"matchSettings\": {
+      \"board\": {
+        \"width\": 8,
+        \"heigth\": 8,
+        \"seed\": 92364118,
+        \"start\": \"| | | | | | | |K|\
+| | | | | | | | |\
+| | | | | |V| | |\
+| | | | |+B| | | |\
+| | | | | | | | |\
+| | | | | | | | |\
+| |B| | | | | | |\
+|K| | | | | | | |\
+\",
+        \"corners\": false
+      },
+      \"players\": {
+        \"number\": 2,
+        \"startPoints\": 0,
+        \"teams\": {
+          \"white\": \"\",
+          \"black\": \"\",
+          \"yellow\": \"\",
+          \"red\": \"\",
+          \"blue\": \"\",
+          \"green\": \"\"
+        }
+      },
+      \"room\": {
+        \"isRanked\": false
+      },
+      \"presetType\": null
+    },
+    \"events\": []
+  },
+  \"historyCreateBool\": false,
+  \"currentPlayer\": {
+    \"dbTable\": null,
+    \"matchId\": \"0\",
+    \"id\": 0,
+    \"expectedElo\": null,
+    \"nPoints\": 0,
+    \"bonusPointCounter\": 0,
+    \"useBoostBool\": false,
+    \"nPieces\": 16,
+    \"King\": \"a1\",
+    \"boostedPiece\": \"\",
+    \"guardianPieces\": {},
+    \"castlingArray\": {},
+    \"time\": 900000,
+    \"team\": \"white\",
+    \"next\": \"black\",
+    \"prev\": \"black\",
+    \"ally\": \"white\",
+    \"allieGuardianCoord\": \"\",
+    \"ai\": {
+      \"profile\": \"First\",
+      \"speechJSON\": {
+        \"eatenPieceMe\": [
+          \"NOOOO! il mio $VAR1!\",
+          \"non gasarti troppo adesso\"
+        ],
+        \"eatenPieceOppo\": [
+          \"bono il $VAR1, grazie\",
+          \"gnam gnam\"
+        ],
+        \"lostChampionMe\": [
+          \"COME OSI!\"
+        ],
+        \"lostChampionOppo\": [
+          \"e finita. Arrenditi. \",
+          \"il tuo campione e caduto.. e presto lo sara anche il tuo re.\"
+        ],
+        \"moveMe\": [
+          \"Ecco qua!\",
+          \"MOVIMENTO\"
+        ],
+        \"checkMe\": [
+          \"non pensare di aver vinto\",
+          \"AH SI?? COME TI PERMETTI?!\"
+        ],
+        \"checkOppo\": [
+          \"non avevi visto questa mossa, eh?\",
+          \"THUNDER CROSS SPLIT ATTACK!\",
+          \"E FINITA JOTARO!\"
+        ],
+        \"checkMateMe\": [
+          \"... Come ho fatto a perdere contro di te??\",
+          \"non pensare di aver vinto! ...cosa? ho perso?? Impossibile!\"
+        ],
+        \"checkMateOppo\": [
+          \"EZ.\",
+          \"EAZY.\",
+          \"easy.\",
+          \"izy.\"
+        ],
+        \"endTurnMe\": [
+          \"PASSO.\"
+        ],
+        \"endTurnOppo\": [
+          \"IT'S MY TURN! I DRAW A CARD!\",
+          \"ah, tocca a me? Menomale, mi stavo addormentando!\",
+          \"con calma eh... disgraziato, non ho tutto il giorno\",
+          \"PESCATA LUCENTE!\"
+        ],
+        \"transformMe\": [
+          \"EMERGI, $VAR1! DISINTEGRA I TUOI NEMICI!\",
+          \"adesso ti faccio vedere io.\"
+        ],
+        \"transformOppo\": [
+          \"un campione in piu non ti fara vincere\"
+        ],
+        \"applyBoostMe\": [
+          \"adesso faccio sul serio!\",
+          \"Beccati questo! Vai, $VAR1!\"
+        ],
+        \"applyBoostOppo\": [
+          \"Che te ne fai di quel $VAR1? Non farmi perdere tempo!\"
+        ],
+        \"useBoostMe\": [
+          \"Uso il potenziamento.\"
+        ],
+        \"useBoostOppo\": [
+          \"Non mi ha fatto nulla!\"
+        ],
+        \"eatWithBoostMe\": [
+          \"E il momento! Vai, $VAR1! DISINTEGRA!\",
+          \"Prendi questo! vai, $VAR1!\"
+        ],
+        \"eatWithBoostOppo\": [
+          \"Posso vincere anche senza di lui! Hai sprecato il potenziamento!\",
+          \"Mmm. Non ti montare la testa.\"
+        ],
+        \"checkWithBoostMe\": [
+          \"Col potere di $VAR1, metto il tuo re sotto minaccia!\"
+        ],
+        \"checkWithBoostOppo\": [
+          \"Come hai fatto?? Il mio re.. Sotto minaccia?!\"
+        ],
+        \"castlingMe\": [
+          \"E il momento.. CASTLING!\"
+        ],
+        \"castlingOppo\": [
+          \"Mmm. Forse sai il fatto tuo..\"
+        ]
+      },
+      \"defeatStatus\": 0
+    }
+  },
+  \"lastMenace\": {
+    \"from\": \"\",
+    \"mid\": \"\",
+    \"to\": \"\"
+  },
+  \"boostPriority\": {},
+  \"playerNum\": 2,
+  \"loserSet\": {},
+  \"victory\": \"\",
+  \"timer\": null,
+  \"start_date\": \"2026-08-07T09:24:15.606Z\",
+  \"tournament_id\": null,
+  \"tournament_round\": null,
+  \"spareCountDown\": 3,
+  \"boardStateMap\": {},
+  \"elo\": {
+    \"k\": 32
+  },
+  \"tournament\": null,
+  \"aiSimulation\": false,
+  \"aiMove\": false,
+  \"aiBool\": true
+}"
 }

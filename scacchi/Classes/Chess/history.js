@@ -129,6 +129,7 @@ export class HistoryEvent
 		this.useBoostBool = false;
 		this.counter = counter;
 		this.updates = updates;
+		this.turnMoves = 0;
 		this.error = false;
 		/** @type {string | null} */ 
 		this.lastLost = null;
@@ -258,6 +259,7 @@ function updateEndTurn(match)
 		throw (`History: invalid currentPlayer team`);
 	record = new HistoryEvent(this.moves, eEvents.EndTurn, match.currentPlayer.team, match.board.updates);
 	record.aiSimulation = match.aiSimulation;
+	record.turnMoves = match.moves;
 	this.events.push(record);
 	this.moves += 1;
 }

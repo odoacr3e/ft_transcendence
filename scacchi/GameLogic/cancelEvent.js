@@ -164,12 +164,8 @@ function cancelBoost(match, lastEvent)
  */
 function cancelEndTurn(match)
 {
-	// let nTurn;
 	let	oldEvent;
 
-	// nTurn = match.history.TurnCount(match.currentPlayer.team);
-	// if (nTurn % MOVEMENT_BONUS_POINT == 0)
-	// 	match.currentPlayer.nPoints -= 1;
 	//@ts-ignore
 	match.currentPlayer = match[match.currentPlayer.prev];
 	match.currentPlayer.bonusPointCounter--;
@@ -178,16 +174,7 @@ function cancelEndTurn(match)
 		match.currentPlayer.bonusPointCounter = MOVEMENT_BONUS_POINT - 1;
 		match.currentPlayer.nPoints -= 1;
 	}
-	for (let i = 0; i != match.history.events.length; i++)
-	{
-		oldEvent = match.history.events[match.history.events.length - 2 - i];
-		if (!oldEvent)
-			break ; 
-		if (oldEvent.type == eEvents.EndTurn)
-			break ;
-		if (oldEvent.type == eEvents.Move || oldEvent.type == eEvents.MoveBoost)
-			match.moves++;
-	}
+	match.moves = match.history.Last().turnMoves;
 }
 
 /**
