@@ -31,8 +31,6 @@ function makeTransfiguration(match, from, to, sendBoardBool=true)
 {
 	let	result;
 
-	if (DEB++ == 286)
-		console.log("breakpoint");
 	result = new Result();
 	if (!paramCheck(result, from, to))
 		return (result);
