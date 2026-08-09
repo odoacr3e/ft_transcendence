@@ -318,8 +318,8 @@ function doubleSave(match, threat)
 				match.cursor.set(x);
 				for (let {dx, dy} of preset.Champion.movement)
 				{
-					match.cursor.setCursor(match.cursor.getRow() + dx, match.cursor.getCol() + dy)
-					if (match.board.get(match.cursor.square)?.piece?.team != square1.piece?.team && match.board.get(match.cursor.square)?.targetZones.has(arr[1]))
+					match.cursor.setCursor(match.cursor.getRow() + dx, match.cursor.getCol() + dy);
+					if (match.board.has(match.cursor.square) && match.board.get(match.cursor.square)?.piece?.team != square1.piece?.team && match.board.get(match.cursor.square)?.targetZones.has(arr[1]))
 						return true;
 					match.cursor.set(startPos);
 				}
