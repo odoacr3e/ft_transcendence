@@ -1,6 +1,1373 @@
 {
   "game": "boosted_champion_mino.json: \u001b[31m[KO]\u001b[0m",
-  "board": "|bM|bJ| |bC|bK|bV| |bM|\n|bB|bB|bB|bV|bB| | | |\n| | | | | | | | |\n| |wV|+wC| | | | |bB|\n| | | |wB| |wB| | |\n| | | | |wB| |wB| |\n|wB|wB|wB| | | | |wB|\n|wM|wJ|wV| |wK| |wJ|wM|\n|00|",
-  "info": "AIExecuteTurn: move failed. Info: {\n  \"move\": {\n    \"from\": \"h5\",\n    \"to\": \"h4\"\n  },\n  \"moveBoost\": null,\n  \"boost\": \"\",\n  \"transform\": \"\"\n}",
-  "matchData": "{\n  \"settings\": {\n    \"preset\": null,\n    \"timer\": 900000,\n    \"board\": {\n      \"width\": 8,\n      \"heigth\": 8,\n      \"seed\": 0,\n      \"start\": \"\",\n      \"corners\": false\n    },\n    \"players\": {\n      \"number\": 2,\n      \"startPoints\": 0,\n      \"allies\": false,\n      \"teams\": {\n        \"white\": \"\",\n        \"black\": \"\",\n        \"yellow\": \"\",\n        \"red\": \"\",\n        \"blue\": \"\",\n        \"green\": \"\"\n      }\n    },\n    \"room\": {\n      \"isRanked\": false\n    },\n    \"presetType\": null\n  },\n  \"white\": {\n    \"dbTable\": null,\n    \"matchId\": \"0\",\n    \"id\": 0,\n    \"expectedElo\": null,\n    \"nPoints\": 1,\n    \"bonusPointCounter\": 0,\n    \"useBoostBool\": false,\n    \"nPieces\": 16,\n    \"King\": \"e1\",\n    \"boostedPiece\": \"c5\",\n    \"guardianPieces\": {},\n    \"castlingArray\": {},\n    \"time\": 899995,\n    \"team\": \"white\",\n    \"next\": \"black\",\n    \"prev\": \"black\",\n    \"ally\": \"white\",\n    \"allieGuardianCoord\": \"\",\n    \"ai\": {\n      \"profile\": \"First\",\n      \"speechJSON\": {\n        \"eatenPieceMe\": [\n          \"NOOOO! il mio $VAR1!\",\n          \"non gasarti troppo adesso\"\n        ],\n        \"eatenPieceOppo\": [\n          \"bono il $VAR1, grazie\",\n          \"gnam gnam\"\n        ],\n        \"lostChampionMe\": [\n          \"COME OSI!\"\n        ],\n        \"lostChampionOppo\": [\n          \"e finita. Arrenditi. \",\n          \"il tuo campione e caduto.. e presto lo sara anche il tuo re.\"\n        ],\n        \"moveMe\": [\n          \"Ecco qua!\",\n          \"MOVIMENTO\"\n        ],\n        \"checkMe\": [\n          \"non pensare di aver vinto\",\n          \"AH SI?? COME TI PERMETTI?!\"\n        ],\n        \"checkOppo\": [\n          \"non avevi visto questa mossa, eh?\",\n          \"THUNDER CROSS SPLIT ATTACK!\",\n          \"E FINITA JOTARO!\"\n        ],\n        \"checkMateMe\": [\n          \"... Come ho fatto a perdere contro di te??\",\n          \"non pensare di aver vinto! ...cosa? ho perso?? Impossibile!\"\n        ],\n        \"checkMateOppo\": [\n          \"EZ.\",\n          \"EAZY.\",\n          \"easy.\",\n          \"izy.\"\n        ],\n        \"endTurnMe\": [\n          \"PASSO.\"\n        ],\n        \"endTurnOppo\": [\n          \"IT'S MY TURN! I DRAW A CARD!\",\n          \"ah, tocca a me? Menomale, mi stavo addormentando!\",\n          \"con calma eh... disgraziato, non ho tutto il giorno\",\n          \"PESCATA LUCENTE!\"\n        ],\n        \"transformMe\": [\n          \"EMERGI, $VAR1! DISINTEGRA I TUOI NEMICI!\",\n          \"adesso ti faccio vedere io.\"\n        ],\n        \"transformOppo\": [\n          \"un campione in piu non ti fara vincere\"\n        ],\n        \"applyBoostMe\": [\n          \"adesso faccio sul serio!\",\n          \"Beccati questo! Vai, $VAR1!\"\n        ],\n        \"applyBoostOppo\": [\n          \"Che te ne fai di quel $VAR1? Non farmi perdere tempo!\"\n        ],\n        \"useBoostMe\": [\n          \"Uso il potenziamento.\"\n        ],\n        \"useBoostOppo\": [\n          \"Non mi ha fatto nulla!\"\n        ],\n        \"eatWithBoostMe\": [\n          \"E il momento! Vai, $VAR1! DISINTEGRA!\",\n          \"Prendi questo! vai, $VAR1!\"\n        ],\n        \"eatWithBoostOppo\": [\n          \"Posso vincere anche senza di lui! Hai sprecato il potenziamento!\",\n          \"Mmm. Non ti montare la testa.\"\n        ],\n        \"checkWithBoostMe\": [\n          \"Col potere di $VAR1, metto il tuo re sotto minaccia!\"\n        ],\n        \"checkWithBoostOppo\": [\n          \"Come hai fatto?? Il mio re.. Sotto minaccia?!\"\n        ],\n        \"castlingMe\": [\n          \"E il momento.. CASTLING!\"\n        ],\n        \"castlingOppo\": [\n          \"Mmm. Forse sai il fatto tuo..\"\n        ]\n      },\n      \"defeatStatus\": 0\n    }\n  },\n  \"black\": {\n    \"dbTable\": null,\n    \"matchId\": \"0\",\n    \"id\": 0,\n    \"expectedElo\": null,\n    \"nPoints\": 2,\n    \"bonusPointCounter\": 3,\n    \"useBoostBool\": false,\n    \"nPieces\": 12,\n    \"King\": \"e8\",\n    \"boostedPiece\": \"\",\n    \"guardianPieces\": {},\n    \"castlingArray\": {},\n    \"time\": 899999,\n    \"team\": \"black\",\n    \"next\": \"white\",\n    \"prev\": \"white\",\n    \"ally\": \"black\",\n    \"allieGuardianCoord\": \"\",\n    \"ai\": {\n      \"profile\": \"First\",\n      \"speechJSON\": {\n        \"eatenPieceMe\": [\n          \"NOOOO! il mio $VAR1!\",\n          \"non gasarti troppo adesso\"\n        ],\n        \"eatenPieceOppo\": [\n          \"bono il $VAR1, grazie\",\n          \"gnam gnam\"\n        ],\n        \"lostChampionMe\": [\n          \"COME OSI!\"\n        ],\n        \"lostChampionOppo\": [\n          \"e finita. Arrenditi. \",\n          \"il tuo campione e caduto.. e presto lo sara anche il tuo re.\"\n        ],\n        \"moveMe\": [\n          \"Ecco qua!\",\n          \"MOVIMENTO\"\n        ],\n        \"checkMe\": [\n          \"non pensare di aver vinto\",\n          \"AH SI?? COME TI PERMETTI?!\"\n        ],\n        \"checkOppo\": [\n          \"non avevi visto questa mossa, eh?\",\n          \"THUNDER CROSS SPLIT ATTACK!\",\n          \"E FINITA JOTARO!\"\n        ],\n        \"checkMateMe\": [\n          \"... Come ho fatto a perdere contro di te??\",\n          \"non pensare di aver vinto! ...cosa? ho perso?? Impossibile!\"\n        ],\n        \"checkMateOppo\": [\n          \"EZ.\",\n          \"EAZY.\",\n          \"easy.\",\n          \"izy.\"\n        ],\n        \"endTurnMe\": [\n          \"PASSO.\"\n        ],\n        \"endTurnOppo\": [\n          \"IT'S MY TURN! I DRAW A CARD!\",\n          \"ah, tocca a me? Menomale, mi stavo addormentando!\",\n          \"con calma eh... disgraziato, non ho tutto il giorno\",\n          \"PESCATA LUCENTE!\"\n        ],\n        \"transformMe\": [\n          \"EMERGI, $VAR1! DISINTEGRA I TUOI NEMICI!\",\n          \"adesso ti faccio vedere io.\"\n        ],\n        \"transformOppo\": [\n          \"un campione in piu non ti fara vincere\"\n        ],\n        \"applyBoostMe\": [\n          \"adesso faccio sul serio!\",\n          \"Beccati questo! Vai, $VAR1!\"\n        ],\n        \"applyBoostOppo\": [\n          \"Che te ne fai di quel $VAR1? Non farmi perdere tempo!\"\n        ],\n        \"useBoostMe\": [\n          \"Uso il potenziamento.\"\n        ],\n        \"useBoostOppo\": [\n          \"Non mi ha fatto nulla!\"\n        ],\n        \"eatWithBoostMe\": [\n          \"E il momento! Vai, $VAR1! DISINTEGRA!\",\n          \"Prendi questo! vai, $VAR1!\"\n        ],\n        \"eatWithBoostOppo\": [\n          \"Posso vincere anche senza di lui! Hai sprecato il potenziamento!\",\n          \"Mmm. Non ti montare la testa.\"\n        ],\n        \"checkWithBoostMe\": [\n          \"Col potere di $VAR1, metto il tuo re sotto minaccia!\"\n        ],\n        \"checkWithBoostOppo\": [\n          \"Come hai fatto?? Il mio re.. Sotto minaccia?!\"\n        ],\n        \"castlingMe\": [\n          \"E il momento.. CASTLING!\"\n        ],\n        \"castlingOppo\": [\n          \"Mmm. Forse sai il fatto tuo..\"\n        ]\n      },\n      \"defeatStatus\": 2\n    }\n  },\n  \"red\": {\n    \"dbTable\": null,\n    \"matchId\": \"0\",\n    \"id\": 0,\n    \"expectedElo\": null,\n    \"nPoints\": 0,\n    \"bonusPointCounter\": 0,\n    \"useBoostBool\": false,\n    \"nPieces\": 16,\n    \"King\": \"\",\n    \"boostedPiece\": \"\",\n    \"guardianPieces\": {},\n    \"castlingArray\": {},\n    \"time\": 900000,\n    \"team\": \"red\",\n    \"next\": \"green\",\n    \"prev\": \"blue\",\n    \"ally\": \"yellow\",\n    \"allieGuardianCoord\": \"\",\n    \"ai\": null\n  },\n  \"blue\": {\n    \"dbTable\": null,\n    \"matchId\": \"0\",\n    \"id\": 0,\n    \"expectedElo\": null,\n    \"nPoints\": 0,\n    \"bonusPointCounter\": 0,\n    \"useBoostBool\": false,\n    \"nPieces\": 16,\n    \"King\": \"\",\n    \"boostedPiece\": \"\",\n    \"guardianPieces\": {},\n    \"castlingArray\": {},\n    \"time\": 900000,\n    \"team\": \"blue\",\n    \"next\": \"red\",\n    \"prev\": \"yellow\",\n    \"ally\": \"green\",\n    \"allieGuardianCoord\": \"\",\n    \"ai\": null\n  },\n  \"green\": {\n    \"dbTable\": null,\n    \"matchId\": \"0\",\n    \"id\": 0,\n    \"expectedElo\": null,\n    \"nPoints\": 0,\n    \"bonusPointCounter\": 0,\n    \"useBoostBool\": false,\n    \"nPieces\": 16,\n    \"King\": \"\",\n    \"boostedPiece\": \"\",\n    \"guardianPieces\": {},\n    \"castlingArray\": {},\n    \"time\": 900000,\n    \"team\": \"green\",\n    \"next\": \"yellow\",\n    \"prev\": \"red\",\n    \"ally\": \"blue\",\n    \"allieGuardianCoord\": \"\",\n    \"ai\": null\n  },\n  \"yellow\": {\n    \"dbTable\": null,\n    \"matchId\": \"0\",\n    \"id\": 0,\n    \"expectedElo\": null,\n    \"nPoints\": 0,\n    \"bonusPointCounter\": 0,\n    \"useBoostBool\": false,\n    \"nPieces\": 16,\n    \"King\": \"\",\n    \"boostedPiece\": \"\",\n    \"guardianPieces\": {},\n    \"castlingArray\": {},\n    \"time\": 900000,\n    \"team\": \"yellow\",\n    \"next\": \"blue\",\n    \"prev\": \"green\",\n    \"ally\": \"red\",\n    \"allieGuardianCoord\": \"\",\n    \"ai\": null\n  },\n  \"users\": [],\n  \"board\": {\n    \"_data\": {},\n    \"updates\": {},\n    \"width\": 8,\n    \"heigth\": 8,\n    \"influenceMap\": {}\n  },\n  \"cursor\": {\n    \"square\": \"h5\",\n    \"_save_pos\": \"h5\",\n    \"_w\": 8,\n    \"_h\": 8\n  },\n  \"moves\": 1,\n  \"boost\": 0,\n  \"history\": {\n    \"moves\": 59,\n    \"victory\": \"\",\n    \"finalBoard\": \"\",\n    \"matchSettings\": {\n      \"preset\": null,\n      \"timer\": 900000,\n      \"board\": {\n        \"width\": 8,\n        \"heigth\": 8,\n        \"seed\": 0,\n        \"start\": \"\",\n        \"corners\": false\n      },\n      \"players\": {\n        \"number\": 2,\n        \"startPoints\": 0,\n        \"allies\": false,\n        \"teams\": {\n          \"white\": \"\",\n          \"black\": \"\",\n          \"yellow\": \"\",\n          \"red\": \"\",\n          \"blue\": \"\",\n          \"green\": \"\"\n        }\n      },\n      \"room\": {\n        \"isRanked\": false\n      },\n      \"presetType\": null\n    },\n    \"events\": [\n      {\n        \"from\": \"g2\",\n        \"to\": \"g3\",\n        \"movedPiece\": \"Bastards\",\n        \"team\": \"white\",\n        \"type\": \"move\",\n        \"useBoostBool\": false,\n        \"counter\": 0,\n        \"updates\": {},\n        \"error\": false\n      },\n      {\n        \"from\": \"\",\n        \"to\": \"\",\n        \"movedPiece\": \"\",\n        \"team\": \"white\",\n        \"type\": \"endturn\",\n        \"useBoostBool\": false,\n        \"counter\": 1,\n        \"updates\": {},\n        \"error\": false\n      },\n      {\n        \"from\": \"h7\",\n        \"to\": \"h6\",\n        \"movedPiece\": \"Bastards\",\n        \"team\": \"black\",\n        \"type\": \"move\",\n        \"useBoostBool\": false,\n        \"counter\": 2,\n        \"updates\": {},\n        \"error\": false\n      },\n      {\n        \"from\": \"\",\n        \"to\": \"\",\n        \"movedPiece\": \"\",\n        \"team\": \"black\",\n        \"type\": \"endturn\",\n        \"useBoostBool\": false,\n        \"counter\": 3,\n        \"updates\": {},\n        \"error\": false\n      },\n      {\n        \"from\": \"f2\",\n        \"to\": \"f4\",\n        \"movedPiece\": \"Bastards\",\n        \"team\": \"white\",\n        \"type\": \"move\",\n        \"useBoostBool\": false,\n        \"counter\": 4,\n        \"updates\": {},\n        \"error\": false\n      },\n      {\n        \"from\": \"\",\n        \"to\": \"\",\n        \"movedPiece\": \"\",\n        \"team\": \"white\",\n        \"type\": \"endturn\",\n        \"useBoostBool\": false,\n        \"counter\": 5,\n        \"updates\": {},\n        \"error\": false\n      },\n      {\n        \"from\": \"g7\",\n        \"to\": \"g5\",\n        \"movedPiece\": \"Bastards\",\n        \"team\": \"black\",\n        \"type\": \"move\",\n        \"useBoostBool\": false,\n        \"counter\": 6,\n        \"updates\": {},\n        \"error\": false\n      },\n      {\n        \"from\": \"\",\n        \"to\": \"\",\n        \"movedPiece\": \"\",\n        \"team\": \"black\",\n        \"type\": \"endturn\",\n        \"useBoostBool\": false,\n        \"counter\": 7,\n        \"updates\": {},\n        \"error\": false\n      },\n      {\n        \"from\": \"e2\",\n        \"to\": \"e3\",\n        \"movedPiece\": \"Bastards\",\n        \"team\": \"white\",\n        \"type\": \"move\",\n        \"useBoostBool\": false,\n        \"counter\": 8,\n        \"updates\": {},\n        \"error\": false\n      },\n      {\n        \"from\": \"\",\n        \"to\": \"\",\n        \"movedPiece\": \"\",\n        \"team\": \"white\",\n        \"type\": \"endturn\",\n        \"useBoostBool\": false,\n        \"counter\": 9,\n        \"updates\": {},\n        \"error\": false\n      },\n      {\n        \"from\": \"d7\",\n        \"to\": \"d5\",\n        \"movedPiece\": \"Bastards\",\n        \"team\": \"black\",\n        \"type\": \"move\",\n        \"useBoostBool\": false,\n        \"counter\": 10,\n        \"updates\": {},\n        \"error\": false\n      },\n      {\n        \"from\": \"\",\n        \"to\": \"\",\n        \"movedPiece\": \"\",\n        \"team\": \"black\",\n        \"type\": \"endturn\",\n        \"useBoostBool\": false,\n        \"counter\": 11,\n        \"updates\": {},\n        \"error\": false\n      },\n      {\n        \"from\": \"d2\",\n        \"to\": \"d4\",\n        \"movedPiece\": \"Bastards\",\n        \"team\": \"white\",\n        \"type\": \"move\",\n        \"useBoostBool\": false,\n        \"counter\": 12,\n        \"updates\": {},\n        \"error\": false\n      },\n      {\n        \"from\": \"\",\n        \"to\": \"\",\n        \"movedPiece\": \"\",\n        \"team\": \"white\",\n        \"type\": \"endturn\",\n        \"useBoostBool\": false,\n        \"counter\": 13,\n        \"updates\": {},\n        \"error\": false\n      },\n      {\n        \"from\": \"g8\",\n        \"to\": \"g8\",\n        \"movedPiece\": \"Jester\",\n        \"team\": \"black\",\n        \"type\": \"move\",\n        \"useBoostBool\": false,\n        \"counter\": 14,\n        \"updates\": {},\n        \"error\": true\n      },\n      {\n        \"from\": \"f7\",\n        \"to\": \"f5\",\n        \"movedPiece\": \"Bastards\",\n        \"team\": \"black\",\n        \"type\": \"move\",\n        \"useBoostBool\": false,\n        \"counter\": 15,\n        \"updates\": {},\n        \"error\": false\n      },\n      {\n        \"from\": \"\",\n        \"to\": \"\",\n        \"movedPiece\": \"\",\n        \"team\": \"black\",\n        \"type\": \"endturn\",\n        \"useBoostBool\": false,\n        \"counter\": 16,\n        \"updates\": {},\n        \"error\": false\n      },\n      {\n        \"from\": \"f1\",\n        \"to\": \"b5\",\n        \"movedPiece\": \"Valkirya\",\n        \"team\": \"white\",\n        \"type\": \"move\",\n        \"useBoostBool\": false,\n        \"counter\": 17,\n        \"updates\": {},\n        \"error\": false\n      },\n      {\n        \"from\": \"\",\n        \"to\": \"\",\n        \"movedPiece\": \"\",\n        \"team\": \"white\",\n        \"type\": \"endturn\",\n        \"useBoostBool\": false,\n        \"counter\": 18,\n        \"updates\": {},\n        \"error\": false\n      },\n      {\n        \"from\": \"c8\",\n        \"to\": \"d7\",\n        \"movedPiece\": \"Valkirya\",\n        \"team\": \"black\",\n        \"type\": \"move\",\n        \"useBoostBool\": false,\n        \"counter\": 19,\n        \"updates\": {},\n        \"error\": false\n      },\n      {\n        \"from\": \"\",\n        \"to\": \"\",\n        \"movedPiece\": \"\",\n        \"team\": \"black\",\n        \"type\": \"endturn\",\n        \"useBoostBool\": false,\n        \"counter\": 20,\n        \"updates\": {},\n        \"error\": false\n      },\n      {\n        \"from\": \"d1\",\n        \"to\": \"d3\",\n        \"movedPiece\": \"Champion\",\n        \"team\": \"white\",\n        \"type\": \"move\",\n        \"useBoostBool\": false,\n        \"counter\": 21,\n        \"updates\": {},\n        \"error\": false\n      },\n      {\n        \"from\": \"\",\n        \"to\": \"\",\n        \"movedPiece\": \"\",\n        \"team\": \"white\",\n        \"type\": \"endturn\",\n        \"useBoostBool\": false,\n        \"counter\": 22,\n        \"updates\": {},\n        \"error\": false\n      },\n      {\n        \"from\": \"g8\",\n        \"to\": \"f6\",\n        \"movedPiece\": \"Jester\",\n        \"team\": \"black\",\n        \"type\": \"move\",\n        \"useBoostBool\": false,\n        \"counter\": 23,\n        \"updates\": {},\n        \"error\": false\n      },\n      {\n        \"from\": \"\",\n        \"to\": \"\",\n        \"movedPiece\": \"\",\n        \"team\": \"black\",\n        \"type\": \"endturn\",\n        \"useBoostBool\": false,\n        \"counter\": 24,\n        \"updates\": {},\n        \"error\": false\n      },\n      {\n        \"from\": \"d3\",\n        \"to\": \"c4\",\n        \"movedPiece\": \"Champion\",\n        \"team\": \"white\",\n        \"type\": \"move\",\n        \"useBoostBool\": false,\n        \"counter\": 25,\n        \"updates\": {},\n        \"error\": false\n      },\n      {\n        \"from\": \"\",\n        \"to\": \"\",\n        \"movedPiece\": \"\",\n        \"team\": \"white\",\n        \"type\": \"endturn\",\n        \"useBoostBool\": false,\n        \"counter\": 26,\n        \"updates\": {},\n        \"error\": false\n      },\n      {\n        \"from\": \"f6\",\n        \"to\": \"e4\",\n        \"movedPiece\": \"Jester\",\n        \"team\": \"black\",\n        \"type\": \"move\",\n        \"useBoostBool\": false,\n        \"counter\": 27,\n        \"updates\": {},\n        \"error\": false\n      },\n      {\n        \"from\": \"\",\n        \"to\": \"\",\n        \"movedPiece\": \"\",\n        \"team\": \"black\",\n        \"type\": \"endturn\",\n        \"useBoostBool\": false,\n        \"counter\": 28,\n        \"updates\": {},\n        \"error\": false\n      },\n      {\n        \"from\": \"c4\",\n        \"to\": \"d5\",\n        \"movedPiece\": \"Champion\",\n        \"team\": \"white\",\n        \"type\": \"move\",\n        \"useBoostBool\": false,\n        \"counter\": 29,\n        \"updates\": {},\n        \"error\": false,\n        \"pieceEaten\": {\n          \"type\": \"Bastards\",\n          \"price\": 1,\n          \"team\": \"black\",\n          \"moveCount\": 1,\n          \"isBoostedBool\": false,\n          \"pos\": \"d5\",\n          \"moveArray\": [\n            {\n              \"dx\": 1,\n              \"dy\": 0\n            },\n            {\n              \"dx\": -1,\n              \"dy\": 0\n            },\n            {\n              \"dx\": 0,\n              \"dy\": 1\n            },\n            {\n              \"dx\": 0,\n              \"dy\": -1\n            },\n            {\n              \"dx\": 1,\n              \"dy\": 1\n            },\n            {\n              \"dx\": -1,\n              \"dy\": -1\n            },\n            {\n              \"dx\": -1,\n              \"dy\": 1\n            },\n            {\n              \"dx\": 1,\n              \"dy\": -1\n            }\n          ],\n          \"moveLongRangeDEBUG\": false,\n          \"multipleMovesBool\": true\n        }\n      },\n      {\n        \"from\": \"\",\n        \"to\": \"\",\n        \"movedPiece\": \"\",\n        \"team\": \"white\",\n        \"type\": \"endturn\",\n        \"useBoostBool\": false,\n        \"counter\": 30,\n        \"updates\": {},\n        \"error\": false\n      },\n      {\n        \"from\": \"h8\",\n        \"to\": \"h7\",\n        \"movedPiece\": \"Minotaurus\",\n        \"team\": \"black\",\n        \"type\": \"move\",\n        \"useBoostBool\": false,\n        \"counter\": 31,\n        \"updates\": {},\n        \"error\": false\n      },\n      {\n        \"from\": \"\",\n        \"to\": \"\",\n        \"movedPiece\": \"\",\n        \"team\": \"black\",\n        \"type\": \"endturn\",\n        \"useBoostBool\": false,\n        \"counter\": 32,\n        \"updates\": {},\n        \"error\": false\n      },\n      {\n        \"from\": \"d5\",\n        \"to\": \"e4\",\n        \"movedPiece\": \"Champion\",\n        \"team\": \"white\",\n        \"type\": \"move\",\n        \"useBoostBool\": false,\n        \"counter\": 33,\n        \"updates\": {},\n        \"error\": false,\n        \"pieceEaten\": {\n          \"type\": \"Jester\",\n          \"price\": 5,\n          \"team\": \"black\",\n          \"moveCount\": 2,\n          \"isBoostedBool\": false,\n          \"pos\": \"e4\",\n          \"moveArray\": [\n            {\n              \"dx\": 2,\n              \"dy\": 1\n            },\n            {\n              \"dx\": 2,\n              \"dy\": -1\n            },\n            {\n              \"dx\": -2,\n              \"dy\": 1\n            },\n            {\n              \"dx\": -2,\n              \"dy\": -1\n            },\n            {\n              \"dx\": 1,\n              \"dy\": 2\n            },\n            {\n              \"dx\": 1,\n              \"dy\": -2\n            },\n            {\n              \"dx\": -1,\n              \"dy\": 2\n            },\n            {\n              \"dx\": -1,\n              \"dy\": -2\n            }\n          ],\n          \"moveLongRangeDEBUG\": false,\n          \"multipleMovesBool\": false\n        }\n      },\n      {\n        \"from\": \"\",\n        \"to\": \"\",\n        \"movedPiece\": \"\",\n        \"team\": \"white\",\n        \"type\": \"endturn\",\n        \"useBoostBool\": false,\n        \"counter\": 34,\n        \"updates\": {},\n        \"error\": false\n      },\n      {\n        \"from\": \"h7\",\n        \"to\": \"h8\",\n        \"movedPiece\": \"Minotaurus\",\n        \"team\": \"black\",\n        \"type\": \"move\",\n        \"useBoostBool\": false,\n        \"counter\": 35,\n        \"updates\": {},\n        \"error\": false\n      },\n      {\n        \"from\": \"\",\n        \"to\": \"\",\n        \"movedPiece\": \"\",\n        \"team\": \"black\",\n        \"type\": \"endturn\",\n        \"useBoostBool\": false,\n        \"counter\": 36,\n        \"updates\": {},\n        \"error\": false\n      },\n      {\n        \"from\": \"e4\",\n        \"to\": \"f5\",\n        \"movedPiece\": \"Champion\",\n        \"team\": \"white\",\n        \"type\": \"move\",\n        \"useBoostBool\": false,\n        \"counter\": 37,\n        \"updates\": {},\n        \"error\": false,\n        \"pieceEaten\": {\n          \"type\": \"Bastards\",\n          \"price\": 1,\n          \"team\": \"black\",\n          \"moveCount\": 1,\n          \"isBoostedBool\": false,\n          \"pos\": \"f5\",\n          \"moveArray\": [\n            {\n              \"dx\": 1,\n              \"dy\": 0\n            },\n            {\n              \"dx\": -1,\n              \"dy\": 0\n            },\n            {\n              \"dx\": 0,\n              \"dy\": 1\n            },\n            {\n              \"dx\": 0,\n              \"dy\": -1\n            },\n            {\n              \"dx\": 1,\n              \"dy\": 1\n            },\n            {\n              \"dx\": -1,\n              \"dy\": -1\n            },\n            {\n              \"dx\": -1,\n              \"dy\": 1\n            },\n            {\n              \"dx\": 1,\n              \"dy\": -1\n            }\n          ],\n          \"moveLongRangeDEBUG\": false,\n          \"multipleMovesBool\": true\n        }\n      },\n      {\n        \"from\": \"\",\n        \"to\": \"\",\n        \"movedPiece\": \"\",\n        \"team\": \"white\",\n        \"type\": \"endturn\",\n        \"useBoostBool\": false,\n        \"counter\": 38,\n        \"updates\": {},\n        \"error\": false\n      },\n      {\n        \"from\": \"h8\",\n        \"to\": \"h7\",\n        \"movedPiece\": \"Minotaurus\",\n        \"team\": \"black\",\n        \"type\": \"move\",\n        \"useBoostBool\": false,\n        \"counter\": 39,\n        \"updates\": {},\n        \"error\": false\n      },\n      {\n        \"from\": \"\",\n        \"to\": \"\",\n        \"movedPiece\": \"\",\n        \"team\": \"black\",\n        \"type\": \"endturn\",\n        \"useBoostBool\": false,\n        \"counter\": 40,\n        \"updates\": {},\n        \"error\": false\n      },\n      {\n        \"from\": \"f5\",\n        \"to\": \"g5\",\n        \"movedPiece\": \"Champion\",\n        \"team\": \"white\",\n        \"type\": \"move\",\n        \"useBoostBool\": false,\n        \"counter\": 41,\n        \"updates\": {},\n        \"error\": false,\n        \"pieceEaten\": {\n          \"type\": \"Bastards\",\n          \"price\": 1,\n          \"team\": \"black\",\n          \"moveCount\": 1,\n          \"isBoostedBool\": false,\n          \"pos\": \"g5\",\n          \"moveArray\": [\n            {\n              \"dx\": 1,\n              \"dy\": 0\n            },\n            {\n              \"dx\": -1,\n              \"dy\": 0\n            },\n            {\n              \"dx\": 0,\n              \"dy\": 1\n            },\n            {\n              \"dx\": 0,\n              \"dy\": -1\n            },\n            {\n              \"dx\": 1,\n              \"dy\": 1\n            },\n            {\n              \"dx\": -1,\n              \"dy\": -1\n            },\n            {\n              \"dx\": -1,\n              \"dy\": 1\n            },\n            {\n              \"dx\": 1,\n              \"dy\": -1\n            }\n          ],\n          \"moveLongRangeDEBUG\": false,\n          \"multipleMovesBool\": true\n        }\n      },\n      {\n        \"from\": \"\",\n        \"to\": \"\",\n        \"movedPiece\": \"\",\n        \"team\": \"white\",\n        \"type\": \"endturn\",\n        \"useBoostBool\": false,\n        \"counter\": 42,\n        \"updates\": {},\n        \"error\": false\n      },\n      {\n        \"from\": \"h7\",\n        \"to\": \"h8\",\n        \"movedPiece\": \"Minotaurus\",\n        \"team\": \"black\",\n        \"type\": \"move\",\n        \"useBoostBool\": false,\n        \"counter\": 43,\n        \"updates\": {},\n        \"error\": false\n      },\n      {\n        \"from\": \"\",\n        \"to\": \"\",\n        \"movedPiece\": \"\",\n        \"team\": \"black\",\n        \"type\": \"endturn\",\n        \"useBoostBool\": false,\n        \"counter\": 44,\n        \"updates\": {},\n        \"error\": false\n      },\n      {\n        \"from\": \"g5\",\n        \"to\": \"c5\",\n        \"movedPiece\": \"Champion\",\n        \"team\": \"white\",\n        \"type\": \"move\",\n        \"useBoostBool\": false,\n        \"counter\": 45,\n        \"updates\": {},\n        \"error\": false\n      },\n      {\n        \"from\": \"c5\",\n        \"to\": \"\",\n        \"movedPiece\": \"Champion\",\n        \"team\": \"white\",\n        \"type\": \"boost\",\n        \"useBoostBool\": false,\n        \"counter\": 46,\n        \"updates\": {},\n        \"error\": false\n      },\n      {\n        \"from\": \"\",\n        \"to\": \"\",\n        \"movedPiece\": \"\",\n        \"team\": \"white\",\n        \"type\": \"endturn\",\n        \"useBoostBool\": false,\n        \"counter\": 47,\n        \"updates\": {},\n        \"error\": false\n      },\n      {\n        \"from\": \"h8\",\n        \"to\": \"h7\",\n        \"movedPiece\": \"Minotaurus\",\n        \"team\": \"black\",\n        \"type\": \"move\",\n        \"useBoostBool\": false,\n        \"counter\": 48,\n        \"updates\": {},\n        \"error\": true\n      },\n      {\n        \"from\": \"e7\",\n        \"to\": \"e6\",\n        \"movedPiece\": \"Bastards\",\n        \"team\": \"black\",\n        \"type\": \"move\",\n        \"useBoostBool\": false,\n        \"counter\": 49,\n        \"updates\": {},\n        \"error\": true\n      },\n      {\n        \"from\": \"e7\",\n        \"to\": \"e5\",\n        \"movedPiece\": \"Bastards\",\n        \"team\": \"black\",\n        \"type\": \"move\",\n        \"useBoostBool\": false,\n        \"counter\": 50,\n        \"updates\": {},\n        \"error\": true\n      },\n      {\n        \"from\": \"d7\",\n        \"to\": \"b5\",\n        \"movedPiece\": \"Valkirya\",\n        \"team\": \"black\",\n        \"type\": \"move\",\n        \"useBoostBool\": false,\n        \"counter\": 51,\n        \"updates\": {},\n        \"error\": true\n      },\n      {\n        \"from\": \"f8\",\n        \"to\": \"g7\",\n        \"movedPiece\": \"Valkirya\",\n        \"team\": \"black\",\n        \"type\": \"move\",\n        \"useBoostBool\": false,\n        \"counter\": 52,\n        \"updates\": {},\n        \"error\": true\n      },\n      {\n        \"from\": \"b8\",\n        \"to\": \"c6\",\n        \"movedPiece\": \"Jester\",\n        \"team\": \"black\",\n        \"type\": \"move\",\n        \"useBoostBool\": false,\n        \"counter\": 53,\n        \"updates\": {},\n        \"error\": true\n      },\n      {\n        \"from\": \"e8\",\n        \"to\": \"d8\",\n        \"movedPiece\": \"King\",\n        \"team\": \"black\",\n        \"type\": \"move\",\n        \"useBoostBool\": false,\n        \"counter\": 54,\n        \"updates\": {},\n        \"error\": true\n      },\n      {\n        \"from\": \"d8\",\n        \"to\": \"c8\",\n        \"movedPiece\": \"Champion\",\n        \"team\": \"black\",\n        \"type\": \"move\",\n        \"useBoostBool\": false,\n        \"counter\": 55,\n        \"updates\": {},\n        \"error\": true\n      },\n      {\n        \"from\": \"h6\",\n        \"to\": \"h4\",\n        \"movedPiece\": \"Bastards\",\n        \"team\": \"black\",\n        \"type\": \"move\",\n        \"useBoostBool\": false,\n        \"counter\": 56,\n        \"updates\": {},\n        \"error\": true\n      },\n      {\n        \"from\": \"h8\",\n        \"to\": \"g8\",\n        \"movedPiece\": \"Minotaurus\",\n        \"team\": \"black\",\n        \"type\": \"move\",\n        \"useBoostBool\": false,\n        \"counter\": 57,\n        \"updates\": {},\n        \"error\": true\n      },\n      {\n        \"from\": \"h6\",\n        \"to\": \"h5\",\n        \"movedPiece\": \"Bastards\",\n        \"team\": \"black\",\n        \"type\": \"move\",\n        \"useBoostBool\": false,\n        \"counter\": 58,\n        \"updates\": {},\n        \"error\": false\n      }\n    ]\n  },\n  \"historyCreateBool\": false,\n  \"currentPlayer\": {\n    \"dbTable\": null,\n    \"matchId\": \"0\",\n    \"id\": 0,\n    \"expectedElo\": null,\n    \"nPoints\": 2,\n    \"bonusPointCounter\": 3,\n    \"useBoostBool\": false,\n    \"nPieces\": 12,\n    \"King\": \"e8\",\n    \"boostedPiece\": \"\",\n    \"guardianPieces\": {},\n    \"castlingArray\": {},\n    \"time\": 899999,\n    \"team\": \"black\",\n    \"next\": \"white\",\n    \"prev\": \"white\",\n    \"ally\": \"black\",\n    \"allieGuardianCoord\": \"\",\n    \"ai\": {\n      \"profile\": \"First\",\n      \"speechJSON\": {\n        \"eatenPieceMe\": [\n          \"NOOOO! il mio $VAR1!\",\n          \"non gasarti troppo adesso\"\n        ],\n        \"eatenPieceOppo\": [\n          \"bono il $VAR1, grazie\",\n          \"gnam gnam\"\n        ],\n        \"lostChampionMe\": [\n          \"COME OSI!\"\n        ],\n        \"lostChampionOppo\": [\n          \"e finita. Arrenditi. \",\n          \"il tuo campione e caduto.. e presto lo sara anche il tuo re.\"\n        ],\n        \"moveMe\": [\n          \"Ecco qua!\",\n          \"MOVIMENTO\"\n        ],\n        \"checkMe\": [\n          \"non pensare di aver vinto\",\n          \"AH SI?? COME TI PERMETTI?!\"\n        ],\n        \"checkOppo\": [\n          \"non avevi visto questa mossa, eh?\",\n          \"THUNDER CROSS SPLIT ATTACK!\",\n          \"E FINITA JOTARO!\"\n        ],\n        \"checkMateMe\": [\n          \"... Come ho fatto a perdere contro di te??\",\n          \"non pensare di aver vinto! ...cosa? ho perso?? Impossibile!\"\n        ],\n        \"checkMateOppo\": [\n          \"EZ.\",\n          \"EAZY.\",\n          \"easy.\",\n          \"izy.\"\n        ],\n        \"endTurnMe\": [\n          \"PASSO.\"\n        ],\n        \"endTurnOppo\": [\n          \"IT'S MY TURN! I DRAW A CARD!\",\n          \"ah, tocca a me? Menomale, mi stavo addormentando!\",\n          \"con calma eh... disgraziato, non ho tutto il giorno\",\n          \"PESCATA LUCENTE!\"\n        ],\n        \"transformMe\": [\n          \"EMERGI, $VAR1! DISINTEGRA I TUOI NEMICI!\",\n          \"adesso ti faccio vedere io.\"\n        ],\n        \"transformOppo\": [\n          \"un campione in piu non ti fara vincere\"\n        ],\n        \"applyBoostMe\": [\n          \"adesso faccio sul serio!\",\n          \"Beccati questo! Vai, $VAR1!\"\n        ],\n        \"applyBoostOppo\": [\n          \"Che te ne fai di quel $VAR1? Non farmi perdere tempo!\"\n        ],\n        \"useBoostMe\": [\n          \"Uso il potenziamento.\"\n        ],\n        \"useBoostOppo\": [\n          \"Non mi ha fatto nulla!\"\n        ],\n        \"eatWithBoostMe\": [\n          \"E il momento! Vai, $VAR1! DISINTEGRA!\",\n          \"Prendi questo! vai, $VAR1!\"\n        ],\n        \"eatWithBoostOppo\": [\n          \"Posso vincere anche senza di lui! Hai sprecato il potenziamento!\",\n          \"Mmm. Non ti montare la testa.\"\n        ],\n        \"checkWithBoostMe\": [\n          \"Col potere di $VAR1, metto il tuo re sotto minaccia!\"\n        ],\n        \"checkWithBoostOppo\": [\n          \"Come hai fatto?? Il mio re.. Sotto minaccia?!\"\n        ],\n        \"castlingMe\": [\n          \"E il momento.. CASTLING!\"\n        ],\n        \"castlingOppo\": [\n          \"Mmm. Forse sai il fatto tuo..\"\n        ]\n      },\n      \"defeatStatus\": 2\n    }\n  },\n  \"lastMenace\": {\n    \"from\": \"\",\n    \"mid\": \"\",\n    \"to\": \"\"\n  },\n  \"boostPriority\": {},\n  \"playerNum\": 2,\n  \"loserSet\": {},\n  \"victory\": \"\",\n  \"timer\": null,\n  \"start_date\": \"2026-08-07T09:50:11.281Z\",\n  \"tournament_id\": null,\n  \"tournament_round\": null,\n  \"spareCountDown\": 0,\n  \"boardStateMap\": {},\n  \"elo\": {\n    \"k\": 32\n  },\n  \"tournament\": null,\n  \"aiSimulation\": false,\n  \"aiMove\": false,\n  \"aiBool\": true\n}"
+  "board": "|bM|bJ| |bC|bK|bV| |bM|
+|bB|bB|bB|bV|bB| | | |
+| | | | | | | | |
+| |wV|+wC| | | | |bB|
+| | | |wB| |wB| | |
+| | | | |wB| |wB| |
+|wB|wB|wB| | | | |wB|
+|wM|wJ|wV| |wK| |wJ|wM|
+|00|",
+  "info": "AIExecuteTurn: move failed. Info: {
+  \"move\": {
+    \"from\": \"h5\",
+    \"to\": \"h4\"
+  },
+  \"moveBoost\": null,
+  \"boost\": \"\",
+  \"transform\": \"\"
+}",
+  "matchData": "{
+  \"settings\": {
+    \"preset\": null,
+    \"timer\": 900000,
+    \"board\": {
+      \"width\": 8,
+      \"heigth\": 8,
+      \"seed\": 0,
+      \"start\": \"\",
+      \"corners\": false
+    },
+    \"players\": {
+      \"number\": 2,
+      \"startPoints\": 0,
+      \"allies\": false,
+      \"teams\": {
+        \"white\": \"\",
+        \"black\": \"\",
+        \"yellow\": \"\",
+        \"red\": \"\",
+        \"blue\": \"\",
+        \"green\": \"\"
+      }
+    },
+    \"room\": {
+      \"isRanked\": false
+    },
+    \"presetType\": null
+  },
+  \"white\": {
+    \"dbTable\": null,
+    \"matchId\": \"0\",
+    \"id\": 0,
+    \"expectedElo\": null,
+    \"nPoints\": 1,
+    \"bonusPointCounter\": 0,
+    \"useBoostBool\": false,
+    \"nPieces\": 16,
+    \"King\": \"e1\",
+    \"boostedPiece\": \"c5\",
+    \"guardianPieces\": {},
+    \"castlingArray\": {},
+    \"time\": 899995,
+    \"team\": \"white\",
+    \"next\": \"black\",
+    \"prev\": \"black\",
+    \"ally\": \"white\",
+    \"allieGuardianCoord\": \"\",
+    \"ai\": {
+      \"profile\": \"First\",
+      \"speechJSON\": {
+        \"eatenPieceMe\": [
+          \"NOOOO! il mio $VAR1!\",
+          \"non gasarti troppo adesso\"
+        ],
+        \"eatenPieceOppo\": [
+          \"bono il $VAR1, grazie\",
+          \"gnam gnam\"
+        ],
+        \"lostChampionMe\": [
+          \"COME OSI!\"
+        ],
+        \"lostChampionOppo\": [
+          \"e finita. Arrenditi. \",
+          \"il tuo campione e caduto.. e presto lo sara anche il tuo re.\"
+        ],
+        \"moveMe\": [
+          \"Ecco qua!\",
+          \"MOVIMENTO\"
+        ],
+        \"checkMe\": [
+          \"non pensare di aver vinto\",
+          \"AH SI?? COME TI PERMETTI?!\"
+        ],
+        \"checkOppo\": [
+          \"non avevi visto questa mossa, eh?\",
+          \"THUNDER CROSS SPLIT ATTACK!\",
+          \"E FINITA JOTARO!\"
+        ],
+        \"checkMateMe\": [
+          \"... Come ho fatto a perdere contro di te??\",
+          \"non pensare di aver vinto! ...cosa? ho perso?? Impossibile!\"
+        ],
+        \"checkMateOppo\": [
+          \"EZ.\",
+          \"EAZY.\",
+          \"easy.\",
+          \"izy.\"
+        ],
+        \"endTurnMe\": [
+          \"PASSO.\"
+        ],
+        \"endTurnOppo\": [
+          \"IT'S MY TURN! I DRAW A CARD!\",
+          \"ah, tocca a me? Menomale, mi stavo addormentando!\",
+          \"con calma eh... disgraziato, non ho tutto il giorno\",
+          \"PESCATA LUCENTE!\"
+        ],
+        \"transformMe\": [
+          \"EMERGI, $VAR1! DISINTEGRA I TUOI NEMICI!\",
+          \"adesso ti faccio vedere io.\"
+        ],
+        \"transformOppo\": [
+          \"un campione in piu non ti fara vincere\"
+        ],
+        \"applyBoostMe\": [
+          \"adesso faccio sul serio!\",
+          \"Beccati questo! Vai, $VAR1!\"
+        ],
+        \"applyBoostOppo\": [
+          \"Che te ne fai di quel $VAR1? Non farmi perdere tempo!\"
+        ],
+        \"useBoostMe\": [
+          \"Uso il potenziamento.\"
+        ],
+        \"useBoostOppo\": [
+          \"Non mi ha fatto nulla!\"
+        ],
+        \"eatWithBoostMe\": [
+          \"E il momento! Vai, $VAR1! DISINTEGRA!\",
+          \"Prendi questo! vai, $VAR1!\"
+        ],
+        \"eatWithBoostOppo\": [
+          \"Posso vincere anche senza di lui! Hai sprecato il potenziamento!\",
+          \"Mmm. Non ti montare la testa.\"
+        ],
+        \"checkWithBoostMe\": [
+          \"Col potere di $VAR1, metto il tuo re sotto minaccia!\"
+        ],
+        \"checkWithBoostOppo\": [
+          \"Come hai fatto?? Il mio re.. Sotto minaccia?!\"
+        ],
+        \"castlingMe\": [
+          \"E il momento.. CASTLING!\"
+        ],
+        \"castlingOppo\": [
+          \"Mmm. Forse sai il fatto tuo..\"
+        ]
+      },
+      \"defeatStatus\": 0
+    }
+  },
+  \"black\": {
+    \"dbTable\": null,
+    \"matchId\": \"0\",
+    \"id\": 0,
+    \"expectedElo\": null,
+    \"nPoints\": 2,
+    \"bonusPointCounter\": 3,
+    \"useBoostBool\": false,
+    \"nPieces\": 12,
+    \"King\": \"e8\",
+    \"boostedPiece\": \"\",
+    \"guardianPieces\": {},
+    \"castlingArray\": {},
+    \"time\": 899999,
+    \"team\": \"black\",
+    \"next\": \"white\",
+    \"prev\": \"white\",
+    \"ally\": \"black\",
+    \"allieGuardianCoord\": \"\",
+    \"ai\": {
+      \"profile\": \"First\",
+      \"speechJSON\": {
+        \"eatenPieceMe\": [
+          \"NOOOO! il mio $VAR1!\",
+          \"non gasarti troppo adesso\"
+        ],
+        \"eatenPieceOppo\": [
+          \"bono il $VAR1, grazie\",
+          \"gnam gnam\"
+        ],
+        \"lostChampionMe\": [
+          \"COME OSI!\"
+        ],
+        \"lostChampionOppo\": [
+          \"e finita. Arrenditi. \",
+          \"il tuo campione e caduto.. e presto lo sara anche il tuo re.\"
+        ],
+        \"moveMe\": [
+          \"Ecco qua!\",
+          \"MOVIMENTO\"
+        ],
+        \"checkMe\": [
+          \"non pensare di aver vinto\",
+          \"AH SI?? COME TI PERMETTI?!\"
+        ],
+        \"checkOppo\": [
+          \"non avevi visto questa mossa, eh?\",
+          \"THUNDER CROSS SPLIT ATTACK!\",
+          \"E FINITA JOTARO!\"
+        ],
+        \"checkMateMe\": [
+          \"... Come ho fatto a perdere contro di te??\",
+          \"non pensare di aver vinto! ...cosa? ho perso?? Impossibile!\"
+        ],
+        \"checkMateOppo\": [
+          \"EZ.\",
+          \"EAZY.\",
+          \"easy.\",
+          \"izy.\"
+        ],
+        \"endTurnMe\": [
+          \"PASSO.\"
+        ],
+        \"endTurnOppo\": [
+          \"IT'S MY TURN! I DRAW A CARD!\",
+          \"ah, tocca a me? Menomale, mi stavo addormentando!\",
+          \"con calma eh... disgraziato, non ho tutto il giorno\",
+          \"PESCATA LUCENTE!\"
+        ],
+        \"transformMe\": [
+          \"EMERGI, $VAR1! DISINTEGRA I TUOI NEMICI!\",
+          \"adesso ti faccio vedere io.\"
+        ],
+        \"transformOppo\": [
+          \"un campione in piu non ti fara vincere\"
+        ],
+        \"applyBoostMe\": [
+          \"adesso faccio sul serio!\",
+          \"Beccati questo! Vai, $VAR1!\"
+        ],
+        \"applyBoostOppo\": [
+          \"Che te ne fai di quel $VAR1? Non farmi perdere tempo!\"
+        ],
+        \"useBoostMe\": [
+          \"Uso il potenziamento.\"
+        ],
+        \"useBoostOppo\": [
+          \"Non mi ha fatto nulla!\"
+        ],
+        \"eatWithBoostMe\": [
+          \"E il momento! Vai, $VAR1! DISINTEGRA!\",
+          \"Prendi questo! vai, $VAR1!\"
+        ],
+        \"eatWithBoostOppo\": [
+          \"Posso vincere anche senza di lui! Hai sprecato il potenziamento!\",
+          \"Mmm. Non ti montare la testa.\"
+        ],
+        \"checkWithBoostMe\": [
+          \"Col potere di $VAR1, metto il tuo re sotto minaccia!\"
+        ],
+        \"checkWithBoostOppo\": [
+          \"Come hai fatto?? Il mio re.. Sotto minaccia?!\"
+        ],
+        \"castlingMe\": [
+          \"E il momento.. CASTLING!\"
+        ],
+        \"castlingOppo\": [
+          \"Mmm. Forse sai il fatto tuo..\"
+        ]
+      },
+      \"defeatStatus\": 2
+    }
+  },
+  \"red\": {
+    \"dbTable\": null,
+    \"matchId\": \"0\",
+    \"id\": 0,
+    \"expectedElo\": null,
+    \"nPoints\": 0,
+    \"bonusPointCounter\": 0,
+    \"useBoostBool\": false,
+    \"nPieces\": 16,
+    \"King\": \"\",
+    \"boostedPiece\": \"\",
+    \"guardianPieces\": {},
+    \"castlingArray\": {},
+    \"time\": 900000,
+    \"team\": \"red\",
+    \"next\": \"green\",
+    \"prev\": \"blue\",
+    \"ally\": \"yellow\",
+    \"allieGuardianCoord\": \"\",
+    \"ai\": null
+  },
+  \"blue\": {
+    \"dbTable\": null,
+    \"matchId\": \"0\",
+    \"id\": 0,
+    \"expectedElo\": null,
+    \"nPoints\": 0,
+    \"bonusPointCounter\": 0,
+    \"useBoostBool\": false,
+    \"nPieces\": 16,
+    \"King\": \"\",
+    \"boostedPiece\": \"\",
+    \"guardianPieces\": {},
+    \"castlingArray\": {},
+    \"time\": 900000,
+    \"team\": \"blue\",
+    \"next\": \"red\",
+    \"prev\": \"yellow\",
+    \"ally\": \"green\",
+    \"allieGuardianCoord\": \"\",
+    \"ai\": null
+  },
+  \"green\": {
+    \"dbTable\": null,
+    \"matchId\": \"0\",
+    \"id\": 0,
+    \"expectedElo\": null,
+    \"nPoints\": 0,
+    \"bonusPointCounter\": 0,
+    \"useBoostBool\": false,
+    \"nPieces\": 16,
+    \"King\": \"\",
+    \"boostedPiece\": \"\",
+    \"guardianPieces\": {},
+    \"castlingArray\": {},
+    \"time\": 900000,
+    \"team\": \"green\",
+    \"next\": \"yellow\",
+    \"prev\": \"red\",
+    \"ally\": \"blue\",
+    \"allieGuardianCoord\": \"\",
+    \"ai\": null
+  },
+  \"yellow\": {
+    \"dbTable\": null,
+    \"matchId\": \"0\",
+    \"id\": 0,
+    \"expectedElo\": null,
+    \"nPoints\": 0,
+    \"bonusPointCounter\": 0,
+    \"useBoostBool\": false,
+    \"nPieces\": 16,
+    \"King\": \"\",
+    \"boostedPiece\": \"\",
+    \"guardianPieces\": {},
+    \"castlingArray\": {},
+    \"time\": 900000,
+    \"team\": \"yellow\",
+    \"next\": \"blue\",
+    \"prev\": \"green\",
+    \"ally\": \"red\",
+    \"allieGuardianCoord\": \"\",
+    \"ai\": null
+  },
+  \"users\": [],
+  \"board\": {
+    \"_data\": {},
+    \"updates\": {},
+    \"width\": 8,
+    \"heigth\": 8,
+    \"influenceMap\": {}
+  },
+  \"cursor\": {
+    \"square\": \"h5\",
+    \"_save_pos\": \"h5\",
+    \"_w\": 8,
+    \"_h\": 8
+  },
+  \"moves\": 1,
+  \"boost\": 0,
+  \"history\": {
+    \"moves\": 59,
+    \"victory\": \"\",
+    \"finalBoard\": \"\",
+    \"matchSettings\": {
+      \"preset\": null,
+      \"timer\": 900000,
+      \"board\": {
+        \"width\": 8,
+        \"heigth\": 8,
+        \"seed\": 0,
+        \"start\": \"\",
+        \"corners\": false
+      },
+      \"players\": {
+        \"number\": 2,
+        \"startPoints\": 0,
+        \"allies\": false,
+        \"teams\": {
+          \"white\": \"\",
+          \"black\": \"\",
+          \"yellow\": \"\",
+          \"red\": \"\",
+          \"blue\": \"\",
+          \"green\": \"\"
+        }
+      },
+      \"room\": {
+        \"isRanked\": false
+      },
+      \"presetType\": null
+    },
+    \"events\": [
+      {
+        \"from\": \"g2\",
+        \"to\": \"g3\",
+        \"movedPiece\": \"Bastards\",
+        \"team\": \"white\",
+        \"type\": \"move\",
+        \"useBoostBool\": false,
+        \"counter\": 0,
+        \"updates\": {},
+        \"error\": false
+      },
+      {
+        \"from\": \"\",
+        \"to\": \"\",
+        \"movedPiece\": \"\",
+        \"team\": \"white\",
+        \"type\": \"endturn\",
+        \"useBoostBool\": false,
+        \"counter\": 1,
+        \"updates\": {},
+        \"error\": false
+      },
+      {
+        \"from\": \"h7\",
+        \"to\": \"h6\",
+        \"movedPiece\": \"Bastards\",
+        \"team\": \"black\",
+        \"type\": \"move\",
+        \"useBoostBool\": false,
+        \"counter\": 2,
+        \"updates\": {},
+        \"error\": false
+      },
+      {
+        \"from\": \"\",
+        \"to\": \"\",
+        \"movedPiece\": \"\",
+        \"team\": \"black\",
+        \"type\": \"endturn\",
+        \"useBoostBool\": false,
+        \"counter\": 3,
+        \"updates\": {},
+        \"error\": false
+      },
+      {
+        \"from\": \"f2\",
+        \"to\": \"f4\",
+        \"movedPiece\": \"Bastards\",
+        \"team\": \"white\",
+        \"type\": \"move\",
+        \"useBoostBool\": false,
+        \"counter\": 4,
+        \"updates\": {},
+        \"error\": false
+      },
+      {
+        \"from\": \"\",
+        \"to\": \"\",
+        \"movedPiece\": \"\",
+        \"team\": \"white\",
+        \"type\": \"endturn\",
+        \"useBoostBool\": false,
+        \"counter\": 5,
+        \"updates\": {},
+        \"error\": false
+      },
+      {
+        \"from\": \"g7\",
+        \"to\": \"g5\",
+        \"movedPiece\": \"Bastards\",
+        \"team\": \"black\",
+        \"type\": \"move\",
+        \"useBoostBool\": false,
+        \"counter\": 6,
+        \"updates\": {},
+        \"error\": false
+      },
+      {
+        \"from\": \"\",
+        \"to\": \"\",
+        \"movedPiece\": \"\",
+        \"team\": \"black\",
+        \"type\": \"endturn\",
+        \"useBoostBool\": false,
+        \"counter\": 7,
+        \"updates\": {},
+        \"error\": false
+      },
+      {
+        \"from\": \"e2\",
+        \"to\": \"e3\",
+        \"movedPiece\": \"Bastards\",
+        \"team\": \"white\",
+        \"type\": \"move\",
+        \"useBoostBool\": false,
+        \"counter\": 8,
+        \"updates\": {},
+        \"error\": false
+      },
+      {
+        \"from\": \"\",
+        \"to\": \"\",
+        \"movedPiece\": \"\",
+        \"team\": \"white\",
+        \"type\": \"endturn\",
+        \"useBoostBool\": false,
+        \"counter\": 9,
+        \"updates\": {},
+        \"error\": false
+      },
+      {
+        \"from\": \"d7\",
+        \"to\": \"d5\",
+        \"movedPiece\": \"Bastards\",
+        \"team\": \"black\",
+        \"type\": \"move\",
+        \"useBoostBool\": false,
+        \"counter\": 10,
+        \"updates\": {},
+        \"error\": false
+      },
+      {
+        \"from\": \"\",
+        \"to\": \"\",
+        \"movedPiece\": \"\",
+        \"team\": \"black\",
+        \"type\": \"endturn\",
+        \"useBoostBool\": false,
+        \"counter\": 11,
+        \"updates\": {},
+        \"error\": false
+      },
+      {
+        \"from\": \"d2\",
+        \"to\": \"d4\",
+        \"movedPiece\": \"Bastards\",
+        \"team\": \"white\",
+        \"type\": \"move\",
+        \"useBoostBool\": false,
+        \"counter\": 12,
+        \"updates\": {},
+        \"error\": false
+      },
+      {
+        \"from\": \"\",
+        \"to\": \"\",
+        \"movedPiece\": \"\",
+        \"team\": \"white\",
+        \"type\": \"endturn\",
+        \"useBoostBool\": false,
+        \"counter\": 13,
+        \"updates\": {},
+        \"error\": false
+      },
+      {
+        \"from\": \"g8\",
+        \"to\": \"g8\",
+        \"movedPiece\": \"Jester\",
+        \"team\": \"black\",
+        \"type\": \"move\",
+        \"useBoostBool\": false,
+        \"counter\": 14,
+        \"updates\": {},
+        \"error\": true
+      },
+      {
+        \"from\": \"f7\",
+        \"to\": \"f5\",
+        \"movedPiece\": \"Bastards\",
+        \"team\": \"black\",
+        \"type\": \"move\",
+        \"useBoostBool\": false,
+        \"counter\": 15,
+        \"updates\": {},
+        \"error\": false
+      },
+      {
+        \"from\": \"\",
+        \"to\": \"\",
+        \"movedPiece\": \"\",
+        \"team\": \"black\",
+        \"type\": \"endturn\",
+        \"useBoostBool\": false,
+        \"counter\": 16,
+        \"updates\": {},
+        \"error\": false
+      },
+      {
+        \"from\": \"f1\",
+        \"to\": \"b5\",
+        \"movedPiece\": \"Valkirya\",
+        \"team\": \"white\",
+        \"type\": \"move\",
+        \"useBoostBool\": false,
+        \"counter\": 17,
+        \"updates\": {},
+        \"error\": false
+      },
+      {
+        \"from\": \"\",
+        \"to\": \"\",
+        \"movedPiece\": \"\",
+        \"team\": \"white\",
+        \"type\": \"endturn\",
+        \"useBoostBool\": false,
+        \"counter\": 18,
+        \"updates\": {},
+        \"error\": false
+      },
+      {
+        \"from\": \"c8\",
+        \"to\": \"d7\",
+        \"movedPiece\": \"Valkirya\",
+        \"team\": \"black\",
+        \"type\": \"move\",
+        \"useBoostBool\": false,
+        \"counter\": 19,
+        \"updates\": {},
+        \"error\": false
+      },
+      {
+        \"from\": \"\",
+        \"to\": \"\",
+        \"movedPiece\": \"\",
+        \"team\": \"black\",
+        \"type\": \"endturn\",
+        \"useBoostBool\": false,
+        \"counter\": 20,
+        \"updates\": {},
+        \"error\": false
+      },
+      {
+        \"from\": \"d1\",
+        \"to\": \"d3\",
+        \"movedPiece\": \"Champion\",
+        \"team\": \"white\",
+        \"type\": \"move\",
+        \"useBoostBool\": false,
+        \"counter\": 21,
+        \"updates\": {},
+        \"error\": false
+      },
+      {
+        \"from\": \"\",
+        \"to\": \"\",
+        \"movedPiece\": \"\",
+        \"team\": \"white\",
+        \"type\": \"endturn\",
+        \"useBoostBool\": false,
+        \"counter\": 22,
+        \"updates\": {},
+        \"error\": false
+      },
+      {
+        \"from\": \"g8\",
+        \"to\": \"f6\",
+        \"movedPiece\": \"Jester\",
+        \"team\": \"black\",
+        \"type\": \"move\",
+        \"useBoostBool\": false,
+        \"counter\": 23,
+        \"updates\": {},
+        \"error\": false
+      },
+      {
+        \"from\": \"\",
+        \"to\": \"\",
+        \"movedPiece\": \"\",
+        \"team\": \"black\",
+        \"type\": \"endturn\",
+        \"useBoostBool\": false,
+        \"counter\": 24,
+        \"updates\": {},
+        \"error\": false
+      },
+      {
+        \"from\": \"d3\",
+        \"to\": \"c4\",
+        \"movedPiece\": \"Champion\",
+        \"team\": \"white\",
+        \"type\": \"move\",
+        \"useBoostBool\": false,
+        \"counter\": 25,
+        \"updates\": {},
+        \"error\": false
+      },
+      {
+        \"from\": \"\",
+        \"to\": \"\",
+        \"movedPiece\": \"\",
+        \"team\": \"white\",
+        \"type\": \"endturn\",
+        \"useBoostBool\": false,
+        \"counter\": 26,
+        \"updates\": {},
+        \"error\": false
+      },
+      {
+        \"from\": \"f6\",
+        \"to\": \"e4\",
+        \"movedPiece\": \"Jester\",
+        \"team\": \"black\",
+        \"type\": \"move\",
+        \"useBoostBool\": false,
+        \"counter\": 27,
+        \"updates\": {},
+        \"error\": false
+      },
+      {
+        \"from\": \"\",
+        \"to\": \"\",
+        \"movedPiece\": \"\",
+        \"team\": \"black\",
+        \"type\": \"endturn\",
+        \"useBoostBool\": false,
+        \"counter\": 28,
+        \"updates\": {},
+        \"error\": false
+      },
+      {
+        \"from\": \"c4\",
+        \"to\": \"d5\",
+        \"movedPiece\": \"Champion\",
+        \"team\": \"white\",
+        \"type\": \"move\",
+        \"useBoostBool\": false,
+        \"counter\": 29,
+        \"updates\": {},
+        \"error\": false,
+        \"pieceEaten\": {
+          \"type\": \"Bastards\",
+          \"price\": 1,
+          \"team\": \"black\",
+          \"moveCount\": 1,
+          \"isBoostedBool\": false,
+          \"pos\": \"d5\",
+          \"moveArray\": [
+            {
+              \"dx\": 1,
+              \"dy\": 0
+            },
+            {
+              \"dx\": -1,
+              \"dy\": 0
+            },
+            {
+              \"dx\": 0,
+              \"dy\": 1
+            },
+            {
+              \"dx\": 0,
+              \"dy\": -1
+            },
+            {
+              \"dx\": 1,
+              \"dy\": 1
+            },
+            {
+              \"dx\": -1,
+              \"dy\": -1
+            },
+            {
+              \"dx\": -1,
+              \"dy\": 1
+            },
+            {
+              \"dx\": 1,
+              \"dy\": -1
+            }
+          ],
+          \"moveLongRangeDEBUG\": false,
+          \"multipleMovesBool\": true
+        }
+      },
+      {
+        \"from\": \"\",
+        \"to\": \"\",
+        \"movedPiece\": \"\",
+        \"team\": \"white\",
+        \"type\": \"endturn\",
+        \"useBoostBool\": false,
+        \"counter\": 30,
+        \"updates\": {},
+        \"error\": false
+      },
+      {
+        \"from\": \"h8\",
+        \"to\": \"h7\",
+        \"movedPiece\": \"Minotaurus\",
+        \"team\": \"black\",
+        \"type\": \"move\",
+        \"useBoostBool\": false,
+        \"counter\": 31,
+        \"updates\": {},
+        \"error\": false
+      },
+      {
+        \"from\": \"\",
+        \"to\": \"\",
+        \"movedPiece\": \"\",
+        \"team\": \"black\",
+        \"type\": \"endturn\",
+        \"useBoostBool\": false,
+        \"counter\": 32,
+        \"updates\": {},
+        \"error\": false
+      },
+      {
+        \"from\": \"d5\",
+        \"to\": \"e4\",
+        \"movedPiece\": \"Champion\",
+        \"team\": \"white\",
+        \"type\": \"move\",
+        \"useBoostBool\": false,
+        \"counter\": 33,
+        \"updates\": {},
+        \"error\": false,
+        \"pieceEaten\": {
+          \"type\": \"Jester\",
+          \"price\": 5,
+          \"team\": \"black\",
+          \"moveCount\": 2,
+          \"isBoostedBool\": false,
+          \"pos\": \"e4\",
+          \"moveArray\": [
+            {
+              \"dx\": 2,
+              \"dy\": 1
+            },
+            {
+              \"dx\": 2,
+              \"dy\": -1
+            },
+            {
+              \"dx\": -2,
+              \"dy\": 1
+            },
+            {
+              \"dx\": -2,
+              \"dy\": -1
+            },
+            {
+              \"dx\": 1,
+              \"dy\": 2
+            },
+            {
+              \"dx\": 1,
+              \"dy\": -2
+            },
+            {
+              \"dx\": -1,
+              \"dy\": 2
+            },
+            {
+              \"dx\": -1,
+              \"dy\": -2
+            }
+          ],
+          \"moveLongRangeDEBUG\": false,
+          \"multipleMovesBool\": false
+        }
+      },
+      {
+        \"from\": \"\",
+        \"to\": \"\",
+        \"movedPiece\": \"\",
+        \"team\": \"white\",
+        \"type\": \"endturn\",
+        \"useBoostBool\": false,
+        \"counter\": 34,
+        \"updates\": {},
+        \"error\": false
+      },
+      {
+        \"from\": \"h7\",
+        \"to\": \"h8\",
+        \"movedPiece\": \"Minotaurus\",
+        \"team\": \"black\",
+        \"type\": \"move\",
+        \"useBoostBool\": false,
+        \"counter\": 35,
+        \"updates\": {},
+        \"error\": false
+      },
+      {
+        \"from\": \"\",
+        \"to\": \"\",
+        \"movedPiece\": \"\",
+        \"team\": \"black\",
+        \"type\": \"endturn\",
+        \"useBoostBool\": false,
+        \"counter\": 36,
+        \"updates\": {},
+        \"error\": false
+      },
+      {
+        \"from\": \"e4\",
+        \"to\": \"f5\",
+        \"movedPiece\": \"Champion\",
+        \"team\": \"white\",
+        \"type\": \"move\",
+        \"useBoostBool\": false,
+        \"counter\": 37,
+        \"updates\": {},
+        \"error\": false,
+        \"pieceEaten\": {
+          \"type\": \"Bastards\",
+          \"price\": 1,
+          \"team\": \"black\",
+          \"moveCount\": 1,
+          \"isBoostedBool\": false,
+          \"pos\": \"f5\",
+          \"moveArray\": [
+            {
+              \"dx\": 1,
+              \"dy\": 0
+            },
+            {
+              \"dx\": -1,
+              \"dy\": 0
+            },
+            {
+              \"dx\": 0,
+              \"dy\": 1
+            },
+            {
+              \"dx\": 0,
+              \"dy\": -1
+            },
+            {
+              \"dx\": 1,
+              \"dy\": 1
+            },
+            {
+              \"dx\": -1,
+              \"dy\": -1
+            },
+            {
+              \"dx\": -1,
+              \"dy\": 1
+            },
+            {
+              \"dx\": 1,
+              \"dy\": -1
+            }
+          ],
+          \"moveLongRangeDEBUG\": false,
+          \"multipleMovesBool\": true
+        }
+      },
+      {
+        \"from\": \"\",
+        \"to\": \"\",
+        \"movedPiece\": \"\",
+        \"team\": \"white\",
+        \"type\": \"endturn\",
+        \"useBoostBool\": false,
+        \"counter\": 38,
+        \"updates\": {},
+        \"error\": false
+      },
+      {
+        \"from\": \"h8\",
+        \"to\": \"h7\",
+        \"movedPiece\": \"Minotaurus\",
+        \"team\": \"black\",
+        \"type\": \"move\",
+        \"useBoostBool\": false,
+        \"counter\": 39,
+        \"updates\": {},
+        \"error\": false
+      },
+      {
+        \"from\": \"\",
+        \"to\": \"\",
+        \"movedPiece\": \"\",
+        \"team\": \"black\",
+        \"type\": \"endturn\",
+        \"useBoostBool\": false,
+        \"counter\": 40,
+        \"updates\": {},
+        \"error\": false
+      },
+      {
+        \"from\": \"f5\",
+        \"to\": \"g5\",
+        \"movedPiece\": \"Champion\",
+        \"team\": \"white\",
+        \"type\": \"move\",
+        \"useBoostBool\": false,
+        \"counter\": 41,
+        \"updates\": {},
+        \"error\": false,
+        \"pieceEaten\": {
+          \"type\": \"Bastards\",
+          \"price\": 1,
+          \"team\": \"black\",
+          \"moveCount\": 1,
+          \"isBoostedBool\": false,
+          \"pos\": \"g5\",
+          \"moveArray\": [
+            {
+              \"dx\": 1,
+              \"dy\": 0
+            },
+            {
+              \"dx\": -1,
+              \"dy\": 0
+            },
+            {
+              \"dx\": 0,
+              \"dy\": 1
+            },
+            {
+              \"dx\": 0,
+              \"dy\": -1
+            },
+            {
+              \"dx\": 1,
+              \"dy\": 1
+            },
+            {
+              \"dx\": -1,
+              \"dy\": -1
+            },
+            {
+              \"dx\": -1,
+              \"dy\": 1
+            },
+            {
+              \"dx\": 1,
+              \"dy\": -1
+            }
+          ],
+          \"moveLongRangeDEBUG\": false,
+          \"multipleMovesBool\": true
+        }
+      },
+      {
+        \"from\": \"\",
+        \"to\": \"\",
+        \"movedPiece\": \"\",
+        \"team\": \"white\",
+        \"type\": \"endturn\",
+        \"useBoostBool\": false,
+        \"counter\": 42,
+        \"updates\": {},
+        \"error\": false
+      },
+      {
+        \"from\": \"h7\",
+        \"to\": \"h8\",
+        \"movedPiece\": \"Minotaurus\",
+        \"team\": \"black\",
+        \"type\": \"move\",
+        \"useBoostBool\": false,
+        \"counter\": 43,
+        \"updates\": {},
+        \"error\": false
+      },
+      {
+        \"from\": \"\",
+        \"to\": \"\",
+        \"movedPiece\": \"\",
+        \"team\": \"black\",
+        \"type\": \"endturn\",
+        \"useBoostBool\": false,
+        \"counter\": 44,
+        \"updates\": {},
+        \"error\": false
+      },
+      {
+        \"from\": \"g5\",
+        \"to\": \"c5\",
+        \"movedPiece\": \"Champion\",
+        \"team\": \"white\",
+        \"type\": \"move\",
+        \"useBoostBool\": false,
+        \"counter\": 45,
+        \"updates\": {},
+        \"error\": false
+      },
+      {
+        \"from\": \"c5\",
+        \"to\": \"\",
+        \"movedPiece\": \"Champion\",
+        \"team\": \"white\",
+        \"type\": \"boost\",
+        \"useBoostBool\": false,
+        \"counter\": 46,
+        \"updates\": {},
+        \"error\": false
+      },
+      {
+        \"from\": \"\",
+        \"to\": \"\",
+        \"movedPiece\": \"\",
+        \"team\": \"white\",
+        \"type\": \"endturn\",
+        \"useBoostBool\": false,
+        \"counter\": 47,
+        \"updates\": {},
+        \"error\": false
+      },
+      {
+        \"from\": \"h8\",
+        \"to\": \"h7\",
+        \"movedPiece\": \"Minotaurus\",
+        \"team\": \"black\",
+        \"type\": \"move\",
+        \"useBoostBool\": false,
+        \"counter\": 48,
+        \"updates\": {},
+        \"error\": true
+      },
+      {
+        \"from\": \"e7\",
+        \"to\": \"e6\",
+        \"movedPiece\": \"Bastards\",
+        \"team\": \"black\",
+        \"type\": \"move\",
+        \"useBoostBool\": false,
+        \"counter\": 49,
+        \"updates\": {},
+        \"error\": true
+      },
+      {
+        \"from\": \"e7\",
+        \"to\": \"e5\",
+        \"movedPiece\": \"Bastards\",
+        \"team\": \"black\",
+        \"type\": \"move\",
+        \"useBoostBool\": false,
+        \"counter\": 50,
+        \"updates\": {},
+        \"error\": true
+      },
+      {
+        \"from\": \"d7\",
+        \"to\": \"b5\",
+        \"movedPiece\": \"Valkirya\",
+        \"team\": \"black\",
+        \"type\": \"move\",
+        \"useBoostBool\": false,
+        \"counter\": 51,
+        \"updates\": {},
+        \"error\": true
+      },
+      {
+        \"from\": \"f8\",
+        \"to\": \"g7\",
+        \"movedPiece\": \"Valkirya\",
+        \"team\": \"black\",
+        \"type\": \"move\",
+        \"useBoostBool\": false,
+        \"counter\": 52,
+        \"updates\": {},
+        \"error\": true
+      },
+      {
+        \"from\": \"b8\",
+        \"to\": \"c6\",
+        \"movedPiece\": \"Jester\",
+        \"team\": \"black\",
+        \"type\": \"move\",
+        \"useBoostBool\": false,
+        \"counter\": 53,
+        \"updates\": {},
+        \"error\": true
+      },
+      {
+        \"from\": \"e8\",
+        \"to\": \"d8\",
+        \"movedPiece\": \"King\",
+        \"team\": \"black\",
+        \"type\": \"move\",
+        \"useBoostBool\": false,
+        \"counter\": 54,
+        \"updates\": {},
+        \"error\": true
+      },
+      {
+        \"from\": \"d8\",
+        \"to\": \"c8\",
+        \"movedPiece\": \"Champion\",
+        \"team\": \"black\",
+        \"type\": \"move\",
+        \"useBoostBool\": false,
+        \"counter\": 55,
+        \"updates\": {},
+        \"error\": true
+      },
+      {
+        \"from\": \"h6\",
+        \"to\": \"h4\",
+        \"movedPiece\": \"Bastards\",
+        \"team\": \"black\",
+        \"type\": \"move\",
+        \"useBoostBool\": false,
+        \"counter\": 56,
+        \"updates\": {},
+        \"error\": true
+      },
+      {
+        \"from\": \"h8\",
+        \"to\": \"g8\",
+        \"movedPiece\": \"Minotaurus\",
+        \"team\": \"black\",
+        \"type\": \"move\",
+        \"useBoostBool\": false,
+        \"counter\": 57,
+        \"updates\": {},
+        \"error\": true
+      },
+      {
+        \"from\": \"h6\",
+        \"to\": \"h5\",
+        \"movedPiece\": \"Bastards\",
+        \"team\": \"black\",
+        \"type\": \"move\",
+        \"useBoostBool\": false,
+        \"counter\": 58,
+        \"updates\": {},
+        \"error\": false
+      }
+    ]
+  },
+  \"historyCreateBool\": false,
+  \"currentPlayer\": {
+    \"dbTable\": null,
+    \"matchId\": \"0\",
+    \"id\": 0,
+    \"expectedElo\": null,
+    \"nPoints\": 2,
+    \"bonusPointCounter\": 3,
+    \"useBoostBool\": false,
+    \"nPieces\": 12,
+    \"King\": \"e8\",
+    \"boostedPiece\": \"\",
+    \"guardianPieces\": {},
+    \"castlingArray\": {},
+    \"time\": 899999,
+    \"team\": \"black\",
+    \"next\": \"white\",
+    \"prev\": \"white\",
+    \"ally\": \"black\",
+    \"allieGuardianCoord\": \"\",
+    \"ai\": {
+      \"profile\": \"First\",
+      \"speechJSON\": {
+        \"eatenPieceMe\": [
+          \"NOOOO! il mio $VAR1!\",
+          \"non gasarti troppo adesso\"
+        ],
+        \"eatenPieceOppo\": [
+          \"bono il $VAR1, grazie\",
+          \"gnam gnam\"
+        ],
+        \"lostChampionMe\": [
+          \"COME OSI!\"
+        ],
+        \"lostChampionOppo\": [
+          \"e finita. Arrenditi. \",
+          \"il tuo campione e caduto.. e presto lo sara anche il tuo re.\"
+        ],
+        \"moveMe\": [
+          \"Ecco qua!\",
+          \"MOVIMENTO\"
+        ],
+        \"checkMe\": [
+          \"non pensare di aver vinto\",
+          \"AH SI?? COME TI PERMETTI?!\"
+        ],
+        \"checkOppo\": [
+          \"non avevi visto questa mossa, eh?\",
+          \"THUNDER CROSS SPLIT ATTACK!\",
+          \"E FINITA JOTARO!\"
+        ],
+        \"checkMateMe\": [
+          \"... Come ho fatto a perdere contro di te??\",
+          \"non pensare di aver vinto! ...cosa? ho perso?? Impossibile!\"
+        ],
+        \"checkMateOppo\": [
+          \"EZ.\",
+          \"EAZY.\",
+          \"easy.\",
+          \"izy.\"
+        ],
+        \"endTurnMe\": [
+          \"PASSO.\"
+        ],
+        \"endTurnOppo\": [
+          \"IT'S MY TURN! I DRAW A CARD!\",
+          \"ah, tocca a me? Menomale, mi stavo addormentando!\",
+          \"con calma eh... disgraziato, non ho tutto il giorno\",
+          \"PESCATA LUCENTE!\"
+        ],
+        \"transformMe\": [
+          \"EMERGI, $VAR1! DISINTEGRA I TUOI NEMICI!\",
+          \"adesso ti faccio vedere io.\"
+        ],
+        \"transformOppo\": [
+          \"un campione in piu non ti fara vincere\"
+        ],
+        \"applyBoostMe\": [
+          \"adesso faccio sul serio!\",
+          \"Beccati questo! Vai, $VAR1!\"
+        ],
+        \"applyBoostOppo\": [
+          \"Che te ne fai di quel $VAR1? Non farmi perdere tempo!\"
+        ],
+        \"useBoostMe\": [
+          \"Uso il potenziamento.\"
+        ],
+        \"useBoostOppo\": [
+          \"Non mi ha fatto nulla!\"
+        ],
+        \"eatWithBoostMe\": [
+          \"E il momento! Vai, $VAR1! DISINTEGRA!\",
+          \"Prendi questo! vai, $VAR1!\"
+        ],
+        \"eatWithBoostOppo\": [
+          \"Posso vincere anche senza di lui! Hai sprecato il potenziamento!\",
+          \"Mmm. Non ti montare la testa.\"
+        ],
+        \"checkWithBoostMe\": [
+          \"Col potere di $VAR1, metto il tuo re sotto minaccia!\"
+        ],
+        \"checkWithBoostOppo\": [
+          \"Come hai fatto?? Il mio re.. Sotto minaccia?!\"
+        ],
+        \"castlingMe\": [
+          \"E il momento.. CASTLING!\"
+        ],
+        \"castlingOppo\": [
+          \"Mmm. Forse sai il fatto tuo..\"
+        ]
+      },
+      \"defeatStatus\": 2
+    }
+  },
+  \"lastMenace\": {
+    \"from\": \"\",
+    \"mid\": \"\",
+    \"to\": \"\"
+  },
+  \"boostPriority\": {},
+  \"playerNum\": 2,
+  \"loserSet\": {},
+  \"victory\": \"\",
+  \"timer\": null,
+  \"start_date\": \"2026-08-07T09:50:11.281Z\",
+  \"tournament_id\": null,
+  \"tournament_round\": null,
+  \"spareCountDown\": 0,
+  \"boardStateMap\": {},
+  \"elo\": {
+    \"k\": 32
+  },
+  \"tournament\": null,
+  \"aiSimulation\": false,
+  \"aiMove\": false,
+  \"aiBool\": true
+}"
 }

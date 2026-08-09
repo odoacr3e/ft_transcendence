@@ -183,35 +183,49 @@ class Cursor
 		this.square = this._save_pos;
 	}
 	/** @param {string} team */
-	EdgeCheck(team="")
+	EdgeCheck(team="", coord="")
 	{
+		let	tmp;
+		let	edgeBool;
+
+		tmp = this.square;
+		if (!coord)
+			coord = this.square;
+		this.square = coord;
 		switch (team)
 		{
 			case (eTeam.Black): case (eTeam.Red):
 			{
-				return (this.getRow() == 1);
+				edgeBool = (this.getRow() == 1);
+				break ;
 			}
 			case (eTeam.White): case (eTeam.Yellow):
 			{
-				return (this.getRow() == this._h);
+				edgeBool = (this.getRow() == this._h);
+				break ;
 			}
 			case (eTeam.Green):
 			{
-				return (this.getCol() == 1);
+				edgeBool = (this.getCol() == 1);
+				break ;
 			}
 			case (eTeam.Blue):
 			{
-				return (this.getCol() == this._w);
+				edgeBool = (this.getCol() == this._w);
+				break ;
 			}
 			case (""):
 			{
 				let col = this.getCol();
 				let row = this.getRow();
-				return (col == 1 || row == this._h || col == 1 || col == this._w);
+				edgeBool = (col == 1 || row == this._h || col == 1 || col == this._w);
+				break ;
 			}
 			default:
 				throw (`EdgeCheck: invalid team ${team}`);
 		}
+		this.square = tmp;
+		return (edgeBool);
 	}
 	/**
 	 * 

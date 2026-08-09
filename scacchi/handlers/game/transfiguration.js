@@ -19,6 +19,8 @@ import { includesOneOf } from "../../utils/string.js";
 import { aiSpeech } from "../../Classes/Chess/AIprofiles/speech.js";
 import { AI_EVENTS } from "../../Macro/macro.js";
 
+let	DEB = 0;
+
 /**
  * 
  * @param {Match} match 
@@ -29,6 +31,8 @@ function makeTransfiguration(match, from, to, sendBoardBool=true)
 {
 	let	result;
 
+	if (DEB++ == 286)
+		console.log("breakpoint");
 	result = new Result();
 	if (!paramCheck(result, from, to))
 		return (result);
@@ -50,7 +54,7 @@ function transfiguration(match, result, coord, newType, sendBoardBool=true)
 	square = match.board.get(coord);
 	if (!square || !square.piece)
 		return (error(result, 400, `invalid coord ${coord}`), result);
-	if (CheckTransfiguration(match, result, square.piece, newType) == false)
+	if (CheckTransfiguration(match, result, square.piece, coord, newType) == false)
 		return (result);
 	aiSpeech(match, AI_EVENTS.transformMe);
 	isBoostedBool = square.piece.isBoostedBool;
@@ -75,9 +79,10 @@ function transfiguration(match, result, coord, newType, sendBoardBool=true)
  * @param {Match} match 
  * @param {Result} result 
  * @param {Piece} piece
+ * @param {string} coord
  * @param {string} newType
  */
-export function CheckTransfiguration(match, result, piece, newType)
+function CheckTransfiguration(match, result, piece, coord, newType)
 {
 	if (match.moves == 0)
 		return (error(result, 403, `you should move before transform`));
@@ -88,7 +93,7 @@ export function CheckTransfiguration(match, result, piece, newType)
 		${enumNames.BASTARDS} is not allowed. However, this may be a cool idea.
 		you should tell the developers to think about it.
 		Maybe you should stop cheating too, if it possible`));
-	if (match.cursor.EdgeCheck(match.currentPlayer.team) == false)
+	if (match.cursor.EdgeCheck(match.currentPlayer.team, coord) == false)
 		return (error(result, 403, `you must be on a edge to transform`));
 	if (!includesOneOf(newType, arrayNames))
 		return (error(result, 403, `${newType} not in array "${arrayNames}"`));
