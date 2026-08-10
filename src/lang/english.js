@@ -102,6 +102,39 @@ export const english = {
             matchHistory: "Match history",
             sendRequest: "Send @.lower:common.friend request"
         },
+        legal: {
+            privacy: {
+                title: "Privacy policy",
+                desc:   "This Privacy Policy document describes how ChessZ, student project 42 Firenze, collects, manages, uses, and protects the personal data of users who register and use the application.",
+                list:   ["The data collected during registration and for using the service are email, first name, last name, username, national identity, avatar;",
+                        "The previously listed data is used for authentication, friendship management, tournament/game creation and management, two-factor authentication (2FA);",
+                        "To send verification code regarding double authentication, external providers with SMTP (Google) service will be used to share the email;",
+                        "For registration via OAuth, First Name, Last Name and email will be shared with external services (Google);",
+                        "The user can access, modify and delete their data at any time. Deleting the account instantly and permanently deletes all user data;",
+                        "To protect all the user's personal information, the following security measures are taken: password hashing with salt, two-factor authentication (optional), HTTPS;",
+                        "All user data is not sold, or profiled, for commercial purposes in any way."]
+            },
+            service: {
+                title:  "Terms of Service",
+                date:   {   title: "Last updated:",
+                            desc: "10/08/2026" },
+                intro:  {   title: "Introduction",
+                            desc: "ChessZ is a web application developed as a student project as part of the 42 Firenze program, which allows users to play chess in online, tournament, and local AI matches, manage a profile, and interact with other users. By using the service, you are fully accepting those present “<b>Terms of Service</b>”. If you do not accept these terms, please do not use the application." },
+                list:   {
+                    "Access Requirements" : "To use ChessZ you need to create an account by providing a valid email and username. For the topics covered and the terms used, the service can be used for users no younger than 14 years old; minor users should use the service with the consent of a parent or guardian.",
+                    "User behavior" : "By using ChessZ, the user commits to:",
+                    "Account" : "The user is responsible for the confidentiality of their login credentials and all activities performed through their account. ChessZ reserves the right to suspend or delete accounts that violate these rules, that present suspicious or fraudulent activity, or at the user's request",
+                    "User-generated content" : "Avatars and other content uploaded by the user remain the property of the user, who claims to own the rights to upload them. ChessZ reserves the right to remove content deemed inappropriate, offensive, or in violation of third-party rights, without notice.",
+                    "Liability limitation" : "ChessZ is a project created exclusively for educational purposes, within the 42Firenze curriculum, without commercial purposes. The service is foirnito “as is”, with no guarantees of continuous availability, absence of errors or liovelli of service (SLA). Developers are not responsible for any data loss, service outages, or damage resulting from using the application.",
+                    "Term Changes" : "ChessZ reserves the right to change this Terms of Service page at any time. Any substantial changes will be communicated to users by notice on the application or by email. Continued use of the service after a change constitutes acceptance of the new terms.",
+                    "Applicable law" : "These terms are governed by Italian law, as a project carried out within the framework of campus 42 Firenze."
+                },
+                behavior:   ["Do not use cheats, bots, automation scripts, or other forms of altering the normal flow of the game;",
+                            "Do not engage in offensive, discriminatory, or abusive behavior toward other users (in chat, usernames, or avatars);",
+                            "Do not attempt to access other users' accounts or compromise the security of the platform"],
+                ban:    "Failure to follow these rules may result in account suspension or deletion.",
+            },
+        },
         codex: {
             title: "Their powers",
             move: "Movements",

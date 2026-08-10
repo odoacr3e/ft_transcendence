@@ -1,10 +1,17 @@
 <script setup>
+import { useI18n }	from 'vue-i18n';
+
+const   { t } = useI18n();
 </script>
 
 <template>
 	<footer>
-		<i><a href="https://i.pinimg.com/736x/f5/22/88/f5228807af8f315ac0d88ec2f7d6e8cc.jpg">Privacy</a></i> |
-         <i><a href="https://i.pinimg.com/originals/31/de/8d/31de8dd17d15fd0d0de29d00afa8c3ac.jpg">Termini di servizio</a></i>
+		<RouterLink to="/privacy">
+			{{ t('legal.privacy.title') }}
+		</RouterLink> |
+		<RouterLink to="/terms">
+			{{ t('legal.service.title') }}
+		</RouterLink>
 	</footer>
 </template>
 

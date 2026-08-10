@@ -102,6 +102,39 @@ export const italian = {
             matchHistory: "Cronologia delle partite",
             sendRequest: "Manda amicizia"
         },
+        legal: {
+            privacy: {
+                title:  "Privacy policy",
+                desc:   "Questo documento di Privacy Policy descrive come ChessZ, progetto studentesco 42 Firenze, raccoglie, gestisce e utilizza e protegge i dati personali degli utenti che si registrano ed utilizzano l'applicazione.",
+                list:   ["I dati che vengono raccolti in fase di registrazione e per l'utilizzo del servizio sono email, nome, cognome, username, nazionalita, avatar;",
+                        "I dati elencati precdentemente vengono utilizzati per autenticazione, gestione amicizie, creazione e gestione tornei/partite, autenticazione a due fattori (2FA);",
+                        "Per l'invio codice di verifica che concerne la doppia autenticazione verranno utilizzati provider esterni con servizio SMTP (Google) a cui sarà condivisa l'email;",
+                        "Per la registrazione tramite OAuth, saranno condivisi Nome, Cognome e email con servizi esterni (Google);",
+                        "L'utente può accedere ai propri dati, modificarli e cancellarli in qualsiasi momento. La cancellazione dell'utenza elimina istantaneamente e in modo definitivo tutti i dati dell'utente.;",
+                        "Per proteggere tutte le informazioni personali dell'utente vengono adottate le seguenti misure di sicurezza: hashing della password con salt, autenticazione a due fattori (facoltativa), HTTPS;",
+                        "Tutti i dati dell'utente non vengono in alcun modo venduti, o profilati, a fini commerciali"]
+            },
+            service: {
+                title: "Termini di Servizio",
+                date:   {   title: "Ultimo aggiornamento:",
+                            desc: "10/08/2026" },
+                intro:  {   title: "Introduzione",
+                            desc: "ChessZ è un'applicazione web sviluppata come progetto studentesco nell'ambito del percorso di 42 Firenze, che permette agli utenti di giocare a scacchi in modalita partita online, torneo e partita locale contro AI, gestire un profilo e interagire con altri utenti. Utilizzando il servizio si accetta interamente i presenti “<b>Termini di Servizio</b>”. Se non si accettano questi termini, si prega di non utilizzare l'applicazione." },
+                list:   {
+                    "Requisiti di accesso" : "Per utilizzare ChessZ è necessario creare un account fornendo un'email valida e uno username. Per i temi trattati e i termini utilizzati, il servizio è utilizzabile per utenti di età non inferiore ai 14 anni; utenti minorenni dovrebbero utilizzare il servizio con il consenso di un genitore o tutore.",
+                    "Comportamento utente" : "Utilizzando ChessZ, l'utente si impegna a:",
+                    "Account" : "L'utente è responsabile della riservatezza delle proprie credenziali di accesso e di tutte le attività svolte tramite il proprio account. ChessZ si riserva il diritto di sospendere o cancellare account che violino queste regole, che presentino attività sospette o fraudolente, o su richiesta dell'utente",
+                    "Contenuto generato dall'utente" : "Gli avatar e gli altri contenuti caricati dall'utente rimangono di proprietà dell'utente stesso, che dichiara di possedere i diritti per caricarli. ChessZ si riserva il diritto rimuovere contenuti ritenuti inappropriati, offensivi o in violazione di diritti di terzi, senza preavviso.",
+                    "Limitazione responsabilità" : "ChessZ è un progetto realizzato a scopo esclusivamente didattico, nell'ambito del curriculum 42Firenze, senza finalità commerciali. Il servizo è foirnito “as is”, senza garanzie di disponibilità continua, assenza di errori o liovelli di serviuzio (SLA). Gli sviluppatori non sono repsponsabili per eventuali perdite di dati, interruzioni di servizio o danni derivanti dall'utilizzo dell'applicazione.",
+                    "Modifiche di termini" : "ChessZ si riserva il diritto di modificare questa pagina Termini di Servizio in qualsiasi momento. Eventuali modifiche sostanziali saranno comunicate agli utenti tramite avviso sull'applicazione o via email. L'uso continuato del servizio dopo una modificacostituisce l'accettazione dei nuovi termini.",
+                    "Legge applicabile" : "Questi termini sono regolati dalla legge italiana, in quanto progetto svolto nell'ambito del campus 42 Firenze."
+                },
+                behavior:   ["Non utilizzare cheat, bot, script di automazione o altre forme di alterazione del normale svolgimento del gioco;",
+                            "Non adottare comportamenti offensivi, discriminatori o abusivi nei confronti di altri utenti (in chat, nomi utente o avatar);",
+                            "Non tentare di accedere ad account di altri utenti o di compromettere la sicurezza della piattaforma"],
+                ban:    "Il mancato rispetto di queste regole può comportare la sospensione o cancellazione dell'account.",
+            },
+        },
         codex: {
             title: "Le sue abilità",
             move: "Come si muove",

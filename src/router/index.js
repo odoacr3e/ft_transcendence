@@ -2,9 +2,11 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore }	from '@/stores/auth.st'
 import TournamentPage from '../views/TournamentPage.vue'
 import OpenTournament from '../views/OpenTournament.vue'
+import TermsOfService from '../views/TermsOfService.vue'
 import RegisterPage from '../views/RegisterPage.vue'
 import ClassicGame from '../views/ClassicGame.vue'
 import LeaderBoard from '../views/LeaderBoard.vue'
+import PrivacyPage from '../views/PrivacyPage.vue'
 import UserOther from '../views/UserOther.vue'
 import UsersList from '../views/UsersList.vue'
 import LoginPage from '../views/LoginPage.vue'
@@ -22,6 +24,16 @@ const routes = [
 		path: '/',
 		name: 'home',
 		component: Home
+	},
+	{
+		path: '/privacy',
+		name: 'privacy',
+		component: PrivacyPage
+	},
+	{
+		path: '/terms',
+		name: 'terms',
+		component: TermsOfService
 	},
 	{
 		path: '/game',
