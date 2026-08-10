@@ -31,7 +31,8 @@
 FROM nginx:alpine
 
 RUN rm /etc/nginx/conf.d/default.conf && \
-	# apk add --no-cache openssl yajl libxml2 pcre2 libcurl && \
+	# apk add --no-cache openssl yajl libxml2 pcre2 libcurl &&
+    apk add --no-cache openssl && \
 	mkdir -p /etc/nginx/ssl && \
     #localhost certificate
     openssl req -x509 -nodes -days 36500 \
