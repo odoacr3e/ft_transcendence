@@ -32,6 +32,18 @@ services:
     volumes:
       - ./frontend_dir:/app
       - /app/node_modules
+  postgres:
+    container_name: postgres
+    build: ./postgres
+    restart: unless-stopped
+    environment:
+      - VAULT_ADDR=http://vault:8200
+    volumes:
+      - vault-shared:/vault/shared
+      - postgres-data:/var/lib/postgresql/data
+    depends_on:
+      vault:
+        condition: service_healthy
   vault:
     container_name: vault
     build: ./vault
@@ -62,3 +74,5 @@ volumes:
   vault-logs:
     driver: local
   vault-shared:
+  postgres-data:
+    driver: local
