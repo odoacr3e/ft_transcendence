@@ -1,6 +1,8 @@
 import { useAuthStore } from "../../stores/auth.st";
+import { useRouter }	from 'vue-router';
 
-const BASE_URL = ''
+const	BASE_URL = '',
+		router = useRouter();
 
 async function checkResp(res)
 {
@@ -29,14 +31,16 @@ async function request_m(endpoint, options = {}) {
 		}
 	});
 
-	if (res.status === 401 && res.body.message === "Token expired")
+	if (res.status === 401)
 	{
 		const refreshed = await tryRefresh();
-		if (refreshed)
+		//console.log(refreshed);
+		if (refreshed.ok)
 			return request_m(endpoint, options);
 		const auth = useAuthStore();
  		auth.user = null;
-		throw new AuthError('Sessione scaduta');
+		// router.push('/log');
+		console.log('Sessione scaduta');
 	}
 
 	return(checkResp(res));
@@ -50,14 +54,16 @@ async function request(endpoint, options = {}) {
 		...options
 	});
 
-	if (res.status === 401 && res.body.message === "Token expired")
+	if (res.status === 401)
 	{
 		const refreshed = await tryRefresh();	// token scaduto, tenta il refresh
-		if (refreshed)
+		//console.log(refreshed);
+		if (refreshed.ok)
 			return request(endpoint, options);
 		const auth = useAuthStore();
  		auth.user = null;
-		throw new AuthError('Sessione scaduta');
+		// router.push('/log');
+		console.log('Sessione scaduta');
 	}
 
 	return (checkResp(res));
@@ -66,13 +72,16 @@ async function request(endpoint, options = {}) {
 async function tryRefresh() {
 	try
 	{
+		const auth = useAuthStore();
 		const res = await fetch(`${BASE_URL}/auth/refresh`, {
+			headers: { 'Content-Type': 'application/json' },
 			method: 'POST',
 			credentials: 'include',
+			body: JSON.stringify({ user: auth.user })
 		});
-		return res.ok;
+		return res;
 	}
-	catch { return false; }
+	catch(err) { return err; }
 }
 
 // Errori tipizzati così nello store puoi distinguerli
