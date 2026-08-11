@@ -160,12 +160,12 @@
 
 /*ANCHOR - LightRed*/
 [data-theme="LightRed"] {
---current-bg-default: #beb9b5;
---current-border-default: #4e4e4e8c;			/*SAME*/
---current-bg-second: #d9d6d3;
---current-border-second: #8f8b88e8;
---current-bg-darker: #8f8b88;
---current-text-default: #201e1c;
+--current-bg-default: #f5f2f0;
+--current-border-default: #6363638c;			/*SAME*/
+--current-bg-second: #e0ddda;
+--current-border-second: #b8b4b0e8;
+--current-bg-darker: #d6d2ce;
+--current-text-default: #0c0c0b;
 --current-text-second: var(--color-zinc-700);	/*? #3f3f46*/
 --current-text-third: var(--color-zinc-600);	/*? #52525b*/
 --current-text-last: #4e4e4e8c;				/*SAME*/
@@ -186,12 +186,12 @@
 
 /*ANCHOR - LightBlue*/
 [data-theme="LightBlue"] {
---current-bg-default: #bebec5;
---current-border-default: #4e4e4e8c;			/*SAME*/
---current-bg-second: #d3d5d9;
---current-border-second: #8f8f94e8;
---current-bg-darker: #8f8f94;
---current-text-default: #201e1c;			    /*SAME*/
+--current-bg-default: #f0f0f5;
+--current-border-default: #6363638c;			/*SAME*/
+--current-bg-second: #dadce0;
+--current-border-second: #b0b1b8e8;
+--current-bg-darker: #ceced6;
+--current-text-default: #0c0c0b;			    /*SAME*/
 --current-text-second: var(--color-zinc-700);	/*? #3f3f46*/
 --current-text-third: var(--color-zinc-600);	/*? #52525b*/
 --current-text-last: #4e4e4e8c;				/*SAME*/
@@ -212,12 +212,12 @@
 
 /*ANCHOR - LightGreen*/
 [data-theme="LightGreen"] {
---current-bg-default: #bfc6c2;
---current-border-default: #4e4e4e8c;			/*SAME*/
---current-bg-second: #d4d9d7;
---current-border-second: #90968fe8;
---current-bg-darker: #90968f;
---current-text-default: #201e1c;			    /*SAME*/
+--current-bg-default: #f0f5f2;
+--current-border-default: #6363638c;			/*SAME*/
+--current-bg-second: #dae0de;
+--current-border-second: #b2b8b0e8;
+--current-bg-darker: #d0d6ce;
+--current-text-default: #0c0c0b;			    /*SAME*/
 --current-text-second: var(--color-zinc-700);	/*? #3f3f46*/
 --current-text-third: var(--color-zinc-600);	/*? #52525b*/
 --current-text-last: #4e4e4e8c;				/*SAME*/
@@ -238,12 +238,12 @@
 
 /*ANCHOR - LightYellow*/
 [data-theme="LightYellow"] {
---current-bg-default: #bec0b8;
---current-border-default: #4e4e4e8c;			/*SAME*/
---current-bg-second: #d8d9d3;
---current-border-second: #8f918be8;
---current-bg-darker: #8f918b;
---current-text-default: #201e1c;			    /*SAME*/
+--current-bg-default: #f4f5f0;
+--current-border-default: #6363638c;			/*SAME*/
+--current-bg-second: #dfe0da;
+--current-border-second: #b5b8b0e8;
+--current-bg-darker: #d3d6ce;
+--current-text-default: #0c0c0b;			    /*SAME*/
 --current-text-second: var(--color-zinc-700);	/*? #3f3f46*/
 --current-text-third: var(--color-zinc-600);	/*? #52525b*/
 --current-text-last: #4e4e4e8c;				/*SAME*/

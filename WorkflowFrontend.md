@@ -193,10 +193,10 @@ boardConverter()
 	✓	dettagli info sui match
 	✓	update delle preferenze di colore degli utenti
 	✓	pagina della lore
-	▫	reworkare i temi chiari [MAVI]
+	✓	reworkare i temi chiari
+	▫	reattività delle pagine [MAVI]
 	▫	reworkare il design delle pagine di gioco appena sono pronte
 	▫	info dei profili per le partitre a 4
-	▫	reattività delle pagine
 
 //NOTE - Testing
 	✓	nome utente in grassetto
@@ -206,25 +206,13 @@ La api di reload funziona quando lanciata da connessione socket già stabilita
 Quando schiaccio ctrl+r sembra che la riconnessione non funzioni correttamente e magari
 distruggiamo il websocket male, magari non ci riconnettiamo bene.
 
+//NOTE
+I breakpoints per la responsività
+Telefoni, 600px in giù
+@media only screen and (max-width: 600px) {...}
 
-//REVIEW - Vecchie variabili delle palette, backup per sicurezza
---color-text-win-open: var(--current-text-win-open);		/*#00a63e*/ /*NOTE - usato sia per le vittorie che per gli open*/
---color-bg-win: var(--current-bg-win);						/*#f0fdf4e6*/
---color-text-lose-closed: var(--current-text-lose-closed);	/*#fb2c36*/ /*NOTE - usato sia per le sconfitte, i close e gli offline. Attenta a quando usano l'opacita' per altri elementi*/
---color-bg-lose: var(--current-bg-lose);					/*#fef2f2e6*/
---color-text-draw-await: var(--current-text-draw-await);	/*#d1d5dc*/ /*NOTE - usato sia per le patte, per gli ongoing e per gli await. Attenta a quando usano l'opacita' per altri elementi*/
---color-bg-draw: var(--current-bg-draw);					/*#d1d5dce6*/
---color-bg-await: var(--current-bg-await);					/*#e5e7eb1a*/
---color-inset-await: var(--current-inset-await);			/*#d1d5dc33*/
+Tablets - 600px in su
+@media only screen and (min-width: 600px) {...}
 
-
---color-bg-tour-friend: var(--current-bg-tour-friend);		/*#51a2ff1a*/	/*NOTE - usato sia come bg per tour e per friends*/
---color-text-tour-friend: var(--current-text-tour-friend);	/*#bedbff*/ 	/*NOTE - usato sia come text per tour e per friends*/
---color-inset-tour-friend: var(--current-inset-tour-friend);/*#2b80ff33*/	/*NOTE - usato sia come inset per tour e per friends*/
---color-hover-tour: var(--current-hover-tour);				/*#51a2ff33*/
-
-
---color-bg-accept: var(--current-bg-accept);				/*#05df721a*/
---color-inset-accept: var(--current-inset-accept);			/*#00c95033*/
---color-bg-reject: var(--current-bg-reject);				/*#ff64671a*/
---color-inset-reject: var(--current-inset-reject);			/*#fb2c3633*/ /*NOTE - Da mettere a mano nella posizione giusta. ATTENTA! Anche come border nell'hover per l'email e la nazionalita' nelle impostazioni*/
+Laptops/desktops - 1280px in su
+@media only screen and (min-width: 1280px) {...}

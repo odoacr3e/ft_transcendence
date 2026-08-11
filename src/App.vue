@@ -1,6 +1,7 @@
 <script setup>
 	import BackGround from './components/BackGround.vue';
 	import AppHeader from './components/AppHeader.vue';
+	import LinkFooter from './components/LinkFooter.vue';
 	import { useAuthStore } from './stores/auth.st.js';
 	import { storeToRefs }	from 'pinia';
 	import { useRoute } from 'vue-router'
@@ -29,7 +30,8 @@
 		<div class="grow wrap" :class="{ 'other' : route.name !== 'home', 'home' : route.name === 'home' }">
 			<router-view/>
 		</div>
-	</div>	
+	</div>
+	<LinkFooter class="justify-self-center"/>
 </template>
 
 <style scoped>
