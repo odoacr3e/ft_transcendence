@@ -153,6 +153,6 @@ authRouter.post("/forceLogout", async (req, res) => {
 	} catch (error) {
 		console.log("Error: ", error);
 		// printLog(`User couldn't logout due server error: ${error.name}`, colors.brightYellow);
-		return res.status(403).json(jsonResponse.ResponseError("Server error logging out user"));
+		return res.status(500).json(jsonResponse.ResponseError("Server error logging out user"));
 	}
 })
