@@ -13,6 +13,7 @@ import { AIexecuteTurn } from "../GameLogic/aiTurn.js";
 import { init } from "../handlers/game/init.js";
 import { boardStringify, render } from "./render.js";
 import { jsonParser } from "../utils/response.js";
+import { colors } from "./colorsOld.js";
 
 const TEST_PATH = `${HISTORY_PATH}`;
 
@@ -20,6 +21,7 @@ const TEST_PATH = `${HISTORY_PATH}`;
 /** @typedef {import ("../../history/HISTORY.json")} historyData */
 
 let	currMatch = "";
+let	renderOutput = "";
 let	currMatchData = new Match();
 let	errorFlag = 0;
 
@@ -107,7 +109,7 @@ function execTest(matchPath=null)
 			render(match, [], "", false, console.debug);
 			AIexecuteTurn(match);
 		}
-		console.debug(`${match.victory} has won.`);
+		console.debug(`${colors.red}${match.victory} has won.${colors.reset}`);
 	}
 	catch(err)
 	{
@@ -181,15 +183,41 @@ function fail(msg, err)
 	if (typeof(msg) != "string")
 		msg = JSON.stringify(err, null, 2);
 	currMatchData.timer = null;
+	try
+	{
+		render(currMatchData, [], "", false, redirectRender);
+	}
+	catch(err)
+	{}
 	let	log = 
 	{
 		game: err,
-		board: `${boardStringify(currMatchData, true)}`,
 		info: msg,
+		render: renderOutput,
+		board: `${boardStringify(currMatchData, true)}`,
+		events: JSON.stringify(currMatchData.history.events, null, 2),
 		matchData: JSON.stringify(currMatchData, null, 2)
 	};
-	console.debug(log);
+	console.debug(`ERROR saved in: "test/log/${currMatch}_${Date.now()}.json".\n\n\n\n`);
 	if (!fs.existsSync("test/log/"))
 		fs.mkdirSync("test/log/", { recursive: true });
 	fs.writeFileSync(`test/log/${currMatch}_${Date.now()}.json`, JSON.stringify(log, null, 2), "utf-8");
+	renderOutput = "";
+}
+
+/**
+ * 
+ * @param {String} str string from render function 
+ */
+function redirectRender(str)
+{
+	let	ansiIndex;
+	let	ansiEndIndex;
+
+	while ((ansiIndex = str.indexOf("\x1b[")) != -1)
+	{
+		ansiEndIndex = str.indexOf("m", ansiIndex);
+		str = str.slice(0, ansiIndex) + str.slice(ansiEndIndex + 1);
+	}
+	renderOutput += `${str}\n`;
 }
