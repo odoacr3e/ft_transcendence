@@ -117,9 +117,10 @@ function checkLostAll(match)
  * @param {string} kingSquare 
  * @param {string} enemyCoord 
  * @param {Square | null} enemySquare
+ * @param {boolean} recBool
  * @returns {boolean} 
  */
-function isStoppable(match, kingSquare, enemyCoord, enemySquare=null)
+function isStoppable(match, kingSquare, enemyCoord, enemySquare=null, recBool=false)
 {
 	let	square;
 	let	dir;
@@ -197,7 +198,9 @@ function isStoppable(match, kingSquare, enemyCoord, enemySquare=null)
 		{
 			if (enemySquare.boostedTargetZones.has(match.cursor.square) == false)
 				return (true);
-			return (isStoppable(match, kingSquare, match.cursor.square, enemySquare));
+			if (recBool)
+				return (true);
+			return (isStoppable(match, kingSquare, match.cursor.square, enemySquare, true));
 		}
 	}
 	if (normalSaveBool == true || match.currentPlayer.guardianPieces.size > 0)
