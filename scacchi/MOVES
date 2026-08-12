@@ -1,677 +1,110 @@
-[
-  {
-    "move": {
-      "from": "b1",
-      "to": "c3"
-    },
-    "moveBoost": null,
-    "boost": "",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "b1",
-      "to": "c3"
-    },
-    "moveBoost": null,
-    "boost": "f1",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "d1",
-      "to": "e2"
-    },
-    "moveBoost": null,
-    "boost": "",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "d1",
-      "to": "e2"
-    },
-    "moveBoost": null,
-    "boost": "f1",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "d1",
-      "to": "f3"
-    },
-    "moveBoost": null,
-    "boost": "",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "d1",
-      "to": "f3"
-    },
-    "moveBoost": null,
-    "boost": "f1",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "d1",
-      "to": "g4"
-    },
-    "moveBoost": null,
-    "boost": "",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "d1",
-      "to": "g4"
-    },
-    "moveBoost": null,
-    "boost": "b1",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "d1",
-      "to": "g4"
-    },
-    "moveBoost": null,
-    "boost": "a1",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "d1",
-      "to": "c2"
-    },
-    "moveBoost": null,
-    "boost": "",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "d1",
-      "to": "c2"
-    },
-    "moveBoost": null,
-    "boost": "f1",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "d1",
-      "to": "e1"
-    },
-    "moveBoost": null,
-    "boost": "",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "d1",
-      "to": "e1"
-    },
-    "moveBoost": null,
-    "boost": "f1",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "d1",
-      "to": "c1"
-    },
-    "moveBoost": null,
-    "boost": "",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "d1",
-      "to": "c1"
-    },
-    "moveBoost": null,
-    "boost": "f1",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "f1",
-      "to": "g2"
-    },
-    "moveBoost": null,
-    "boost": "",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "f1",
-      "to": "g2"
-    },
-    "moveBoost": null,
-    "boost": "a3",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "f1",
-      "to": "h3"
-    },
-    "moveBoost": null,
-    "boost": "",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "f1",
-      "to": "h3"
-    },
-    "moveBoost": null,
-    "boost": "a3",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "f1",
-      "to": "e2"
-    },
-    "moveBoost": null,
-    "boost": "",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "f1",
-      "to": "e2"
-    },
-    "moveBoost": null,
-    "boost": "a3",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "f1",
-      "to": "d3"
-    },
-    "moveBoost": null,
-    "boost": "",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "f1",
-      "to": "d3"
-    },
-    "moveBoost": null,
-    "boost": "a3",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "h1",
-      "to": "g1"
-    },
-    "moveBoost": null,
-    "boost": "",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "h1",
-      "to": "g1"
-    },
-    "moveBoost": null,
-    "boost": "f1",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "d2",
-      "to": "d3"
-    },
-    "moveBoost": null,
-    "boost": "",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "d2",
-      "to": "d3"
-    },
-    "moveBoost": null,
-    "boost": "f1",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "d2",
-      "to": "d4"
-    },
-    "moveBoost": null,
-    "boost": "",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "d2",
-      "to": "d4"
-    },
-    "moveBoost": null,
-    "boost": "f1",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "f2",
-      "to": "g3"
-    },
-    "moveBoost": null,
-    "boost": "",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "f2",
-      "to": "g3"
-    },
-    "moveBoost": null,
-    "boost": "f1",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "f2",
-      "to": "e1"
-    },
-    "moveBoost": null,
-    "boost": "",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "f2",
-      "to": "e1"
-    },
-    "moveBoost": null,
-    "boost": "f1",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "f2",
-      "to": "g1"
-    },
-    "moveBoost": null,
-    "boost": "",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "f2",
-      "to": "g1"
-    },
-    "moveBoost": null,
-    "boost": "f1",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "f2",
-      "to": "g2"
-    },
-    "moveBoost": null,
-    "boost": "",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "f2",
-      "to": "g2"
-    },
-    "moveBoost": null,
-    "boost": "f1",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "f2",
-      "to": "e2"
-    },
-    "moveBoost": null,
-    "boost": "",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "f2",
-      "to": "e2"
-    },
-    "moveBoost": null,
-    "boost": "f1",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "f2",
-      "to": "f3"
-    },
-    "moveBoost": null,
-    "boost": "",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "f2",
-      "to": "f3"
-    },
-    "moveBoost": null,
-    "boost": "f1",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "h2",
-      "to": "h3"
-    },
-    "moveBoost": null,
-    "boost": "",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "h2",
-      "to": "h3"
-    },
-    "moveBoost": null,
-    "boost": "f1",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "h2",
-      "to": "h4"
-    },
-    "moveBoost": null,
-    "boost": "",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "h2",
-      "to": "h4"
-    },
-    "moveBoost": null,
-    "boost": "f1",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "a3",
-      "to": "b4"
-    },
-    "moveBoost": null,
-    "boost": "",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "a3",
-      "to": "b4"
-    },
-    "moveBoost": null,
-    "boost": "f1",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "a3",
-      "to": "c5"
-    },
-    "moveBoost": null,
-    "boost": "",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "a3",
-      "to": "c5"
-    },
-    "moveBoost": null,
-    "boost": "f1",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "a3",
-      "to": "d6"
-    },
-    "moveBoost": null,
-    "boost": "",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "a3",
-      "to": "d6"
-    },
-    "moveBoost": null,
-    "boost": "f1",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "a3",
-      "to": "b2"
-    },
-    "moveBoost": null,
-    "boost": "",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "a3",
-      "to": "b2"
-    },
-    "moveBoost": null,
-    "boost": "f1",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "a3",
-      "to": "c1"
-    },
-    "moveBoost": null,
-    "boost": "",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "a3",
-      "to": "c1"
-    },
-    "moveBoost": null,
-    "boost": "f1",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "b3",
-      "to": "b4"
-    },
-    "moveBoost": null,
-    "boost": "",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "b3",
-      "to": "b4"
-    },
-    "moveBoost": null,
-    "boost": "f1",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "e3",
-      "to": "e4"
-    },
-    "moveBoost": null,
-    "boost": "",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "e3",
-      "to": "e4"
-    },
-    "moveBoost": null,
-    "boost": "f1",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "c4",
-      "to": "c5"
-    },
-    "moveBoost": null,
-    "boost": "",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "c4",
-      "to": "c5"
-    },
-    "moveBoost": null,
-    "boost": "f1",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "d5",
-      "to": "e7"
-    },
-    "moveBoost": null,
-    "boost": "",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "d5",
-      "to": "e7"
-    },
-    "moveBoost": null,
-    "boost": "f1",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "d5",
-      "to": "c7"
-    },
-    "moveBoost": null,
-    "boost": "",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "d5",
-      "to": "c7"
-    },
-    "moveBoost": null,
-    "boost": "f1",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "d5",
-      "to": "c3"
-    },
-    "moveBoost": null,
-    "boost": "",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "d5",
-      "to": "c3"
-    },
-    "moveBoost": null,
-    "boost": "f1",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "d5",
-      "to": "f6"
-    },
-    "moveBoost": null,
-    "boost": "",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "d5",
-      "to": "f6"
-    },
-    "moveBoost": null,
-    "boost": "f1",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "d5",
-      "to": "b6"
-    },
-    "moveBoost": null,
-    "boost": "",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "d5",
-      "to": "b6"
-    },
-    "moveBoost": null,
-    "boost": "f1",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "d5",
-      "to": "f4"
-    },
-    "moveBoost": null,
-    "boost": "",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "d5",
-      "to": "f4"
-    },
-    "moveBoost": null,
-    "boost": "f1",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "d5",
-      "to": "b4"
-    },
-    "moveBoost": null,
-    "boost": "",
-    "transform": ""
-  },
-  {
-    "move": {
-      "from": "d5",
-      "to": "b4"
-    },
-    "moveBoost": null,
-    "boost": "f1",
-    "transform": ""
-  }
-]
+//@ts-check
+
+//SECTION - pathFinding functions
+/*
+	list of exports:
+	-	checkPieceDanger:	checks piece danger ignoring a coord
+	-	pathFinding:		check if is possible to go from start to dest
+*/
+
+import {movePiece} from "../utils/dangerUpdate.js";
+
+/** @typedef {import("../Classes/Chess/match.js").Match} Match*/
+/** @typedef {import("../Classes/Chess/Pieces/pieces.js").Piece} Piece*/
+/** @typedef {import("../Classes/Chess/chessBoard.js").Square} Square*/
+
+/**
+ * checks piece danger ignoring a coord
+ * @param {Match} match 
+ * @param {string} checkDangerCoord the coord source of danger 
+ * @param {Piece} piece the piece to check
+ * @param {string} pieceCoord the current piece coord
+ * @param {string} ignoreCoord the coord to ignore (usually is the `from` coord)
+ */
+export function checkPieceDanger(match, checkDangerCoord, piece, pieceCoord, ignoreCoord)
+{
+	let	square;
+	let	dangerSquare;
+
+	square = match.board.get(checkDangerCoord);
+	for (const dangerCoord of square.dangerZones)
+	{
+		dangerSquare = match.board.get(dangerCoord);
+		if (dangerSquare.piece?.team == piece.team)
+			continue ;
+		if (pathFinding(match, dangerCoord, pieceCoord, ignoreCoord) != null)
+		{
+			return (true);
+		}
+	}
+	return (false);
+}
+
+//FIXME - refactorizzare (semplificare, tanta roba inutile)
+/**
+ * check if is possible to go from start to dest
+ * @param {Match} match 
+ * @param {string} startCoord 
+ * @param {string} destCoord
+ * @param {Set<string> | string} ignoredCoords
+ * @param {Square | null} startSquare
+ */
+export function pathFinding(match, startCoord, destCoord, ignoredCoords=new Set, startSquare=null)
+{
+	let	moveData;
+
+	if (!startSquare)
+		startSquare = match.board.get(startCoord);
+	if (typeof(ignoredCoords) == "string")
+		ignoredCoords = new Set().add(ignoredCoords);
+	if (!startCoord || !destCoord || !startSquare.piece)
+		throw (`pathFinding: invalid parameters => ${startCoord}/${destCoord}/${startSquare}`);
+	//reverse movement from dest to start
+	for (const move of startSquare.piece.moveArray)
+	{
+		moveData = moveSimulation(match, startCoord, destCoord, ignoredCoords, startSquare.piece, move);
+		if (moveData)
+		{
+			return (moveData);
+		}
+	}
+	return (null);
+}
+
+/**
+ * 
+ * @param {Match} match 
+ * @param {string} startCoord
+ * @param {string} destCoord 
+ * @param {Set<string>} ignoredCoords 
+ * @param {Piece} startPiece
+ * @param {{dx: number, dy: number}} move
+ */
+function moveSimulation(match, startCoord, destCoord, ignoredCoords=new Set, startPiece, move)
+{
+	let	square;
+	let	moveData;
+
+	match.cursor.Save();
+	match.cursor.set(startCoord);
+	while (movePiece(match, move.dy, move.dx))
+	{
+		if (ignoredCoords.has(match.cursor.square))
+		{
+			if (!startPiece.moveLongRangeDEBUG)
+				break ;
+			continue ;
+		}
+		if (destCoord == match.cursor.square)
+		{
+			moveData = {from: startCoord, to: destCoord};
+			match.cursor.Restore();
+			return (moveData);
+		}
+		square = match.board.get(match.cursor.square);
+		if (square.piece || !startPiece.moveLongRangeDEBUG)
+			break ;
+	}
+	match.cursor.Restore();
+	return (null);
+}

@@ -457,6 +457,8 @@ function cantMovePiece(match, enemyCoord, enemySquare, kingCoord)
 		//checking every guardian danger zone
 		for (const threatCoord of guardianSquare.dangerZones)
 		{
+			if (threatCoord == enemyCoord)//we don't care of the starting threat
+				continue ;
 			threatSquare = match.board.get(threatCoord);
 			threatPiece = threatSquare.piece;
 			if (!threatPiece)
@@ -467,7 +469,7 @@ function cantMovePiece(match, enemyCoord, enemySquare, kingCoord)
 				continue ;
 			if (threatPiece.moveLongRangeDEBUG == false)//guardian not important 
 				continue ;
-			canReachKing = pathFinding(match, threatSquare, kingCoord, ignoredCoords, true);
+			canReachKing = pathFinding(match, threatCoord, kingCoord, ignoredCoords, threatSquare);
 			if (canReachKing != null)
 				break ;
 		}

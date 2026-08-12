@@ -32,7 +32,7 @@ export function checkPieceDanger(match, checkDangerCoord, piece, pieceCoord, ign
 		dangerSquare = match.board.get(dangerCoord);
 		if (dangerSquare.piece?.team == piece.team)
 			continue ;
-		if (pathFinding(match, dangerCoord, pieceCoord, ignoreCoord, true) != null)
+		if (pathFinding(match, dangerCoord, pieceCoord, ignoreCoord, dangerSquare) != null)
 		{
 			return (true);
 		}
@@ -40,56 +40,29 @@ export function checkPieceDanger(match, checkDangerCoord, piece, pieceCoord, ign
 	return (false);
 }
 
-//FIXME - refactorizzare (semplificare, tanta roba inutile)
 /**
  * check if is possible to go from start to dest
  * @param {Match} match 
- * @param {Square | string} start 
- * @param {string} dest
- * @param {Set<string> | string} ignoredCoords
- * @param {boolean} considerBoostedBool 
+ * @param {string} startCoord 
+ * @param {string} destCoord 
+ * @param {Set<string> | string} ignoredCoords example: avoiding the fromCoord in move
+ * @param {Square | null} startSquare if null, is taken from startCoord
  */
-export function pathFinding(match, start, dest, ignoredCoords=new Set, considerBoostedBool=false)
+export function pathFinding(match, startCoord, destCoord, ignoredCoords=new Set, startSquare=null)
 {
-	let	startArray = new Set;
-	let	startCoord;
-	let	destCoord;
-	let	reverseMove = {dx: 0, dy: 0};
 	let	moveData;
 
-	//finds data for start, dest and ignoredCoords
-	if (typeof(start) == "string")
-	{
-		startCoord = start;
-		start = match.board.get(start);
-	}
-	else
-		startCoord = start.piece?.pos;
-	destCoord = dest;
+	if (!startSquare)
+		startSquare = match.board.get(startCoord);
 	if (typeof(ignoredCoords) == "string")
 		ignoredCoords = new Set().add(ignoredCoords);
-	if (!start.piece || !startCoord || !destCoord)
-		throw (`pathFinding: invalid parameters`);
-	//for optimization, the search will go from dest to start
-	//because you have one dest but multiple start (boosted zones)
-	startArray.add(startCoord);
-	if (considerBoostedBool == true)
+	if (!startCoord || !destCoord || !startSquare.piece)
+		throw (`pathFinding: invalid parameters => ${startCoord}/${destCoord}/${startSquare}`);
+	for (const move of startSquare.piece.moveArray)
 	{
-		for (const boostStart in start.boostedTargetZones)
-			startArray.add(boostStart);
-	}
-	//reverse movement from dest to start
-	for (const move of start.piece.moveArray)
-	{
-		reverseMove.dx = -move.dx;
-		reverseMove.dy = -move.dy;
-		//move simulation takes reverted input
-		moveData = moveSimulation(match, start.piece, destCoord, startArray, reverseMove, ignoredCoords);
+		moveData = moveSimulation(match, startCoord, destCoord, ignoredCoords, startSquare.piece, move);
 		if (moveData)
-		{//if exist a path, swaps from with to
-			let	tmp = moveData.from;
-			moveData.to = tmp;
-			moveData.from = moveData.to;
+		{
 			return (moveData);
 		}
 	}
@@ -99,19 +72,19 @@ export function pathFinding(match, start, dest, ignoredCoords=new Set, considerB
 /**
  * 
  * @param {Match} match 
- * @param {Piece} startPiece
- * @param {string} start
- * @param {Set<string>} destArray 
- * @param {{dx: number, dy: number}} move
+ * @param {string} startCoord
+ * @param {string} destCoord 
  * @param {Set<string>} ignoredCoords 
+ * @param {Piece} startPiece
+ * @param {{dx: number, dy: number}} move
  */
-function moveSimulation(match, startPiece, start, destArray, move, ignoredCoords=new Set)
+function moveSimulation(match, startCoord, destCoord, ignoredCoords=new Set, startPiece, move)
 {
 	let	square;
 	let	moveData;
 
 	match.cursor.Save();
-	match.cursor.set(start);
+	match.cursor.set(startCoord);
 	while (movePiece(match, move.dy, move.dx))
 	{
 		if (ignoredCoords.has(match.cursor.square))
@@ -120,9 +93,9 @@ function moveSimulation(match, startPiece, start, destArray, move, ignoredCoords
 				break ;
 			continue ;
 		}
-		if (destArray.has(match.cursor.square))//trovato path valido
+		if (destCoord == match.cursor.square)
 		{
-			moveData = {from: start, to: match.cursor.square};
+			moveData = {from: startCoord, to: destCoord};
 			match.cursor.Restore();
 			return (moveData);
 		}
