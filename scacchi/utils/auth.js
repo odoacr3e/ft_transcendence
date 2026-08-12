@@ -21,7 +21,7 @@ export const cookiesOpt = {
 export const checkJwt = async (req, res, next) => {
 	const token = req.cookies?.jwt_token;
 	if (!token)
-		return res.status(401).json(jsonResponse.ResponseError("User not autorized"));
+		return res.status(401).json(jsonResponse.ResponseError("Token not found"));
 	try {
 		// controllo se il token e ancora in blacklist dal logout
 		if (await redis.get(`blacklist:${token}`))
@@ -55,8 +55,8 @@ export const createJwt = async (req, res) => {
 		}),
 		'EX', ttl
 	);
-	res.cookie('jwt_token', token, { ...cookiesOpt, maxAge: ms(process.env.JWT_TTL) + 60000 }); // setting cookies for jwt
-	res.cookie('refresh_token', refreshToken, { ...cookiesOpt, maxAge: ms(process.env.REFRESH_TTL) + 60000,	path: '/auth/refresh' }); // setting cookies for refresh token
+	res.cookie('jwt_token', token, { ...cookiesOpt, maxAge: ms(process.env.JWT_TTL) + 720000 }); // setting cookies for jwt
+	res.cookie('refresh_token', refreshToken, { ...cookiesOpt, maxAge: ms(process.env.REFRESH_TTL),	path: '/auth/refresh' }); // setting cookies for refresh token
 }
 
 /** 
