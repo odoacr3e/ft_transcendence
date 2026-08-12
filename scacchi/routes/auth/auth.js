@@ -142,3 +142,17 @@ authRouter.post("/logout", checkJwt, async (req, res) => {
 		return res.status(403).json(jsonResponse.ResponseError("Server error logging out user"));
 	}
 });
+
+authRouter.post("/forceLogout", async (req, res) => {
+	try {
+		const { id_user } = req.body;
+		await redis.del(`refresh:${id_user}`);
+		res.clearCookie('jwt_token', cookiesOpt);
+		res.clearCookie('refresh_token', { ...cookiesOpt, path: '/auth/refresh'});
+		return res.status(200).json(jsonResponse.ResponseSuccess({ logout: "ok" }));
+	} catch (error) {
+		console.log("Error: ", error);
+		// printLog(`User couldn't logout due server error: ${error.name}`, colors.brightYellow);
+		return res.status(403).json(jsonResponse.ResponseError("Server error logging out user"));
+	}
+})
