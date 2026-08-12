@@ -68,7 +68,7 @@ export function cancelTurn(match, turn)
 	while (match.history.Last().type != eEvents.EndTurn && match.history.events.length)
 	{
 		result = cancelEvent(match);
-	if (result.status != 200)
-		throw (`cancelTurn: error on cancel event: ${result.msg} => ${JSON.stringify(turn, null, 2)}`);
+		if (result.status != 200)
+			throw (`cancelTurn: error on cancel event: ${result.msg} => ${JSON.stringify(turn, null, 2)}`);
 	}
 }

@@ -68,6 +68,7 @@ function getBestTurn(match)
 	/** @type {Array<Eval>} */
 	let bestTurns = new Array();
 	let	bestTurnIdx;
+	let playableTurn = new Array();
 	let	ai;
 
 	ai = match.currentPlayer.ai;
@@ -84,6 +85,7 @@ function getBestTurn(match)
 		const turn = arrayTurns[i];
 		if (!execTurn(match, turn))
 			continue ;
+		playableTurn.push(turn);
 		render(match);
 		newTurns = getLegalMoves(match);
 		val.score = minMax(match, ai, newTurns, 2, [turn]);
@@ -117,7 +119,7 @@ function getBestTurn(match)
 	if (bestTurns.length == 0)
 	{//@ts-ignore
 		ai.defeatStatus = 1;
-		return (arrayTurns[0]);
+		return (playableTurn[Math.floor(Math.random() * 100000) % playableTurn.length]);
 	}
 	bestTurnIdx = bestTurns[Math.floor(Math.random() * 100000) % bestTurns.length];
 	console.log(bestTurnIdx);

@@ -106,6 +106,7 @@ function execTest(matchPath=null)
 		while (!match.victory)
 		{
 			console.debug(`Executing test "${currMatch}", move ${i++}`);
+			match.cursor.square = "";
 			render(match, [], "", false, console.debug);
 			AIexecuteTurn(match);
 		}
