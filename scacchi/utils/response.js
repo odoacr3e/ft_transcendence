@@ -20,7 +20,7 @@ import { DEBUG_CURL } from "../Macro/macro.js";
  */
 const ResponseError = (message) => 
 {
-	return ({ "status": "error", "message": message, log: {status: 500, msg: message} });
+	return ({ "status": "error", "message": message});
 }
 
 /**

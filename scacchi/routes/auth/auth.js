@@ -98,7 +98,6 @@ authRouter.post("/refresh", async (req, res) => {
 		if (!refresh_token)
 			return res.status(403).json(jsonResponse.ResponseError("Missing refresh token"));
 		const { user } = req.body; // serve per il rinnovo del jwt che riprende user.id_user e user.username
-		console.log("User da body: ", user);
 		const refToken = await redis.get(`refresh:${refresh_token}`);
 		if (!refToken)
 			return res.status(403).json(jsonResponse.ResponseError("Invalid or expired token"));
@@ -120,7 +119,6 @@ authRouter.post("/refresh", async (req, res) => {
 		return res.status(200).send();
 	} catch (error) {
 		// printLog(`User couldn't refresh token due server error: ${error.name}`, colors.brightYellow);
-		console.log("Error: ", error);
 		return res.status(500).json(jsonResponse.ResponseError("Server error refreshing token"));
 	}
 });
