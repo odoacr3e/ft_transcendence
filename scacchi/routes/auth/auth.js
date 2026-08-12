@@ -95,8 +95,10 @@ authRouter.post("/register", async (req, res) => {
 authRouter.post("/refresh", async (req, res) => {
 	try {
 		const { refresh_token } = req.cookies;
-		// const { user } = req.body;
-		const refToken = await redis.get(`refresh:${refresh}`);
+		if (!refresh_token)
+			return res.status(403).json(jsonResponse.ResponseError("Missing refresh token"));
+		const { user } = req.body; // serve per il rinnovo del jwt che riprende user.id_user e user.username
+		const refToken = await redis.get(`refresh:${refresh_token}`);
 		if (!refToken)
 			return res.status(403).json(jsonResponse.ResponseError("Invalid or expired token"));
 		/** @type {token} rawToken */
@@ -106,18 +108,18 @@ authRouter.post("/refresh", async (req, res) => {
 			revokeTokenSessions(rawToken.userId)
 			return res.status(403).json(jsonResponse.ResponseError("Token already used"));
 		}
-		// req.user = user;
+		req.user = user;
 		await redis.set(
 			`refresh:${refresh}`,
 			JSON.stringify({ ...rawToken, used: true }),
 			'KEEPTTL'
 		);
 		await createJwt(req, res);
-		await redis.del(`refresh:${refresh}`);
+		await redis.del(`refresh:${refresh_token}`);
 		return res.status(200).send();
 	} catch (error) {
 		// printLog(`User couldn't refresh token due server error: ${error.name}`, colors.brightYellow);
-		return res.status(403).json(jsonResponse.ResponseError("Server error refreshing token"));
+		return res.status(500).json(jsonResponse.ResponseError("Server error refreshing token"));
 	}
 });
 
