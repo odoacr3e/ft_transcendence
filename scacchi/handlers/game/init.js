@@ -13,12 +13,13 @@ gameChecks, init
 import {Match} from "../../Classes/Chess/match.js";
 import {clientBoard, Result} from "./utils.js";
 import {initRng} from "../../utils/random.js";
-import { CHESSBOARD_W, CHESSBOARD_H } from "../../Macro/macro.js";
+import { CHESSBOARD_W, CHESSBOARD_H, AI_EVENTS } from "../../Macro/macro.js";
 import * as creators from "../../GameLogic/createChessBoard.js";
 import { MatchSettings, matchPresets } from "../../Classes/Chess/match.js";
 import { includesOneOf, strCount } from "../../utils/string.js";
 import { enumInitTeam } from "../../Macro/enums.js";
 import { render } from "../../test/render.js";
+import { aiSpeech } from "../../Classes/Chess/AIprofiles/speech.js";
 
 /**
  * The Map board is added to result to be sent to the client. Steps:
@@ -59,6 +60,8 @@ function init(match=null, preset=null)
 		creators.initClassicBoard(match);
 	else
 		creators.initRandomBoard(match, rng);
+	aiSpeech(match, AI_EVENTS.startGame);
+	aiSpeech(match, AI_EVENTS.startGame, [], false);
 	result.status = 200;
 	// @ts-ignore
 	result.board = clientBoard(match, true);

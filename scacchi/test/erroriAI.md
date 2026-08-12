@@ -7,7 +7,7 @@
 }
 ``
 
-## Update Champion
+## ✅Update Champion
 
 ``json
 {
@@ -17,7 +17,7 @@
 }
 ``
 
-## Invalid position chessboard
+## ✅Invalid position chessboard
 
 ``json
 {
@@ -49,7 +49,7 @@
 }
 ``
 
-## Trasfiguration failed
+## ✅Trasfiguration failed
 
 ``json
 {
@@ -59,7 +59,7 @@
 }
 ``
 
-##doubleSave
+## ✅doubleSave
 
 Trace
     at ChessBoard.get (file:///home/alerusso/ft_transcendence/scacchi/Classes/Chess/chessBoard.js:138:12)
@@ -72,3 +72,13 @@ Trace
     at minMax (file:///home/alerusso/ft_transcendence/scacchi/Classes/Chess/AI.js:163:10)
     at getBestTurn (file:///home/alerusso/ft_transcendence/scacchi/Classes/Chess/AI.js:89:15)
     at AIexecuteTurn (file:///home/alerusso/ft_transcendence/scacchi/GameLogic/aiTurn.js:31:9)
+
+## pushChild
+
+  "game": "fresh 1: \u001b[31m[KO]\u001b[0m",
+  "info": "pushChildMoves: coord f3, boostedSquare [object Object] has no piece",
+
+## GASTER
+
+  "game": "gang_is_threatening_king.json: \u001b[31m[KO]\u001b[0m",
+  "info": "{}",

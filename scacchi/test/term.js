@@ -25,6 +25,7 @@ import { fakeBoost } from "../handlers/game/boost.js";
 import { Match, MatchSettings } from "../Classes/Chess/match.js";
 import { getLegalMoves } from "../GameLogic/checkLegalMoves.js";
 import { AI } from "../Classes/Chess/AI.js";
+import { AIexecuteTurn } from "../GameLogic/aiTurn.js";
 
 //SECTION - main: inizializza e fa primo render, mette terminale in ascolto
 function mainTerm()
@@ -51,14 +52,23 @@ function mainTerm()
 	// move(match, "h8", "g8");
 	// if (lib.include.fs.existsSync(HISTORY_DEFAULT))
 	// 	historyRestore(match, HISTORY_DEFAULT);
-
-	match.NextPlayer().ai = new AI();
+	match.currentPlayer.ai = new AI(AIprofiles.FIRST_AI);
+	match.NextPlayer().ai = new AI(AIprofiles.GMU);
 	match.aiBool = true;
 
 	// move(match, "e5", "f6");
 	console.log(`time to init: ${(process.hrtime.bigint() - time) / 1000n} microseconds`);
 	match.cursor.square = match.currentPlayer.King;
 	render(match);
+	console.log = ()=>{};
+	let i = 0;
+	while (!match.victory)
+	{
+		console.debug(`move ${i++}`);
+		match.cursor.square = "";
+		render(match, [], "", false, console.debug);
+		AIexecuteTurn(match);
+	}
 	return (match);
 }
 

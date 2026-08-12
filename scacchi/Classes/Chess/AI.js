@@ -12,6 +12,26 @@ import { AIProfileConstructor } from "./AIprofiles/constructors.js";
 /** @typedef {{move: Move | null, moveBoost: Move | null, transform: string, boost: string}} Turn */
 /** @typedef {{score: number, index: number}} Eval */
 
+/*
+
+	g1: win {t1, t2, t3} => {b1, b2, b3} 
+	g2: lost {t1, t2, t3} => {b1, b2, b3}
+
+	g1-t3 =>	g1-b3 (+1)	
+	g1-t2 =>	g1-b2 (+0.95)
+	g1-t1 =>	g1-b1 (+0.90)
+
+	g2-t3 =>	g2-b3 (-1)
+	g2-t2 =>	g2-b2 (-0.95)
+	g2-t1 =>	g2-b1 (-0.90)
+
+	x migliori
+	{
+		b1: {scores: [80, -500], count: 1}
+		b2: {scores: [80, -500], count: 1}
+	}
+*/
+
 /** @template T */
 export class AI
 {
