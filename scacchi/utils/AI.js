@@ -7,7 +7,6 @@ import { makeTransfiguration } from "../handlers/game/transfiguration.js";
 import { endTurn } from "../handlers/game/endTurn.js";
 import { eEvents } from "../Macro/enums.js";
 import { render } from "../test/render.js";
-import { jsonParser } from "./response.js";
 
 /** @typedef {import("../Classes/Chess/match.js").Match} Match*/
 /** @typedef {{from: string, to: string}} Move */
@@ -19,8 +18,9 @@ let	DEB = 0;
  * 
  * @param {Match} match 
  * @param {Turn} turn 
+ * @param {Array<Turn> | null} prevTurns
  */
-export function execTurn(match, turn)
+export function execTurn(match, turn, prevTurns=null)
 {
 	/** @type {string} */	let	toCoord;
 	let	team;
@@ -39,9 +39,9 @@ export function execTurn(match, turn)
 	}
 	if (turn.boost && (result = boost(match, turn.boost)).status != 200)
 	{
-		console.error(`BOOST ERROR N. ${DEB++} => {${result.msg}: ${turn}`);
-		//render(match);
-		//throw (`execTurn: boost's function has failed : ${result.msg}`); // @ts-ignore
+		// console.error(`BOOST ERROR N. ${DEB++} => {${result.msg}: ${turn}`);
+		render(match);
+		throw (`execTurn: boost's function has failed : ${result.msg}`); // @ts-ignore
 	}//@ts-ignore
 	toCoord = turn.moveBoost ? turn.moveBoost.to : turn.move?.to;
 	if (turn.transform && makeTransfiguration(match, toCoord, turn.transform).status != 200)

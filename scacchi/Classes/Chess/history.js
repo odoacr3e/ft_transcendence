@@ -66,11 +66,13 @@ export class History
 	Log(match, name="")
 	{
 		let	history;
+		let	copy;
 
 		if (fs.existsSync(HISTORY_PATH) == false)
 			fs.mkdirSync(HISTORY_PATH);
 		if (name && fs.existsSync(name) == true)
 			fs.rmSync(name);
+		copy = structuredClone(this.events);
 		for (const event of this.events)
 		{
 			// @ts-ignore
@@ -92,6 +94,7 @@ export class History
 		if (match.settings.presetType)
 			match.history.matchSettings = match.settings.presetType;
 		history = JSON.stringify(this, null, 2);
+		this.events = copy;
 		if (!name)
 			return (history);
 		else

@@ -159,7 +159,7 @@ function pushAllLegalBoost(match, player, legalMovesArray, currTurn, usedBoostBo
 	from = currTurn.move? currTurn.move.from : currTurn.moveBoost?.from;
 	to = currTurn.moveBoost? currTurn.moveBoost.to : currTurn.move?.to;//@ts-ignore
 	toPiece = match.board.get(to).piece;
-	points = player.nPoints + (toPiece ? toPiece?.price : 0); 
+	points = player.nPoints + (toPiece && toPiece.team != player.team ? toPiece?.price : 0); 
 	if (points == 0)
 		return ;
 	for (const [coord, square] of match.board)

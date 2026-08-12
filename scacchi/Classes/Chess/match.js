@@ -287,9 +287,10 @@ class Match
 	}
 	/**
 	 * 
-	 * @param {Result | null} result 
+	 * @param {Result | null} result
+	 * @param {string} reason 
 	 */
-	DrawMatch(result)
+	DrawMatch(result, reason)
 	{
 		let player;
 		let tmp;
@@ -299,6 +300,7 @@ class Match
 		if (this.aiSimulation == true)
 			return (new Result());
 		this.victory = "draw";
+		console.debug(reason);
 		// console.log("Premi un qualsiasi tasto per concludere...");
 		tmp = this.currentPlayer;
 		player = tmp.next;

@@ -45,14 +45,14 @@ function endTurn(match, sendBoardBool=true)
 	if (match.playerNum == 2 && nPieces <= 4)
 	{
 		if (checkInsuficientResources(match, nPieces))
-			return (match.DrawMatch(result));
+			return (match.DrawMatch(result, "Insuficient Resources"));
 	}
 	if (match.spareCountDown == 50 * match.playerNum)
-		return (match.DrawMatch(result));
+		return (match.DrawMatch(result, "Too many futiles moves"));
 	if (!match.boardStateMap.has(boardState) && match.aiSimulation == false)
 		match.boardStateMap.set(boardState, 1);//@ts-ignore
 	else if (match.boardStateMap.get(boardState) >= 2 && match.aiSimulation == false)
-		return (match.DrawMatch(result));//@ts-ignore
+		return (match.DrawMatch(result, "board already occured 3 times"));//@ts-ignore
 	else if (match.boardStateMap.get(boardState) < 2)
 		match.boardStateMap.set(boardState, 2);
 	if (match.timer != null && match.aiSimulation == false)

@@ -195,9 +195,7 @@ function fail(msg, err)
 		game: err,
 		info: msg,
 		render: renderOutput,
-		board: `${boardStringify(currMatchData, true)}`,
-		events: JSON.stringify(currMatchData.history.events, null, 2),
-		matchData: JSON.stringify(currMatchData, null, 2)
+		events: JSON.stringify(currMatchData.history.events, null, 2)
 	};
 	console.debug(`ERROR saved in: "test/log/${currMatch}_${Date.now()}.json".\n\n\n\n`);
 	if (!fs.existsSync("test/log/"))

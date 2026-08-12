@@ -36,8 +36,8 @@ function boost(match, from)
 		return (result);
 	if (!tryBoost(match, result, from))
 		return (result);
-	result.status = 200;
-	aiSpeech(match, AI_EVENTS.applyBoostMe);
+	result.status = 200;//@ts-ignore
+	aiSpeech(match, AI_EVENTS.applyBoostMe, [match.board.get(from).piece?.type]);
 	if (match.boost == BOOSTED_MAX)
 	{
 		checkMateCheckAll(match, result);
@@ -62,11 +62,11 @@ function tryBoost(match, result, from)
 	let	square;
 	let	tmp;
 
-	if (match.history.moves == 259186)
-	{
-		render(match);
-		console.log("BREAKPOINT");
-	}
+	// if (match.history.moves == 259186)
+	// {
+	// 	render(match);
+	// 	console.log("BREAKPOINT");
+	// }
 	if (match.boost >= BOOSTED_MAX || match.moves < MOVEMENT_MIN)
 		return (error(result, 403, "You can't boost now"));
 	if (checkKingDanger(match) == true)

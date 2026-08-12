@@ -126,6 +126,8 @@ function getBestTurn(match)
 	return (arrayTurns[bestTurnIdx.index]);
 }
 
+let DEB = 0;
+
 /**
  * 
  * @param {Match} match 
@@ -152,9 +154,11 @@ function minMax(match, ai, arrayTurns, depth, pastTurns)
 		let maxEval = -Infinity;
 		for (const turn of arrayTurns)
 		{
-			if (execTurn(match, turn) == false)
+			if (execTurn(match, turn, pastTurns) == false)
 				continue ;
 			// render(match);
+			if (DEB++ == 33)
+				console.log("aaa");
 			if (depth != 1)
 				newTurns = getLegalMoves(match);
 			// else

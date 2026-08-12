@@ -80,8 +80,7 @@ function checkMateCheckAll(match, result)
 		return (match.CheckMate(result), true);//@ts-ignore
 	if (getLegalMoves(match, match.currentPlayer.next, false) == true)
 	{
-		console.log("szechuan...");
-		return (match.DrawMatch(result), true);
+		return (match.DrawMatch(result, "Spare"), true);
 	}
 	return (false);
 }
