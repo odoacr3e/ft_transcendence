@@ -51,7 +51,7 @@ function endTurn(match, sendBoardBool=true)
 		return (match.DrawMatch(result, "Too many futiles moves"));
 	if (!match.boardStateMap.has(boardState) && match.aiSimulation == false)
 		match.boardStateMap.set(boardState, 1);//@ts-ignore
-	else if (match.boardStateMap.get(boardState) >= 2 && match.aiSimulation == false)
+	else if (match.boardStateMap.get(boardState) >= 2)
 		return (match.DrawMatch(result, "board already occured 3 times"));//@ts-ignore
 	else if (match.boardStateMap.get(boardState) < 2)
 		match.boardStateMap.set(boardState, 2);

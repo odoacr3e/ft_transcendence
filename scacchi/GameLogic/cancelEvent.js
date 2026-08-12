@@ -5,6 +5,7 @@ import { Piece } from "../Classes/Chess/Pieces/pieces.js";
 import { Result } from "../Classes/endPoint/result.js";
 import { eEvents, enumNames, enumSpecialMoves } from "../Macro/enums.js";
 import { MOVEMENT_BONUS_POINT } from "../Macro/macro.js";
+import { boardStringify } from "../test/render.js";
 import { DangerUpdate, updateBoostedChampions } from "../utils/dangerUpdate.js";
 import { includesOneOf } from "../utils/string.js";
 import { setTimerGame } from "./timer.js";
@@ -164,7 +165,8 @@ function cancelBoost(match, lastEvent)
  */
 function cancelEndTurn(match)
 {
-	let	oldEvent;
+	let	boardState;
+	let	counter;
 
 	//@ts-ignore
 	match.currentPlayer = match[match.currentPlayer.prev];
@@ -175,6 +177,12 @@ function cancelEndTurn(match)
 		match.currentPlayer.nPoints -= 1;
 	}
 	match.moves = match.history.Last().turnMoves;
+	if (match.aiSimulation == true)
+		return ;
+	boardState = boardStringify(match, true);
+	counter = match.boardStateMap.get(boardState); 
+	if (counter)
+		match.boardStateMap.set(boardState, counter - 1);
 }
 
 /**

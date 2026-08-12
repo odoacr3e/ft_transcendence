@@ -88,15 +88,29 @@ function getBestTurn(match)
 		playableTurn.push(turn);
 		render(match);
 		newTurns = getLegalMoves(match);
-		val.score = minMax(match, ai, newTurns, 2, [turn]);
+		val.score = minMax(match, ai, newTurns, 2, [turn], -Infinity, +Infinity);
 		// val.score = Math.abs(val.score);
 		val.index = i;
 		cancelTurn(match, turn);
 		// render(match);
-		if (match.currentPlayer.team == eTeam.Black && val.score == +Infinity)
-			continue ;
-		else if (match.currentPlayer.team == eTeam.White && val.score == -Infinity)
-			continue ;
+		if (val.score == +Infinity)
+		{
+			if (match.currentPlayer.team == eTeam.Black)
+				continue ;
+			else
+				return (turn);
+		}
+		else if (val.score == -Infinity)
+		{
+			if (match.currentPlayer.team == eTeam.White)
+				continue ;
+			else
+				return (turn);
+		}
+		// if (match.currentPlayer.team == eTeam.Black && val.score == +Infinity)
+		// 	continue ;
+		// else if (match.currentPlayer.team == eTeam.White && val.score == -Infinity)
+		// 	continue ;
 		if (bestTurns.length <= 1)
 			bestTurns.push({score: val.score, index: val.index});
 		for (let i = 0; i != bestTurns.length; i++)
@@ -135,9 +149,11 @@ let DEB = 0;
  * @param {Array<Turn>} arrayTurns 
  * @param {number} depth 
  * @param {Array<Turn>} pastTurns
+ * @param {number} alpha
+ * @param {number} beta
  * @returns 
  */
-function minMax(match, ai, arrayTurns, depth, pastTurns)
+function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 {//@ts-ignore
 	let	newTurns;
 	let val;
@@ -156,9 +172,6 @@ function minMax(match, ai, arrayTurns, depth, pastTurns)
 		{
 			if (execTurn(match, turn, pastTurns) == false)
 				continue ;
-			// render(match);
-			if (DEB++ == 33)
-				console.log("aaa");
 			if (depth != 1)
 				newTurns = getLegalMoves(match);
 			// else
@@ -166,12 +179,15 @@ function minMax(match, ai, arrayTurns, depth, pastTurns)
 			pastTurns.push(turn);
 			// console.log(turn);
 			ai.Simulate(match, ai);//@ts-ignore
-			val = minMax(match, ai, newTurns, depth - 1, pastTurns);
+			val = minMax(match, ai, newTurns, depth - 1, pastTurns, alpha, beta);
 			ai.Cancel(match, ai);
 			pastTurns.pop();
 			maxEval = Math.max(val, maxEval);
 			cancelTurn(match, turn);
 			if (maxEval == +Infinity)
+				break ;
+			alpha = Math.max(maxEval, alpha);
+			if (beta <= alpha)
 				break ;
 			// render(match);
 		}
@@ -192,12 +208,15 @@ function minMax(match, ai, arrayTurns, depth, pastTurns)
 			pastTurns.push(turn);
 			// console.log(turn);
 			ai.Simulate(match, ai);//@ts-ignore
-			val = minMax(match, ai, newTurns, depth - 1, pastTurns);
+			val = minMax(match, ai, newTurns, depth - 1, pastTurns, alpha, beta);
 			ai.Cancel(match, ai);
 			pastTurns.pop();
 			minEval = Math.min(val, minEval);
 			cancelTurn(match, turn);
 			if (minEval == -Infinity)
+				break ;
+			beta = Math.min(minEval, beta);
+			if (beta <= alpha)
 				break ;
 			// render(match);
 		}

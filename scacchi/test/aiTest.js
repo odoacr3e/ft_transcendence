@@ -111,6 +111,8 @@ function execTest(matchPath=null)
 			AIexecuteTurn(match);
 		}
 		console.debug(`${colors.red}${match.victory} has won.${colors.reset}`);
+		render(match, [], "", false, console.debug);
+		console.debug("\n\n====================\n\n");
 	}
 	catch(err)
 	{

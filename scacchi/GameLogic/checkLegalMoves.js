@@ -154,8 +154,6 @@ function pushAllLegalBoost(match, player, legalMovesArray, currTurn, usedBoostBo
 	let	to;
 	let	toPiece;
 
-	if (player.boostedPiece && usedBoostBool == false)
-		return ;
 	from = currTurn.move? currTurn.move.from : currTurn.moveBoost?.from;
 	to = currTurn.moveBoost? currTurn.moveBoost.to : currTurn.move?.to;//@ts-ignore
 	toPiece = match.board.get(to).piece;
