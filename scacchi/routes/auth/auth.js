@@ -110,7 +110,7 @@ authRouter.post("/refresh", async (req, res) => {
 		}
 		req.user = user;
 		await redis.set(
-			`refresh:${refresh}`,
+			`refresh:${refresh_token}`,
 			JSON.stringify({ ...rawToken, used: true }),
 			'KEEPTTL'
 		);
