@@ -1,22 +1,36 @@
 import { useAuthStore } from "../../stores/auth.st";
-import { useRouter }	from 'vue-router';
+import router from "../index.js"
 
-const	BASE_URL = '',
-		router = useRouter();
+const	BASE_URL = '';
 
-async function checkResp(res)
+async function checkResp(res, fun, endpoint, options)
 {
-	if (!res.ok)
+	const	Jres = await res.json().catch(() => ({})),
+			auth = useAuthStore();
+
+	if (res.status == 401 && auth.user != null)
 	{
-		const body = await res.json().catch(() => ({}));
-		throw new ApiError(body.message ?? 'Errore sconosciuto', res.status);
+		if (Jres.message === "Token expired")
+		{
+			const refreshed = await tryRefresh();
+			if (refreshed.ok) { return fun(endpoint, options); }
+	
+			await auth.logout(true);
+			router.push('/log');
+			throw new AuthError('Sessione scaduta');
+		}
+		else if (Jres.message === "Token not found")
+		{
+			await auth.logout(true);
+			router.push('/log');
+			throw new AuthError('Sessione scaduta');
+		}
 	}
 
-	// 204 No Content (es. logout) non ha body
-	if (res.status === 204)
-		return null;
+	if (!res.ok) { throw new ApiError(Jres.message ?? 'Errore sconosciuto', res.status); }
+	if (res.status == 204) { return null; }
 
-	return res.json();
+	return Jres;
 }
 
 async function request_m(endpoint, options = {}) {
@@ -31,19 +45,7 @@ async function request_m(endpoint, options = {}) {
 		}
 	});
 
-	if (res.status === 401)
-	{
-		const refreshed = await tryRefresh();
-		//console.log(refreshed);
-		if (refreshed.ok)
-			return request_m(endpoint, options);
-		const auth = useAuthStore();
- 		auth.user = null;
-		// router.push('/log');
-		console.log('Sessione scaduta');
-	}
-
-	return(checkResp(res));
+	return(checkResp(res, request_m, endpoint, options));
 }
 
 async function request(endpoint, options = {}) {
@@ -54,19 +56,7 @@ async function request(endpoint, options = {}) {
 		...options
 	});
 
-	if (res.status === 401)
-	{
-		const refreshed = await tryRefresh();	// token scaduto, tenta il refresh
-		//console.log(refreshed);
-		if (refreshed.ok)
-			return request(endpoint, options);
-		const auth = useAuthStore();
- 		auth.user = null;
-		// router.push('/log');
-		console.log('Sessione scaduta');
-	}
-
-	return (checkResp(res));
+	return (checkResp(res, request, endpoint, options));
 }
 
 async function tryRefresh() {

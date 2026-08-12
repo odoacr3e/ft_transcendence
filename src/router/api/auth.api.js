@@ -41,5 +41,5 @@ export const authApi = {
 		const resp = await api.get('/api/tournaments'); // lista degli tornei
 		return (resp.data.tournaments);
 	},
-	logout:		() => api.post('/auth/logout')
+	logout:		async(userData) => api.post('/auth/logout', userData)
 }

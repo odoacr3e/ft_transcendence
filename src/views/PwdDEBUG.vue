@@ -12,9 +12,12 @@
 			router = useRouter();
 
 	async function submitForm() {
-		const resp = await api.patch("/api/users/updatePassword", formData.value);
-		if (!resp)	{ router.push('/'); }
-		else		{ error.value = true; }
+		try{
+			const resp = await api.patch("/api/users/updatePassword", formData.value);
+			if (!resp)	{ router.push('/'); }
+			else		{ error.value = true; }
+		}
+		catch(err) { error.value = true; }
 	}
 
 	function show() { visible.value = !visible.value; }

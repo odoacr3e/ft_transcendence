@@ -20,7 +20,10 @@
 		   
 
 	onMounted(async () => {
-		tournaments.value = await authApi.tournament();
+		try {
+			tournaments.value = await authApi.tournament();
+		}
+		catch{}
 	});
 
 	const openTour = computed(() => tournaments.value.filter((t) => t.status === 'open' || t.status === 'ongoing' ));

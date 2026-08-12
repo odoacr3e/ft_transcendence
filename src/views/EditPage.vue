@@ -303,7 +303,7 @@
                             </div>
                         </div>
 
-                        <div class="flex gap-10 my-3">
+<!--                    <div class="flex gap-10 my-3">
                             <div class="flex gap-2 w-[18vh]">
                                 <input size="35" class="pl-2 text-base hidden" type="radio" id="5" value="5" v-model="formData.preferences">
                                 <label for="5" class="flex gap-2 items-center">
@@ -352,7 +352,7 @@
                                     Light Yellow
                                 </label>
                             </div>
-                        </div>
+                        </div>-->
                     </div>
                 </div>
             </div>

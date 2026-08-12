@@ -1,7 +1,8 @@
 import { io }				from 'socket.io-client'
+import { api }				from '../router/api/client';
 import { authApi }			from '../router/api/auth.api';
 import { defineStore }		from 'pinia';
-import { listenGameSocket } from '@/scripts/Data/SocketLink';
+import { listenGameSocket } from '../scripts/Data/SocketLink';
 
 export const useAuthStore = defineStore('auth', {
 	state: () => ({
@@ -40,6 +41,7 @@ export const useAuthStore = defineStore('auth', {
 					this.user = resp.data.user;
 					this.getAllMsg();
 					this.connectSocket();
+					this.sessionChecked = true;
 				}
 				else if (resp.data.message === "OTP sent by email")
 					this.error = resp;
@@ -70,19 +72,26 @@ export const useAuthStore = defineStore('auth', {
 			try {
 				this.user = await authApi.register(credentials);
 				this.connectSocket();
+				this.sessionChecked = true;
 			}
 			catch (err) { this.error = err.message; }
 			finally		{ this.isLoading = false; }
 			return (this.error);
 		},
 
-		async logout() 
+		async logout(force = false) 
 		{
-			await authApi.logout();
-			this.disconnectSocket();
-			this.user = null;
-			this.usersOnline.clear();
-			this.msgRecevied.clear();
+			try {
+				if (force)
+					await api.post('/auth/forceLogout', { id_user: this.user.id_user })
+				else
+					await authApi.logout({ id_user: this.user.id_user });
+				this.disconnectSocket();
+				this.user = null;
+				this.usersOnline.clear();
+				this.msgRecevied.clear();
+			}
+			catch(err) { console.log(err); }
 		},
 
 		async update(credentials)

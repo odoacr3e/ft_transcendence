@@ -31,7 +31,7 @@
 			<router-view/>
 		</div>
 	</div>
-	<LinkFooter class="justify-self-center"/>
+	<LinkFooter class="z-11 justify-self-center"/>
 </template>
 
 <style scoped>

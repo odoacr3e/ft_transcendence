@@ -23,4 +23,5 @@ const i18n = createI18n({
 app.use(createPinia());
 app.use(router);
 app.use(i18n);
+await router.isReady();
 app.mount('#app');

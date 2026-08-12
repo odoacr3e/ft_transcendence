@@ -14,14 +14,20 @@ export const handleAvatarError = (event) => {
 
 export async function acceptRequest(id_user)
 {
-	await api.patch("/api/friends", { id_friend: id_user });
-	router.go(0);
+    try{
+        await api.patch("/api/friends", { id_friend: id_user });
+        router.go(0);
+    }
+    catch{}
 }
 
 export async function rejectRequest(id_user)
 {
-	await api.delete("/api/friends", { id_friend: id_user });
-	router.go(0);
+    try{
+        await api.delete("/api/friends", { id_friend: id_user });
+        router.go(0);
+    }
+    catch{}
 }
 
 export function rework_date(old_date)

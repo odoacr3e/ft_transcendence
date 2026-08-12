@@ -27,9 +27,12 @@
             return;
         }
 
-        otherUser.value = (await api.get(`/api/users/username/${username}`)).data.user;
-        friends.value = (await api.get(`/api/friends/${otherUser.value.id_user}`)).data.friendship;
-        matches.value = (await api.get(`/api/matchesHistory/user/${otherUser.value.id_user}`)).data.matches;
+        try{
+            otherUser.value = (await api.get(`/api/users/username/${username}`)).data.user;
+            friends.value = (await api.get(`/api/friends/${otherUser.value.id_user}`)).data.friendship;
+            matches.value = (await api.get(`/api/matchesHistory/user/${otherUser.value.id_user}`)).data.matches;
+        }
+        catch{}
     }
 
     watch(
