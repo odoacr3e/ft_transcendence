@@ -14,15 +14,15 @@
 			  otp: ''
 			}),
 			otpValues = ref(['', '', '', '', '', '']),
-			auth = useAuthStore(),
+			authStore = useAuthStore(),
 			visible = ref(false), popup = ref(false),
 			error = ref(false), error_card = ref(false), error_msg = ref(null),
 			resp = ref(null);
 
 	async function submitForm() {
-		resp.value = await auth.login(formData.value);
-		if (!resp.value && auth.isAuthenticated)	{ router.push('/me'); }
-		else if (resp.value && resp.value.status === "success" && !auth.isAuthenticated)
+		resp.value = await authStore.login(formData.value);
+		if (!resp.value && authStore.isAuthenticated)	{ router.push('/me'); }
+		else if (resp.value && resp.value.status === "success" && !authStore.isAuthenticated)
 		{
 			popup.value = true;
 			otpData.value.id_user = resp.value.data.id_user;
@@ -33,7 +33,7 @@
 	async function submitOtp()
 	{
 		otpData.value.otp = otpValues.value.join('');
-		resp.value = await auth.mfa(otpData.value);
+		resp.value = await authStore.mfa(otpData.value);
 
 		if (!resp.value)	{ router.push('/me'); }
 		else if (resp.value === "Too many attempts")

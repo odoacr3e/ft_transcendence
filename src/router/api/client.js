@@ -1,5 +1,4 @@
 import { useAuthStore } from "../../stores/auth.st";
-import router from "../index.js"
 
 const	BASE_URL = '';
 
@@ -38,9 +37,9 @@ async function checkResp(res, fun, endpoint, options)
 	{
 		if (Jres.message === "Token expired")
 		{
-			const refreshed = await tryRefresh();
+			const refreshed = await tryRefresh(auth);
 			if (refreshed.ok) { return fun(endpoint, options); }
-			forceLogout();
+			forceLogout(auth);
 		}
 		else if (Jres.message === "Token not found") { forceLogout(); }
 	}
@@ -51,17 +50,15 @@ async function checkResp(res, fun, endpoint, options)
 	return Jres;
 }
 
-async function forceLogout()
+async function forceLogout(auth)
 {
 	await auth.logout(true);
-	router.push('/log');
 	throw new AuthError('Sessione scaduta');
 }
 
-async function tryRefresh() {
+async function tryRefresh(auth) {
 	try
 	{
-		const auth = useAuthStore();
 		const res = await fetch(`${BASE_URL}/auth/refresh`, {
 			headers: { 'Content-Type': 'application/json' },
 			method: 'POST',

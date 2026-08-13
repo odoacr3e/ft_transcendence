@@ -1,7 +1,7 @@
 <script setup>
-    import { useAuthStore } from "../stores/auth.st";
+    import { useSockStore } from '../stores/sock.st';
 
-    const authStore = useAuthStore(),
+    const sockStore = useSockStore(),
           prop = defineProps({
   	    	user_id: Number
 	    });
@@ -9,8 +9,7 @@
 
 <template>
     <span class="rounded-full absolute size-3 ml-9.5 mt-9.5"
-            v-bind:class="{ 'bg-online-accept' : authStore.isUserOnline(prop.user_id) ,
-                            'bg-text-lose-closed' : !authStore.isUserOnline(prop.user_id) }"></span>
+            :class="sockStore.isUserOnline(prop.user_id) ?  'bg-online-accept' : 'bg-text-lose-closed'"></span>
 </template>
 
 <style scoped>

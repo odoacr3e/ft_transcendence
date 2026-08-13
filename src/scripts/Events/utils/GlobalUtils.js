@@ -3,7 +3,7 @@ import { PIECES_HIGHLIGHT }								from "@/scripts/Helper/piecesHighlights";
 import { computePosition }								from "@floating-ui/dom";
 import { clearHighlight }								from "@/scripts/Events/utils/HighlightUtils.js";
 import { requestToBack }								from "@/scripts/Events/BackLink.js";
-import { useAuthStore } 								from "@/stores/auth.st";
+import { useSockStore }									from "../../../stores/sock.st";
 
 // ANCHOR USER INTERACTION FUNCTIONS
 export function useAbility()
@@ -180,11 +180,11 @@ export function usingAbility()
 
 export async function showBoostedMovesHover(fromId)
 {
-	const auth = useAuthStore();
-	if (!auth.socket)
+	const sockStore = useSockStore();
+	if (!sockStore.socket)
 		return;
 
-	const response	= await auth.socket.emitWithAck('simulate_boost', { from: fromId, to: "" });
+	const response	= await sockStore.socket.emitWithAck('simulate_boost', { from: fromId, to: "" });
 	const square	= localBoard.get(fromId);
 	if (!square)
 		return;

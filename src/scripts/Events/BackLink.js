@@ -3,7 +3,7 @@ import { localBoard, localInfo }	from "@/scripts/Data/Variables";
 // import { clearHighlight }			from "@/scripts/Events/utils/HighlightUtils.js";
 import { getTarget }				from "./utils/MovementUtils.js";
 // import { MACRO } 					from "@/scripts/Data/Variables";
-import { useAuthStore } from "@/stores/auth.st.js";
+import { useSockStore } from "../../stores/sock.st.js";
 import { sendEndTurn } from "./utils/GlobalUtils.js";
 // import { connect } from "node:http2";
 // import { _jsonReviver }				from "../Data/utils/ArchiUtils.js";
@@ -37,7 +37,7 @@ export async function sendToBackend(fromId, toId, flag)
 
 export async function requestToBack(fromSquare, toSquare, opType)
 {
-	const auth = useAuthStore();
+	const sockStore = useSockStore();
 	let type;
 	if (opType === "showBoost")
 		{type = "simulate_boost"; toSquare = "";}
@@ -58,7 +58,7 @@ export async function requestToBack(fromSquare, toSquare, opType)
 	console.log("req: type: ", type, "from: ", fromSquare, "to: ", toSquare);
 		
 	return new Promise((resolve) => {
-		auth.socket.emit("game", { type, from: fromSquare, to: toSquare }, (result) => {
+		sockStore.socket.emit("game", { type, from: fromSquare, to: toSquare }, (result) => {
 			console.log(`request: type: ${type}, from: ${fromSquare}, to:${toSquare}`)
 			clearTimeout(timeout);
 			resolve(result?.log?.status === 200);
@@ -74,12 +74,12 @@ export async function requestToBack(fromSquare, toSquare, opType)
  */
 export async function amIPlaying()
 {
-	const auth = useAuthStore();
+	const sockStore = useSockStore();
 
-	if (!auth.socket)
+	if (!sockStore.socket)
 		return (false);
 	try {
-		return (await auth.socket.timeout(3000).emitWithAck('amiplaying', {}) === true);
+		return (await sockStore.socket.timeout(3000).emitWithAck('amiplaying', {}) === true);
 	} catch {
 		console.log("[BackLink] -> [amIPlaying]: nessuna risposta dal back");
 		return (false);
@@ -89,8 +89,8 @@ export async function amIPlaying()
 export function reloadMatch()
 {
 	console.log("chiamata di reload!");
-	const auth = useAuthStore();
-	if (!auth.socket)
+	const sockStore = useSockStore();
+	if (!sockStore.socket)
 		return (Promise.resolve(false));
 
 	return new Promise((resolve) =>
@@ -99,7 +99,7 @@ export function reloadMatch()
 
 		const emit = () => {
 			console.log("[reload] emit");
-			auth.socket.emit("game", {
+			sockStore.socket.emit("game", {
 				type: "reload",
 				from: sessionStorage.getItem("match:myTeam"),
 				to: ""
@@ -109,8 +109,8 @@ export function reloadMatch()
 		const finish = (ok) => {
 			clearTimeout(timeout);
 			clearInterval(retryId);
-			auth.socket.off("game", onResponse);
-			auth.socket.off("connect", start);
+			sockStore.socket.off("game", onResponse);
+			sockStore.socket.off("connect", start);
 			resolve(ok);
 		};
 
@@ -132,11 +132,11 @@ export function reloadMatch()
 
 		const timeout = setTimeout(() => finish(false), 6000);
 
-		auth.socket.on("game", onResponse);
+		sockStore.socket.on("game", onResponse);
 
-		if (auth.socket.connected)
+		if (sockStore.socket.connected)
 			start();
 		else
-			auth.socket.once("connect", start);
+			sockStore.socket.once("connect", start);
 	});
 }

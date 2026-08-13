@@ -2,9 +2,10 @@
 	import TournamentCard       from '../components/TournamentCard.vue';
 	import { ref, onMounted, computed } from 'vue';
 	import { useAuthStore } from "../stores/auth.st";
+	import { useTourStore } from '../stores/tour.st.js';
 	import { storeToRefs }  from 'pinia';
 	import { useI18n }		from 'vue-i18n';
-	import { authApi }      from '../router/api/auth.api';
+	import { taskApi }      from '../router/api/task.api';
 	import { api }          from '../router/api/client'
 	import router from '@/router/index.js';
 	
@@ -21,7 +22,7 @@
 
 	onMounted(async () => {
 		try {
-			tournaments.value = await authApi.tournament();
+			tournaments.value = await taskApi.tournament();
 		}
 		catch{}
 	});
@@ -33,7 +34,7 @@
 	{
 		// if (formData.value.name.includes('%') || formData.value.name.includes('|')) { error.value = true; return; }
 
-		// const resp = authStore.createTour(formData.value.name);
+		// const resp = useTourStore().createTour(formData.value.name);
 		// if (resp)
 		// 	router.push({
 		// 		name: "open_tournament",

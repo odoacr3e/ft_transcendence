@@ -2,6 +2,8 @@
 	import { ref, onMounted, onBeforeUnmount }	from 'vue';
 	import { rework_date, defaultAvatar, handleAvatarError }	from '../scripts/Helper/CompUtils';
 	import { useAuthStore }	from "../stores/auth.st";
+	import { useMsgStore }	from '../stores/msg.st';
+	import { useSockStore } from '../stores/sock.st';
 	import { storeToRefs }	from 'pinia';
 	import { useI18n }		from 'vue-i18n';
 	import { api }			from '../router/api/client';
@@ -9,24 +11,23 @@
 	
 	defineOptions({ inheritAttrs: false });
 	
-	const { t, locale } = useI18n({ useScope: 'global' });
-	const authStore = useAuthStore();
-	const { user } = storeToRefs(authStore);
-	const	p_bool = ref(false),
+	const	{ t, locale } = useI18n({ useScope: 'global' }),
+			msgStore = useMsgStore(),
+			authStore = useAuthStore(),
+			{ user } = storeToRefs(authStore),
+			p_bool = ref(false),
 			n_bool = ref(false),
 			l_bool = ref(false),
+			p_dropdown = ref(null),
+			n_dropdown = ref(null),
+			lang_dropdown = ref(null),
 			popUp = ref(false),
 			tourOpen = ref(null),
 			db = ref([]),
-			searchUser = ref(""),
-			p_dropdown = ref(null),
-			n_dropdown = ref(null),
-			lang_dropdown = ref(null);
+			searchUser = ref("");
 
 	async function submitForm() {
-        const authStore = useAuthStore();
 		await authStore.logout();
-		router.push('/log');
 	}
 
 	function goToUser() {
@@ -66,7 +67,7 @@
 	}
 
 	async function accpetInvite() {
-		// authStore.socket.emit("join_tournament", 
+		// useSockStore().socket.emit("join_tournament",
 		// 	{ tournament_pwd: tourOpen.value.msg.description.slice(tourOpen.value.msg.description.indexOf('|') + 1, tourOpen.value.msg.description.indexOf('%')) }, 
 		// 	(resp) => { 
 		// 		if (resp.log)
@@ -128,7 +129,7 @@
 					@click="n_bool = !n_bool"
 					:aria-expanded="n_bool"
 					aria-haspopup="true">
-					<div v-if="authStore.msgRecevied && Array.from(authStore.msgRecevied).find(m => m.status === 'not_read') !== undefined">
+					<div v-if="msgStore.msgRecevied && Array.from(msgStore.msgRecevied).find(m => m.status === 'not_read') !== undefined">
 						<span class="absolute inline-flex translate-x-5.5 -translate-y-3.5 size-3 animate-ping rounded-full bg-notif-on opacity-75"></span>
 						<span class="absolute justify-self-end translate-x-5.5 -translate-y-3.5 size-3 rounded-full bg-notif-on"></span>
 					</div>
@@ -143,8 +144,8 @@
 					leave-from-class="opacity-100 scale-100"
 					leave-to-class="opacity-0 scale-70">
 					<div v-if="n_bool" class="mt-1.25 px-2 absolute bg-bg-darker border border-border-second w-76.5"
-						:class="authStore.msgRecevied.size > 3 ? 'w-79 max-h-[40vh] overflow-y-auto' : ''">
-						<div v-if="authStore.msgRecevied" v-for="m in [...authStore.msgRecevied].reverse()"
+						:class="msgStore.msgRecevied.size > 3 ? 'w-79 max-h-[40vh] overflow-y-auto' : ''">
+						<div v-if="msgStore.msgRecevied" v-for="m in [...msgStore.msgRecevied].reverse()"
 							class="bg-bg-default p-2 my-2 rounded-sm text-text-default">
 							<div class="flex gap-2 pb-1 items-center">
 								<span class="py-1 block size-2 rounded-full"
@@ -187,7 +188,7 @@
 								</div>
 							</div>
 						</div>
-						<div v-if="!authStore.msgRecevied.size" class="flex p-2 my-2 rounded-sm text-text-default">
+						<div v-if="!msgStore.msgRecevied.size" class="flex p-2 my-2 rounded-sm text-text-default">
 							<p class="mx-auto">{{ t('header.zeroNotif') }}</p>
 						</div>
 					</div>	

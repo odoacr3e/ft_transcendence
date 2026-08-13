@@ -8,7 +8,7 @@
     import { useAuthStore }     from "../stores/auth.st";
     import { storeToRefs }      from 'pinia';
     import { useI18n }          from 'vue-i18n';
-    import { authApi }          from '../router/api/auth.api';
+    import { taskApi }          from '../router/api/task.api';
     
     const { t } = useI18n();
 	const friends = ref(null), matches = ref(null), fReq = ref([]);
@@ -16,13 +16,17 @@
 	const { user } = storeToRefs(authStore);
 
     onMounted(async () => {
-        friends.value = await authApi.friendlist();
-        matches.value = await authApi.matchlist();
-
-        friends.value.forEach(friendship => {
-            if (friendship.friend_status === "pending" && friendship.sender.username !== user.value.username)
-                fReq.value.push(friendship);
-        });
+        try
+        {
+            friends.value = await taskApi.friendlist();
+            matches.value = await taskApi.matchlist();
+    
+            friends.value.forEach(friendship => {
+                if (friendship.friend_status === "pending" && friendship.sender.username !== user.value.username)
+                    fReq.value.push(friendship);
+            });
+        }
+        catch {}
     });
 </script>
 

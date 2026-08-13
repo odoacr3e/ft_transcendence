@@ -2,10 +2,11 @@
 	import { matchMakingOpt }					from '@/scripts/Data/Variables.js';
 	import { eRoomType } 						from '@/Common/ENUMS.js';
 	import { useAuthStore } 					from '@/stores/auth.st.js';
+	import { useSockStore }						from '@/stores/sock.st';
 	import { ref, computed, watch, onMounted }	from 'vue';
 	import router								from '@/router';
 
-	const auth      = useAuthStore();
+	const	sockStore = useSockStore();
 
 	const roomType  = ref(null);
 	const players   = ref(null);
@@ -30,19 +31,19 @@
 			roomType:		eRoomType[roomType.value],
 			matchSettings:	null
 		})
-		if (!auth.socket)
+		if (!sockStore.socket)
 			return;
-		auth.socket.emit('find_match', options);
+		sockStore.socket.emit('find_match', options);
 		console.log(useAuthStore().username, " ha appena richiesto un matchmaking!");
 		waiting.value = true;
 	}
 
 	async function askAmIPlaying()
 	{
-		if (!auth.socket)
+		if (!sockStore.socket)
 			return;
 		try {
-			const playing = await auth.socket.timeout(3000).emitWithAck('amiplaying', {});
+			const playing = await sockStore.socket.timeout(3000).emitWithAck('amiplaying', {});
 			if (playing)
 				router.push({ name: "game" });
 			else
@@ -118,7 +119,7 @@
 				<p v-else class="text-white text-xl tracking-widest">
 					Reloading game<span class="dot dot-1">.</span><span class="dot dot-2">.</span><span class="dot dot-3">.</span>
 				</p>
-				<button @click="waiting = false; auth.socket?.emit('cancel_match')"
+				<button @click="waiting = false; sockStore.socket?.emit('cancel_match')"
 						class="text-zinc-400 text-sm hover:text-white cursor-pointer transition-colors border-black border-5 rounded-full p-2 bg-red">
 						Cancel
 				</button>

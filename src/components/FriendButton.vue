@@ -2,32 +2,36 @@
 	import router from '@/router/index.js';
 	import { acceptRequest, rejectRequest }	from '../scripts/Helper/CompUtils';
 	import { ref, onMounted, watch }		from 'vue';
-	import { authApi }						from '../router/api/auth.api';
+	import { taskApi }						from '../router/api/task.api';
 	import { useI18n }						from 'vue-i18n';
 	import { api }							from '../router/api/client';
 
     const   { t } = useI18n();
 	const   prop = defineProps({
-  			user: Object
-		}),
+  				user: Object
+			}),
 			friends = ref(null), state = ref(null);
  
 	async function updateState() {
-		friends.value = await authApi.friendlist();
-		const isFriend = friends.value.find(x => (x.friend.username === prop.user.username));
-
-		if (isFriend) {
-			if (isFriend.friend_status !== 'pending')
-				state.value = 2;
-			else if (isFriend.friend_status === 'pending') {
-				if (isFriend.sender.username === prop.user.username)
-					state.value = 1;
-				else
-					state.value = 0;
+		try
+		{
+			friends.value = await taskApi.friendlist();
+			const isFriend = friends.value.find(x => (x.friend.username === prop.user.username));
+	
+			if (isFriend) {
+				if (isFriend.friend_status !== 'pending')
+					state.value = 2;
+				else if (isFriend.friend_status === 'pending') {
+					if (isFriend.sender.username === prop.user.username)
+						state.value = 1;
+					else
+						state.value = 0;
+				}
+			} else {
+				state.value = -1;
 			}
-		} else {
-			state.value = -1;
 		}
+		catch {}
 	}
 
 	onMounted(updateState); 

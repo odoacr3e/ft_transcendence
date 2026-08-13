@@ -2,9 +2,11 @@
     import { defaultAvatar, handleAvatarError } from '../scripts/Helper/CompUtils';
     import { ref, onMounted }   from 'vue';
     import { useAuthStore }     from "../stores/auth.st";
+    import { useSockStore }     from '../stores/sock.st';
+    import { useTourStore }     from '../stores/tour.st';
     import { storeToRefs }      from 'pinia';
     import { useRoute } from 'vue-router'
-    import { authApi }  from '../router/api/auth.api';
+    import { taskApi }  from '../router/api/task.api';
     import { api }      from '@/router/api/client';
 
     const   tournament = ref(null),
@@ -14,6 +16,8 @@
             searchUser = ref(""),
             searchList = ref(null),
 			admin = ref(null),
+            sockStore = useSockStore(),
+            tourStore = useTourStore(),
             authStore = useAuthStore(),
             { user } = storeToRefs(authStore),
             route = useRoute()
@@ -21,18 +25,18 @@
     onMounted(async () => {
         try
         {
-            friends.value = await authApi.friendlist();
+            friends.value = await taskApi.friendlist();
             tournament.value = (await api.get(`/api/tournaments/${route.params.tournament}`)).data.tournament;
 
 			admin.value = user.value.username === tournament.value?.created_by.username;
 			players.value = tournament.value.players;
 
-			authStore.socket.on("join_tournament", async ({resp}) => {
+			sockStore.socket.on("join_tournament", async ({resp}) => {
 				if (resp.log)
 					tournament.value = (await api.get(`/api/tournaments/${route.params.tournament}`)).data.tournament;
 			});
         }
-        catch(err) {}
+        catch {}
     });
 
     function findUser(list, id_user) { return list.find(u => u.id_user === id_user); }
@@ -68,7 +72,7 @@
             {
                 await api.post("/api/notifications", 
                     {	title: "T",
-                        description: ` ${tournament.value?.name}|${authStore.tourInfo.pwd}%${tournament.value.id_tournament}`,
+                        description: ` ${tournament.value?.name}|${tourStore.pwd}%${tournament.value.id_tournament}`,
                         id_receiver: u.id_user });
             }
         }
@@ -76,7 +80,7 @@
     }
 
 	async function startTour() {
-		authStore.socket.emit('start_round');
+		sockStore.socket.emit('start_round');
 	}
 </script>
 

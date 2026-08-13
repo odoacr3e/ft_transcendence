@@ -13,11 +13,10 @@
             authStore = useAuthStore(),
             { user } = storeToRefs(authStore),
             visible = ref(false),
-			error = ref(false),
-            auth = useAuthStore();
+			error = ref(false);
 
     async function submitForm() {
-		const resp = await auth.changePwd(formData.value);
+		const resp = await authStore.changePwd(formData.value);
 		if (!resp)	{ router.push('/me'); }
 		else		{ error.value = true; }
 	}

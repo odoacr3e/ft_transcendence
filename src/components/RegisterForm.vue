@@ -13,7 +13,7 @@
 				password: '',
 				nationality: ''
 			});
-	const	auth = useAuthStore(),
+	const	authStore = useAuthStore(),
 			visible = ref(false),
 			error = reactive({
 				clone: [false, false],		//[0] == shake, [1] == card
@@ -37,7 +37,7 @@
 	}
 
 	async function submitForm() {
-		resp.value = await auth.register(formData.value);
+		resp.value = await authStore.register(formData.value);
 		resetError();
 		if (!resp.value)	{ router.push('/me'); }
 		else {

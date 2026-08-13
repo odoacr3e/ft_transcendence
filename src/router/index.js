@@ -136,14 +136,14 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to) => {
-	const auth = useAuthStore();
+	const authStore = useAuthStore();
 
-	if (!auth.sessionChecked) { await auth.fetchMe(); }
+	if (!authStore.sessionChecked) { await authStore.fetchMe(); }
 
-	if (to.meta.requiresAuth && !auth.isAuthenticated)
+	if (to.meta.requiresAuth && !authStore.isAuthenticated)
 		return ({ name: 'log' });
 
-	if (to.meta.requiresGuest && auth.isAuthenticated)
+	if (to.meta.requiresGuest && authStore.isAuthenticated)
 		return ({ name: 'home' });
 })
 
