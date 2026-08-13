@@ -265,7 +265,7 @@ class Match
 		render(this);
 		if (this.aiSimulation == true)
 			return (new Result());
-		aiSpeech(this, AI_EVENTS.checkMateOppo);
+		aiSpeech(this, AI_EVENTS.checkMateOppo, false);
 		this.history.Last().loserSet.add(player.id);
 		this.UpdateElo(player, false);
 		this.DeletePlayer(player);

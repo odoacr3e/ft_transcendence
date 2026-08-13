@@ -36,12 +36,14 @@ export function AI_gmu_eval(match, ai, turns)
 		score -= otherBoostedPiece.piece.price * 7;
 	//4)	PIU quanto minaccio il re avversario
 	if (checkKingDanger(match, nextPlayer.team))
-	for (const dangerCoord of match.board.get(nextPlayer.King).dangerZones)
 	{
-		square = match.board.get(dangerCoord);
-		if (!square.piece || square.piece.team == match.currentPlayer.team)
-			continue ;
-		score += 75;
+		for (const dangerCoord of match.board.get(nextPlayer.King).dangerZones)
+		{
+			square = match.board.get(dangerCoord);
+			if (!square.piece || square.piece.team == match.currentPlayer.team)
+				continue ;
+			score += 75;
+		}
 	}
 	lastTurn = turns[turns.length - 2];
 	if (lastTurn?.boost)

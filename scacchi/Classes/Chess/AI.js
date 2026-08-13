@@ -5,6 +5,7 @@ import { checkLostAll } from "../../GameLogic/checkMate.js";
 import { AIprofilesArray, eTeam } from "../../Macro/enums.js";
 import { render } from "../../test/render.js";
 import { cancelTurn, execTurn } from "../../utils/AI.js";
+import { checkKingDanger } from "../../utils/checkDanger.js";
 import { AIProfileConstructor } from "./AIprofiles/constructors.js";
 
 /** @typedef {import("./match.js").Match} Match*/
@@ -218,7 +219,7 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 		let minEval = +Infinity;
 		for (const turn of arrayTurns)
 		{
-			if (execTurn(match, turn) == false)
+			if (execTurn(match, turn, pastTurns) == false)
 				continue ;
 			// render(match);
 			if (depth != 1)

@@ -213,7 +213,7 @@ function printSwap(match, coords, from, to, result=null)
 		}
 		else
 		{
-			aiSpeech(match, AI_EVENTS.eatenPieceMe, [toType]);
+			aiSpeech(match, AI_EVENTS.eatenPieceMe, [toType], false);
 		}
 	}
 	else if (result?.specialMoves.CheckCastling())
