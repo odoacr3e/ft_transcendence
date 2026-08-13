@@ -3,9 +3,9 @@
 	import { rework_date, defaultAvatar, handleAvatarError }	from '../scripts/Helper/CompUtils';
 	import { useAuthStore }	from "../stores/auth.st";
 	import { storeToRefs }	from 'pinia';
-	import { useRouter }	from 'vue-router';
 	import { useI18n }		from 'vue-i18n';
 	import { api }			from '../router/api/client';
+	import router			from '../router/index.js';
 	
 	defineOptions({ inheritAttrs: false });
 	
@@ -17,7 +17,6 @@
 			l_bool = ref(false),
 			popUp = ref(false),
 			tourOpen = ref(null),
-			router = useRouter(),
 			db = ref([]),
 			searchUser = ref(""),
 			p_dropdown = ref(null),

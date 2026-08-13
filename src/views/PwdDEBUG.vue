@@ -1,15 +1,14 @@
 <script setup>
-	import { useRouter }	from 'vue-router';
-	import { api }          from '../router/api/client'
-	import { ref }  		from 'vue';
+	import router	from '../router/index.js';
+	import { api }	from '../router/api/client'
+	import { ref }	from 'vue';
 
 	const   formData = ref({
 				  username: '',
 				  password: ''
 				}),
 			visible = ref(false),
-			error = ref(false),
-			router = useRouter();
+			error = ref(false);
 
 	async function submitForm() {
 		try{

@@ -1,8 +1,8 @@
 <script setup>
 	import { ref, reactive }	from 'vue';
 	import { useAuthStore } from "../stores/auth.st";
-	import { useRouter }	from 'vue-router';
 	import { useI18n }		from 'vue-i18n';
+	import router			from '../router/index.js';
 
     const { t, locale } = useI18n({ useScope: 'global' }),
 			formData = ref({
@@ -26,8 +26,7 @@
 				username: t('login.err.username'),
 				email: t('login.err.email'),
 				password: t('login.err.password')
-			},
-			router = useRouter();
+			};
 	let		resp = ref(null);
 
 	function resetError() {

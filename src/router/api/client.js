@@ -3,34 +3,15 @@ import router from "../index.js"
 
 const	BASE_URL = '';
 
-async function checkResp(res, fun, endpoint, options)
-{
-	const	Jres = await res.json().catch(() => ({})),
-			auth = useAuthStore();
+async function request(endpoint, options = {}) {
+	const res = await fetch(`${BASE_URL}${endpoint}`, {
+		headers: { 'Content-Type': 'application/json' },
+		cache: 'no-store',
+		credentials: 'include',
+		...options
+	});
 
-	if (res.status == 401 && auth.user != null)
-	{
-		if (Jres.message === "Token expired")
-		{
-			const refreshed = await tryRefresh();
-			if (refreshed.ok) { return fun(endpoint, options); }
-	
-			await auth.logout(true);
-			router.push('/log');
-			throw new AuthError('Sessione scaduta');
-		}
-		else if (Jres.message === "Token not found")
-		{
-			await auth.logout(true);
-			router.push('/log');
-			throw new AuthError('Sessione scaduta');
-		}
-	}
-
-	if (!res.ok) { throw new ApiError(Jres.message ?? 'Errore sconosciuto', res.status); }
-	if (res.status == 204) { return null; }
-
-	return Jres;
+	return (checkResp(res, request, endpoint, options));
 }
 
 async function request_m(endpoint, options = {}) {
@@ -48,15 +29,33 @@ async function request_m(endpoint, options = {}) {
 	return(checkResp(res, request_m, endpoint, options));
 }
 
-async function request(endpoint, options = {}) {
-	const res = await fetch(`${BASE_URL}${endpoint}`, {
-		headers: { 'Content-Type': 'application/json' },
-		cache: 'no-store',
-		credentials: 'include',
-		...options
-	});
+async function checkResp(res, fun, endpoint, options)
+{
+	const	Jres = await res.json().catch(() => ({})),
+			auth = useAuthStore();
 
-	return (checkResp(res, request, endpoint, options));
+	if (res.status == 401 && auth.user != null)
+	{
+		if (Jres.message === "Token expired")
+		{
+			const refreshed = await tryRefresh();
+			if (refreshed.ok) { return fun(endpoint, options); }
+			forceLogout();
+		}
+		else if (Jres.message === "Token not found") { forceLogout(); }
+	}
+
+	if (!res.ok) { throw new ApiError(Jres.message ?? 'Errore sconosciuto', res.status); }
+	if (res.status == 204) { return null; }
+
+	return Jres;
+}
+
+async function forceLogout()
+{
+	await auth.logout(true);
+	router.push('/log');
+	throw new AuthError('Sessione scaduta');
 }
 
 async function tryRefresh() {

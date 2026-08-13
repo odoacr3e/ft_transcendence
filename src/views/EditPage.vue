@@ -3,8 +3,8 @@
     import { ref, computed }	from 'vue';
     import { useAuthStore }     from "../stores/auth.st";
     import { storeToRefs }      from 'pinia';
-    import { useRouter }	    from 'vue-router';
     import { useI18n }          from 'vue-i18n';
+    import router               from '../router/index.js';
 
     const   { t } = useI18n(),
             authStore = useAuthStore(),
@@ -20,7 +20,6 @@
 	        }),
             avatarFile = ref(null),      // il File vero e proprio
             avatarPreview = ref(null),   // URL per l'anteprima
-            router = useRouter(),
             error = ref(false),
             removeAvatar = ref(false);
 

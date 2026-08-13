@@ -1,8 +1,8 @@
 <script setup>
 	import { useAuthStore }	from "../stores/auth.st";
-	import { useRouter }	from 'vue-router';
+	import { useI18n }		from 'vue-i18n';
 	import { ref }			from 'vue';
-	import { useI18n } from 'vue-i18n';
+	import router	from '../router/index.js';
 
     const	{ t } = useI18n(),
 			formData = ref({
@@ -17,7 +17,6 @@
 			auth = useAuthStore(),
 			visible = ref(false), popup = ref(false),
 			error = ref(false), error_card = ref(false), error_msg = ref(null),
-			router = useRouter(),
 			resp = ref(null);
 
 	async function submitForm() {

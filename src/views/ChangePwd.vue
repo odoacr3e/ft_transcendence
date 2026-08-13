@@ -2,9 +2,9 @@
     import { defaultAvatar, handleAvatarError }	from '../scripts/Helper/CompUtils';
     import { useAuthStore }	from "../stores/auth.st";
     import { storeToRefs }	from 'pinia';
-	import { useRouter }	from 'vue-router';
 	import { useI18n }		from 'vue-i18n';
     import { ref }			from 'vue';
+	import router	from '../router/index.js';
 	
     const	{ t } = useI18n(),
     	   formData = ref({
@@ -14,8 +14,7 @@
             { user } = storeToRefs(authStore),
             visible = ref(false),
 			error = ref(false),
-            auth = useAuthStore(),
-            router = useRouter();
+            auth = useAuthStore();
 
     async function submitForm() {
 		const resp = await auth.changePwd(formData.value);

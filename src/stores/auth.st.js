@@ -3,6 +3,7 @@ import { api }				from '../router/api/client';
 import { authApi }			from '../router/api/auth.api';
 import { defineStore }		from 'pinia';
 import { listenGameSocket } from '../scripts/Data/SocketLink';
+import router from "../router/index.js"
 
 export const useAuthStore = defineStore('auth', {
 	state: () => ({
@@ -59,6 +60,7 @@ export const useAuthStore = defineStore('auth', {
 				this.user = await authApi.mfa(credentials);
 				this.getAllMsg();
 				this.connectSocket();
+				this.sessionChecked = true;
 			}
 			catch (err) { this.error = err.message; }
 			finally		{ this.isLoading = false; }
@@ -86,6 +88,7 @@ export const useAuthStore = defineStore('auth', {
 					await api.post('/auth/forceLogout', { id_user: this.user.id_user })
 				else
 					await authApi.logout({ id_user: this.user.id_user });
+				await router.push('/log');
 				this.disconnectSocket();
 				this.user = null;
 				this.usersOnline.clear();
