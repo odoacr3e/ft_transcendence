@@ -1,8 +1,8 @@
 import { api }				from '../router/api/client';
 import { authApi }			from '../router/api/auth.api';
 import { defineStore }		from 'pinia';
-import { useSockStore }     from './sock.st';
 import { useMsgStore }      from './msg.st';
+import { useSockStore }     from './sock.st';
 import router from "../router/index.js"
 
 export const useAuthStore = defineStore('auth', {
@@ -95,7 +95,6 @@ export const useAuthStore = defineStore('auth', {
 			this.error = null;
 			try {
 				this.user = await authApi.update(credentials);
-				// if (this.user && !this.socket) { useSockStore().connect(); } 
 			}
 			catch (err) { this.error = err.message; }
 			finally		{ this.isLoading = false; }

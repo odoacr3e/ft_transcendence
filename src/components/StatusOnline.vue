@@ -9,7 +9,7 @@
 
 <template>
     <span class="rounded-full absolute size-3 ml-9.5 mt-9.5"
-            :class="sockStore.isUserOnline(prop.user_id) ?  'bg-online-accept' : 'bg-text-lose-closed'"></span>
+            :class="sockStore.isUserOnline(prop.user_id) ? 'bg-online-accept' : 'bg-text-lose-closed'"></span>
 </template>
 
 <style scoped>

@@ -6,6 +6,12 @@
 	import { useI18n }						from 'vue-i18n';
 	import { api }							from '../router/api/client';
 
+	
+	//NOTE - Se volgio fare in modo che il bottone cambi appena clicckato (senza reload)
+	// basta fare updateState dopo il sendReq, l'accetazione/rifiutoReq
+	// Una cosa che però rimane non dinamica è se elimini l'amicizia da UserMe dalla lista
+
+
     const   { t } = useI18n();
 	const   prop = defineProps({
   				user: Object
