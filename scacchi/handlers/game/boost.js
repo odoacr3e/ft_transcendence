@@ -62,11 +62,11 @@ function tryBoost(match, result, from)
 	let	square;
 	let	tmp;
 
-	// if (match.history.moves == 259186)
-	// {
-	// 	render(match);
-	// 	console.log("BREAKPOINT");
-	// }
+	if (match.history.moves >= 35251 && from == "g4")
+	{
+		render(match);
+		console.log("BREAKPOINT");
+	}
 	if (match.boost >= BOOSTED_MAX || match.moves < MOVEMENT_MIN)
 		return (error(result, 403, "You can't boost now"));
 	if (checkKingDanger(match) == true)

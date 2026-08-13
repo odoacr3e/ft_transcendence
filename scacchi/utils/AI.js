@@ -27,6 +27,8 @@ export function execTurn(match, turn, prevTurns=null)
 	let	result;
 	let	oldPlayerDEBUG;
 
+	if (match.history.moves == 35253 && turn.move?.from == "d1" && turn.move?.to == "c2")
+		console.log("DEBUG");
 	oldPlayerDEBUG = {team: match.currentPlayer.team, boosted: match.currentPlayer.boostedPiece};
 	team = match.currentPlayer.team;
 	if (turn.move && move(match, turn.move.from, turn.move.to).status != 200)

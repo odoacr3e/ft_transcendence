@@ -49,9 +49,9 @@ function CheckMateCheck(match, kingCoord=match.currentPlayer.King)
 	if (!enemyCoord)
 		return false;
 	enemySquare = match.board.get(enemyCoord);
-	stopBool = isStoppable(match, kingCoord, enemyCoord);
 	if (isDangerous(match, enemySquare.dangerZones, enemySquare.piece?.team))
 		return (cantMovePiece(match, enemyCoord, enemySquare, kingCoord));
+	stopBool = isStoppable(match, kingCoord, enemyCoord);
 	return (!stopBool);
 }
 

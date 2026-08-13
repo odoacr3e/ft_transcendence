@@ -8,9 +8,10 @@
 
 import { Square } from "../Classes/Chess/chessBoard.js";
 import { Player } from "../Classes/Chess/player.js";
-import { arrayNamesDoubleMove, enumNames } from "../Macro/enums.js";
+import { enumNames } from "../Macro/enums.js";
 import { isDangerous } from "../utils/checkDanger.js";
 import { includesOneOf } from "../utils/string.js";
+import { render } from "../test/render.js";
 
 /** @typedef {import("../Classes/Chess/match").Match} Match*/
 /** @typedef {{from: string, to: string}} Move */
@@ -29,6 +30,8 @@ export function getLegalMoves(match, team=match.currentPlayer.team, infoBool=tru
 	let	targetSquare;
 	/** @type {Map<string, Set<string>>} */
 	let	legalMovesMap = new Map();
+	/** @type {Map<string, Set<string>>} */
+	let	legalBoostedMovesMap = new Map();
 	/** @type {Array<Turn>} */
 	let	legalMovesArray = new Array();
 	/** @type {Player} */
@@ -54,16 +57,38 @@ export function getLegalMoves(match, team=match.currentPlayer.team, infoBool=tru
 				legalMovesMap.set(coord, new Set());
 			legalMovesMap.get(coord)?.add(targetCoord);
 		}
+		for (const [startCoord, targets] of square.boostedTargetZones)
+		{
+			if (startCoord != coord || square.piece.type == enumNames.BASTARDS)
+				break ;
+			for (const target of targets)
+			{
+				targetSquare = match.board.get(target);
+				if (targetSquare.piece?.team == square.piece?.team)
+					continue ;	
+				if (infoBool == false)//@ts-ignore
+					return (false);
+				if (legalBoostedMovesMap.has(coord) == false)
+					legalBoostedMovesMap.set(coord, new Set());
+				legalBoostedMovesMap.get(coord)?.add(target);
+			}
+		}
 	}
 	if (infoBool == false)//@ts-ignore
 		return (true);
 	//@ts-ignore
 	player = match[team];
 	for (const [coord, targetSet] of legalMovesMap)
-	{// TODO - eventualmente controllo per vedere che il re sia al sicuro dopo la mossa
+	{
 		for (const targetCoord of targetSet)
 			pushChildMoves(match, player, legalMovesArray, {from: coord, to: targetCoord});
 	}
+	for (const [coord, targetSet] of legalBoostedMovesMap)
+	{
+		for (const targetCoord of targetSet)
+			pushChildMoves(match, player, legalMovesArray, {from: coord, to: targetCoord}, true);
+	}
+	// legalMovesArray.sort(optimizeSort);
 	return (legalMovesArray);
 }
 
@@ -243,4 +268,22 @@ function pushAllLegalTransform(match, player, legalMovesArray, currTurn, destCoo
 	// 	turnWithTransform.transform = type;
 	// 	legalMovesArray.push(turnWithTransform);
 	// }
+}
+
+/**
+ * 
+ * @param {Turn} turn1 
+ * @param {Turn} turn2 
+ */
+function optimizeSort(turn1, turn2)
+{
+	if (!turn2.boost && turn1.boost)
+		return (-1);
+	else if (turn1.boost && !turn2.boost)
+		return (+1);
+	if (!turn2.moveBoost && turn1.moveBoost)
+		return (+1);
+	else if (turn1.moveBoost && !turn2.moveBoost)
+		return (-1);
+	return (0);
 }

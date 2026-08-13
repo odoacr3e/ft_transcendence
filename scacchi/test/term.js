@@ -52,7 +52,7 @@ function mainTerm()
 	// move(match, "h8", "g8");
 	// if (lib.include.fs.existsSync(HISTORY_DEFAULT))
 	// 	historyRestore(match, HISTORY_DEFAULT);
-	match.currentPlayer.ai = new AI(AIprofiles.FIRST_AI);
+	// match.currentPlayer.ai = new AI(AIprofiles.FIRST_AI);
 	match.NextPlayer().ai = new AI(AIprofiles.GMU);
 	match.aiBool = true;
 
@@ -60,15 +60,6 @@ function mainTerm()
 	console.log(`time to init: ${(process.hrtime.bigint() - time) / 1000n} microseconds`);
 	match.cursor.square = match.currentPlayer.King;
 	render(match);
-	console.log = ()=>{};
-	let i = 0;
-	while (!match.victory)
-	{
-		console.debug(`move ${i++}`);
-		match.cursor.square = "";
-		render(match, [], "", false, console.debug);
-		AIexecuteTurn(match);
-	}
 	return (match);
 }
 
