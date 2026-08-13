@@ -179,6 +179,8 @@ function highLightBoardDiff(correct, wrong)
 	let	diffIndex;
 
 	diffIndex = 0;
+	if (!correct)
+		return ({correct: "", wrong: wrong});
 	while (diffIndex < correct.length)
 	{
 		if (correct.at(diffIndex) != wrong.at(diffIndex))

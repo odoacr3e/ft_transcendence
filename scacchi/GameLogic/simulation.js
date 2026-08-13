@@ -35,7 +35,9 @@ export function simulation(coords, match, result=null, otherCoords=null)
 	let	king;
 	let	kingCoord;
 	let	dangerBool;
+	let	tmpCursor;
 
+	tmpCursor = match.cursor.square;
 	from = match.board.get(coords[0]);
 	to = match.board.get(coords[1]);
 	kingCoord = match.currentPlayer.King;
@@ -83,10 +85,11 @@ export function simulation(coords, match, result=null, otherCoords=null)
 		dangerBool = checkGuardiansDanger(match, coords);	
 	if (tmpSquare)
 		match.board.set(coords[1], tmpSquare);
+	match.cursor.square = tmpCursor;
 	return (!dangerBool);
 }
 
-//FIXME - unused
+// FIXME - unused
 // /**
 //  * 
 //  * @param {Match} match 

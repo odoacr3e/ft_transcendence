@@ -18,6 +18,7 @@ import { simulation } from "./simulation.js";
 import { getLegalMoves } from "./checkLegalMoves.js";
 import {preset} from "../Classes/Chess/Pieces/preset.js";
 import { render } from "../test/render.js";
+import { Piece } from "../Classes/Chess/Pieces/pieces.js";
 
 /**
  * checks if a player is in checkMate
@@ -110,6 +111,10 @@ function checkLostAll(match)
 	return (lostTeam);
 }
 
+/*
+
+*/
+
 /**
  * Checks if a piece that is menacing the king can be eaten
  * @param {Match} match
@@ -117,43 +122,63 @@ function checkLostAll(match)
  * @param {string} enemyCoord 
  * @param {Square | null} enemySquare
  * @param {boolean} recBool
+ * @param {boolean} simBool
+ * @param {Piece | null | undefined} kingPiece
  * @returns {boolean} 
  */
-function isStoppable(match, kingSquare, enemyCoord, enemySquare=null, recBool=false)
+function isStoppable(match, kingSquare, enemyCoord, enemySquare=null, recBool=false, simBool=false, kingPiece=null)
 {
 	let	square;
 	let	dir;
 	let	guardianSquare;
 	let	guardianPiece;
-	let	kingPiece;
 	let	normalSaveBool = false;
 	let	allyGuardianCoord = "";
 	let	influenceCoords;
+	let	startPos;
+	let	tmpCursor;
 
+	tmpCursor = match.cursor.square;
+	match.cursor.square = enemyCoord;
 	match.currentPlayer.guardianPieces.clear();
 	if (!enemySquare)
 		enemySquare = match.board.get(enemyCoord);
-	kingPiece = match.board.get(kingSquare).piece;
+	if (!kingPiece)
+		kingPiece = match.board.get(kingSquare).piece;
 	if (!enemySquare || !kingPiece)
 		throw ("given to isStoppable an invalid position");
-	if (enemySquare.piece?.type == enumNames.JESTER || 
-	enemySquare.piece?.type == enumNames.BASTARDS || 
-	(enemySquare.piece?.type == enumNames.VALKIRYA && 
-	enemySquare.piece?.isBoostedBool == true) ||
+	if (!enemySquare.piece)
+		throw ("isStoppable: enemy undefined");
+	if (enemySquare.piece.type == enumNames.JESTER || 
+	enemySquare.piece.type == enumNames.BASTARDS || 
+	(enemySquare.piece.type == enumNames.VALKIRYA && 
+	enemySquare.piece.isBoostedBool == true) ||
 	match.board.get(kingSquare)?.targetZones.has(enemyCoord))
-		return false;
+		return (match.cursor.square = tmpCursor, false);
+	else if ((enemySquare.piece.type == enumNames.CHAMPION) && enemySquare.piece.isBoostedBool && !recBool)
+		return (match.cursor.square = tmpCursor, canStopTheChampion(match, kingSquare, enemySquare, enemyCoord));
 	dir = getDirection(match, kingSquare, enemyCoord);
-	if (!movePiece(match, dir.diffCol, dir.diffRow))
-		return true;
-	while (match.board.get(match.cursor.square)?.piece?.type != enumNames.KING)
+	// if (!movePiece(match, dir.diffCol, dir.diffRow))
+	// 	return true;
+	startPos = match.cursor.square;
+	while (match.cursor.square != kingSquare)
 	{
 		allyGuardianCoord = "";
 		square = match.board.get(match.cursor.square);
-		if (!square || !square.dangerZones)
+		if (square.piece && startPos != match.cursor.square)
+		{
+			if (enemySquare.boostedTargetZones.has(match.cursor.square) == false)
+				return (match.cursor.square = tmpCursor, true);
+			if (recBool)
+				return (match.cursor.square = tmpCursor, true);
+			return (match.cursor.square = tmpCursor, isStoppable(match, kingSquare, match.cursor.square, enemySquare, true));
+		}
+		if (!square.dangerZones)
 			continue ;
 		influenceCoords = match.board.influenceMap.get(match.cursor.square);
 		if (!influenceCoords)
 			continue ;
+		influenceCoords = structuredClone(influenceCoords);
 		for (let x of influenceCoords)
 		{
 			guardianSquare = match.board.get(x);
@@ -187,18 +212,22 @@ function isStoppable(match, kingSquare, enemyCoord, enemySquare=null, recBool=fa
 				}
 			}
 			if (guardianRegularSave)
-				normalSaveBool = true;
+			{
+				if (!simBool || simulation([x, match.cursor.square], match, null) == true)
+					normalSaveBool = true;
+			}
 			if (guardianBoostedSave)
 			{
-				match.currentPlayer.guardianPieces.add({coord: x, target: match.cursor.square});
+				if (!simBool || simulation([x, match.cursor.square], match, null) == true)
+					match.currentPlayer.guardianPieces.add({coord: x, target: match.cursor.square});
 			}
 		}
 		if (!movePiece(match, dir.diffCol, dir.diffRow))
 		{
 			if (enemySquare.boostedTargetZones.has(match.cursor.square) == false)
-				return (true);
+				return (match.cursor.square = tmpCursor, true);
 			if (recBool)
-				return (true);
+				return (match.cursor.square = tmpCursor, true);
 			return (isStoppable(match, kingSquare, match.cursor.square, enemySquare, true));
 		}
 	}
@@ -206,9 +235,9 @@ function isStoppable(match, kingSquare, enemyCoord, enemySquare=null, recBool=fa
 	{
 		if (allyGuardianCoord)//@ts-ignore
 			match[match.currentPlayer.ally].allieGuardianCoord = allyGuardianCoord;
-		return true;
+		return (match.cursor.square = tmpCursor, true);
 	}
-	return false;
+	return (match.cursor.square = tmpCursor, false);
 }
 
 /**
@@ -482,6 +511,37 @@ function cantMovePiece(match, enemyCoord, enemySquare, kingCoord)
 	}
 	if (allyGuardianCoord)//@ts-ignore
 		match[match.currentPlayer.ally].allieGuardianCoord = allyGuardianCoord;
+	return (true);
+}
+
+/**
+ * 
+ * @param {Match} match
+ * @param {string} kingCoord
+ * @param {Square} enemySquare 
+ * @param {string} enemyCoord
+ * @return {boolean}
+ */
+function canStopTheChampion(match, kingCoord, enemySquare, enemyCoord)
+{
+	let kingSquare;
+	let keySet = new Set();
+
+	if (enemySquare.targetZones.has(kingCoord) && !isStoppable(match, kingCoord, enemyCoord, enemySquare, true))
+		return (false);
+	kingSquare = match.board.get(kingCoord);
+	for (let [key, val] of enemySquare.boostedTargetZones)
+	{
+		if (val.has(kingCoord))
+			keySet.add(key);
+	}
+	for (let key of keySet)
+	{
+		if (isStoppable(match, key, enemyCoord, enemySquare, true, true, kingSquare.piece))
+			continue ;
+		if (!isStoppable(match, kingCoord, key, enemySquare, true, true))
+			return (false);
+	}
 	return (true);
 }
 

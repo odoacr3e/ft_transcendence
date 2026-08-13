@@ -184,8 +184,8 @@ process.stdin.on('keypress', (str, key) =>
 			if (!name)
 				name = HISTORY_FILE;
 			historyRestore(match, HISTORY_PATH + name);
-			match.NextPlayer().ai = new AI();
-			match.aiBool = true;
+			// match.NextPlayer().ai = new AI();
+			// match.aiBool = true;
 			break ;
 		}
 		case (cmd.CANCEL_EVENT):

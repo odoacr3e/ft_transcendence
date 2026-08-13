@@ -40,6 +40,11 @@ function boost(match, from)
 	aiSpeech(match, AI_EVENTS.applyBoostMe, [match.board.get(from).piece?.type]);
 	if (match.boost == BOOSTED_MAX)
 	{
+		if (match.history.moves >= 35252 && from == "g4" && match.board.get("e2").piece?.type == enumNames.MINOTAURUS)
+		{
+			render(match);
+			console.log("BREAKPOINT");
+		}
 		checkMateCheckAll(match, result);
 		if (endTurn(match, false).specialMoves.CheckKingDanger())
 			result.specialMoves.SetKingDanger();
@@ -62,11 +67,6 @@ function tryBoost(match, result, from)
 	let	square;
 	let	tmp;
 
-	if (match.history.moves >= 35251 && from == "g4")
-	{
-		render(match);
-		console.log("BREAKPOINT");
-	}
 	if (match.boost >= BOOSTED_MAX || match.moves < MOVEMENT_MIN)
 		return (error(result, 403, "You can't boost now"));
 	if (checkKingDanger(match) == true)
