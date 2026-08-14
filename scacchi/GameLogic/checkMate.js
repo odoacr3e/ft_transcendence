@@ -14,7 +14,7 @@ import { isDangerous } from "../utils/checkDanger.js";
 import { movePiece, getDirection } from "../utils/movePiece.js";
 import { Square } from "../Classes/Chess/chessBoard.js";
 import { pathFinding } from "./pathFinding.js";
-import { simulation } from "./simulation.js";
+import { simulation, simulationGlobal } from "./simulation.js";
 import { getLegalMoves } from "./checkLegalMoves.js";
 import {preset} from "../Classes/Chess/Pieces/preset.js";
 import { render } from "../test/render.js";
@@ -540,7 +540,7 @@ function canStopTheChampion(match, kingCoord, enemySquare, enemyCoord)
 		if (isStoppable(match, key, enemyCoord, enemySquare, true, true, kingSquare.piece))
 			continue ;
 		if (!isStoppable(match, kingCoord, key, enemySquare, true, true))
-			return (false);
+			return (simulationGlobal(match));
 	}
 	return (true);
 }

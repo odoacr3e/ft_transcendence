@@ -163,6 +163,14 @@ class Match
 		player = this[this.currentPlayer.prev];
 		return (player);
 	}
+	/** 
+	 * @param {string} team 
+	 * @returns {Player}
+	 * */
+	GetPlayer(team)
+	{//@ts-ignore
+		return (this[team]);
+	}
 	CheckOtherKingsDanger()
 	{
 		/** @type {Player} */let	player;

@@ -89,28 +89,37 @@ export function simulation(coords, match, result=null, otherCoords=null)
 	return (!dangerBool);
 }
 
-// FIXME - unused
-// /**
-//  * 
-//  * @param {Match} match 
-//  * @param {string} team 
-//  */
-// export function simulationGlobal(match, team=match.currentPlayer.team)
-// {
-// 	let	legalMovesArray;
+let	DEBUGcount = 0;
 
-// 	legalMovesArray = getLegalMoves(match, team, true);
-// 	for (const turn of legalMovesArray)
-// 	{
-// 		if (turn.move && turn.moveBoost && simulation([turn.move.from, turn.move.to], match, null, [turn.moveBoost.from, turn.moveBoost.to]))
-// 			return (true);
-// 		else if (turn.move && !turn.moveBoost && simulation([turn.move.from, turn.move.to], match))
-// 			return (true);
-// 		else if (!turn.move && turn.moveBoost && simulation([turn.moveBoost.from, turn.moveBoost.to], match))
-// 			return (true);
-// 	}
-// 	return (false);
-// }
+/**
+ * tried to move every piece in the team once, to find a valid move
+ * @param {Match} match 
+ * @param {string} team 
+ */
+export function simulationGlobal(match, team=match.currentPlayer.team)
+{
+	let	kingCoord;
+	let	legalMovesArray;
+
+	console.debug(`===============================`);
+	console.debug(`=======SIMULATION GLOBAL=======`);
+	console.debug(`=======CALL NUMBER ${++DEBUGcount}========`);
+	console.debug(`===============================`);
+	kingCoord = match.GetPlayer(team).King;
+	legalMovesArray = getLegalMoves(match, team, true);
+	for (const turn of legalMovesArray)
+	{
+		if (turn.move?.from == kingCoord)
+			continue ;
+		if (turn.move && turn.moveBoost && simulation([turn.move.from, turn.move.to], match, null, [turn.moveBoost.from, turn.moveBoost.to]))
+			return (console.log(`SAVE: ${JSON.stringify(turn, null, 2)}`), true);
+		else if (turn.move && !turn.moveBoost && simulation([turn.move.from, turn.move.to], match))
+			return (console.log(`SAVE: ${JSON.stringify(turn, null, 2)}`), true);
+		else if (!turn.move && turn.moveBoost && simulation([turn.moveBoost.from, turn.moveBoost.to], match))
+			return (console.log(`SAVE: ${JSON.stringify(turn, null, 2)}`), true);
+	}
+	return (false);
+}
 
 //SECTION - utils
 

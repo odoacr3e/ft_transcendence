@@ -25,7 +25,6 @@ import { fakeBoost } from "../handlers/game/boost.js";
 import { Match, MatchSettings } from "../Classes/Chess/match.js";
 import { getLegalMoves } from "../GameLogic/checkLegalMoves.js";
 import { AI } from "../Classes/Chess/AI.js";
-import { AIexecuteTurn } from "../GameLogic/aiTurn.js";
 
 //SECTION - main: inizializza e fa primo render, mette terminale in ascolto
 function mainTerm()
@@ -34,6 +33,7 @@ function mainTerm()
 	let	seed;
 	let	time;
 
+	// console.log = ()=>{};
 	console.time();
 	console.profile();
 	termInit();
@@ -184,8 +184,8 @@ process.stdin.on('keypress', (str, key) =>
 			if (!name)
 				name = HISTORY_FILE;
 			historyRestore(match, HISTORY_PATH + name);
-			// match.NextPlayer().ai = new AI();
-			// match.aiBool = true;
+			match.NextPlayer().ai = new AI();
+			match.aiBool = true;
 			break ;
 		}
 		case (cmd.CANCEL_EVENT):
