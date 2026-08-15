@@ -162,7 +162,8 @@ function getBestTurn(match)
 }
 
 let DEB = 0;
-
+//101320
+//101329
 /**
  * 
  * @param {Match} match 
@@ -180,6 +181,7 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 	let val;
 	let	lostTeam;
 
+	DEB++;
 	// console.log(depth);
 	if ((depth <= 0))
 		return (evalScore(match, ai, pastTurns));
@@ -189,8 +191,12 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 	if (match.currentPlayer.team == eTeam.White)
 	{
 		let maxEval = -Infinity;
+		let i = -1;
 		for (const turn of arrayTurns)
 		{
+			++i;
+			if (DEB == 101328 && i == 120)
+				console.log("a");
 			if (execTurn(match, turn, pastTurns) == false)
 				continue ;
 			if (depth != 1)
@@ -226,6 +232,10 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 				newTurns = getLegalMoves(match);
 			// else
 			// 	console.log(arrayTurns.length);
+			if (DEB >= 101320)
+			{
+				console.log("çount => " + DEB);
+			}
 			pastTurns.push(turn);
 			// console.log(turn);
 			ai.Simulate(match, ai);//@ts-ignore

@@ -54,7 +54,7 @@ export function AI_gmu_eval(match, ai, turns)
 		for (const [key, boostTarget] of match.board.get(lastTurn.boost).boostedTargetZones)
 			score += boostTarget.size;
 	}
-	if (score == 0)
-		return (Math.floor(Math.random() * 10000) * (Math.floor(Math.random()) == 1? 1 : -1));
+	// if (score == 0)
+	// 	return (Math.floor(Math.random() * 10000) * (Math.floor(Math.random()) == 1? 1 : -1));
 	return (score);
 }

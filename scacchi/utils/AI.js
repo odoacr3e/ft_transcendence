@@ -13,7 +13,11 @@ import { render } from "../test/render.js";
 /** @typedef {{move: Move | null, moveBoost: Move | null, transform: string, boost: string}} Turn */
 
 let	DEB = 0;
-
+let	DEB1 = 0;
+let	DEB2 = 0;
+//226768 - 	226629
+//3636
+//3213
 /**
  * 
  * @param {Match} match 
@@ -27,8 +31,13 @@ export function execTurn(match, turn, prevTurns=null)
 	let	result;
 	let	oldPlayerDEBUG;
 
-	if (match.history.moves == 35253 && turn.move?.from == "d1" && turn.move?.to == "c2")
-		console.log("DEBUG");
+	DEB++;
+	if (turn.boost == "h5")
+		DEB1++;
+	if (DEB1 == 3635)
+		console.log("exec break");
+	if (DEB >= 226700)
+		console.log("exec=> ", DEB, DEB1, DEB2);
 	oldPlayerDEBUG = {team: match.currentPlayer.team, boosted: match.currentPlayer.boostedPiece};
 	team = match.currentPlayer.team;
 	if (turn.move && move(match, turn.move.from, turn.move.to).status != 200)
@@ -62,6 +71,13 @@ export function cancelTurn(match, turn)
 {
 	let	result;
 
+	DEB++;
+	if (turn.boost == "h5")
+		DEB2++;
+	if (DEB2 == 3212)
+		console.log("cancel break");
+	if (DEB >= 226700)
+		console.log("cancel=> ", DEB, DEB1, DEB2);
 	if (match.history.Last().type != eEvents.EndTurn)
 		throw ("cancelTurn: last turn is not endTurn:" + JSON.stringify(turn, null, 2) + JSON.stringify(match.history.events, null, 2));
 	result = cancelEvent(match); 
