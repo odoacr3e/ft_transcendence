@@ -182,7 +182,6 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 	let	lostTeam;
 
 	DEB++;
-	// console.log(depth);
 	if ((depth <= 0))
 		return (evalScore(match, ai, pastTurns));
 	lostTeam = checkLostAll(match);

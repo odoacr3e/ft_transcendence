@@ -86,6 +86,8 @@ export function simulation(coords, match, result=null, otherCoords=null)
 	if (tmpSquare)
 		match.board.set(coords[1], tmpSquare);
 	match.cursor.square = tmpCursor;
+	if (from.piece?.isBoostedBool)
+		match.currentPlayer.boostedPiece = coords[0];
 	return (!dangerBool);
 }
 

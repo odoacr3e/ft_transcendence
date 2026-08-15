@@ -38,7 +38,7 @@
     "make": "r='npm run';R='\\033[31m';G='\\033[32m';Y='\\033[33m';Q='\\033[0m'; echo ♔ $Y waiting... $Q;((echo ♖ $Y updating node modules... $Q >/dev/stderr;$r) && (echo ♗ $Y configurating prisma...>/dev/stderr;$r confprisma) && (echo ♘ $Y pulling from db... remember to get the .env from Slack $Q >/dev/stderr;$r pulldb)) >/dev/null && echo ♕ $G OK $Q || echo 𝖈𝖍𝖊𝖈𝖐𝖒𝖆𝖙𝖊! $R ERROR $Q",
     "gtest": "node test/cursorTest.js && node --env-file=.env test/localTest.js && node --env-file=.env test/curlTest.js && echo '\n\\033[32mGAME OK!' || echo '\n\\033[31m' KO!; echo '\n\\033[0m'",
     "aitest": "node --env-file=.env test/aiTest.js",
-	"term": "clear ; node --trace-uncaught --env-file=.env test/term.js",
+    "term": "clear ; node --trace-uncaught --env-file=.env test/term.js",
     "debugTerm": "clear ; node --trace-uncaught --inspect --env-file=.env test/term.js",
     "profileGame": "clear; node --prof --env-file=.env test/term.js"
   },
