@@ -29,7 +29,8 @@ function AIProfileConstructor(ai)
 			ai.Eval = AI_gmu_eval;
 			break ;
 		case (AIprofiles.DEBUG):
-			ai.Eval = () => {return (0);}
+			ai.Eval = () => {return (0);};
+			break ;
 		default :
 			throw (`AI profile ${ai.profile} not recognized.`);
 	}
