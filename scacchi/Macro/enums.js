@@ -197,7 +197,8 @@ const kingMovements =
 const AIprofiles = 
 {
 	FIRST_AI: "First",
-	GMU: "gmu"
+	GMU: "gmu",
+	DEBUG: "Debug"
 }
 
 const AIprofilesArray = Object.values(AIprofiles);

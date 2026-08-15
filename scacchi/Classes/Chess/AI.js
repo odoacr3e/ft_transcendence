@@ -102,12 +102,11 @@ function getBestTurn(match)
 	for (let i = 0; i != arrayTurns.length; i++)
 	{
 		console.log(`Turns: ${i}/${arrayTurns.length}`);
-		render(match);
 		const turn = arrayTurns[i];
 		if (!execTurn(match, turn))
 			continue ;
-		playableTurn.push(turn);
 		render(match);
+		playableTurn.push(turn);
 		newTurns = getLegalMoves(match);
 		val.score = minMax(match, ai, newTurns, 2, [turn], -Infinity, +Infinity);
 		// val.score = Math.abs(val.score);
@@ -231,10 +230,6 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 				newTurns = getLegalMoves(match);
 			// else
 			// 	console.log(arrayTurns.length);
-			if (DEB >= 101320)
-			{
-				console.log("çount => " + DEB);
-			}
 			pastTurns.push(turn);
 			// console.log(turn);
 			ai.Simulate(match, ai);//@ts-ignore
