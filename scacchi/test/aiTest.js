@@ -14,7 +14,8 @@ import { init } from "../handlers/game/init.js";
 import { boardStringify, render } from "./render.js";
 import { jsonParser } from "../utils/response.js";
 import { colors } from "./colorsOld.js";
-import { AIprofiles } from "../Macro/enums.js";
+import { AIprofiles, eEvents } from "../Macro/enums.js";
+import { endTurn } from "../handlers/game/endTurn.js";
 
 const TEST_PATH = `${HISTORY_PATH}`;
 
@@ -100,6 +101,11 @@ function execTest(matchPath=null)
 		else
 			match = loadHistory(matchPath);
 		currMatchData = match;
+		if (match.history.Last().type != eEvents.EndTurn && endTurn(match, false).status != 200)
+		{
+			console.debug(`${currMatch}: ${MSG.RESULT_IGNORED}`);
+			return ;
+		}
 		match.currentPlayer.ai = new AI(AIprofiles.DEBUG);
 		match.NextPlayer().ai = new AI(AIprofiles.DEBUG);
 		match.aiBool = true;

@@ -3,7 +3,7 @@
 import { matchMakingOpt } from "../../Classes/endPoint/matchInit.js";
 import { Result } from "../../Classes/endPoint/result.js";
 import { enumConnection } from "../../Macro/enums.js";
-import { includesOneOf } from "../../utils/string.js";
+import { isOneOf } from "../../utils/string.js";
 import { MatchMaking } from "../handlers/MatchMaking.js";
 import { isBusy } from "../utils.js";
 
@@ -25,7 +25,7 @@ export function routesMatchMaking(socket, user)
 			socket.emit('error', {log: {status: 403, msg: `bad options parameter: ${options}. expected: ${matchMakingOpt}`}});
 			return ;
 		}
-		if (includesOneOf(options.roomType, enumConnection.FRIENDLY, enumConnection.RANKED, enumConnection.ARENA))
+		if (isOneOf(options.roomType, enumConnection.FRIENDLY, enumConnection.RANKED, enumConnection.ARENA))
 			MatchMaking(user, options);
 		else
 			throw ("stanze non implementate");

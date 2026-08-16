@@ -16,7 +16,7 @@ import {initRng} from "../../utils/random.js";
 import { CHESSBOARD_W, CHESSBOARD_H, AI_EVENTS } from "../../Macro/macro.js";
 import * as creators from "../../GameLogic/createChessBoard.js";
 import { MatchSettings, matchPresets } from "../../Classes/Chess/match.js";
-import { includesOneOf, strCount } from "../../utils/string.js";
+import { isOneOf, strCount } from "../../utils/string.js";
 import { enumInitTeam } from "../../Macro/enums.js";
 import { render } from "../../test/render.js";
 import { aiSpeech } from "../../Classes/Chess/AIprofiles/speech.js";
@@ -85,7 +85,7 @@ function initFromStr(boardStr, matchSettings=null)
 	boardX = strCount(firstLine, "|") - 1;
 	boardY = strCount(boardStr, "\n");
 	playerNum = 2;
-	if (includesOneOf(boardStr, enumInitTeam.Green, enumInitTeam.Red, enumInitTeam.Yellow))
+	if (isOneOf(boardStr, enumInitTeam.Green, enumInitTeam.Red, enumInitTeam.Yellow))
 		playerNum = 4;
 	matchSettings = new MatchSettings();
 	matchSettings.board.heigth = boardY;

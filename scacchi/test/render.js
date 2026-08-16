@@ -5,7 +5,7 @@ import { Result } from "../Classes/endPoint/result.js";
 import {eTeam, getInitialOfTeam, enumNames} from "../Macro/enums.js";
 import { AI_EVENTS } from "../Macro/macro.js";
 import { isDangerous } from "../utils/checkDanger.js";
-import { includesOneOf } from "../utils/string.js";
+import { isOneOf } from "../utils/string.js";
 
 /** @typedef {import("../Classes/Chess/match.js").Match} Match*/
 
@@ -76,7 +76,7 @@ function renderSquare(match, square, coords, selected, TargetDangerSwitch)
 		buffer += "[X]";
 	else if (coords.player == coords.curr)
 		buffer += `\x1b[32m[${asciiArt}]`;
-	else if (includesOneOf(coords.curr, match.lastMenace.from, match.lastMenace.mid, match.lastMenace.to))
+	else if (isOneOf(coords.curr, match.lastMenace.from, match.lastMenace.mid, match.lastMenace.to))
 		buffer += `\x1b[31m[${asciiArt}]`;
 	else if (coords.curr == selected[0])
 		buffer += `\x1b[33m[${asciiArt}]`;

@@ -1,7 +1,7 @@
 //@ts-check
 import { enumNames } from "../../Macro/enums.js";
 import { jsonParser } from "../../utils/response.js";
-import { includesOneOf } from "../../utils/string.js";
+import { isOneOf } from "../../utils/string.js";
 import { clientBoard } from "./utils.js";
 
 /**
@@ -38,7 +38,7 @@ export function reload(match, result, socketData)
 	{
 		lastMovedPiece = match.board._data.get(match.history.Last().to)?.piece;
 		if (lastMovedPiece && lastMovedPiece.isBoostedBool == true &&
-		includesOneOf(lastMovedPiece.type, enumNames.BASTARDS, enumNames.MINOTAURUS, enumNames.CHAMPION))
+		isOneOf(lastMovedPiece.type, enumNames.BASTARDS, enumNames.MINOTAURUS, enumNames.CHAMPION))
 		{
 			result.usedBoost = match.history.Last().to;//@ts-ignore
 			result.oldBoosted = jsonParser(match.history.Last().pieceBoosterTargetZones);

@@ -1,6 +1,6 @@
 //@ts-check
 
-import { includesOneOf } from "../../utils/string.js";
+import { isOneOf } from "../../utils/string.js";
 import { eMatchPresets } from "../../Macro/enums.js";
 import { matchMakingOpt } from "../endPoint/matchInit.js";
 import { enumConnection } from "../../Macro/enums.js";
@@ -153,7 +153,7 @@ export class QueueNode
 		/** @type {string} */						this.matchType = options.matchType;
 		/** @type {number} */						this.minPlayers = 2;
 
-		if (includesOneOf(this.matchType, fourPresets))
+		if (isOneOf(this.matchType, fourPresets))
 			this.minPlayers = 4;
 	}
 	IsFull()

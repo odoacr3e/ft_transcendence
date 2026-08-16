@@ -12,7 +12,7 @@ import { enumNames, eEvents, eMatchPresets } from "../Macro/enums.js";
 import { movePiece } from "../utils/dangerUpdate.js";
 import { Preset } from "../Classes/Chess/Pieces/preset.js";
 import {checkCastling} from "./Castling.js";
-import { includesOneOf } from "../utils/string.js";
+import { isOneOf } from "../utils/string.js";
 import { MOVEMENT_MAX } from "../Macro/macro.js";
 import { simulation } from "./simulation.js";
 import { coordNormify } from "../Classes/Chess/cursor.js";
@@ -141,7 +141,7 @@ function checkBooster(match, result, from, coords, boostBool)
 		pieceMultipleMoveBool = false;
 	if (pieceMultipleMoveBool == true)
 	{
-		if (!includesOneOf(match.history.Last().type, eEvents.Move, eEvents.MoveBoost))
+		if (!isOneOf(match.history.Last().type, eEvents.Move, eEvents.MoveBoost))
 			return (error(result, 500, "match History is messed up"));
 	}
 	if (boostBool && from.piece.isBoostedBool == true)

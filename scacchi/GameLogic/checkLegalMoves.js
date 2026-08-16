@@ -10,7 +10,7 @@ import { Square } from "../Classes/Chess/chessBoard.js";
 import { Player } from "../Classes/Chess/player.js";
 import { enumNames } from "../Macro/enums.js";
 import { isDangerous } from "../utils/checkDanger.js";
-import { includesOneOf } from "../utils/string.js";
+import { isOneOf } from "../utils/string.js";
 import { render } from "../test/render.js";
 
 /** @typedef {import("../Classes/Chess/match").Match} Match*/
@@ -133,7 +133,7 @@ function pushChildMoves(match, player, legalMovesArray, move, boostBool=false)
 			{
 				if (move.from == key || move.to == zone)
 					continue ;
-				if (includesOneOf(boostedSquare.piece.type, enumNames.CHAMPION, enumNames.MINOTAURUS) && move.to != key)
+				if (isOneOf(boostedSquare.piece.type, enumNames.CHAMPION, enumNames.MINOTAURUS) && move.to != key)
 					continue ;
 				currTurn = {move: move, moveBoost: {from: key, to: zone}, boost: "", transform: ""};
 				legalMovesArray.push(currTurn);

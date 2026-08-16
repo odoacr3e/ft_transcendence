@@ -20,7 +20,7 @@ import { globals } from "../../Classes/Globals/globals.js";
 import { query } from "../../lib/query.js";
 const { openMatch, createUsersMatch } = query.gameQuery;
 import { Match} from "../../Classes/Chess/match.js";
-import { includesOneOf } from "../../utils/string.js";
+import { isOneOf } from "../../utils/string.js";
 import { updateTournament } from "../../websocket/handlers/tournament.js";
 import { roomMessage } from "../../websocket/utils.js";
 import { enumSocketState } from "../../Macro/enums.js";
@@ -86,7 +86,7 @@ async function gameWebSocketHandler(req, id_user, socketData)
 		return (socketError(socketData.socket, null, 403, "Socket: invalid match id " + matchId));
 	id = match.id;
 	req = normifyRequest(match.cursor, req);
-	if (includesOneOf(req.type, "reload", "history"))
+	if (isOneOf(req.type, "reload", "history"))
 		result = await gameInfoHandler(match, req, socketData);
 	else if (match.currentPlayer.team != socketData.matchData?.team)
 		return (socketError(socketData.socket, null, 401, "Socket: it's not your turn, mr.greedy cheeta"));
@@ -129,7 +129,7 @@ async function gameHandler(match, body, socketData=null)
 {
 	let	result;
 
-	if (includesOneOf(body.type, "reload", "history"))
+	if (isOneOf(body.type, "reload", "history"))
 		return (gameInfoHandler(match, body, socketData));
 	result = new Result();
 	console.clear();

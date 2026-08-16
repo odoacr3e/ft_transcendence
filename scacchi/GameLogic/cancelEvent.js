@@ -7,7 +7,7 @@ import { eEvents, enumNames, enumSpecialMoves } from "../Macro/enums.js";
 import { MOVEMENT_BONUS_POINT } from "../Macro/macro.js";
 import { boardStringify } from "../test/render.js";
 import { DangerUpdate, updateBoostedChampions } from "../utils/dangerUpdate.js";
-import { includesOneOf } from "../utils/string.js";
+import { isOneOf } from "../utils/string.js";
 import { setTimerGame } from "./timer.js";
 
 /** @typedef {import("../Classes/Chess/match.js").Match} Match */
@@ -26,7 +26,7 @@ export function cancelEvent(match)
 	if (match.aiSimulation == false)
 		console.log("behold an unthinkable present...");
 	lastEvent = match.history.Last();
-	if (includesOneOf(lastEvent.type, eEvents.Move, eEvents.MoveBoost))
+	if (isOneOf(lastEvent.type, eEvents.Move, eEvents.MoveBoost))
 		errorMsg = cancelMove(match, lastEvent);
 	else if (lastEvent.type == eEvents.Boost)
 		errorMsg = cancelBoost(match, lastEvent);

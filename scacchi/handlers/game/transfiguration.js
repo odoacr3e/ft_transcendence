@@ -15,7 +15,7 @@ import { DangerUpdate, updateBoostedChampions } from "../../utils/dangerUpdate.j
 import { Piece } from "../../Classes/Chess/Pieces/pieces.js";
 import { checkKingDanger } from "../../utils/checkDanger.js";
 import { enumNames, arrayNames } from "../../Macro/enums.js";
-import { includesOneOf } from "../../utils/string.js";
+import { isOneOf } from "../../utils/string.js";
 import { aiSpeech } from "../../Classes/Chess/AIprofiles/speech.js";
 import { AI_EVENTS } from "../../Macro/macro.js";
 
@@ -93,7 +93,7 @@ function CheckTransfiguration(match, result, piece, coord, newType)
 		Maybe you should stop cheating too, if it possible`));
 	if (match.cursor.EdgeCheck(match.currentPlayer.team, coord) == false)
 		return (error(result, 403, `you must be on a edge to transform`));
-	if (!includesOneOf(newType, arrayNames))
+	if (!isOneOf(newType, arrayNames))
 		return (error(result, 403, `${newType} not in array "${arrayNames}"`));
 	if (match.history.Last().to != piece.pos)
 		return (error(result, 403, `That's too late to boost that bastard.`));

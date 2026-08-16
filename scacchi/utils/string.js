@@ -1,7 +1,32 @@
 // @ts-check
 
 /**
- * checks if one on the strings is present in the source string
+ * checks if one on the strings is the source string
+ * @param {String} str  the source string 
+ * @var .one or more string to compare, OR an Array
+ * @returns {string} the first string found if a match exists, else ""
+ */
+function isOneOf(str)
+{
+	let list = arguments;
+	let i = 0;
+
+	if (list[1] == "")
+		return ("");
+	if (typeof(list[1]) != "string")
+		list = list[1];
+	else
+		i = 1;
+	for (; i != list.length; i++)
+	{
+		if (str == list[i])
+			return (list[i]);
+	}
+	return ("");
+}
+
+/**
+ * checks if one on the strings is included in the source string
  * @param {String} str  the source string 
  * @var .one or more string to compare, OR an Array
  * @returns {string} the first string found if a match exists, else ""
@@ -17,12 +42,12 @@ function includesOneOf(str)
 		list = list[1];
 	else
 		i = 1;
-    for (; i != list.length; i++)
-    {
-        if (str == list[i])
-            return (list[i]);
-    }
-    return ("");
+	for (; i != list.length; i++)
+	{
+		if (str.includes(list[i]))
+			return (list[i]);
+	}
+	return ("");
 }
 
 /**
@@ -61,4 +86,4 @@ function isLowerCase(string)
 	return (chr >= 97 && chr <= 122);
 }
 
-export {includesOneOf, strCount, isLowerCase};
+export {isOneOf, includesOneOf, strCount, isLowerCase};

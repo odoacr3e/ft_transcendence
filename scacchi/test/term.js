@@ -2,7 +2,7 @@
 import {HISTORY_DEFAULT, HISTORY_FILE, HISTORY_PATH} from "../Macro/macro.js";
 import {AIprofiles, eEvents} from "../Macro/enums.js";
 import {movePiece} from "../utils/dangerUpdate.js";
-import {includesOneOf} from "../utils/string.js";
+import {isOneOf} from "../utils/string.js";
 import {historyGetMatchState, historyRestore, historyRestoreFromDb} from "../utils/history.js";
 import {error, move, boost, endTurn, init} from "../handlers/game/Game.js";
 import {Result} from "../handlers/game/utils.js";
@@ -216,7 +216,7 @@ process.stdin.on('keypress', (str, key) =>
 			break ;
 		}
 	}
-	if (includesOneOf(key.name, cmd.MOVEMENTS) && !movePiece(match, dx, dy))
+	if (isOneOf(key.name, cmd.MOVEMENTS) && !movePiece(match, dx, dy))
 	{
 		console.log("lol no");
 	}
