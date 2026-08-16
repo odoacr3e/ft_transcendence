@@ -18,6 +18,7 @@ import { AIprofiles, eEvents } from "../Macro/enums.js";
 import { endTurn } from "../handlers/game/endTurn.js";
 
 const TEST_PATH = `${HISTORY_PATH}`;
+const DEFAULT_AI = AIprofiles.FIRST_AI;
 
 //@ts-ignore
 /** @typedef {import ("../../history/HISTORY.json")} historyData */
@@ -26,6 +27,7 @@ let	currMatch = "";
 let	renderOutput = "";
 let	currMatchData = new Match();
 let	errorFlag = 0;
+let aiType = "";
 
 function testerMain()
 {
@@ -35,7 +37,9 @@ function testerMain()
 	console.debug = console.log;
 	console.log = () => {};
 	globals.matches.set("0", new Match());
-	matchName = process.argv.at(2);
+	aiType = getAiType(process.argv[2]);
+	if (!aiType)
+		matchName = process.argv.at(2);
 	if (!matchName)
 		return (execAllTests());
 	if (matchName.endsWith(".json") == false)
@@ -106,8 +110,8 @@ function execTest(matchPath=null)
 			console.debug(`${currMatch}: ${MSG.RESULT_IGNORED}`);
 			return ;
 		}
-		match.currentPlayer.ai = new AI(AIprofiles.FIRST_AI);
-		match.NextPlayer().ai = new AI(AIprofiles.FIRST_AI);
+		match.currentPlayer.ai = new AI(aiType);
+		match.NextPlayer().ai = new AI(aiType);
 		match.aiBool = true;
 		i = 0;
 		while (!match.victory)
@@ -204,6 +208,8 @@ function fail(msg, err)
 		game: err,
 		info: msg,
 		render: renderOutput,
+		aiWhite: currMatchData.white.ai?.profile,
+		aiBlack: currMatchData.black.ai?.profile,
 		events: JSON.stringify(currMatchData.history.events, null, 2)
 	};
 	console.debug(`ERROR saved in: "test/log/${currMatch}_${Date.now()}.json".\n\n\n\n`);
@@ -228,4 +234,24 @@ function redirectRender(str)
 		str = str.slice(0, ansiIndex) + str.slice(ansiEndIndex + 1);
 	}
 	renderOutput += `${str}\n`;
+}
+
+/**
+ * 
+ * @param {string | undefined} type 
+ */
+function getAiType(type="")
+{
+	if (!type)
+		return (DEFAULT_AI);
+//@ts-ignore
+	if (AIprofiles[type])//@ts-ignore
+		return (AIprofiles[type]);//@ts-ignore
+	if (AIprofiles[type.toLocaleLowerCase()])//@ts-ignore
+		return (AIprofiles[type.toLocaleLowerCase()]);//@ts-ignore
+	if (AIprofiles[type.toLocaleUpperCase()])//@ts-ignore
+		return (AIprofiles[type.toLocaleUpperCase()]);//@ts-ignore
+	if (type && !AIprofiles[type.at(0)?.toUpperCase() + type.toLowerCase().slice(1)])//@ts-ignore
+		return (AIprofiles[type.at(0)?.toUpperCase() + type.toLowerCase().slice(1)]);
+	return (DEFAULT_AI);
 }
