@@ -8,6 +8,7 @@ import { endTurn } from "../handlers/game/endTurn.js";
 import { eEvents } from "../Macro/enums.js";
 import { render } from "../test/render.js";
 import { checkKingDanger } from "./checkDanger.js";
+import { isOneOf } from "./string.js";
 
 /** @typedef {import("../Classes/Chess/match.js").Match} Match*/
 /** @typedef {{from: string, to: string}} Move */
@@ -55,7 +56,13 @@ export function execTurn(match, turn, prevTurns=null)
 	if (turn.transform && makeTransfiguration(match, toCoord, turn.transform).status != 200)
 		throw (`execTurn: transfiguration has failed`);
 	if (team == match.currentPlayer.team)
-		endTurn(match, false);
+	{
+		if ((result = endTurn(match, false)).status != 200)
+		{
+			while (!isOneOf(match.history.Last().type, eEvents.EndTurn, "Empty"))
+				cancelEvent(match);
+		}
+	}
 	return true;
 }
 
