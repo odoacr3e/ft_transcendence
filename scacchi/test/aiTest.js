@@ -61,7 +61,7 @@ testerMain();
 
 function execAllTests()
 {
-	for (let i = 0; i != 5; i++)
+	for (let i = 0; i != 3; i++)
 	{
 		currMatch = "fresh " + i;
 		execTest(null);

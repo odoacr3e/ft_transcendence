@@ -7,6 +7,7 @@ import { makeTransfiguration } from "../handlers/game/transfiguration.js";
 import { endTurn } from "../handlers/game/endTurn.js";
 import { eEvents } from "../Macro/enums.js";
 import { render } from "../test/render.js";
+import { checkKingDanger } from "./checkDanger.js";
 
 /** @typedef {import("../Classes/Chess/match.js").Match} Match*/
 /** @typedef {{from: string, to: string}} Move */
@@ -36,6 +37,8 @@ export function execTurn(match, turn, prevTurns=null)
 	team = match.currentPlayer.team;
 	if (turn.move && move(match, turn.move.from, turn.move.to).status != 200)
 		return (false);
+	if (turn.move?.to == match.currentPlayer.boostedPiece && !turn.moveBoost && checkKingDanger(match))
+		return (cancelEvent(match), false);
 	if (turn.moveBoost && move(match, turn.moveBoost.from, turn.moveBoost.to, true).status != 200)
 	{
 		if (turn.move)

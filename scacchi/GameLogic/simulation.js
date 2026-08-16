@@ -103,10 +103,10 @@ export function simulationGlobal(match, team=match.currentPlayer.team)
 	let	kingCoord;
 	let	legalMovesArray;
 
-	console.debug(`===============================`);
-	console.debug(`=======SIMULATION GLOBAL=======`);
-	console.debug(`=======CALL NUMBER ${++DEBUGcount}========`);
-	console.debug(`===============================`);
+	//console.debug(`===============================`);
+	//console.debug(`=======SIMULATION GLOBAL=======`);
+	//console.debug(`=======CALL NUMBER ${++DEBUGcount}========`);
+	//console.debug(`===============================`);
 	kingCoord = match.GetPlayer(team).King;
 	legalMovesArray = getLegalMoves(match, team, true);
 	for (const turn of legalMovesArray)
