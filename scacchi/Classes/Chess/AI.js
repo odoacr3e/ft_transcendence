@@ -6,6 +6,7 @@ import { AIprofilesArray, eTeam } from "../../Macro/enums.js";
 import { render } from "../../test/render.js";
 import { cancelTurn, execTurn } from "../../utils/AI.js";
 import { checkKingDanger } from "../../utils/checkDanger.js";
+import { rngProportional } from "../../utils/random.js";
 import { AIProfileConstructor } from "./AIprofiles/constructors.js";
 
 /** @typedef {import("./match.js").Match} Match*/
@@ -155,7 +156,9 @@ function getBestTurn(match)
 		ai.defeatStatus = 1;
 		return (playableTurn[Math.floor(Math.random() * 100000) % playableTurn.length]);
 	}
-	bestTurnIdx = bestTurns[Math.floor(Math.random() * 100000) % bestTurns.length];
+	if (bestTurns.length == 1)
+		return (bestTurns[0]);
+	bestTurnIdx = bestTurns[rngProportional(bestTurns[0].score, bestTurns[1].score)];
 	console.log(bestTurnIdx);
 	return (arrayTurns[bestTurnIdx.index]);
 }
