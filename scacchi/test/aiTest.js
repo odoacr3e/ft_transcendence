@@ -57,7 +57,7 @@ testerMain();
 
 function execAllTests()
 {
-	for (let i = 0; i != 3; i++)
+	for (let i = 0; i != 5; i++)
 	{
 		currMatch = "fresh " + i;
 		execTest(null);
@@ -101,13 +101,13 @@ function execTest(matchPath=null)
 		else
 			match = loadHistory(matchPath);
 		currMatchData = match;
-		if (match.history.Last().type != eEvents.EndTurn && endTurn(match, false).status != 200)
+		if (!includesOneOf(match.history.Last().type, eEvents.EndTurn, "Empty") && endTurn(match, false).status != 200)
 		{
 			console.debug(`${currMatch}: ${MSG.RESULT_IGNORED}`);
 			return ;
 		}
-		match.currentPlayer.ai = new AI(AIprofiles.DEBUG);
-		match.NextPlayer().ai = new AI(AIprofiles.DEBUG);
+		match.currentPlayer.ai = new AI(AIprofiles.FIRST_AI);
+		match.NextPlayer().ai = new AI(AIprofiles.FIRST_AI);
 		match.aiBool = true;
 		i = 0;
 		while (!match.victory)

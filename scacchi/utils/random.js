@@ -23,4 +23,26 @@ function initRng(seed=null)
 
 const rng = initRng(SEED);
 
+/**
+ * select a random index from a pair of number, basing on their highness.
+ * @param {number} x first number
+ * @param {number} y second number
+ * @returns {0 | 1} zero 
+ */
+function rngProportional(x, y)
+{
+	let	n;
+
+	if (x == y)
+		return (0);
+	else if (y < 0 && x > 0)
+		return (0);
+	else if (x < 0 && y > 0)
+		return (1);
+	x = Math.abs(x);
+	y = Math.abs(y);
+	n = rng(y);
+	return (n <= x? 0 : 1);
+}
+
 export {initRng, rng};
