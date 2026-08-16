@@ -156,7 +156,11 @@ function checkBooster(match, result, from, coords, boostBool)
 	if (pieceMultipleMoveBool == false && match.moves > 0)
 		return (error(result, 403, "Multiple moves not allowed there (tip: is it a moveBoost?"));
 	if (pieceMultipleMoveBool == false && from.targetZones.has(coords[1]))
+	{
+		if (result.specialMoves.CheckSniperMove())
+			result.usedBoost = true;
 		return (true);
+	}
 	if (from.piece.isBoostedBool == false || boostBool == false)
 		return (error(result, 403, `illegal move`));
 	if (pieceMultipleMoveBool == true && from.piece.multipleMovesBool == false)

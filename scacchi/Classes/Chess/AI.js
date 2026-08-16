@@ -193,8 +193,6 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 		for (const turn of arrayTurns)
 		{
 			++i;
-			if (DEB == 101328 && i == 120)
-				console.log("a");
 			if (execTurn(match, turn, pastTurns) == false)
 				continue ;
 			if (depth != 1)

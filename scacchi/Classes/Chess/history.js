@@ -6,6 +6,7 @@ import {eTeam, eEvents, eMatchPresets} from "../../Macro/enums.js";
 import {copyBoostedTargetZones} from "./chessBoard.js";
 import {HISTORY_PATH, CHESSBOARD_W, CHESSBOARD_H, MATCHTIMER} from "../../Macro/macro.js";
 import {boardStringify} from "../../test/render.js";
+import { Result } from "../endPoint/result.js";
 
 /**@typedef {import("./match.js").Match} Match*/
 /**@typedef {import("./match.js").MatchSettings} MatchSettings*/
@@ -72,7 +73,7 @@ export class History
 			fs.mkdirSync(HISTORY_PATH);
 		if (name && fs.existsSync(name) == true)
 			fs.rmSync(name);
-		copy = structuredClone(this.events);
+		copy = JSON.parse(JSON.stringify(this.events));
 		for (const event of this.events)
 		{
 			// @ts-ignore
@@ -154,10 +155,10 @@ export class HistoryEvent
  * @param {Match} match
  * @param {Square} square 
  * @param {Array<string>} coords 
- * @param {number} specialMoves
+ * @param {Result} result
  * @param {boolean} boostBool
  */
-function updateMoves(match, square, coords, specialMoves, boostBool=false)
+function updateMoves(match, square, coords, result, boostBool=false)
 {
 	let	record;
 	let	eName;
@@ -171,13 +172,13 @@ function updateMoves(match, square, coords, specialMoves, boostBool=false)
 	// if (!square.piece)
 	// 	throw (`History: missing piece in square: ${square}`);
 	eName = eEvents.Move;
-	if (boostBool == true)
+	if (result.usedBoost || boostBool == true)
 		eName = eEvents.MoveBoost;
 	record = new HistoryEvent(this.moves, eName, square.piece?.team, match.board.updates, square.piece?.type, coords[0], coords[1], square.boostedTargetZones, square.piece?.isBoostedBool);
 	record.pieceEaten = match.board._data.get(coords[1])?.piece;
 	if (record.pieceEaten)
 		record.pieceEaten = record.pieceEaten.Copy();
-	record.specialMoves = specialMoves;
+	record.specialMoves = result.specialMoves._mask;
 	record.updates = structuredClone(match.board.updates);
 	record.time = match.currentPlayer.time;
 	record.prevBoost = match.currentPlayer.boostedPiece;

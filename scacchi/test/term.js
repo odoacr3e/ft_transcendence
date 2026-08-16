@@ -367,7 +367,7 @@ function getline(prompt)
 function saveWrongMove(match, result, type)
 {
 	if (type == eEvents.Move || type == eEvents.MoveBoost)
-		match.history.UpdateMoves(match, match.board.get(selected[0]), selected, result.specialMoves._mask, type == eEvents.MoveBoost);
+		match.history.UpdateMoves(match, match.board.get(selected[0]), selected, result, type == eEvents.MoveBoost);
 	else if (type == eEvents.Boost)
 		match.history.UpdateBoost(match, match.board.get(selected[0]), selected[0]);
 	else if (type == eEvents.Transform)

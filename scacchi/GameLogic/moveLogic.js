@@ -40,7 +40,7 @@ function updateChessboard(coords=[], result, match, boostBool)
 		boostBool = false;
 	if (boostBool == true && !match.currentPlayer.boostedPiece)
 		throw (`updateChessboard: boostedPiece does not exist in moveBoost`);
-	match.history.UpdateMoves(match, from, coords, result.specialMoves._mask, boostBool);
+	match.history.UpdateMoves(match, from, coords, result, boostBool);
 	if (result.usedBoost == true)
 	{
 		from.piece.isBoostedBool = false;
