@@ -104,6 +104,8 @@ function getBestTurn(match)
 	{
 		console.log(`Turns: ${i}/${arrayTurns.length}`);
 		const turn = arrayTurns[i];
+		if (turn.boost == "g8" && turn.move?.from == "b5" && turn.move.to == "c4")
+			console.log("a");
 		if (!execTurn(match, turn))
 			continue ;
 		render(match);
@@ -164,8 +166,7 @@ function getBestTurn(match)
 }
 
 let DEB = 0;
-//101320
-//101329
+//1176
 /**
  * 
  * @param {Match} match 
@@ -196,7 +197,7 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 		for (const turn of arrayTurns)
 		{
 			++i;
-			if (turn.move?.from == "e8" && turn.move.to == "a8")
+			if (DEB == 83 && i == 82)
 				console.log("BREAKPOINT");
 			if (execTurn(match, turn, pastTurns) == false)
 				continue ;
@@ -224,8 +225,12 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 	else
 	{
 		let minEval = +Infinity;
+		let i = -1;
 		for (const turn of arrayTurns)
-		{
+		{//3423
+			++i;
+			if (DEB == 3423 && i == 76)
+				console.log("BREAKPOINT");
 			if (execTurn(match, turn, pastTurns) == false)
 				continue ;
 			// render(match);

@@ -12,7 +12,6 @@ import { AI } from "../Classes/Chess/AI.js";
 import { AIexecuteTurn } from "../GameLogic/aiTurn.js";
 import { init } from "../handlers/game/init.js";
 import { boardStringify, render } from "./render.js";
-import { jsonParser } from "../utils/response.js";
 import { colors } from "./colorsOld.js";
 import { AIprofiles, eEvents } from "../Macro/enums.js";
 import { endTurn } from "../handlers/game/endTurn.js";
@@ -39,7 +38,10 @@ function testerMain()
 	globals.matches.set("0", new Match());
 	aiType = getAiType(process.argv[2]);
 	if (!aiType)
+	{
+		aiType = DEFAULT_AI;
 		matchName = process.argv.at(2);
+	}
 	if (!matchName)
 		return (execAllTests());
 	if (matchName.endsWith(".json") == false)
