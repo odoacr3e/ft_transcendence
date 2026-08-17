@@ -5,9 +5,10 @@ import { Queue } from "./Queue.js";
 import { Room } from "./room.js";
 import { DEBUG } from "../../Macro/macro.js";
 import { render } from "../../test/render.js";
-import { enumConnection } from "../../Macro/enums.js";
+import { AIprofiles, enumConnection } from "../../Macro/enums.js";
 import { Result } from "../endPoint/result.js";
 import { SocketInfo } from "./socketInfo.js";
+import fs from "fs";
 
 /** @typedef {import("../Chess/chessBoard.js").ChessBoard} ChessBoard*/
 /** @typedef {import("../Chess/player.js").Player} Player*/
@@ -47,6 +48,7 @@ class Globals
 		/** @type {Map<matchId, Array<stringifyBoard>>} */
 		this.matchCache = new Map();
 		this.turns = ['QF', 'SF', 'F'];
+		// this.AITraining = getTrainingSchedule();
 	}
 	/** @param {string} roomType */
 	GetQueue(roomType)
@@ -177,6 +179,15 @@ class Globals
 			return (new Result().Success());
 		return (new Result().Error('User not in this room', 400));
 	}
+}
+
+function getTrainingSchedule()
+{
+	let data = new Map();
+
+	data.set(AIprofiles.FIRST_AI, JSON.parse(fs.readFileSync(`../Chess/AIprofiles/${AIprofiles.FIRST_AI}/${AIprofiles.FIRST_AI}Cache.json`, 'utf-8')));
+	// data.set(AIprofiles.GMU, JSON.parse(fs.readFileSync(`../Chess/AIprofiles/${AIprofiles.GMU}/${AIprofiles.GMU}Cache.json`, 'utf-8')));
+	return data;
 }
 
 const	globals = new Globals();
