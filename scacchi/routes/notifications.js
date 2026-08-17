@@ -86,7 +86,12 @@ notifyRouter.post("/", checkJwt, async (req, res) => {
 		const notification = await notifyQuery.postNotification(data);
 		const destSock = req.app.get('clientMap').get(data.id_user); // prendo il socket di riferimento all'id dello user
 		if (destSock && notification)
-			destSock.socket.emit(`notification`, { title: notification.title, description: notification.description, sender: notification.users_notifications_id_senderTousers.username });
+			destSock.socket.emit(`notification`, { title: notification.title, description: notification.description,
+				sender: { 
+					"id_user": notification.users_notifications_id_senderTousers.id_user,
+					"username": notification.users_notifications_id_senderTousers.username
+				},
+				creation_date: notification.creation_date });
 		return res.status(204).send();
 	} catch (error) {
 		console.log("Error: ", error);
