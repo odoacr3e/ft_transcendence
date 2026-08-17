@@ -26,7 +26,6 @@ export const useMsgStore = defineStore('msg', {
 				if (firstRead) { this.msgRecevied.delete(firstRead); }
 			}
 			this.msgRecevied.add(msg);
-			this.allert = true;
 		},
 
 		clear() { this.msgRecevied.clear(); }
