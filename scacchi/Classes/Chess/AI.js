@@ -6,6 +6,7 @@ import { AIprofilesArray, eTeam } from "../../Macro/enums.js";
 import { render } from "../../test/render.js";
 import { cancelTurn, execTurn } from "../../utils/AI.js";
 import { checkKingDanger } from "../../utils/checkDanger.js";
+import { getBestNumber } from "../../utils/math.js";
 import { rngProportional } from "../../utils/random.js";
 import { AIProfileConstructor } from "./AIprofiles/constructors.js";
 
@@ -92,11 +93,15 @@ function getBestTurn(match)
 	let	bestTurnIdx;
 	let playableTurn = new Array();
 	let	ai;
+	let	alpha;
+	let	beta;
 
 	ai = match.currentPlayer.ai;
 	if (!ai)
 		throw (`getBestTurn: you are not a machine!`);
 	console.log("Calculating best move...");
+	alpha = -Infinity;
+	beta = +Infinity;
 	arrayTurns = getLegalMoves(match);
 	if (ai.defeatStatus != 0)
 		return (arrayTurns[0]);
@@ -106,12 +111,16 @@ function getBestTurn(match)
 		const turn = arrayTurns[i];
 		if (turn.boost == "g8" && turn.move?.from == "b5" && turn.move.to == "c4")
 			console.log("a");
+		if (match.currentPlayer.team == eTeam.White)
+			alpha = getBestNumber([alpha, bestTurns[0]?.score, bestTurns[1]?.score], false);
+		else if (match.currentPlayer.team == eTeam.Black)
+			beta = getBestNumber([beta, bestTurns[0]?.score, bestTurns[1]?.score], true);
 		if (!execTurn(match, turn))
 			continue ;
 		render(match);
 		playableTurn.push(turn);
 		newTurns = getLegalMoves(match);
-		val.score = minMax(match, ai, newTurns, 2, [turn], -Infinity, +Infinity);
+		val.score = minMax(match, ai, newTurns, 2, [turn], alpha, beta);
 		// val.score = Math.abs(val.score);
 		val.index = i;
 		cancelTurn(match, turn);
@@ -160,6 +169,11 @@ function getBestTurn(match)
 	}
 	if (bestTurns.length == 1)
 		return (arrayTurns[bestTurns[0].index]);
+	if (match.currentPlayer.team == eTeam.Black)
+	{
+		bestTurns[0].score = -bestTurns[0].score; 
+		bestTurns[1].score = -bestTurns[1].score; 
+	}
 	bestTurnIdx = bestTurns[rngProportional(bestTurns[0].score, bestTurns[1].score)];
 	console.log(bestTurnIdx);
 	return (arrayTurns[bestTurnIdx.index]);

@@ -31,6 +31,8 @@ export function getLegalMoves(match, team=match.currentPlayer.team, infoBool=tru
 	/** @type {Map<string, Set<string>>} */
 	let	legalMovesMap = new Map();
 	/** @type {Map<string, Set<string>>} */
+	let	legalMovesEatMap = new Map();
+	/** @type {Map<string, Set<string>>} */
 	let	legalBoostedMovesMap = new Map();
 	/** @type {Array<Turn>} */
 	let	legalMovesArray = new Array();
@@ -53,9 +55,18 @@ export function getLegalMoves(match, team=match.currentPlayer.team, infoBool=tru
 			}
 			if (infoBool == false)//@ts-ignore
 				return (false);
-			if (legalMovesMap.has(coord) == false)
-				legalMovesMap.set(coord, new Set());
-			legalMovesMap.get(coord)?.add(targetCoord);
+			if (targetSquare.piece && targetSquare.piece.team != team)
+			{
+				if (legalMovesEatMap.has(coord) == false)
+					legalMovesEatMap.set(coord, new Set());
+				legalMovesEatMap.get(coord)?.add(targetCoord);
+			}
+			else
+			{
+				if (legalMovesMap.has(coord) == false)
+					legalMovesMap.set(coord, new Set());
+				legalMovesMap.get(coord)?.add(targetCoord);
+			}
 		}
 		for (const [startCoord, targets] of square.boostedTargetZones)
 		{
@@ -78,6 +89,11 @@ export function getLegalMoves(match, team=match.currentPlayer.team, infoBool=tru
 		return (true);
 	//@ts-ignore
 	player = match[team];
+	for (const [coord, targetSet] of legalMovesEatMap)
+	{
+		for (const targetCoord of targetSet)
+			pushChildMoves(match, player, legalMovesArray, {from: coord, to: targetCoord});
+	}
 	for (const [coord, targetSet] of legalMovesMap)
 	{
 		for (const targetCoord of targetSet)

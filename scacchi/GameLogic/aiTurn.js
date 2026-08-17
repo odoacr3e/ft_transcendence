@@ -86,6 +86,6 @@ export function AIexecuteTurn(match)
 function sendResult(match, result, type="")
 {
 	if (result.status != 200)
-		throw (`AIExecuteTurn: ${type} failed. Info: ${JSON.stringify(DEBUG_turn, null, 2)}`);
+		throw (`AIExecuteTurn: ${type} failed. Reason: "${result.msg}".Info: ${JSON.stringify(DEBUG_turn, null, 2)}`);
 	roomMessage(`Match_${match.id}`, "game", result, true);
 }
