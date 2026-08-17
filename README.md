@@ -56,18 +56,59 @@ docker logs <container_name>
 
 ## Resources
 Le risorse che sono state utilizzate sono state le seguenti:
+
 ### Backend
 - [Esercizi Javascript](https://github.com/AlbertoOlla/esercizi-di-programmazione-javascript "github.com/AlbertoOlla/esercizi-di-programmazione-javascript")
+- [Web Socket](https://www.youtube.com/watch?v=pnj3Jbho5Ck "How WebSocket work")
+
+### Database
+- [Prisma ORM docs](https://www.prisma.io/docs/orm "Prisma ORM docs")
+
+### Frontend
+- [Vue Components](https://vuejs.org/guide/essentials/component-basics.html#in-dom-template-parsing-caveats "Vue Components")
+  - [Vue Component Registration](https://vuejs.org/guide/components/registration.html "Vue Component Registration")
+  - [Vue Components Props](https://vuejs.org/guide/components/props.html "Vue Components Props")
+  - [Vue Component Slots](https://vuejs.org/guide/components/slots.html "Vue Component Slots")
+  - [Vue Components Event](https://vuejs.org/guide/components/events.html "Vue Components Event")
+- [Vue v-for](https://it.vuejs.org/api/built-in-directives.html#v-for "Vue v-for")
+- [Vue v-bind](https://it.vuejs.org/api/built-in-directives.html#v-bind "Vue v-bind")
+- [Vue Style Guide](https://vuejs.org/style-guide/ "Vue Style Guide")
+- [Tailwind docs](https://tailwindcss.com/docs/installation/using-vite "Tailwind docs")
+
+### Infrastructure & Deployment
+- [HashiCorp Vault docs](https://developer.hashicorp.com/vault/docs/configuration "HashiCorp Vault docs")
+- [HashiCorp CoreRule Set](https://owasp.org/www-project-modsecurity-core-rule-set/ "HashiCorp CoreRule Set")
+- [Nginx configuration](https://projects.intra.42.fr/projects/inception "42 Project Inception")
+- [ModSecurity WAF](https://www.getpagespeed.com/server-setup/nginx/install-modsecurity-nginx-linux "ModSecurity WAF")
+- [Docker](https://youtu.be/3c-iBn73dDE?si=GZAfuvLYFyp2kX4Z "Docker from zero")
 
 ## Team Information
 
 | Intra   | Roles | Responsabilities |
-|---------|----------------------------|-----------------|
+|-|-|-|
 | **mfanelli** | Project Manager + Developer | Coordinates the team, organizes meetings and planning, tracks progress and deadlines, manages risks and blocks; develops assigned features. |
 | **mbiagi** | Product Owner + Developer | Defines the product vision, manages the backlog and priorities, validates completed work, serves as a reference for evaluators/peers; develops assigned features. |
 | **edraccan** | Technical Lead / Architect + Developer | Defines the technical architecture, chooses the technology stack, ensures code quality and best practices, reviews critical changes, and develops assigned features. |
 | **lparolis** | Developer | Implement assigned features, participate in code reviews, test and document your work. |
 | **alerusso** | Developer | Implement assigned features, participate in code reviews, test and document your work. |
+
+## Project Management
+The team organized the work through an initial phase of *task distribution*, followed by in-person meetings aimed at defining the project, coordinating activities, and *defining the main objectives and priorities*. During development, the group maintained a constant comparison on the progress of work, reviewing and updating tasks and objectives when necessary.
+
+Project management, documentation, and information and goal sharing were centralized within a **Notion** workspace shared, organized, and maintained collaboratively by all team members. This has made it possible to have documentation that is always up-to-date, consistent and easily accessible.
+
+Regarding communication and collaboration, several tools were used. **Slack** was primarily used for file and folder sharing and daily communication, while **GitHub** was used for hosting and project management, thanks to a multi-branch structure that enabled collaborative development and change tracking. Finally, **Discord** has been used primarily for remote collaboration, facilitating coordination of activities between team members in different locations.
+
+## Technical Stack
+Lo stack tecnico utilizzato e composto da:
+
+
+| Level | Tecnologia | Motivo |
+|-|-|-|
+| Frontend | Vue.js + Tailwind|  |
+| Backend | Node.js + Express, Prisma (ORM), Redis, JWT |  |
+| Database | Postgresql |  |
+
 
 
 This template should help get you started developing with Vue 3 in Vite.
