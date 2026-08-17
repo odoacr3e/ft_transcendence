@@ -12,6 +12,7 @@ import { enumNames } from "../Macro/enums.js";
 import { isDangerous } from "../utils/checkDanger.js";
 import { isOneOf } from "../utils/string.js";
 import { render } from "../test/render.js";
+import fs from "fs";
 
 /** @typedef {import("../Classes/Chess/match").Match} Match*/
 /** @typedef {{from: string, to: string}} Move */
@@ -55,7 +56,7 @@ export function getLegalMoves(match, team=match.currentPlayer.team, infoBool=tru
 			}
 			if (infoBool == false)//@ts-ignore
 				return (false);
-			if (targetSquare.piece && targetSquare.piece.team != team)
+			if (targetSquare.piece)
 			{
 				if (legalMovesEatMap.has(coord) == false)
 					legalMovesEatMap.set(coord, new Set());
@@ -105,6 +106,9 @@ export function getLegalMoves(match, team=match.currentPlayer.team, infoBool=tru
 			pushChildMoves(match, player, legalMovesArray, {from: coord, to: targetCoord}, true);
 	}
 	// legalMovesArray.sort(optimizeSort);
+	render(match);
+	fs.rmSync("TEST");
+	fs.writeFileSync("TEST", JSON.stringify(legalMovesArray, null, 2));
 	return (legalMovesArray);
 }
 
@@ -128,9 +132,11 @@ function pushChildMoves(match, player, legalMovesArray, move, boostBool=false)
 		currTurn = {move: move, moveBoost: null, boost: "", transform: ""};
 	else
 		currTurn = {move: null, moveBoost: move, boost: "", transform: ""};
+	addTransform(match, player, legalMovesArray, currTurn, move.to, match.board.get(move.from));
 	legalMovesArray.push(currTurn);
+	if (currTurn.transform)
+		return ;
 	pushAllLegalBoost(match, player, legalMovesArray, currTurn);
-	pushAllLegalTransform(match, player, legalMovesArray, currTurn, move.to, match.board.get(move.from));
 	if (boostBool == true)
 		return ;
 	// se puoi fare un boost a partire da li
@@ -154,7 +160,6 @@ function pushChildMoves(match, player, legalMovesArray, move, boostBool=false)
 				currTurn = {move: move, moveBoost: {from: key, to: zone}, boost: "", transform: ""};
 				legalMovesArray.push(currTurn);
 				pushAllLegalBoost(match, player, legalMovesArray, currTurn, true);
-				pushAllLegalTransform(match, player, legalMovesArray, currTurn, zone, boostedSquare);
 			}
 		}
 	}
@@ -169,7 +174,6 @@ function pushChildMoves(match, player, legalMovesArray, move, boostBool=false)
 			currTurn = {move: move, moveBoost: {from: player.boostedPiece, to: target}, boost: "", transform: ""};
 			legalMovesArray.push(currTurn);
 			pushAllLegalBoost(match, player, legalMovesArray, currTurn, true);
-			pushAllLegalTransform(match, player, legalMovesArray, currTurn, target, boostedSquare);
 		}
 	}
 }
@@ -259,7 +263,7 @@ function pushOneBoost(coord, legalMovesArray, currTurn)
  * @param {string} destCoord
  * @param {Square} square
  * */
-function pushAllLegalTransform(match, player, legalMovesArray, currTurn, destCoord, square)
+function addTransform(match, player, legalMovesArray, currTurn, destCoord, square)
 {
 	let	bastardEdgeBool;
 	let	turnWithTransform;
@@ -273,11 +277,13 @@ function pushAllLegalTransform(match, player, legalMovesArray, currTurn, destCoo
 	bastardEdgeBool = square.piece.type == enumNames.BASTARDS && edgeBool;
 	match.cursor.Restore();
 	if (!bastardEdgeBool)
-		return ;
+		return false;
 	//NOTE - AI prova a transformare solo in champion
-	turnWithTransform = structuredClone(currTurn);
-	turnWithTransform.transform = enumNames.CHAMPION;
-	legalMovesArray.push(turnWithTransform);
+	//turnWithTransform = structuredClone(currTurn);
+	//turnWithTransform.transform = enumNames.CHAMPION;
+	currTurn.transform = enumNames.CHAMPION;
+	//legalMovesArray.push(turnWithTransform);
+	return true;
 	// for (const type of arrayNamesTransform)
 	// {
 	// 	turnWithTransform = structuredClone(currTurn);
