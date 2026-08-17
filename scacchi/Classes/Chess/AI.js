@@ -157,7 +157,7 @@ function getBestTurn(match)
 		return (playableTurn[Math.floor(Math.random() * 100000) % playableTurn.length]);
 	}
 	if (bestTurns.length == 1)
-		return (bestTurns[0]);
+		return (arrayTurns[bestTurns[0].index]);
 	bestTurnIdx = bestTurns[rngProportional(bestTurns[0].score, bestTurns[1].score)];
 	console.log(bestTurnIdx);
 	return (arrayTurns[bestTurnIdx.index]);
