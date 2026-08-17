@@ -196,6 +196,8 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 		for (const turn of arrayTurns)
 		{
 			++i;
+			if (turn.move?.from == "e8" && turn.move.to == "a8")
+				console.log("BREAKPOINT");
 			if (execTurn(match, turn, pastTurns) == false)
 				continue ;
 			if (depth != 1)
