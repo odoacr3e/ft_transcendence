@@ -8,6 +8,7 @@ import { MOVEMENT_BONUS_POINT } from "../Macro/macro.js";
 import { boardStringify } from "../test/render.js";
 import { DangerUpdate, updateBoostedChampions } from "../utils/dangerUpdate.js";
 import { isOneOf } from "../utils/string.js";
+import { zobristUpdateHash } from "../utils/zobrist.js";
 import { setTimerGame } from "./timer.js";
 
 /** @typedef {import("../Classes/Chess/match.js").Match} Match */
@@ -46,6 +47,7 @@ export function cancelEvent(match)
 		setTimerGame(match);
 	else
 		match.timer = null;
+	zobristUpdateHash(match, lastEvent);
 	return (new Result().Success());
 }
 

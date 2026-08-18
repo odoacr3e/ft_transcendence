@@ -16,6 +16,7 @@ import EloRank from "elo-rank";
 import { query } from "../../lib/query.js";
 import { render } from "../../test/render.js";
 import { aiSpeech } from "./AIprofiles/speech.js";
+import { zobristGenerateTable, zobristInitHash } from "../../utils/zobrist.js";
 
 /** @typedef {import("../Globals/Queue.js").QueueNode} QueueNode*/
 
@@ -75,6 +76,12 @@ class Match
 		this.aiMove = false;
 		//if any of the players is an AI
 		this.aiBool = false;
+		/** @type {Map<number, Array<number>>} */
+		this.memTurn = new Map();
+		/** @type {BigInt} */
+		this._zobristHash = BigInt(0);
+		this.zobristIndex = 0;
+		zobristInitHash(this);
 	}
 	/** @param {MatchSettings | string | null} preset*/
 	Reset(preset=null)
@@ -124,6 +131,7 @@ class Match
 		this.aiSimulation = false;
 		this.aiMove = false;
 		this.aiBool = false;
+		zobristInitHash(this);
 	}
 	endTurn()
 	{

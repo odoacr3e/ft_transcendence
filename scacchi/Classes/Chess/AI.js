@@ -9,6 +9,7 @@ import { checkKingDanger } from "../../utils/checkDanger.js";
 import { getBestNumber } from "../../utils/math.js";
 import { rngProportional } from "../../utils/random.js";
 import { AIProfileConstructor } from "./AIprofiles/constructors.js";
+import fs from "fs";
 
 /** @typedef {import("./match.js").Match} Match*/
 /** @typedef {{from: string, to: string}} Move */
@@ -55,7 +56,8 @@ export class AI
 		this.profile = profile;
 		/** @type {null | import("./AIprofiles/speech.json")} */
 		this.speechJSON = null;
-		this.defeatStatus = 0;
+		this.defeatStatus = 0;//@ts-ignore
+		this.memory = null;
 		console.log(`A new opponent has spawned: ${profile}... fear its power!`);
 		AIProfileConstructor(this);
 	}
@@ -120,11 +122,16 @@ function getBestTurn(match)
 		render(match);
 		playableTurn.push(turn);
 		newTurns = getLegalMoves(match);
-		val.score = minMax(match, ai, newTurns, 2, [turn], alpha, beta);
-		// val.score = Math.abs(val.score);
+		if (match.zobristIndex in ai.memory)
+			match.memTurn.set(match.zobristIndex, [ai.memory[match.zobristIndex][0], ai.memory[match.zobristIndex][1] + 1]);
+		else
+		{
+			val.score = minMax(match, ai, newTurns, 2, [turn], alpha, beta);
+			// val.score = Math.abs(val.score);
+			match.memTurn.set(match.zobristIndex, [val.score, 1]);
+		}
 		val.index = i;
 		cancelTurn(match, turn);
-		// render(match);
 		if (val.score == +Infinity)
 		{
 			if (match.currentPlayer.team == eTeam.Black)

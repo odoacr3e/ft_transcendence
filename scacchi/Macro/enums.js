@@ -110,6 +110,8 @@ const enumInitNames =
 	GHOUL: 'G'
 };
 
+const arrayInitNames = Object.values(enumInitNames);
+
 const enumInitTeam = 
 {
 	Black: 'b',
@@ -119,6 +121,8 @@ const enumInitTeam =
 	Green: 'g',
 	Yellow: 'y',
 };
+
+const arrayInitTeam = Object.values(enumInitTeam);
 
 /** @param {string} team */
 function getInitialOfTeam(team)
@@ -203,4 +207,4 @@ const AIprofiles =
 
 const AIprofilesArray = Object.values(AIprofiles);
 
-export {eTeam, eEvents, eMatchPresets, enumNames, arrayNames, arrayNamesTransform, arrayNamesDoubleMove, enumInitNames, getInitialOfTeam, enumInitTeam, enumValues, enumSpecialMoves, kingMovements, enumConnection, enumSocketState, getTeamByInitial, AIprofiles, AIprofilesArray};
+export {eTeam, eEvents, eMatchPresets, enumNames, arrayNames, arrayNamesTransform, arrayNamesDoubleMove, enumInitNames, arrayInitNames, getInitialOfTeam, enumInitTeam, arrayInitTeam, enumValues, enumSpecialMoves, kingMovements, enumConnection, enumSocketState, getTeamByInitial, AIprofiles, AIprofilesArray};

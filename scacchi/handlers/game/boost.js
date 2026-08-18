@@ -18,6 +18,7 @@ import { enumNames } from "../../Macro/enums.js";
 import { jsonParser } from "../../utils/response.js";
 import { aiSpeech } from "../../Classes/Chess/AIprofiles/speech.js";
 import { render } from "../../test/render.js";
+import { zobristUpdateHash } from "../../utils/zobrist.js";
 
 /** @typedef {import ('../../Classes/Chess/chessBoard.js').Square} Square  */
 
@@ -36,6 +37,7 @@ function boost(match, from)
 		return (result);
 	if (!tryBoost(match, result, from))
 		return (result);
+	zobristUpdateHash(match, match.history.Last());
 	result.status = 200;//@ts-ignore
 	aiSpeech(match, AI_EVENTS.applyBoostMe, [match.board.get(from).piece?.type]);
 	if (match.boost == BOOSTED_MAX)

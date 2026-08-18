@@ -5,6 +5,7 @@ import { AIprofiles, AIprofilesArray } from "../../../Macro/enums.js";
 import { AI_first_eval } from "./First/eval.js";
 import { AI_gmu_eval } from "./gmu/eval.js";
 import { AI_PROFILE_PATH } from "../../../Macro/macro.js";
+import { globals } from "../../Globals/globals.js";
 
 /** @typedef {import("../AI.js").AI<*>} AI*/
 
@@ -23,9 +24,11 @@ function AIProfileConstructor(ai)
 	switch (ai.profile)
 	{
 		case (AIprofiles.FIRST_AI):
+			ai.memory = globals.AITraining.get(AIprofiles.FIRST_AI);
 			ai.Eval = AI_first_eval;
 			break ;
 		case (AIprofiles.GMU):
+			ai.memory = globals.AITraining.get(AIprofiles.GMU);
 			ai.Eval = AI_gmu_eval;
 			break ;
 		case (AIprofiles.DEBUG):

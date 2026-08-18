@@ -107,8 +107,8 @@ export function getLegalMoves(match, team=match.currentPlayer.team, infoBool=tru
 	}
 	// legalMovesArray.sort(optimizeSort);
 	render(match);
-	fs.rmSync("TEST");
-	fs.writeFileSync("TEST", JSON.stringify(legalMovesArray, null, 2));
+	//fs.rmSync("TEST");
+	//fs.writeFileSync("TEST", JSON.stringify(legalMovesArray, null, 2));
 	return (legalMovesArray);
 }
 

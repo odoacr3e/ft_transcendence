@@ -21,6 +21,7 @@ class Square
 	constructor(other=null, normifier=null)
 	{
         /** @type {string | undefined} */		this.color = undefined;
+		this.index = 0;
 		/** @type {boolean} */					this.wallBool = false;
         /** @type {Piece | null | undefined} */ this.piece = null;
 		/** @type {Set<string>} */				this.targetZones = new Set();
@@ -220,7 +221,10 @@ function initBoard(maxWidth=CHESSBOARD_W, maxHeigth=CHESSBOARD_H, cursor=null)
 {
 	/** @type {string} */				let	squareId;
 	/** @type {Map<string, Square>} */	let	board;
+	let	square;
+	let	i;
 
+	i = 0;
 	if (!cursor)
 		cursor = new Cursor(maxWidth, maxHeigth);
 	board = new Map();
@@ -232,7 +236,9 @@ function initBoard(maxWidth=CHESSBOARD_W, maxHeigth=CHESSBOARD_H, cursor=null)
 		do
 		{
 			squareId = cursor.square;
-			board.set(squareId, new Square());
+			square = new Square();
+			board.set(squareId, square);
+			square.index = i++;
 		}
 		while (cursor.moveCol(1))
 	}

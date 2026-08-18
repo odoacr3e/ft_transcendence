@@ -18,6 +18,7 @@ import { enumNames, arrayNames } from "../../Macro/enums.js";
 import { isOneOf } from "../../utils/string.js";
 import { aiSpeech } from "../../Classes/Chess/AIprofiles/speech.js";
 import { AI_EVENTS } from "../../Macro/macro.js";
+import { zobristUpdateHash } from "../../utils/zobrist.js";
 
 let	DEB = 0;
 
@@ -62,6 +63,7 @@ function transfiguration(match, result, coord, newType, sendBoardBool=true)
 	if (isBoostedBool == true && newType == enumNames.CHAMPION)
 		updateBoostedChampions(match, []);
 	match.history.UpdateTransform(match, square, coord, newType);
+	zobristUpdateHash(match, match.history.Last());
 	checkMateCheckAll(match, result);
 	if (endTurn(match, false).specialMoves.CheckKingDanger())
 		result.specialMoves.SetKingDanger();

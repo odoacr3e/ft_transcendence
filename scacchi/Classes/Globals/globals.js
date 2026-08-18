@@ -5,10 +5,11 @@ import { Queue } from "./Queue.js";
 import { Room } from "./room.js";
 import { DEBUG } from "../../Macro/macro.js";
 import { render } from "../../test/render.js";
-import { AIprofiles, enumConnection } from "../../Macro/enums.js";
+import { AIprofiles, AIprofilesArray, enumConnection } from "../../Macro/enums.js";
 import { Result } from "../endPoint/result.js";
 import { SocketInfo } from "./socketInfo.js";
 import fs from "fs";
+import { zobristGenerateTable } from "../../utils/zobrist.js";
 
 /** @typedef {import("../Chess/chessBoard.js").ChessBoard} ChessBoard*/
 /** @typedef {import("../Chess/player.js").Player} Player*/
@@ -48,7 +49,9 @@ class Globals
 		/** @type {Map<matchId, Array<stringifyBoard>>} */
 		this.matchCache = new Map();
 		this.turns = ['QF', 'SF', 'F'];
-		// this.AITraining = getTrainingSchedule();
+		zobristGenerateTable();
+		/** @type {Map<string, object>} */
+		this.AITraining = getTrainingSchedule();
 	}
 	/** @param {string} roomType */
 	GetQueue(roomType)
@@ -183,11 +186,18 @@ class Globals
 
 function getTrainingSchedule()
 {
-	let data = new Map();
+	let trainings = new Map();
+	let data;
 
-	data.set(AIprofiles.FIRST_AI, JSON.parse(fs.readFileSync(`../Chess/AIprofiles/${AIprofiles.FIRST_AI}/${AIprofiles.FIRST_AI}Cache.json`, 'utf-8')));
-	// data.set(AIprofiles.GMU, JSON.parse(fs.readFileSync(`../Chess/AIprofiles/${AIprofiles.GMU}/${AIprofiles.GMU}Cache.json`, 'utf-8')));
-	return data;
+	AIprofilesArray
+	for (let profile of AIprofilesArray)
+	{
+		if (!fs.existsSync(`../Chess/AIprofiles/${profile}/cache.json`))
+			fs.writeFileSync(`../Chess/AIprofiles/${profile}/cache.json`, JSON.stringify(null));
+		data = JSON.parse(fs.readFileSync(`../Chess/AIprofiles/${profile}/cache.json`, 'utf-8'));
+		trainings.set(profile, data);
+	}
+	return trainings;
 }
 
 const	globals = new Globals();

@@ -16,6 +16,7 @@ import {updateChessboard} from "../../GameLogic/moveLogic.js";
 import {enumNames} from "../../Macro/enums.js";
 import { checkMove, checkSecondMove } from "../../GameLogic/checkMove.js";
 import { render } from "../../test/render.js";
+import { zobristUpdateHash } from "../../utils/zobrist.js";
 
 /** @typedef {import('../../Classes/Chess/chessBoard.js').Square} Square */
 
@@ -49,6 +50,7 @@ function move(match, from, to, boostBool=false)
 		match.spareCountDown = 0;
 	if (!updateChessboard([from, to], result, match, boostBool))
 		return (result);
+	zobristUpdateHash(match, match.history.Last());
 	result.status = 200;
 	checkMateCheckAll(match, result);//@ts-ignore
 	result.board = clientBoard(match);

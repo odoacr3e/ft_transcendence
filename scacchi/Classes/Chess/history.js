@@ -7,6 +7,7 @@ import {copyBoostedTargetZones} from "./chessBoard.js";
 import {HISTORY_PATH, CHESSBOARD_W, CHESSBOARD_H, MATCHTIMER} from "../../Macro/macro.js";
 import {boardStringify} from "../../test/render.js";
 import { Result } from "../endPoint/result.js";
+import { zobristPieceHash } from "../../utils/zobrist.js";
 
 /**@typedef {import("./match.js").Match} Match*/
 /**@typedef {import("./match.js").MatchSettings} MatchSettings*/
@@ -126,6 +127,15 @@ export class HistoryEvent
 		this.to = to;
 		this.movedPiece = pieceType;
 		this.team = team;
+		this.points =
+		{
+			WHITE: 0,
+			BLACK: 0,
+			YELLOW: 0,
+			BLUE: 0,
+			RED: 0,
+			GREEN: 0
+		};
 		this.type = eventType;
 		this.pieceBoosterTargetZones = null;
 		this.specialMoves = 0;
@@ -146,6 +156,8 @@ export class HistoryEvent
 		if (pieceBoosterZones)
 			this.pieceBoosterTargetZones = copyBoostedTargetZones(pieceBoosterZones);
 		this.aiSimulation = false;
+		this.fromHash = BigInt(0);
+		this.toHash = BigInt(0);
 	}
 }
 
@@ -162,6 +174,7 @@ function updateMoves(match, square, coords, result, boostBool=false)
 {
 	let	record;
 	let	eName;
+	let	to;
 
 	if (!this)
 		throw ("updateMoves must be called inside of History class");
@@ -169,6 +182,7 @@ function updateMoves(match, square, coords, result, boostBool=false)
 		throw (`History: invalid move coords [${coords[0]}, ${coords[1]}]`);
 	if (!square)
 		throw (`History: invalid square`);
+	to = match.board.get(coords[1]);
 	// if (!square.piece)
 	// 	throw (`History: missing piece in square: ${square}`);
 	eName = eEvents.Move;
@@ -182,6 +196,10 @@ function updateMoves(match, square, coords, result, boostBool=false)
 	record.updates = structuredClone(match.board.updates);
 	record.time = match.currentPlayer.time;
 	record.prevBoost = match.currentPlayer.boostedPiece;
+	record.points.WHITE = match.white.nPoints;
+	record.points.BLACK = match.white.nPoints;
+	record.fromHash = zobristPieceHash(square.index, square.piece);
+	record.toHash = zobristPieceHash(to.index, to.piece);
 	record.aiSimulation = match.aiSimulation;
 	this.events.push(record);
 	this.moves += 1;
@@ -210,6 +228,7 @@ function updateBoost(match, square, from)
 	record.updates = structuredClone(match.board.updates);
 	record.time = match.currentPlayer.time;
 	record.prevBoost = match.currentPlayer.boostedPiece;
+	record.fromHash = zobristPieceHash(square.index, square.piece);
 	record.aiSimulation = match.aiSimulation;
 	this.events.push(record);
 	this.moves += 1;
@@ -239,6 +258,7 @@ function updateTransform(match, square, from, newType)
 	record.to = newType;
 	record.updates = structuredClone(match.board.updates);
 	record.time = match.currentPlayer.time;
+	record.fromHash = zobristPieceHash(square.index, square.piece);
 	record.aiSimulation = match.aiSimulation;
 	this.events.push(record);
 	this.moves += 1;
