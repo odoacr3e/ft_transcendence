@@ -100,18 +100,63 @@ Project management, documentation, and information and goal sharing were central
 Regarding communication and collaboration, several tools were used. **Slack** was primarily used for file and folder sharing and daily communication, while **GitHub** was used for hosting and project management, thanks to a multi-branch structure that enabled collaborative development and change tracking. Finally, **Discord** has been used primarily for remote collaboration, facilitating coordination of activities between team members in different locations.
 
 ## Technical Stack
-Lo stack tecnico utilizzato e composto da:
-
 
 | Level | Tecnologia | Motivo |
 |-|-|-|
-| Frontend | Vue.js + Tailwind|  |
-| Backend | Node.js + Express, Prisma (ORM), Redis, JWT |  |
-| Database | Postgresql |  |
+| ***Frontend*** | *Vue.js* | Progressive frontend framework based on reusable components, with responsiveness system for automatically updating the UI based on state changes. |
+|  | *Tailwind* | Utility-first CSS framework that allows you to stylize components directly in markup using predefined classes, without writing separate custom CSS. |
+| ***Backend*** | *Node.js* | V8-based server-side JavaScript runtime, used to run JS code outside the browser (HTTP server, filesystem/OS access, scripting). |
+|  | *Express* | Minimal framework for Node.js that simplifies routing, HTTP requests/responses, and middleware management  |
+| ***Database*** | *PostgreSQL* | Relational database with SQL syntax, native support for advanced data types like JSONB, arrays, and custom data types, allowing for great database scalability, optimization of complex queries |
+| ***Other tecnhologies and libraries*** | *Prisma* | ORM for Node.js, used to interact with the PostgreSQL database via a type-safe client automatically generated from the schema imported from the database (`schema.prisma`). Chosen for security on types under development and regarding SQL Injection, integrated migration management and query readability compared to writing raw SQL, reducing the risk of errors such as malformed queries or type mismatches between code and database. |
+|  | *Redis* | In-memory key-value database, used for quick-access temporary data. Chosen to save and manage refresh JWT tokens (logout invalidation), the OTPs for 2FA with automatic expiration (TTL). Use cases where disk persistence is not needed and read/write speed is a priority. |
+|  | *HashiCorp Vault* | Tool for centralized and secure secret management (DB credentials, JWT secret, etc.), with encrypted storage and controlled access. |
+|  | *JWT* | Stateless authentication that avoids database requests or caches for each request, the information is contained and signed in the token itself. Can be used with any RFC-compliant poiche language and framework. Implemented in combination with refresh token, which when the JWT expires is used to request a new JWT + refresh pair. |
+|  | *nginx* | Web server used as the only public entry point to the cpsi stack for other services to remain isolated on the internal Docker network. Routes requests to the appropriate containers (Vite frontend, Express backend, Socket.IO) and handles encrypted communication via TLS protocol. Chosen for its reliability in managing reverse proxies and HTTPS, and for the ability to directly serve static files (e.g. media/avatar) without going through the backend. |
+
+## Database Schema
+
+[Schema Database](docs/db_diagram.png)
+
+Il database e composto da 10 tabelle:
+
+<details>
+<summary><strong>users</strong> — dati utente e autenticazione</summary>
+<br>
+
+| Field | Type | Notes |
+|-------|------|------|
+| *id_user* | int (PK) | Primary Key |
+| *username* | varchar(50) | unique |
+| *email* | varchar(100) | unique |
+| *password* | varchar(200) | hashed |
+| *points* | int | default 500 |
+| *title* | varchar(200) | default "Newbie" |
+| *mfa* | boolean | 2FA enabled or not |
+| *google_id* | varchar | unique, id assigned by Google for OAuth |
+| *id_preference* | int (FK) | `preferences` |
+
+**Relations**: N:1 with `preferences`, 1:N with `friendships` (as *id_user1*, *id_user2*, *sender*), 1:N with `notifications` (as *id_user* and *id_sender*), 1:N with `tournament_players` (as *id_user*), 1:N with `tournaments` (as *created_by*), 1:N with `users_matches` (as *id_user*)
+
+</details>
+
+---
+Informazioni dei pezzi tra cui nome, abilita e costo del suo utilizzo
+
+
+- abilities: nome e descrizione delle abilita
+- friendships: 
+- users
+- preferences
+- notifications
+- tournaments
+- matches
+- tournament_players
+- users_matches
 
 
 
-This template should help get you started developing with Vue 3 in Vite.
+<!-- This template should help get you started developing with Vue 3 in Vite.
 
 ## Recommended IDE Setup
 
@@ -146,4 +191,4 @@ npm run dev
 
 ```sh
 npm run build
-```
+``` -->
