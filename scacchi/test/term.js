@@ -45,6 +45,8 @@ function mainTerm()
 	seed = "1v1";
 	time = process.hrtime.bigint();
 	init(match, seed);
+	console.log(`index => ${match.zobristIndex}`);
+	console.log(`hash => ${match._zobristHash}`);
 	// historyRestore(match, HISTORY_DEFAULT);
 	// move(match, "e2", "e4");
 	// move(match, "g8", "f6");
@@ -53,8 +55,8 @@ function mainTerm()
 	// if (lib.include.fs.existsSync(HISTORY_DEFAULT))
 	// 	historyRestore(match, HISTORY_DEFAULT);
 	// match.currentPlayer.ai = new AI(AIprofiles.FIRST_AI);
-	match.NextPlayer().ai = new AI(AIprofiles.FIRST_AI);
-	match.aiBool = true;
+	// match.NextPlayer().ai = new AI(AIprofiles.FIRST_AI);
+	// match.aiBool = true;
 
 	// move(match, "e5", "f6");
 	console.log(`time to init: ${(process.hrtime.bigint() - time) / 1000n} microseconds`);
@@ -132,6 +134,8 @@ process.stdin.on('keypress', (str, key) =>
 			result = execEvent(match, eEvents.Boost);
 			if (result.status != 200)
 				return (saveWrongMove(match, result, eEvents.Boost));
+			console.log(`index => ${match.zobristIndex}`);
+			console.log(`hash => ${match._zobristHash}`);
 			selected = [];
 			break ;
 		case (cmd.USE_BOOST) :
@@ -148,6 +152,8 @@ process.stdin.on('keypress', (str, key) =>
 					return (saveWrongMove(match, result, eEvents.MoveBoost));
 				else if (result.status != 200)
 					return (saveWrongMove(match, result, eEvents.Move));
+				console.log(`index => ${match.zobristIndex}`);
+				console.log(`hash => ${match._zobristHash}`);
 				selected = [];
 			}
 			break ;
@@ -157,6 +163,8 @@ process.stdin.on('keypress', (str, key) =>
 			selected[0] = match.cursor.square;
 			if (result.status != 200)
 				return (saveWrongMove(match, result, eEvents.Transform));
+			console.log(`index => ${match.zobristIndex}`);
+			console.log(`hash => ${match._zobristHash}`);
 			selected.pop();
 			break ;
 		case (cmd.SQUARE_INFO):
@@ -184,8 +192,8 @@ process.stdin.on('keypress', (str, key) =>
 			if (!name)
 				name = HISTORY_FILE;
 			historyRestore(match, HISTORY_PATH + name);
-			match.NextPlayer().ai = new AI(AIprofiles.FIRST_AI);
-			match.aiBool = true;
+			// match.NextPlayer().ai = new AI(AIprofiles.FIRST_AI);
+			// match.aiBool = true;
 			break ;
 		}
 		case (cmd.CANCEL_EVENT):
@@ -194,10 +202,14 @@ process.stdin.on('keypress', (str, key) =>
 
 			filePath = "./test/re-zero-return-by-death.mp3";
 			result = execEvent(match, "cancel");
+			console.log(`index => ${match.zobristIndex}`);
+			console.log(`hash => ${match._zobristHash}`);
 			if (result.status != 200)
 				return (error(null, result));
 			if (lib.include.fs.existsSync(filePath))
 				exec(`ffplay -nodisp -autoexit "${filePath}" || mpg123 "${filePath}" || cvlc --play-and-exit "${filePath}"`);
+			console.log(`index => ${match.zobristIndex}`);
+			console.log(`hash => ${match._zobristHash}`);
 			break ;
 		}
 		case (cmd.FAKE_BOOST):

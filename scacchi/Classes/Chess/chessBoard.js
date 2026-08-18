@@ -31,6 +31,7 @@ class Square
 
 		if (other == null)
 			return ;
+		this.index = other.index;
 		this.color = other.color;
 		this.wallBool = other.wallBool;
 		if (other.piece != null)
@@ -82,6 +83,7 @@ class Square
 		other.color = this.color;
 		if (this.piece)
 			other.piece = this.piece.Copy();
+		other.index = this.index;
 		other.targetZones = structuredClone(this.targetZones);
 		other.dangerZones = structuredClone(this.dangerZones);
 		other.influenceZones = structuredClone(this.influenceZones);

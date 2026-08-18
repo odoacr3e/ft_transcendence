@@ -68,13 +68,11 @@ export class History
 	Log(match, name="")
 	{
 		let	history;
-		let	copy;
 
 		if (fs.existsSync(HISTORY_PATH) == false)
 			fs.mkdirSync(HISTORY_PATH);
 		if (name && fs.existsSync(name) == true)
 			fs.rmSync(name);
-		copy = JSON.parse(JSON.stringify(this.events));
 		for (const event of this.events)
 		{
 			// @ts-ignore
@@ -84,7 +82,10 @@ export class History
 			if (event.lastLost == null)//@ts-ignore
 				delete event.lastLost;//@ts-ignore
 			delete event.pieceEaten;//@ts-ignore
-			delete event.loserSet;
+			delete event.loserSet;//@ts-ignore
+			delete event.fromHash;//@ts-ignore
+			delete event.toHash;//@ts-ignore
+			delete event.prevBoostHash;
 		}
 		if (name)
 		{
@@ -96,7 +97,6 @@ export class History
 		if (match.settings.presetType)
 			match.history.matchSettings = match.settings.presetType;
 		history = JSON.stringify(this, null, 2);
-		this.events = copy;
 		if (!name)
 			return (history);
 		else
@@ -158,6 +158,8 @@ export class HistoryEvent
 		this.aiSimulation = false;
 		this.fromHash = BigInt(0);
 		this.toHash = BigInt(0);
+		/** @type {bigint | undefined} */
+		this.prevBoostHash = undefined;
 	}
 }
 
@@ -215,6 +217,7 @@ function updateMoves(match, square, coords, result, boostBool=false)
 function updateBoost(match, square, from)
 {
 	let	record;
+	let	prevBoostSquare;
 
 	if (!this)
 		throw ("updateMoves must be called inside of History class");
@@ -228,6 +231,11 @@ function updateBoost(match, square, from)
 	record.updates = structuredClone(match.board.updates);
 	record.time = match.currentPlayer.time;
 	record.prevBoost = match.currentPlayer.boostedPiece;
+	if (record.prevBoost)
+	{
+		prevBoostSquare = match.board.get(record.prevBoost);
+		record.prevBoostHash = zobristPieceHash(prevBoostSquare.index, prevBoostSquare.piece); 
+	}
 	record.fromHash = zobristPieceHash(square.index, square.piece);
 	record.aiSimulation = match.aiSimulation;
 	this.events.push(record);
@@ -261,8 +269,7 @@ function updateTransform(match, square, from, newType)
 	record.fromHash = zobristPieceHash(square.index, square.piece);
 	record.aiSimulation = match.aiSimulation;
 	this.events.push(record);
-	this.moves += 1;
-}
+	this.moves += 1;}
 
 /**
  * 

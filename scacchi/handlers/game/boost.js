@@ -37,7 +37,6 @@ function boost(match, from)
 		return (result);
 	if (!tryBoost(match, result, from))
 		return (result);
-	zobristUpdateHash(match, match.history.Last());
 	result.status = 200;//@ts-ignore
 	aiSpeech(match, AI_EVENTS.applyBoostMe, [match.board.get(from).piece?.type]);
 	if (match.boost == BOOSTED_MAX)
@@ -82,8 +81,6 @@ function tryBoost(match, result, from)
 		return (error(result, 403, `it's ${match.currentPlayer.team} turn`));
 	else if (square.piece.price > match.currentPlayer.nPoints)
 		return (error(result, 403, `You need ${square.piece.price} to boost this`));
-	match.currentPlayer.nPoints -= square.piece.price;
-	square.piece.isBoostedBool = true;
 	if (match.currentPlayer.boostedPiece)
 	{
 		match.boostPriority.delete(match.currentPlayer.team);
@@ -95,6 +92,9 @@ function tryBoost(match, result, from)
 	match.board.updates.add(from);
 	match.boostPriority.add(match.currentPlayer.team);
 	match.history.UpdateBoost(match, square, from);
+	zobristUpdateHash(match, match.history.Last());
+	square.piece.isBoostedBool = true;
+	match.currentPlayer.nPoints -= square.piece.price;
 	match.currentPlayer.boostedPiece = from;
 	DangerUpdate(match, from, false);
 	checkInluenceOfBoost(match, square);

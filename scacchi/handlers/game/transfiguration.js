@@ -56,14 +56,14 @@ function transfiguration(match, result, coord, newType, sendBoardBool=true)
 	if (CheckTransfiguration(match, result, square.piece, coord, newType) == false)
 		return (result);
 	aiSpeech(match, AI_EVENTS.transformMe);
+	match.history.UpdateTransform(match, square, coord, newType);
+	zobristUpdateHash(match, match.history.Last());
 	isBoostedBool = square.piece.isBoostedBool;
 	square.piece = new Piece(newType, square.piece.pos, square.piece.team);
 	square.piece.isBoostedBool = isBoostedBool;
 	DangerUpdate(match, coord);
 	if (isBoostedBool == true && newType == enumNames.CHAMPION)
 		updateBoostedChampions(match, []);
-	match.history.UpdateTransform(match, square, coord, newType);
-	zobristUpdateHash(match, match.history.Last());
 	checkMateCheckAll(match, result);
 	if (endTurn(match, false).specialMoves.CheckKingDanger())
 		result.specialMoves.SetKingDanger();

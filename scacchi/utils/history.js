@@ -42,7 +42,7 @@ function historyRestore(match, path)
 		path += ".json";
 	if (!path || !fs.existsSync(path))
 		throw (`History, restore: path "${path}" invalid`);
-	buffer = fs.readFileSync(path, "utf-8");
+	buffer = fs.readFileSync(path, "utf-8"); // FIXME - HISTORY.json non salva gli hash, percio' tira errori
 	history = JSON.parse(buffer);
 	recreateMatch(match, history);
 }

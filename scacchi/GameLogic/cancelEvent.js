@@ -8,7 +8,7 @@ import { MOVEMENT_BONUS_POINT } from "../Macro/macro.js";
 import { boardStringify } from "../test/render.js";
 import { DangerUpdate, updateBoostedChampions } from "../utils/dangerUpdate.js";
 import { isOneOf } from "../utils/string.js";
-import { zobristUpdateHash } from "../utils/zobrist.js";
+import { zobristPieceHash, zobristUpdateHash } from "../utils/zobrist.js";
 import { setTimerGame } from "./timer.js";
 
 /** @typedef {import("../Classes/Chess/match.js").Match} Match */
@@ -68,6 +68,10 @@ function cancelMove(match, lastEvent)
 		return (console.error("cancelMove: History does not have the updates array"));
 	fromSquare = match.board.get(lastEvent.from);
 	toSquare = match.board.get(lastEvent.to);
+	lastEvent.fromHash = zobristPieceHash(fromSquare.index, fromSquare.piece);
+	lastEvent.toHash = zobristPieceHash(toSquare.index, toSquare.piece);
+	lastEvent.points.WHITE = match.white.nPoints;
+	lastEvent.points.BLACK = match.black.nPoints;
 	if (!lastEvent.pieceEaten && toSquare.piece && fromSquare.piece)
 		console.warn("cancelMove, warning: info on pieceEaten undefined.");
 	match.currentPlayer.guardianPieces.clear();
@@ -130,7 +134,7 @@ function cancelMove(match, lastEvent)
 		match.spareCountDown = 0;
 	else
 		++match.spareCountDown;
-	}
+}
 
 /**
  * 

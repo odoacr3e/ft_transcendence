@@ -69,6 +69,9 @@ function zobristInitHash(match)
 	match.zobristIndex = Number(hash & TABLE_SIZE);
 }
 
+let	I = 0;
+let	arr = [];
+
 /**
  * 
  * @param {Match} match 
@@ -80,23 +83,47 @@ function zobristUpdateHash(match, event)
 	let	fromSquare;
 	/** @type {Square | undefined} */
 	let	toSquare;
+	let	prevBoostSquare;
 	let	fromHash;
 	let	toHash;
+	let	historyFromHash;
+	let	historyToHash;
+	let	tmp = BigInt(0);
 
+	if (!event.from)
+		return ;
+	historyFromHash = event.fromHash;
+	historyToHash = event.toHash;
 	fromSquare = match.board.get(event.from);
-	if (event.to)
+	if (event.to && event.type != eEvents.Transform)
 		toSquare = match.board.get(event.to);
 	fromHash = zobristPieceHash(fromSquare.index, fromSquare.piece);
 	toHash = zobristPieceHash(toSquare?.index, toSquare?.piece);
-	if (event.fromHash != fromHash)
+	arr[I] = `zeb${I}: ${match._zobristHash}
+`;
+	arr[I] += `from${I}: ${fromHash}
+`;
+	arr[I] += `to${I}: ${toHash}
+`;
+	arr[I] += `prevFrom${I}: ${historyFromHash}
+`;
+	arr[I] += `prevTo${I}: ${historyToHash}
+`;
+	if (historyFromHash != fromHash)
 	{
-		match._zobristHash ^= event.fromHash;
+		match._zobristHash ^= historyFromHash;
 		match._zobristHash ^= fromHash;
 	}
-	if (toHash && event.toHash != toHash)
+	if (toSquare && historyToHash != toHash)
 	{
-		match._zobristHash ^= event.toHash;
+		match._zobristHash ^= historyToHash;
 		match._zobristHash ^= toHash;
+	}
+	if (event.prevBoostHash)
+	{
+		prevBoostSquare = match.board.get(event.prevBoost);
+		match._zobristHash ^= zobristPieceHash(prevBoostSquare.index, prevBoostSquare.piece);
+		match._zobristHash ^= event.prevBoostHash;
 	}
 	if (event.points.WHITE != match.white.nPoints || event.points.BLACK != match.black.nPoints)
 	{
@@ -104,9 +131,19 @@ function zobristUpdateHash(match, event)
 		match._zobristHash ^= zobristPointsHash(match.white.nPoints, match.black.nPoints);
 	}
 	match.zobristIndex = Number(match._zobristHash & TABLE_SIZE);
+	arr[I] += `newZeb${I}: ${match._zobristHash}
+`;
+	console.debug(arr);
+	I++;
 }
 
-//SECTION - utils
+//SECTION - utils 7426276207182823518
+
+//zeb0:		7112883808504317778n
+//from0:	0n
+//to0:		3601157839445666124n
+//oldFrom0:	13120451337166340020n
+//oldTo0:	10329356723668511865n
 
 /**
  * get the random number associated with the unique combination of:
@@ -136,7 +173,6 @@ function zobristPieceHash(boardCount, piece)
 function zobristPointsHash(pWhite, pBLack)
 {
 	pWhite = pWhite > SAVED_POINTS ? SAVED_POINTS : pWhite;
-	// 16 - 31
 	pBLack = pBLack > SAVED_POINTS ? SAVED_POINTS : pBLack;
 	return (zobristTable.points[pWhite] ^ zobristTable.points[pBLack + SAVED_POINTS]);
 }

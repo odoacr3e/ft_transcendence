@@ -3,7 +3,7 @@
 import { Match } from "../Chess/match.js";
 import { Queue } from "./Queue.js";
 import { Room } from "./room.js";
-import { DEBUG } from "../../Macro/macro.js";
+import { AI_PROFILE_PATH, DEBUG } from "../../Macro/macro.js";
 import { render } from "../../test/render.js";
 import { AIprofiles, AIprofilesArray, enumConnection } from "../../Macro/enums.js";
 import { Result } from "../endPoint/result.js";
@@ -192,9 +192,12 @@ function getTrainingSchedule()
 	AIprofilesArray
 	for (let profile of AIprofilesArray)
 	{
-		if (!fs.existsSync(`../Chess/AIprofiles/${profile}/cache.json`))
-			fs.writeFileSync(`../Chess/AIprofiles/${profile}/cache.json`, JSON.stringify(null));
-		data = JSON.parse(fs.readFileSync(`../Chess/AIprofiles/${profile}/cache.json`, 'utf-8'));
+		if (!fs.existsSync(`${AI_PROFILE_PATH}/${profile}/cache.json`))
+		{
+			fs.openSync(`${AI_PROFILE_PATH}/${profile}/cache.json`, "a+");
+			fs.writeFileSync(`${AI_PROFILE_PATH}/${profile}/cache.json`, JSON.stringify({data: []}, null, 2));
+		}
+		data = JSON.parse(fs.readFileSync(`${AI_PROFILE_PATH}/${profile}/cache.json`, 'utf-8'));
 		trainings.set(profile, data);
 	}
 	return trainings;
