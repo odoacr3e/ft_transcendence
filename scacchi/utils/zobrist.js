@@ -88,9 +88,8 @@ function zobristUpdateHash(match, event)
 	let	toHash;
 	let	historyFromHash;
 	let	historyToHash;
-	let	tmp = BigInt(0);
 
-	if (!event.from)
+	if (!event.from || match.settings.players.number != 2)
 		return ;
 	historyFromHash = event.fromHash;
 	historyToHash = event.toHash;
@@ -133,7 +132,7 @@ function zobristUpdateHash(match, event)
 	match.zobristIndex = Number(match._zobristHash & TABLE_SIZE);
 	arr[I] += `newZeb${I}: ${match._zobristHash}
 `;
-	console.debug(arr);
+	// console.debug(arr);
 	I++;
 }
 
