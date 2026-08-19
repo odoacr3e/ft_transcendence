@@ -29,7 +29,8 @@ function AIProfileConstructor(ai)
 			break ;
 		case (AIprofiles.GMU):
 			ai.memory = globals.AITraining.get(AIprofiles.GMU);
-			ai.Eval = AI_gmu_eval;
+			// ai.Eval = AI_gmu_eval;
+			ai.Eval = AI_first_eval;
 			break ;
 		case (AIprofiles.DEBUG):
 			ai.Eval = () => {return (0);};

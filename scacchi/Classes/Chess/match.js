@@ -19,6 +19,7 @@ import { aiSpeech } from "./AIprofiles/speech.js";
 import { zobristGenerateTable, zobristInitHash } from "../../utils/zobrist.js";
 
 /** @typedef {import("../Globals/Queue.js").QueueNode} QueueNode*/
+/** @typedef {import("./Pieces/pieces.js").Piece} Piece*/
 
 class Match
 {
@@ -195,6 +196,32 @@ class Match
 			player = this[player.next];
 		}
 		return (false);
+	}
+	/** @return {Array<Piece>} */
+	GetBoostedPieceTypes()
+	{
+		/** @type {Player} */			let	player;
+		/** @type {Square | undefined} */let	pieceSquare;
+		/** @type {Array<*>} */let	arr = [];
+		/** @type {Array<string>} */let	arrPriority;
+
+		//@ts-ignore
+		player = this[this.currentPlayer.next];
+		while (player.team != this.currentPlayer.team)
+		{
+			pieceSquare = this.board._data.get(player.boostedPiece);
+			if (!pieceSquare?.piece?.type)
+			{
+				//@ts-ignore
+				player = this[player.next];
+				continue ;
+			}
+			arr.push(this.board.get(player.boostedPiece).piece?.type);//@ts-ignore
+			player = this[player.next];
+		}
+		if (this.currentPlayer.boostedPiece)
+			arr.push(this.board.get(player.boostedPiece).piece?.type);//@ts-ignore
+		return (arr);
 	}
 	GetBoostedPieceCoords(considerCurrentPlayerBool=false, sortByPriorityBool=false)
 	{

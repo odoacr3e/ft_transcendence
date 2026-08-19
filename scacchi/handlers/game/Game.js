@@ -27,6 +27,7 @@ import { enumSocketState } from "../../Macro/enums.js";
 import { saveMatch } from "../../utils/saveMatch.js";
 import { checkKingDanger } from "../../utils/checkDanger.js";
 import { reload } from "./reload.js";
+import { AItraining } from "../../Classes/Chess/AIprofiles/training.js";
 
 /** @typedef {import("express").Request} Request*/
 /** @typedef {import("express").Response} Response*/
@@ -172,6 +173,8 @@ async function gameHandler(match, body, socketData=null)
 	result = responseFormatter(match, result, null, null);//@ts-ignore
 	result.type = body.type;
 	render(match);
+	if (match.victory && match.aiBool)
+		AItraining(match);
 	if (match.victory != "" && match.id != "0")
 		saveMatch(match);
 	return (result);

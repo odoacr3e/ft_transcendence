@@ -1,8 +1,9 @@
 //@ts-check
 
+import { randomInt } from "crypto";
 import { getLegalMoves } from "../../GameLogic/checkLegalMoves.js";
 import { checkLostAll } from "../../GameLogic/checkMate.js";
-import { AIprofilesArray, eTeam } from "../../Macro/enums.js";
+import { AIprofilesArray, eTeam, enumNames } from "../../Macro/enums.js";
 import { render } from "../../test/render.js";
 import { cancelTurn, execTurn } from "../../utils/AI.js";
 import { checkKingDanger } from "../../utils/checkDanger.js";
@@ -10,6 +11,7 @@ import { getBestNumber } from "../../utils/math.js";
 import { rngProportional } from "../../utils/random.js";
 import { AIProfileConstructor } from "./AIprofiles/constructors.js";
 import fs from "fs";
+import { isOneOf } from "../../utils/string.js";
 
 /** @typedef {import("./match.js").Match} Match*/
 /** @typedef {{from: string, to: string}} Move */
@@ -63,21 +65,6 @@ export class AI
 	}
 };
 
-// /**
-//  * 
-//  * @param {Array<Eval>} turns
-//  */
-// function sortTurns(turns)
-// {
-// 	let tmp;
-
-// 	if (turns.length <= 1)
-// 		return ;
-// 	if (!turns.at(0) || !turns.at(1))
-// 		throw (`sortTurns: error in checking for turns`);//@ts-ignore
-// 	turns.sort((x, y) => {x.score - y.score});
-// }
-
 //SECTION - utils
 
 /**
@@ -97,6 +84,7 @@ function getBestTurn(match)
 	let	ai;
 	let	alpha;
 	let	beta;
+	let	depth;
 
 	ai = match.currentPlayer.ai;
 	if (!ai)
@@ -104,6 +92,9 @@ function getBestTurn(match)
 	console.log("Calculating best move...");
 	alpha = -Infinity;
 	beta = +Infinity;
+	depth = 3;
+	if (match.boostPriority.size >= 1)
+		depth -= 1;
 	arrayTurns = getLegalMoves(match);
 	if (ai.defeatStatus != 0)
 		return (arrayTurns[0]);
@@ -122,14 +113,11 @@ function getBestTurn(match)
 		render(match);
 		playableTurn.push(turn);
 		newTurns = getLegalMoves(match);
-		if (match.zobristIndex in ai.memory)
-			match.memTurn.set(match.zobristIndex, [ai.memory[match.zobristIndex][0], ai.memory[match.zobristIndex][1] + 1]);
+		if (match.zobristIndex in ai.memory && (ai.memory[match.zobristIndex][0] == (match.currentPlayer.team == eTeam.White? +Infinity : -Infinity) ||
+		rngProportional(100, 50)))
+			val.score = ai.memory[match.zobristIndex][0];
 		else
-		{
-			val.score = minMax(match, ai, newTurns, 2, [turn], alpha, beta);
-			// val.score = Math.abs(val.score);
-			match.memTurn.set(match.zobristIndex, [val.score, 1]);
-		}
+			val.score = minMax(match, ai, newTurns, depth, [turn], alpha, beta);
 		val.index = i;
 		cancelTurn(match, turn);
 		if (val.score == +Infinity)
@@ -228,8 +216,12 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 			// 	console.log(arrayTurns.length);
 			pastTurns.push(turn);
 			// console.log(turn);
-			ai.Simulate(match, ai);//@ts-ignore
-			val = minMax(match, ai, newTurns, depth - 1, pastTurns, alpha, beta);
+			ai.Simulate(match, ai);
+			if (match.zobristIndex in ai.memory && (ai.memory[match.zobristIndex][0] == +Infinity ||
+			rngProportional(100, 50)))
+				val = ai.memory[match.zobristIndex][0];
+			else //@ts-ignore
+				val = minMax(match, ai, newTurns, depth - 1, pastTurns, alpha, beta);
 			ai.Cancel(match, ai);
 			pastTurns.pop();
 			maxEval = Math.max(val, maxEval);
@@ -262,7 +254,11 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 			pastTurns.push(turn);
 			// console.log(turn);
 			ai.Simulate(match, ai);//@ts-ignore
-			val = minMax(match, ai, newTurns, depth - 1, pastTurns, alpha, beta);
+			if (match.zobristIndex in ai.memory && (ai.memory[match.zobristIndex][0] == -Infinity ||
+			rngProportional(100, 50)))
+				val = ai.memory[match.zobristIndex][0];
+			else //@ts-ignore
+				val = minMax(match, ai, newTurns, depth - 1, pastTurns, alpha, beta);
 			ai.Cancel(match, ai);
 			pastTurns.pop();
 			minEval = Math.min(val, minEval);

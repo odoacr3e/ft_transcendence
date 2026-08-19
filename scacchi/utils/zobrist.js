@@ -114,16 +114,16 @@ function zobristUpdateHash(match, event)
 		toSquare = match.board.get(event.to);
 	fromHash = zobristPieceHash(fromSquare.index, fromSquare.piece);
 	toHash = zobristPieceHash(toSquare?.index, toSquare?.piece);
-	arr[I] = `zeb${I}: ${match._zobristHash}
-`;
-	arr[I] += `from${I}: ${fromHash}
-`;
-	arr[I] += `to${I}: ${toHash}
-`;
-	arr[I] += `prevFrom${I}: ${historyFromHash}
-`;
-	arr[I] += `prevTo${I}: ${historyToHash}
-`;
+// 	arr[I] = `zeb${I}: ${match._zobristHash}
+// `;
+// 	arr[I] += `from${I}: ${fromHash}
+// `;
+// 	arr[I] += `to${I}: ${toHash}
+// `;
+// 	arr[I] += `prevFrom${I}: ${historyFromHash}
+// `;
+// 	arr[I] += `prevTo${I}: ${historyToHash}
+// `;
 	if (historyFromHash != fromHash)
 	{
 		match._zobristHash ^= historyFromHash;
@@ -146,10 +146,10 @@ function zobristUpdateHash(match, event)
 		match._zobristHash ^= zobristPointsHash(match.white.nPoints, match.black.nPoints);
 	}
 	match.zobristIndex = Number(match._zobristHash & TABLE_SIZE);
-	arr[I] += `newZeb${I}: ${match._zobristHash}
-`;
-	// console.debug(arr);
-	I++;
+// 	arr[I] += `newZeb${I}: ${match._zobristHash}
+// `;
+// 	console.debug(arr);
+// 	I++;
 }
 
 //SECTION - utils 7426276207182823518

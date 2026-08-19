@@ -15,6 +15,7 @@ import { zobristGenerateTable } from "../../utils/zobrist.js";
 /** @typedef {import("../Chess/player.js").Player} Player*/
 /** @typedef {import("./socketInfo.js").SocketInfo} Socket*/
 /** @typedef {import("../Chess/tournament.js").Tournament} Tournament*/
+/** @typedef {Record<string, [number, number]>} ZobristCache*/
 /** @typedef {string} matchId*/
 
 /** @typedef {string} stringifyBoard*/
@@ -50,8 +51,9 @@ class Globals
 		this.matchCache = new Map();
 		this.turns = ['QF', 'SF', 'F'];
 		zobristGenerateTable();
-		/** @type {Map<string, object>} */
+		/** @type {Map<string, ZobristCache>} */
 		this.AITraining = getTrainingSchedule();
+		this.AIgameCounter = 0;
 	}
 	/** @param {string} roomType */
 	GetQueue(roomType)
@@ -187,7 +189,7 @@ class Globals
 function getTrainingSchedule()
 {
 	let trainings = new Map();
-	let data;
+	/** @type {ZobristCache} */ let data;
 
 	AIprofilesArray
 	for (let profile of AIprofilesArray)

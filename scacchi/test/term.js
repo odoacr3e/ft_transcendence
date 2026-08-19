@@ -55,8 +55,8 @@ function mainTerm()
 	// if (lib.include.fs.existsSync(HISTORY_DEFAULT))
 	// 	historyRestore(match, HISTORY_DEFAULT);
 	// match.currentPlayer.ai = new AI(AIprofiles.FIRST_AI);
-	// match.NextPlayer().ai = new AI(AIprofiles.FIRST_AI);
-	// match.aiBool = true;
+	match.NextPlayer().ai = new AI(AIprofiles.FIRST_AI);
+	match.aiBool = true;
 
 	// move(match, "e5", "f6");
 	console.log(`time to init: ${(process.hrtime.bigint() - time) / 1000n} microseconds`);

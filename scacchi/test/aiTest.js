@@ -125,7 +125,6 @@ function execTest(matchPath=null)
 			console.debug(`Executing test "${currMatch}", move ${i++}`);
 			match.cursor.square = "";
 			render(match, [], "", false, console.debug);
-			printMemoryReport(`crawling in my skin, this world deserves a hero...`);
 			AIexecuteTurn(match);
 		}
 		console.debug(`${colors.red}${match.victory} has won.${colors.reset}`);
@@ -261,21 +260,4 @@ function getAiType(type="")
 	if (type && !AIprofiles[type.at(0)?.toUpperCase() + type.toLowerCase().slice(1)])//@ts-ignore
 		return (AIprofiles[type.at(0)?.toUpperCase() + type.toLowerCase().slice(1)]);
 	return (DEFAULT_AI);
-}
-
-/**
- * scritta da Claude
- */
-function printMemoryReport(label = "")
-{
-	const mem = process.memoryUsage();//@ts-ignore
-	const toMB = (bytes) => (bytes / 1024 / 1024).toFixed(1);
-
-	console.debug(`\n=== Memoria ${label} ===`);
-	console.debug(`RSS (memoria totale processo):     ${toMB(mem.rss)} MB`);
-	console.debug(`Heap totale allocato:               ${toMB(mem.heapTotal)} MB`);
-	console.debug(`Heap effettivamente usato:           ${toMB(mem.heapUsed)} MB`);
-	console.debug(`Memoria esterna (buffer, ecc.):      ${toMB(mem.external)} MB`);
-	console.debug(`Array buffers:                       ${toMB(mem.arrayBuffers)} MB`);
-	console.debug(`========================\n`);
 }
