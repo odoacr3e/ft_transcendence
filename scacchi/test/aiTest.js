@@ -15,6 +15,7 @@ import { boardStringify, render } from "./render.js";
 import { colors } from "./colorsOld.js";
 import { AIprofiles, eEvents } from "../Macro/enums.js";
 import { endTurn } from "../handlers/game/endTurn.js";
+import { jsonSafeParse } from "../utils/response.js";
 
 const TEST_PATH = `${HISTORY_PATH}`;
 const DEFAULT_AI = AIprofiles.FIRST_AI;
@@ -67,6 +68,9 @@ function execAllTests()
 	{
 		currMatch = "fresh " + i;
 		execTest(null);
+		globals.matches.delete("0");
+		globals.matches.set("0", new Match());//@ts-ignore
+		currMatchData = null;
 	}
 	for (const file of fs.readdirSync(TEST_PATH))
 	{
@@ -121,6 +125,7 @@ function execTest(matchPath=null)
 			console.debug(`Executing test "${currMatch}", move ${i++}`);
 			match.cursor.square = "";
 			render(match, [], "", false, console.debug);
+			printMemoryReport(`crawling in my skin, this world deserves a hero...`);
 			AIexecuteTurn(match);
 		}
 		console.debug(`${colors.red}${match.victory} has won.${colors.reset}`);
@@ -132,7 +137,7 @@ function execTest(matchPath=null)
 		if (!err)
 			err = "MISSING";
 		else if (typeof(err) != "string")
-			err = JSON.stringify(err);//@ts-ignore
+			err = JSON.stringify(err, jsonSafeParse);//@ts-ignore
 		gameFail(err);
 	}
 }
@@ -195,9 +200,9 @@ function gameFail(msg)
 function fail(msg, err)
 {
 	if (typeof(err) != "string")
-		err = JSON.stringify(err, null, 2);
+		err = JSON.stringify(err, jsonSafeParse, 2);
 	if (typeof(msg) != "string")
-		msg = JSON.stringify(err, null, 2);
+		msg = JSON.stringify(err, jsonSafeParse, 2);
 	currMatchData.timer = null;
 	try
 	{
@@ -212,12 +217,12 @@ function fail(msg, err)
 		render: renderOutput,
 		aiWhite: currMatchData.white.ai?.profile,
 		aiBlack: currMatchData.black.ai?.profile,
-		events: JSON.stringify(currMatchData.history.events, null, 2)
+		events: JSON.stringify(currMatchData.history.events, jsonSafeParse, 2)
 	};
 	console.debug(`ERROR saved in: "test/log/${currMatch}_${Date.now()}.json".\n\n\n\n`);
 	if (!fs.existsSync("test/log/"))
 		fs.mkdirSync("test/log/", { recursive: true });
-	fs.writeFileSync(`test/log/${currMatch}_${Date.now()}.json`, JSON.stringify(log, null, 2), "utf-8");
+	fs.writeFileSync(`test/log/${currMatch}_${Date.now()}.json`, JSON.stringify(log, jsonSafeParse, 2), "utf-8");
 	renderOutput = "";
 }
 
@@ -256,4 +261,21 @@ function getAiType(type="")
 	if (type && !AIprofiles[type.at(0)?.toUpperCase() + type.toLowerCase().slice(1)])//@ts-ignore
 		return (AIprofiles[type.at(0)?.toUpperCase() + type.toLowerCase().slice(1)]);
 	return (DEFAULT_AI);
+}
+
+/**
+ * scritta da Claude
+ */
+function printMemoryReport(label = "")
+{
+	const mem = process.memoryUsage();//@ts-ignore
+	const toMB = (bytes) => (bytes / 1024 / 1024).toFixed(1);
+
+	console.debug(`\n=== Memoria ${label} ===`);
+	console.debug(`RSS (memoria totale processo):     ${toMB(mem.rss)} MB`);
+	console.debug(`Heap totale allocato:               ${toMB(mem.heapTotal)} MB`);
+	console.debug(`Heap effettivamente usato:           ${toMB(mem.heapUsed)} MB`);
+	console.debug(`Memoria esterna (buffer, ecc.):      ${toMB(mem.external)} MB`);
+	console.debug(`Array buffers:                       ${toMB(mem.arrayBuffers)} MB`);
+	console.debug(`========================\n`);
 }

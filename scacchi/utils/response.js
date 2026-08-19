@@ -236,6 +236,18 @@ function jsonParser(data)
 		return (JSON.parse(JSON.stringify(data, _jsonParser, 2)));
 }
 
+/**
+ * 
+ * @param {*} key
+ * @param {*} val
+ */
+function jsonSafeParse(key, val)
+{
+	if (typeof(val) == "bigint")
+		return (`${val}`);
+	return (val);
+}
+
 const jsonResponse = { ResponseError, ResponseSuccess };
 
-export { jsonResponse, jsonParser, responseFormatter };
+export { jsonResponse, jsonParser, responseFormatter, jsonSafeParse };

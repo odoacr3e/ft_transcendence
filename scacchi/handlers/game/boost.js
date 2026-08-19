@@ -92,9 +92,9 @@ function tryBoost(match, result, from)
 	match.board.updates.add(from);
 	match.boostPriority.add(match.currentPlayer.team);
 	match.history.UpdateBoost(match, square, from);
-	zobristUpdateHash(match, match.history.Last());
 	square.piece.isBoostedBool = true;
 	match.currentPlayer.nPoints -= square.piece.price;
+	zobristUpdateHash(match, match.history.Last());
 	match.currentPlayer.boostedPiece = from;
 	DangerUpdate(match, from, false);
 	checkInluenceOfBoost(match, square);

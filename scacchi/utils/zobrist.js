@@ -1,7 +1,10 @@
 //@ts-check
 
-import { arrayInitNames, arrayInitTeam, arrayNames, eEvents } from "../Macro/enums.js";
+import fs from "fs";
+import { AIprofilesArray, arrayInitNames, arrayInitTeam, arrayNames, eEvents } from "../Macro/enums.js";
 import {getRandomValues} from "crypto";
+import { AI_PROFILE_PATH } from "../Macro/macro.js";
+import { jsonSafeParse } from "./response.js";
 
 /** @typedef {import("../Classes/Globals/globals.js").globals} Globals*/
 /** @typedef {import("../Classes/Chess/match.js").Match} Match*/
@@ -14,7 +17,7 @@ const METADATA = 2;//0: non boostato; 1: boostato
 const SQUARE_COMBINATION = COMBINATIONS * METADATA;
 const SAVED_POINTS = 16;//oltre 16 non ha senso separare
 const TABLE_SIZE = BigInt((2 << 20) - 1);
-const zobristTable = 
+let zobristTable = 
 {
 	/** @type {Array<BigInt>} */
 	board: [],
@@ -29,6 +32,8 @@ function zobristGenerateTable()
 {
 	let	array64 = new BigUint64Array(1);
 
+	if (fs.existsSync(`${AI_PROFILE_PATH}/trainingChambersKeys.json`))
+		return zobristRetrieveTable();
 	//				tipo pezzo			colori team
 	for (let x = 0; x != 64 * SQUARE_COMBINATION; x += SQUARE_COMBINATION)
 	{
@@ -46,6 +51,17 @@ function zobristGenerateTable()
 	{
 		getRandomValues(array64);
 		zobristTable.points[x] = array64[0];
+	}
+	fs.openSync(`${AI_PROFILE_PATH}/trainingChambersKeys.json`, "a+");
+	fs.writeFileSync(`${AI_PROFILE_PATH}/trainingChambersKeys.json`, JSON.stringify(zobristTable, jsonSafeParse, 0));
+	for (let profile of AIprofilesArray)
+	{
+		if (fs.existsSync(`${AI_PROFILE_PATH}/${profile}/cache.json`))
+		{
+			fs.openSync(`${AI_PROFILE_PATH}/${profile}/cacheBackup.json`, "a+");
+			fs.copyFileSync(`${AI_PROFILE_PATH}/${profile}/cache.json`, `${AI_PROFILE_PATH}/${profile}/cacheBackup.json`);
+			fs.rmSync(`${AI_PROFILE_PATH}/${profile}/cache.json`);
+		}
 	}
 }
 
@@ -118,12 +134,12 @@ function zobristUpdateHash(match, event)
 		match._zobristHash ^= historyToHash;
 		match._zobristHash ^= toHash;
 	}
-	if (event.prevBoostHash)
-	{
-		prevBoostSquare = match.board.get(event.prevBoost);
-		match._zobristHash ^= zobristPieceHash(prevBoostSquare.index, prevBoostSquare.piece);
-		match._zobristHash ^= event.prevBoostHash;
-	}
+	// if (event.prevBoostHash)
+	// {
+	// 	prevBoostSquare = match.board.get(event.prevBoost);
+	// 	match._zobristHash ^= zobristPieceHash(prevBoostSquare.index, prevBoostSquare.piece);
+	// 	match._zobristHash ^= event.prevBoostHash;
+	// }
 	if (event.points.WHITE != match.white.nPoints || event.points.BLACK != match.black.nPoints)
 	{
 		match._zobristHash ^= zobristPointsHash(event.points.WHITE, event.points.BLACK);
@@ -174,6 +190,22 @@ function zobristPointsHash(pWhite, pBLack)
 	pWhite = pWhite > SAVED_POINTS ? SAVED_POINTS : pWhite;
 	pBLack = pBLack > SAVED_POINTS ? SAVED_POINTS : pBLack;
 	return (zobristTable.points[pWhite] ^ zobristTable.points[pBLack + SAVED_POINTS]);
+}
+
+function zobristRetrieveTable()
+{
+	let data;
+
+	data = JSON.parse(fs.readFileSync(`${AI_PROFILE_PATH}/trainingChambersKeys.json`, "utf-8"));
+	zobristTable = data;
+	for (let i = 0; i != zobristTable.board.length; i++)
+	{
+		zobristTable.board[i] = BigInt(zobristTable.board[i]);
+	}
+	for (let i = 0; i != zobristTable.points.length; i++)
+	{
+		zobristTable.points[i] = BigInt(zobristTable.points[i]);
+	}
 }
 
 export {zobristGenerateTable, zobristInitHash, zobristUpdateHash, zobristPieceHash};

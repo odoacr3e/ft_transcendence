@@ -47,7 +47,8 @@ export function cancelEvent(match)
 		setTimerGame(match);
 	else
 		match.timer = null;
-	zobristUpdateHash(match, lastEvent);
+	match.zobristIndex = lastEvent.zobristIndex;
+	match._zobristHash = lastEvent.zobristHash;
 	return (new Result().Success());
 }
 

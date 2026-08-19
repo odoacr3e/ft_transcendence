@@ -8,6 +8,7 @@ import {HISTORY_PATH, CHESSBOARD_W, CHESSBOARD_H, MATCHTIMER} from "../../Macro/
 import {boardStringify} from "../../test/render.js";
 import { Result } from "../endPoint/result.js";
 import { zobristPieceHash } from "../../utils/zobrist.js";
+import { jsonSafeParse } from "../../utils/response.js";
 
 /**@typedef {import("./match.js").Match} Match*/
 /**@typedef {import("./match.js").MatchSettings} MatchSettings*/
@@ -85,7 +86,6 @@ export class History
 			delete event.loserSet;//@ts-ignore
 			delete event.fromHash;//@ts-ignore
 			delete event.toHash;//@ts-ignore
-			delete event.prevBoostHash;
 		}
 		if (name)
 		{
@@ -96,7 +96,7 @@ export class History
 		match.history.finalBoard = boardStringify(match);
 		if (match.settings.presetType)
 			match.history.matchSettings = match.settings.presetType;
-		history = JSON.stringify(this, null, 2);
+		history = JSON.stringify(this, jsonSafeParse, 2);
 		if (!name)
 			return (history);
 		else
@@ -158,8 +158,8 @@ export class HistoryEvent
 		this.aiSimulation = false;
 		this.fromHash = BigInt(0);
 		this.toHash = BigInt(0);
-		/** @type {bigint | undefined} */
-		this.prevBoostHash = undefined;
+		this.zobristHash = BigInt(0);
+		this.zobristIndex = 0;
 	}
 }
 
@@ -202,6 +202,8 @@ function updateMoves(match, square, coords, result, boostBool=false)
 	record.points.BLACK = match.white.nPoints;
 	record.fromHash = zobristPieceHash(square.index, square.piece);
 	record.toHash = zobristPieceHash(to.index, to.piece);
+	record.zobristHash = match._zobristHash;
+	record.zobristIndex = match.zobristIndex;
 	record.aiSimulation = match.aiSimulation;
 	this.events.push(record);
 	this.moves += 1;
@@ -231,12 +233,9 @@ function updateBoost(match, square, from)
 	record.updates = structuredClone(match.board.updates);
 	record.time = match.currentPlayer.time;
 	record.prevBoost = match.currentPlayer.boostedPiece;
-	if (record.prevBoost)
-	{
-		prevBoostSquare = match.board.get(record.prevBoost);
-		record.prevBoostHash = zobristPieceHash(prevBoostSquare.index, prevBoostSquare.piece); 
-	}
 	record.fromHash = zobristPieceHash(square.index, square.piece);
+	record.zobristHash = match._zobristHash;
+	record.zobristIndex = match.zobristIndex;
 	record.aiSimulation = match.aiSimulation;
 	this.events.push(record);
 	this.moves += 1;
@@ -267,6 +266,8 @@ function updateTransform(match, square, from, newType)
 	record.updates = structuredClone(match.board.updates);
 	record.time = match.currentPlayer.time;
 	record.fromHash = zobristPieceHash(square.index, square.piece);
+	record.zobristHash = match._zobristHash;
+	record.zobristIndex = match.zobristIndex;
 	record.aiSimulation = match.aiSimulation;
 	this.events.push(record);
 	this.moves += 1;}
