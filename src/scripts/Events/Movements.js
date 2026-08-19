@@ -3,30 +3,30 @@ import { clearHighlight }			from "@/scripts/Events/utils/HighlightUtils.js";
 import { sendToBackend }			from "./BackLink.js";
 import { PIECES_ABILITY } 			from "@/scripts/Helper/abilityMovement";
 
+const EMPTY_IMG = new Image();
+EMPTY_IMG.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+EMPTY_IMG.decode?.().catch(() => {});
+
 export function onDragStart(event, square)
 {
-	event.dataTransfer.setData('pieceId', `piece-${square.id}`)
-	event.dataTransfer.setData('fromSquareId', square.id)
+	event.dataTransfer.setData('pieceId', `piece-${square.id}`);
+	event.dataTransfer.setData('fromSquareId', square.id);
+	event.dataTransfer.effectAllowed = "move";
+	event.dataTransfer.setDragImage(EMPTY_IMG, 0, 0);
 
-	event.dataTransfer.setDragImage(event.target, window.outerWidth, window.outerHeight);
+	localInfo.drag = {
+		src:	event.target.src,
+		size:	event.target.offsetWidth,
+		x:		event.clientX,
+		y:		event.clientY,
+		from:	square.id
+	};
 
-	document.querySelectorAll("#floatingPiece").forEach(node => node.remove());
-
-  	localInfo.dragClone = event.target.cloneNode(true);
-	localInfo.dragClone.id = "floatingPiece";
-	localInfo.dragClone.style.top = -200 + "px";
-	localInfo.dragClone.style.left = -200 + 'px';
-  	localInfo.dragClone.style.position = 'fixed';
-  	localInfo.dragClone.style.pointerEvents = 'none';
-  	localInfo.dragClone.style.zIndex = '13';
-  	localInfo.dragClone.style.width = event.target.offsetWidth + 'px';
-  	localInfo.dragClone.style.height = event.target.offsetHeight + 'px';
-  	document.body.appendChild(localInfo.dragClone);
-
-	//FIXME - DOBBIAMO ASSICURARCI CHE QUESTO NON ROMPA NULLA
 	localInfo.lastClickedId = event.target.parentNode.id;
-
-  	setTimeout(() => { event.target.style.visibility = 'hidden'; }, 0);
+	setTimeout(() => {
+		if (localInfo.drag)
+			localInfo.drag.hideSource = true;
+	}, 0);
 }
 
 export async function onDrop(event, toSquare)
@@ -53,18 +53,11 @@ export async function onDrop(event, toSquare)
 		return
 	}
 
-	localInfo.dropDone = true;
-
 	const moveAccepted = await sendToBackend(fromSquareId, toSquareId, true);
 	if (moveAccepted)
 	{
 		// console.log("[onDrop]: Mossa valida!");	
 		clearHighlight();
 		localInfo.usingAbility = "";
-	}
-	else
-	{
-		localInfo.dropDone = false;
-		// console.log("[onDrop]: mossa rifiutata dal server!");
 	}
 }

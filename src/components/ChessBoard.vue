@@ -28,6 +28,14 @@
 <template>
     <div id="root">
 		<div v-if="localInfo.goatId" id="overlay" v-bind:class="{ 'opacity-60 pointer-events-auto':localInfo.goatId }"></div>
+		<Teleport to="body">
+			<img v-if="localInfo.drag" class="floatingPiece"
+					:src="localInfo.drag.src" 
+					:style="{width: localInfo.drag.size + 'px',
+							 height: localInfo.drag.size + 'px',
+							 left: localInfo.drag.x + 'px',
+							 top: localInfo.drag.y + 'px'}"/>
+		</Teleport>
 		<div id="board" oncontextmenu="return false;" v-bind:class="{ 'boardTwo' : style === '1v1', 'boardFour' : style === '14x14x4'}">
 				<div v-for="row in domBoardComputed" :key="row[0]?.id" class="grid" v-bind:class="{ 'rowTwo' : style === '1v1', 'rowFour' : style === '14x14x4'}">
 					<div
@@ -61,7 +69,7 @@
 						<img
 							v-if="square.piece"
 							class="piece"
-							v-bind:class="{ 'boosted-aura':square.piece.isBoostedBool }"
+							v-bind:class="{ 'boosted-aura':square.piece.isBoostedBool, 'invisible': localInfo.drag?.hideSource && localInfo.drag.from === square.id }"
 							:src="IMG_PATHS[square.piece.team + square.piece.type]"
 							:draggable="true"
 							@dragstart="onDragStart($event, square)"/>
@@ -239,5 +247,13 @@
     	        drop-shadow(0 0 10px #FFA500)
     	        drop-shadow(0 0 20px #FF4500)
     	}
+	}
+
+	.floatingPiece
+	{
+		position: fixed;
+		z-index: 13;
+		pointer-events: none;
+		transform: translate(-50%, -50%);
 	}
 </style>

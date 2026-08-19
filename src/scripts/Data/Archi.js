@@ -1,28 +1,12 @@
 import { initLocalBoard, localMatchState, localBoard,  
 		 localPlayers, startLocalMatchState, 
 		 localInfo}										from "./Variables.js";
-import { checkEndTurn, hasBoost, DEBUGSetVisible, 
+import { checkEndTurn, hasBoost, 
 		 checkUpgrade, assignLastMoveSquares }			from "./utils/ArchiUtils.js";
 import "./SocketLink.js"
+import { beginPendingAbility } from "../Helper/abilityMovement.js";
 
 //SECTION - INIT FUNCTIONS
-
-// export async function loadReceivedMatch(style) 
-// {
-// 	const response = await fetch("http://localhost:8080/api/game",
-// 	{
-// 		method: "POST",
-// 		headers: { "Content-Type": "application/json" },
-// 		body: JSON.stringify({ type: "init", from: style, to: "0" })
-// 	});
-
-// 	if (!response.ok)
-// 		throw new Error(`Impossibile caricare /match.json: ${response.status}`);
-// 	const match = await response.json();
-// 	// const match = await JSON.parse(response.body, _jsonReviver);
-// 	// console.log(`responde: ${JSON.stringify(match)}`)
-// 	return match;
-// }
 
 export function  validateReceivedMatch(rawJson)
 {
@@ -63,7 +47,7 @@ export function initLocalMatchState(raw)
 	const validated = validateReceivedMatch(raw);
 	startLocalMatchState(validated);
 
-	initLocalBoard(localMatchState.board);
+	initLocalBoard(localMatchState?.board);
 	initLocalPlayers();
 
 	localInfo.matchId = raw.id;
@@ -71,8 +55,10 @@ export function initLocalMatchState(raw)
 	localInfo.victory = raw.victory;
 	localInfo.matchStarted = false;	//il timer non parte finché il bianco non ha mosso
 
-	sessionStorage.setItem("match:myTeam", raw.team);
-	sessionStorage.setItem("match:id", raw.id);
+	if (localInfo.myTeam)
+		sessionStorage.setItem("match:myTeam", localInfo.myTeam);
+	if (raw.id !== undefined && raw.id !== null)
+		sessionStorage.setItem("match:id", raw.id);
 }
 
 export function initLocalPlayers()
@@ -99,6 +85,7 @@ export function initLocalPlayers()
 
 export function updateMatchState(nextRaw)
 {
+	localInfo.drag = null;
 	const validated = validateReceivedMatch(nextRaw);
 
 	localInfo.victory = nextRaw.victory ?? null;
@@ -110,7 +97,6 @@ export function updateMatchState(nextRaw)
 	{
 		if (validated.board)
 			updateLocalBoard(validated);
-		DEBUGSetVisible();
 		checkUpgrade();
 		updateLocalPlayers(validated);
 	} 
@@ -183,13 +169,38 @@ export function reloadMatchState(raw)
 	initLocalBoard(localMatchState.board);
 	initLocalPlayers();
 
-	localInfo.myTeam = raw.team ?? sessionStorage.getItem("match:myTeam");
-	localInfo.matchId = sessionStorage.getItem("match:id");
-	localInfo.victory = raw.victory;
-	localInfo.matchStarted = true;	//si rientra a partita in corso: il timer riparte subito
+	localInfo.myTeam			= raw.team ?? sessionStorage.getItem("match:myTeam");	
+	localInfo.matchId			= sessionStorage.getItem("match:id");
+	localInfo.victory			= raw.victory;
+	localInfo.matchStarted		= true;
+	localInfo.secondTurn		= raw.secondMove ?? false;
 
-	if (raw.team)
-		sessionStorage.setItem("match:myTeam", raw.team);
+	restorePendingAbility(raw);
+
+	if (localInfo.myTeam)
+		sessionStorage.setItem("match:myTeam", localInfo.myTeam);
+}
+
+function restorePendingAbility(raw)
+{
+	const anchorId	= raw.usedBoost || null;
+	const zones		= Object.values(raw.oldBoosted || {})[0];
+	const pieceType	= anchorId ? localBoard.get(anchorId)?.piece?.type : null;
+
+	if (!anchorId || !pieceType || !Array.isArray(zones) || zones.length === 0)
+	{
+		localInfo.usingAbility		= "";
+		localInfo.secondMove		= false;
+		localInfo.savedBoostedMap 	= null;
+		return;
+	}
+
+	beginPendingAbility({
+		pieceType,
+		zones:		new Set(zones),
+		anchorId:	pieceType === "Bastards" ? null : anchorId,
+		focusId:	anchorId,
+	})
 }
 
 export function clearMatchStorage()

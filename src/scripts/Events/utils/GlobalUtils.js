@@ -1,6 +1,5 @@
 import { localInfo, localBoard, localPlayers, MACRO }	from "@/scripts/Data/Variables";
 import { PIECES_HIGHLIGHT }								from "@/scripts/Helper/piecesHighlights";
-import { computePosition }								from "@floating-ui/dom";
 import { clearHighlight }								from "@/scripts/Events/utils/HighlightUtils.js";
 import { requestToBack }								from "@/scripts/Events/BackLink.js";
 import { useSockStore }									from "../../../stores/sock.st";
@@ -21,7 +20,7 @@ export function useAbility()
 	else 
 	{ 
 		square.useAbilityBool = true;
-		localInfo.usingAbility = square.piece.type;
+		localInfo.usingAbility = square.piece?.type ? square.piece.type : "";
 		if (MACRO.AUDIO)
 			new Audio("/src/assets/audios/useAbility.mp3").play();
 		console.log(`who the fuck i am: ${localInfo.usingAbility}`);
@@ -94,52 +93,33 @@ export function upgradeBastard(newType)
 
 export function moveDragClone(event)
 {
-	if (event.target.classList.contains("piece"))
-	{
-		if (event.clientX === 0 && event.clientY === 0) 
-			return;
-
-		const cursor = {
-			getBoundingClientRect() {
-				return {
-					width: 0,
-					height: 0,
-					x: event.clientX,
-					y: event.clientY,
-					left: event.clientX,
-					right: event.clientX,
-					top: event.clientY,
-					bottom: event.clientY
-				};
-			}
-		};
-		computePosition(cursor, localInfo.dragClone).then(({ x, y }) => {
-			if (!localInfo.dragClone)
-				return;
-			Object.assign(localInfo.dragClone.style, {
-			top: `${y - 40}px`,
-			left: `${x}px`
-			});
-		});
-	}
+	if (!localInfo.drag || (event.clientX === 0 && event.clientY === 0))
+		return;
+	localInfo.drag.x = event.clientX;
+	localInfo.drag.y = event.clientY;
 }
 
 export function checkPermision(event)
 {
-	if (event.target.localName === "div")	{ localInfo.clickedId = event.target.id; }
-	else									{ localInfo.clickedId = event.target.parentNode.id; }
+	if (event.target.localName === "div")
+		localInfo.clickedId = event.target.id;
+	else									
+		localInfo.clickedId = event.target.parentNode.id;
 	
-	if (localInfo.clickedId === "" || localInfo.clickedId === "board") { return (false) };
+	if (localInfo.clickedId === "" || localInfo.clickedId === "board")
+		return (false);
 
 	const Square  = localBoard.get(localInfo.clickedId);
-	const Piece   = Square.piece;
-	const Player  = localPlayers.values().find(p => p.isPlaying === true);
+	const Piece   = Square?.piece;
 
-	if (Square.highlight || Square.boostedHighlight) 
+	if (Square?.highlight || Square?.boostedHighlight) 
 		return (true);
 
-	if (Piece && Piece.team != Player.team) { localInfo.lastClickedId = null; return false; }
-
+	if (Piece && Piece.team != localInfo.myTeam)
+	{
+		localInfo.lastClickedId = null;
+		return false;
+	}
 	return (true);
 }
 
@@ -168,14 +148,13 @@ export function checkForHighlightMove()
 
 export function usingAbility()
 {
-    const lastSquare  = localBoard.get(localInfo.lastClickedId);
-    const square      = localBoard.get(localInfo.clickedId);
-	const secondTurn = localInfo.secondTurn;
+	const lastSquare  = localBoard.get(localInfo.lastClickedId);
+	const square      = localBoard.get(localInfo.clickedId);
 
 	const lastUseAbility = lastSquare?.useAbilityBool && lastSquare?.piece.isBoostedBool;
 	const useAbility	 = square.useAbilityBool && square.piece.isBoostedBool;
 
-    return (localInfo.usingAbility !== "" && ((localInfo.lastClickedId && (useAbility || lastUseAbility)) || secondTurn));
+	return (localInfo.usingAbility !== "" && ((localInfo.lastClickedId && (useAbility || lastUseAbility)) || localInfo.secondTurn));
 }
 
 export async function showBoostedMovesHover(fromId)

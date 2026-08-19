@@ -30,18 +30,18 @@
 
 	watch(victory, (v) => {
 		if (v) 
-			dismissed.value = false;
+			return;
+		dismissed.value = false;
 		clearMatchStorage()
 	});
 
 	function leaveMatch() {
-		sessionStorage.removeItem('match:id');
-		sessionStorage.removeItem('match:myTeam');
+		clearMatchStorage();
 		localInfo.victory = null;
 		startLocalMatchState(null);
 	}
 
-	function playAgain() { leaveMatch(); router.push({name: 'playpage'}); }
+	function playAgain() { leaveMatch(); router.replace({name: 'playpage'}); }
 	function goHome() { leaveMatch(); router.push({name: 'home'}); }
 	function watchBoard() { dismissed.value = true; }
 	function reopen() { dismissed.value = false; }

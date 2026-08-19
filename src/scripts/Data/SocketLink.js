@@ -4,6 +4,7 @@ import { clearHighlight, setCheckSquare }							from "../Events/utils/HighlightU
 import { eSpecialMoves }											from "@/Common/ENUMS";		
 import { blinkSquares } 											from "../Events/utils/GlobalUtils";
 import router 														from "@/router";
+import { resetLocalVars } 											from "./utils/ArchiUtils";
 
 export function listenGameSocket(socket)
 {
@@ -27,7 +28,8 @@ export function listenGameSocket(socket)
 				if (raw.check != undefined)
 				{
 					const threatId = new Set([raw.check.to, raw.check.mid, raw.check.from].filter(Boolean));
-					localInfo.blinking = blinkSquares(threatId, {interval: 650, delay: 650});
+					localInfo.blinking = blinkSquares(threatId, {interval: 450, delay: 600});
+					resetLocalVars();
 					return;
 				}
 			}
@@ -37,7 +39,7 @@ export function listenGameSocket(socket)
 		{
 			console.log("[socket game] ID NEW GAME TROVATO!");
 			initLocalMatchState(raw);
-			router.push( {name: raw.p3 ? "GameFour" : "game"});
+			router.replace( {name: raw.p3 ? "GameFour" : "game"});
 			return;
 		}
 		if (raw.type === "reload")
@@ -48,23 +50,25 @@ export function listenGameSocket(socket)
 				reloadMatchState(raw);
 				if ((Number(raw.mask) & (eSpecialMoves.CHECK | eSpecialMoves.CHECKMATE)) && raw.giorgi0)
 					setCheckSquare(raw.giorgi0);
-				console.log("{socket game [reload]} Renderizzo game reloadato");
-				router.push({ name: "game" });
 			}
 			else
-				console.log("{socket game [reload]}: Fallimento ricezione");
+				console.log("{socket game [reload]}:state già presente nel controllo sul mounted");
 			return;
 		}
 		if (raw.type === "giveup")
 		{
 			console.log("[socket game] -> [giveup]: ricevuto giveup");
 			localInfo.victory = raw.victory;
+			resetLocalVars();
 			return;
 		}
 		if (raw.type === "timeout")
 		{
-			console.log("[socket game] -> [timeout]: tempos scaduto");
-			locaInfo.victory = raw.victory;
+			console.log("[socket game] -> [timeout]: tempo scaduto, victory =", raw.victory);
+			if (raw.victory)
+				localInfo.victory = raw.victory;
+			resetLocalVars();
+			return;
 		}
 		if (raw.type == "simulate_boost")
 		{

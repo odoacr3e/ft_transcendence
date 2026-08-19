@@ -1,5 +1,5 @@
 import { computePosition, offset, flip, shift, autoUpdate }	from "@floating-ui/dom";
-import { localBoard, localInfo, localPlayers, Square } 		from "../Variables";
+import { emptyCapturedPieces, localBoard, localInfo, localPlayers, Square } 		from "../Variables";
 import { clearHighlight }									from "@/scripts/Events/utils/HighlightUtils.js";
 
 let stopAutoUpdate = null;
@@ -27,35 +27,6 @@ export function checkEndTurn(validated)
 	if (curP.name === newCurP.name) { localInfo.secondTurn = true; }
 	else
 		resetLocalVars();
-}
-
-export function resetLocalVars()
-{
-	localInfo.clickedId			= null;
-	localInfo.lastClickedId		= null;
-	localInfo.usingAbility		= "";
-	localInfo.savedBoostedMap	= null;
-	localInfo.secondTurn		= false;
-	localInfo.secondMove		= false;
-	localInfo.dropDone			= false;
-
-	localBoard.forEach(square => {
-		if (square.useAbilityBool)
-			square.useAbilityBool = false;
-	});
-	clearHighlight();
-}
-
-export function DEBUGSetVisible()
-{
-	localBoard.forEach((square , key) => {
-		if (square.piece)
-		{
-			const DOMPiece = document.getElementById(key).getElementsByClassName("piece")[0];
-			if (DOMPiece && DOMPiece.style.visibility === "hidden")
-				DOMPiece.style.visibility = "visible";
-		}
-	});
 }
 
 export function checkUpgrade()
@@ -138,4 +109,47 @@ export function assignLastMoveSquares(oldSquare, newSquare, newSet)
 		newSet.add(oldSquare.id);
 	if (!isOldEmpty && !isNewEmpty && oldPSignat !== newPSignat)
 		newSet.add(oldSquare.id);
+}
+
+export function isValidTeam(team)
+{
+	if (!team || typeof team != "string")
+		return (false);
+	return ([...localPlayers.values()].some(p => p.team === team));
+}
+
+export function resolveMyTeam(rawTeam)
+{
+	const stored = sessionStorage.getItem("match:myTeam");
+
+	if (isValidTeam(rawTeam.team))
+		return(rawTeam);
+	if (isValidTeam(rawTeam.team))
+		return(stored);
+	console.error("[resolveMyTeam]: myTeam non determinabile", {rawTeam, stored});
+	return (null);
+}
+
+export function resetLocalVars()
+{
+	localInfo.clickedId			= null;
+	localInfo.lastClickedId		= null;
+	localInfo.usingAbility		= "";
+	localInfo.savedBoostedMap	= null;
+	localInfo.secondTurn		= false;
+	localInfo.secondMove		= false;
+	localInfo.drag				= null;
+
+	if (localInfo.victory)
+	{
+		console.log("resettiamo i pezzi catturati");
+		localInfo.capturedP		= { white: emptyCapturedPieces(),
+									black: emptyCapturedPieces() };
+	}
+
+	localBoard.forEach(square => {
+		if (square.useAbilityBool)
+			square.useAbilityBool = false;
+	});
+	clearHighlight();
 }

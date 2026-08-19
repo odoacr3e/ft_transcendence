@@ -19,10 +19,15 @@ export async function globalEvents()
 
 	ROOT_DIV.addEventListener("click", async function(event) 
 	{
-		if (!checkPermision(event))	{ clearHighlight(); return; }
+		if (!checkPermision(event))
+		{
+			clearHighlight(); 
+			return;
+		}	
 		console.log(`CID: ${localInfo.clickedId}, LCID: ${localInfo.lastClickedId}`);
 		if (checkForHighlightMove()) 
 		{
+			console.log("dentro check");
 			if (usingAbility())
 			{
 				console.log(`Boosted Piece: ${localInfo.usingAbility}`);
@@ -41,26 +46,22 @@ export async function globalEvents()
 
 	ROOT_DIV.addEventListener("dragstart", function(event)
 	{
-		if ((localInfo.secondMove && localInfo.savedBoostedMap && 
-			localInfo.savedBoostedMap.has(event.target.parentNode.id)) || !localInfo.secondTurn)
+		if (((localInfo.secondMove && localInfo.savedBoostedMap && 
+			localInfo.savedBoostedMap.has(event.target.parentNode.id)) || !localInfo.secondTurn) && localBoard.get(event.target.parentNode.id)?.piece?.team === localInfo.myTeam)
+			{
+				console.log("sono qui");				
 				highlightOnDrag(event);
+			}
 	});
 
 	ROOT_DIV.addEventListener("drag", function(event) {
 		moveDragClone(event);
 	});
 
-	ROOT_DIV.addEventListener("dragend", function(event) 
+	ROOT_DIV.addEventListener("dragend", function() 
 	{
 		clearHighlight("clicked");
-		setTimeout(() => {
-			if (event.target.classList.contains("piece") && !localInfo.dropDone)
-				event.target.style.visibility = "visible";
-			if (localInfo.dropDone) { localInfo.dropDone = false; }
-		}, 30);
-
-		document.querySelectorAll("#floatingPiece").forEach(node => node.remove());
-		localInfo.dragClone = null;
+		localInfo.drag = null;
 	});
 
 	document.addEventListener("keydown", async function(event)
