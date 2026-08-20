@@ -15,6 +15,8 @@ import { jsonSafeParse } from "./response.js";
 const COMBINATIONS = arrayNames.length * 2;//tipo pezzo	+ colori team
 const METADATA = 2;//0: non boostato; 1: boostato
 const SQUARE_COMBINATION = COMBINATIONS * METADATA;
+//NOTE - si puo ridurre a 5^2 combinazioni: 
+// ha senso segnare se i giocatori hanno almeno:	0, 1, 3, 5, 10 punti		 
 const SAVED_POINTS = 16;//oltre 16 non ha senso separare
 const TABLE_SIZE = BigInt((2 << 20) - 1);
 let zobristTable = 
@@ -134,12 +136,6 @@ function zobristUpdateHash(match, event)
 		match._zobristHash ^= historyToHash;
 		match._zobristHash ^= toHash;
 	}
-	// if (event.prevBoostHash)
-	// {
-	// 	prevBoostSquare = match.board.get(event.prevBoost);
-	// 	match._zobristHash ^= zobristPieceHash(prevBoostSquare.index, prevBoostSquare.piece);
-	// 	match._zobristHash ^= event.prevBoostHash;
-	// }
 	if (event.points.WHITE != match.white.nPoints || event.points.BLACK != match.black.nPoints)
 	{
 		match._zobristHash ^= zobristPointsHash(event.points.WHITE, event.points.BLACK);

@@ -68,9 +68,13 @@ function endTurn(match, sendBoardBool=true)
 		result.specialMoves.SetKingDanger();
 		aiSpeech(match, AI_EVENTS.checkMe);
 	}
-	result.status = 200;
-	if (sendBoardBool)//@ts-ignore
+	result.Success();
+	if (match.aiSimulation == false)
+		match.history.AddClientTurn();
+	if (sendBoardBool)
+	{//@ts-ignore
 		result.board = clientBoard(match);
+	}
 	if (match.currentPlayer.ai && match.aiSimulation == false && !match.PrevPlayer().ai)
 		AIexecuteTurn(match);
 	return (result);

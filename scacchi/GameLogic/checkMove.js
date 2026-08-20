@@ -158,7 +158,11 @@ function checkBooster(match, result, from, coords, boostBool)
 	if (pieceMultipleMoveBool == false && from.targetZones.has(coords[1]))
 	{
 		if (result.specialMoves.CheckSniperMove())
+		{
+			if (!match.board.get(coords[1]).piece)
+				return (error(result, 403, "Boosted valkyria must eat a piece"));
 			result.usedBoost = true;
+		}
 		return (true);
 	}
 	if (from.piece.isBoostedBool == false || boostBool == false)

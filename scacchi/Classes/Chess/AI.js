@@ -93,7 +93,7 @@ function getBestTurn(match)
 	alpha = -Infinity;
 	beta = +Infinity;
 	depth = 3;
-	if (match.boostPriority.size >= 1)
+	if (isOneOf(enumNames.CHAMPION, match.GetBoostedPieceTypes()))
 		depth -= 1;
 	arrayTurns = getLegalMoves(match);
 	if (ai.defeatStatus != 0)

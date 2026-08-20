@@ -19,7 +19,8 @@ export function reload(match, result, socketData)
 	if (match.timer && match.timer.start != 0)
 		match.currentPlayer.time = match.timer.time - (Date.now() - match.timer.start);
 	// @ts-ignore
-	result.board = clientBoard(match, true, true);
+	result.board = clientBoard(match, true, true);//@ts-ignore
+	result.history = match.history.clientEvents;
 	result.team = socketData?.matchData?.team;
 	if (result.team == undefined)
 		result.team = "spectating";

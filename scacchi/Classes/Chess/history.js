@@ -9,12 +9,14 @@ import {boardStringify} from "../../test/render.js";
 import { Result } from "../endPoint/result.js";
 import { zobristPieceHash } from "../../utils/zobrist.js";
 import { jsonSafeParse } from "../../utils/response.js";
+import { historyClientEvents } from "../endPoint/clientHistory.js";
 
 /**@typedef {import("./match.js").Match} Match*/
 /**@typedef {import("./match.js").MatchSettings} MatchSettings*/
 /**@typedef {import("./chessBoard.js").Square} Square*/
 /**@typedef {import("./Pieces/pieces.js").Piece} Piece*/
 /**@typedef {import("./player.js").Player} Player*/
+/**@typedef {import("../endPoint/clientHistory.js").historyClientEvents} HistoryClientEvents*/
 
 export class History
 {
@@ -37,6 +39,8 @@ export class History
 			this.matchSettings = matchSettings;
 		/** @type {Array<HistoryEvent>} */
 		this.events = new Array();
+		/** @type {Array<HistoryClientEvents>} */
+		this.clientEvents = new Array();
 	}
 	Last()
 	{
@@ -50,6 +54,29 @@ export class History
 			++i;
 		}
 		return (new HistoryEvent(0, "Empty", "Empty"));
+	}
+	LastTurn()
+	{
+		/** @type {Array<HistoryEvent>} */
+		let	turns;
+		let	i;
+
+		turns = [];
+		i = this.events.length - 2;
+		while (this.events[i] && this.events[i]?.type != eEvents.EndTurn)
+		{
+			turns.push(this.events[i]);
+			i--;
+		}
+		turns = turns.reverse();
+		return (turns);
+	}
+	AddClientTurn()
+	{
+		let	clientEvent;
+
+		clientEvent = new historyClientEvents(this.LastTurn(), this.clientEvents.length);
+		this.clientEvents.push(clientEvent);
 	}
 	/** @param {string} team */
 	TurnCount(team)
@@ -92,7 +119,8 @@ export class History
 			name = HISTORY_PATH + name;
 			if (name.indexOf(".json") == -1)
 				name = name + ".json";
-		}
+		}//@ts-ignore
+		delete this.clientEvents;
 		match.history.finalBoard = boardStringify(match);
 		if (match.settings.presetType)
 			match.history.matchSettings = match.settings.presetType;

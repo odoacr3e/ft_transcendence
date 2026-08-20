@@ -2,7 +2,8 @@
 
 import { matchMakingOpt } from "../../Classes/endPoint/matchInit.js";
 import { Result } from "../../Classes/endPoint/result.js";
-import { enumConnection } from "../../Macro/enums.js";
+import { globals } from "../../Classes/Globals/globals.js";
+import { enumConnection, enumSocketState } from "../../Macro/enums.js";
 import { isOneOf } from "../../utils/string.js";
 import { MatchMaking } from "../handlers/MatchMaking.js";
 import { isBusy } from "../utils.js";
@@ -13,6 +14,8 @@ import { isBusy } from "../utils.js";
  * */
 export function routesMatchMaking(socket, user)
 {
+	let	socketData;
+
 	socket.on('find_match', async(/** @type {matchMakingOpt}*/options) => 
 	{
 		if (isBusy(user.id_user) == true)
@@ -29,5 +32,10 @@ export function routesMatchMaking(socket, user)
 			MatchMaking(user, options);
 		else
 			throw ("stanze non implementate");
+	});
+
+	socket.on('cancel_match', async() => 
+	{
+		globals.RemoveFromAllQueues(user.id_user);
 	});
 }

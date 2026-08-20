@@ -42,9 +42,11 @@ export function AItraining(match)
 		data = event.team == eTeam.Black? dataB : dataW;
 		if (!data)
 			continue ;
+		//FIXME - se data[event.zobristIndex] torna undefined, crasha con [0]
 		val = evaluateEvent(match, event, data[event.zobristIndex][0], data[event.zobristIndex][1]);
 		if (data[event.zobristIndex])
 		{
+			//NOTE - io farei += val: si considera quello storico e si aggiorna
 			data[event.zobristIndex][0] = val;
 			data[event.zobristIndex][1] += 1;
 		}
@@ -54,6 +56,8 @@ export function AItraining(match)
 			data[event.zobristIndex][1] = 1;
 		}
 	}
+	//FIXME - cosi si rischia skippare il 20 se siamo a 19, farei +1 e basta
+	//NOTE - oppure come dicevi ieri si puo fare un counter per ogni AI
 	if (profileB && profileW)
 		globals.AIgameCounter += 2;
 	else
@@ -61,9 +65,10 @@ export function AItraining(match)
 	// if (globals.AIgameCounter % 20 != 0)
 	// 	return (updateData(match));
 	if (globals.AIgameCounter % 20 == 0 && dataW != undefined)
-		updateTrainigData(dataW);
+		updateTrainingData(dataW);
 	if (globals.AIgameCounter % 20 == 0 && dataB != undefined)
-		updateTrainigData(dataB);
+		updateTrainingData(dataB);
+	//NOTE - i file li aggiornerei quando il counter arriva a 20
 	if (dataB)
 		fs.writeFileSync(`${AI_PROFILE_PATH}/${profileB}/cache.json`, JSON.stringify(dataB));
 	if (dataW)
@@ -103,6 +108,8 @@ function getDelta(match, event)
 	win = match.victory == event.team ? 1 : -1;
 	if (win == undefined)
 		return 0.1;
+	//FIXME - event counter non e il contatore dell'intero turno, ma dell'evento
+	//NOTE - potremmo generare in history event.turnNumber
 	delta = match.moves - event.counter;
 	result = MAX_MOVES_REWARD_AND_PENALITY * (1 / delta);
 	return result * win;
@@ -112,7 +119,7 @@ function getDelta(match, event)
  * 
  * @param {ZobristCache} data 
  */
-function updateTrainigData(data)
+function updateTrainingData(data)
 {
 	// for (let [value, counter] of Object.entries(data))
 	// {

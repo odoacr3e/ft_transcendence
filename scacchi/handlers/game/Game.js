@@ -23,7 +23,7 @@ import { Match} from "../../Classes/Chess/match.js";
 import { isOneOf } from "../../utils/string.js";
 import { updateTournament } from "../../websocket/handlers/tournament.js";
 import { roomMessage } from "../../websocket/utils.js";
-import { enumSocketState } from "../../Macro/enums.js";
+import { eEvents, enumSocketState } from "../../Macro/enums.js";
 import { saveMatch } from "../../utils/saveMatch.js";
 import { checkKingDanger } from "../../utils/checkDanger.js";
 import { reload } from "./reload.js";
@@ -198,7 +198,7 @@ async function gameInfoHandler(match, body, socketData=null)
 	else if (body.type == "history")
 	{
 		result.Success();//@ts-ignore
-		result.history = match.history;
+		result.history = match.history.clientEvents[match.history.clientEvents.length - 1];
 	}
 	else
 		throw ("gameInfoHandler: invalid type " + body.type);
