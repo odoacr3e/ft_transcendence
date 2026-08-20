@@ -1,8 +1,8 @@
 <script setup>
-	import { computed, nextTick, ref, watch }		from 'vue';
-	import { localHistory }							from '@/scripts/Data/History';
-	import { mainAction, turnDuration, turnLabel }	from "@/scripts/Helper/Historyutils.js"
-	import { IMG_PATHS }							from '@/scripts/Data/Variables';
+	import { computed, nextTick, ref, watch }				from 'vue';
+	import { localHistory }									from '@/scripts/Data/History';
+	import { mainAction, teamDot, turnDuration, turnLabel }	from "@/scripts/Helper/Historyutils.js"
+	import { IMG_PATHS }									from '@/scripts/Data/Variables';
 	
 	//@ts-ignore
 	const emit = defineEmits(['select']);
@@ -12,11 +12,86 @@
 	const iconOf = (turn) => {
 		const action = mainAction(turn);
 		return (action?.piece ? IMG_PATHS[turn.team + action.piece] : null);
-	}
+	};
 
 	watch(() => localHistory.length, async () => {
 		await nextTick();
 		if (scroller.value)
-			scroller.value.scrollTop
-	})
+			scroller.value.scrollTop = scroller.value.scrollHeight;
+	});
 </script>
+
+<template>
+	<div class="wrap flex flex-col overflow-hidden">
+		<div ref="scroller" class="grow overflow-y-auto scroll-smooth">
+			<p v-if="!localHistory.length" class="px-4 py-8 text-center text-white/35 text-sm">
+				No moves yet
+			</p>
+
+			<button v-for="t in localHistory" :key="t.turn"
+					class="row" :class="{ 'is-last': t.turn === lastTurn}"
+					:title="`turn ${t.turn} · ${turnDuration(t.time)}`"
+					@click="emit('select', t)">
+
+					<span class="num">{{ t.turn }}</span>
+					<span class="dot" :style="{ backgroundColor: teamDot(t.team)}"/>
+					<img v-if="iconOf(t)" :src="iconOf(t)" :draggable="false" class="size-5 shrink-0" alt="">
+					<span class="truncate grow">{{  turnLabel(t) }}</span>
+					<span class="time">{{ turnDuration(t.time) }}</span>
+			</button>
+		</div>
+	</div>
+</template>
+
+<style scoped>
+	.wrap
+	{
+		background-color: #2c2c2c;
+		border: 1px solid #4e4e4e8c;
+		user-select: none;
+	}
+
+	.row
+	{
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		width: 100%;
+		padding: 7px 10px;
+		color: #e8e8e8;
+		font-size: 0.9rem;
+		text-align: left;
+		transition: background-color .15s ease;
+	}
+
+	.row:nth-child(even)	{ background-color: rgba(255, 255, 255, .03); }
+	.row:hover				{ background-color: rgba(255, 255, 255, .07); }
+	.row.is-last			{ background-color: rgba(255, 178, 148, .18); color: #fff1e6;}
+
+	.num
+	{
+		width: 2.2rem;
+		flex-shrink: 0;
+		color: rgba(255, 255, 255, .35);
+		font-size: 0.85rem;
+	}
+
+	.dot
+	{
+		width: 9px;
+		height: 9px;
+		flex-shrink: 0;
+		border-radius: 50%;
+		border: 1px solid rgba(0, 0, 0, .55);
+	}
+
+	.time
+	{
+		flex-shrink: 0;
+		color: rgba(255, 255, 255, .3);
+		font-size: 0.75rem;
+	}
+
+	h3 {font-family: "Copperplate", Times; }
+
+</style>

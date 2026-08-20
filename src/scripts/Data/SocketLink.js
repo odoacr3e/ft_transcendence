@@ -5,6 +5,7 @@ import { eSpecialMoves }											from "@/Common/ENUMS";
 import { blinkSquares } 											from "../Events/utils/GlobalUtils";
 import router 														from "@/router";
 import { resetLocalVars } 											from "./utils/ArchiUtils";
+import { pushTurn, reloadHistory } from "./History";
 
 export function listenGameSocket(socket)
 {
@@ -44,15 +45,19 @@ export function listenGameSocket(socket)
 		}
 		if (raw.type === "reload")
 		{
-			console.log("{socket game [reload]} ricevuto reload. localMatchstate =", localMatchState);
+			// console.log("{socket game [reload]} ricevuto reload. localMatchstate =", localMatchState);
 			if (!localMatchState)
 			{
 				reloadMatchState(raw);
+				if (Array.isArray(raw.history))
+					reloadHistory(raw.history);
+				else if (raw.history)
+					pushTurn(raw.history);
 				if ((Number(raw.mask) & (eSpecialMoves.CHECK | eSpecialMoves.CHECKMATE)) && raw.giorgi0)
 					setCheckSquare(raw.giorgi0);
 			}
 			else
-				console.log("{socket game [reload]}:state già presente nel controllo sul mounted");
+				console.log("{socket game [reload]}: state già presente nel controllo sul mounted");
 			return;
 		}
 		if (raw.type === "giveup")
@@ -72,11 +77,24 @@ export function listenGameSocket(socket)
 		}
 		if (raw.type == "simulate_boost")
 		{
-			console.log("{socket game [simu_boost]} payload richiesta simulate boots");
+			console.log("{socket game [simu_boost]}: payload richiesta simulate boots");
 			return;
 		}
-		console.log("[socket game]: update match");
+		if (raw.type === "history")
+		{
+			// console.log("{socket game [history]}: ricevuti turni");
+			if (Array.isArray(raw.history))
+				reloadHistory(raw.history);
+			else if (raw.history)
+				pushTurn(raw.history);
+			else
+				console.log("{socket game [history]}: nessun turno nel payload", raw);
+			return;
+		}
+		// console.log("[socket game]: update match");
 		updateMatchState(raw);
+		if (raw.history)
+			pushTurn(raw.history);
 		clearHighlight();
 		if (MACRO.AUDIO)
 			new Audio("/src/assets/audios/moving.mp3").play();

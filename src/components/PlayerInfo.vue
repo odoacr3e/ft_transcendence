@@ -80,7 +80,7 @@
 		initial-value: 0deg;
 	}
 
-	.wrap::before,
+	/* .wrap::before,
 	.wrap::after
 	{
 		content: "";
@@ -116,7 +116,7 @@
 		animation: frame-spin var(--frame-speed) linear infinite;
 		opacity: 0;
 		transition: opacity .4s ease;
-	}
+	} */
 
 	.wrap.is-turn::before
 	{

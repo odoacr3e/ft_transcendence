@@ -3,7 +3,12 @@
 	import { useAbility, sendEndTurn, shopAbility, 
 			 sendGiveUp, showBoostedMovesHover,
 			 showBoostedMovesLeave }							from '@/scripts/Events/utils/GlobalUtils';
-	import { computed, ref, watch, nextTick, onBeforeUnmount } from 'vue'
+	import { computed, ref, watch, nextTick, onBeforeUnmount }	from 'vue'
+	import IconHourglass										from '@/components/icons/IconHourglass.vue';
+	import IconLightning										from '@/components/icons/IconLightning.vue';
+	import IconFlag												from '@/components/icons/IconFlag.vue';
+	import IconHandshake										from '@/components/icons/IconHandshake.vue';
+	import IconEnergyArrow										from './icons/IconEnergyArrow.vue';
 
 	const localPlayer	= computed(() => [...localPlayers.values()].find(p => p.team === localInfo.myTeam) ?? null);
 	const myTurn		= computed(() => localPlayer.value?.isPlaying === true);
@@ -22,18 +27,18 @@
 									&& localPlayer.value?.nPoints >= Piece.value?.price
 									&& localInfo.secondTurn);
 
-	const priceMessage = computed(() => {
-		if (!localInfo.lastClickedId)
-			return "...";
-		const piece = localBoard.get(localInfo.lastClickedId)?.piece ?? null;
-		if (!piece)
-			return "...";
-		if (piece.isBoostedBool)
-			return "This piece is already\nboosted you fool!";
-		if (piece.price > (localPlayer.value?.nPoints ?? 0))
-			return "AHAH! You're too poor\nto buy that!";
-		return "Price: " + piece.price;
-	});
+	// const priceMessage = computed(() => {
+	// 	if (!localInfo.lastClickedId)
+	// 		return "...";
+	// 	const piece = localBoard.get(localInfo.lastClickedId)?.piece ?? null;
+	// 	if (!piece)
+	// 		return "...";
+	// 	if (piece.isBoostedBool)
+	// 		return "This piece is already\nboosted you fool!";
+	// 	if (piece.price > (localPlayer.value?.nPoints ?? 0))
+	// 		return "AHAH! You're too poor\nto buy that!";
+	// 	return "Price: " + piece.price;
+	// });
 	const canEndTurn = computed(() => myTurn.value && localInfo.secondTurn);
 	const canGiveUp = computed(() => myTurn.value || localInfo.secondTurn);
 
@@ -78,33 +83,61 @@
 			return "Chiedere il pareggio?";
 		return "";
 	});
+
+	const abilityArmed = computed(() => localInfo.usingAbility !== '' && localBoard.get(localInfo.clickedId)?.useAbilityBool === true);
 </script>
 
 <template>
 	<div class="wrapper" v-if="localPlayer">
-		<div class="column">
-			<button class="action bg-amber-300 hover:bg-orange-400"
-				v-bind:class="canUseAbility ? 'on' : 'off'"
+		<div class="top-row">
+			<button class="action" 		
+				v-bind:class="[
+				canUseAbility ? 'on' : 'off',
+				abilityArmed ? 'armed bg-orange-500 hover:bg-orange-600'
+							 : 'bg-amber-300 hover:bg-orange-400'
+				]"
 				@click="useAbility()">
-				<img src="../assets/boost.png" alt="" :draggable="false" class="size-5">
-				<b>Use Ability!</b>
+				<IconEnergyArrow class="icon"/>
+				<b>{{ abilityArmed ? "Ability ON!..." : "Use Ability!"}}</b>
 			</button>
-			<button class="action bg-emerald-400 hover:bg-emerald-500 flex-col gap-0!"
+		</div>
+
+		<span class="msgs">THEN</span>
+
+		<div class="mid-row">
+			<button class="action end-turn bg-blue-500 hover:bg-indigo-500"
+				v-bind:class="canEndTurn ? 'on' : 'off'"
+				@click="sendEndTurn()">
+				<IconHourglass class="icon"/>
+				<b>End Turn!</b>
+			</button>
+
+			<span class="msgs">OR</span>
+
+			<button class="action bg-emerald-400 hover:bg-emerald-500"
 				v-bind:class="canBoost ? 'on' : 'off'"
 				@click="shopAbility()"
 				@mouseenter="showBoostedMovesHover(localInfo.clickedId)"
-				@mouseleave="showBoostedMovesLeave(localInfo.clickedId)">
-				<b>Boost your Piece!</b>
-				<p style="white-space: pre-line" class="text-xs"><i>{{ priceMessage }}</i></p>
-			</button>
-			<button class="action bg-blue-500 hover:bg-indigo-500"
-				v-bind:class="canEndTurn ? 'on' : 'off'"
-				@click="sendEndTurn()">
-				<img src="../assets/endturn.png" alt="" :draggable="false" class="size-5">
-				<b>End Turn!</b>
+				@mouseleave="showBoostedMovesLeave()">
+				<IconLightning class="icon"/>
+				<b>Boost Piece!</b>
 			</button>
 		</div>
+		
 		<div class="bottom-section" ref="panelEl">
+			<div class="btm-row">
+				<button class="action mini bg-red-400 hover:bg-red-500"
+					v-bind:class="canGiveUp ? 'on' : 'off'"
+					@click="askGiveUp()">
+					<IconFlag class="icon"/>
+					<b>Give Up!</b>
+				</button>
+				<button class="action mini on bg-amber-300 hover:bg-orange-400"
+					@click="askDraw()">
+					<IconHandshake class="icon"/>
+					<b>Chiedi Pareggio</b>
+				</button>
+			</div>
 			<div class="confirm-slot">
 				<div class="confirm-col" v-if="pending">
 					<span class="confirm-msg">{{ confirmMessage }}</span>
@@ -120,20 +153,6 @@
 					</div>
 				</div>
 			</div>
-			<div class="bottom-bar">
-				<button class="action mini bg-red-400 hover:bg-red-500"
-					v-bind:class="canGiveUp ? 'on' : 'off'"
-					@click="askGiveUp()">
-					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-3">
-						<path stroke-linecap="round" stroke-linejoin="round" d="M3 3v1.5M3 21v-6m0 0 2.77-.693a9 9 0 0 1 6.208.682l.108.054a9 9 0 0 0 6.086.71l3.114-.732a48.524 48.524 0 0 1-.005-10.499l-3.11.732a9 9 0 0 1-6.085-.711l-.108-.054a9 9 0 0 0-6.208-.682L3 4.5M3 15V4.5" />
-					</svg>
-					<b>Give Up!</b>
-				</button>
-				<button class="action mini on bg-amber-300 hover:bg-orange-400"
-					@click="askDraw()">
-					<b>Chiedi Pareggio</b>
-				</button>
-			</div>
 		</div>
 	</div>
 </template>
@@ -141,26 +160,53 @@
 <style scoped>
 	.wrapper
 	{
-		position: relative;
 		display: flex;
 		flex-direction: column;
-		align-items: stretch;
-		height: 100%;
+		gap: 12px;
+		width: 100%;
 		user-select: none;
 		z-index: 10;
 	}
 
-	.column
+	.top-row,
+	.mid-row
 	{
-		flex: 1;
 		display: flex;
-		flex-direction: column;
-		justify-content: center;
 		align-items: stretch;
-		gap: 16px;
-		width: 190px;
-		user-select: none;
-		z-index: 10;
+		justify-content: center;
+		gap: 12px;
+		width: 100%;
+		margin: 0 auto;		
+	}
+
+	.top-row > .action,
+	.mid-row > .action
+	{
+		flex: 1 1 0;
+		min-width: 0;
+	}
+
+	.btm-row
+	{
+		display: flex;
+		flex: 1 1 0;
+		align-items: stretch;
+		justify-content: center;
+		gap: 12px;
+		width: 60%;
+		height: 50%;
+		margin: 0 auto;
+		margin-top: 10%;
+	}
+
+	.msgs
+	{
+		flex: 0 0 auto;
+		align-self: center;
+		color: #e5e5e5;
+		font-size: .8rem;
+		font-weight: 700;
+		letter-spacing: .08rem;
 	}
 
 	.action
@@ -170,9 +216,15 @@
 		justify-content: center;
 		gap: 6px;
 		padding: 12px;
-		border-radius: 16px;
+		border-radius: 8px;
 		color: #1b1b1b;
 		transition: opacity .3s ease-in-out, filter .3s ease-in-out, transform .2s ease-in-out;
+	}
+
+	.icon
+	{
+		flex: 0 0 auto;
+		font-size: 1.25em;
 	}
 
 	.action.on
@@ -187,6 +239,33 @@
 		transform: translateY(-2px) scale(1.05);
 	}
 
+	.action.on:active
+	{
+		transform: scale(.96);
+		transition-duration: .05s;
+	}
+
+	.action.armed
+	{
+		color: #fff1e6;
+		animation: armed-pulse 1.4s ease-out infinite;
+	}
+
+	.action.armed .icon { animation: armed-throb .7s ease-in-out infinite alternate; }
+
+	@keyframes armed-pulse
+	{
+		0%		{ box-shadow: 0 0 0 0 rgba(249, 115, 22, .65); }
+		70%		{ box-shadow: 0 0 0 12px rgba(249, 115, 22, 0); }
+		100%	{ box-shadow: 0 0 0 0 rgba(249, 115, 22, 0); }
+	}
+
+	@keyframes armed-throb
+	{
+		from	{ transform: scale(1); }
+		to		{ transform: scale(1.2); }
+	}
+
 	.action.off
 	{
 		opacity: .4;
@@ -196,22 +275,17 @@
 
 	.bottom-section
 	{
-		position: absolute;
-		left: 0;
-		bottom: 0;
-		width: 190px;
-		display: flex;
-		flex-direction: column;
-		gap: 12px;
-		padding-bottom: 60px;
-		z-index: 10;
+		position: relative;
 	}
 
-	.bottom-bar
+	.confirm-slot
 	{
-		display: flex;
-		align-items: stretch;
-		gap: 8px;
+		position: absolute;
+		top: 100%;
+		left: 0;
+		right: 0;
+		margin-top: 10px;
+		z-index: 20;
 	}
 
 	.confirm-col
@@ -246,10 +320,10 @@
 
 	.action.mini
 	{
-		flex: 1;
-		gap: 3px;
-		padding: 6px;
+		flex: 0 1 150px;
+		gap: 10px;
+		padding: 12px;
 		border-radius: 8px;
-		font-size: .7rem;
+		font-size: .85rem;
 	}
 </style>

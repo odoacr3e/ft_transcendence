@@ -64,12 +64,12 @@ export function reloadHistory(list)
 	if (Array.isArray(list))
 		list.forEach(pushTurn);
 	historyInfo.loaded = true;
-	console.log(`[History]: caricati ${localHistory.length} turni`);
+	// console.log(`[History]: caricati ${localHistory.length} turni`);
 }
 
 export function clearHistory()
 {
-	localHistory.slice(0);
+	localHistory.splice(0);
 	historyInfo.loaded = false;
 	historyInfo.lastTurn = -1;
 }

@@ -1,10 +1,8 @@
 import { ePlaying, localBoard, localInfo }	from "@/scripts/Data/Variables";
-import { getTarget }				from "./utils/MovementUtils.js";
-// import { MACRO } 					from "@/scripts/Data/Variables";
-import { useSockStore } from "../../stores/sock.st.js";
-import { sendEndTurn } from "./utils/GlobalUtils.js";
-// import { connect } from "node:http2";
-// import { _jsonReviver }				from "../Data/utils/ArchiUtils.js";
+import { getTarget }						from "./utils/MovementUtils.js";
+// import { MACRO } 						from "@/scripts/Data/Variables";
+import { useSockStore } 					from "../../stores/sock.st.js";
+import { sendEndTurn } 						from "./utils/GlobalUtils.js";
 
 export async function sendToBackend(fromId, toId, flag)
 {
@@ -28,6 +26,8 @@ export async function requestToBack(fromSquare, toSquare, opType)
 	let type;
 	if (opType === "showBoost")
 		{type = "simulate_boost"; toSquare = "";}
+	else if (opType === "history")
+		{type = "history"; fromSquare = ""; toSquare = "";}
 	else if (opType === "giveUp")
 		{type = "giveup"; fromSquare = ""; toSquare = ""; }
 	else if (fromSquare === null && toSquare === null && localInfo.secondTurn)
@@ -42,11 +42,11 @@ export async function requestToBack(fromSquare, toSquare, opType)
 	let	timeout;
 
 	timeout = setTimeout(() => {}, 1000 * 1);
-	console.log("req: type: ", type, "from: ", fromSquare, "to: ", toSquare);
+	// console.log("req: type: ", type, "from: ", fromSquare, "to: ", toSquare);
 		
 	return new Promise((resolve) => {
-		sockStore.socket.emit("game", { type, from: fromSquare, to: toSquare }, (result) => {
-			console.log(`request: type: ${type}, from: ${fromSquare}, to:${toSquare}`)
+		sockStore.socket?.emit("game", { type, from: fromSquare, to: toSquare }, (result) => {
+			// console.log(`request: type: ${type}, from: ${fromSquare}, to:${toSquare}`)
 			clearTimeout(timeout);
 			resolve(result?.log?.status === 200);
 		});
@@ -115,7 +115,7 @@ export function reloadMatch()
 		let done	= false;
 
 		const emit = () => {
-			console.log("[reload] emit");
+			// console.log("[reload] emit");
 			sockStore.socket.emit("game", {
 				type: "reload",
 				from: sessionStorage.getItem("match:myTeam"),

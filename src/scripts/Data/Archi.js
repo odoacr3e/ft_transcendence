@@ -1,10 +1,11 @@
-import { initLocalBoard, localMatchState, localBoard,  
-		 localPlayers, startLocalMatchState, 
-		 localInfo}										from "./Variables.js";
+import { initLocalBoard, localMatchState, 
+		 localBoard, localPlayers,
+		 startLocalMatchState, localInfo }		from "./Variables.js";
 import { checkEndTurn, hasBoost, 
-		 checkUpgrade, assignLastMoveSquares }			from "./utils/ArchiUtils.js";
+		 checkUpgrade, assignLastMoveSquares }	from "./utils/ArchiUtils.js";
+import { beginPendingAbility } 					from "../Helper/abilityMovement.js";
+import { clearHistory } 						from "./History.js";
 import "./SocketLink.js"
-import { beginPendingAbility } from "../Helper/abilityMovement.js";
 
 //SECTION - INIT FUNCTIONS
 
@@ -89,7 +90,7 @@ export function updateMatchState(nextRaw)
 	const validated = validateReceivedMatch(nextRaw);
 
 	localInfo.victory = nextRaw.victory ?? null;
-	console.log("stampiamoci victory: ", localInfo.victory);
+	// console.log("stampiamoci victory: ", localInfo.victory);
 	
 	checkEndTurn(validated);
 	startLocalMatchState(validated);
@@ -207,4 +208,5 @@ export function clearMatchStorage()
 {
 	sessionStorage.removeItem("match:id");
 	sessionStorage.removeItem("match:myTeam");
+	clearHistory();
 }

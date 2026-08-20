@@ -177,29 +177,30 @@ boardConverter()
 		mosso il pedone, che passa dove prima c’era il pedone mi viene fuoir eccezione
 		ma in modi casuali non riesco ancora a capire cosa succede
 
-//TODO FRONTEND - 
-	✓	websocket per lo stato online
-	✓	history dei match
-	✓	reazione del frontend agli errori (es. al login)
-	✓	redirection alla pagina login se si prova ad accedere a pagine protette
-	✓	pagina di modifica delle info utente
-	✓	reset della password (sia dal login page che dalla pagina utente loggato)
-	✓	dettagli info sui match
-	✓	refactor pagina di gioco, pulsanti con tipi di partite, creazione 
-		stanze, sfida amici
-	✓	websocket per la partita
-	✓	test login e resgiter con OTP e opzioni di toglierlo nelle impostazioni
-	✓	pagina della leaderboard
-	✓	finire l'editing del profilo
-	✓	websocket per le notifiche
-	✓	re-design della home
-	✓	dettagli info sui match
-	✓	update delle preferenze di colore degli utenti
-	✓	pagina della lore
-	✓	reworkare i temi chiari
-	▫	reattività delle pagine [MAVI]
-	▫	reworkare il design delle pagine di gioco appena sono pronte
-	▫	info dei profili per le partitre a 4
+#TODO FRONTEND - 
+- [x]	websocket per lo stato online
+- [x]	history dei match
+- [x]	reazione del frontend agli errori (es. al login)
+- [x]	redirection alla pagina login se si prova ad accedere a pagine protette
+- [x]	pagina di modifica delle info utente
+- [x]	reset della password (sia dal login page che dalla pagina utente loggato)
+- [x]	dettagli info sui match
+- [x]	refactor pagina di gioco, pulsanti con tipi di partite, creazione stanze, sfida amici
+- [x]	websocket per la partita
+- [x]	test login e resgiter con OTP e opzioni di toglierlo nelle impostazioni
+- [x]	pagina della leaderboard
+- [x]	finire l'editing del profilo
+- [x]	websocket per le notifiche
+- [x]	re-design della home
+- [x]	dettagli info sui match
+- [x]	update delle preferenze di colore degli utenti
+- [x]	pagina della lore
+- [x]	reworkare i temi chiari
+- [ ]	reattività delle pagine [MAVI]
+- [ ]	reworkare il design delle pagine di gioco appena sono pronte
+- [ ]	info dei profili per le partitre a 4
+- [ ]	Sia per poter potenziare i pezzi che per usare l'abilità aggiungere un bottoncino sul pezzo (bl o br) stile overwatch
+- [ ]	Tutte le info/bottoni attuali a destra in un unico div in futuro tutorial/info pezzi a sinistra
 
 //NOTE - Testing
 	✓	nome utente in grassetto

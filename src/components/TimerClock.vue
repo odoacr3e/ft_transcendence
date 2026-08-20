@@ -1,5 +1,6 @@
 <script setup>
-	import { computed, ref, watch, onUnmounted } from 'vue'
+	import { computed, ref, watch, onUnmounted }	from 'vue'
+	import IconClock 								from './icons/IconClock.vue';
 
 	const props = defineProps({
 		millis: { type: Number, default: 0 },
@@ -61,13 +62,14 @@
 </script>
 
 <template>
-	<div class="rounded-lg text-2xl mr-2 flex tabular-nums w-28 h-10 justify-center self-center p-2"
+	<div class="rounded-lg text-2xl mr-2 flex items-center gap-2 tabular-nums w-36 h-10 justify-center self-center p-2"
 		style="font-weight: 700;"
 		:class="{
 			'opacity-50': !props.go,
 			'bg-[#181715] text-white': props.team === 'black',
 			'bg-[#ededed] text-black': props.team === 'white'
 		}">
+		<IconClock class="clock-icon" fill="currentColor" stroke="none" :paused="!props.go" />
 		<p class="justify-self-center self-center">{{ pad(min) }} : {{ pad(sec) }}</p>
 	</div>
 </template>
@@ -76,6 +78,12 @@
 
 div {
     font-family: 'Inter Variable', sans-serif;
+}
+
+.clock-icon
+{
+	flex: 0 0 auto;
+	font-size: .9em;
 }
 
 </style>
