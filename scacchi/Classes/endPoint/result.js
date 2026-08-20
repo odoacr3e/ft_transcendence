@@ -63,6 +63,8 @@ class Result
 /** @type {string | undefined} */	this.team = undefined;
 		/** @type {Match | null} */	this.match = null;
 
+		//@ts-ignore
+		this.board = {};
 		if (!other)
 			return ;
 		this.status = other.status;

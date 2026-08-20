@@ -42,6 +42,7 @@ export function cancelEvent(match)
 	while (match.history.events[match.history.events.length - 1]?.error == true)
 		match.history.events.pop();
 	match.history.events.pop();
+	match.victory = "";
 	clearTimeout(match.timer?.timeout? match.timer.timeout : undefined);
 	if (match.history.events.length != 0)
 		setTimerGame(match);

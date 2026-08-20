@@ -55,7 +55,7 @@ function mainTerm()
 	// if (lib.include.fs.existsSync(HISTORY_DEFAULT))
 	// 	historyRestore(match, HISTORY_DEFAULT);
 	// match.currentPlayer.ai = new AI(AIprofiles.FIRST_AI);
-	match.NextPlayer().ai = new AI(AIprofiles.FIRST_AI);
+	match.NextPlayer().ai = new AI(AIprofiles.GMU);
 	match.aiBool = true;
 
 	// move(match, "e5", "f6");
@@ -134,8 +134,8 @@ process.stdin.on('keypress', (str, key) =>
 			result = execEvent(match, eEvents.Boost);
 			if (result.status != 200)
 				return (saveWrongMove(match, result, eEvents.Boost));
-			console.log(`index => ${match.zobristIndex}`);
-			console.log(`hash => ${match._zobristHash}`);
+			// console.log(`index => ${match.zobristIndex}`);
+			// console.log(`hash => ${match._zobristHash}`);
 			selected = [];
 			break ;
 		case (cmd.USE_BOOST) :
@@ -152,8 +152,8 @@ process.stdin.on('keypress', (str, key) =>
 					return (saveWrongMove(match, result, eEvents.MoveBoost));
 				else if (result.status != 200)
 					return (saveWrongMove(match, result, eEvents.Move));
-				console.log(`index => ${match.zobristIndex}`);
-				console.log(`hash => ${match._zobristHash}`);
+				// console.log(`index => ${match.zobristIndex}`);
+				// console.log(`hash => ${match._zobristHash}`);
 				selected = [];
 			}
 			break ;
@@ -192,8 +192,8 @@ process.stdin.on('keypress', (str, key) =>
 			if (!name)
 				name = HISTORY_FILE;
 			historyRestore(match, HISTORY_PATH + name);
-			// match.NextPlayer().ai = new AI(AIprofiles.FIRST_AI);
-			// match.aiBool = true;
+			match.NextPlayer().ai = new AI(AIprofiles.FIRST_AI);
+			match.aiBool = true;
 			break ;
 		}
 		case (cmd.CANCEL_EVENT):

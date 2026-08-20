@@ -101,8 +101,8 @@ function checkLostAll(match)
 	{
 		if (CheckMateCheck(match))
 		{
-			console.log(match.currentPlayer.team, ":haaaaaiiiiii persoooooooooooooooooo!!!!!!!");
-			render(match);
+			// console.log(match.currentPlayer.team, ":haaaaaiiiiii persoooooooooooooooooo!!!!!!!");
+			// render(match);
 			lostTeam = match.currentPlayer.team;
 		}
 		match.endTurn();

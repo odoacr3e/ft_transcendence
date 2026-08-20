@@ -304,10 +304,13 @@ class Match
 	 */
 	PlayerLost(result, player=this.currentPlayer)
 	{
+		if (this.aiSimulation == true)
+		{
+			this.victory = player.next;
+			return (new Result());
+		}
 		console.log(player.team, ":haaaaaiiiiii persoooooooooooooooooo!!!!!!!");
 		render(this);
-		if (this.aiSimulation == true)
-			return (new Result());
 		aiSpeech(this, AI_EVENTS.checkMateOppo, false);
 		this.history.Last().loserSet.add(player.id);
 		this.UpdateElo(player, false);
@@ -338,10 +341,13 @@ class Match
 		let player;
 		let tmp;
 
+		if (this.aiSimulation == true)
+		{
+			this.victory = "draw";
+			return (new Result());
+		}
 		console.log("ed e' un pareggioooooooo!!!!");
 		render(this);
-		if (this.aiSimulation == true)
-			return (new Result());
 		this.victory = "draw";
 		console.debug(reason);
 		// console.log("Premi un qualsiasi tasto per concludere...");

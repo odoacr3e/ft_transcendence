@@ -53,7 +53,8 @@ class Globals
 		zobristGenerateTable();
 		/** @type {Map<string, ZobristCache>} */
 		this.AITraining = getTrainingSchedule();
-		this.AIgameCounter = 0;
+		/** @type {Map<string | undefined, number>} */
+		this.AIgameCounter = new Map();
 	}
 	/** @param {string} roomType */
 	GetQueue(roomType)

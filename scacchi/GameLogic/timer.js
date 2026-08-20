@@ -36,7 +36,8 @@ export function setTimerGame(match)
 		hasSockets = match.currentPlayer.dbTable != null;
 		result = new Result();
 		match.endTurn();
-		result = match.PlayerLost(result, p);
+		result = match.PlayerLost(result, p);//@ts-ignore
+		result.board = {};
 		if (hasSockets)
 			roomMessage(`match_${match.id}`, "game", result);
 		if (match.playerNum == 1)

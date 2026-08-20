@@ -67,9 +67,12 @@ export class AI
 
 //SECTION - utils
 
+let DEB = 0;
+//15832
 /**
  * 
  * @param {Match} match 
+ * @return {{Turn: Turn, Score: number}} match 
  */
 function getBestTurn(match)
 {
@@ -85,6 +88,7 @@ function getBestTurn(match)
 	let	alpha;
 	let	beta;
 	let	depth;
+	let	victoryEval = null;
 
 	ai = match.currentPlayer.ai;
 	if (!ai)
@@ -98,9 +102,10 @@ function getBestTurn(match)
 	arrayTurns = getLegalMoves(match);
 	for (let i = 0; i != arrayTurns.length; i++)
 	{
-		console.log(`Turns: ${i}/${arrayTurns.length}`);
+		DEB++;
+		// console.log(`Turns: ${i}/${arrayTurns.length}`);
 		const turn = arrayTurns[i];
-		if (turn.boost == "g8" && turn.move?.from == "b5" && turn.move.to == "c4")
+		if (turn.move?.from == "g7" && turn.move.to == "g5")
 			console.log("a");
 		if (match.currentPlayer.team == eTeam.White)
 			alpha = getBestNumber([alpha, bestTurns[0]?.score, bestTurns[1]?.score], false);
@@ -108,14 +113,17 @@ function getBestTurn(match)
 			beta = getBestNumber([beta, bestTurns[0]?.score, bestTurns[1]?.score], true);
 		if (!execTurn(match, turn))
 			continue ;
-		render(match);
+		// render(match);
 		playableTurn.push(turn);
 		newTurns = getLegalMoves(match);
 		if (match.zobristIndex in ai.memory && (ai.memory[match.zobristIndex][0] == (match.currentPlayer.team == eTeam.White? +Infinity : -Infinity) ||
 		rngProportional(100, 50)))
 			val.score = ai.memory[match.zobristIndex][0];
+		else if (match.victory)
+			val.score = victoryScore(match);
 		else
 			val.score = minMax(match, ai, newTurns, depth, [turn], alpha, beta);
+		victoryEval = null;
 		val.index = i;
 		cancelTurn(match, turn);
 		if (val.score == +Infinity)
@@ -154,11 +162,11 @@ function getBestTurn(match)
 			}
 		}
 	}
-	console.log(`Turns: ${arrayTurns.length}/${arrayTurns.length}`);
+	// console.log(`Turns: ${arrayTurns.length}/${arrayTurns.length}`);
 	if (bestTurns.length == 0)
 	{//@ts-ignore
 		ai.defeatStatus = 1;
-		return (playableTurn[Math.floor(Math.random() * 100000) % playableTurn.length]);
+		return ({Turn: playableTurn[Math.floor(Math.random() * 100000) % playableTurn.length], Score: 0});
 	}
 	if (bestTurns.length == 1)
 		return ({Turn: arrayTurns[bestTurns[0].index], Score: bestTurns[0].score});
@@ -168,12 +176,11 @@ function getBestTurn(match)
 		bestTurns[1].score = -bestTurns[1].score; 
 	}
 	bestTurnIdx = bestTurns[rngProportional(bestTurns[0].score, bestTurns[1].score)];
-	console.log(bestTurnIdx);
+	// console.log(bestTurnIdx);
 	return ({Turn: arrayTurns[bestTurnIdx.index], Score: bestTurnIdx.score});
 }
 
-let DEB = 0;
-//1176
+
 /**
  * 
  * @param {Match} match 
@@ -191,7 +198,6 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 	let val;
 	let	lostTeam;
 
-	DEB++;
 	if ((depth <= 0))
 		return (evalScore(match, ai, pastTurns));
 	lostTeam = checkLostAll(match);
@@ -204,8 +210,8 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 		for (const turn of arrayTurns)
 		{
 			++i;
-			if (DEB == 83 && i == 82)
-				console.log("BREAKPOINT");
+			// if (DEB == 11 && turn.move?.from == "d1" && turn.move?.to == "h5")
+			// 	console.log();
 			if (execTurn(match, turn, pastTurns) == false)
 				continue ;
 			if (depth != 1)
@@ -218,6 +224,8 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 			if (match.zobristIndex in ai.memory && (ai.memory[match.zobristIndex][0] == +Infinity ||
 			rngProportional(100, 50)))
 				val = ai.memory[match.zobristIndex][0];
+			else if (match.victory)
+				val = victoryScore(match);
 			else //@ts-ignore
 				val = minMax(match, ai, newTurns, depth - 1, pastTurns, alpha, beta);
 			ai.Cancel(match, ai);
@@ -238,7 +246,7 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 		let minEval = +Infinity;
 		let i = -1;
 		for (const turn of arrayTurns)
-		{//3423
+		{
 			++i;
 			if (DEB == 3423 && i == 76)
 				console.log("BREAKPOINT");
@@ -255,6 +263,8 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 			if (match.zobristIndex in ai.memory && (ai.memory[match.zobristIndex][0] == -Infinity ||
 			rngProportional(100, 50)))
 				val = ai.memory[match.zobristIndex][0];
+			else if (match.victory)
+				val = victoryScore(match);
 			else //@ts-ignore
 				val = minMax(match, ai, newTurns, depth - 1, pastTurns, alpha, beta);
 			ai.Cancel(match, ai);
@@ -292,6 +302,21 @@ function evalScore(match, ai, turns, lostTeam="")
 	if (match.currentPlayer.team == eTeam.Black)
 		score = -score;
 	return (score);
+}
+
+/**
+ * 
+ * @param {Match} match 
+ */
+function victoryScore(match)
+{
+	let tmp;
+
+	if (match.victory == "draw")
+		return (match.victory = "", 0);
+	tmp = match.victory;
+	match.victory = "";
+	return (tmp == eTeam.White ? +Infinity : -Infinity);
 }
 
 export {getBestTurn};

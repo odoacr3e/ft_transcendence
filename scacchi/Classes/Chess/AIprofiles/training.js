@@ -1,8 +1,7 @@
 //@ts-check
 
-import { json } from "stream/consumers";
 import { eTeam } from "../../../Macro/enums.js";
-import { AI_PROFILE_PATH, MAX_MOVES_REWARD_AND_PENALITY } from "../../../Macro/macro.js";
+import { AI_PROFILE_PATH, MAX_MOVES_REWARD_AND_PENALITY, CUTOFF } from "../../../Macro/macro.js";
 import { globals } from "../../Globals/globals.js";
 import fs from "fs";
 
@@ -32,9 +31,19 @@ export function AItraining(match)
 	profileW = match.white.ai?.profile;
 	profileB = match.black.ai?.profile;
 	if (profileW)
+	{
+		if (!globals.AIgameCounter.has(profileW))
+			globals.AIgameCounter.set(profileW, 0);//@ts-ignore
+		globals.AIgameCounter.set(profileW, globals.AIgameCounter.get(profileW) + 1);
 		dataW = globals.AITraining.get(profileW);
+	}
 	if (profileB)
+	{
+		if (!globals.AIgameCounter.has(profileB))
+			globals.AIgameCounter.set(profileB, 0);//@ts-ignore
+		globals.AIgameCounter.set(profileB, globals.AIgameCounter.get(profileB) + 1);
 		dataB = globals.AITraining.get(profileB);
+	}
 	for (let event of events)
 	{
 		let val;
@@ -54,21 +63,17 @@ export function AItraining(match)
 			data[event.zobristIndex][0] = val;
 			data[event.zobristIndex][1] = 1;
 		}
-	}
-	// if (globals.AIgameCounter % 20 != 0)
-	// 	return (updateData(match));
-	if (globals.AIgameCounter % 20 == 0 && dataW != undefined)
+	}//@ts-ignore
+	if (dataW != undefined && globals.AIgameCounter.get(profileW) % 20 == 0)
+	{
 		updateTrainingData(dataW);
-	if (globals.AIgameCounter % 20 == 0 && dataB != undefined)
-		updateTrainingData(dataB);
-	//NOTE - i file li aggiornerei quando il counter arriva a 20
-	globals.AIgameCounter += 1;
-	if (profileB && profileW)
-		globals.AIgameCounter += 1;
-	if (dataB)
-		fs.writeFileSync(`${AI_PROFILE_PATH}/${profileB}/cache.json`, JSON.stringify(dataB));
-	if (dataW)
 		fs.writeFileSync(`${AI_PROFILE_PATH}/${profileW}/cache.json`, JSON.stringify(dataW));
+	}//@ts-ignore
+	if (dataB != undefined && globals.AIgameCounter.get(profileB) % 20 == 0)
+	{
+		updateTrainingData(dataB);
+		fs.writeFileSync(`${AI_PROFILE_PATH}/${profileB}/cache.json`, JSON.stringify(dataB));
+	}
 }
 
 //SECTION - utils
@@ -106,11 +111,22 @@ function getDelta(match, event)
 		return 0.1;
 	if (event.team == eTeam.Black)
 		win *= -1;
-	//FIXME - event counter non e il contatore dell'intero turno, ma dell'evento
-	//NOTE - potremmo generare in history event.turnNumber
 	delta = match.moves - event.turnCounter;
 	result = MAX_MOVES_REWARD_AND_PENALITY * (1 / delta == 0 ? 1 : delta);
 	return result * win;
+}
+
+/**
+ * 
+ * @param {number} score 
+ * @param {number} counter 
+ */
+function getImportance(score , counter)
+{
+	let confidence;
+
+	confidence = (counter / counter + 1);
+	return Math.abs(score * confidence);
 }
 
 /**
@@ -119,8 +135,16 @@ function getDelta(match, event)
  */
 function updateTrainingData(data)
 {
-	Object.entries(data).sort(([[, scoreA, counterA]], [[scoreB, counterB]], {
+	let garbageIndex;
+	let toDelete;
+	let entries = Object.entries(data);
 
-	}));
-	
+	entries.sort(([, [scoreA, counterA]], [, [scoreB, counterB]]) => 
+		getImportance(scoreA, counterA) - getImportance(scoreB, counterB)
+	);
+	garbageIndex = entries.length * CUTOFF;
+	toDelete = entries.slice(0, garbageIndex);
+	for (const [key] of toDelete)
+		delete data[key];
+	return data;
 }

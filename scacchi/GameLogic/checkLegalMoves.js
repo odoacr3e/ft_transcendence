@@ -106,7 +106,7 @@ export function getLegalMoves(match, team=match.currentPlayer.team, infoBool=tru
 			pushChildMoves(match, player, legalMovesArray, {from: coord, to: targetCoord}, true);
 	}
 	// legalMovesArray.sort(optimizeSort);
-	render(match);
+	// render(match);
 	//fs.rmSync("TEST");
 	//fs.writeFileSync("TEST", JSON.stringify(legalMovesArray, null, 2));
 	return (legalMovesArray);

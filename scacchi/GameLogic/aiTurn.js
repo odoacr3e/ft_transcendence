@@ -21,6 +21,7 @@ let	DEBUG_turn = {};
 export function AIexecuteTurn(match)
 {
 	let	result;
+	let	turnData;
 	let	turn;
 	let	team;
 	let	aiDefeatBool = false;
@@ -29,7 +30,8 @@ export function AIexecuteTurn(match)
 	if (!match.currentPlayer.ai)
 		throw (`AIexecuteTurn: there is no AI`);
 	match.aiSimulation = true;
-	turn = getBestTurn(match);
+	turnData = getBestTurn(match);
+	turn = turnData.Turn;
 	// render(match);
 	DEBUG_turn = turn;
 	match.aiSimulation = false;
@@ -67,8 +69,8 @@ export function AIexecuteTurn(match)
 	}
 	lastEvents = match.history.LastTurn();
 	for (let event of lastEvents)
-		event.score = 0;
-	render(match);
+		event.score = turnData.Score;
+	// render(match);
 	if (aiDefeatBool)
 	{
 		result = new Result().Success(`😭Pareggiamo please senpai😭`);

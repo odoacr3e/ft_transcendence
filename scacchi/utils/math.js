@@ -10,7 +10,7 @@ export function getBestNumber(numArray, lowBool=false)
 	let	best;
 
 	best = lowBool? +Infinity : -Infinity;
-	for (const x of numArray)
+	for (const  x of numArray)
 	{
 		if (!x && x != 0)
 			continue ;
