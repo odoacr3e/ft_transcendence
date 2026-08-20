@@ -1,6 +1,6 @@
 # FASE 1: immagine temporanea che serve a fare tutta la configurazione di ModSecurity per poi
 # copiare solo il modulo caricato nel vero container di nginx
-FROM nginx:alpine AS builder
+FROM nginx:1.31.3-alpine AS builder
 
 # nginx -v ti dà la versione esatta da usare qui sotto
 ARG NGINX_VERSION=1.31.3
@@ -28,7 +28,7 @@ RUN git clone --depth 1 https://github.com/coreruleset/coreruleset /crs && \
 # RUN find / -name "libmodsecurity.so*" 2>/dev/null
 
 # FASE 2: immagine reale di nginx in cui vengono copiati il file compilato di modsecurity
-FROM nginx:alpine
+FROM nginx:1.31.3-alpine
 
 RUN rm /etc/nginx/conf.d/default.conf && \
 	apk add --no-cache openssl yajl libxml2 pcre2 libcurl && \

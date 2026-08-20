@@ -55,7 +55,6 @@ services:
       - vault-data:/vault/data:rw
       - vault-logs:/vault/logs
       - vault-shared:/vault/shared
-      # - ./vault/certs:/vault/certs:ro
     environment:
       - VAULT_ADDR=http://127.0.0.1:8200
       - VAULT_API_ADDR=http://127.0.0.1:8200
