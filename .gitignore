@@ -10,3 +10,4 @@ backend_dir/
 frontend_dir/
 schema.sql
 data.sql
+.env_real
