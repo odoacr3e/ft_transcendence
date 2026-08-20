@@ -121,42 +121,127 @@ Regarding communication and collaboration, several tools were used. **Slack** wa
 
 [Schema Database](docs/db_diagram.png)
 
-Il database e composto da 10 tabelle:
+The database is composed of 10 tables with the following relationships:
 
-<details>
-<summary><strong>users</strong> — dati utente e autenticazione</summary>
-<br>
+### users
 
-| Field | Type | Notes |
-|-------|------|------|
-| *id_user* | int (PK) | Primary Key |
-| *username* | varchar(50) | unique |
-| *email* | varchar(100) | unique |
-| *password* | varchar(200) | hashed |
-| *points* | int | default 500 |
-| *title* | varchar(200) | default "Newbie" |
-| *mfa* | boolean | 2FA enabled or not |
-| *google_id* | varchar | unique, id assigned by Google for OAuth |
-| *id_preference* | int (FK) | `preferences` |
-
-**Relations**: N:1 with `preferences`, 1:N with `friendships` (as *id_user1*, *id_user2*, *sender*), 1:N with `notifications` (as *id_user* and *id_sender*), 1:N with `tournament_players` (as *id_user*), 1:N with `tournaments` (as *created_by*), 1:N with `users_matches` (as *id_user*)
-
-</details>
-
----
-Informazioni dei pezzi tra cui nome, abilita e costo del suo utilizzo
+| Type | Table | As |
+|------|-------|-----|
+| N:1 | *preferences* | `id_preference` |
+| 1:N | *friendships* | `id_user1`, `id_user2`, `sender` |
+| 1:N | *notifications* | `id_user`, `id_sender` |
+| 1:N | *tournament_players* | `id_user` |
+| 1:N | *tournaments* | `created_by` |
+| 1:N | *users_matches* | `id_user` |
 
 
-- abilities: nome e descrizione delle abilita
-- friendships: 
-- users
-- preferences
-- notifications
-- tournaments
-- matches
-- tournament_players
-- users_matches
+### friendships
 
+| Type | Table | As |
+|------|-------|-----|
+| N:1 | *users* | `id_user1` |
+| N:1 | *users* | `id_user2` |
+| N:1 | *users* | `sender` |
+
+
+### matches
+
+| Type | Table | As |
+|------|-------|-----|
+| N:1 | *tournaments* | `id_tournament` |
+| 1:N | *users_matches* | `id_match` |
+
+
+### users_matches
+
+| Type | Table | As |
+|------|-------|-----|
+| N:1 | *users* | `id_user` |
+| N:1 | *matches* | `id_match` |
+
+
+### tournaments
+
+| Type | Table | As |
+|------|-------|-----|
+| N:1 | *users* | `created_by` |
+| 1:N | *matches* | `id_tournament` |
+| 1:N | *tournament_players* | `id_tournament` |
+
+
+### tournament_players
+
+| Type | Table | As |
+|------|-------|-----|
+| N:1 | *tournaments* | `id_tournament` |
+| N:1 | *users* | `id_user` |
+
+
+### pieces
+
+| Type | Table | As |
+|------|-------|-----|
+| N:1 | *abilities* | `id_ability` |
+
+
+### abilities
+
+| Type | Table | As |
+|------|-------|-----|
+| 1:N | *pieces* | `id_ability` |
+
+
+### notifications
+
+| Type | Table | As |
+|------|-------|-----|
+| N:1 | *users* | `id_user` |
+| N:1 | *users* | `id_sender` |
+
+
+### preferences
+
+| Type | Table | As |
+|------|-------|-----|
+| 1:N | *users* | `id_preference` |
+
+## Feature List
+
+<!-- 
+[x] Registrazione utente
+[x] Login
+[x] Modifiche informazioni utente (Nome, immagine profilo ...)
+[x] OAuth con Google
+[x] Notifiche
+[x] Amicizie (invio richiesta, visualizzazione lista)
+[x] Partite offline vs AI
+[x] Matchmaking online
+[] Tornei
+[] Classifiche
+[] Libro guida e tutorial
+[] Ricerca utenti
+[] 2FA
+[] Cambio lingua
+ -->
+
+In questo progetto sono state implementate diverse feature da tutto il gruppo di lavoro.
+
+| Feature | Description | Team Member(s) |
+|-|-|-|
+| User Registration | User can create an account with username, email, and password | edraccan, mfanelli |
+| Login and Authentication | User can log in via username/email and password | edraccan, mfanelli |
+| User Information Management | Allows you to edit user information, including profile picture and theme preferences | edraccan, mfanelli |
+| Google Authentication | Allows users, registered and unregistered, to register/log in with Google's OAuth service | edraccan, mbiagi |
+| Send and receive notifications for real-time friendships and tournaments | Allows the user to receive notifications about tournaments and friendships in real time | edraccan, mfanelli |
+| Friendship Management | Allows the user to send, accept, and reject friendship requests | edraccan, mfanelli |
+| Offline Matches (vs AI) | Allows the user to play offline against an AI implemented to play ChessZ | mbiagi, alerusso, lparolis |
+| Online Matchmaking | Allows the user to play online against other players | mbiagi, alerusso, lparolis |
+| Tournament Creation and Participation | Allows the user to create and participate in an 8-player single-elimination tournament | edraccan, mfanelli, mbiagi, alerusso |
+| Rankings | Users can view global rankings, managed through an ELO system where they win/lose points based on the outcomes of their matches | edraccan, mfanelli, mbiagi, alerusso |
+| Guide book | Allows the user to consult a game guide that explains the movements of each piece, their abilities, and their historical background | edraccan, mfanelli, mbiagi |
+| User Search | Allows the user to search for other users registered with the application | edraccan, mfanelli |
+| 2FA | Allows the user to receive a one-time code on their email at login to authenticate | edraccan, mfanelli |
+| Language Change | Allows the user to change the application language | mfanelli |
 
 
 <!-- This template should help get you started developing with Vue 3 in Vite.
