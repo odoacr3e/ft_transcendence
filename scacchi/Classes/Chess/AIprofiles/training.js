@@ -119,6 +119,8 @@ function getDelta(match, event)
  */
 function updateTrainingData(data)
 {
-	Object.entries(data)
+	Object.entries(data).sort(([[, scoreA, counterA]], [[scoreB, counterB]], {
+
+	}));
 	
 }

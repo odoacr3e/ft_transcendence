@@ -66,7 +66,8 @@ function transfiguration(match, result, coord, newType, sendBoardBool=true)
 		updateBoostedChampions(match, []);
 	checkMateCheckAll(match, result);
 	if (endTurn(match, false).specialMoves.CheckKingDanger())
-		result.specialMoves.SetKingDanger();
+		result.specialMoves.SetKingDanger();//@ts-ignore
+	result.history = match.history.clientEvents[match.history.clientEvents.length - 1];
 	result.status = 200;
 	result.msg = "OK";
 	if (sendBoardBool == true)//@ts-ignore

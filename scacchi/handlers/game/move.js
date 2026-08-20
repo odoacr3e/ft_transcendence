@@ -57,8 +57,11 @@ function move(match, from, to, boostBool=false)
 	secondMoveBool = checkSecondMove(match, [from, to]);
 	if ((match.moves >= MOVEMENT_MIN && !match.currentPlayer.nPoints) && !(secondMoveBool || boostBool) && 
 	!(match.cursor.EdgeCheck(match.currentPlayer.team, to) && match.board.get(match.cursor.square)?.piece?.type == enumNames.BASTARDS))
+	{
 		if (endTurn(match, false).specialMoves.CheckKingDanger())
-			result.specialMoves.SetKingDanger();
+			result.specialMoves.SetKingDanger();//@ts-ignore
+		result.history = match.history.clientEvents[match.history.clientEvents.length - 1];
+	}
 	return (result);
 }
 

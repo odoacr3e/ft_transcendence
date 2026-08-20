@@ -48,7 +48,8 @@ function boost(match, from)
 		}
 		checkMateCheckAll(match, result);
 		if (endTurn(match, false).specialMoves.CheckKingDanger())
-			result.specialMoves.SetKingDanger();
+			result.specialMoves.SetKingDanger();//@ts-ignore
+		result.history = match.history.clientEvents[match.history.clientEvents.length - 1];
 	}
 	//@ts-ignore
 	result.board = clientBoard(match);
