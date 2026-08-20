@@ -11,7 +11,7 @@ const DEBUG = true;
 //@ts-ignore
 /** @type {string} */const DEBUG_HISTORY_PATH = process.env.DEBUG_HISTORY_PATH ? process.env.DEBUG_HISTORY_PATH : "./";
 //@ts-ignore
-/** @type {string} */const DEBUG_AI_PROFILE_PATH = process.env.DEBUG_AI_PROFILE_PATH ? process.env.DEBUG_AI_PROFILE_PATH : "./scacchi/Classes/Chess/AIprofiles/";
+/** @type {string} */const DEBUG_AI_PROFILE_PATH = process.env.DEBUG_AI_PROFILE_PATH ? process.env.DEBUG_AI_PROFILE_PATH : "./Classes/Chess/AIprofiles/";
 
 //SECTION - history
 const HISTORY_PATH = `${DEBUG_HISTORY_PATH}/`;
