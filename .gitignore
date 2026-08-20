@@ -8,3 +8,5 @@ vault/keys/vault-keys.json
 backend_dir/history/HISTORY.json
 backend_dir/
 frontend_dir/
+schema.sql
+data.sql
