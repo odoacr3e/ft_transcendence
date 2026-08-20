@@ -4,7 +4,7 @@ import fs from "fs";
 //SECTION - backend cute stuff >3
 import { globals } from "../Classes/Globals/globals.js";
 import { historyRestore } from "../utils/history.js";
-import {AI_PROFILE_PATH, HISTORY_DEFAULT, HISTORY_FILE, HISTORY_PATH} from "../Macro/macro.js";
+import {AI_PROFILE_PATH, DEBUG_AI_TRAINING, HISTORY_DEFAULT, HISTORY_FILE, HISTORY_PATH} from "../Macro/macro.js";
 import { testerEnum as MSG } from "./enumsTest.js";
 import { Match } from "../Classes/Chess/match.js";
 import { includesOneOf } from "../utils/string.js";
@@ -16,9 +16,12 @@ import { colors } from "./colorsOld.js";
 import { AIprofiles, eEvents } from "../Macro/enums.js";
 import { endTurn } from "../handlers/game/endTurn.js";
 import { jsonSafeParse } from "../utils/response.js";
+import { AItraining } from "../Classes/Chess/AIprofiles/training.js";
 
 const TEST_PATH = `${HISTORY_PATH}`;
 const DEFAULT_AI = AIprofiles.FIRST_AI;
+const DEFAULT_AI2 = AIprofiles.FIRST_AI;
+const FRESH_GAMES = !DEBUG_AI_TRAINING ? 3 : +Infinity;
 
 //@ts-ignore
 /** @typedef {import ("../../history/HISTORY.json")} historyData */
@@ -28,6 +31,7 @@ let	renderOutput = "";
 let	currMatchData = new Match();
 let	errorFlag = 0;
 let aiType = "";
+let aiType2 = "";
 
 function testerMain()
 {
@@ -36,27 +40,20 @@ function testerMain()
 
 	console.debug = console.log;
 	console.log = () => {};
+	if (DEBUG_AI_TRAINING)
+		console.debug = () => {};
 	globals.matches.set("0", new Match());
 	aiType = getAiType(process.argv[2]);
+	aiType2 = getAiType(process.argv[3]);
 	if (!aiType)
 	{
 		aiType = DEFAULT_AI;
-		matchName = process.argv.at(2);
 	}
-	if (!matchName)
-		return (execAllTests());
-	if (matchName.endsWith(".json") == false)
-		matchName = matchName + ".json";
-	currMatch = matchName;
-	if (matchName.indexOf("..") != -1)
-		return (testerFail(MSG.INVALID_DIR));
-	matchPath = `${TEST_PATH}${matchName}`;
-	if (!matchPath)
-		return (testerFail(MSG.INVALID_PATH, matchPath));
-	if (fs.existsSync(matchPath) == false)
-		return (testerFail(MSG.INVALID_PATH, matchPath));
-	execTest(matchPath);
-	process.exit(errorFlag);
+	if (!aiType2)
+	{
+		aiType = DEFAULT_AI2;
+	}
+	return (execAllTests());
 }
 
 testerMain();
@@ -64,7 +61,7 @@ testerMain();
 
 function execAllTests()
 {
-	for (let i = 0; i != 3; i++)
+	for (let i = 0; i != FRESH_GAMES; i++)
 	{
 		currMatch = "fresh " + i;
 		execTest(null);
@@ -93,6 +90,7 @@ function execAllTests()
 function execTest(matchPath=null)
 {
 	let	match;
+	let	time;
 	let	i;
 
 	match = globals.getDebugMatch();
@@ -117,9 +115,12 @@ function execTest(matchPath=null)
 			return ;
 		}
 		match.currentPlayer.ai = new AI(aiType);
-		match.NextPlayer().ai = new AI(aiType);
+		match.NextPlayer().ai = new AI(aiType2);
 		match.aiBool = true;
 		i = 0;
+		if (DEBUG_AI_TRAINING)
+			console.warn(`Executing test "${currMatch}"`);
+		time = Date.now();
 		while (!match.victory)
 		{
 			console.debug(`Executing test "${currMatch}", move ${i++}`);
@@ -127,12 +128,15 @@ function execTest(matchPath=null)
 			render(match, [], "", false, console.debug);
 			AIexecuteTurn(match);
 		}
-		console.debug(`${colors.red}${match.victory} has won.${colors.reset}`);
+		AItraining(match);
+		console.warn(`${colors.red}${match.victory} has won.${colors.reset}`);
+		console.warn(`time: ${Date.now() - time} ms`)
 		render(match, [], "", false, console.debug);
-		console.debug("\n\n====================\n\n");
+		console.warn("\n\n====================\n\n");
 	}
 	catch(err)
 	{
+		console.warn(err);
 		if (!err)
 			err = "MISSING";
 		else if (typeof(err) != "string")

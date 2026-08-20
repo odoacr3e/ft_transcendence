@@ -1,6 +1,6 @@
 //@ts-check
 
-import { eTeam } from "../../../Macro/enums.js";
+import { eEvents, eTeam } from "../../../Macro/enums.js";
 import { AI_PROFILE_PATH, MAX_MOVES_REWARD_AND_PENALITY, CUTOFF } from "../../../Macro/macro.js";
 import { globals } from "../../Globals/globals.js";
 import fs from "fs";
@@ -49,7 +49,7 @@ export function AItraining(match)
 		let val;
 
 		data = event.team == eTeam.Black? dataB : dataW;
-		if (!data)
+		if (!data || event.type == eEvents.EndTurn)
 			continue ;
 		if (data[event.zobristIndex])
 		{
@@ -60,8 +60,7 @@ export function AItraining(match)
 		else
 		{
 			val = evaluateEvent(match, event, event.score, 1);
-			data[event.zobristIndex][0] = val;
-			data[event.zobristIndex][1] = 1;
+			data[event.zobristIndex] = [val, 1];
 		}
 	}//@ts-ignore
 	if (dataW != undefined && globals.AIgameCounter.get(profileW) % 20 == 0)
@@ -111,7 +110,7 @@ function getDelta(match, event)
 		return 0.1;
 	if (event.team == eTeam.Black)
 		win *= -1;
-	delta = match.moves - event.turnCounter;
+	delta = match.history.clientEvents.length - event.turnCounter;
 	result = MAX_MOVES_REWARD_AND_PENALITY * (1 / delta == 0 ? 1 : delta);
 	return result * win;
 }
@@ -140,7 +139,7 @@ function updateTrainingData(data)
 	let entries = Object.entries(data);
 
 	entries.sort(([, [scoreA, counterA]], [, [scoreB, counterB]]) => 
-		getImportance(scoreA, counterA) - getImportance(scoreB, counterB)
+		getImportance(scoreB, counterB) - getImportance(scoreA, counterA)
 	);
 	garbageIndex = entries.length * CUTOFF;
 	toDelete = entries.slice(0, garbageIndex);

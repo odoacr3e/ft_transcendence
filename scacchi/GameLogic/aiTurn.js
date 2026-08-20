@@ -7,7 +7,7 @@ import { endTurn } from "../handlers/game/endTurn.js";
 import { move } from "../handlers/game/move.js";
 import { makeTransfiguration } from "../handlers/game/transfiguration.js";
 import { eEvents } from "../Macro/enums.js";
-import { render } from "../test/render.js";
+import { render, boardStringify } from "../test/render.js";
 import { roomMessage } from "../websocket/utils.js";
 
 /** @typedef {import("../Classes/Chess/match").Match} Match */
@@ -42,6 +42,8 @@ export function AIexecuteTurn(match)
 		aiDefeatBool = true;
 		match.currentPlayer.ai.defeatStatus = 2;
 	}
+	if (turn == undefined)
+		console.log();
 	if (turn.move)
 	{
 		result = move(match, turn.move.from, turn.move.to, false);

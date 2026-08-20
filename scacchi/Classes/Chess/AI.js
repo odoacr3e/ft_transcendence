@@ -12,6 +12,7 @@ import { rngProportional } from "../../utils/random.js";
 import { AIProfileConstructor } from "./AIprofiles/constructors.js";
 import fs from "fs";
 import { isOneOf } from "../../utils/string.js";
+import { DEBUG_AI_TRAINING } from "../../Macro/macro.js";
 
 /** @typedef {import("./match.js").Match} Match*/
 /** @typedef {{from: string, to: string}} Move */
@@ -89,6 +90,7 @@ function getBestTurn(match)
 	let	beta;
 	let	depth;
 	let	victoryEval = null;
+	const	DEBUGTEAM = match.currentPlayer.team;
 
 	ai = match.currentPlayer.ai;
 	if (!ai)
@@ -97,7 +99,9 @@ function getBestTurn(match)
 	alpha = -Infinity;
 	beta = +Infinity;
 	depth = 3;
-	if (isOneOf(enumNames.CHAMPION, match.GetBoostedPieceTypes()))
+	if (DEBUG_AI_TRAINING)
+		depth = 0;
+	else if (isOneOf(enumNames.CHAMPION, match.GetBoostedPieceTypes()))
 		depth -= 1;
 	arrayTurns = getLegalMoves(match);
 	for (let i = 0; i != arrayTurns.length; i++)
@@ -162,6 +166,8 @@ function getBestTurn(match)
 			}
 		}
 	}
+	if (match.currentPlayer.team != DEBUGTEAM)
+		throw (`AI: Team has changed..`);
 	// console.log(`Turns: ${arrayTurns.length}/${arrayTurns.length}`);
 	if (bestTurns.length == 0)
 	{//@ts-ignore

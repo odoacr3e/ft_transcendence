@@ -25,6 +25,7 @@ import { fakeBoost } from "../handlers/game/boost.js";
 import { Match, MatchSettings } from "../Classes/Chess/match.js";
 import { getLegalMoves } from "../GameLogic/checkLegalMoves.js";
 import { AI } from "../Classes/Chess/AI.js";
+import { initFromStr } from "../handlers/game/init.js";
 
 //SECTION - main: inizializza e fa primo render, mette terminale in ascolto
 function mainTerm()
