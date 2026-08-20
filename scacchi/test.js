@@ -14,8 +14,5 @@ function hashPosition(boardString) {
 	return createHash("sha256").update(boardString).digest("hex");
 }
 
-console.log(test[0]);
-console.log(test[3]);
-console.log(test[4]);
 console.log(hashPosition(board));
 console.log(hashPosition(board));

@@ -16,8 +16,9 @@ const COMBINATIONS = arrayNames.length * 2;//tipo pezzo	+ colori team
 const METADATA = 2;//0: non boostato; 1: boostato
 const SQUARE_COMBINATION = COMBINATIONS * METADATA;
 //NOTE - si puo ridurre a 5^2 combinazioni: 
-// ha senso segnare se i giocatori hanno almeno:	0, 1, 3, 5, 10 punti		 
-const SAVED_POINTS = 16;//oltre 16 non ha senso separare
+// ha senso segnare se i giocatori hanno almeno:	0, 1, 3, 5, 10 punti
+const POINT_MILESTONE = [1, 3, 5, 10];//oltre 16 non ha senso separare
+const POINT_COMBINATION = Math.pow(POINT_MILESTONE.length + 1, 2);//oltre 16 non ha senso separare
 const TABLE_SIZE = BigInt((2 << 20) - 1);
 let zobristTable = 
 {
@@ -49,7 +50,7 @@ function zobristGenerateTable()
 			}
 		}
 	}
-	for (let x = 0; x != (SAVED_POINTS * 2) + 1; x += 1)
+	for (let x = 0; x != (POINT_COMBINATION) + 1; x += 1)
 	{
 		getRandomValues(array64);
 		zobristTable.points[x] = array64[0];
@@ -183,9 +184,19 @@ function zobristPieceHash(boardCount, piece)
  */
 function zobristPointsHash(pWhite, pBLack)
 {
-	pWhite = pWhite > SAVED_POINTS ? SAVED_POINTS : pWhite;
-	pBLack = pBLack > SAVED_POINTS ? SAVED_POINTS : pBLack;
-	return (zobristTable.points[pWhite] ^ zobristTable.points[pBLack + SAVED_POINTS]);
+	let	iW;
+	let	iB;
+
+	iW = -0;
+	iB = -0;
+	for (const x of POINT_MILESTONE)
+	{
+		if (pWhite > x)
+			iW += 1;
+		if (pBLack > x)
+			iB += 1;
+	}
+	return (zobristTable.points[iW] ^ zobristTable.points[iW + POINT_MILESTONE.length + 1]);
 }
 
 function zobristRetrieveTable()

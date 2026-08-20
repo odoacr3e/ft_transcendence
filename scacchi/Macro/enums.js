@@ -202,7 +202,10 @@ const AIprofiles =
 {
 	FIRST_AI: "First",
 	GMU: "gmu",
-	DEBUG: "Debug"
+	DEBUG: "Debug",
+	AM: "AM",
+	HAL9000: "HAL9000",
+	GRIEVOUS: "Grievous"
 }
 
 const AIprofilesArray = Object.values(AIprofiles);

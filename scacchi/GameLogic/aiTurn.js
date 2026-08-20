@@ -24,6 +24,7 @@ export function AIexecuteTurn(match)
 	let	turn;
 	let	team;
 	let	aiDefeatBool = false;
+	let	lastEvents;
 
 	if (!match.currentPlayer.ai)
 		throw (`AIexecuteTurn: there is no AI`);
@@ -64,12 +65,15 @@ export function AIexecuteTurn(match)
 		result = endTurn(match, false);
 		sendResult(match, result, eEvents.EndTurn);
 	}
+	lastEvents = match.history.LastTurn();
+	for (let event of lastEvents)
+		event.score = 0;
 	render(match);
 	if (aiDefeatBool)
 	{
 		result = new Result().Success(`😭Pareggiamo please senpai😭`);
 		console.log(result.msg);
-		roomMessage(`Match_${match.id}`, "gameDraw", result);
+		roomMessage(`match_${match.id}`, "gameDraw", result);
 	}
 	// console.profileEnd();
 	// console.log(`Killo processo.`);
@@ -87,5 +91,5 @@ function sendResult(match, result, type="")
 {
 	if (result.status != 200)
 		throw (`AIExecuteTurn: ${type} failed. Reason: "${result.msg}".Info: ${JSON.stringify(DEBUG_turn, null, 2)}`);
-	roomMessage(`Match_${match.id}`, "game", result, true);
+	roomMessage(`match_${match.id}`, "game", result, true);
 }

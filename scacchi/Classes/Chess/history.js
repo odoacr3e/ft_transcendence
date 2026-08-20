@@ -24,6 +24,7 @@ export class History
 	constructor(matchSettings=null)
 	{
 		this.moves = 0;
+		this.turnCounter = 0;
 		this.victory = "";
 		this.finalBoard = "";
 		this.UpdateMoves = updateMoves;
@@ -170,6 +171,7 @@ export class HistoryEvent
 		this.isBoostedBool = isBoosted;
 		this.useBoostBool = false;
 		this.counter = counter;
+		this.turnCounter = 0;
 		this.updates = updates;
 		this.turnMoves = 0;
 		this.error = false;
@@ -184,6 +186,7 @@ export class HistoryEvent
 		if (pieceBoosterZones)
 			this.pieceBoosterTargetZones = copyBoostedTargetZones(pieceBoosterZones);
 		this.aiSimulation = false;
+		this.score = 0;
 		this.fromHash = BigInt(0);
 		this.toHash = BigInt(0);
 		this.zobristHash = BigInt(0);
@@ -233,6 +236,7 @@ function updateMoves(match, square, coords, result, boostBool=false)
 	record.zobristHash = match._zobristHash;
 	record.zobristIndex = match.zobristIndex;
 	record.aiSimulation = match.aiSimulation;
+	record.turnCounter = this.turnCounter;
 	this.events.push(record);
 	this.moves += 1;
 }
@@ -247,7 +251,6 @@ function updateMoves(match, square, coords, result, boostBool=false)
 function updateBoost(match, square, from)
 {
 	let	record;
-	let	prevBoostSquare;
 
 	if (!this)
 		throw ("updateMoves must be called inside of History class");
@@ -265,6 +268,7 @@ function updateBoost(match, square, from)
 	record.zobristHash = match._zobristHash;
 	record.zobristIndex = match.zobristIndex;
 	record.aiSimulation = match.aiSimulation;
+	record.turnCounter = this.turnCounter;
 	this.events.push(record);
 	this.moves += 1;
 }
@@ -297,6 +301,7 @@ function updateTransform(match, square, from, newType)
 	record.zobristHash = match._zobristHash;
 	record.zobristIndex = match.zobristIndex;
 	record.aiSimulation = match.aiSimulation;
+	record.turnCounter = this.turnCounter;
 	this.events.push(record);
 	this.moves += 1;}
 
@@ -320,7 +325,9 @@ function updateEndTurn(match)
 	record = new HistoryEvent(this.moves, eEvents.EndTurn, match.currentPlayer.team, match.board.updates);
 	record.aiSimulation = match.aiSimulation;
 	record.turnMoves = match.moves;
+	record.turnCounter = this.turnCounter;
 	this.events.push(record);
+	this.turnCounter += 1;
 	this.moves += 1;
 }
 
@@ -341,6 +348,7 @@ function updateGiveUp(match, team=match.currentPlayer.team)
 	if (!match[team])
 		throw (`History: invalid team ${team}`);
 	record = new HistoryEvent(this.moves, eEvents.GiveUp, team);
+	record.turnCounter = this.turnCounter;
 	this.events.push(record);
 	this.moves += 1;
 }

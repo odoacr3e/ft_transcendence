@@ -73,7 +73,8 @@ function endTurn(match, sendBoardBool=true)
 		match.history.AddClientTurn();
 	if (sendBoardBool)
 	{//@ts-ignore
-		result.board = clientBoard(match);
+		result.board = clientBoard(match);//@ts-ignore
+		result.history = match.history.clientEvents;
 	}
 	if (match.currentPlayer.ai && match.aiSimulation == false && !match.PrevPlayer().ai)
 		AIexecuteTurn(match);

@@ -96,8 +96,6 @@ function getBestTurn(match)
 	if (isOneOf(enumNames.CHAMPION, match.GetBoostedPieceTypes()))
 		depth -= 1;
 	arrayTurns = getLegalMoves(match);
-	if (ai.defeatStatus != 0)
-		return (arrayTurns[0]);
 	for (let i = 0; i != arrayTurns.length; i++)
 	{
 		console.log(`Turns: ${i}/${arrayTurns.length}`);
@@ -125,14 +123,14 @@ function getBestTurn(match)
 			if (match.currentPlayer.team == eTeam.Black)
 				continue ;
 			else
-				return (turn);
+				return ({Turn: turn, Score: +Infinity});
 		}
 		else if (val.score == -Infinity)
 		{
 			if (match.currentPlayer.team == eTeam.White)
 				continue ;
 			else
-				return (turn);
+				return ({Turn: turn, Score: -Infinity});
 		}
 		// if (match.currentPlayer.team == eTeam.Black && val.score == +Infinity)
 		// 	continue ;
@@ -163,7 +161,7 @@ function getBestTurn(match)
 		return (playableTurn[Math.floor(Math.random() * 100000) % playableTurn.length]);
 	}
 	if (bestTurns.length == 1)
-		return (arrayTurns[bestTurns[0].index]);
+		return ({Turn: arrayTurns[bestTurns[0].index], Score: bestTurns[0].score});
 	if (match.currentPlayer.team == eTeam.Black)
 	{
 		bestTurns[0].score = -bestTurns[0].score; 
@@ -171,7 +169,7 @@ function getBestTurn(match)
 	}
 	bestTurnIdx = bestTurns[rngProportional(bestTurns[0].score, bestTurns[1].score)];
 	console.log(bestTurnIdx);
-	return (arrayTurns[bestTurnIdx.index]);
+	return ({Turn: arrayTurns[bestTurnIdx.index], Score: bestTurnIdx.score});
 }
 
 let DEB = 0;
