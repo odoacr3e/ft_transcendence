@@ -36,8 +36,8 @@
 							 left: localInfo.drag.x + 'px',
 							 top: localInfo.drag.y + 'px'}"/>
 		</Teleport>
-		<div id="board" oncontextmenu="return false;" v-bind:class="{ 'boardTwo' : style === '1v1', 'boardFour' : style === '14x14x4'}">
-				<div v-for="row in domBoardComputed" :key="row[0]?.id" class="grid" v-bind:class="{ 'rowTwo' : style === '1v1', 'rowFour' : style === '14x14x4'}">
+		<div id="board" oncontextmenu="return false;" :class="{ 'boardTwo' : style === '1v1', 'boardFour' : style === '14x14x4'}">
+				<div v-for="row in domBoardComputed" :key="row[0]?.id" class="grid" :class="{ 'rowTwo' : style === '1v1', 'rowFour' : style === '14x14x4'}">
 					<div
 						v-for="square in row"
 						:key="square.id"
@@ -58,12 +58,12 @@
 							v-if="(parseInt(square.id.substring(1)) === bottomRank) || 
 								(style === '14x14x4' && parseInt(square.id.substring(1)) === 4 &&
 								['a', 'b', 'c', 'l', 'm', 'n'].includes(square.id.charAt(0)))"
-							v-bind:class="{ 'ml-15 mt-13' : style === '1v1',
-											'ml-10.25 mt-9 text-xs' : style === '14x14x4',
-											'text-[#1b0000]': getSquareColor(square.id) == 'white' && square.selected === square.inCheck,
-											'text-white	': getSquareColor(square.id) == 'black' && square.selected === square.inCheck,
-											'text-[#801a12]' : getSquareColor(square.id) == 'white' && square.selected !== square.inCheck,
-											'text-[#bb4232]' : getSquareColor(square.id) == 'black' && square.selected !== square.inCheck }">
+							:class="{	'ml-15 mt-13' : style === '1v1',
+										'ml-10.25 mt-9 text-xs' : style === '14x14x4',
+										'text-bg-square': getSquareColor(square.id) == 'white' && square.selected === square.inCheck,
+										'text-text-default	': getSquareColor(square.id) == 'black' && square.selected === square.inCheck,
+										'text-bg-BSelect' : getSquareColor(square.id) == 'white' && square.selected !== square.inCheck,
+										'text-bg-WSelect' : getSquareColor(square.id) == 'black' && square.selected !== square.inCheck }">
 							<b>{{ square.id.charAt(0) }}</b>
 						</p>
 						<img
@@ -80,10 +80,10 @@
 							v-bind:class="{ 'mr-15 mb-13' : style === '1v1',
 											'mr-10.25 mb-9.5 text-xs' : style === '14x14x4',
 											'ml-1.5' : parseInt(square.id.substring(1)) > 9,
-											'text-[#1b0000]':getSquareColor(square.id) == 'white' && square.selected === square.inCheck,
-											'text-white':getSquareColor(square.id) == 'black' && square.selected === square.inCheck,
-											'text-[#801a12]' : getSquareColor(square.id) == 'white' && square.selected !== square.inCheck,
-											'text-[#bb4232]' : getSquareColor(square.id) == 'black' && square.selected !== square.inCheck }">
+											'text-bg-square':getSquareColor(square.id) == 'white' && square.selected === square.inCheck,
+											'text-text-default':getSquareColor(square.id) == 'black' && square.selected === square.inCheck,
+											'text-bg-BSelect' : getSquareColor(square.id) == 'white' && square.selected !== square.inCheck,
+											'text-bg-WSelect' : getSquareColor(square.id) == 'black' && square.selected !== square.inCheck }">
 							<b>{{square.id.substring(1)}}</b>
 						</p>
 						<span v-if="square.highlight && !square.piece" class="highlight"
@@ -130,7 +130,7 @@
 		width: fit-content;
 		margin: auto;
 		--piece-clicked-bg: rgba(209, 152, 8, 0.55);
-		--last-move-color: rgba(65, 54, 27, 0.692);
+		--last-move-color: rgba(65, 54, 27, 0.633);
 	}
 
 	.boardTwo {
@@ -180,11 +180,11 @@
 	}
 	
 	.white{
-		background-color: white;
+		background-color: var(--color-text-default);
 	}
 
 	.black{
-		background-color: rgb(27, 0, 0);
+		background-color: var(--color-bg-square);
 	}
 
 	.pieceClicked {
@@ -196,7 +196,7 @@
 		display: block;
 		margin: auto;
 		border-radius: 50%;
-		background-color: brown;
+		background-color: var(--color-bg-highlight);
 	}
 
 	.boostedHighlight
@@ -209,12 +209,12 @@
 
 	.selectedB
 	{
-		background-color: rgb(128, 26, 18);
+		background-color: var(--color-bg-BSelect);
 	}
 
 	.selectedW
 	{
-		background-color: rgb(187, 66, 50);
+		background-color: var(--color-bg-WSelect);
 	}
 
 	.selectedBstB

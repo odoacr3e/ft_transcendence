@@ -212,8 +212,8 @@
 		padding: 15px;
 		border-width: 1px;
 		border-radius: 7px;
-		border-color: #4e4e4e8c;
-		color: #dcdfe4c0;
+		border-color: var(--color-border-default);
+		color: var(--color-form-icon);
 		justify-self: center;
 	}
 

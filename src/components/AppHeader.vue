@@ -150,7 +150,7 @@
 							<div class="flex gap-2 pb-1 items-center">
 								<span class="py-1 block size-2 rounded-full"
 									:class="{	'bg-notif-on' : m.status === 'not_read',
-												'bg-zinc-500' : m.status === 'read' }"/> <!--NOTE ✓-->
+												'bg-text-third' : m.status === 'read' }"/> <!--NOTE ✓-->
 								<h3 v-if="m.description[0] === ' ' && m.title === 'F'" class="text-md">{{ t('header.inv.friendTitle') }}</h3>
 								<h3 v-if="m.description[0] === ' ' && m.title === 'T'" class="text-md">{{ t('header.inv.tourTitle') }}</h3>
 								<h3 v-if="m.title !== 'F' && m.title !== 'T'" class="text-md">{{ m.title }}</h3>

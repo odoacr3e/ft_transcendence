@@ -13,6 +13,11 @@
 	--color-text-last: var(--current-text-last);
 	--color-form-icon: var(--current-form-icon);
 
+	--color-bg-square: var(--current-bg-square);
+	--color-bg-WSelect: var(--current-bg-WSelect);
+	--color-bg-BSelect: var(--current-bg-BSelect);
+	--color-bg-highlight: var(--current-bg-highlight);
+
 	--color-notif-on: var(--current-notif-on);
 	--color-online-accept: var(--current-online-accept);
 	--color-bg-blur: var(--current-bg-blur);
@@ -63,6 +68,11 @@
 --current-text-last: #4e4e4e8c;
 --current-form-icon: #dcdfe4c0;
 
+--current-bg-square: #1b0000;
+--current-bg-WSelect: #bb4232;
+--current-bg-BSelect: #801a12;
+--current-bg-highlight: #a52a2a;
+
 --current-notif-on: #c41c1c;
 --current-online-accept: var(--color-green-500);	/*#00c950*/ /*NOTE - usato sia per l'online che per text-accept*/
 --current-bg-blur: #00000033;						/*black/20*/
@@ -88,6 +98,11 @@
 --current-text-third: var(--color-zinc-500);	/*SAME*/
 --current-text-last: #4e4e4e8c;				/*SAME*/
 --current-form-icon: #dcdfe4c0;				/*SAME*/
+
+--current-bg-square: #000C14;
+--current-bg-WSelect: #3E93CC;
+--current-bg-BSelect: #176AA1;
+--current-bg-highlight: #2C75A5;
 
 --current-notif-on: #c41c1c;					/*SAME*/
 --current-online-accept: var(--color-green-500);	/*SAME*/
@@ -115,6 +130,11 @@
 --current-text-last: #4e4e4e8c;				/*SAME*/
 --current-form-icon: #dcdfe4c0;				/*SAME*/
 
+--current-bg-square: #011B00;
+--current-bg-WSelect: #37BB32;
+--current-bg-BSelect: #168012;
+--current-bg-highlight: #2EA52A;
+
 --current-notif-on: #c41c1c;					/*SAME*/
 --current-online-accept: var(--color-green-500);	/*SAME*/
 --current-bg-blur: #00000033;						/*SAME*/
@@ -140,6 +160,11 @@
 --current-text-third: var(--color-zinc-500);	/*SAME*/
 --current-text-last: #4e4e4e8c;				/*SAME*/
 --current-form-icon: #dcdfe4c0;				/*SAME*/
+
+--current-bg-square: #1B1400;
+--current-bg-WSelect: #BB9B32;
+--current-bg-BSelect: #806412;
+--current-bg-highlight: #A5872A;
 
 --current-notif-on: #c41c1c;					/*SAME*/
 --current-online-accept: var(--color-green-500);	/*SAME*/

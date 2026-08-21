@@ -370,7 +370,7 @@
 
 <style scoped>
     input:checked + label div {
-        border-color: #dcdfe4c0;
+        border-color: var(--color-form-icon);
     }
 
     div.form {
