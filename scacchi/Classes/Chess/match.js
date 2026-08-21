@@ -311,7 +311,7 @@ class Match
 		}
 		console.log(player.team, ":haaaaaiiiiii persoooooooooooooooooo!!!!!!!");
 		render(this);
-		aiSpeech(this, AI_EVENTS.checkMateOppo, false);
+		aiSpeech(this, AI_EVENTS.checkMateOppo, player.team != this.currentPlayer.team);
 		this.history.Last().loserSet.add(player.id);
 		this.UpdateElo(player, false);
 		this.DeletePlayer(player);
