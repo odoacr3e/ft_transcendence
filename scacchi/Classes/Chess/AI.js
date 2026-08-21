@@ -89,7 +89,6 @@ function getBestTurn(match)
 	let	alpha;
 	let	beta;
 	let	depth;
-	let	victoryEval = null;
 	const	DEBUGTEAM = match.currentPlayer.team;
 
 	ai = match.currentPlayer.ai;
@@ -98,7 +97,7 @@ function getBestTurn(match)
 	console.log("Calculating best move...");
 	alpha = -Infinity;
 	beta = +Infinity;
-	depth = 2;
+	depth = 3;
 	if (DEBUG_AI_TRAINING)
 		depth = 0;
 	else if (isOneOf(enumNames.CHAMPION, match.GetBoostedPieceTypes()))
@@ -122,14 +121,16 @@ function getBestTurn(match)
 		// render(match);
 		playableTurn.push(turn);
 		newTurns = getLegalMoves(match);
-		if (match.zobristIndex in ai.memory && (ai.memory[match.zobristIndex][0] == (match.currentPlayer.team == eTeam.White? +Infinity : -Infinity) ||
+		if (match.zobristIndex in ai.memory && (!DEBUG_AI_TRAINING ||
 		rngProportional(100, 50)))
+		{
 			val.score = ai.memory[match.zobristIndex][0];
+			debugReaction(match, ai.memory[match.zobristIndex]);
+		}
 		else if (match.victory)
 			val.score = victoryScore(match);
 		else
 			val.score = minMax(match, ai, newTurns, depth, [turn], alpha, beta);
-		victoryEval = null;
 		val.index = i;
 		if (match.currentPlayer.team == DEBUGTEAM)
 			throw (`AI: Team has NOT changed..`);
@@ -236,9 +237,12 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 			pastTurns.push(turn);
 			// console.log(turn);
 			ai.Simulate(match, ai);
-			if (match.zobristIndex in ai.memory && (ai.memory[match.zobristIndex][0] == +Infinity ||
+			if (match.zobristIndex in ai.memory && (!DEBUG_AI_TRAINING ||
 			rngProportional(100, 50)))
+			{
 				val = ai.memory[match.zobristIndex][0];
+				debugReaction(match, ai.memory[match.zobristIndex]);
+			}
 			else if (match.victory)
 				val = victoryScore(match);
 			else //@ts-ignore
@@ -275,9 +279,12 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 			pastTurns.push(turn);
 			// console.log(turn);
 			ai.Simulate(match, ai);//@ts-ignore
-			if (match.zobristIndex in ai.memory && (ai.memory[match.zobristIndex][0] == -Infinity ||
+			if (match.zobristIndex in ai.memory && (!DEBUG_AI_TRAINING ||
 			rngProportional(100, 50)))
+			{
 				val = ai.memory[match.zobristIndex][0];
+				debugReaction(match, ai.memory[match.zobristIndex]);
+			}
 			else if (match.victory)
 				val = victoryScore(match);
 			else //@ts-ignore
@@ -332,6 +339,23 @@ function victoryScore(match)
 	tmp = match.victory;
 	match.victory = "";
 	return (tmp == eTeam.White ? +Infinity : -Infinity);
+}
+
+/**
+ * 
+ * @param {Match} match 
+ * @param {Array<Number>} data
+ */
+function debugReaction(match, data)
+{
+	console.log(`Mi ricordo.. gia vista ${data[1]} volte`);
+	if (match.currentPlayer.team == eTeam.White && data[0] >= 0 || match.currentPlayer.team == eTeam.Black && data[0] < 0)
+		console.log(`Roba buona, punteggio ${data[0]}`);
+	else
+		console.log(`Molto male, punteggio ${data[0]}`);
+	render(match);
+	console.log("<======================>");
+	console.log("<======================>");
 }
 
 export {getBestTurn};
