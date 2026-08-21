@@ -32,13 +32,15 @@
 				</h1>
 			</div>
 			<!-- <div class="sep-line mt-5"></div> -->
-			<div class="metadata mt-20" :class="{ 'is-hidden': !piecePath }">
-				<div class="icon-slot">
-					<img v-if="piecePath" :src="piecePath" alt="" :draggable="false" class="metadata-icon">
-				</div>
-				<div class="metadata-info">
-					<span>{{ piece?.type }}</span>
-					<span>{{ piece?.price }}</span>
+			<div class="metadata mt-20">
+				<div :class="{ 'is-hidden': !piecePath }">
+					<div class="icon-slot">
+						<img v-if="piecePath" :src="piecePath" alt="" :draggable="false" class="metadata-icon">
+					</div>
+					<div class="metadata-info">
+						<span>{{ piece?.type }}</span>
+						<span>{{ piece?.price }}</span>
+					</div>
 				</div>
 			</div>
 			<div class="sep-line"/>
