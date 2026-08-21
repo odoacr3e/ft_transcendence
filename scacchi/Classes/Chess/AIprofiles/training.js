@@ -51,6 +51,8 @@ export function AItraining(match)
 		data = event.team == eTeam.Black? dataB : dataW;
 		if (!data || event.type == eEvents.EndTurn)
 			continue ;
+		if (event.score == +Infinity || event.score == -Infinity)
+			continue ;
 		if (data[event.zobristIndex])
 		{
 			val = evaluateEvent(match, event, data[event.zobristIndex][0], data[event.zobristIndex][1]);
@@ -61,7 +63,7 @@ export function AItraining(match)
 		{
 			val = evaluateEvent(match, event, event.score, 1);
 			data[event.zobristIndex] = [val, 1];
-		}
+		}//407746
 	}//@ts-ignore
 	if (dataW != undefined && globals.AIgameCounter.get(profileW) % 20 == 0)
 	{
@@ -89,9 +91,13 @@ function evaluateEvent(match, event, oldVal, counter)
 	let delta;
 	let val;
 
+	if (oldVal == undefined || oldVal == null || Number.isNaN(oldVal))
+		console.log("B");
 	delta = getDelta(match, event);
 	val = oldVal - (delta - oldVal) / counter;//NOTE - media incrementale: una mossa viene penalizzata meno se e' ripetuta piu' volte
-	return val;
+	if (val == undefined || val == null || Number.isNaN(val))
+		console.log("B");
+	return Math.trunc(val);
 }
 
 /**
@@ -120,11 +126,11 @@ function getDelta(match, event)
  * @param {number} score 
  * @param {number} counter 
  */
-function getImportance(score , counter)
+function getImportance(score, counter)
 {
 	let confidence;
 
-	confidence = (counter / counter + 1);
+	confidence = counter / (counter + 1);
 	return Math.abs(score * confidence);
 }
 
