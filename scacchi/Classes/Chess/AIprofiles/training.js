@@ -70,7 +70,7 @@ export function AItraining(match)
 		updateTrainingData(dataW);
 		fs.writeFileSync(`${AI_PROFILE_PATH}/${profileW}/cache.json`, JSON.stringify(dataW));
 	}//@ts-ignore
-	if (dataB != undefined && globals.AIgameCounter.get(profileB) % 20 == 0)
+	if (profileW != profileB && dataB != undefined && globals.AIgameCounter.get(profileB) % 20 == 0)
 	{
 		updateTrainingData(dataB);
 		fs.writeFileSync(`${AI_PROFILE_PATH}/${profileB}/cache.json`, JSON.stringify(dataB));

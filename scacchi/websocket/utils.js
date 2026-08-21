@@ -61,4 +61,17 @@ function roomMessage(roomName, eventType, result, gameFormatBool=false)
 	sockio.to(roomName).emit(`${eventType}`, result);
 }
 
-export {getReconnectTime, isBusy, roomMessage};
+/**
+ * 
+ * @param {Number} id 
+ */
+function clientSetState(id, state=enumSocketState.NAVIGATING)
+{
+	let	socketInfo = globals.clientMap.get(id);
+
+	if (!socketInfo)
+		return ;
+	socketInfo.state = state;
+}
+
+export {getReconnectTime, isBusy, roomMessage, clientSetState};

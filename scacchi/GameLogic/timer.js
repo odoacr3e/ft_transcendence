@@ -3,8 +3,10 @@
 import { Result } from "../Classes/endPoint/result.js";
 import { globals } from "../Classes/Globals/globals.js";
 import { Match, Timer } from "../Classes/Chess/match.js";
-import { roomMessage } from "../websocket/utils.js";
+import { clientSetState, roomMessage } from "../websocket/utils.js";
 import { saveMatch } from "../utils/saveMatch.js";
+import { responseFormatter } from "../utils/response.js";
+import { enumSocketState } from "../Macro/enums.js";
 
 /**
  * 
@@ -25,7 +27,6 @@ export function setTimerGame(match)
 		let p;
 		let result;
 		let match = globals.matches.get(matchId);
-		let	hasSockets;
 
 		p = match?.currentPlayer;
 		if (!match)
@@ -33,18 +34,17 @@ export function setTimerGame(match)
 			console.warn(`Warning: timer of game ${matchId}: already finish`);
 			return ;
 		}
-		hasSockets = match.currentPlayer.dbTable != null;
 		result = new Result();
 		match.endTurn();
 		result = match.PlayerLost(result, p);//@ts-ignore
-		result.board = {};
-		if (hasSockets)
-			roomMessage(`match_${match.id}`, "game", result);
+		clientSetState(p?.dbTable?.id_user, enumSocketState.NAVIGATING);
+		responseFormatter(match, result, null, null);
+		roomMessage(`match_${match.id}`, "game", result);
 		if (match.playerNum == 1)
 		{
 			result = match.CheckMate();
-			if (hasSockets)
-				roomMessage(`match_${match.id}`, "game", result);
+			roomMessage(`match_${match.id}`, "game", result);
+			clientSetState(match.currentPlayer.dbTable?.id_user, enumSocketState.NAVIGATING);
 			if (match.victory != "" && match.id != "0")
 				saveMatch(match);
 		}
