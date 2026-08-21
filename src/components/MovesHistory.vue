@@ -46,8 +46,6 @@
 <style scoped>
 	.wrap
 	{
-		background-color: #2c2c2c;
-		border: 1px solid #4e4e4e8c;
 		user-select: none;
 	}
 
