@@ -1,7 +1,7 @@
 //@ts-check
 
 import { eEvents, eTeam } from "../../../Macro/enums.js";
-import { AI_PROFILE_PATH, MAX_MOVES_REWARD_AND_PENALITY, CUTOFF } from "../../../Macro/macro.js";
+import { AI_PROFILE_PATH, MAX_MOVES_REWARD_AND_PENALITY, CUTOFF, AI_MAX_DATA } from "../../../Macro/macro.js";
 import { globals } from "../../Globals/globals.js";
 import fs from "fs";
 
@@ -90,7 +90,7 @@ function evaluateEvent(match, event, oldVal, counter)
 	let val;
 
 	delta = getDelta(match, event);
-	val = oldVal - (delta - oldVal) / counter;//media incrementale: una mossa viene penalizzata meno se e' ripetuta piu' volte
+	val = oldVal - (delta - oldVal) / counter;//NOTE - media incrementale: una mossa viene penalizzata meno se e' ripetuta piu' volte
 	return val;
 }
 
@@ -101,13 +101,13 @@ function evaluateEvent(match, event, oldVal, counter)
  */
 function getDelta(match, event)
 {
-	let win = undefined;
+	let win;
 	let delta;
 	let result;
 
 	win = match.victory == event.team ? 1 : -1;
-	if (match.victory == "draw")
-		return 0.1;
+	if (match.victory == "draw")//NOTE - ridurre a una frazione win
+		win = 0.1;
 	if (event.team == eTeam.Black)
 		win *= -1;
 	delta = match.history.clientEvents.length - event.turnCounter;
@@ -141,8 +141,12 @@ function updateTrainingData(data)
 	entries.sort(([, [scoreA, counterA]], [, [scoreB, counterB]]) => 
 		getImportance(scoreB, counterB) - getImportance(scoreA, counterA)
 	);
-	garbageIndex = entries.length * CUTOFF;
-	toDelete = entries.slice(0, garbageIndex);
+	// garbageIndex = entries.length * CUTOFF;
+	if (entries.length > AI_MAX_DATA)
+		garbageIndex = AI_MAX_DATA;
+	else
+		return data;
+	toDelete = entries.slice(garbageIndex, entries.length);
 	for (const [key] of toDelete)
 		delete data[key];
 	return data;

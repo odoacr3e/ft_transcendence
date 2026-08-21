@@ -98,7 +98,7 @@ function getBestTurn(match)
 	console.log("Calculating best move...");
 	alpha = -Infinity;
 	beta = +Infinity;
-	depth = 3;
+	depth = 2;
 	if (DEBUG_AI_TRAINING)
 		depth = 0;
 	else if (isOneOf(enumNames.CHAMPION, match.GetBoostedPieceTypes()))
@@ -117,6 +117,8 @@ function getBestTurn(match)
 			beta = getBestNumber([beta, bestTurns[0]?.score, bestTurns[1]?.score], true);
 		if (!execTurn(match, turn))
 			continue ;
+		if (match.currentPlayer.team == DEBUGTEAM)
+			throw (`AI: Team has NOT changed..`);
 		// render(match);
 		playableTurn.push(turn);
 		newTurns = getLegalMoves(match);
@@ -129,7 +131,11 @@ function getBestTurn(match)
 			val.score = minMax(match, ai, newTurns, depth, [turn], alpha, beta);
 		victoryEval = null;
 		val.index = i;
+		if (match.currentPlayer.team == DEBUGTEAM)
+			throw (`AI: Team has NOT changed..`);
 		cancelTurn(match, turn);
+		if (match.currentPlayer.team != DEBUGTEAM)
+			throw (`AI: Team has changed..`);
 		if (val.score == +Infinity)
 		{
 			if (match.currentPlayer.team == eTeam.Black)
@@ -149,7 +155,10 @@ function getBestTurn(match)
 		// else if (match.currentPlayer.team == eTeam.White && val.score == -Infinity)
 		// 	continue ;
 		if (bestTurns.length <= 1)
+		{
 			bestTurns.push({score: val.score, index: val.index});
+			continue ;
+		}
 		for (let i = 0; i != bestTurns.length; i++)
 		{
 			const x = bestTurns[i];

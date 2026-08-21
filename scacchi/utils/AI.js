@@ -31,37 +31,28 @@ export function execTurn(match, turn, prevTurns=null)
 	/** @type {string} */	let	toCoord;
 	let	team;
 	let	result;
+	let	historySize;
 	let	oldPlayerDEBUG;
 
 	DEB++;
+	historySize = match.history.events.length;
 	oldPlayerDEBUG = {team: match.currentPlayer.team, boosted: match.currentPlayer.boostedPiece};
 	team = match.currentPlayer.team;
 	if (turn.move && move(match, turn.move.from, turn.move.to).status != 200)
-		return (false);
+		return (cancelMove(match, historySize), false);
 	if (turn.move?.to == match.currentPlayer.boostedPiece && !turn.moveBoost && checkKingDanger(match))
-		return (cancelEvent(match), false);
+		return (cancelMove(match, historySize), false);
 	if (turn.moveBoost && move(match, turn.moveBoost.from, turn.moveBoost.to, true).status != 200)
-	{
-		if (turn.move)
-			cancelEvent(match);
-		return false;
-	}
+		return (cancelMove(match, historySize), false);
 	if (turn.boost && (result = boost(match, turn.boost)).status != 200)
-	{
-		// console.error(`BOOST ERROR N. ${DEB++} => {${result.msg}: ${turn}`);
-		render(match);
-		throw (`execTurn: boost's function has failed : ${result.msg}`); // @ts-ignore
-	}//@ts-ignore
+		return (cancelMove(match, historySize), false);//@ts-ignore
 	toCoord = turn.moveBoost ? turn.moveBoost.to : turn.move?.to;
 	if (turn.transform && makeTransfiguration(match, toCoord, turn.transform).status != 200)
 		throw (`execTurn: transfiguration has failed`);
 	if (team == match.currentPlayer.team)
 	{
 		if ((result = endTurn(match, false)).status != 200)
-		{
-			while (!isOneOf(match.history.Last().type, eEvents.EndTurn, "Empty"))
-				cancelEvent(match);
-		}
+			return (cancelMove(match, historySize), false);
 	}
 	return true;
 }
@@ -79,7 +70,7 @@ export function cancelTurn(match, turn)
 	DEB++;
 	if (match.history.Last().type != eEvents.EndTurn)
 		throw ("cancelTurn: last turn is not endTurn:" + JSON.stringify(turn, null, 2) + JSON.stringify(match.history.events, null, 2));
-	result = cancelEvent(match); 
+	result = cancelEvent(match);
 	if (result.status != 200)
 		throw (`cancelTurn: error on cancel last endTurn: ${result.msg} => ${JSON.stringify(turn, null, 2)} => ${JSON.stringify(match.history.Last(), null, 2)}`);
 	while (match.history.Last().type != eEvents.EndTurn && match.history.events.length)
@@ -87,5 +78,24 @@ export function cancelTurn(match, turn)
 		result = cancelEvent(match);
 		if (result.status != 200)
 			throw (`cancelTurn: error on cancel event: ${result.msg} => ${JSON.stringify(turn, null, 2)}`);
+	}
+}
+
+//SECTION - utils
+
+/**
+ * 
+ * @param {Match} match 
+ * @param {number} prevHistorySize 
+ */
+function cancelMove(match, prevHistorySize)
+{
+	let	result;
+
+	while (match.history.events.length != prevHistorySize)
+	{
+		result = cancelEvent(match);
+		if (result.status != 200)
+			throw (`cancelTurn: error on cancel last endTurn: ${result.msg} => ${match.history.Last()} => ${console.trace()}`);
 	}
 }
