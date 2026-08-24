@@ -104,7 +104,7 @@ export const english = {
         },
         game: {
             playPgae: {
-                title: "Choose yuor fate",
+                title: "Choose your fate",
                 opt: {
                     priv: "Private",
                     friend: "Friendly",

@@ -36,11 +36,12 @@
 			});
 
             sockStore.socket.on('join_player', async (resp) => {
-                console.log("JOIIIN");
-				console.log(resp);
-
-                // const x = invites.value.find(u => u.id_user === resp.id_user);
-                // players.value.push(x);
+                if (resp.msg == 'OK')
+                {
+                    const p = invites.value.find(u => u.id_user === resp.id_user);
+                    players.value.push(p);
+                    invites.value.splice(invites.value.indexOf(p), 1);
+                }
 			});
         }
         catch {}

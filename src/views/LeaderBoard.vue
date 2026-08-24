@@ -33,7 +33,7 @@ onMounted(async () => {
 </script>
 
 <template>
-    <div class="flex flex-col z-2 pb-1 bg-bg-darker rounded-3xl w-[90vh] h-fit text-text-default">
+    <div class="flex flex-col z-2 bg-bg-darker rounded-3xl w-[90vh] h-fit text-text-default">
         <h2 class="text-3xl px-6 py-4 font-semibold self-center">{{ t('leaderBoard.title') }}</h2>
         <div class="flex flex-col mx-4 mb-1 p-2 bg-bg-default rounded-3xl border border-border-default">
             <div v-if="top3" class="justify-items-center justify-self-center -mb-7">
