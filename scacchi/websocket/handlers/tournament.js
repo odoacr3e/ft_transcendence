@@ -80,7 +80,7 @@ export async function joinTournamentRoomHandler(req, socket, user)
 		socket.join(room.id);
 		socketData = globals.clientMap.get(user.id_user);
 		await query.tournamentsQuery.addPlayersToTournament(room.tournamentId, [user.id_user]);
-		roomMessage(`tournament_${socketData?.tournamentData?.id}`, `join_player`, result);
+		roomMessage(`${room?.id}`, `join_player`, result);
 		if (socketData)
 			socketData.state = enumSocketState.JOIN_TOURNAMENT;
 	}
