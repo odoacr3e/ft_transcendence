@@ -102,6 +102,17 @@ export const italian = {
             matchHistory: "Cronologia delle partite",
             sendRequest: "Manda amicizia"
         },
+        game: {
+            playPgae: {
+                title: "Scegli il tuo destino",
+                opt: {
+                    priv: "Private",
+                    friend: "Amichevoli",
+                    rank: "Ranked"
+                },
+                play: "Gioca!"
+            }
+        },
         legal: {
             privacy: {
                 title:  "Privacy policy",
