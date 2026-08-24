@@ -93,10 +93,10 @@ import KingsCodex from '@/components/KingsCodex.vue';
 				</p>
         	</div>
 		</div>
-        <!-- <div class="pt-10 mt-20 w-md px-6 flex flex-col gap-4">
+        <div class="pt-10 mt-20 w-md px-6 flex flex-col gap-4">
 			<MovesHistory v-if="ready" class="h-87.5"/>
 			<ActionButtons v-if="ready"/>
-		</div> -->
+		</div>
     </div>
 </template>
 
