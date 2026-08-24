@@ -327,7 +327,8 @@ function updateEndTurn(match)
 	record.turnMoves = match.moves;
 	record.turnCounter = this.turnCounter;
 	this.events.push(record);
-	this.turnCounter += 1;
+	if (!record.aiSimulation)
+		this.turnCounter += 1;
 	this.moves += 1;
 }
 

@@ -188,11 +188,13 @@ function getBestTurn(match)
 		return ({Turn: arrayTurns[bestTurns[0].index], Score: bestTurns[0].score});
 	if (match.currentPlayer.team == eTeam.Black)
 	{
-		bestTurns[0].score = -bestTurns[0].score; 
-		bestTurns[1].score = -bestTurns[1].score; 
+		bestTurns[0].score = -bestTurns[0].score;
+		bestTurns[1].score = -bestTurns[1].score;
 	}
-	bestTurnIdx = bestTurns[rngProportional(bestTurns[0].score, bestTurns[1].score)];
-	// console.log(bestTurnIdx);
+	if (DEBUG_AI_TRAINING)
+		bestTurnIdx = bestTurns[rngProportional(bestTurns[0].score, bestTurns[1].score)];
+	else
+		bestTurnIdx = bestTurns[0].score > bestTurns[1].score ? bestTurns[0] : bestTurns[1];
 	return ({Turn: arrayTurns[bestTurnIdx.index], Score: bestTurnIdx.score});
 }
 

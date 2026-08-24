@@ -67,7 +67,6 @@ export function cancelTurn(match, turn)
 {
 	let	result;
 
-	DEB++;
 	if (match.history.Last().type != eEvents.EndTurn)
 		throw ("cancelTurn: last turn is not endTurn:" + JSON.stringify(turn, null, 2) + JSON.stringify(match.history.events, null, 2));
 	result = cancelEvent(match);

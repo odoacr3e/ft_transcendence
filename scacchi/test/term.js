@@ -56,7 +56,7 @@ function mainTerm()
 	// if (lib.include.fs.existsSync(HISTORY_DEFAULT))
 	// 	historyRestore(match, HISTORY_DEFAULT);
 	// match.currentPlayer.ai = new AI(AIprofiles.FIRST_AI);
-	match.NextPlayer().ai = new AI(AIprofiles.FIRST_AI);
+	match.NextPlayer().ai = new AI(AIprofiles.GMU);
 	match.aiBool = true;
 
 	// move(match, "e5", "f6");

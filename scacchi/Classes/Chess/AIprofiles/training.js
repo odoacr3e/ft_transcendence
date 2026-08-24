@@ -110,6 +110,7 @@ function getDelta(match, event)
 	let win;
 	let delta;
 	let result;
+	let tmp;
 
 	win = match.victory == event.team ? 1 : -1;
 	if (match.victory == "draw")//NOTE - ridurre a una frazione win
@@ -117,7 +118,8 @@ function getDelta(match, event)
 	if (event.team == eTeam.Black)
 		win *= -1;
 	delta = match.history.clientEvents.length - event.turnCounter;
-	result = MAX_MOVES_REWARD_AND_PENALITY * (1 / delta == 0 ? 1 : delta);
+	tmp = (delta == 0 ? 1 : delta);
+	result = MAX_MOVES_REWARD_AND_PENALITY / tmp;
 	return result * win;
 }
 
