@@ -51,7 +51,8 @@ export class Room
 		else
 		{
 			this.players.add(id);
-			result = new Result().Success();
+			result = new Result().Success();//@ts-ignore
+			result.user_id = id;
 		}
 		return result;
 	}

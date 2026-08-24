@@ -44,8 +44,10 @@ export async function createTournamentRoomHandler(req, socket, user)
 			if (socketData)
 				socketData.state = enumSocketState.JOIN_TOURNAMENT;
 			room.tournamentId = (await query.tournamentsQuery.createTournament(req.name, user.id_user)).id_tournament;
+			query.tournamentsQuery.addPlayersToTournament(room.tournamentId, [user.id_user]);
 			result = new Result().Success();//@ts-ignore
 			result.tournament_pwd = room.cryptId;
+			result.tournament_id = room.tournamentId;
 		}
 	}
 	catch (error)
@@ -77,7 +79,8 @@ export async function joinTournamentRoomHandler(req, socket, user)
 		result = room.addPlayer(user.id_user);
 		socket.join(room.id);
 		socketData = globals.clientMap.get(user.id_user);
-		query.tournamentsQuery.addPlayersToTournament(room.tournamentId, [user.id_user]);
+		await query.tournamentsQuery.addPlayersToTournament(room.tournamentId, [user.id_user]);
+		roomMessage(`tournament_${socketData?.tournamentData?.id}`, `join_player`, result);
 		if (socketData)
 			socketData.state = enumSocketState.JOIN_TOURNAMENT;
 	}

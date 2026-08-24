@@ -41,7 +41,7 @@ const SOCKET_RECONNECT_TIMER = 3 * 1 * 1000;//3 seconds
 const MATCH_RECONNECT_TIMER = 60 * 1 * 1000;//60 seconds
 const TOURNAMENT_WAIT_TIMER = 60 * 5 * 1000;//5 minutes
 
-const HASH_SALT = process.env.HASH_SALT? process.env.HASH_SALT : "10";
+const HASH_SALT = process.env.HASH_SALT? Number(process.env.HASH_SALT) : 10;
 
 const MAX_MOVES_REWARD_AND_PENALITY = 30;// numero massimo che si aggiunge o sottrae ad una mossa ai a fine partita
 const CUTOFF = 0.1;

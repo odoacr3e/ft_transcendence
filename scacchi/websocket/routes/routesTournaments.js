@@ -23,19 +23,22 @@ export function routesTournament(socket, user)
 		result = await createTournamentRoomHandler(req, socket, user);
 		socket.emit('create_tournament', result);
 		if (typeof(callback) == "function")
-			callback(result.log);
+			callback(result);
 	});
 
 	socket.on('join_tournament', async(/** @type {{tournament_pwd: string}}*/req, callback) =>
 	{
+		// console.log(JSON.stringify(req, null, 2));
+		// console.log("join");
 		result = await joinTournamentRoomHandler(req, socket, user);
 		socket.emit('join_tournament', result);
 		if (typeof(callback) == "function")
-			callback(result.log);
+			callback(result);
 	});
 
 	socket.on('leave_tournament', async(req, callback) =>
 	{
+		// console.log(JSON.stringify(req, null, 2));
 		socketData = globals.clientMap.get(user.id_user);
 		if (!socketData)
 			throw (`leave_tournament: socketData is empty`);
@@ -44,13 +47,14 @@ export function routesTournament(socket, user)
 		result = globals.LeaveRoom(socketData, user.id_user);
 		roomMessage(socketData.roomData?.cryptId, 'leave_tournament', result);
 		if (typeof(callback) == "function")
-			callback(result?.log);
+			callback(result);
 	});
 
 	socket.on('start_round', async (req, callback) => 
 	{
+		// console.log(JSON.stringify(req, null, 2));
 		result = await startRoundHandler(req, socket, user);
 		if (typeof(callback) == "function")
-			callback(result.log);
+			callback(result);
 	});
 }
