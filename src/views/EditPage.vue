@@ -301,57 +301,6 @@
                                 </label>
                             </div>
                         </div>
-
-<!--                    <div class="flex gap-10 my-3">
-                            <div class="flex gap-2 w-[18vh]">
-                                <input size="35" class="pl-2 text-base hidden" type="radio" id="5" value="5" v-model="formData.preferences">
-                                <label for="5" class="flex gap-2 items-center">
-                                    <div class="grid grid-cols-2 grid-rows-2 w-12 h-12 rounded-2xl border-2 border-border-second">
-                                        <div class="rounded-tl-xl bg-[#6b3838]"></div>
-                                        <div class="rounded-tr-xl bg-[#c54444]"></div>
-                                        <div class="rounded-bl-xl bg-[#beb9b5]"></div>
-                                        <div class="rounded-br-xl bg-[#d9d6d3]"></div>
-                                    </div>
-                                    Light Red
-                                </label>
-                            </div>
-                            <div class="flex gap-2 w-[18vh]">
-                                <input size="35" class="pl-2 text-base hidden" type="radio" id="6" value="6" v-model="formData.preferences">
-                                <label for="6" class="flex gap-2 items-center">
-                                    <div class="grid grid-cols-2 grid-rows-2 w-12 h-12 rounded-2xl border-2 border-border-second">
-                                        <div class="rounded-tl-2xl bg-[#37586d]"></div>
-                                        <div class="rounded-tr-2xl bg-[#4494c5]"></div>
-                                        <div class="rounded-bl-2xl bg-[#bebec5]"></div>
-                                        <div class="rounded-br-2xl bg-[#d3d5d9]"></div>
-                                    </div>
-                                    Light Blue
-                                </label>
-                            </div>
-                            <div class="flex gap-2 w-[18vh]">
-                                <input size="35" class="pl-2 text-base hidden" type="radio" id="7" value="7" v-model="formData.preferences">
-                                <label for="7" class="flex gap-2 items-center">
-                                    <div class="grid grid-cols-2 grid-rows-2 w-12 h-12 rounded-2xl border-2 border-border-second">
-                                        <div class="rounded-tl-2xl bg-[#396d37]"></div>
-                                        <div class="rounded-tr-2xl bg-[#46c544]"></div>
-                                        <div class="rounded-bl-2xl bg-[#bfc6c2]"></div>
-                                        <div class="rounded-br-2xl bg-[#d4d9d7]"></div>
-                                    </div>
-                                    Light Green
-                                </label>
-                            </div>
-                            <div class="flex gap-2 w-[18vh]">
-                                <input size="35" class="pl-2 text-base hidden" type="radio" id="8" value="8" v-model="formData.preferences">
-                                <label for="8" class="flex gap-2 items-center">
-                                    <div class="grid grid-cols-2 grid-rows-2 w-12 h-12 rounded-2xl border-2 border-border-second">
-                                        <div class="rounded-tl-2xl bg-[#6d6237]"></div>
-                                        <div class="rounded-tr-2xl bg-[#c7a643]"></div>
-                                        <div class="rounded-bl-2xl bg-[#bec0b8]"></div>
-                                        <div class="rounded-br-2xl bg-[#d8d9d3]"></div>
-                                    </div>
-                                    Light Yellow
-                                </label>
-                            </div>
-                        </div>-->
                     </div>
                 </div>
             </div>

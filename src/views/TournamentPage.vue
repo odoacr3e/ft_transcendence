@@ -13,6 +13,7 @@
 			tournaments = ref([]),
 			error = ref(null),
 			authStore = useAuthStore(),
+			tourStore = useTourStore(),
 			{ user } = storeToRefs(authStore),
 			formData = ref({
 				name: '',
@@ -32,13 +33,13 @@
 
 	async function submitFirstForm()
 	{
-		if (formData.value.name.includes('%') || formData.value.name.includes('|')) { error.value = true; return; }
+		if (!formData.value.name.length || formData.value.name.includes('%') || formData.value.name.includes('|')) { error.value = true; return; }
 
-		const resp = useTourStore().createTour(formData.value.name);
+		const resp = await tourStore.createTour(formData.value.name);
 		if (resp)
 			router.push({
 				name: "open_tournament",
-				params: { tournament: resp.data.tournament.id_tournament }
+				params: { tournament: tourStore.id }
 				});
 		else { error.value = true; }
 		

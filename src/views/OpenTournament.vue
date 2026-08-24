@@ -27,13 +27,20 @@
         {
             friends.value = await taskApi.friendlist();
             tournament.value = (await api.get(`/api/tournaments/${route.params.tournament}`)).data.tournament;
-
 			admin.value = user.value.username === tournament.value?.created_by.username;
 			players.value = tournament.value.players;
 
-			sockStore.socket.on("join_tournament", async ({resp}) => {
+			sockStore.socket.on("join_tournament", async (resp) => {
 				if (resp.log)
 					tournament.value = (await api.get(`/api/tournaments/${route.params.tournament}`)).data.tournament;
+			});
+
+            sockStore.socket.on('join_player', async (resp) => {
+                console.log("JOIIIN");
+				console.log(resp);
+
+                // const x = invites.value.find(u => u.id_user === resp.id_user);
+                // players.value.push(x);
 			});
         }
         catch {}

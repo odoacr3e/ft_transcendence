@@ -3,6 +3,7 @@
 	import { rework_date, defaultAvatar, handleAvatarError }	from '../scripts/Helper/CompUtils';
 	import { useAuthStore }	from "../stores/auth.st";
 	import { useMsgStore }	from '../stores/msg.st';
+	import { useTourStore }	from '../stores/tour.st';
 	import { useSockStore } from '../stores/sock.st';
 	import { storeToRefs }	from 'pinia';
 	import { useI18n }		from 'vue-i18n';
@@ -14,6 +15,7 @@
 	const	{ t, locale } = useI18n({ useScope: 'global' }),
 			msgStore = useMsgStore(),
 			authStore = useAuthStore(),
+			tourStore = useTourStore(),
 			{ user } = storeToRefs(authStore),
 			p_bool = ref(false),
 			n_bool = ref(false),
@@ -67,20 +69,19 @@
 	}
 
 	async function accpetInvite() {
-		// useSockStore().socket.emit("join_tournament",
-		// 	{ tournament_pwd: tourOpen.value.msg.description.slice(tourOpen.value.msg.description.indexOf('|') + 1, tourOpen.value.msg.description.indexOf('%')) }, 
-		// 	(resp) => { 
-		// 		if (resp.log)
-		// 			closePopup();
-		// 			router.push(`/tournament/${tourOpen.value.id_tournament}`);
-		// 	});
+		const msg = tourOpen.value.msg.description;
 
-		//solo per test
-		try {
-			await api.post("/api/tournaments/addPlayers", {id_tournament: tourOpen.value.id_tournament, id_users: [user.value.id_user]}); }
-		catch(err) { console.log(err); }
-		closePopup();
-		router.push(`/tournament/${tourOpen.value.id_tournament}`);
+		if (await tourStore.enterTour(msg.slice(msg.indexOf('|') + 1, msg.indexOf('%'))))
+		{
+			closePopup();
+			router.push(`/tournament/${tourOpen.value.id_tournament}`);
+		}
+
+		// try {
+		// 	await api.post("/api/tournaments/addPlayers", {id_tournament: tourOpen.value.id_tournament, id_users: [user.value.id_user]}); }
+		// catch(err) { console.log(err); }
+		// closePopup();
+		// router.push(`/tournament/${tourOpen.value.id_tournament}`);
 	}
 
 	async function rejectInvite() {
@@ -298,7 +299,7 @@
                 <button type="button" class="text-2xl leading-none text-text-third hover:text-text-default" @click="closePopup()">&times;</button>
             </div>
             <div class="mt-6 mb-3 flex flex-col gap-2 justify-self-center items-center text-center">
-				 <p v-html="$t('header.inv.desc', {tourName: tourOpen.name, tourCreator: tourOpen.created_by.username})"></p>
+				<p v-html="$t('header.inv.desc', {tourName: tourOpen.name, tourCreator: tourOpen.created_by.username})"></p>
 				<div v-if="tourOpen.status == 'open'" class="flex gap-10 w-max justify-self-end-safe pt-5">
 					<button class="cursor-pointer rounded-md inset-ring text-lg px-3 p-2.5
 								bg-bg-accept text-online-accept inset-ring-inset-accept"

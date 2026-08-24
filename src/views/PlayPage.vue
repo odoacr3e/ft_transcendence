@@ -1,4 +1,4 @@
-<script setup>
+	<script setup>
 	import { ePlaying, matchMakingOpt }			from '@/scripts/Data/Variables.js';
 	import { eRoomType } 						from '@/Common/ENUMS.js';
 	import { useAuthStore } 					from '@/stores/auth.st.js';
@@ -64,7 +64,7 @@
 
 <template>
     <div class="flex z-2 bg-bg-darker rounded-3xl">
-        <div class="px-1 pb-16 flex flex-col items-center w-[40vw]">
+        <div class="px-1 pb-16 flex flex-col items-center w-180">
     		<img :draggable="false" src="../assets/CrownIcon.png" alt="" class="w-30">
     		<h1 class="text-[200%] mb-1 text-text-default justify-self-center whitespace-nowrap">{{ t('game.playPgae.title') }}</h1>
 			<div class="mb-5 flex flex-row gap-4">
