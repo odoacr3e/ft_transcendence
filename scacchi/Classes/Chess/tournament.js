@@ -29,7 +29,7 @@ export class Tournament
 	 * @param {string} matchType 
 	 * @param {number} playerNum 
 	 */
-	constructor (name="", matchType=eMatchPresets.ClassicTwoPlayers, playerNum=8)
+	constructor (name="", matchType=eMatchPresets.ClassicTwoPlayers, playerNum=2)
 	{
 		this.id = 0;//NOTE - prendiamo da prisma
 		this.adminId = 0;
@@ -41,11 +41,11 @@ export class Tournament
 		this.userIds = new Array();
 		this.matchType = matchType;
 		this.playerNum = playerNum;
-		if (playerNum != 8)
-		{
-			console.log("non supportato");
-			this.playerNum = 8;
-		}
+		// if (playerNum != 8)
+		// {
+		// 	console.log("non supportato");
+		// 	this.playerNum = 8;
+		// }
 		this.round = 0;
 		this.activeMatches = 0;
 		this.first = 0;

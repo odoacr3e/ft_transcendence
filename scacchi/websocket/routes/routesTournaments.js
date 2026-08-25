@@ -57,4 +57,6 @@ export function routesTournament(socket, user)
 		if (typeof(callback) == "function")
 			callback(result);
 	});
+
+	//FIXME - ban_tournament
 }
