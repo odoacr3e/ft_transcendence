@@ -103,8 +103,7 @@ export class Tournament
 		let	oppoId;
 		let	matchId;
 
-		this.round += 1;
-		i = 1;
+		i = 0;
 		while (this.userIds[this.round].length > i)
 		{
 			meId = this.userIds[this.round][i];
@@ -123,6 +122,7 @@ export class Tournament
 			opponent.socket.join(`tournament_${this.id}`);
 			i += 2;
 		}
+		this.round += 1;
 	}
 	checkFinish()
 	{
