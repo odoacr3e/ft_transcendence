@@ -110,6 +110,7 @@ export async function startRoundHandler(req, socket, user)
 		return (new Result().Error("Tournament doesn't exist", 500));
 	if (tournament.adminId != user.id_user)
 		return (new Result().Error("You must be admin to start the round", 401));
+	console.log("startRound: proviamo a iniziarli tutti dai..");
 	await tournament.initAllMatches();
 	result = new Result().Success();
 	roomMessage(`tournament_${tournament.id}`, "start_round", result);
@@ -126,6 +127,7 @@ export async function initTournament(room)
 
 	try
 	{
+		console.log("initTournament: proviamo a crearlo dai..");
 		tournament = new Tournament(room.name, room.matchType, room.maxPlayers);
 		// tournament.id = (await tournamentsQuery.createTournament(room.name, room.ownerId)).id_tournament;
 		tournament.id = room.tournamentId;
