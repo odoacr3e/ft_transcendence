@@ -50,11 +50,8 @@ class Globals
 		/** @type {Map<matchId, Array<stringifyBoard>>} */
 		this.matchCache = new Map();
 		this.turns = ['QF', 'SF', 'F'];
-		zobristGenerateTable();
-		/** @type {Map<string, ZobristCache>} */
+		this.zobristTable = zobristGenerateTable();
 		this.AITraining = getTrainingSchedule();
-		/** @type {Map<string | undefined, number>} */
-		this.AIgameCounter = new Map();
 	}
 	/** @param {string} roomType */
 	GetQueue(roomType)

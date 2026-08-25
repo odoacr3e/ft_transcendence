@@ -17,7 +17,6 @@ import { query } from "../../lib/query.js";
 import { render } from "../../test/render.js";
 import { aiSpeech } from "./AIprofiles/speech.js";
 import { zobristGenerateTable, zobristInitHash } from "../../utils/zobrist.js";
-import { rng } from "../../utils/random.js";
 
 /** @typedef {import("../Globals/Queue.js").QueueNode} QueueNode*/
 /** @typedef {import("./Pieces/pieces.js").Piece} Piece*/
@@ -77,13 +76,8 @@ class Match
 		//when AI finishes simulating and makes the real turn
 		this.aiMove = false;
 		//if any of the players is an AI
-		this.aiBool = this.settings.ai.profile != "";
-		/** @type {Map<number, Array<number>>} */
-		this.memTurn = new Map();
-		/** @type {BigInt} */
-		this._zobristHash = BigInt(0);
-		this.zobristIndex = 0;
-		zobristInitHash(this);
+		this.aiBool = false;
+		this.zobristTable = [];
 	}
 	/** @param {MatchSettings | string | null} preset*/
 	Reset(preset=null)
