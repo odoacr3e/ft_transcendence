@@ -72,14 +72,14 @@ export const PIECES_CODEX = Object.freeze({
 		name:		"King",
 		move:		{ dirs: STAR, slide: false },
 		boost:		null,
-		baseText:	"Mosse base degli scacchi",
+		baseText:	"MOSSA BASE DEGLI SCACCHI",
 		boostText:	"Potenzia a tuo rischio e pericolo.",
 	},
 	Champion: {
 		name:		"Champion",
 		move:		{ dirs: STAR, slide: true },
 		boost:		{ dirs: STAR, slide: true },
-		baseText:	"Mosse base degli scacchi",
+		baseText:	"MOSSA BASE DEGLI SCACCHI",
 		boostText:	"Due mosse in un turno: si sposta, poi riparte dalla casella\
 					 d'arrivo. Ma attenzione, se si fa scacco al re avversario,\
 					 oppure ci si muove in una casella minacciata da un pezzo\
@@ -89,21 +89,21 @@ export const PIECES_CODEX = Object.freeze({
 		name:		"Minotaurus",
 		move:		{ dirs: ORTHO, slide: true },
 		boost:		{ dirs: ORTHO, slide: true },
-		baseText:	"Mosse base degli scacchi",
+		baseText:	"MOSSA BASE DEGLI SCACCHI",
 		boostText:	"Due mosse in un turno: si sposta, poi riparte dalla casella d'arrivo.",
 	},
 	Jester: {
 		name:		"Jester",
 		move:		{ dirs: KNIGHT, slide: false },
 		boost:		{ dirs: KNIGHT, slide: false },
-		baseText:	"Mosse base degli scacchi",
+		baseText:	"MOSSA BASE DEGLI SCACCHI",
 		boostText:	"Mossa singola, ma su zone extra concesse dall'abilita'.",
 	},
 	Valkirya: {
 		name:		"Valkirya",
 		move:		{ dirs: DIAG, slide: true },
 		boost:		{ dirs: DIAG, slide: true },
-		baseText:	"Mosse base degli scacchi",
+		baseText:	"MOSSA BASE DEGLI SCACCHI",
 		boostText:	"Mossa singola che permette di mangiare un pezzo avversario senza\
 					 muovere la valkirya stessa.\n Salta un qualsiasi pezzo lungo il raggio d'azione'.",
 	},
@@ -111,9 +111,9 @@ export const PIECES_CODEX = Object.freeze({
 		name:		"Bastards",
 		move:		{ dirs: [[0,-1]], slide: false, capture: [[-1,-1], [1,-1]] },
 		boost:		{ dirs: [[0,-1], [0,-2]], slide: false, capture: [[-1,-1], [1,-1]] },
-		baseText:	"Mosse base degli scacchi",
-		boostText:	"Due mosse in un turno:\
-					\n - Un movimento regolare da scacchi classico\
+		baseText:	"MOSSA BASE DEGLI SCACCHI",
+		boostText:	"DUE MOSSE IN UN TURNO\
+					\n\n - Un movimento regolare da scacchi classico\
 					\n - Muove un pezzo che si trovava a distanza 1 dalla sua posizione precedente.",
 		baseScenes: [
 			{

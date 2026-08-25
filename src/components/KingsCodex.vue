@@ -5,6 +5,7 @@
 	import { computed, ref, watch }								from 'vue';
 	import { PIECES_CODEX }										from '@/scripts/Data/PiecesCodex.js';
 	import MoveGrid												from './MoveGrid.vue';
+	import IconCoins											from './icons/IconCoins.vue';
 
 	const piece = ref(null);
 
@@ -23,20 +24,42 @@
 	const piecePath 	= computed(() => piece.value ? IMG_PATHS[piece.value.team + piece.value.type] : "");
 	const entry			= computed(() => piece.value ? PIECES_CODEX[piece.value.type] ?? null : null);
 	const tab			= ref('base');
-	const shownPattern	= computed(() => tab.value === 'base' ? entry.value?.move : entry.value?.boost);
 	const shownText		= computed(() => tab.value === 'base' ? entry.value?.baseText : entry.value?.boostText);
 	const localPlayer	= computed(() => [...localPlayers.values()].find(p => p.team === localInfo.myTeam) ?? null);
 	const canAfford		= computed(() => (localPlayer.value?.nPoints ?? 0) >= (piece.value?.price ?? 0));
+	const shownScenes	= computed(() => {
+		if (!entry.value)
+			return ([]);
+
+		const scenes = tab.value === 'base' ? entry.value.baseScenes : entry.value.boostScenes;
+		if (scenes?.length)
+			return (scenes);
+
+		const pattern = tab.value === 'base' ? entry.value.move : entry.value.boost;
+		if (!pattern)
+			return ([]);
+		return ([{
+			actors:	[ { x:0, y:0, role: 'self' } ],
+			pattern,
+		}])
+	});
+
+	const enemyTeam		= computed(() => piece.value?.team === 'black' ? 'white' : 'black');
+	const iconFor		= (actor) => {
+		const team = actor.role === 'enemy' ? enemyTeam.value : piece.value?.team;
+		const type = actor.type ?? piece.value?.type;
+		return IMG_PATHS[team + type] ?? '';
+	}
 
 	watch(piece, () => tab.value = 'base');
+
 
 </script>
 
 <template>
-	<div class="wrap m-18 mt-2.5">
+	<div class="wrap">
 
 		<div class="codex">
-			<div class="sep-line mb-5"></div>
 			<div class="title">
 				<IconEsoteric class="codex-svg"/>
 				<h1 class="title-txt">
@@ -44,29 +67,36 @@
 					<span class="title-bottom">CODEX</span>
 				</h1>
 			</div>
+			<hr class="sep-line mt-1.5">
 
-			<div class="metadata mt-6" :class="{ 'is-hidden' : !piece }">
+			<div class="metadata" :class="{ 'is-hidden' : !piece }">
 				<div class="mb-8 mt-10">
 					<div class="page-head">
 						<img v-if="piecePath" :src="piecePath" alt="" :draggable="false" class="piece-icon">
-						<h2 class="piece-name">{{ entry?.name ?? piece?.type  }}</h2>
-					</div>
-					<div class="cost">
-						<span v-if="piece?.isBoostedBool">Già Potenziato</span>
-						<span v-else>Costo: {{ piece?.price }}</span>
+						<div class="head-info">
+							<h2 class="font-[1000] transform: uppercase">{{ entry?.name ?? piece?.type  }}</h2>
+							<span class="text-lg flex flex-row items-center gap-2">
+								<IconCoins/> {{ piece?.price }}
+							</span>
+						</div>
 					</div>
 				</div>
 				<div class="moves">
 					<div class="tabs">
 						<button type="button" class="tab" :class="{ active: tab === 'base' }" @click="tab = 'base'">Base</button>
-						<button type="button" class="tab" :class="{ active: tab === 'boost' }" :disabled="!entry?.boost" @click="tab = 'boost'">Boost</button>
+						<button type="button" class="tab" :class="{ active: tab === 'boost' }" :disabled="!entry?.boost && !entry?.boostScenes?.length" @click="tab = 'boost'">Boost</button>
 					</div>
 					<p class="move-desc">{{ shownText }}</p>
-					<MoveGrid :pattern="shownPattern" :icon="piecePath" :variant="tab === 'base' ? 'regular' : 'boosted'"/>
+					<div class="scenes">
+						<figure v-for="(scene, i) in shownScenes" :key="i" class="scene">
+							<MoveGrid :scene="scene" :variant="tab === 'base' ? 'regular' : 'boosted'" :resolve-icon="iconFor"/>
+							<figcaption v-if="scene.caption" class="scene-cap">{{ scene.caption }}</figcaption>
+						</figure>
+					</div>
 				</div>
 			</div>
 			
-			<div class="sep-line"/>
+			<!-- <hr class="sep-line mt-12"> -->
 		</div>
 	</div>
 </template>
@@ -75,10 +105,13 @@
 	.wrap
 	{
 		user-select: none;
-		padding-top: 1.5rem;
 		box-sizing: border-box;
 		flex: 0 0 auto;
-		width: 18rem;
+		width: 25rem;
+		margin-top: 1rem;
+		padding-right: 3rem;
+		padding-left: 3rem;
+		/* margin: 2rem; */
 	}
 
 	.title
@@ -86,7 +119,7 @@
 		display: flex;
 		flex-direction: row;
 		align-items: center;
-		gap: .4rem;
+		gap: .8rem;
 	}
 
 	.title-txt
@@ -99,6 +132,22 @@
 		font-size: x-large;
 		letter-spacing: .08rem;
 		font-family: Arial, Helvetica, sans-serif;
+		gap: .8rem;
+	}
+
+	.head-info
+	{
+		display: flex;
+		flex-direction: column;
+		gap: .8rem;
+		margin-top: 1rem;
+		color: #ffffff;
+		font-weight: 700;
+		font-size: x-large;
+		letter-spacing: .08rem;
+		line-height: 1;
+		font-family: Arial, Helvetica, sans-serif;
+		text-transform: uppercase;
 	}
 
 	.title-bottom
@@ -139,12 +188,13 @@
 		display: flex;
 		flex-direction: row;
 		align-items: center;
-		gap: .6rem;
+		gap: .1rem;
+		zoom: .88;
 	}
 
 	.piece-icon
 	{
-		--piece-dim: 3rem;
+		--piece-dim: 6rem;
 
 		flex: 0 0 auto;
 		width: var(--piece-dim);
@@ -164,11 +214,14 @@
 
 	.moves
 	{
+		position: relative;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		gap: .5rem;
-		width: 11rem;
+		width: 18rem;
+		padding-left: 1rem;
+		padding-right: 1rem;
 	}
 
 	.tabs
@@ -179,14 +232,46 @@
 
 	.move-desc
 	{
+		position: relative;
+		padding: .9rem 1.1rem;
 		width: 25rem;
 		margin-inline: -2rem;
-		white-space: pre-line; /**Per considerare i whitespace */
+		white-space: pre-line; /**Per considerare i whitespace nel testo che scrivo*/
 		min-height: 3.5rem;
 		font-size: 1rem;
 		line-height: 1.35;
 		letter-spacing: .02rem;
 		opacity: .8;
+	}
+
+	.moves::before
+	{
+		content: '';
+		position: absolute;
+		width: 3.5rem;
+		height: 25rem;
+		border: 1px solid rgb(66, 59, 59, 1);
+		pointer-events: none;
+		top: .9rem;
+		left: -2.5rem;
+		border-right: none;
+		/* border-bottom: none; */
+		z-index: 0;
+	}
+
+	.moves::after
+	{
+		content: '';
+		position: absolute;
+		width: 3.5rem;
+		height: 25rem;
+		border: 1px solid rgb(66, 59, 59, 1);
+		pointer-events: none;
+		top: .9rem;
+		right: -2.5rem;
+		/* border-top: none; */
+		border-left: none;
+		z-index: 0;
 	}
 
 	.tab
@@ -230,12 +315,37 @@
 		color: aliceblue;
 	}
 
+	.scenes
+	{
+		position: relative;
+		display: flex;
+		flex-direction: row;
+		align-items: flex-start;
+		justify-content: center;
+		gap: .6rem;
+		width: 18.6rem;
+		margin-inline: -3.8rem;
+	}
+
+	.scene
+	{
+		flex: 0 0 8.8rem;
+		min-width: 0;
+	}
+
+	.scene-cap
+	{
+		margin-top: .35rem;
+		font-size: .7rem;
+		line-height: 1.25;
+		opacity: .75;
+		text-align: center;
+	}
+
 	.sep-line
 	{
-		flex: 0 0 auto;
-		height: 1px;
-		margin-left: -3rem;
-		margin-right: -3rem;
-		background-color: #423b3b;
+		margin-left: -1rem;
+		margin-right: -1rem;
+		color: rgb(66, 59, 59, 1);
 	}
 </style>

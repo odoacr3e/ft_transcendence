@@ -1,4 +1,5 @@
 <script setup>
+//@ts-nocheck
 	import { DOMBoard, localInfo, IMG_PATHS }	from '@/scripts/Data/Variables';
 	import { onMounted, computed, ref }			from 'vue';
 	import { onDragStart, onDrop }				from '@/scripts/Events/Movements';
