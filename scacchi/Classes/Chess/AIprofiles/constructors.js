@@ -29,7 +29,7 @@ function AIProfileConstructor(ai)
 			break ;
 		case (AIprofiles.GMU):
 			ai.memory = globals.AITraining.get(AIprofiles.GMU);
-			ai.Eval = AI_first_eval; // TODO - da scrivere/fixare altre eval functions
+			ai.Eval = AI_gmu_eval; // TODO - da scrivere/fixare altre eval functions
 			break ;
 		case (AIprofiles.HAL9000):
 			ai.memory = globals.AITraining.get(AIprofiles.HAL9000);

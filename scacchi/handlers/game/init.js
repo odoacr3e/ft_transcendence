@@ -17,9 +17,10 @@ import { CHESSBOARD_W, CHESSBOARD_H, AI_EVENTS } from "../../Macro/macro.js";
 import * as creators from "../../GameLogic/createChessBoard.js";
 import { MatchSettings, matchPresets } from "../../Classes/Chess/match.js";
 import { isOneOf, strCount } from "../../utils/string.js";
-import { enumInitTeam } from "../../Macro/enums.js";
+import { AIprofilesArray, enumInitTeam } from "../../Macro/enums.js";
 import { render } from "../../test/render.js";
 import { aiSpeech } from "../../Classes/Chess/AIprofiles/speech.js";
+import { profile } from "node:console";
 
 /**
  * The Map board is added to result to be sent to the client. Steps:

@@ -61,6 +61,7 @@ export class AI
 		this.speechJSON = null;
 		this.defeatStatus = 0;//@ts-ignore
 		this.memory = null;
+		this.evalSimulation = false;
 		console.log(`A new opponent has spawned: ${profile}... fear its power!`);
 		AIProfileConstructor(this);
 	}
@@ -73,9 +74,10 @@ let DEB = 0;
 /**
  * 
  * @param {Match} match 
+ * @param {number | undefined} depth 
  * @return {{Turn: Turn, Score: number}} match 
  */
-function getBestTurn(match)
+function getBestTurn(match, depth=undefined)
 {
 	let	arrayTurns;
 	/** @type {Eval} */
@@ -88,7 +90,7 @@ function getBestTurn(match)
 	let	ai;
 	let	alpha;
 	let	beta;
-	let	depth;
+
 	const	DEBUGTEAM = match.currentPlayer.team;
 
 	ai = match.currentPlayer.ai;
@@ -97,7 +99,8 @@ function getBestTurn(match)
 	console.log("Calculating best move...");
 	alpha = -Infinity;
 	beta = +Infinity;
-	depth = 3;
+	if (depth == undefined)
+		depth = 3;
 	if (DEBUG_AI_TRAINING)
 		depth = 0;
 	else if (isOneOf(enumNames.CHAMPION, match.GetBoostedPieceTypes()))
@@ -125,7 +128,8 @@ function getBestTurn(match)
 		rngProportional(100, 50)))
 		{
 			val.score = ai.memory[match.zobristIndex][0];
-			debugReaction(match, ai.memory[match.zobristIndex]);
+			if (ai.evalSimulation)
+				debugReaction(match, ai.memory[match.zobristIndex]);
 		}
 		else if (match.victory)
 			val.score = victoryScore(match);
@@ -243,7 +247,8 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 			rngProportional(100, 50)))
 			{
 				val = ai.memory[match.zobristIndex][0];
-				debugReaction(match, ai.memory[match.zobristIndex]);
+				if (ai.evalSimulation)
+					debugReaction(match, ai.memory[match.zobristIndex]);
 			}
 			else if (match.victory)
 				val = victoryScore(match);
@@ -285,7 +290,8 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 			rngProportional(100, 50)))
 			{
 				val = ai.memory[match.zobristIndex][0];
-				debugReaction(match, ai.memory[match.zobristIndex]);
+				if (ai.evalSimulation)
+					debugReaction(match, ai.memory[match.zobristIndex]);
 			}
 			else if (match.victory)
 				val = victoryScore(match);

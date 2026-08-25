@@ -1,6 +1,8 @@
 //@ts-check
 
+import { eTeam } from "../../../../Macro/enums.js";
 import { checkKingDanger } from "../../../../utils/checkDanger.js";
+import { getBestTurn } from "../../AI.js";
 
 /** @typedef {import("../../match.js").Match} Match*/
 /** @typedef {import("../../AI.js").AI<null>} AI*/
@@ -22,6 +24,7 @@ export function AI_gmu_eval(match, ai, turns)
 	let	lastTurn;
 	let	square;
 	let	price;
+	let val;
 
 	nextPlayer = match.NextPlayer();
 	//1)	differenza punti
@@ -37,14 +40,28 @@ export function AI_gmu_eval(match, ai, turns)
 	//4)	PIU quanto minaccio il re avversario
 	if (checkKingDanger(match, nextPlayer.team))
 	{
-		for (const dangerCoord of match.board.get(nextPlayer.King).dangerZones)
+		// for (const dangerCoord of match.board.get(nextPlayer.King).dangerZones)
+		// {
+		// 	square = match.board.get(dangerCoord);
+		// 	if (!square.piece || square.piece.team == match.currentPlayer.team)
+		// 		continue ;
+		// 	score += 75;
+		// }
+		if (ai.evalSimulation == true)
+			score *= 2;
+		else
 		{
-			square = match.board.get(dangerCoord);
-			if (!square.piece || square.piece.team == match.currentPlayer.team)
-				continue ;
-			score += 75;
+			ai.evalSimulation = true;
+			val = getBestTurn(match, 2).Score;
+			if (Math.abs(val) == Infinity)
+				return (match.currentPlayer.team == eTeam.White ? Infinity : -Infinity)
+			score += (val * 3) / 4;
+			ai.evalSimulation = false;
 		}
 	}
+	//5)	MENO se il nostro re e' in pericolo
+	if (checkKingDanger(match, match.currentPlayer.team))
+		score /= 2;
 	lastTurn = turns[turns.length - 2];
 	if (lastTurn?.boost)
 	{

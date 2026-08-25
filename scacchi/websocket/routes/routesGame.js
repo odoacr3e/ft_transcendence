@@ -4,10 +4,11 @@ import { callbackify } from "node:util";
 import { Result } from "../../Classes/endPoint/result.js";
 import { globals } from "../../Classes/Globals/globals.js";
 import { boost, gameWebSocketHandler } from "../../handlers/game/Game.js";
-import { enumSocketState } from "../../Macro/enums.js";
+import { enumConnection, enumSocketState } from "../../Macro/enums.js";
 import { historyGetMatchState } from "../../utils/history.js";
 import { isBusy } from "../utils.js";
 import { fakeBoost } from "../../handlers/game/boost.js";
+import { AIexecuteTurn } from "../../GameLogic/aiTurn.js";
 
 /** @typedef {{from: *, to: *}} */
 
@@ -85,6 +86,35 @@ export function routesGame(socket, user)
 		else
 			result = await historyGetMatchState(req);
 		socket.emit("replay_game", result);
+		if (typeof(callback) == "function")
+			callback(result?.log);
+	});
+
+	socket.on("start_ai_match", async(req, callback) => 
+	{
+		let result;
+
+		socketData = globals.clientMap.get(user.id_user);
+		if (!socketData)
+			throw ("start_ai_match: socketData not found");
+		if (socketData.state != enumSocketState.PLAYING)
+			result = new Result().Error("Player is not playing any match", 404);
+		else
+		{
+			let match;
+//@ts-ignore
+			match = globals.matches.get(socketData.matchData?.matchId);
+			if (match?.history.events.length != 0)
+				result = new Result().Error("The is already started", 404);
+			else if (!match.currentPlayer.ai)
+				result = new Result().Success();
+			else
+			{
+				AIexecuteTurn(match);
+				result = new Result().Success();
+			}
+		}
+		socket.emit('start_ai_match', result);
 		if (typeof(callback) == "function")
 			callback(result?.log);
 	});
