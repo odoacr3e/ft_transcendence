@@ -44,7 +44,9 @@ export async function createTournamentRoomHandler(req, socket, user)
 			if (socketData)
 				socketData.state = enumSocketState.JOIN_TOURNAMENT;
 			room.tournamentId = (await query.tournamentsQuery.createTournament(req.name, user.id_user)).id_tournament;
+			console.log("createTournament =>	query createTournament");
 			query.tournamentsQuery.addPlayersToTournament(room.tournamentId, [user.id_user]);
+			console.log("createTournament =>	query addPlayers");
 			result = new Result().Success();//@ts-ignore
 			result.tournament_pwd = room.cryptId;//@ts-ignore
 			result.tournament_id = room.tournamentId;
@@ -80,6 +82,7 @@ export async function joinTournamentRoomHandler(req, socket, user)
 		socket.join(`tournament_${room.id}`);
 		socketData = globals.clientMap.get(user.id_user);
 		await query.tournamentsQuery.addPlayersToTournament(room.tournamentId, [user.id_user]);
+		console.log("joinTournament =>	query addPlayers");
 		roomMessage(`tournament_${room.id}`, `join_player`, result);
 		if (socketData)
 			socketData.state = enumSocketState.JOIN_TOURNAMENT;
@@ -124,9 +127,10 @@ export async function initTournament(room)
 	try
 	{
 		tournament = new Tournament(room.name, room.matchType, room.maxPlayers);
-		tournament.id = (await tournamentsQuery.createTournament(room.name, room.ownerId)).id_tournament;
+		// tournament.id = (await tournamentsQuery.createTournament(room.name, room.ownerId)).id_tournament;
+		tournament.id = room.tournamentId;
 		tournament.adminId = room.ownerId;
-		await tournamentsQuery.addPlayersToTournament(tournament.id, Array.from(room.players));
+		// await tournamentsQuery.addPlayersToTournament(tournament.id, Array.from(room.players));
 		globals.tournamentMap.set(tournament.id, tournament);
 		tournament.startUserIds = new Set(room.players);
 		tournament.userIds[0] = new Array();
