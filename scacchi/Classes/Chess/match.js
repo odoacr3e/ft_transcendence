@@ -69,6 +69,7 @@ class Match
 		this.elo = new EloRank();
 		if (!this.elo)
 			throw (`Match: eloRank library error during initialization`);
+		this.socketBool = false;
 		/** @type {number | null} */
 		this.tournament = null;
 		//is AI simulating a move?
@@ -122,6 +123,7 @@ class Match
 		this.elo = new EloRank();
 		if (!this.elo)
 			throw (`Match: eloRank library error during initialization`);
+		this.socketBool = false;
 		this.cursor.square = this.currentPlayer.King;
 		this.tournament = null;
 		this.aiSimulation = false;

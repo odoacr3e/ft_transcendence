@@ -7,7 +7,8 @@ import { prisma } from "../lib/prisma.js"
  * @param {import("socket.io").Server} sockio
  * @param {Map<number, SocketInfo>} clientMap
  */
-export async function announceMeOnline(sockio, user, clientMap) {
+export async function announceMeOnline(sockio, user, clientMap)
+{
 	let	socketData;
 	let	friendsId = [];
 

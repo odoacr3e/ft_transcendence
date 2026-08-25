@@ -138,6 +138,7 @@ export async function bindPlayersToMatch(match, userSet, result, userIdIndexMap=
 	let dbTable;
 	let	tourIndex;
 
+	match.socketBool = true;
 	i = 0;
 	userArray = Array.from(userSet);
 	currTeam = match.currentPlayer.team;

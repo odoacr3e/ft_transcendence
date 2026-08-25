@@ -38,11 +38,10 @@ async function websocketConnectionHandler(socket)
 	try 
 	{
 		await announceMeOnline(sockio, user, globals.clientMap);
-	} catch (error) 
+	}
+	catch (error)
 	{
 		console.log(error);
-		//FIXME - entra sempre qui! da controllare come mai
-		// console.error("Server error loading friends:", error);
 	}
 	return (user);
 }

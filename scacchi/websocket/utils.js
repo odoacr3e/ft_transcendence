@@ -16,6 +16,7 @@ import { sockio } from "./websocket.js";
 import { responseFormatter } from "../utils/response.js";
 
 /** @typedef {import("../Classes/endPoint/result.js").Result} Result*/
+/** @typedef {import("../Classes/Chess/match.js").Match} Match*/
 
 /**
  * time to become offline, based on client activity.
@@ -74,4 +75,18 @@ function clientSetState(id, state=enumSocketState.NAVIGATING)
 	socketInfo.state = state;
 }
 
-export {getReconnectTime, isBusy, roomMessage, clientSetState};
+/**
+ * 
+ * @param {Match} match 
+ * @param {string} msg 
+ * @param {function} printer 
+ */
+function gameMessage(match, msg, printer=console.log)
+{
+	printer(msg);
+	if (match.socketBool == false)
+		return ;
+	roomMessage(`match_${match.id}`, `gameMsg`, msg);
+}
+
+export {getReconnectTime, isBusy, roomMessage, gameMessage, clientSetState};
