@@ -29,8 +29,8 @@ export const useSockStore = defineStore('sock', {
 			this.socket.on('connect', () => { console.log(`[sock.st] -> [connect]: Ricevuto connect: Socket id: ${this.socket.id}`); })
 			this.socket.on('ready',				()			 =>	{ this.socketReady = true; });
 			this.socket.on('disconnect',		()			 =>	{ this.socketReady = false; });
-			this.socket.on('friend:online',		({ userId }) =>	{ this.usersOnline.add(userId); });
-			this.socket.on('friend:offline',	({ userId }) =>	{ this.usersOnline.delete(userId); });
+			this.socket.on('friend:online',		({ userId }) =>	{ this.usersOnline.add(userId);});
+			this.socket.on('friend:offline',	({ userId }) =>	{ this.usersOnline.delete(userId);});
 			this.socket.on('notification',		( msg )		 =>	{ useMsgStore().add(msg) });
 		},
 

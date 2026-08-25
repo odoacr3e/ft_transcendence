@@ -18,6 +18,7 @@ import PlayPage from '../views/PlayPage.vue'
 import PwdDEBUG from '../views/PwdDEBUG.vue'
 import UserMe from '../views/UserMe.vue'
 import Home from '../views/Home.vue'
+import StartTour from '../views/StartTour.vue'
 import { ePlaying, localMatchState } from '@/scripts/Data/Variables.js'
 import { amIPlaying } from '@/scripts/Events/BackLink.js'
 import { api } from './api/client'
@@ -136,6 +137,22 @@ const routes = [
 		path: '/tournament/:tournament?',
 		name: 'open_tournament',
 		component: OpenTournament,
+		meta: { requiresAuth: true }, //da aggiungere requisito di essere nel torneo
+		beforeEnter: async (to) => {
+			const id = Number(to.params.tournament);
+
+			if (!Number.isInteger(id) || id <= 0) { return { name: 'Tournaments' }; }
+
+			try { if (await api.get(`/api/tournaments/${id}`)) { return true; } }
+			catch { return { name: 'Tournaments' }; }
+		},
+		props: (route) => ({ tournament: Number(route.params.tournament) }) //id
+		// props: (route) => ({ tournament: String(route.params.tournament) })
+	},
+	{
+		path: '/tournament/:tournament?/tree',
+		name: 'start_tournament',
+		component: StartTour,
 		meta: { requiresAuth: true }, //da aggiungere requisito di essere nel torneo
 		beforeEnter: async (to) => {
 			const id = Number(to.params.tournament);
