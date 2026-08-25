@@ -1,6 +1,7 @@
 //@ts-check
 
-import { eTeam } from "../../../../Macro/enums.js";
+import { enumNames, eTeam } from "../../../../Macro/enums.js";
+import { render } from "../../../../test/render.js";
 import { checkKingDanger } from "../../../../utils/checkDanger.js";
 import { getBestTurn } from "../../AI.js";
 
@@ -32,8 +33,13 @@ export function AI_gmu_eval(match, ai, turns)
 	boostedPiece = match.board._data.get(match.currentPlayer.boostedPiece);
 	otherBoostedPiece = match.board._data.get(nextPlayer.boostedPiece);
 	//2)	PIU valore pezzo boostato nostro
-	if (boostedPiece && boostedPiece.piece)
-		score += boostedPiece.piece.price * 7;
+	if (boostedPiece && boostedPiece.piece && boostedPiece.piece.type)
+	{
+		if (boostedPiece.piece.type == enumNames.BASTARDS)
+			score += boostedPiece.piece.price;
+		else
+			score += boostedPiece.piece.price * 7;
+	}
 	//3)	MENO valore pezzo boostato avversario
 	if (otherBoostedPiece && otherBoostedPiece.piece)
 		score -= otherBoostedPiece.piece.price * 7;
@@ -62,6 +68,32 @@ export function AI_gmu_eval(match, ai, turns)
 	//5)	MENO se il nostro re e' in pericolo
 	if (checkKingDanger(match, match.currentPlayer.team))
 		score /= 2;
+	lastTurn = turns[turns.length - 1];
+	if (lastTurn.boost)
+	{
+		price = match.board.get(lastTurn.boost).piece?.price;
+		price = price? price : 0;
+		score -= 4 * price;
+		for (const [key, boostTarget] of match.board.get(lastTurn.boost).boostedTargetZones)
+			score += boostTarget.size * 2;
+	}
+	for (let [key, square] of match.board)
+	{
+		for (let x of square.dangerZones)
+		{
+			if (match.board.get(x).piece?.team == match.currentPlayer.team)
+				score += 10;
+			else
+				score -= 10;
+		}
+		for (let x of square.targetZones)
+		{
+			if (match.board.get(x).piece?.team != match.currentPlayer.team)
+				score += 10;
+			else
+				score -= 10;
+		}
+	}
 	lastTurn = turns[turns.length - 2];
 	if (lastTurn?.boost)
 	{

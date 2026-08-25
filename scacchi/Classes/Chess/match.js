@@ -17,6 +17,7 @@ import { query } from "../../lib/query.js";
 import { render } from "../../test/render.js";
 import { aiSpeech } from "./AIprofiles/speech.js";
 import { zobristGenerateTable, zobristInitHash } from "../../utils/zobrist.js";
+import { rng } from "../../utils/random.js";
 
 /** @typedef {import("../Globals/Queue.js").QueueNode} QueueNode*/
 /** @typedef {import("./Pieces/pieces.js").Piece} Piece*/
@@ -78,6 +79,7 @@ class Match
 		this.aiMove = false;
 		//if any of the players is an AI
 		this.aiBool = false;
+		this.zobristIndex = 0;
 		this.zobristTable = [];
 	}
 	/** @param {MatchSettings | string | null} preset*/

@@ -52,6 +52,8 @@ class Globals
 		this.turns = ['QF', 'SF', 'F'];
 		this.zobristTable = zobristGenerateTable();
 		this.AITraining = getTrainingSchedule();
+		/** @type {Map<string, number>} */
+		this.AIgameCounter = new Map();
 	}
 	/** @param {string} roomType */
 	GetQueue(roomType)

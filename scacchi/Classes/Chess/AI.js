@@ -111,8 +111,6 @@ function getBestTurn(match, depth=undefined)
 		DEB++;
 		// console.log(`Turns: ${i}/${arrayTurns.length}`);
 		const turn = arrayTurns[i];
-		if (turn.move?.from == "g7" && turn.move.to == "g5")
-			console.log("a");
 		if (match.currentPlayer.team == eTeam.White)
 			alpha = getBestNumber([alpha, bestTurns[0]?.score, bestTurns[1]?.score], false);
 		else if (match.currentPlayer.team == eTeam.Black)
@@ -124,6 +122,8 @@ function getBestTurn(match, depth=undefined)
 		// render(match);
 		playableTurn.push(turn);
 		newTurns = getLegalMoves(match);
+		if (checkKingDanger(match, eTeam.White) && match.currentPlayer.team == eTeam.Black)
+			console.log("aaaaaaaaaaaaaa");
 		if (match.zobristIndex in ai.memory && (!DEBUG_AI_TRAINING ||
 		rngProportional(100, 50)))
 		{
@@ -243,6 +243,8 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 			pastTurns.push(turn);
 			// console.log(turn);
 			ai.Simulate(match, ai);
+			if (checkKingDanger(match, eTeam.White) && match.currentPlayer.team == eTeam.Black)
+				console.log("aaaaaaaaaaaaaa");
 			if (match.zobristIndex in ai.memory && (!DEBUG_AI_TRAINING ||
 			rngProportional(100, 50)))
 			{
@@ -285,6 +287,8 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 			// 	console.log(arrayTurns.length);
 			pastTurns.push(turn);
 			// console.log(turn);
+			if (checkKingDanger(match, eTeam.White) && match.currentPlayer.team == eTeam.Black)
+				console.log("aaaaaaaaaaaaaa");
 			ai.Simulate(match, ai);//@ts-ignore
 			if (match.zobristIndex in ai.memory && (!DEBUG_AI_TRAINING ||
 			rngProportional(100, 50)))
