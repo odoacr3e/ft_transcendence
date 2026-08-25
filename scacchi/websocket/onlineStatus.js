@@ -7,7 +7,13 @@ import { prisma } from "../lib/prisma.js"
  * @param {import("socket.io").Server} sockio
  * @param {Map<number, SocketInfo>} clientMap
  */
-export async function announceMeOnline(sockio, user, clientMap, friendsId) {
+export async function announceMeOnline(sockio, user, clientMap) {
+	let	socketData;
+	let	friendsId = [];
+
+	socketData = clientMap.get(user.id_user);
+	if (!socketData)
+		throw (`id_user does not exist yet`);
 	const friends = await prisma.friendships.findMany({
 		where: {
 			OR: [
@@ -26,9 +32,10 @@ export async function announceMeOnline(sockio, user, clientMap, friendsId) {
 		if (friendSocket)
 		{
 			sockio.to(friendSocket.socket.id).emit('friend:online', { userId: user.id_user }); // comunico all'amico (id) online che sono online
-			clientMap.get(user.id_user).socket.emit('friend:online', { userId: id }); // comunico a me stesso che quell'amico e online, altrimenti lo vedrei solo alla sua riconnessione
+			socketData.socket.emit('friend:online', { userId: id }); // comunico a me stesso che quell'amico e online, altrimenti lo vedrei solo alla sua riconnessione
 		}
-		clientMap.get(user.id_user).socket.emit('friend:online', { userId: user.id_user }); // comunico a me stesso che sono online
+		socketData.socket.emit('friend:online', { userId: user.id_user }); // comunico a me stesso che sono online
 	}
+	socketData.friendsId = friendsId;
 	return friendsId;
 }

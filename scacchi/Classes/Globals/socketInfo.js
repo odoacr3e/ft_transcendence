@@ -24,5 +24,7 @@ export class SocketInfo
 		this.roomData = null;
 		/** @type {tournamentData | null} */
 		this.tournamentData = null;
+		/** @type {Array<number>} */
+		this.friendsId = [];
 	}
 }
