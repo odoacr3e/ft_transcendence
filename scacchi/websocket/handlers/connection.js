@@ -54,7 +54,8 @@ async function websocketDisconnectionHandler(socket, user, friendsId)
 {
 	let socketData;
 
-	socket.on('disconnect', async () => {
+	socket.on('disconnect', async () => 
+	{
 		clearTimeout(globals.timers.get(user.id_user));
 		socketData = globals.clientMap.get(user.id_user);
 		if (!socketData)
@@ -62,32 +63,14 @@ async function websocketDisconnectionHandler(socket, user, friendsId)
 		socketData.reconnectBool = true;
 		//NOTE - after SOCKET_RECONNECT_TIMER, user is considered disconnected
 		console.log("setting reconnection timeout for user", user.id_user);
-		globals.timers.set(user.id_user, setTimeout(() =>
-		{
-			let	result;
-
-			socketData = globals.clientMap.get(user.id_user);
-			if (!socketData)
-				throw (`disconnect: socketData is empty`);
-			globals.ClearTimer(user.id_user);
-			console.log(`User with id ${user.id_user} disconnected`);
-			globals.RemoveFromAllQueues(user.id_user);
-			result = globals.DeletePlayer(socketData.matchData?.matchId, socketData.matchData?.team);
-			if (socketData.matchData)
-				roomMessage(`match_${socketData.matchData.matchId}`, `game`, result);
-			result = globals.LeaveRoom(socketData, user.id_user);
-			if (socketData.roomData)
-				roomMessage(`room_${socketData.roomData.id}`, "leave_room", result);
-			globals.clientMap.delete(user.id_user);
-			for (const id of friendsId)
-			{
-				const friendSock = globals.clientMap.get(id);
-				if (friendSock)
-					sockio.to(friendSock.socket.id).emit('friend:offline', { userId: user.id_user });
-			}
-			socket.emit("rip");//NOTE - avvisa frontend che socket e morto
-		}, getReconnectTime(socketData.state)));
-})}
+		globals.timers.set(user.id_user, setTimeout(
+		handleLogout, getReconnectTime(socketData.state), socket, user, friendsId));
+	});
+	socket.on('logout', async () => 
+	{
+		handleLogout(socket, user, friendsId);
+	});
+}
 
 //SECTION - utils
 
@@ -127,6 +110,39 @@ function handleReconnect(dbUser, socketData, newSocket)
 			return (console.log("ERROR: data for player are lost! OH NO!"));		
 		socketData.socket.join(`match_${socketData.matchData.matchId}`);
 	}
+}
+
+/** 
+ * 
+ * @param {import("socket.io").Socket} socket
+ * @param {import("../../Classes/Chess/player").dbUser} user
+ * @param {Array<*>} friendsId
+ * */
+function handleLogout(socket, user, friendsId)
+{
+		let	result;
+		let	socketData;
+
+		socketData = globals.clientMap.get(user.id_user);
+		if (!socketData)
+			return (console.log(`disconnect: socketData is empty`));
+		globals.ClearTimer(user.id_user);
+		console.log(`User with id ${user.id_user} disconnected`);
+		globals.RemoveFromAllQueues(user.id_user);
+		result = globals.DeletePlayer(socketData.matchData?.matchId, socketData.matchData?.team);
+		if (socketData.matchData)
+			roomMessage(`match_${socketData.matchData.matchId}`, `game`, result);
+		result = globals.LeaveRoom(socketData, user.id_user);
+		if (socketData.roomData)
+			roomMessage(`room_${socketData.roomData.id}`, "leave_room", result);
+		globals.clientMap.delete(user.id_user);
+		for (const id of friendsId)
+		{
+			const friendSock = globals.clientMap.get(id);
+			if (friendSock)
+				sockio.to(friendSock.socket.id).emit('friend:offline', { userId: user.id_user });
+		}
+		socket.emit("rip");//NOTE - avvisa frontend che socket e morto
 }
 
 export {websocketConnectionHandler, websocketDisconnectionHandler};
