@@ -223,6 +223,12 @@
         </div>
     </div>
 
+<!-- Box per i messaggi generali di gioco -->
+    <div id="global-msg-log" style="width: 100%; max-width: 1300px; background-color: #262522; border: 2px solid var(--accent-blue); border-radius: 8px; padding: 1rem; margin-top: 1rem; box-sizing: border-box;">
+        <h3 style="margin-top: 0; color: var(--accent-blue);">💬 Game Messages</h3>
+        <ul id="msg-list" style="padding-left: 1.2rem; margin: 0; color: #fff;"></ul>
+    </div>
+
     <div id="global-error-log">
         <h3>🚨 Log Errori Ricevuti (status != 200)</h3>
         <ul id="error-list"></ul>
@@ -311,6 +317,25 @@
             socket.on("game", (data) => {
                 gestisciRispostaServer(datiUtente.id_user, lastEventType, data);
             });
+
+			socket.on("gameMsg", (data) => {
+				const msgList = document.getElementById("msg-list");
+				const li = document.createElement("li");
+
+				// Estrazione del contenuto testuale (sia che data sia stringa che oggetto)
+				let testoMessaggio = "";
+				if (typeof data === "object" && data !== null) {
+					testoMessaggio = data.msg || data.message || JSON.stringify(data);
+				} else {
+					testoMessaggio = data;
+				}
+
+				// Formattazione dell'elemento di lista
+				li.innerHTML = `<strong>[${datiUtente.username}]:</strong> ${testoMessaggio}`;
+				
+				// Inseriamo il messaggio in cima alla lista
+				msgList.prepend(li);
+			});
 
             // Gestione Grafica Connessione
             socket.on('connect', () => {

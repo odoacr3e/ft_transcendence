@@ -46,8 +46,6 @@ function mainTerm()
 	seed = "1v1";
 	time = process.hrtime.bigint();
 	init(match, seed);
-	console.log(`index => ${match.zobristIndex}`);
-	console.log(`hash => ${match._zobristHash}`);
 	// historyRestore(match, HISTORY_DEFAULT);
 	// move(match, "e2", "e4");
 	// move(match, "g8", "f6");
@@ -164,8 +162,6 @@ process.stdin.on('keypress', (str, key) =>
 			selected[0] = match.cursor.square;
 			if (result.status != 200)
 				return (saveWrongMove(match, result, eEvents.Transform));
-			console.log(`index => ${match.zobristIndex}`);
-			console.log(`hash => ${match._zobristHash}`);
 			selected.pop();
 			break ;
 		case (cmd.SQUARE_INFO):
@@ -203,14 +199,10 @@ process.stdin.on('keypress', (str, key) =>
 
 			filePath = "./test/re-zero-return-by-death.mp3";
 			result = execEvent(match, "cancel");
-			console.log(`index => ${match.zobristIndex}`);
-			console.log(`hash => ${match._zobristHash}`);
 			if (result.status != 200)
 				return (error(null, result));
 			if (lib.include.fs.existsSync(filePath))
 				exec(`ffplay -nodisp -autoexit "${filePath}" || mpg123 "${filePath}" || cvlc --play-and-exit "${filePath}"`);
-			console.log(`index => ${match.zobristIndex}`);
-			console.log(`hash => ${match._zobristHash}`);
 			break ;
 		}
 		case (cmd.FAKE_BOOST):

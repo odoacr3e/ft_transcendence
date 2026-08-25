@@ -6,6 +6,7 @@ import {eTeam, getInitialOfTeam, enumNames} from "../Macro/enums.js";
 import { AI_EVENTS } from "../Macro/macro.js";
 import { isDangerous } from "../utils/checkDanger.js";
 import { isOneOf } from "../utils/string.js";
+import { gameMessage } from "../websocket/utils.js";
 
 /** @typedef {import("../Classes/Chess/match.js").Match} Match*/
 
@@ -139,20 +140,20 @@ function displayPlayerInfo(board, match)
 		return ;
 	player = match.currentPlayer;
 	col = getDotColor(match.currentPlayer.team);
-	printer(`It's ${col} turn.`);
-	printer(`points: ${player.nPoints}💲, bonus: ${player.bonusPointCounter}⚖️`);
+	gameMessage(match, `It's ${col} turn.`, printer);
+	gameMessage(match, `points: ${player.nPoints}💲, bonus: ${player.bonusPointCounter}⚖️`, printer);
 	if (match.currentPlayer.boostedPiece)
-		printer(`Boosted piece: ${match.currentPlayer.boostedPiece}`);
+		gameMessage(match, `Boosted piece: ${match.currentPlayer.boostedPiece}`, printer);
 	if (match.lastMenace.from)
-		printer(`⚠️: ${match.lastMenace.from} => ${match.lastMenace.mid} => ${match.lastMenace.to}`);
+		gameMessage(match, `⚠️: ${match.lastMenace.from} => ${match.lastMenace.mid} => ${match.lastMenace.to}`, printer);
 	if (match.currentPlayer.useBoostBool == true)
-		printer(`Ready to use boost!`);
+		gameMessage(match, `Ready to use boost!`, printer);
 	else
-		printer(`Boost NOT used`);
+		gameMessage(match, `Boost NOT used`, printer);
 	if (kingThreat(board, match) == true)
-		printer(`${player.team} king is threatened💀`);
-	printer("match: ", match?.timer?.time);
-	printer("player: ", match.currentPlayer.time);
+		gameMessage(match, `${player.team} king is threatened💀`, printer);
+	gameMessage(match, `match: ${match?.timer?.time}`, printer);
+	gameMessage(match, `player: ${match.currentPlayer.time}`, printer);
 	
 	
 }
@@ -193,13 +194,13 @@ function printSwap(match, coords, from, to, result=null)
 		toType = "Square";
 	else
 		toType = `\x1b[33m${toType}\x1b[0m`;
-	printer(`SWAP ${fromType} with ${toType}`);
+	gameMessage(match, `SWAP ${fromType} with ${toType}`, printer);
 	match.cursor.Save();
 	match.cursor.set(coords[0]);
 	fromString = match.cursor.Normify();
 	match.cursor.set(coords[1]);
 	toString = match.cursor.Normify();
-	printer(`from ${fromString} to ${toString}`);
+	gameMessage(match, `from ${fromString} to ${toString}`, printer);
 	match.cursor.Restore();
 	if (toType == enumNames.CHAMPION)
 	{

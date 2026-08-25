@@ -53,13 +53,12 @@ sockio.engine.use(async (req, res, next) => {
 
 sockio.on('connection', async (socket) => 
 {
-	let	friendsId = [];
 	let	user;
 
-	user = await websocketConnectionHandler(socket, friendsId);
+	user = await websocketConnectionHandler(socket);
 	routesMatchMaking(socket, user);
 	routesGame(socket, user);
 	routesTournament(socket, user);
-	websocketDisconnectionHandler(socket, user, friendsId);
+	websocketDisconnectionHandler(socket, user);
 	socket.emit('ready');
 });

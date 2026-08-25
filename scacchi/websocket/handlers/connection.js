@@ -19,8 +19,9 @@ import { getReconnectTime, roomMessage } from "../utils.js";
 /**
  * 
  * @param {import("socket.io").Socket} socket 
+ * @param {Array<*>} friendsId
  */
-async function websocketConnectionHandler(socket)
+async function websocketConnectionHandler(socket, friendsId)
 {
 	let user;
 	let	socketData;
@@ -34,14 +35,12 @@ async function websocketConnectionHandler(socket)
 	if (socketData?.reconnectBool == true || socketData?.state)
 		await handleReconnect(user, socketData, socket);
 	else
-		await firstConnection(user, socket);
-	try 
-	{
-		await announceMeOnline(sockio, user, globals.clientMap);
-	}
-	catch (error)
-	{
-		console.log(error);
+		await firstConnection(user, socket, friendsId);
+	try {
+		friendsId = await announceMeOnline(sockio, user, globals.clientMap);
+	} catch (error) {
+		//FIXME - entra sempre qui! da controllare come mai
+		// console.error("Server error loading friends:", error);
 	}
 	return (user);
 }
@@ -78,8 +77,9 @@ async function websocketDisconnectionHandler(socket, user)
  * 
  * @param {*} user 
  * @param {*} socket 
+ * @param {Array<*>} friendsId
  */
-async function firstConnection(user, socket)
+async function firstConnection(user, socket, friendsId)
 {
 	console.log("A new user connected with id ", user.id_user);
 	globals.clientMap.set(user.id_user, new SocketInfo(socket));
@@ -126,7 +126,6 @@ function handleLogout(socket, user)
 			return (console.log(`disconnect: socketData is empty`));
 		globals.ClearTimer(user.id_user);
 		console.log(`User with id ${user.id_user} disconnected`);
-		console.log(`LOGOUT!`);
 		globals.RemoveFromAllQueues(user.id_user);
 		result = globals.DeletePlayer(socketData.matchData?.matchId, socketData.matchData?.team);
 		if (socketData.matchData)
@@ -135,8 +134,6 @@ function handleLogout(socket, user)
 		if (socketData.roomData)
 			roomMessage(`room_${socketData.roomData.id}`, "leave_room", result);
 		globals.clientMap.delete(user.id_user);
-		console.log(`friends list:`);
-		console.log(socketData.friendsId);
 		for (const id of socketData.friendsId)
 		{
 			const friendSock = globals.clientMap.get(id);
