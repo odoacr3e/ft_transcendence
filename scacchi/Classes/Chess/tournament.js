@@ -4,6 +4,7 @@ import { eMatchPresets } from "../../Macro/enums.js";
 import { createTournament } from "../../query/tournamentsQuery.js";
 import { rng } from "../../utils/random.js";
 import { createMatchTournament } from "../../websocket/handlers/tournament.js";
+import { roomMessage } from "../../websocket/utils.js";
 import { globals } from "../Globals/globals.js";
 import { createMatchId } from "./match.js";
 
@@ -122,6 +123,7 @@ export class Tournament
 			opponent.socket.join(`tournament_${this.id}`);
 			i += 2;
 		}
+		roomMessage(`tournament_${this.id}`, "update_tournament", {data: this.userIds[this.round], roundId: this.round});
 		this.round += 1;
 	}
 	checkFinish()

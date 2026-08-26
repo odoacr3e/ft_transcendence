@@ -1,4 +1,5 @@
 
+import { tournaments_status } from "@prisma/client";
 import { prisma } from "../lib/prisma.js";
 
 export async function getAllUserTournaments(id_user) {
@@ -41,6 +42,21 @@ export async function getAllUserTournaments(id_user) {
 		created_by: { id_user: t.tournaments.users.id_user, username: t.tournaments.users.username },
 		players: t.tournaments.tournament_players.map(tp => tp.users)
 	}));
+}
+
+export async function getAllTournaments(status="")
+{
+	let	conditions;
+
+	conditions = {};
+	if (status == "ongoing")//@ts-ignore
+		conditions = {status: {equals: tournaments_status.ongoing}};
+	else if (status == "open")
+		conditions = {status: {equals: tournaments_status.open}};
+	const tournaments = await prisma.tournaments.findMany({
+		where: conditions
+	});
+	return (tournaments);
 }
 
 export async function getTournamentById(id_tournament) {

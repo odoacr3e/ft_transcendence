@@ -43,10 +43,10 @@ tournamentsRouter.get('/retrieveTournamentMatches', checkJwt, async (req, res) =
 				i = rounds.indexOf(m.round);
 				if (!matrix[i])
 					matrix[i] = new Array();
-				matrix[i].push(m);
-
+				matrix[i].push(m.p1.id_user);
+				matrix[i].push(m.p2.id_user);
 			}
-			return (res.status(200).json(jsonResponse.ResponseSuccess({tournamentMatches: matrix[2]})));
+			return (res.status(200).json(jsonResponse.ResponseSuccess({tournamentMatches: matrix})));
 		}
 	} catch (error) {
 		return (res.status(500).json(jsonResponse.ResponseError("Server error ")));

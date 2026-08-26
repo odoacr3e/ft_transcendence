@@ -110,6 +110,8 @@ export async function startRoundHandler(req, socket, user)
 		return (new Result().Error("Tournament doesn't exist", 500));
 	if (tournament.adminId != user.id_user)
 		return (new Result().Error("You must be admin to start the round", 401));
+	if (tournament.activeMatches != 0)
+		return (new Result().Error(`There are ${tournament.activeMatches} active matches`, 409));
 	console.log("startRound: proviamo a iniziarli tutti dai..");
 	await tournament.initAllMatches();
 	result = new Result().Success();
@@ -141,10 +143,12 @@ export async function initTournament(room)
 		console.log(tournament.userIds);
 		tournament.RNGplayer();
 		console.log(tournament.userIds);
+		roomMessage(`tournament_${tournament.id}`, "start_tournament", new Result().Success());
 		tournament.nextRound();
 		//FIXME - decidere con frontend, oltre ad eventi, che dati mandare
-		//@ts-ignore
-		roomMessage(`tournament_${tournament.id}`, "start_tournament", {pairings: tournament.userIds[tournament.round], log: new Result().Success().log});
+		console.log("giving frontend pairings data");
+		console.log(tournament.userIds[tournament.round - 1]);
+		console.log(tournament.userIds[tournament.round]);
 	}
 	catch(error)
 	{
@@ -220,17 +224,18 @@ export async function updateTournament(match, drawBool)
 			userSet.add(v.id_user);//@ts-ignore
 			userIdIndexMap.set(v.id_user, v.tour_index);
 		});
-		roomMessage(`tournament_${tournament.id}`, "update_tournament", tournament.userIds[tournament.round]);
+		//FIXME - cosa vuole il frontend?
+		// roomMessage(`tournament_${tournament.id}`, "update_tournament", {data: tournament.userIds[tournament.round], roundId: tournament.round});
 		createMatchTournament(userSet, match.id, tournament.id, userIdIndexMap);
 		return ;
 	}
 	if (!tournament.userIds[tournament.round + 1])
 		tournament.userIds[tournament.round + 1] = new Array();
 	//@ts-ignore
-	matchNum = tournament.userIds[tournament.round].indexOf((match[match.victory].tournament_index));//@ts-ignore
+	matchNum = tournament.userIds[tournament.round].indexOf((match.GetPlayer(match.vic).tournament_index));//@ts-ignore
 	tournament.userIds[tournament.round + 1][matchNum / 2] = match[match.victory].tournament_index;
 	tournament.activeMatches--;
-	roomMessage(`tournament_${tournament.id}`, "update_tournament", tournament.userIds[tournament.round]);
+	roomMessage(`tournament_${tournament.id}`, "update_tournament", {data: tournament.userIds[tournament.round + 1], roundId: tournament.round + 1});
 	if (tournament.activeMatches == 0)
 		tournament.nextRound();
 	if (tournament.checkFinish())
