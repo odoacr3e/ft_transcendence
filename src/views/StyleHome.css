@@ -14,6 +14,7 @@
 	--color-form-icon: var(--current-form-icon);
 
 	--color-bg-square: var(--current-bg-square);
+	--color-bg-WSquare: #CCCCCC;
 	--color-bg-WSelect: var(--current-bg-WSelect);
 	--color-bg-BSelect: var(--current-bg-BSelect);
 	--color-bg-highlight: var(--current-bg-highlight);
@@ -68,7 +69,7 @@
 --current-text-last: #4e4e4e8c;
 --current-form-icon: #dcdfe4c0;
 
---current-bg-square: #1b0000;
+--current-bg-square: #200E0E;
 --current-bg-WSelect: #bb4232;
 --current-bg-BSelect: #801a12;
 --current-bg-highlight: #a52a2a;
@@ -99,7 +100,7 @@
 --current-text-last: #4e4e4e8c;				/*SAME*/
 --current-form-icon: #dcdfe4c0;				/*SAME*/
 
---current-bg-square: #000C14;
+--current-bg-square: #0B151A;
 --current-bg-WSelect: #3E93CC;
 --current-bg-BSelect: #176AA1;
 --current-bg-highlight: #2C75A5;

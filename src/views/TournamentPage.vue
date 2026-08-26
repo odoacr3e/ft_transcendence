@@ -42,28 +42,6 @@
 				params: { tournament: tourStore.id }
 				});
 		else { error.value = true; }
-		
-		// const fd = {};
-
-		// fd.name = formData.value.name;
-		// fd.id_creator = formData.value.id_creator;
-
-		// try
-		// {
-		//     const respA = await api.post("/api/tournaments", fd);
-		//     if (respA.status === "success")
-		//     {
-		// 		const respB = await api.post("/api/tournaments/addPlayers", {id_tournament: respA.data.tournament.id_tournament, id_users: [user.value.id_user]});
-		// 		if (respB.status === "success") {
-		//         router.push({
-		//         name: "open_tournament",
-		// 			params: { tournament: respA.data.tournament.id_tournament }
-		//         });
-		// 		}
-		//     }
-		//     else { error.value = true; }
-		// }
-		// catch (err) { error.value = true; }
 	}
 </script>
 

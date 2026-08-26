@@ -1,6 +1,6 @@
 <script setup>
     import { defaultAvatar, handleAvatarError } from '../scripts/Helper/CompUtils';
-    import { ref, onMounted }   from 'vue';
+    import { ref, onMounted, watch }   from 'vue';
     import { useAuthStore }     from "../stores/auth.st";
     import { useSockStore }     from '../stores/sock.st';
     import { useTourStore }     from '../stores/tour.st';
@@ -51,6 +51,18 @@
         }
         catch {}
     });
+
+    watch(() => players.value.length, (len) => {
+		if (len == 8) {
+            setTimeout(() => {
+                router.push({
+			    name: "start_tournament",
+			    params: { tournament: tournament.value.id_tournament }
+			    });
+            }, 5000);
+		}
+	});
+
 
     function findUser(list, id_user) { return list.find(u => u.id_user === id_user); }
 
@@ -142,16 +154,18 @@
                 </div>
             </div>
 
-            <div class="my-4 mx-8 h-[68vh] w-full bg-bg-darker text-text-default rounded-3xl border border-border-default">
-                <div class="p-4">
+            <div class="my-4 mx-8 h-[68vh] w-full bg-bg-darker text-text-default rounded-3xl border border-border-default overflow-hidden">
+                <div class="p-4 flex flex-col">
                     <div>
-                        <div class="flex justify-between">
-                            <h2 class="m-3" :class="{ 'text-3xl' : !admin, 'text-2xl' : admin }">
+                        <div class="relative flex">
+                            <h2 class="m-3 justify-self-start" :class="{ 'text-3xl' : !admin, 'text-2xl' : admin }">
 								Giocatori:     ({{ players.length }}/8)</h2>
-                            <form v-if="admin" @submit.prevent="startTour()" method="post" enctype="application/json" class="text-text-default items-center">
-                                <input id="submit" class="h-fit self-center transition-opacity w-fit p-3 m-2 mr-5 text-base bg-main-color rounded-[7px] text-text-default hover:bg-linear-to-t from-main-color to-light-button"
-                                        type="submit" value="Inizia il torneo!" :class="{ 'opacity-100 duration-250 cursor-pointer pointer-events-auto' : players.length === 8, 'pointer-events-none opacity-0' : players.length < 8 }">
-                            </form>
+                            <div v-if="!admin && players.length === 8" class="flex w-fit absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 justify-center px-11 py-3 rounded-3xl text-xl
+                                border inset-ring bg-bg-error text-text-error border-border-error inset-ring-inset-error transition-all animate-start">
+                                <p class="self-center w-fit">
+                                    Il torneo sta iniziando!
+                                </p>
+                            </div>
                         </div>
                         <div class="grid grid-cols-2 grid-rows-1" 
                             :class="{   'grid-rows-4' : players.length == 8 || players.length == 7, 
@@ -168,7 +182,7 @@
                             </div>
                         </div>
                     </div>
-                    <div v-if="admin">
+                    <div v-if="admin && players.length < 8">
                         <div class="flex justify-between">
                             <h2 class="text-2xl m-3">Invitati:</h2>
                             <button @click="inviteUsers()" class="h-fit self-center transition-opacity w-25 p-2 m-2 mr-5 text-base bg-main-color rounded-[7px] text-text-default hover:bg-linear-to-t from-main-color to-light-button">
@@ -184,6 +198,12 @@
                                     </div>
                             </div>
                         </div>
+                    </div>
+                    <div v-if="admin && players.length === 8" class="flex w-fit self-center justify-center mt-20 px-15 py-4 rounded-3xl text-2xl
+                        border inset-ring bg-bg-error text-text-error border-border-error inset-ring-inset-error transition-all animate-start">
+                        <p class="self-center w-fit">
+                            Il torneo sta iniziando!
+                        </p>
                     </div>
                 </div>
             </div>
@@ -204,4 +224,16 @@ input[type="search"]::-webkit-search-cancel-button {
 input::-webkit-calendar-picker-indicator {
 	display: none !important;
 }
+
+@keyframes startPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+
+.animate-start {
+  animation: startPulse 1s ease-in-out infinite;
+  transform-origin: center;
+}
+
 </style>

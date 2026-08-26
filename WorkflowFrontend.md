@@ -136,7 +136,7 @@ boardConverter()
 		✓	effetto sonoro ed evidenziazione del re quando viene messo sotto scacco
 	✓	Bottone ed evento per chiedere pareggio
 	✓	Barra di caricamento durante il loading delle partite
-	▫	history delle mosse durante la partita
+	✓	history delle mosse durante la partita
 	▫	re-design dei pezzi
 	▫	history delle partite
 	▫ 	refactor di archi nel caso la board non esista
@@ -199,7 +199,8 @@ boardConverter()
 	✓	reworkare i temi chiari
 	▫	reattività delle pagine [MAVI]
 	▫	reworkare il design delle pagine di gioco appena sono pronte
-	▫	info dei profili per le partitre a 4
+	▫	testing dei tornei con 8 giocatori
+	
 
 //NOTE - Testing
 	✓	nome utente in grassetto

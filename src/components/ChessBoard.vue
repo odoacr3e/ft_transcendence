@@ -180,7 +180,7 @@
 	}
 	
 	.white{
-		background-color: var(--color-text-default);
+		background-color: var(--color-bg-WSquare);
 	}
 
 	.black{

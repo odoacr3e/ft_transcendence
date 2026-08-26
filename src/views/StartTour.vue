@@ -11,6 +11,7 @@
 	const   tournament = ref(null),
             players = ref([]),
 			admin = ref(null),
+            rounds = ref(null),
 			authStore = useAuthStore(),
             sockStore = useSockStore(),
             { user } = storeToRefs(authStore),
@@ -22,18 +23,28 @@
             tournament.value = (await api.get(`/api/tournaments/${route.params.tournament}`)).data.tournament;
 			admin.value = user.value.username === tournament.value?.created_by.username;
 			players.value = tournament.value.players;
+            rounds.value = (await api.get(`/api/tournament/retriveTournamentMatches`));
+            console.log(rounds.value);
+
+			sockStore.socket.on('update_tournament', (resp) => {
+                console.log(resp);
+                // if (!resp.log) 
+                //     rounds.vale = resp.msg;
+            });
         }
-        catch {}
+        catch(err) {console.log(err);}
     });
 
     async function startGames()
     {
         try{
-			const resp = await sockStore.socket.emitWithAck("start_round");
-			// if (resp.msg == "OK")
-                // router.push({ name: "game" });
+			const resp = (await sockStore.socket.emitWithAck("start_round", { DEBUG: true }));
+            console.log(resp);
+            console.log("oky doky start!");
+			if (resp.log.msg == "OK")
+                router.push({ name: "game" });
 		}
-		catch {}
+		catch(err) {console.log(err);}
     }
 </script>
 
@@ -48,7 +59,7 @@
         <hr class="w-full justify-self-start text-text-last">
         <div class="max-w-[80vw] h-full max-h-[75vh] flex my-4 mx-8 p-3 bg-bg-default text-text-default rounded-3xl border border-border-default justify-start overflow-auto">
             <TournamentBracket :players="players"/>
-            <button @click="startGames()" class="absolute bottom-30 right-80 h-fit 
+            <button v-if="admin" @click="startGames()" class="absolute bottom-30 right-80 h-fit 
                     self-center transition-opacity w-64 px-8 py-3 m-2 mr-5 text-xl bg-main-color rounded-[7px] text-text-default hover:bg-linear-to-t from-main-color to-light-button">
                 <p>Dai il via ai giochi!</p>
             </button>

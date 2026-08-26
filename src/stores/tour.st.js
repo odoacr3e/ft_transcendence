@@ -20,8 +20,6 @@ export const useTourStore = defineStore('tour', {
 				{
 					this.pwd = resp.tournament_pwd;
 					this.id = resp.tournament_id;
-					socket.off('update_tournament'); //meglio metterla in una funziona a fine torneo
-					socket.on('update_tournament', (resp) => { if (!resp.log) { this.error = resp.msg; } this.status = resp.status });
 				}
 				return (true);
 			}
