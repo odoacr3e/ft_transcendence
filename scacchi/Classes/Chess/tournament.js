@@ -143,6 +143,8 @@ export class Tournament
 		/** @type {UserIds} */
 		this.userIds = new Array();
 		this.userIds[0] = [84, 2, 85, 86, 88, 67, 108, 105];
+		for (const id of this.userIds[0])
+			this.startUserIds.add(id);
 		this.playerNum = 8;
 		this.round = 0;
 		this.activeMatches = 0;

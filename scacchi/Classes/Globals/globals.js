@@ -57,6 +57,7 @@ class Globals
 		this.AIgameCounter = new Map();
 		this.tournamentMap.set(0, new Tournament("DEBUG"));
 		this.tournamentMap.get(0)?.DEBUGtournament();
+		console.log(this.tournamentMap.get(0));
 	}
 	/** @param {string} roomType */
 	GetQueue(roomType)
