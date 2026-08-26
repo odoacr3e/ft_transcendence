@@ -6,6 +6,7 @@ import { init } 							from "../../handlers/game/init.js";
 import { render } 							from "../../test/render.js";
 import { query } 							from "../../lib/query.js";
 import { responseFormatter }				from "../../utils/response.js";
+import { saveMatch } from "../../utils/saveMatch.js";
 
 /** @typedef {import("../../Classes/Chess/player.js").Player} Player*/
 /** @typedef {import("../../Classes/endPoint/result.js").Result} Result*/
@@ -147,7 +148,20 @@ export async function bindPlayersToMatch(match, userSet, result, userIdIndexMap=
 		userId = userArray[i];
 		user = globals.clientMap.get(userId);
 		if (!user)
-			throw ("bindPlayerToMatch: userId " + userArray[i] + " has left");
+		{
+			console.log("bindPlayerToMatch: userId " + userArray[i] + " has left");
+			match.users.push({id_user: userId, outcome: "Lose", startTeam: null, team: match.currentPlayer.team, tour_index: tourIndex});
+			match.currentPlayer.tournament_index = tourIndex;
+			match.currentPlayer.id = userId;
+			match.currentPlayer.matchId = match.id;
+			++i;
+			console.log(`team ${match.currentPlayer.team} settato come sconfitto`);
+			match.DeletePlayer();
+			if (match.currentPlayer.team == currTeam)
+				break ;
+			match.endTurn();
+			continue ;
+		}
 		user.state = enumSocketState.PLAYING;
 		match.currentPlayer.matchId = match.id;
 		match.currentPlayer.id = userId;
@@ -184,4 +198,6 @@ export async function bindPlayersToMatch(match, userSet, result, userIdIndexMap=
 		match.endTurn();
 	}
 	while (currTeam != match.currentPlayer.team)
+	if (match.playerNum <= 1)
+		saveMatch(match);
 }

@@ -115,7 +115,7 @@ export async function startRoundHandler(req, socket, user)
 
 	if (req?.DEBUG == true)
 		tournament = globals.tournamentMap.get(0);
-	if (!socketData || !socketData.tournamentData)
+	else if (!socketData || !socketData.tournamentData)
 		return (new Result().Error("Can't find myself or tournament I've joined", 404));
 	else
 		tournament = globals.tournamentMap.get(socketData?.tournamentData?.id);
