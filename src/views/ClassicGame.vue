@@ -67,7 +67,7 @@
 </script>
 
 <template>
-    <div class="flex z-2 bg-bg-darker rounded-3xl">
+    <div id="wrapping" class="flex z-2 bg-bg-darker rounded-3xl">
         <div class="flex items-center px-4" v-if="ready">
             <ActionButtons/>
         </div>

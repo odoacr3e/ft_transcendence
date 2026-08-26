@@ -18,34 +18,24 @@
  *   Se non lo passi, i round successivi al primo mostrano "TBD".
  */
 import { computed } from 'vue';
+import { defaultAvatar, handleAvatarError }	from '../scripts/Helper/CompUtils';
 
 const props = defineProps({
-    players: {
-        type: Array,
-        required: true,
-        // atteso: array di 8 elementi { id, name }
-    },
-    matches: {
-        type: Array,
-        default: () => [],
-    },
+    players: { type: Array, required: true },
+    matches: { type: Array, default: () => [] },
 });
 
-// Nome sicuro anche se manca il player (bye/placeholder)
-function playerName(p) {
-    return p?.username ?? 'TBD';
+function playerName(p) { return p?.username ?? 'TBD'; }
+
+function winnerOf(roundI, matchI) {
+    const round = props.matches?.[roundI];
+    const match = round?.[matchI];
+
+    if (!match?.winnerId) { return null; }
+
+    return (props.players.find(p => p.id_user === match.winnerId) ?? { username: 'TBD' });
 }
 
-// Trova il vincitore di un match del round precedente, se disponibile
-function winnerOf(roundIndex, matchIndex) {
-    const round = props.matches?.[roundIndex];
-    const match = round?.[matchIndex];
-    if (!match?.winnerId) return null;
-    // cerca il player corrispondente nell'elenco originale
-    return props.players.find(p => p.id_user === match.winnerId) ?? { username: 'TBD' };
-}
-
-// Costruisce i 3 round da visualizzare: quarti, semifinali, finale
 const rounds = computed(() => {
     const p = props.players ?? [];
 
@@ -72,129 +62,66 @@ const champion = computed(() => winnerOf(2, 0));
 </script>
 
 <template>
-    <div class="bracket-outer w-full h-full rounded-3xl border border-border-default bg-bg-default p-6 text-text-default overflow-auto">
-        <div class="bracket-container">
-            <div
-                v-for="(round, ri) in rounds"
-                :key="ri"
-                class="round"
-                :class="{ 'round-last': ri === rounds.length - 1 }"
-            >
-                <div
-                    v-for="(pair, pi) in round"
-                    :key="pi"
-                    class="pair"
-                    :class="{ 'has-connector': ri < rounds.length - 1 }"
-                >
-                    <div class="match">
-                        <div class="player">{{ playerName(pair.top) }}</div>
-                        <div class="player">{{ playerName(pair.bottom) }}</div>
+        <div class="flex items-stretch min-h-145 gap-7">
+            <div v-for="(round, ri) in rounds" :key="ri" class="flex flex-col justify-around min-w-90">
+                <div v-for="(pair, pi) in round" :key="pi" class="relative flex flex-col justify-between gap-20 z-10">
+                    <div class="pair h-25 flex flex-col justify-center border border-border-default rounded-lg bg-bg-darker overflow-hidden"
+                        :class="{ 'semi rounded-l-none' : ri == 1, 'final rounded-l-none' : ri == 2 }">
+                        <div class="player border-b border-border-default">
+                            <img :src="pair.top?.image ? `${pair.top?.image}` : defaultAvatar" @error="handleAvatarError" :draggable="false"
+                                class="size-9 rounded-full place-self-center mr-2 object-cover" alt="">
+                            {{ playerName(pair.top) }}</div>
+                        <div class="player">
+                            <img :src="pair.bottom?.image ? `${pair.bottom?.image}` : defaultAvatar" @error="handleAvatarError" :draggable="false"
+                                class="size-9 rounded-full place-self-center mr-2 object-cover" alt="">
+                            {{ playerName(pair.bottom) }}</div>
                     </div>
                 </div>
             </div>
-
-            <!-- Colonna finale: mostra il campione -->
-            <div class="round round-champion">
-                <div class="champion-box">
-                    <span class="champion-label">Campione</span>
-                    <span class="champion-name">{{ playerName(champion) }}</span>
+            <div class="relative flex flex-col gap-20 justify-center left-1">
+                <div class="flex flex-col items-center gap-1 py-4 px-6 border-2 border-[#aeb0b3] rounded-lg bg-bg-darker">
+                    <span class="text-sm uppercase tracking-wider text-text-second">Campione</span>
+                    <span class="font-bold">{{ playerName(champion) }}</span>
                 </div>
             </div>
         </div>
-    </div>
 </template>
 
 <style scoped>
-/* Variabili di layout: modificale per cambiare dimensioni del bracket */
-.bracket-container {
-    --match-h: 3.25rem;   /* altezza di un box match (2 righe player) */
-    --pair-gap: 1.25rem;  /* spazio verticale tra i due match di una coppia */
-    --stub: 1.75rem;      /* lunghezza della linea orizzontale tra i round */
-    --line-color: var(--color-border-default, #999);
-
-    display: flex;
-    align-items: stretch;
-    min-height: 32rem; /* altezza totale fissa: fondamentale per l'allineamento */
-    gap: var(--stub);
-}
-
-.round {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    min-width: 11rem;
-}
-
-.pair {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: var(--pair-gap);
-}
-
-.match {
-    height: var(--match-h);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    border: 1px solid var(--color-border-default);
-    border-radius: 0.75rem;
-    background: var(--color-bg-darker);
-    overflow: hidden;
-}
 
 .player {
     flex: 1;
     display: flex;
     align-items: center;
     padding: 0 0.75rem;
-    font-size: 0.9rem;
+    font-size: 1.3rem;
 }
 
-.player:first-child {
-    border-bottom: 1px solid var(--color-border-default);
-}
-
-/* Linea "a staffa" che unisce i due match di una coppia e prosegue
-   verso il match del round successivo */
-.pair.has-connector::after {
+.pair::after {
     content: '';
     position: absolute;
-    top: calc(var(--match-h) / 2);
-    bottom: calc(var(--match-h) / 2);
-    right: calc(-1 * var(--stub));
-    width: var(--stub);
-    border-top: 2px solid var(--line-color);
-    border-right: 2px solid var(--line-color);
-    border-bottom: 2px solid var(--line-color);
+    width: 2rem;
+    right: calc(-1 * 2rem);
+    bottom: calc((6.25rem - 0.25rem) / 2);
+    border-top: 2px solid #aeb0b3;
+    border-bottom: 2px solid #aeb0b3;
 }
 
-/* Colonna finale con il nome del campione */
-.round-champion {
-    justify-content: center;
+.semi::before {
+    z-index: -1;
+    content: '';
+    position: absolute;
+    height: calc(6.25rem * 1.49);
+    border-right: 2px solid #aeb0b3;
+    border-left: 2px solid #aeb0b3;
 }
 
-.champion-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.25rem;
-    padding: 1rem 1.5rem;
-    border: 2px solid var(--color-form-icon, var(--color-border-default));
-    border-radius: 0.75rem;
-    background: var(--color-bg-darker);
-}
-
-.champion-label {
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    opacity: 0.7;
-}
-
-.champion-name {
-    font-size: 1.1rem;
-    font-weight: 600;
+.final::before {
+    z-index: -1;
+    content: '';
+    position: absolute;
+    height: calc(6.25rem * 2.94);
+    border-right: 2px solid #aeb0b3;
+    border-left: 2px solid #aeb0b3;
 }
 </style>

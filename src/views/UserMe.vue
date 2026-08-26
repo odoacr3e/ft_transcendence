@@ -31,7 +31,7 @@
 </script>
 
 <template>
-    <div class="flex-row z-2 bg-bg-darker rounded-3xl w-[100vh] h-[80vh]">
+    <div class="flex-row z-2 bg-bg-darker rounded-3xl min-w-[50vw] max-w-full min-h-[80vh]">
         <div class="flex p-2 m-4 bg-bg-default rounded-3xl border border-border-default">
                 <img :src="user.image ? `${user.image}` : defaultAvatar" @error="handleAvatarError"
                     alt="" class="size-35 rounded-full place-self-start m-5 object-cover">
@@ -48,7 +48,7 @@
         </div>
         <div class="flex m-4">
             <div class=" m-2 w-full">
-                <div class="w-full p-2 mb-2 h-[35vh] bg-bg-default rounded-3xl border border-border-default">
+                <div class="w-full p-2 mb-2 h-[35vh] bg-bg-default rounded-3xl border border-border-default overflow-hidden">
                     <h2 class="text-text-default text-xl m-1">{{ t('userPage.friendList') }}</h2>
                     <hr class="w-full justify-self-start text-text-last">
                     <div v-if="friends" :class="friends.length > 3 ? 'max-h-[29.5vh] overflow-y-auto' : ''">
@@ -62,7 +62,7 @@
                     <FriendRequest :friendReq="fReq" :user="user"/>
                 </div>
             </div>
-            <div class="w-full m-2 p-2 h-[51vh] bg-bg-default rounded-3xl border border-border-default">
+            <div class="w-full m-2 p-2 h-[51vh] bg-bg-default rounded-3xl border border-border-default overflow-hidden">
                 <h2 class="text-text-default text-xl m-1">{{ t('userPage.matchHistory') }}</h2>
                 <hr class="w-full justify-self-start text-text-last">
                 <div v-if="matches" class="flex gap-2 m-2 text-sm text-text-default justify-self-center">

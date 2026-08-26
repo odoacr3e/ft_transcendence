@@ -64,7 +64,7 @@ export async function globalEvents()
 		localInfo.drag = null;
 	});
 
-	document.addEventListener("keydown", async function(event)
+	document.getElementById("wrapping").addEventListener("keydown", async function(event)
 	{
 		if (event.code === "Space" && localInfo.secondTurn)
 			await sendEndTurn();
