@@ -1,16 +1,13 @@
 <script setup>
 //@ts-nocheck
-	import { DOMBoard, localInfo, IMG_PATHS }	from '@/scripts/Data/Variables';
-	import { onMounted, computed, ref }			from 'vue';
-	import { onDragStart, onDrop }				from '@/scripts/Events/Movements';
-	import { getSquareColor } 					from '@/scripts/Helper/RenderUtils';
-	import { globalEvents }						from '@/scripts/Events/Global';
+	import { DOMBoard, localInfo, IMG_PATHS, 
+			 HIDDEN, localPlayers }						from '@/scripts/Data/Variables';
+	import { onMounted, computed, ref }					from 'vue';
+	import { onDragStart, onDrop }						from '@/scripts/Events/Movements';
+	import { getSquareColor } 							from '@/scripts/Helper/RenderUtils';
+	import { globalEvents }								from '@/scripts/Events/Global';
+import IconChevronSolid from './icons/IconChevronSolid.vue';
 
-	const HIDDEN = new Set( ["a14", "b14", "c14", "a13", "b13", "c13", "a12", "b12", "c12",
-					 "l14", "m14", "n14", "l13", "m13", "n13", "l12", "m12", "n12",
-					 "a3", "b3", "c3", "a2", "b2", "c2", "a1", "b1", "c1",
-					 "l3", "m3", "n3", "l2", "m2", "n2", "l1", "m1", "n1"] );
-	// eslint-disable-next-line no-unused-vars
 	const prop = defineProps({
   	    	style: String
 	    });
@@ -18,11 +15,19 @@
         globalEvents();
     });
 
-	const dragOver = ref(null);
+	const dragOver 			= ref(null);
 	const domBoardComputed	= computed(() => DOMBoard());
 	const orientation		= computed(() => localInfo.myTeam === "white" ? "white" : "black");
 	const bottomRank		= computed(() => orientation.value === "white" ? 1 : 8);
 	const leftFile			= computed(() => orientation.value === "white" ? 'a' : 'h');
+	const localPlayer		= computed(() => [...localPlayers.values()].find(p => p.team === localInfo.myTeam) ?? null);
+	const myTurn			= computed(() => localPlayer.value?.isPlaying === true);
+	const boostPrompt		= ref(null);
+	const canAfford			= (square) => (localPlayer.value?.nPoints ?? 0) >= (square?.piece?.price ?? 0);
+	const canBoostSquare	= (square) => !!square?.piece && square.piece.team === localInfo.myTeam
+											&& !square.piece.isBoostedBool && myTurn.value
+											&& localInfo.secondTurn && !localInfo.goatId
+											&& canAfford(square) && square?.piece.type !== 'King';
 </script>
 
 <template>
@@ -92,6 +97,13 @@
 								v-bind:class="{'w-3.75 h-3.75': style === '1v1', 'w-2.5 h-2.5': style === '14x14x4'}"></span>
 						<span v-if="localInfo.lastMovesSquares.has(square?.id) && !square?.selected && !square?.inCheck"
 								class="lastMoveOverlay"></span>
+						<button v-if="canBoostSquare(square)" type="button" class="boostBadge"
+									:class="{	'is-morphing': boostPrompt === square?.id,
+												'mini': style === '14x14x4'	 }"
+									@click.stop="openBoostPrompt(square)"
+									@mousedown.stop>
+								<IconChevronSolid class="boostBadgeIcon chevronUp"/>
+						</button>
 					</div>
 				</div>
 			</div>
@@ -247,6 +259,62 @@
     	        drop-shadow(0 0 10px #FFA500)
     	        drop-shadow(0 0 20px #FF4500)
     	}
+	}
+
+	.boostBadge
+	{
+		--badge-dim: 1.15rem;
+
+		position: absolute;
+		top: 2px;
+		right: 2px;
+		z-index: 5;
+		display: flex;
+		align-items: center;
+		width: var(--badge-dim);
+		height: var(--badge-dim);
+		padding: 0;
+		opacity: 0;
+		cursor: pointer;
+		pointer-events: none;
+		transition: opacity .15s ease, transform .15s ease;
+		rotate: -90deg;
+	}
+
+	.boostBadge:hover
+	{
+		animation: chevron-spin .3s linear;
+	}
+
+	.boostBadge.mini
+	{
+		--mini-dim: .9rem;
+
+		width: var(--mini-dim);
+		height: var(--mini-dim);
+	}
+
+	.square:hover > .boostBadge,
+	.boostBadge:focus-visible
+	{
+		opacity: 1;
+		pointer-events: auto;
+	}
+
+	.square:hover > .boostBadge:hover
+	{
+		transform: scale(1.25);
+	}
+
+	.boostBadgeIcon
+	{
+		font-size: 1.5rem;
+	}
+
+	@keyframes chevron-spin 
+	{
+		from	{ rotate: 0deg; }
+		to		{ rotate: 360deg; }	
 	}
 
 	.floatingPiece

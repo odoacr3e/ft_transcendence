@@ -158,6 +158,10 @@ export function getRootDiv() {
 
 export const FILES_TWO = ["a", "b", "c", "d", "e", "f", "g", "h"];
 export const FILES_FOUR = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n"];
+export const HIDDEN = new Set( ["a14", "b14", "c14", "a13", "b13", "c13", "a12", "b12", "c12",
+				 "l14", "m14", "n14", "l13", "m13", "n13", "l12", "m12", "n12",
+				 "a3", "b3", "c3", "a2", "b2", "c2", "a1", "b1", "c1",
+				 "l3", "m3", "n3", "l2", "m2", "n2", "l1", "m1", "n1"] );
 
 export let MACRO = Object ({
 	"AUDIO" : true,

@@ -95,8 +95,6 @@
 					</div>
 				</div>
 			</div>
-			
-			<!-- <hr class="sep-line mt-12"> -->
 		</div>
 	</div>
 </template>

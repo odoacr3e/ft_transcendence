@@ -5,9 +5,9 @@ import { requestToBack }								from "@/scripts/Events/BackLink.js";
 import { useSockStore }									from "../../../stores/sock.st";
 
 // ANCHOR USER INTERACTION FUNCTIONS
-export function useAbility()
+export function useAbility(targetId = null)
 {
-	const clickedId = localInfo.clickedId;
+	const clickedId = targetId ?? localInfo.clickedId;
 	const square 	= localBoard.get(clickedId);
 
 	if (!square) { return; }
@@ -28,13 +28,17 @@ export function useAbility()
 	PIECES_HIGHLIGHT[square.piece.type](clickedId);
 }
 
-export function shopAbility()
+export function shopAbility(targetId = null)
 {
-	const Piece = localBoard.get(localInfo.clickedId)?.piece;
-	const Player = localPlayers.values().find(p => p.isPlaying === true);
+	const squareId	= targetId ?? localInfo.clickedId;
+	const Piece		= localBoard.get(squareId)?.piece;
+	const Player	= localPlayers.values().find(p => p.isPlaying === true);
 
+	if (Piece?.team !== localInfo.myTeam)
+		return;
+	
 	if (!Piece?.isBoostedBool && Player.nPoints >= Piece?.price && localInfo.secondTurn)
-		requestToBack(localInfo.clickedId, null).then(
+		requestToBack(squareId, null).then(
 			function(value) {if (value) 
 			{ 
 				clearHighlight();
