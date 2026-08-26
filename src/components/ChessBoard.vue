@@ -1,12 +1,16 @@
 <script setup>
 //@ts-nocheck
 	import { DOMBoard, localInfo, IMG_PATHS, 
-			 HIDDEN, localPlayers }						from '@/scripts/Data/Variables';
-	import { onMounted, computed, ref }					from 'vue';
+			 HIDDEN, localPlayers, localBoard }			from '@/scripts/Data/Variables';
+	import { onMounted, computed, ref, watch, 
+			 nextTick, onBeforeUnmount }				from 'vue';
 	import { onDragStart, onDrop }						from '@/scripts/Events/Movements';
 	import { getSquareColor } 							from '@/scripts/Helper/RenderUtils';
 	import { globalEvents }								from '@/scripts/Events/Global';
-import IconChevronSolid from './icons/IconChevronSolid.vue';
+	import IconChevronSolid 							from './icons/IconChevronSolid.vue';
+	import { shopAbility, showBoostedMovesHover,
+			 showBoostedMovesLeave, useAbility }		from '@/scripts/Events/utils/GlobalUtils.js';
+import IconDoubleChevron from './icons/IconDoubleChevron.vue';
 
 	const prop = defineProps({
   	    	style: String
@@ -15,19 +19,97 @@ import IconChevronSolid from './icons/IconChevronSolid.vue';
         globalEvents();
     });
 
-	const dragOver 			= ref(null);
-	const domBoardComputed	= computed(() => DOMBoard());
-	const orientation		= computed(() => localInfo.myTeam === "white" ? "white" : "black");
-	const bottomRank		= computed(() => orientation.value === "white" ? 1 : 8);
-	const leftFile			= computed(() => orientation.value === "white" ? 'a' : 'h');
-	const localPlayer		= computed(() => [...localPlayers.values()].find(p => p.team === localInfo.myTeam) ?? null);
-	const myTurn			= computed(() => localPlayer.value?.isPlaying === true);
-	const boostPrompt		= ref(null);
-	const canAfford			= (square) => (localPlayer.value?.nPoints ?? 0) >= (square?.piece?.price ?? 0);
-	const canBoostSquare	= (square) => !!square?.piece && square.piece.team === localInfo.myTeam
-											&& !square.piece.isBoostedBool && myTurn.value
-											&& localInfo.secondTurn && !localInfo.goatId
-											&& canAfford(square) && square?.piece.type !== 'King';
+	const dragOver 				= ref(null);
+	const domBoardComputed		= computed(() => DOMBoard());
+	const orientation			= computed(() => localInfo.myTeam === "white" ? "white" : "black");
+	const bottomRank			= computed(() => orientation.value === "white" ? 1 : 8);
+	const leftFile				= computed(() => orientation.value === "white" ? 'a' : 'h');
+	const localPlayer			= computed(() => [...localPlayers.values()].find(p => p.team === localInfo.myTeam) ?? null);
+	const myTurn				= computed(() => localPlayer.value?.isPlaying === true);
+	const boostPopup			= ref(null);
+	const canAfford				= (square) => (localPlayer.value?.nPoints ?? 0) >= (square?.piece?.price ?? 0);
+	const canBoostSquare		= (square) => !!square?.piece && square.piece.team === localInfo.myTeam
+												&& !square.piece.isBoostedBool && myTurn.value
+												&& localInfo.secondTurn && !localInfo.goatId
+												&& canAfford(square) && square?.piece.type !== 'King';
+	const canUseAbilitySquare	= (square) => !!square?.piece && square.piece.team === localInfo.myTeam
+												&& square.piece.isBoostedBool && myTurn.value
+												&& !localInfo.secondTurn && !localInfo.goatId; 
+
+	function popupBoost(squareId)
+	{
+		if (!squareId)
+			return;
+		if (boostPopup.value === squareId)
+		{
+			boostPopup.value = null;
+			shopAbility(squareId);
+			return;
+		}
+		boostPopup.value = squareId;
+		showBoostedMovesLeave();
+		showBoostedMovesHover(squareId);
+	}
+
+	function closeBoostPopup()
+	{
+		if (!boostPopup.value)
+			return;
+		boostPopup.value = null;
+		showBoostedMovesLeave();
+	}
+
+	function onOutsideClick(event)
+	{
+		if (event.target?.closest?.('.boostBadge'))
+			return;
+		closeBoostPopup();
+	}
+
+	function onEscape(event)
+	{
+		if (event.key === 'Escape')
+			closeBoostPopup();
+	}
+
+	function stopPopupListeners()
+	{
+		document.removeEventListener('click', onOutsideClick);
+		document.removeEventListener('keydown', onEscape);
+	}
+
+	function popupAbility(squareId)
+	{
+		const square = localBoard.get(squareId);
+
+		if (!square)
+			return;
+
+		const previous = localBoard.get(localInfo.lastClickedId);
+		if (previous && previous.id !== squareId)
+		{
+			previous.clicked		= false;
+			previous.useAbilityBool = false;
+		}
+
+		localInfo.clickedId 	= squareId;
+		localInfo.lastClickedId = squareId;
+		square.clicked			= true;
+
+		useAbility(squareId);
+	}
+
+	watch(boostPopup, (val) => {
+		if (val)
+			nextTick(() => {
+				document.addEventListener('click', onOutsideClick);
+            	document.addEventListener('keydown', onEscape);	
+			});
+		else
+			stopPopupListeners();
+	})
+
+	onBeforeUnmount(() => stopPopupListeners());
 </script>
 
 <template>
@@ -98,12 +180,26 @@ import IconChevronSolid from './icons/IconChevronSolid.vue';
 						<span v-if="localInfo.lastMovesSquares.has(square?.id) && !square?.selected && !square?.inCheck"
 								class="lastMoveOverlay"></span>
 						<button v-if="canBoostSquare(square)" type="button" class="boostBadge"
-									:class="{	'is-morphing': boostPrompt === square?.id,
+									:class="{	'is-morphing': boostPopup === square?.id,
 												'mini': style === '14x14x4'	 }"
-									@click.stop="openBoostPrompt(square)"
+									@click.stop="popupBoost(square?.id)"
 									@mousedown.stop>
-								<IconChevronSolid class="boostBadgeIcon chevronUp"/>
+								<IconChevronSolid class="boostBadgeIcon chevronUp"
+									:outline="boostPopup === square?.id ? '#ffe100' : '#f97316'"
+									:from="boostPopup === square?.id ? '#fb923c' : '#ffe100'"
+    								:to="boostPopup === square?.id ? '#ea580c' : '#ffc400'"/>
 						</button>
+						<button v-if="canUseAbilitySquare(square)" type="button" class="boostBadge abilityBadge"
+									:class="{	'is-morphing': square?.useAbilityBool,
+												'mini': style === '14x14x4'	 }"
+									@click.stop="popupAbility(square?.id)"
+									@mousedown.stop>
+								<IconDoubleChevron class="boostBadgeIcon chevronUp"
+									:outline="square?.useAbilityBool ? '#ffe100' : '#f97316'"
+									:from="square?.useAbilityBool ? '#fb923c' : '#ffe100'"
+									:to="square?.useAbilityBool ? '#ea580c' : '#ffc400'"/>
+						</button>
+
 					</div>
 				</div>
 			</div>
@@ -115,12 +211,12 @@ import IconChevronSolid from './icons/IconChevronSolid.vue';
 
 	div#overlay
 	{
-		opacity: 0.4;                    /* fisso, la transizione la gestisci con v-if */
+		opacity: 0.4;                    	/* fisso, la transizione la gestisci con v-if */
 		background: rgba(0, 0, 0, 0.35);
 		inset: 0;
 		position: fixed;
-		z-index: 14;                     /* sotto al menu */
-		pointer-events: auto;            /* blocca i click sotto */
+		z-index: 14;                     	/* sotto al menu */
+		pointer-events: auto;            	/* blocca i click sotto */
 		transition: opacity 0.2s ease;
 	}
 
@@ -132,8 +228,8 @@ import IconChevronSolid from './icons/IconChevronSolid.vue';
 		margin-left: 5px;
 		z-index: 13;
 		top: 50%;
-	    left: calc(50% + 300px + 16px); /* bordo destro board + gap */
-	    transform: translateY(-50%); /* centrato verticalmente rispetto alla board */
+	    left: calc(50% + 300px + 16px); 	/* bordo destro board + gap */
+	    transform: translateY(-50%); 		/* centrato verticalmente rispetto alla board */
 	}
 
 	#board
@@ -219,23 +315,19 @@ import IconChevronSolid from './icons/IconChevronSolid.vue';
 		background-color: rgb(99, 221, 0);
 	}
 
-	.selectedB
-	{
+	.selectedB{
 		background-color: rgb(128, 26, 18);
 	}
 
-	.selectedW
-	{
+	.selectedW{
 		background-color: rgb(187, 66, 50);
 	}
 
-	.selectedBstB
-	{
+	.selectedBstB{
 		background-color: rgb(173, 187, 50);
 	}
 
-	.selectedBstW
-	{
+	.selectedBstW{
 		background-color: rgb(9, 214, 19);
 	}
 
@@ -281,11 +373,6 @@ import IconChevronSolid from './icons/IconChevronSolid.vue';
 		rotate: -90deg;
 	}
 
-	.boostBadge:hover
-	{
-		animation: chevron-spin .3s linear;
-	}
-
 	.boostBadge.mini
 	{
 		--mini-dim: .9rem;
@@ -301,20 +388,24 @@ import IconChevronSolid from './icons/IconChevronSolid.vue';
 		pointer-events: auto;
 	}
 
-	.square:hover > .boostBadge:hover
-	{
-		transform: scale(1.25);
+	.boostBadge:hover{
+		transform: scale(1.5);
 	}
 
-	.boostBadgeIcon
+	.boostBadge.is-morphing
 	{
+		opacity: 1;
+		pointer-events: auto;
+		transform: scale(1.35);
+		filter: drop-shadow(0 0 2px rgb(255, 225, 0)) drop-shadow(0 0 6px rgb(249, 115, 22));
+	}
+
+	.boostBadge.is-morphing:hover{
+		transform: scale(1.6);
+	}
+
+	.boostBadgeIcon{
 		font-size: 1.5rem;
-	}
-
-	@keyframes chevron-spin 
-	{
-		from	{ rotate: 0deg; }
-		to		{ rotate: 360deg; }	
 	}
 
 	.floatingPiece

@@ -31,6 +31,13 @@ export function checkEndTurn(validated)
 
 export function checkUpgrade()
 {
+	//NOTE - Disattivata: il menu #choseMenu e' stato rimosso dal template di ChessBoard.vue
+	//(commit e086215f), quindi goatId restava acceso per sempre: overlay nero sulla board,
+	//bottone "End Turn" spento (secondTurn = false) e badge di boost/ability disabilitati.
+	//Togliere questo return quando il menu di promozione viene ripristinato.
+	return;
+
+	// eslint-disable-next-line no-unreachable
 	const	curP = localPlayers.values().find(p => p.isPlaying === true);
 
 	localBoard.forEach((square ,id) => {
