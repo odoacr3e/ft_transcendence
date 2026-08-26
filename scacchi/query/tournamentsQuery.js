@@ -1,6 +1,7 @@
-
-import { tournaments_status } from "@prisma/client";
+//@ts-check
 import { prisma } from "../lib/prisma.js";
+
+console.log("ciao");
 
 export async function getAllUserTournaments(id_user) {
 	const userTournaments = await prisma.tournament_players.findMany({
@@ -49,10 +50,10 @@ export async function getAllTournaments(status="")
 	let	conditions;
 
 	conditions = {};
-	if (status == "ongoing")//@ts-ignore
-		conditions = {status: {equals: tournaments_status.ongoing}};
+	if (status == "ongoing")
+		conditions = {status: {equals: "ongoing"}};
 	else if (status == "open")
-		conditions = {status: {equals: tournaments_status.open}};
+		conditions = {status: {equals: "open"}};
 	const tournaments = await prisma.tournaments.findMany({
 		where: conditions
 	});
