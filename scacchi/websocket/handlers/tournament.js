@@ -116,6 +116,8 @@ export async function startRoundHandler(req, socket, user)
 	await tournament.initAllMatches();
 	result = new Result().Success();
 	roomMessage(`tournament_${tournament.id}`, "start_round", result);
+	console.log("do roba al frontend");
+	console.log({data: tournament.userIds[tournament.round], roundId: tournament.round});
 	roomMessage(`tournament_${tournament.id}`, "update_tournament", {data: tournament.userIds[tournament.round], roundId: tournament.round});
 	return (result);
 }
