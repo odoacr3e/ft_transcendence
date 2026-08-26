@@ -1,5 +1,5 @@
 <script setup>
-	import { localInfo, localBoard, localPlayers }				from '@/scripts/Data/Variables.js';
+	import { localInfo, localBoard, myPlayer, canAfford }	from '@/scripts/Data/Variables.js';
 	import { useAbility, sendEndTurn, shopAbility, 
 			 sendGiveUp, showBoostedMovesHover,
 			 showBoostedMovesLeave }							from '@/scripts/Events/utils/GlobalUtils';
@@ -10,7 +10,7 @@
 	import IconHandshake										from '@/components/icons/IconHandshake.vue';
 	import IconEnergyArrow										from './icons/IconEnergyArrow.vue';
 
-	const localPlayer	= computed(() => [...localPlayers.values()].find(p => p.team === localInfo.myTeam) ?? null);
+	const localPlayer	= computed(() => myPlayer());
 	const myTurn		= computed(() => localPlayer.value?.isPlaying === true);
 	const Piece = computed(() => {
 		if (!localInfo.clickedId)
@@ -24,7 +24,7 @@
 
 	const canBoost = computed(() => myTurn.value && Piece.value
 									&& !Piece.value.isBoostedBool
-									&& localPlayer.value?.nPoints >= Piece.value?.price
+									&& canAfford(Piece.value)
 									&& localInfo.secondTurn);
 
 	const canEndTurn = computed(() => myTurn.value && localInfo.secondTurn);

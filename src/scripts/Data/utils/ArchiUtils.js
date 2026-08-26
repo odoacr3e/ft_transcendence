@@ -1,5 +1,5 @@
 import { computePosition, offset, flip, shift, autoUpdate }	from "@floating-ui/dom";
-import { emptyCapturedPieces, localBoard, localInfo, localPlayers } 		from "../Variables";
+import { emptyCapturedPieces, localBoard, localInfo, currentPlayer } 		from "../Variables";
 import { clearHighlight }									from "@/scripts/Events/utils/HighlightUtils.js";
 
 let stopAutoUpdate = null;
@@ -18,7 +18,7 @@ export function checkEndTurn(validated)
 {
 	let		newCurP;
 	const	players_list = ["p1", "p2", "p3", "p4"];
-	const	curP = localPlayers.values().find(p => p.isPlaying === true);
+	const	curP = currentPlayer();
 
 	players_list.forEach((player) => {
 		if (validated[player]?.isPlaying) { newCurP = validated[player]; };
@@ -31,7 +31,7 @@ export function checkEndTurn(validated)
 
 export function checkUpgrade()
 {
-	const	curP = localPlayers.values().find(p => p.isPlaying === true);
+	const	curP = currentPlayer();
 
 	if (curP.team !== localInfo.myTeam)
 		return;

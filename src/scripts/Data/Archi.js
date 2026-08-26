@@ -1,6 +1,7 @@
 import { initLocalBoard, localMatchState, 
 		 localBoard, localPlayers,
-		 startLocalMatchState, localInfo }		from "./Variables.js";
+		 startLocalMatchState, localInfo,
+		 currentPlayer }						from "./Variables.js";
 import { checkEndTurn, hasBoost, 
 		 checkUpgrade, assignLastMoveSquares }	from "./utils/ArchiUtils.js";
 import { beginPendingAbility } 					from "../Helper/abilityMovement.js";
@@ -79,7 +80,7 @@ function initLocalPlayers()
 		localPlayers.set(player, localMatchState[player]);
 	});
 
-	hasBoost(localPlayers.values().find(p => p.isPlaying === true));
+	hasBoost(currentPlayer());
 }
 //!SECTION
 
@@ -159,7 +160,7 @@ function updateLocalPlayers(changes)
 		localPlayers.set(player, {...localPlayers.get(player), ...changes[player]});
 	});
 
-	hasBoost(localPlayers.values().find(p => p.isPlaying === true));
+	hasBoost(currentPlayer());
 }
 //!SECTION
 

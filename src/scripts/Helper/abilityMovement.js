@@ -1,4 +1,4 @@
-import { localInfo, localBoard, localPlayers }	from "../Data/Variables.js";
+import { localInfo, localBoard, currentPlayer }	from "../Data/Variables.js";
 import { setHighlightTrue, clearHighlight }		from "../Events/utils/HighlightUtils.js";
 import { PIECES_HIGHLIGHT } 					from "./piecesHighlights.js";
 import { sendToBackend }						from "../Events/BackLink.js";
@@ -141,7 +141,7 @@ function boostHlOnClick()
 				localInfo.lastClickedId = localInfo.clickedId;
 		}
 		else
-			setHighlightTrue(localInfo.savedBoostedMap, "boosted", localPlayers.values().find(p => p.isPlaying === true).team);
+			setHighlightTrue(localInfo.savedBoostedMap, "boosted", currentPlayer().team);
 		return;
 	}
 	if (localInfo.clickedId === localInfo.lastClickedId) 

@@ -1,4 +1,4 @@
-import { localInfo, localBoard, localPlayers, MACRO }	from "@/scripts/Data/Variables";
+import { localInfo, localBoard, canAfford, MACRO }	from "@/scripts/Data/Variables";
 import { PIECES_HIGHLIGHT }								from "@/scripts/Helper/piecesHighlights";
 import { clearHighlight }								from "@/scripts/Events/utils/HighlightUtils.js";
 import { stopUpgradeMenu }							from "@/scripts/Data/utils/ArchiUtils.js";
@@ -33,12 +33,11 @@ export function shopAbility(targetId = null)
 {
 	const squareId	= targetId ?? localInfo.clickedId;
 	const Piece		= localBoard.get(squareId)?.piece;
-	const Player	= localPlayers.values().find(p => p.isPlaying === true);
 
 	if (Piece?.team !== localInfo.myTeam)
 		return;
 	
-	if (!Piece?.isBoostedBool && Player.nPoints >= Piece?.price && localInfo.secondTurn)
+	if (!Piece?.isBoostedBool && canAfford(Piece) && localInfo.secondTurn)
 		requestToBack(squareId, null).then(
 			function(value) {if (value) 
 			{ 

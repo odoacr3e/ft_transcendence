@@ -114,6 +114,18 @@ export const DOMPlayer = (p) => getLocalPlayers(p);
 
 export const emptyCapturedPieces = () => ({Bastards: 0, Minotaurus: 0, Valkirya: 0, Jester: 0, Champion: 0}); 
 
+//Il giocatore seduto a questo client: quello della squadra che il browser controlla.
+export const myPlayer = () => [...localPlayers.values()].find(p => p.team === localInfo.myTeam) ?? null;
+
+//Il giocatore di turno, che sui client avversari NON coincide con myPlayer().
+export const currentPlayer = () => [...localPlayers.values()].find(p => p.isPlaying === true) ?? null;
+
+//Il giocatore di questo client ha i punti per potenziare questo pezzo.
+export const canAfford = (piece) => {
+	const points = myPlayer()?.nPoints;
+	return (typeof points === "number" && typeof piece?.price === "number" && points >= piece.price);
+};
+
 // Funzioni setter per aggiornare le variabili globali
 export function startLocalMatchState(newMatchState) {
 	localMatchState = newMatchState;

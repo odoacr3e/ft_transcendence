@@ -5,8 +5,8 @@ import { eSpecialMoves }											from "@/Common/ENUMS";
 import { blinkSquares } 											from "../Events/utils/GlobalUtils";
 import router 														from "@/router";
 import { resetLocalVars } 											from "./utils/ArchiUtils";
-import { pushTurn, reloadHistory } from "./History";
-import { pushGameMsg } from "./GameMsg";
+import { pushTurn, reloadHistory } 									from "./History";
+import { pushGameMsg } 												from "./GameMsg";
 
 export function listenGameSocket(socket)
 {

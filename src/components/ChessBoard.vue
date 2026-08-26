@@ -1,7 +1,7 @@
 <script setup>
 //@ts-nocheck
 	import { DOMBoard, localInfo, IMG_PATHS, 
-			 HIDDEN, localPlayers, localBoard }			from '@/scripts/Data/Variables';
+			 HIDDEN, myPlayer, canAfford, localBoard }	from '@/scripts/Data/Variables';
 	import { onMounted, computed, ref, watch, 
 			 nextTick, onBeforeUnmount }				from 'vue';
 	import { onDragStart, onDrop }						from '@/scripts/Events/Movements';
@@ -25,15 +25,14 @@
 	const orientation			= computed(() => localInfo.myTeam === "white" ? "white" : "black");
 	const bottomRank			= computed(() => orientation.value === "white" ? 1 : 8);
 	const leftFile				= computed(() => orientation.value === "white" ? 'a' : 'h');
-	const localPlayer			= computed(() => [...localPlayers.values()].find(p => p.team === localInfo.myTeam) ?? null);
+	const localPlayer			= computed(() => myPlayer());
 	const myTurn				= computed(() => localPlayer.value?.isPlaying === true);
 	const boostPopup			= ref(null);
 	const promoTeam				= computed(() => localBoard.get(localInfo.goatId)?.piece?.team ?? localInfo.myTeam);
-	const canAfford				= (square) => (localPlayer.value?.nPoints ?? 0) >= (square?.piece?.price ?? 0);
 	const canBoostSquare		= (square) => !!square?.piece && square.piece.team === localInfo.myTeam
 												&& !square.piece.isBoostedBool && myTurn.value
 												&& localInfo.secondTurn && !localInfo.goatId
-												&& canAfford(square) && square?.piece.type !== 'King';
+												&& canAfford(square?.piece) && square?.piece.type !== 'King';
 	const canUseAbilitySquare	= (square) => !!square?.piece && square.piece.team === localInfo.myTeam
 												&& square.piece.isBoostedBool && myTurn.value
 												&& !localInfo.secondTurn && !localInfo.goatId; 

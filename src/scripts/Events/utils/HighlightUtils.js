@@ -1,4 +1,4 @@
-import { localInfo, localBoard, localPlayers }	from "@/scripts/Data/Variables";
+import { localInfo, localBoard, currentPlayer }	from "@/scripts/Data/Variables";
 import { PIECES_HIGHLIGHT }						from "@/scripts/Helper/piecesHighlights";
 
 // UTILS - HIGHLIGHT AND SELECT FUNCTIONS
@@ -57,7 +57,7 @@ export function highlightOnDrag(event)
 			clearHighlight();
 
 		const Piece = localBoard.get(clickedId).piece;
-		const Player = localPlayers.values().find(p => p.isPlaying === true);
+		const Player = currentPlayer();
 	 	
 		if (Piece.team != Player.team) { return; }
 
