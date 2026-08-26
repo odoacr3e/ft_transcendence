@@ -3,7 +3,8 @@
 	import { useAbility, sendEndTurn, shopAbility, 
 			 sendGiveUp, showBoostedMovesHover,
 			 showBoostedMovesLeave }							from '@/scripts/Events/utils/GlobalUtils';
-	import { computed, ref, watch, nextTick, onBeforeUnmount }	from 'vue'
+	import { computed, ref }							from 'vue'
+	import { useClickOutside }							from '@/scripts/Helper/useClickOutside';
 	import IconHourglass										from '@/components/icons/IconHourglass.vue';
 	import IconLightning										from '@/components/icons/IconLightning.vue';
 	import IconFlag												from '@/components/icons/IconFlag.vue';
@@ -39,21 +40,8 @@
 	function askDraw()		{ pending.value = (pending.value === 'draw') ? null : 'draw'; }
 	function cancelPending()	{ pending.value = null; }
 
-	function onOutsideClick(e) {
-		if (panelEl.value && panelEl.value.contains(e.target))
-			return;
-		cancelPending();
-	}
-
 	// chiude la conferma quando si clicca fuori dall'area di conferma
-	watch(pending, (val) => {
-		if (val)
-			nextTick(() => document.addEventListener('click', onOutsideClick));
-		else
-			document.removeEventListener('click', onOutsideClick);
-	});
-
-	onBeforeUnmount(() => document.removeEventListener('click', onOutsideClick));
+	useClickOutside(panelEl, cancelPending, { when: pending });
 
 	function confirmPending() {
 		if (pending.value === 'giveup')

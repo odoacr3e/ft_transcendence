@@ -1,5 +1,6 @@
 <script setup>
-	import { ref, onMounted, onBeforeUnmount }	from 'vue';
+	import { ref, onMounted }					from 'vue';
+	import { useClickOutside }					from '@/scripts/Helper/useClickOutside';
 	import { rework_date, defaultAvatar, handleAvatarError }	from '../scripts/Helper/CompUtils';
 	import { useAuthStore }	from "../stores/auth.st";
 	import { useMsgStore }	from '../stores/msg.st';
@@ -39,11 +40,10 @@
 			router.push(`/users/${encodeURIComponent(username)}`);
 	}
 
-	function handleClickOutside(e) {
-		if (p_dropdown.value && !p_dropdown.value.contains(e.target))		{ p_bool.value = false; }
-		if (n_dropdown.value && !n_dropdown.value.contains(e.target))		{ n_bool.value = false; }
-		if (lang_dropdown.value && !lang_dropdown.value.contains(e.target))	{ l_bool.value = false; }
-	}
+	//un dropdown per chiamata: il listener resta attaccato solo mentre quel menu e' aperto
+	useClickOutside(p_dropdown,    () => { p_bool.value = false; }, { when: p_bool });
+	useClickOutside(n_dropdown,    () => { n_bool.value = false; }, { when: n_bool });
+	useClickOutside(lang_dropdown, () => { l_bool.value = false; }, { when: l_bool });
 
 	async function readMsg(msg)
 	{
@@ -92,10 +92,7 @@
 		try {
 			if (user.value) { db.value = (await api.get("/api/users")).data.users; } }
 		catch { console.log("user non loggato, impossibile fare fetch su db");}
-		document.addEventListener('click', handleClickOutside);
     });
-
-	onBeforeUnmount(() => { document.removeEventListener('click', handleClickOutside); });
 </script>
 
 <template>

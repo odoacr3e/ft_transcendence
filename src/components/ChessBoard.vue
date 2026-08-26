@@ -2,8 +2,8 @@
 //@ts-nocheck
 	import { DOMBoard, localInfo, IMG_PATHS, 
 			 HIDDEN, myPlayer, canAfford, localBoard }	from '@/scripts/Data/Variables';
-	import { onMounted, computed, ref, watch, 
-			 nextTick, onBeforeUnmount }				from 'vue';
+	import { onMounted, computed, ref }				from 'vue';
+	import { useClickOutside }						from '@/scripts/Helper/useClickOutside';
 	import { onDragStart, onDrop }						from '@/scripts/Events/Movements';
 	import { getSquareColor } 							from '@/scripts/Helper/RenderUtils';
 	import { globalEvents }								from '@/scripts/Events/Global';
@@ -60,25 +60,6 @@
 		showBoostedMovesLeave();
 	}
 
-	function onOutsideClick(event)
-	{
-		if (event.target?.closest?.('.boostBadge'))
-			return;
-		closeBoostPopup();
-	}
-
-	function onEscape(event)
-	{
-		if (event.key === 'Escape')
-			closeBoostPopup();
-	}
-
-	function stopPopupListeners()
-	{
-		document.removeEventListener('click', onOutsideClick);
-		document.removeEventListener('keydown', onEscape);
-	}
-
 	function popupAbility(squareId)
 	{
 		const square = localBoard.get(squareId);
@@ -100,17 +81,7 @@
 		useAbility(squareId);
 	}
 
-	watch(boostPopup, (val) => {
-		if (val)
-			nextTick(() => {
-				document.addEventListener('click', onOutsideClick);
-            	document.addEventListener('keydown', onEscape);	
-			});
-		else
-			stopPopupListeners();
-	})
-
-	onBeforeUnmount(() => stopPopupListeners());
+	useClickOutside('.boostBadge', closeBoostPopup, { when: boostPopup, escape: true });
 </script>
 
 <template>
