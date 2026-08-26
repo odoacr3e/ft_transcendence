@@ -16,7 +16,7 @@
 			if (!resp)	{ router.push('/'); }
 			else		{ error.value = true; }
 		}
-		catch(err) { error.value = true; }
+		catch { error.value = true; }
 	}
 
 	function show() { visible.value = !visible.value; }

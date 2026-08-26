@@ -2,8 +2,6 @@
  * @typedef { "move"|"boost"|"trans"|"giveup"|"draw"|"lost" } ActionType
  */
 
-import { hasBoost } from "../Data/utils/ArchiUtils";
-
 /**
  * @typedef		{Object}		ActionVM
  * @property	{ActionType}	type
@@ -23,7 +21,7 @@ import { hasBoost } from "../Data/utils/ArchiUtils";
  * @property 	{Array<ActionVM>}	actions
  */
 
-export const eActionType = Object.freeze({
+const eActionType = Object.freeze({
 	MOVE:	"move",
 	BOOST:	"boost",
 	TRANS:	"trans",
@@ -44,7 +42,7 @@ const TEAM_DOT = Object.freeze({
 })
 
 /**@param {string} piece */
-export function pieceLetter(piece)
+function pieceLetter(piece)
 {
 	return (PIECE_LETTER[piece] ?? "");
 }
@@ -58,7 +56,7 @@ export function teamDot(team)
 /**
  * @param {ActionVM} action
  */
-export function actionLabel(action)
+function actionLabel(action)
 {
 	if (!action)
 		return ("");

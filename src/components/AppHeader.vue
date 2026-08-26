@@ -3,7 +3,6 @@
 	import { rework_date, defaultAvatar, handleAvatarError }	from '../scripts/Helper/CompUtils';
 	import { useAuthStore }	from "../stores/auth.st";
 	import { useMsgStore }	from '../stores/msg.st';
-	import { useSockStore } from '../stores/sock.st';
 	import { storeToRefs }	from 'pinia';
 	import { useI18n }		from 'vue-i18n';
 	import { api }			from '../router/api/client';
@@ -62,7 +61,7 @@
             tourOpen.value = (await api.get(`/api/tournaments/${msg.description.slice(msg.description.indexOf('%') + 1)}`)).data.tournament;
 			if (!tourOpen.value) { tourOpen.value = null; }
         }
-        catch(err) { tourOpen.value = null; }
+        catch { tourOpen.value = null; }
 		tourOpen.value.msg = msg;
 	}
 
@@ -92,7 +91,7 @@
 	onMounted(async () => {
 		try {
 			if (user.value) { db.value = (await api.get("/api/users")).data.users; } }
-		catch (error) { console.log("user non loggato, impossibile fare fetch su db");}
+		catch { console.log("user non loggato, impossibile fare fetch su db");}
 		document.addEventListener('click', handleClickOutside);
     });
 

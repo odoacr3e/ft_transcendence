@@ -2,7 +2,6 @@ import { ePlaying, localBoard, localInfo }	from "@/scripts/Data/Variables";
 import { getTarget }						from "./utils/MovementUtils.js";
 // import { MACRO } 						from "@/scripts/Data/Variables";
 import { useSockStore } 					from "../../stores/sock.st.js";
-import { sendEndTurn } 						from "./utils/GlobalUtils.js";
 
 export async function sendToBackend(fromId, toId, flag)
 {

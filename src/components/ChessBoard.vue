@@ -9,8 +9,9 @@
 	import { globalEvents }								from '@/scripts/Events/Global';
 	import IconChevronSolid 							from './icons/IconChevronSolid.vue';
 	import { shopAbility, showBoostedMovesHover,
-			 showBoostedMovesLeave, useAbility }		from '@/scripts/Events/utils/GlobalUtils.js';
-import IconDoubleChevron from './icons/IconDoubleChevron.vue';
+			 showBoostedMovesLeave, useAbility,
+			 upgradeBastard }							from '@/scripts/Events/utils/GlobalUtils.js';
+	import IconDoubleChevron 							from './icons/IconDoubleChevron.vue';
 
 	const prop = defineProps({
   	    	style: String
@@ -27,6 +28,7 @@ import IconDoubleChevron from './icons/IconDoubleChevron.vue';
 	const localPlayer			= computed(() => [...localPlayers.values()].find(p => p.team === localInfo.myTeam) ?? null);
 	const myTurn				= computed(() => localPlayer.value?.isPlaying === true);
 	const boostPopup			= ref(null);
+	const promoTeam				= computed(() => localBoard.get(localInfo.goatId)?.piece?.team ?? localInfo.myTeam);
 	const canAfford				= (square) => (localPlayer.value?.nPoints ?? 0) >= (square?.piece?.price ?? 0);
 	const canBoostSquare		= (square) => !!square?.piece && square.piece.team === localInfo.myTeam
 												&& !square.piece.isBoostedBool && myTurn.value
@@ -202,6 +204,14 @@ import IconDoubleChevron from './icons/IconDoubleChevron.vue';
 
 					</div>
 				</div>
+			</div>
+
+			<div v-if="localInfo.goatId" id="choseMenu" class="flex absolute pointer-events-none size-75 z-14 gap-0.5 p-1.5 
+					border-2 border-[#1b0000] rounded-md bg-[#fafafa] max-h-[10%]">
+				<button v-for="type in ['Champion', 'Jester', 'Minotaurus', 'Valkirya']" :key="type"
+						@click="upgradeBastard(type)" class="rounded-md p-1 hover:bg-[#a52a2a]">
+					<img :src="IMG_PATHS[promoTeam + type]" :alt="type" :draggable="false">
+				</button>
 			</div>
     </div>
 </template>

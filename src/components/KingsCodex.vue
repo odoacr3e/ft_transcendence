@@ -1,7 +1,7 @@
 <script setup>
 	//@ts-nocheck
 	import IconEsoteric											from './icons/IconEsoteric.vue';
-	import { localBoard, localInfo, IMG_PATHS, localPlayers }	from '@/scripts/Data/Variables.js';
+	import { localBoard, localInfo, IMG_PATHS }	from '@/scripts/Data/Variables.js';
 	import { computed, ref, watch }								from 'vue';
 	import { PIECES_CODEX }										from '@/scripts/Data/PiecesCodex.js';
 	import MoveGrid												from './MoveGrid.vue';
@@ -25,8 +25,6 @@
 	const entry			= computed(() => piece.value ? PIECES_CODEX[piece.value.type] ?? null : null);
 	const tab			= ref('base');
 	const shownText		= computed(() => tab.value === 'base' ? entry.value?.baseText : entry.value?.boostText);
-	const localPlayer	= computed(() => [...localPlayers.values()].find(p => p.team === localInfo.myTeam) ?? null);
-	const canAfford		= computed(() => (localPlayer.value?.nPoints ?? 0) >= (piece.value?.price ?? 0));
 	const shownScenes	= computed(() => {
 		if (!entry.value)
 			return ([]);

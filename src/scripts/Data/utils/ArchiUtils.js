@@ -1,5 +1,5 @@
 import { computePosition, offset, flip, shift, autoUpdate }	from "@floating-ui/dom";
-import { emptyCapturedPieces, localBoard, localInfo, localPlayers, Square } 		from "../Variables";
+import { emptyCapturedPieces, localBoard, localInfo, localPlayers } 		from "../Variables";
 import { clearHighlight }									from "@/scripts/Events/utils/HighlightUtils.js";
 
 let stopAutoUpdate = null;
@@ -31,14 +31,10 @@ export function checkEndTurn(validated)
 
 export function checkUpgrade()
 {
-	//NOTE - Disattivata: il menu #choseMenu e' stato rimosso dal template di ChessBoard.vue
-	//(commit e086215f), quindi goatId restava acceso per sempre: overlay nero sulla board,
-	//bottone "End Turn" spento (secondTurn = false) e badge di boost/ability disabilitati.
-	//Togliere questo return quando il menu di promozione viene ripristinato.
-	return;
-
-	// eslint-disable-next-line no-unreachable
 	const	curP = localPlayers.values().find(p => p.isPlaying === true);
+
+	if (curP.team !== localInfo.myTeam)
+		return;
 
 	localBoard.forEach((square ,id) => {
 		if (((id.charAt(1) === '1' && curP.team === "black") ||
@@ -86,6 +82,15 @@ export function checkUpgrade()
 	});
 }
 
+export function stopUpgradeMenu()
+{
+	if (stopAutoUpdate)
+	{
+		stopAutoUpdate();
+		stopAutoUpdate = null;
+	}
+}
+
 export function assignLastMoveSquares(oldSquare, newSquare, newSet)
 {
 	const oldPiece	 = oldSquare.piece;
@@ -101,13 +106,6 @@ export function assignLastMoveSquares(oldSquare, newSquare, newSet)
 		newSet.add(oldSquare.id);
 	if (!isOldEmpty && !isNewEmpty && oldPSignat !== newPSignat)
 		newSet.add(oldSquare.id);
-}
-
-export function isValidTeam(team)
-{
-	if (!team || typeof team != "string")
-		return (false);
-	return ([...localPlayers.values()].some(p => p.team === team));
 }
 
 export function resetLocalVars()

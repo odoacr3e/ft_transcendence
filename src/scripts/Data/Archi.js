@@ -63,7 +63,7 @@ export function initLocalMatchState(raw)
 		sessionStorage.setItem("match:id", raw.id);
 }
 
-export function initLocalPlayers()
+function initLocalPlayers()
 {
 	const players_list = ["p1", "p2", "p3", "p4"];
 
@@ -107,7 +107,7 @@ export function updateMatchState(nextRaw)
   	}
 }
 
-export function updateLocalBoard(changes)
+function updateLocalBoard(changes)
 {
 	const board = changes.board;
 
@@ -143,7 +143,7 @@ export function updateLocalBoard(changes)
 	}
 }
 
-export function updateLocalPlayers(changes) 
+function updateLocalPlayers(changes) 
 {
 	const players_list = ["p1", "p2", "p3", "p4"];
 

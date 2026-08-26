@@ -1,6 +1,7 @@
 import { localInfo, localBoard, localPlayers, MACRO }	from "@/scripts/Data/Variables";
 import { PIECES_HIGHLIGHT }								from "@/scripts/Helper/piecesHighlights";
 import { clearHighlight }								from "@/scripts/Events/utils/HighlightUtils.js";
+import { stopUpgradeMenu }							from "@/scripts/Data/utils/ArchiUtils.js";
 import { requestToBack }								from "@/scripts/Events/BackLink.js";
 import { useSockStore }									from "../../../stores/sock.st";
 
@@ -85,6 +86,7 @@ export function upgradeBastard(newType)
 		function(value) {if (value) 
 		{ 
 			localInfo.goatId = null; 
+			stopUpgradeMenu();
 			clearHighlight(); 
 			if (MACRO.AUDIO)
 				new Audio("/src/assets/audios/transformation.mp3").play();

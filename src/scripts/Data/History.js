@@ -33,8 +33,6 @@ import { reactive } from "vue";
 /** @type {Array<TurnVM>} */
 export const localHistory = reactive([]);
 
-export const historyInfo = reactive({ loaded: false, lastTurn: -1});
-
 export function pushTurn(raw)
 {
 	const turn = normalizeTurn(raw);
@@ -51,7 +49,6 @@ export function pushTurn(raw)
 	else
 		localHistory.splice(localHistory.findIndex(t => t.turn > turn.turn), 0, turn);
 
-	historyInfo.lastTurn = localHistory[localHistory.length - 1].turn;
 	return (true);
 }
 
@@ -63,15 +60,12 @@ export function reloadHistory(list)
 	localHistory.splice(0);
 	if (Array.isArray(list))
 		list.forEach(pushTurn);
-	historyInfo.loaded = true;
 	// console.log(`[History]: caricati ${localHistory.length} turni`);
 }
 
 export function clearHistory()
 {
 	localHistory.splice(0);
-	historyInfo.loaded = false;
-	historyInfo.lastTurn = -1;
 }
 
 //SECTION - NORMALIZZAZIONE

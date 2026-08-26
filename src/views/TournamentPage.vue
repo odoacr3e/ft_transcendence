@@ -2,7 +2,6 @@
 	import TournamentCard       from '../components/TournamentCard.vue';
 	import { ref, onMounted, computed } from 'vue';
 	import { useAuthStore } from "../stores/auth.st";
-	import { useTourStore } from '../stores/tour.st.js';
 	import { storeToRefs }  from 'pinia';
 	import { useI18n }		from 'vue-i18n';
 	import { taskApi }      from '../router/api/task.api';
@@ -62,7 +61,7 @@
 		    }
 		    else { error.value = true; }
 		}
-		catch (err) { error.value = true; }
+		catch { error.value = true; }
 	}
 </script>
 

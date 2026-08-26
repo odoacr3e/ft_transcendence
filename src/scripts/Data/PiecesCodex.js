@@ -12,7 +12,6 @@ export const CODEX_RADIUS = 2;
 //role decide solo con che colore viene disegnata l'icona, non la logica.
 const self	= (x, y, opts = {})			=> ({ x, y, role: 'self',		...opts });
 const ally	= (x, y, type, opts = {})	=> ({ x, y, role: 'ally',	type,	...opts });
-const enemy	= (x, y, type, opts = {})	=> ({ x, y, role: 'enemy',	type,	...opts });
 
 
 /**

@@ -27,18 +27,6 @@
 									&& localPlayer.value?.nPoints >= Piece.value?.price
 									&& localInfo.secondTurn);
 
-	// const priceMessage = computed(() => {
-	// 	if (!localInfo.lastClickedId)
-	// 		return "...";
-	// 	const piece = localBoard.get(localInfo.lastClickedId)?.piece ?? null;
-	// 	if (!piece)
-	// 		return "...";
-	// 	if (piece.isBoostedBool)
-	// 		return "This piece is already\nboosted you fool!";
-	// 	if (piece.price > (localPlayer.value?.nPoints ?? 0))
-	// 		return "AHAH! You're too poor\nto buy that!";
-	// 	return "Price: " + piece.price;
-	// });
 	const canEndTurn = computed(() => myTurn.value && localInfo.secondTurn);
 	const canGiveUp = computed(() => myTurn.value || localInfo.secondTurn);
 

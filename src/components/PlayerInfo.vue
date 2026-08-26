@@ -1,6 +1,5 @@
 <script setup>
-	import { DOMPlayer, localBoard, localInfo }	from '@/scripts/Data/Variables';
-	import { useAbility, sendEndTurn }			from '@/scripts/Events/utils/GlobalUtils';
+	import { DOMPlayer, localInfo }	from '@/scripts/Data/Variables';
 	import { defaultAvatar, handleAvatarError }	from '../scripts/Helper/CompUtils';
 	import { computed }							from 'vue';
 	import	TimerClock							from "./TimerClock.vue"
@@ -14,8 +13,7 @@
 			playing	= computed(() => player.value.isPlaying),
 			running	= computed(() => playing.value && localInfo.matchStarted && !localInfo.victory),
 			up		= prop.pos === 'top',
-			down	= prop.pos === 'bottom',
-			endT	= computed(() => localInfo.secondTurn);
+			down	= prop.pos === 'bottom';
 
 	const nameSize = computed(() => {
 		const len = Math.max(
@@ -28,10 +26,6 @@
 		return 'small';
 	});
 
-	const Piece = computed(() => {
-		if (!localInfo.clickedId) { return null; }
-		return localBoard.get(localInfo.clickedId)?.piece ?? null;
-	});
 </script>
 
 <template>

@@ -1,6 +1,6 @@
 <script setup>
 	import { localMatchState, localInfo, DOMPlayer, ePlaying }	from '@/scripts/Data/Variables';
-	import { onMounted, ref, computed, KeepAlive, onUnmounted, watch }       			from 'vue';
+	import { onMounted, ref, computed, onUnmounted, watch }       			from 'vue';
 	import { reloadMatch, amIPlaying, requestToBack }					from '@/scripts/Events/BackLink.js';
 	import PlayerInfo               					from '../components/PlayerInfo.vue';
 	import ChessBoard               					from '../components/ChessBoard.vue';
@@ -8,7 +8,6 @@
 	import EndGameOverlay 								from '@/components/EndGameOverlay.vue';
 	import { clearMatchStorage }						from '@/scripts/Data/Archi.js';
 	import router 										from '@/router';
-	import GameFour										from './GameFour.vue';
 import MovesHistory from '@/components/MovesHistory.vue';
 import KingsCodex from '@/components/KingsCodex.vue';
 import GameMsgBox from '@/components/GameMsgBox.vue';

@@ -11,7 +11,7 @@ export const PIECES_HIGHLIGHT = Object.freeze ({
 	"Bastards" : KingAndBastardsHL,
 });
 
-export function JesterHL(squareId)
+function JesterHL(squareId)
 {
 	if (!squareId && localBoard.has(squareId))
 		return;
@@ -34,7 +34,7 @@ export function JesterHL(squareId)
 		throw Error("[JesterHL]: qualcosa è andato storto");
 }
 
-export function ValkiryaHL(squareId)
+function ValkiryaHL(squareId)
 {
 	if (!squareId && localBoard.has(squareId))
 		return;
@@ -54,7 +54,7 @@ export function ValkiryaHL(squareId)
 		throw Error("[ValkiryaHL]: qualcosa è andato storto");
 }
 
-export function KingAndBastardsHL(squareId)
+function KingAndBastardsHL(squareId)
 {
 	if (!squareId && localBoard.has(squareId))
 		return;
@@ -84,7 +84,7 @@ export function KingAndBastardsHL(squareId)
 		throw Error("[KingAndBastardsHL]: qualcosa è andato storto");
 }
 
-export function ChampAndMinoHL(squareId)
+function ChampAndMinoHL(squareId)
 {
 	if (!squareId && localBoard.has(squareId))
 		return;
