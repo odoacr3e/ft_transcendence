@@ -116,6 +116,7 @@ export async function startRoundHandler(req, socket, user)
 	await tournament.initAllMatches();
 	result = new Result().Success();
 	roomMessage(`tournament_${tournament.id}`, "start_round", result);
+	roomMessage(`tournament_${tournament.id}`, "update_tournament", {data: tournament.userIds[tournament.round], roundId: tournament.round});
 	return (result);
 }
 

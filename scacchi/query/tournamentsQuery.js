@@ -1,8 +1,6 @@
 //@ts-check
 import { prisma } from "../lib/prisma.js";
 
-console.log("ciao");
-
 export async function getAllUserTournaments(id_user) {
 	const userTournaments = await prisma.tournament_players.findMany({
 		where: {
