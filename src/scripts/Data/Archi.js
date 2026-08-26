@@ -5,6 +5,7 @@ import { checkEndTurn, hasBoost,
 		 checkUpgrade, assignLastMoveSquares }	from "./utils/ArchiUtils.js";
 import { beginPendingAbility } 					from "../Helper/abilityMovement.js";
 import { clearHistory } 						from "./History.js";
+import { clearGameMsgs } 					from "./GameMsg.js";
 import "./SocketLink.js"
 
 //SECTION - INIT FUNCTIONS
@@ -209,4 +210,5 @@ export function clearMatchStorage()
 	sessionStorage.removeItem("match:id");
 	sessionStorage.removeItem("match:myTeam");
 	clearHistory();
+	clearGameMsgs();
 }

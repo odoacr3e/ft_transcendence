@@ -4,8 +4,8 @@
 	const props = defineProps({
 		fill:		{ type: String, default: '#006aff' },
 		stroke:		{ type: String, default: '#000000' },
-		hourDur:	{ type: [String, Number], default: '9s' },
-		minuteDur:	{ type: [String, Number], default: '0.75s' },
+		hourDur:	{ type: [String, Number], default: '15s' },
+		minuteDur:	{ type: [String, Number], default: '2s' },
 		paused:		{ type: Boolean, default: false }
 	});
 

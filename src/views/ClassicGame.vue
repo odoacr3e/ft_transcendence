@@ -11,6 +11,7 @@
 	import GameFour										from './GameFour.vue';
 import MovesHistory from '@/components/MovesHistory.vue';
 import KingsCodex from '@/components/KingsCodex.vue';
+import GameMsgBox from '@/components/GameMsgBox.vue';
 
 	const	ready		= ref(false);
 	const	style		= ref("1v1");
@@ -76,7 +77,7 @@ import KingsCodex from '@/components/KingsCodex.vue';
 
 <template>
     <div class="flex z-2 bg-bg-darker rounded-3xl">
-		<KingsCodex/>
+		<KingsCodex v-if="ready"/>
         <div class="p-6 bg-bg-default rounded-l-3xl border-r border-border-default">
           <div v-if="ready">
             <PlayerInfo :p="topP" pos="top"/>
@@ -93,7 +94,8 @@ import KingsCodex from '@/components/KingsCodex.vue';
 				</p>
         	</div>
 		</div>
-        <div class="pt-10 mt-20 w-md px-6 flex flex-col gap-4">
+        <div class="mt-10 w-md px-6 flex flex-col gap-4">
+			<GameMsgBox v-if="ready"/>
 			<MovesHistory v-if="ready" class="h-87.5"/>
 			<ActionButtons v-if="ready"/>
 		</div>

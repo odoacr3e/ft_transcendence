@@ -86,21 +86,6 @@ export function checkUpgrade()
 	});
 }
 
-/**
- * 
- * @param {string} key 
- * @param {*} val 
- * @returns 
- */
-export function _jsonReviver(key, val)
-{
-	if (val && val.__type == "Set")
-		return (new Set(val.data));
-	if (val && val.__type == "Map")
-		return (new Map(val.data));
-	return val;
-}
-
 export function assignLastMoveSquares(oldSquare, newSquare, newSet)
 {
 	const oldPiece	 = oldSquare.piece;
@@ -123,18 +108,6 @@ export function isValidTeam(team)
 	if (!team || typeof team != "string")
 		return (false);
 	return ([...localPlayers.values()].some(p => p.team === team));
-}
-
-export function resolveMyTeam(rawTeam)
-{
-	const stored = sessionStorage.getItem("match:myTeam");
-
-	if (isValidTeam(rawTeam.team))
-		return(rawTeam);
-	if (isValidTeam(rawTeam.team))
-		return(stored);
-	console.error("[resolveMyTeam]: myTeam non determinabile", {rawTeam, stored});
-	return (null);
 }
 
 export function resetLocalVars()

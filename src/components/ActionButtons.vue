@@ -44,7 +44,6 @@
 
 	function requestDraw() {}
 
-	// null | 'giveup' | 'draw' : azione in attesa di conferma
 	const pending = ref(null);
 	const panelEl = ref(null);
 

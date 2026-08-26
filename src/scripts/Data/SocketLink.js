@@ -6,6 +6,7 @@ import { blinkSquares } 											from "../Events/utils/GlobalUtils";
 import router 														from "@/router";
 import { resetLocalVars } 											from "./utils/ArchiUtils";
 import { pushTurn, reloadHistory } from "./History";
+import { pushGameMsg } from "./GameMsg";
 
 export function listenGameSocket(socket)
 {
@@ -106,5 +107,10 @@ export function listenGameSocket(socket)
 			if (MACRO.AUDIO)
 				new Audio("/src/assets/audios/tette.mp3").play();
 		}
+	});
+
+	socket.on("gameMsg", (raw) => {
+		// console.log("{[socket gameMsg]} ricevuto messaggio:", raw);
+		pushGameMsg(raw);
 	});
 }

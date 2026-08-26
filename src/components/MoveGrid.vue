@@ -65,7 +65,7 @@
 			const [tx, ty]	= a.to;
 			const dx		= Math.sign(tx - fx);
 			const dy		= Math.sign(ty - fy);
-			const steps		= Math.max(Math.abs(tx - tx), Math.abs(ty - fy));
+			const steps		= Math.max(Math.abs(tx - fx), Math.abs(ty - fy));
 
 			if (steps && (dx === 0 || dy === 0 || Math.abs(tx - fx) === Math.abs(ty - fy)))
 				for (let s = 1; s <= steps; s++)
