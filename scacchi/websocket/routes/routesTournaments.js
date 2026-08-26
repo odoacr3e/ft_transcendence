@@ -56,7 +56,11 @@ export function routesTournament(socket, user)
 	{
 		// console.log(JSON.stringify(req, null, 2));
 		result = await startRoundHandler(req, socket, user);
-		console.log("Round started.");
+		if (result.status != 200)
+			console.log("Round error: " + JSON.stringify(result, null, 2));
+		else
+			console.log("round started");
+		socket.emit("start_round", result);
 		if (typeof(callback) == "function")
 			callback(result);
 	});
