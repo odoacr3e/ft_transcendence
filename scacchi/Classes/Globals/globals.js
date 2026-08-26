@@ -31,7 +31,7 @@ class Globals
 {
 	constructor()
 	{
-		/** @type {Map<string, Match>} */
+		/** @type {Map<string | undefined, Match>} */
 		this.matches = new Map();
 		/** @type {Map<number, Socket>} */
 		this.clientMap = new Map();

@@ -85,6 +85,11 @@ async function gameWebSocketHandler(req, id_user, socketData)
 	match = globals.matches.get(matchId);
 	if (!match)
 		return (socketError(socketData.socket, null, 403, "Socket: invalid match id " + matchId));
+	if (match.mutex == true)
+	{
+		console.log(`Someone is already using fakeboost.. try again later`);
+		return (socketError(socketData.socket, null, 409, "Someone is using fakeboost... try later"));
+	}
 	id = match.id;
 	req = normifyRequest(match.cursor, req);
 	if (isOneOf(req.type, "reload", "history"))
@@ -163,7 +168,8 @@ async function gameHandler(match, body, socketData=null)
 	}
 	else
 	{
-		error(null, result, 400, `invalid type ${body.type}`);
+		result.Error(`invalid type ${body.type}`, 400);
+		error(null, result);
 		return (result);
 	}
 	if (!result || !result.status)

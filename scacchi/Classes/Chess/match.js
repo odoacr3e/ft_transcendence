@@ -81,6 +81,7 @@ class Match
 		this.aiBool = false;
 		this.zobristIndex = 0;
 		this.zobristTable = [];
+		this.mutex = false;
 	}
 	/** @param {MatchSettings | string | null} preset*/
 	Reset(preset=null)
