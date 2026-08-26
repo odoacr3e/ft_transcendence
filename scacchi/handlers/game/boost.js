@@ -111,6 +111,8 @@ function fakeBoost(match, from)
 {
 	let	result = new Result;
 	let	square;
+	let	player;
+	let	prevBoost;
 
 	if (!from)
 		return (result.Error(`boost: coord from ${from} does not exist`));
@@ -119,6 +121,8 @@ function fakeBoost(match, from)
 	square = match.board.get(from);
 	if (!square.piece)
 		return (result.Error(`boost: there is no piece is ${from}...`));
+	player = match.GetPlayer(square.piece.team);
+	prevBoost = player.boostedPiece;
 	square.piece.isBoostedBool = true;
 	DangerUpdate(match, from);
 	result.Success();
@@ -126,6 +130,7 @@ function fakeBoost(match, from)
 	result.zones = jsonParser(structuredClone(square.boostedTargetZones));
 	square.piece.isBoostedBool = false;
 	DangerUpdate(match, from);
+	player.boostedPiece = prevBoost;
 	return (result);
 }
 
