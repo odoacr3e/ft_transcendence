@@ -10,6 +10,7 @@ import { Result } from "../endPoint/result.js";
 import { SocketInfo } from "./socketInfo.js";
 import fs from "fs";
 import { zobristGenerateTable } from "../../utils/zobrist.js";
+import { Tournament } from "../Chess/tournament.js";
 
 /** @typedef {import("../Chess/chessBoard.js").ChessBoard} ChessBoard*/
 /** @typedef {import("../Chess/player.js").Player} Player*/
@@ -54,6 +55,8 @@ class Globals
 		this.AITraining = getTrainingSchedule();
 		/** @type {Map<string, number>} */
 		this.AIgameCounter = new Map();
+		this.tournamentMap.set(0, new Tournament("DEBUG"));
+		this.tournamentMap.get(0)?.DEBUGtournament();
 	}
 	/** @param {string} roomType */
 	GetQueue(roomType)

@@ -52,7 +52,7 @@ export function routesTournament(socket, user)
 			callback(result);
 	});
 
-	socket.on('start_round', async (req, callback) => 
+	socket.on('start_round', async (/** @type {{DEBUG: Boolean}} */ req, callback) => 
 	{
 		// console.log(JSON.stringify(req, null, 2));
 		result = await startRoundHandler(req, socket, user);

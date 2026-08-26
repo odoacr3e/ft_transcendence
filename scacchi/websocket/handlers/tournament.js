@@ -81,11 +81,20 @@ export async function joinTournamentRoomHandler(req, socket, user)
 		result = room.addPlayer(user.id_user);
 		socket.join(`tournament_${room.id}`);
 		socketData = globals.clientMap.get(user.id_user);
+		if (!socketData)
+			throw (`joinTournamentRoomHandler: socketData not found`);
 		await query.tournamentsQuery.addPlayersToTournament(room.tournamentId, [user.id_user]);
 		console.log("joinTournament =>	query addPlayers");
 		roomMessage(`tournament_${room.id}`, `join_player`, result);
-		if (socketData)
-			socketData.state = enumSocketState.JOIN_TOURNAMENT;
+		socketData.state = enumSocketState.JOIN_TOURNAMENT;
+		socketData.tournamentData = 
+		{
+			id: room.tournamentId,
+			matchId: "",//@ts-ignore
+			me: null,//@ts-ignore
+			opponent: null,
+			ready: false
+		};
 	}
 	if (room && result.status == 200 && room.players.size == room.maxPlayers)
 		initTournament(room);
@@ -94,18 +103,22 @@ export async function joinTournamentRoomHandler(req, socket, user)
 
 /**
  * 
- * @param {{tournament_pwd: string}} req 
+ * @param {{DEBUG: boolean}} req 
  * @param {Socket} socket
  * @param {dbUser} user 
  */
 export async function startRoundHandler(req, socket, user)
 {
 	let result;
+	let	tournament;
 	const socketData = globals.clientMap.get(user.id_user);
 
+	if (req?.DEBUG == true)
+		tournament = globals.tournamentMap.get(0);
 	if (!socketData || !socketData.tournamentData)
 		return (new Result().Error("Can't find myself or tournament I've joined", 404));
-	const tournament = globals.tournamentMap.get(socketData?.tournamentData?.id);
+	else
+		tournament = globals.tournamentMap.get(socketData?.tournamentData?.id);
 	if (!tournament)
 		return (new Result().Error("Tournament doesn't exist", 500));
 	if (tournament.adminId != user.id_user)

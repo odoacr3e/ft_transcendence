@@ -24,8 +24,6 @@ export class Room
 		/** @type {Set<number>} */ this.players = new Set();
 		this.players.add(ownerId);
 		this.maxPlayers = max;
-		//FIXME - debug
-		this.maxPlayers = 2;
 		this.connType = roomType;
 		this.matchType = matchType;
 		this.tournamentId = 0;

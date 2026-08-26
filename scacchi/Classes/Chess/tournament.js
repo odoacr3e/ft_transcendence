@@ -30,7 +30,7 @@ export class Tournament
 	 * @param {string} matchType 
 	 * @param {number} playerNum 
 	 */
-	constructor (name="", matchType=eMatchPresets.ClassicTwoPlayers, playerNum=2)
+	constructor (name="", matchType=eMatchPresets.ClassicTwoPlayers, playerNum=8)
 	{
 		this.id = 0;//NOTE - prendiamo da prisma
 		this.adminId = 0;
@@ -131,5 +131,23 @@ export class Tournament
 		if (this.userIds[this.round].length != 1)
 			return false;
 		return true;
+	}
+	DEBUGtournament()
+	{
+		this.id = 113;
+		this.adminId = 84;
+		this.name = "DEBUG";
+		/** @type {OldMatch} */
+		this.oldMatchIds = new Array();
+		this.startUserIds = new Set();
+		/** @type {UserIds} */
+		this.userIds = new Array();
+		this.userIds[0] = [84, 2, 85, 86, 88, 67, 108, 105];
+		this.playerNum = 8;
+		this.round = 0;
+		this.activeMatches = 0;
+		this.first = 0;
+		this.second = 0;
+		this.third = [0, 0];
 	}
 }
