@@ -1,4 +1,5 @@
 import { nextTick, onBeforeUnmount, onMounted, unref, watch } from "vue";
+import { MACRO } from "../Data/Variables";
 
 /*
 	Chiude un popup quando si clicca fuori dalla sua area (e, se richiesto, con Escape).
@@ -63,4 +64,16 @@ export function useClickOutside(target, onOutside, { when = null, escape = false
 	onBeforeUnmount(stop);
 
 	return ({ start, stop });
+}
+
+export function playAudio(path, case, flag = null)
+{
+	if (!MACRO.AUDIO)
+		return;
+	if (path)
+	switch (case)
+	{
+		case 'move':
+			new Audio(path)
+	}
 }

@@ -116,6 +116,8 @@
 		flex-direction: row;
 		align-items: center;
 		gap: .8rem;
+		zoom: .88;
+		padding-top: 1rem;
 	}
 
 	.title-txt

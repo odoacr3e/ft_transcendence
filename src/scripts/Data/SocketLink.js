@@ -8,6 +8,8 @@ import { resetLocalVars } 											from "./utils/ArchiUtils";
 import { pushTurn, reloadHistory } 									from "./History";
 import { pushGameMsg } 												from "./GameMsg";
 
+let audioFlag = false;
+
 export function listenGameSocket(socket)
 {
 	socket.on("game", (raw) => {

@@ -1,6 +1,6 @@
 <script setup>
 	import { ref, onMounted }					from 'vue';
-	import { useClickOutside }					from '@/scripts/Helper/useClickOutside';
+	import { useClickOutside }					from '@/scripts/Helper/generalUtils';
 	import { rework_date, defaultAvatar, handleAvatarError }	from '../scripts/Helper/CompUtils';
 	import { useAuthStore }	from "../stores/auth.st";
 	import { useMsgStore }	from '../stores/msg.st';

@@ -199,8 +199,18 @@ boardConverter()
 - [ ]	reattività delle pagine [MAVI]
 - [ ]	reworkare il design delle pagine di gioco appena sono pronte
 - [ ]	info dei profili per le partitre a 4
-- [ ]	Sia per poter potenziare i pezzi che per usare l'abilità aggiungere un bottoncino sul pezzo (bl o br) stile overwatch
-- [ ]	Tutte le info/bottoni attuali a destra in un unico div in futuro tutorial/info pezzi a sinistra
+- [x]	Sia per poter potenziare i pezzi che per usare l'abilità
+		aggiungere un bottoncino sul pezzo (bl o br) stile overwatch
+- [x]	Tutte le info/bottoni attuali a destra in un unico div in 
+		futuro tutorial/info pezzi a sinistra
+- [ ]	Compilare le scene per i tutorial
+- [ ]	Sistemare gli audio
+- [ ]	Pagina contro IA
+- [ ]	Shadow GMU
+- [ ]	Pagina a 4 giocatori
+- [ ]	Frecce sulla scaccchiera
+- [ ]	Icone e nomi dei pezzi che cambiano quando vengono potenziati
+- [ ]	Cambiare l'aura dei pezzi potenziati con l'aura di goku
 
 //NOTE - Testing
 	✓	nome utente in grassetto

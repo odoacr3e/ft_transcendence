@@ -4,7 +4,7 @@
 			 sendGiveUp, showBoostedMovesHover,
 			 showBoostedMovesLeave }							from '@/scripts/Events/utils/GlobalUtils';
 	import { computed, ref }							from 'vue'
-	import { useClickOutside }							from '@/scripts/Helper/useClickOutside';
+	import { useClickOutside }							from '@/scripts/Helper/generalUtils.js';
 	import IconHourglass										from '@/components/icons/IconHourglass.vue';
 	import IconLightning										from '@/components/icons/IconLightning.vue';
 	import IconFlag												from '@/components/icons/IconFlag.vue';

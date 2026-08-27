@@ -182,6 +182,10 @@ export let MACRO = Object ({
 	"CLASSIC"	: false,
 });
 
+export const AUDIOPATH = Object.freeze({
+	move:	"ciao",
+})
+
 export function debug(...args)
 {
 	if (MACRO.DEBUG)

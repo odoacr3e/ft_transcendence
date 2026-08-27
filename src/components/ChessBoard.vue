@@ -3,7 +3,7 @@
 	import { DOMBoard, localInfo, IMG_PATHS, 
 			 HIDDEN, myPlayer, canAfford, localBoard }	from '@/scripts/Data/Variables';
 	import { onMounted, computed, ref }				from 'vue';
-	import { useClickOutside }						from '@/scripts/Helper/useClickOutside';
+	import { useClickOutside }						from '@/scripts/Helper/generalUtils.js';
 	import { onDragStart, onDrop }						from '@/scripts/Events/Movements';
 	import { getSquareColor } 							from '@/scripts/Helper/RenderUtils';
 	import { globalEvents }								from '@/scripts/Events/Global';
