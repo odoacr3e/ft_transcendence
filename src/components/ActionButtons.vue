@@ -29,7 +29,7 @@
 									&& localInfo.secondTurn);
 
 	const canEndTurn = computed(() => myTurn.value && localInfo.secondTurn);
-	const canGiveUp = computed(() => myTurn.value || localInfo.secondTurn);
+	// const canGiveUp = computed(() => myTurn.value || localInfo.secondTurn);
 
 	function requestDraw() {}
 
@@ -102,7 +102,7 @@
 		<div class="bottom-section" ref="panelEl">
 			<div class="btm-row">
 				<button class="action mini bg-red-400 hover:bg-red-500"
-					v-bind:class="canGiveUp ? 'on' : 'off'"
+					v-bind:class="'on'"
 					@click="askGiveUp()">
 					<IconFlag class="icon"/>
 					<b>Give Up!</b>
