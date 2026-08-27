@@ -2,10 +2,10 @@
 	import TournamentCard       from '../components/TournamentCard.vue';
 	import { ref, onMounted, computed } from 'vue';
 	import { useAuthStore } from "../stores/auth.st";
+	import { useTourStore } from "../stores/tour.st";
 	import { storeToRefs }  from 'pinia';
 	import { useI18n }		from 'vue-i18n';
 	import { taskApi }      from '../router/api/task.api';
-	import { api }          from '../router/api/client'
 	import router from '@/router/index.js';
 	
     const	{ t } = useI18n(),
