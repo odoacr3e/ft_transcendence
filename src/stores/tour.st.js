@@ -4,24 +4,42 @@ import { defineStore }  from 'pinia';
 export const useTourStore = defineStore('tour', {
 	state: () => ({
 		pwd: null,
+		id : null,
         status: null,
         error: null
 	}),
 
 	actions: 
 	{
-        createTour(tourName)
+        async createTour(tourName)
 		{
             const socket = useSockStore().socket;
-			socket.emit("create_tournament", {name: tourName}, ({resp}) => {
-				if (resp.log.status == "OK")
+			try{
+				const resp = await socket.emitWithAck("create_tournament", {name: tourName});
+				if (resp.msg == "OK")
 				{
 					this.pwd = resp.tournament_pwd;
-					socket.off('update_tournament'); //meglio metterla in una funziona a fine torneo
-					socket.on('update_tournament', ({resp}) => { if (!resp.log) { this.error = resp.log.error; } this.status = resp.round });
-					return (resp);
+					this.id = resp.tournament_id;
 				}
-			});
+				return (true);
+			}
+			catch(error) {
+				this.error = error;
+				return (false);
+			}
+		},
+		async enterTour(pwd)
+		{
+			const socket = useSockStore().socket;
+			try{
+				const resp = await socket.emitWithAck("join_tournament", {tournament_pwd: pwd});
+				if (resp.msg == "OK")
+				{ return (true); }
+			}
+			catch(error) {
+				this.error = error;
+				return (false);
+			}
 		}
 	}
 })

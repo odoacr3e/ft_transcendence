@@ -1,6 +1,6 @@
 <script setup>
     import { defaultAvatar, handleAvatarError } from '../scripts/Helper/CompUtils';
-    import { ref, onMounted }   from 'vue';
+    import { ref, onMounted, watch }   from 'vue';
     import { useAuthStore }     from "../stores/auth.st";
     import { useSockStore }     from '../stores/sock.st';
     import { useTourStore }     from '../stores/tour.st';
@@ -8,6 +8,7 @@
     import { useRoute } from 'vue-router'
     import { taskApi }  from '../router/api/task.api';
     import { api }      from '@/router/api/client';
+    import router from '@/router/index.js';
 
     const   tournament = ref(null),
             friends = ref(null),
@@ -27,17 +28,41 @@
         {
             friends.value = await taskApi.friendlist();
             tournament.value = (await api.get(`/api/tournaments/${route.params.tournament}`)).data.tournament;
-
 			admin.value = user.value.username === tournament.value?.created_by.username;
 			players.value = tournament.value.players;
 
-			sockStore.socket.on("join_tournament", async ({resp}) => {
-				if (resp.log)
-					tournament.value = (await api.get(`/api/tournaments/${route.params.tournament}`)).data.tournament;
+            sockStore.socket.on('join_player', async (resp) => {
+                if (resp.msg == 'OK')
+                {
+                    const p = invites.value.find(u => u.id_user === resp.user_id); //post push del back modificare in id_user
+                    players.value.push(p);
+                    invites.value.splice(invites.value.indexOf(p), 1);
+                }
 			});
+            sockStore.socket.on('start_tournament', async (resp) => {
+			    if (resp.log.msg == "OK")
+			    {
+			    	router.push({
+			    	name: "start_tournament",
+			    	params: { tournament: tournament.value.id_tournament }
+			    	});
+			    }
+            });
         }
         catch {}
     });
+
+    watch(() => players.value.length, (len) => {
+		if (len == 8) {
+            setTimeout(() => {
+                router.push({
+			    name: "start_tournament",
+			    params: { tournament: tournament.value.id_tournament }
+			    });
+            }, 5000);
+		}
+	});
+
 
     function findUser(list, id_user) { return list.find(u => u.id_user === id_user); }
 
@@ -60,7 +85,7 @@
 	    const existing = findUser(invites.value, user.id_user);
 	    if (existing)
 	        invites.value.splice(invites.value.indexOf(existing), 1);
-	    else if (invites.value.length < 7)
+	    else if (invites.value.length < 7 && invites.value.length + players.value.length < 8)
 	        invites.value.push(user);
 	}
 
@@ -78,14 +103,10 @@
         }
         catch(err) { console.error(err); }
     }
-
-	async function startTour() {
-		sockStore.socket.emit('start_round');
-	}
 </script>
 
 <template>
-    <div class="w-full max-w-350 h-full max-h-190 rounded-3xl translate-y-7 border border-border-default bg-bg-default p-6 text-text-default shadow-2xl overflow-hidden transition-all">
+    <div class="w-full max-w-350 h-full max-h-190 rounded-3xl border border-border-default bg-bg-default p-6 text-text-default shadow-2xl overflow-hidden transition-all">
         <div class="flex items-center">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-13 m-2 text-form-icon">
                 <path fill-rule="evenodd" d="M5.166 2.621v.858c-1.035.148-2.059.33-3.071.543a.75.75 0 0 0-.584.859 6.753 6.753 0 0 0 6.138 5.6 6.73 6.73 0 0 0 2.743 1.346A6.707 6.707 0 0 1 9.279 15H8.54c-1.036 0-1.875.84-1.875 1.875V19.5h-.75a2.25 2.25 0 0 0-2.25 2.25c0 .414.336.75.75.75h15a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-2.25-2.25h-.75v-2.625c0-1.036-.84-1.875-1.875-1.875h-.739a6.706 6.706 0 0 1-1.112-3.173 6.73 6.73 0 0 0 2.743-1.347 6.753 6.753 0 0 0 6.139-5.6.75.75 0 0 0-.585-.858 47.077 47.077 0 0 0-3.07-.543V2.62a.75.75 0 0 0-.658-.744 49.22 49.22 0 0 0-6.093-.377c-2.063 0-4.096.128-6.093.377a.75.75 0 0 0-.657.744Zm0 2.629c0 1.196.312 2.32.857 3.294A5.266 5.266 0 0 1 3.16 5.337a45.6 45.6 0 0 1 2.006-.343v.256Zm13.5 0v-.256c.674.1 1.343.214 2.006.343a5.265 5.265 0 0 1-2.863 3.207 6.72 6.72 0 0 0 .857-3.294Z" clip-rule="evenodd" />
@@ -133,22 +154,24 @@
                 </div>
             </div>
 
-            <div class="my-4 mx-8 h-[68vh] w-full bg-bg-darker text-text-default rounded-3xl border border-border-default">
-                <div class="p-4">
+            <div class="my-4 mx-8 h-[68vh] w-full bg-bg-darker text-text-default rounded-3xl border border-border-default overflow-hidden">
+                <div class="p-4 flex flex-col">
                     <div>
-                        <div class="flex justify-between">
-                            <h2 class="m-3" :class="{ 'text-3xl' : !admin, 'text-2xl' : admin }">
+                        <div class="relative flex">
+                            <h2 class="m-3 justify-self-start" :class="{ 'text-3xl' : !admin, 'text-2xl' : admin }">
 								Giocatori:     ({{ players.length }}/8)</h2>
-                            <form v-if="admin" @submit.prevent="startTour()" method="post" enctype="application/json" class="text-text-default items-center">
-                                <input id="submit" class="h-fit self-center transition-opacity w-fit p-3 m-2 mr-5 text-base bg-main-color rounded-[7px] text-text-default hover:bg-linear-to-t from-main-color to-light-button"
-                                        type="submit" value="Inizia il torneo!" :class="{ 'opacity-100 duration-250 cursor-pointer pointer-events-auto' : players.length === 8, 'pointer-events-none opacity-0' : players.length < 8 }">
-                            </form>
+                            <div v-if="!admin && players.length === 8" class="flex w-fit absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 justify-center px-11 py-3 rounded-3xl text-xl
+                                border inset-ring bg-bg-error text-text-error border-border-error inset-ring-inset-error transition-all animate-start">
+                                <p class="self-center w-fit">
+                                    Il torneo sta iniziando!
+                                </p>
+                            </div>
                         </div>
                         <div class="grid grid-cols-2 grid-rows-1" 
                             :class="{   'grid-rows-4' : players.length == 8 || players.length == 7, 
 										'grid-rows-3' : players.length == 6 || players.length == 5, 
                                         'grid-rows-2' : players.length == 4 || players.length == 3 }">
-                            <div v-for="p in players" class="flex m-3 items-center" :class="{ 'justify-center' : !admin }">
+                            <div v-for="p in players" class="flex m-3 items-center" :class="{ 'ml-[18vh]' : !admin }">
                                     <img :src="p.image ? `${p.image}` : defaultAvatar" @error="handleAvatarError" :draggable="false"
                                         alt="" class="rounded-full object-cover mx-2" :class="{ 'size-25' : !admin, 'size-15' : admin }">
                                     <div :class="{ 'text-2xl mx-2' : !admin, 'text-md' : admin }">
@@ -159,7 +182,7 @@
                             </div>
                         </div>
                     </div>
-                    <div v-if="admin">
+                    <div v-if="admin && players.length < 8">
                         <div class="flex justify-between">
                             <h2 class="text-2xl m-3">Invitati:</h2>
                             <button @click="inviteUsers()" class="h-fit self-center transition-opacity w-25 p-2 m-2 mr-5 text-base bg-main-color rounded-[7px] text-text-default hover:bg-linear-to-t from-main-color to-light-button">
@@ -172,10 +195,15 @@
                                         alt="" class="size-15 rounded-full object-cover mx-2">
                                     <div>
                                         <p>{{ p.username }}</p>
-                                        <p>...</p>
                                     </div>
                             </div>
                         </div>
+                    </div>
+                    <div v-if="admin && players.length === 8" class="flex w-fit self-center justify-center mt-20 px-15 py-4 rounded-3xl text-2xl
+                        border inset-ring bg-bg-error text-text-error border-border-error inset-ring-inset-error transition-all animate-start">
+                        <p class="self-center w-fit">
+                            Il torneo sta iniziando!
+                        </p>
                     </div>
                 </div>
             </div>
@@ -196,4 +224,16 @@ input[type="search"]::-webkit-search-cancel-button {
 input::-webkit-calendar-picker-indicator {
 	display: none !important;
 }
+
+@keyframes startPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+
+.animate-start {
+  animation: startPulse 1s ease-in-out infinite;
+  transform-origin: center;
+}
+
 </style>

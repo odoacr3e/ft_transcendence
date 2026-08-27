@@ -1,16 +1,16 @@
 <script setup>
 	import { localMatchState, localInfo, DOMPlayer, ePlaying, debug}	from '@/scripts/Data/Variables';
-	import { onMounted, ref, computed, onUnmounted, watch }       			from 'vue';
+	import { onMounted, ref, computed, onUnmounted, watch }       		from 'vue';
 	import { reloadMatch, amIPlaying, requestToBack }					from '@/scripts/Events/BackLink.js';
-	import PlayerInfo               					from '../components/PlayerInfo.vue';
-	import ChessBoard               					from '../components/ChessBoard.vue';
-	import ActionButtons								from '../components/ActionButtons.vue';
-	import EndGameOverlay 								from '@/components/EndGameOverlay.vue';
-	import { clearMatchStorage }						from '@/scripts/Data/Archi.js';
-	import router 										from '@/router';
-import MovesHistory from '@/components/MovesHistory.vue';
-import KingsCodex from '@/components/KingsCodex.vue';
-import GameMsgBox from '@/components/GameMsgBox.vue';
+	import PlayerInfo               									from '../components/PlayerInfo.vue';
+	import ChessBoard               									from '../components/ChessBoard.vue';
+	import ActionButtons												from '../components/ActionButtons.vue';
+	import EndGameOverlay 												from '@/components/EndGameOverlay.vue';
+	import { clearMatchStorage }										from '@/scripts/Data/Archi.js';
+	import router 														from '@/router';
+	import MovesHistory													from '@/components/MovesHistory.vue';
+	import KingsCodex													from '@/components/KingsCodex.vue';
+	import GameMsgBox													from '@/components/GameMsgBox.vue';
 
 	const	ready		= ref(false);
 	const	style		= ref("1v1");

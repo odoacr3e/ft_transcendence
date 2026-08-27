@@ -74,7 +74,7 @@
 		style="font-weight: 700;"
 		:class="{
 			'opacity-50': !props.go,
-			'bg-[#181715] text-white': props.team === 'black',
+			'bg-bg-darker text-white': props.team === 'black',
 			'bg-[#ededed] text-black': props.team === 'white'
 		}">
 		<IconClock class="clock-icon" fill="currentColor" stroke="none" :paused="!props.go" />

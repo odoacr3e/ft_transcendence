@@ -83,6 +83,7 @@ export const useAuthStore = defineStore('auth', {
 					await authApi.logout({ id_user: this.user.id_user });
 				await router.push('/log');
 				useMsgStore().clear();
+				useSockStore().socket.emit("logout");
 				useSockStore().disconnect();
 				this.user = null;
 			}

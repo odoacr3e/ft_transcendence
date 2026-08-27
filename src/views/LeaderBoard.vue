@@ -13,12 +13,12 @@ const   { t } = useI18n(),
         last7 = ref(null),
         authStore = useAuthStore(),
 		{ user } = storeToRefs(authStore),
-        top = ref(!lBoard.value?.filter((u) => u.id_user == user.id_user));
+        top = ref(false);
 
-    function winRate(win, total) {
-        if (!total) { return (0); }
-        return (Math.round((win / total) * 100));
-    }
+function winRate(win, total) {
+    if (!total) { return (0); }
+    return (Math.round((win / total) * 100));
+}
 
 onMounted(async () => {
     try {
@@ -27,16 +27,18 @@ onMounted(async () => {
 
         top3.value = lBoard.value.slice(0, 3);
         last7.value = lBoard.value.slice(3, 10);
+        if (lBoard.value.find((u) => u.id_user == user.value.id_user))
+            top.value = true;
     }
     catch (err) { console.error(err); }
 });
 </script>
 
 <template>
-    <div class="flex flex-col z-2 pb-1 bg-bg-darker rounded-3xl w-[90vh] h-fit text-text-default">
+    <div class="flex flex-col z-2 bg-bg-darker rounded-3xl w-[90vh] h-fit text-text-default">
         <h2 class="text-3xl px-6 py-4 font-semibold self-center">{{ t('leaderBoard.title') }}</h2>
         <div class="flex flex-col mx-4 mb-1 p-2 bg-bg-default rounded-3xl border border-border-default">
-            <div v-if="top3" class="justify-items-center justify-self-center -mb-7">
+            <div v-if="top3" class="justify-items-center justify-self-center -mb-7 z-2">
                 <p class="text-text-second">{{ top3[0].points }}</p>
                 <img class="size-27 rounded-full object-cover" :src="top3[0].image ? `${top3[0].image}` : defaultAvatar" @error="handleAvatarError"/>
                 <TagTitle :title="top3[0].title" class="absolute translate-x-102 -translate-y-3"/>
@@ -49,7 +51,7 @@ onMounted(async () => {
                     {{ t('leaderBoard.outOf', { games: top3[0].stats.total }) }}
                 </div>
             </div>
-            <div class="grid grid-rows-1 grid-cols-2" :class=" top ? '-mt-15' : '-mt-7'">
+            <div class="grid grid-rows-1 grid-cols-2" :class=" top ? '-mt-7' : '-mt-15'">
                 <div v-if="top3" class="justify-items-center">
                     <p class="text-text-second">{{ top3[1].points }}</p>
                     <img class="size-22 rounded-full object-cover" :src="top3[1].image ? `${top3[1].image}` : defaultAvatar" @error="handleAvatarError"/>
@@ -82,7 +84,7 @@ onMounted(async () => {
             <div v-for="(p, index) in last7">
                 <div class="flex items-center px-4">
                     <h3 class="ml-3" :class="{'mr-2' : index == 6, 'mr-5' : index != 6 }"><b>{{ index + 4 }}°</b></h3>
-                    <div class="grid grid-cols-2 gap-2 items-center" :class=" top ? 'm-1.5' : 'm-2'">
+                    <div class="grid grid-cols-2 gap-2 items-center" :class=" top ? 'm-2' : 'm-1.5'">
                         <div class="flex items-center gap-2 w-78 min-w-fit">
                             <img class="size-10 rounded-full object-cover" :src="p.image ? `${p.image}` : defaultAvatar" @error="handleAvatarError"/>
                             <RouterLink :to="{ name: 'user_page', params: { username: p.username } }">
@@ -100,14 +102,14 @@ onMounted(async () => {
                 <hr v-if="index != 6" class="w-full justify-self-start text-text-last">
             </div>
         </div>
-        <div v-if="top" class="mt-1.5">
-            <hr class="text-text-last border-dashed m-1.5">
+        <div v-if="!top">
+            <hr class="text-text-last border-dashed">
             <div class="flex items-center px-4">
-                <h3 class="ml-3 mr-2"><b>Tu</b></h3>
+                <h3 class="ml-3 mr-4"><b>Tu</b></h3>
                 <div class="flex m-2 gap-2 items-center">
                     <img class="size-10 rounded-full object-cover" :src="user.image ? `${user.image}` : defaultAvatar" @error="handleAvatarError"/>
                     <RouterLink :to="{ name: 'user_page', params: { username: user.username } }">
-                        <p class="text-text-default hover:underline">{{ user.username }}</p>
+                        <p class="text-text-default hover:underline font-semibold">{{ user.username }}</p>
                     </RouterLink>
                     <div class="flex items-center gap-1">
                         <TagTitle :title="user.title" class="mt-1"/>

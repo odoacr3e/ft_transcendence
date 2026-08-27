@@ -102,6 +102,17 @@ export const english = {
             matchHistory: "Match history",
             sendRequest: "Send @.lower:common.friend request"
         },
+        game: {
+            playPgae: {
+                title: "Choose your fate",
+                opt: {
+                    priv: "Private",
+                    friend: "Friendly",
+                    rank: "Ranked",
+                },
+                play: "Play!"
+            }
+        },
         legal: {
             privacy: {
                 title: "Privacy policy",

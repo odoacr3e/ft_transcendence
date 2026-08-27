@@ -136,7 +136,7 @@ boardConverter()
 		✓	effetto sonoro ed evidenziazione del re quando viene messo sotto scacco
 	✓	Bottone ed evento per chiedere pareggio
 	✓	Barra di caricamento durante il loading delle partite
-	▫	history delle mosse durante la partita
+	✓	history delle mosse durante la partita
 	▫	re-design dei pezzi
 	▫	history delle partite
 	▫ 	refactor di archi nel caso la board non esista

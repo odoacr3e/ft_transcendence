@@ -41,7 +41,7 @@
 					:style="{ fontSize: nameSize }">{{ player.name }}</h1></b>
 			<div class="flex">
 				<h2>Points: {{ player.nPoints }}</h2>
-				<p class="text-[#4e4e4e8c] mx-2">|</p>
+				<p class="text-text-last mx-2">|</p>
 				<CapturedPieces :player="player"/>
 			</div>
 		</div>

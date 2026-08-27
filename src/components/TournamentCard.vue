@@ -6,12 +6,17 @@
             prop = defineProps({
   	    	    tournaments: Array
 	        });
+
+    function checkPage(n) {
+        if (n === 8)    { return ("start_tournament"); }
+        else            { return ("open_tournament"); }
+    }
 </script>
 
 <template>
     <div v-for="games in tournaments" :key="games.id_tournament" class="bg-bg-second p-5 pb-3 rounded-3xl w-fit h-full shrink-0">
         <div class="flex items-center justify-start gap-2">
-            <RouterLink :to="{ name: 'open_tournament', params: { tournament: games.id_tournament } }"
+            <RouterLink :to="{ name: checkPage(games?.players?.length), params: { tournament: games.id_tournament } }"
                     class="hover:underline">
                     <h2 class="text-2xl">{{ games.name }}</h2>
             </RouterLink>
