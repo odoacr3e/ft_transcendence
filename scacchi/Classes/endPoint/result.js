@@ -55,7 +55,7 @@ class Result
 	{
 		/** @type {Number | null} */this.status = 200;
 		/** @type {string | null} */this.msg = "OK";
-		/**	@type {*} */			this.log = {status: this.status}; 
+		/**	@type {*} */			this.log = {status: this.status, msg: this.msg}; 
 		/** @type {Board | null} */	this.board = null;
 	/** @type {boolean | string} */	this.usedBoost = false;
 									this.victory = "";

@@ -1,0 +1,8 @@
+{
+  "moves": 0,
+  "turnCounter": 0,
+  "victory": "",
+  "finalBoard": "|M|J|V|C|K|V|J|M|\n|B|B|B|B|B|B|B|B|\n| | | | | | | | |\n| | | | | | | | |\n| | | | | | | | |\n| | | | | | | | |\n|B|B|B|B|B|B|B|B|\n|M|J|V|C|K|V|J|M|\n",
+  "matchSettings": "1v1",
+  "events": []
+}

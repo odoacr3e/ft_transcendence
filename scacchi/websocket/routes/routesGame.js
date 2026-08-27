@@ -67,17 +67,9 @@ export function routesGame(socket, user)
 		match = globals.matches.get(socketData?.matchData?.matchId);//@ts-ignore
 		if (!match || !match[socketData?.matchData?.team])
 			result = new Result().Error("You can't simulate the boost", 403);
-		else if (match?.mutex == true)
-		{
-			console.log(`Someone is already using fakeboost.. try again later`);
-			result = new Result().Error("Someone is already using fakeboost.. try again later", 409);
-		}
 		else
 		{
-			match.mutex = true;
 			result = fakeBoost(match, req.from);
-			match.mutex = false;
-			console.log(`fakeBoost response: ${result}`);
 			socket.emit("simulate_boost", result);
 		}
 		if (typeof(callback) == 'function')
