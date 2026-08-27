@@ -1,5 +1,5 @@
-	<script setup>
-	import { ePlaying, matchMakingOpt }			from '@/scripts/Data/Variables.js';
+<script setup>
+	import { ePlaying, matchMakingOpt, debug}			from '@/scripts/Data/Variables.js';
 	import { eRoomType } 						from '@/Common/ENUMS.js';
 	import { useAuthStore } 					from '@/stores/auth.st.js';
 	import { useSockStore }						from '@/stores/sock.st';
@@ -38,7 +38,7 @@
 		if (!sockStore.socket)
 			return;
 		sockStore.socket.emit('find_match', options);
-		console.log(useAuthStore().username, " ha appena richiesto un matchmaking!");
+		debug(useAuthStore().username, " ha appena richiesto un matchmaking!");
 		waiting.value = true;
 	}
 
@@ -55,7 +55,7 @@
 		if (playing === ePlaying.YES)
 			router.push({ name: "game" });
 		else
-			console.log("[playPage]: allora non sto already doing playing eh?");
+			debug("[playPage]: allora non sto already doing playing eh?");
 	}
 
 	onMounted(askAmIPlaying);

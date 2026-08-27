@@ -1,14 +1,16 @@
 <script setup>
-	import { localMatchState, localInfo, DOMPlayer, ePlaying }	from '@/scripts/Data/Variables';
-	import { onMounted, ref, computed, KeepAlive, onUnmounted }       			from 'vue';
-	import { reloadMatch, amIPlaying }					from '@/scripts/Events/BackLink.js';
+	import { localMatchState, localInfo, DOMPlayer, ePlaying, debug}	from '@/scripts/Data/Variables';
+	import { onMounted, ref, computed, onUnmounted, watch }       			from 'vue';
+	import { reloadMatch, amIPlaying, requestToBack }					from '@/scripts/Events/BackLink.js';
 	import PlayerInfo               					from '../components/PlayerInfo.vue';
 	import ChessBoard               					from '../components/ChessBoard.vue';
 	import ActionButtons								from '../components/ActionButtons.vue';
 	import EndGameOverlay 								from '@/components/EndGameOverlay.vue';
 	import { clearMatchStorage }						from '@/scripts/Data/Archi.js';
 	import router 										from '@/router';
-	import GameFour										from './GameFour.vue';
+import MovesHistory from '@/components/MovesHistory.vue';
+import KingsCodex from '@/components/KingsCodex.vue';
+import GameMsgBox from '@/components/GameMsgBox.vue';
 
 	const	ready		= ref(false);
 	const	style		= ref("1v1");
@@ -17,7 +19,7 @@
 	let		alive		= true;
 
 	onMounted(async () => {
-		console.log("[ClassicGame]: OnMounted");		
+		debug("[ClassicGame]: OnMounted");		
 		try{
 			if (!localMatchState)
 			{
@@ -34,14 +36,14 @@
 
 				if (playing === ePlaying.NO)
 				{
-					console.log("[ClassicGame]: non sono in partita, reloaddami sta ciola");
+					debug("[ClassicGame]: non sono in partita, reloaddami sta ciola");
 					clearMatchStorage();
 					router.replace({ name: "playpage" });
 					return;
 				}
 				if (playing === ePlaying.UNKNOWN)
 				{
-					console.log("[ClassicGame]: stato incerto, back ma che combini?");
+					debug("[ClassicGame]: stato incerto, back ma che combini?");
 					router.replace({ name: "playpage" });
 					return;
 				}
@@ -59,18 +61,22 @@
 			}
 			ready.value = true;
 		} catch (err) {
-			console.log(`${err}`);
+			console.error(`${err}`);
 		}
 	})
+
+	watch(ready, (val) => {
+		if (val)
+			requestToBack(null, null, "history");
+	}, { once: true });// questo perchè la history si chiede una volta sola
+		
 
 	onUnmounted(() => { alive = false });
 </script>
 
 <template>
-    <div id="wrapping" class="flex z-2 bg-bg-darker rounded-3xl">
-        <div class="flex items-center px-4" v-if="ready">
-            <ActionButtons/>
-        </div>
+    <div class="flex z-2 bg-bg-darker rounded-3xl">
+		<KingsCodex v-if="ready"/>
         <div class="p-6 bg-bg-default rounded-l-3xl border-r border-border-default">
           <div v-if="ready">
             <PlayerInfo :p="topP" pos="top"/>
@@ -87,7 +93,11 @@
 				</p>
         	</div>
 		</div>
-        <div class="p-10 flex-col mt-20 w-lg"/>
+        <div class="mt-10 w-md px-6 flex flex-col gap-4">
+			<GameMsgBox v-if="ready"/>
+			<MovesHistory v-if="ready" class="h-87.5"/>
+			<ActionButtons v-if="ready"/>
+		</div>
     </div>
 </template>
 

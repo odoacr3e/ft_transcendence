@@ -114,6 +114,18 @@ export const DOMPlayer = (p) => getLocalPlayers(p);
 
 export const emptyCapturedPieces = () => ({Bastards: 0, Minotaurus: 0, Valkirya: 0, Jester: 0, Champion: 0}); 
 
+//Il giocatore seduto a questo client: quello della squadra che il browser controlla.
+export const myPlayer = () => [...localPlayers.values()].find(p => p.team === localInfo.myTeam) ?? null;
+
+//Il giocatore di turno, che sui client avversari NON coincide con myPlayer().
+export const currentPlayer = () => [...localPlayers.values()].find(p => p.isPlaying === true) ?? null;
+
+//Il giocatore di questo client ha i punti per potenziare questo pezzo.
+export const canAfford = (piece) => {
+	const points = myPlayer()?.nPoints;
+	return (typeof points === "number" && typeof piece?.price === "number" && points >= piece.price);
+};
+
 // Funzioni setter per aggiornare le variabili globali
 export function startLocalMatchState(newMatchState) {
 	localMatchState = newMatchState;
@@ -158,10 +170,23 @@ export function getRootDiv() {
 
 export const FILES_TWO = ["a", "b", "c", "d", "e", "f", "g", "h"];
 export const FILES_FOUR = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n"];
+export const HIDDEN = new Set( ["a14", "b14", "c14", "a13", "b13", "c13", "a12", "b12", "c12",
+				 "l14", "m14", "n14", "l13", "m13", "n13", "l12", "m12", "n12",
+				 "a3", "b3", "c3", "a2", "b2", "c2", "a1", "b1", "c1",
+				 "l3", "m3", "n3", "l2", "m2", "n2", "l1", "m1", "n1"] );
 
 export let MACRO = Object ({
-	"AUDIO" : false,
+	"AUDIO"		: true,
+	"DEBUG"		: import.meta.env.DEV,
+	"LOL"		: true,
+	"CLASSIC"	: false,
 });
+
+export function debug(...args)
+{
+	if (MACRO.DEBUG)
+		console.log(...args);
+}
 
 export const ePlaying = Object.freeze({ YES: "yes", NO: "no", UNKNOWN: "unknown" });
 

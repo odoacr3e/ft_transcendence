@@ -1,16 +1,18 @@
 <script setup>
-	import { DOMBoard, localInfo, localPlayers, IMG_PATHS }	from '@/scripts/Data/Variables';
-	import { shopAbility,upgradeBastard }		from '@/scripts/Events/utils/GlobalUtils';
-	import { onMounted, computed, ref }			from 'vue';
-	import { onDragStart, onDrop }				from '@/scripts/Events/Movements';
-	import { getSquareColor } 					from '@/scripts/Helper/RenderUtils';
-	import { globalEvents }						from '@/scripts/Events/Global';
+//@ts-nocheck
+	import { DOMBoard, localInfo, IMG_PATHS, 
+			 HIDDEN, myPlayer, canAfford, localBoard }	from '@/scripts/Data/Variables';
+	import { onMounted, computed, ref }				from 'vue';
+	import { useClickOutside }						from '@/scripts/Helper/useClickOutside';
+	import { onDragStart, onDrop }						from '@/scripts/Events/Movements';
+	import { getSquareColor } 							from '@/scripts/Helper/RenderUtils';
+	import { globalEvents }								from '@/scripts/Events/Global';
+	import IconChevronSolid 							from './icons/IconChevronSolid.vue';
+	import { shopAbility, showBoostedMovesHover,
+			 showBoostedMovesLeave, selectAbilitySquare,
+			 upgradeBastard }							from '@/scripts/Events/utils/GlobalUtils.js';
+	import IconDoubleChevron 							from './icons/IconDoubleChevron.vue';
 
-	const HIDDEN = new Set( ["a14", "b14", "c14", "a13", "b13", "c13", "a12", "b12", "c12",
-					 "l14", "m14", "n14", "l13", "m13", "n13", "l12", "m12", "n12",
-					 "a3", "b3", "c3", "a2", "b2", "c2", "a1", "b1", "c1",
-					 "l3", "m3", "n3", "l2", "m2", "n2", "l1", "m1", "n1"] );
-	// eslint-disable-next-line no-unused-vars
 	const prop = defineProps({
   	    	style: String
 	    });
@@ -18,11 +20,47 @@
         globalEvents();
     });
 
-	const currP = ref(localPlayers.values().find(p => p.isPlaying === true)), dragOver = ref(null);
-	const domBoardComputed	= computed(() => DOMBoard());
-	const orientation		= computed(() => localInfo.myTeam === "white" ? "white" : "black");
-	const bottomRank		= computed(() => orientation.value === "white" ? 1 : 8);
-	const leftFile			= computed(() => orientation.value === "white" ? 'a' : 'h');
+	const dragOver 				= ref(null);
+	const domBoardComputed		= computed(() => DOMBoard());
+	const orientation			= computed(() => localInfo.myTeam === "white" ? "white" : "black");
+	const bottomRank			= computed(() => orientation.value === "white" ? 1 : 8);
+	const leftFile				= computed(() => orientation.value === "white" ? 'a' : 'h');
+	const localPlayer			= computed(() => myPlayer());
+	const myTurn				= computed(() => localPlayer.value?.isPlaying === true);
+	const boostPopup			= ref(null);
+	const promoTeam				= computed(() => localBoard.get(localInfo.goatId)?.piece?.team ?? localInfo.myTeam);
+	const canBoostSquare		= (square) => !!square?.piece && square.piece.team === localInfo.myTeam
+												&& !square.piece.isBoostedBool && myTurn.value
+												&& localInfo.secondTurn && !localInfo.goatId
+												&& canAfford(square?.piece) && square?.piece.type !== 'King';
+	const canUseAbilitySquare	= (square) => !!square?.piece && square.piece.team === localInfo.myTeam
+												&& square.piece.isBoostedBool && myTurn.value
+												&& !localInfo.secondTurn && !localInfo.goatId; 
+
+	function popupBoost(squareId)
+	{
+		if (!squareId)
+			return;
+		if (boostPopup.value === squareId)
+		{
+			boostPopup.value = null;
+			shopAbility(squareId);
+			return;
+		}
+		boostPopup.value = squareId;
+		showBoostedMovesLeave();
+		showBoostedMovesHover(squareId);
+	}
+
+	function closeBoostPopup()
+	{
+		if (!boostPopup.value)
+			return;
+		boostPopup.value = null;
+		showBoostedMovesLeave();
+	}
+
+	useClickOutside('.boostBadge', closeBoostPopup, { when: boostPopup, escape: true });
 </script>
 
 <template>
@@ -40,20 +78,20 @@
 				<div v-for="row in domBoardComputed" :key="row[0]?.id" class="grid" :class="{ 'rowTwo' : style === '1v1', 'rowFour' : style === '14x14x4'}">
 					<div
 						v-for="square in row"
-						:key="square.id"
-						:id="square.id"
-						:class="[getSquareColor(square.id),
+						:key="square?.id"
+						:id="square?.id"
+						:class="[getSquareColor(square?.id),
 								'square',
 								{ 'w-18.75 h-18.75' : style === '1v1', 'w-13 h-13' : style === '14x14x4'},
-								{ 'opacity-0 hidden': style === '14x14x4' && HIDDEN.has(square.id) },
-								{'outline-4 outline-[#e2dac5c5] -outline-offset-4': dragOver === square.id},
-								{'selectedBstW': getSquareColor(square.id) == 'white' && (square.boostedHighlight && square.piece)},
-								{'selectedBstB': getSquareColor(square.id) == 'black' && (square.boostedHighlight && square.piece)},
-								{'selectedW': getSquareColor(square.id) == 'white' && (square.selected !== square.inCheck || square.highlight && square.piece)},
-								{'selectedB': getSquareColor(square.id) == 'black' && (square.selected !== square.inCheck || square.highlight && square.piece)},
+								{ 'opacity-0 hidden': style === '14x14x4' && HIDDEN.has(square?.id) },
+								{'outline-4 outline-[#e2dac5c5] -outline-offset-4': dragOver === square?.id},
+								{'selectedBstW': getSquareColor(square?.id) == 'white' && (square.boostedHighlight && square.piece)},
+								{'selectedBstB': getSquareColor(square?.id) == 'black' && (square.boostedHighlight && square.piece)},
+								{'selectedW': getSquareColor(square?.id) == 'white' && (square.selected !== square.inCheck || square.highlight && square.piece)},
+								{'selectedB': getSquareColor(square?.id) == 'black' && (square.selected !== square.inCheck || square.highlight && square.piece)},
 								{'pieceClicked': square.piece && square.piece.team === localInfo.myTeam && square.clicked}]"
 						@drop="onDrop($event, square); dragOver = null"
-						@dragover.prevent="dragOver = square.id;">
+						@dragover.prevent="dragOver = square?.id;">
 						<p	class="absolute"
 							v-if="(parseInt(square.id.substring(1)) === bottomRank) || 
 								(style === '14x14x4' && parseInt(square.id.substring(1)) === 4 &&
@@ -67,16 +105,16 @@
 							<b>{{ square.id.charAt(0) }}</b>
 						</p>
 						<img
-							v-if="square.piece"
+							v-if="square?.piece"
 							class="piece"
-							v-bind:class="{ 'boosted-aura':square.piece.isBoostedBool, 'invisible': localInfo.drag?.hideSource && localInfo.drag.from === square.id }"
+							v-bind:class="{ 'boosted-aura':square.piece.isBoostedBool, 'invisible': localInfo.drag?.hideSource && localInfo.drag.from === square?.id }"
 							:src="IMG_PATHS[square.piece.team + square.piece.type]"
 							:draggable="true"
 							@dragstart="onDragStart($event, square)"/>
 						<p 	class="absolute" 
-							v-if="(square.id.charAt(0) == leftFile) ||
-								(style === '14x14x4' && square.id.charAt(0) == 'd' && 
-								(parseInt(square.id.substring(1)) < 4 || parseInt(square.id.substring(1)) > 11))"
+							v-if="(square?.id.charAt(0) == leftFile) ||
+								(style === '14x14x4' && square?.id.charAt(0) == 'd' && 
+								(parseInt(square?.id.substring(1)) < 4 || parseInt(square?.id.substring(1)) > 11))"
 							v-bind:class="{ 'mr-15 mb-13' : style === '1v1',
 											'mr-10.25 mb-9.5 text-xs' : style === '14x14x4',
 											'ml-1.5' : parseInt(square.id.substring(1)) > 9,
@@ -86,14 +124,43 @@
 											'text-bg-WSelect' : getSquareColor(square.id) == 'black' && square.selected !== square.inCheck }">
 							<b>{{square.id.substring(1)}}</b>
 						</p>
-						<span v-if="square.highlight && !square.piece" class="highlight"
+						<span v-if="square?.highlight && !square?.piece" class="highlight"
 								v-bind:class="{'w-3.75 h-3.75': style === '1v1', 'w-2.5 h-2.5': style === '14x14x4'}"></span>
-						<span v-if="square.boostedHighlight && !square.piece" class="boostedHighlight"
+						<span v-if="square?.boostedHighlight && !square?.piece" class="boostedHighlight"
 								v-bind:class="{'w-3.75 h-3.75': style === '1v1', 'w-2.5 h-2.5': style === '14x14x4'}"></span>
-						<span v-if="localInfo.lastMovesSquares.has(square.id) && !square.selected && !square.inCheck"
+						<span v-if="localInfo.lastMovesSquares.has(square?.id) && !square?.selected && !square?.inCheck"
 								class="lastMoveOverlay"></span>
+						<button v-if="canBoostSquare(square)" type="button" class="boostBadge"
+									:class="{	'is-morphing': boostPopup === square?.id,
+												'mini': style === '14x14x4'	 }"
+									@click.stop="popupBoost(square?.id)"
+									@mousedown.stop>
+								<IconChevronSolid class="boostBadgeIcon chevronUp"
+									:outline="boostPopup === square?.id ? '#ffe100' : '#f97316'"
+									:from="boostPopup === square?.id ? '#fb923c' : '#ffe100'"
+    								:to="boostPopup === square?.id ? '#ea580c' : '#ffc400'"/>
+						</button>
+						<button v-if="canUseAbilitySquare(square)" type="button" class="boostBadge abilityBadge"
+									:class="{	'is-morphing': square?.useAbilityBool,
+												'mini': style === '14x14x4'	 }"
+									@click.stop="selectAbilitySquare(square?.id)"
+									@mousedown.stop>
+								<IconDoubleChevron class="boostBadgeIcon chevronUp"
+									:outline="square?.useAbilityBool ? '#ffe100' : '#f97316'"
+									:from="square?.useAbilityBool ? '#fb923c' : '#ffe100'"
+									:to="square?.useAbilityBool ? '#ea580c' : '#ffc400'"/>
+						</button>
+
 					</div>
 				</div>
+			</div>
+
+			<div v-if="localInfo.goatId" id="choseMenu" class="flex absolute pointer-events-none size-75 z-14 gap-0.5 p-1.5 
+					border-2 border-[#1b0000] rounded-md bg-[#fafafa] max-h-[10%]">
+				<button v-for="type in ['Champion', 'Jester', 'Minotaurus', 'Valkirya']" :key="type"
+						@click="upgradeBastard(type)" class="rounded-md p-1 hover:bg-[#a52a2a]">
+					<img :src="IMG_PATHS[promoTeam + type]" :alt="type" :draggable="false">
+				</button>
 			</div>
     </div>
 </template>
@@ -103,12 +170,12 @@
 
 	div#overlay
 	{
-		opacity: 0.4;                    /* fisso, la transizione la gestisci con v-if */
+		opacity: 0.4;                    	/* fisso, la transizione la gestisci con v-if */
 		background: rgba(0, 0, 0, 0.35);
 		inset: 0;
 		position: fixed;
-		z-index: 14;                     /* sotto al menu */
-		pointer-events: auto;            /* blocca i click sotto */
+		z-index: 14;                     	/* sotto al menu */
+		pointer-events: auto;            	/* blocca i click sotto */
 		transition: opacity 0.2s ease;
 	}
 
@@ -120,8 +187,8 @@
 		margin-left: 5px;
 		z-index: 13;
 		top: 50%;
-	    left: calc(50% + 300px + 16px); /* bordo destro board + gap */
-	    transform: translateY(-50%); /* centrato verticalmente rispetto alla board */
+	    left: calc(50% + 300px + 16px); 	/* bordo destro board + gap */
+	    transform: translateY(-50%); 		/* centrato verticalmente rispetto alla board */
 	}
 
 	#board
@@ -217,13 +284,11 @@
 		background-color: var(--color-bg-WSelect);
 	}
 
-	.selectedBstB
-	{
+	.selectedBstB{
 		background-color: rgb(173, 187, 50);
 	}
 
-	.selectedBstW
-	{
+	.selectedBstW{
 		background-color: rgb(9, 214, 19);
 	}
 
@@ -247,6 +312,61 @@
     	        drop-shadow(0 0 10px #FFA500)
     	        drop-shadow(0 0 20px #FF4500)
     	}
+	}
+
+	.boostBadge
+	{
+		--badge-dim: 1.15rem;
+
+		position: absolute;
+		top: 2px;
+		right: 2px;
+		z-index: 5;
+		display: flex;
+		align-items: center;
+		width: var(--badge-dim);
+		height: var(--badge-dim);
+		padding: 0;
+		opacity: 0;
+		cursor: pointer;
+		pointer-events: none;
+		transition: opacity .15s ease, transform .15s ease;
+		rotate: -90deg;
+	}
+
+	.boostBadge.mini
+	{
+		--mini-dim: .9rem;
+
+		width: var(--mini-dim);
+		height: var(--mini-dim);
+	}
+
+	.square:hover > .boostBadge,
+	.boostBadge:focus-visible
+	{
+		opacity: 1;
+		pointer-events: auto;
+	}
+
+	.boostBadge:hover{
+		transform: scale(1.5);
+	}
+
+	.boostBadge.is-morphing
+	{
+		opacity: 1;
+		pointer-events: auto;
+		transform: scale(1.35);
+		filter: drop-shadow(0 0 2px rgb(255, 225, 0)) drop-shadow(0 0 6px rgb(249, 115, 22));
+	}
+
+	.boostBadge.is-morphing:hover{
+		transform: scale(1.6);
+	}
+
+	.boostBadgeIcon{
+		font-size: 1.5rem;
 	}
 
 	.floatingPiece

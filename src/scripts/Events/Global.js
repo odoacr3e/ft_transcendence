@@ -5,7 +5,7 @@ import { usingAbility, checkPermision,
 		useAbility}											from "./utils/GlobalUtils.js";
 import { rightClickSelect, highlightOnClick,
 		highlightOnDrag, clearHighlight }					from "./utils/HighlightUtils.js";
-import { localInfo, getRootDiv, localBoard, localPlayers }	from "@/scripts/Data/Variables";
+import { localInfo, getRootDiv, localBoard, currentPlayer, debug}	from "@/scripts/Data/Variables";
 import { PIECES_ABILITY } 									from "@/scripts/Helper/abilityMovement";
 import { sendToBackend }									from "./BackLink.js";
 
@@ -24,13 +24,13 @@ export async function globalEvents()
 			clearHighlight(); 
 			return;
 		}	
-		console.log(`CID: ${localInfo.clickedId}, LCID: ${localInfo.lastClickedId}`);
+		debug(`CID: ${localInfo.clickedId}, LCID: ${localInfo.lastClickedId}`);
 		if (checkForHighlightMove()) 
 		{
-			console.log("dentro check");
+			debug("dentro check");
 			if (usingAbility())
 			{
-				console.log(`Boosted Piece: ${localInfo.usingAbility}`);
+				debug(`Boosted Piece: ${localInfo.usingAbility}`);
 				await PIECES_ABILITY[localInfo.usingAbility](localInfo.lastClickedId, localInfo.clickedId, "click");
 				return;
 			}
@@ -49,7 +49,7 @@ export async function globalEvents()
 		if (((localInfo.secondMove && localInfo.savedBoostedMap && 
 			localInfo.savedBoostedMap.has(event.target.parentNode.id)) || !localInfo.secondTurn) && localBoard.get(event.target.parentNode.id)?.piece?.team === localInfo.myTeam)
 			{
-				console.log("sono qui");				
+				debug("sono qui");				
 				highlightOnDrag(event);
 			}
 	});
@@ -68,7 +68,7 @@ export async function globalEvents()
 	{
 		if (event.code === "Space" && localInfo.secondTurn)
 			await sendEndTurn();
-		if (event.code === "Enter" && localBoard.get(localInfo.clickedId)?.piece.team === localPlayers.values().find(p => p.isPlaying === true).team)
+		if (event.code === "Enter" && localBoard.get(localInfo.clickedId)?.piece.team === currentPlayer().team)
 			shopAbility();
 		if (event.code === "ShiftLeft" && localBoard.get(localInfo.clickedId)?.piece.isBoostedBool)
 			useAbility();

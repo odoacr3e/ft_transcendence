@@ -30,7 +30,7 @@ onMounted(async () => {
         if (lBoard.value.find((u) => u.id_user == user.value.id_user))
             top.value = true;
     }
-    catch (err) { console.log(err); }
+    catch (err) { console.error(err); }
 });
 </script>
 

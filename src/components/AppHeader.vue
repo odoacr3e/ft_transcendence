@@ -1,5 +1,6 @@
 <script setup>
-	import { ref, onMounted, onBeforeUnmount }	from 'vue';
+	import { ref, onMounted }					from 'vue';
+	import { useClickOutside }					from '@/scripts/Helper/useClickOutside';
 	import { rework_date, defaultAvatar, handleAvatarError }	from '../scripts/Helper/CompUtils';
 	import { useAuthStore }	from "../stores/auth.st";
 	import { useMsgStore }	from '../stores/msg.st';
@@ -10,6 +11,7 @@
 	import { api }			from '../router/api/client';
 	import router			from '../router/index.js';
 	
+import { debug } from "@/scripts/Data/Variables";
 	defineOptions({ inheritAttrs: false });
 	
 	const	{ t, locale } = useI18n({ useScope: 'global' }),
@@ -42,11 +44,10 @@
 			router.push(`/users/${encodeURIComponent(username)}`);
 	}
 
-	function handleClickOutside(e) {
-		if (p_dropdown.value && !p_dropdown.value.contains(e.target))		{ p_bool.value = false; }
-		if (n_dropdown.value && !n_dropdown.value.contains(e.target))		{ n_bool.value = false; }
-		if (lang_dropdown.value && !lang_dropdown.value.contains(e.target))	{ l_bool.value = false; }
-	}
+	//un dropdown per chiamata: il listener resta attaccato solo mentre quel menu e' aperto
+	useClickOutside(p_dropdown,    () => { p_bool.value = false; }, { when: p_bool });
+	useClickOutside(n_dropdown,    () => { n_bool.value = false; }, { when: n_bool });
+	useClickOutside(lang_dropdown, () => { l_bool.value = false; }, { when: l_bool });
 
 	async function readMsg(msg)
 	{
@@ -55,7 +56,7 @@
 			msg.status = 'read';
 			try {
 				await api.patch("/api/notifications", { id_notification: Number(msg.id_notification) }); }
-			catch(err) { console.log(err); }
+			catch(err) { console.error(err); }
 		}
 	}
 
@@ -64,7 +65,7 @@
             tourOpen.value = (await api.get(`/api/tournaments/${msg.description.slice(msg.description.indexOf('%') + 1)}`)).data.tournament;
 			if (!tourOpen.value) { tourOpen.value = null; }
         }
-        catch(err) { tourOpen.value = null; }
+        catch { tourOpen.value = null; }
 		tourOpen.value.msg = msg;
 	}
 
@@ -85,7 +86,7 @@
 	}
 
 	async function rejectInvite() {
-		console.log("Per ora e' inutile :)");
+		debug("Per ora e' inutile :)");
 	}
 
 	const closePopup = () => { popUp.value = false; };
@@ -93,11 +94,8 @@
 	onMounted(async () => {
 		try {
 			if (user.value) { db.value = (await api.get("/api/users")).data.users; } }
-		catch (error) { console.log("user non loggato, impossibile fare fetch su db");}
-		document.addEventListener('click', handleClickOutside);
+		catch { debug("user non loggato, impossibile fare fetch su db");}
     });
-
-	onBeforeUnmount(() => { document.removeEventListener('click', handleClickOutside); });
 </script>
 
 <template>

@@ -1,13 +1,41 @@
-import { localInfo, localBoard, localPlayers, MACRO }	from "@/scripts/Data/Variables";
-import { PIECES_HIGHLIGHT }								from "@/scripts/Helper/piecesHighlights";
-import { clearHighlight }								from "@/scripts/Events/utils/HighlightUtils.js";
-import { requestToBack }								from "@/scripts/Events/BackLink.js";
-import { useSockStore }									from "../../../stores/sock.st";
+import { localInfo, localBoard, canAfford, MACRO, debug}	from "@/scripts/Data/Variables";
+import { PIECES_HIGHLIGHT }									from "@/scripts/Helper/piecesHighlights";
+import { clearHighlight }									from "@/scripts/Events/utils/HighlightUtils.js";
+import { stopUpgradeMenu }									from "@/scripts/Data/utils/ArchiUtils.js";
+import { requestToBack }									from "@/scripts/Events/BackLink.js";
+import { useSockStore }										from "../../../stores/sock.st";
 
 // ANCHOR USER INTERACTION FUNCTIONS
-export function useAbility()
+
+/**
+ * Sposta la selezione su una casella e ne arma l'abilita'.
+ * Deseleziona la casella precedente, perche' due pezzi armati insieme non hanno senso.
+ * @param {string} squareId
+ */
+export function selectAbilitySquare(squareId)
 {
-	const clickedId = localInfo.clickedId;
+	const square = localBoard.get(squareId);
+
+	if (!square)
+		return;
+
+	const previous = localBoard.get(localInfo.lastClickedId);
+	if (previous && previous.id !== squareId)
+	{
+		previous.clicked		= false;
+		previous.useAbilityBool	= false;
+	}
+
+	localInfo.clickedId		= squareId;
+	localInfo.lastClickedId	= squareId;
+	square.clicked			= true;
+
+	useAbility(squareId);
+}
+
+export function useAbility(targetId = null)
+{
+	const clickedId = targetId ?? localInfo.clickedId;
 	const square 	= localBoard.get(clickedId);
 
 	if (!square) { return; }
@@ -23,25 +51,28 @@ export function useAbility()
 		localInfo.usingAbility = square.piece?.type ? square.piece.type : "";
 		if (MACRO.AUDIO)
 			new Audio("/src/assets/audios/useAbility.mp3").play();
-		console.log(`who the fuck i am: ${localInfo.usingAbility}`);
+		debug(`who the fuck i am: ${localInfo.usingAbility}`);
 	}
 	PIECES_HIGHLIGHT[square.piece.type](clickedId);
 }
 
-export function shopAbility()
+export function shopAbility(targetId = null)
 {
-	const Piece = localBoard.get(localInfo.clickedId)?.piece;
-	const Player = localPlayers.values().find(p => p.isPlaying === true);
+	const squareId	= targetId ?? localInfo.clickedId;
+	const Piece		= localBoard.get(squareId)?.piece;
 
-	if (!Piece?.isBoostedBool && Player.nPoints >= Piece?.price && localInfo.secondTurn)
-		requestToBack(localInfo.clickedId, null).then(
+	if (Piece?.team !== localInfo.myTeam)
+		return;
+	
+	if (!Piece?.isBoostedBool && canAfford(Piece) && localInfo.secondTurn)
+		requestToBack(squareId, null).then(
 			function(value) {if (value) 
 			{ 
 				clearHighlight();
 				if (MACRO.AUDIO)
 					new Audio("/src/assets/audios/boost.mp3").play(); 
 			}},
-			function(value) {if (!value) { console.log("Shop non completato correttamente"); }}
+			function(value) {if (!value) { debug("Shop non completato correttamente"); }}
 		);
 }
 
@@ -57,7 +88,7 @@ export async function sendEndTurn()
 			new Audio("/src/assets/audios/endTurn.mp3").play();
 	}
 	else
-		console.log("End turn non mandato correttamente");
+		debug("End turn non mandato correttamente");
 }
 
 export async function sendGiveUp()
@@ -72,7 +103,7 @@ export async function sendGiveUp()
 			new Audio("vedemmu");
 	}
 	else
-		console.log("Give up non mandato correttamente")
+		debug("Give up non mandato correttamente")
 }
 
 export function upgradeBastard(newType)
@@ -81,11 +112,12 @@ export function upgradeBastard(newType)
 		function(value) {if (value) 
 		{ 
 			localInfo.goatId = null; 
+			stopUpgradeMenu();
 			clearHighlight(); 
 			if (MACRO.AUDIO)
 				new Audio("/src/assets/audios/transformation.mp3").play();
 		}},
-		function(value) {if (!value) { console.log("Mossa non valida"); }}
+		function(value) {if (!value) { debug("Mossa non valida"); }}
 	);
 }
 
@@ -167,10 +199,10 @@ export async function showBoostedMovesHover(fromId)
 	const square	= localBoard.get(fromId);
 	if (!square)
 		return;
-	console.log(response);	
+	debug(response);	
 	if (response?.log?.status !== 200)
 	{
-		console.log("[showBoostedMovesHover]: response status != 200!", response);
+		debug("[showBoostedMovesHover]: response status != 200!", response);
 		return;
 	}
 	const futureBoostedZones = new Map(
@@ -189,7 +221,7 @@ export async function showBoostedMovesHover(fromId)
 			const pieceTeam = piece?.team;	
 			if ((isValkirya || isJester) && pieceTeam === localInfo.myTeam)
 			{
-				console.log("vediamo: ", pieceTeam !== localInfo.myTeam);
+				debug("vediamo: ", pieceTeam !== localInfo.myTeam);
 				continue;
 			}
 			else

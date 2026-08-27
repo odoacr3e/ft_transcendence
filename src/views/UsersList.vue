@@ -2,11 +2,9 @@
     import TagTitle from '../components/TagTitle.vue';
     import { defaultAvatar, handleAvatarError }    from '../scripts/Helper/CompUtils';
     import { ref, watch }       from 'vue';
-    import { useI18n }          from 'vue-i18n';
     import { api }              from '../router/api/client';
     
-    const { t } = useI18n(),
-	prop = defineProps({
+    const prop = defineProps({
 	    query: {
 	    	type: String,
 	    	default: ''

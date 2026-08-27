@@ -53,7 +53,7 @@
 								description: " ",
 								id_receiver: prop.user.id_user });
 		}
-		catch(err) { console.log(err); }
+		catch(err) { console.error(err); }
 		router.go(0);
 	}
 	

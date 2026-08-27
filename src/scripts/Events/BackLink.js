@@ -1,10 +1,7 @@
-import { ePlaying, localBoard, localInfo }	from "@/scripts/Data/Variables";
-import { getTarget }				from "./utils/MovementUtils.js";
-// import { MACRO } 					from "@/scripts/Data/Variables";
-import { useSockStore } from "../../stores/sock.st.js";
-import { sendEndTurn } from "./utils/GlobalUtils.js";
-// import { connect } from "node:http2";
-// import { _jsonReviver }				from "../Data/utils/ArchiUtils.js";
+import { ePlaying, localBoard, localInfo, debug}	from "@/scripts/Data/Variables";
+import { getTarget }						from "./utils/MovementUtils.js";
+// import { MACRO } 						from "@/scripts/Data/Variables";
+import { useSockStore } 					from "../../stores/sock.st.js";
 
 export async function sendToBackend(fromId, toId, flag)
 {
@@ -28,6 +25,8 @@ export async function requestToBack(fromSquare, toSquare, opType)
 	let type;
 	if (opType === "showBoost")
 		{type = "simulate_boost"; toSquare = "";}
+	else if (opType === "history")
+		{type = "history"; fromSquare = ""; toSquare = "";}
 	else if (opType === "giveUp")
 		{type = "giveup"; fromSquare = ""; toSquare = ""; }
 	else if (fromSquare === null && toSquare === null && localInfo.secondTurn)
@@ -42,11 +41,11 @@ export async function requestToBack(fromSquare, toSquare, opType)
 	let	timeout;
 
 	timeout = setTimeout(() => {}, 1000 * 1);
-	console.log("req: type: ", type, "from: ", fromSquare, "to: ", toSquare);
+	// console.log("req: type: ", type, "from: ", fromSquare, "to: ", toSquare);
 		
 	return new Promise((resolve) => {
-		sockStore.socket.emit("game", { type, from: fromSquare, to: toSquare }, (result) => {
-			console.log(`request: type: ${type}, from: ${fromSquare}, to:${toSquare}`)
+		sockStore.socket?.emit("game", { type, from: fromSquare, to: toSquare }, (result) => {
+			// console.log(`request: type: ${type}, from: ${fromSquare}, to:${toSquare}`)
 			clearTimeout(timeout);
 			resolve(result?.log?.status === 200);
 		});
@@ -89,7 +88,7 @@ export async function amIPlaying()
 
 	if (!await waitForSocketToBeReady())
 	{
-		console.log("[BackLink] -> [amIPlaying]: socket mai connesso");
+		debug("[BackLink] -> [amIPlaying]: socket mai connesso");
 		return (ePlaying.UNKNOWN);
 	}
 	try {
@@ -97,14 +96,14 @@ export async function amIPlaying()
 		return (resp === true ? ePlaying.YES : ePlaying.NO);
 	}
 	catch {
-		console.log("[BackLink] -> [amIPlaying]: nessuna risposta dal back");
+		debug("[BackLink] -> [amIPlaying]: nessuna risposta dal back");
 		return (ePlaying.UNKNOWN);
 	}
 }
 
 export function reloadMatch()
 {
-	console.log("chiamata di reload!");
+	debug("chiamata di reload!");
 	const sockStore = useSockStore();
 	if (!sockStore.socket)
 		return (Promise.resolve(false));
@@ -115,7 +114,7 @@ export function reloadMatch()
 		let done	= false;
 
 		const emit = () => {
-			console.log("[reload] emit");
+			// console.log("[reload] emit");
 			sockStore.socket.emit("game", {
 				type: "reload",
 				from: sessionStorage.getItem("match:myTeam"),
@@ -140,7 +139,7 @@ export function reloadMatch()
 			//le risposte d'errore non hanno type: inutile continuare a riprovare
 			if (raw?.log?.status && raw.log.status !== 200)
 			{
-				console.log("[reload] il back rifiuta:", raw.log.msg);
+				debug("[reload] il back rifiuta:", raw.log.msg);
 				return finish(false);
 			}
 		};

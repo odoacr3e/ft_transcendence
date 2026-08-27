@@ -1,10 +1,13 @@
-import { initLocalBoard, localMatchState, localBoard,  
-		 localPlayers, startLocalMatchState, 
-		 localInfo}										from "./Variables.js";
+import { initLocalBoard, localMatchState, 
+		 localBoard, localPlayers,
+		 startLocalMatchState, localInfo,
+		 currentPlayer }						from "./Variables.js";
 import { checkEndTurn, hasBoost, 
-		 checkUpgrade, assignLastMoveSquares }			from "./utils/ArchiUtils.js";
+		 checkUpgrade, assignLastMoveSquares }	from "./utils/ArchiUtils.js";
+import { beginPendingAbility } 					from "../Helper/abilityMovement.js";
+import { clearHistory } 						from "./History.js";
+import { clearGameMsgs } 					from "./GameMsg.js";
 import "./SocketLink.js"
-import { beginPendingAbility } from "../Helper/abilityMovement.js";
 
 //SECTION - INIT FUNCTIONS
 
@@ -61,7 +64,7 @@ export function initLocalMatchState(raw)
 		sessionStorage.setItem("match:id", raw.id);
 }
 
-export function initLocalPlayers()
+function initLocalPlayers()
 {
 	const players_list = ["p1", "p2", "p3", "p4"];
 
@@ -77,7 +80,7 @@ export function initLocalPlayers()
 		localPlayers.set(player, localMatchState[player]);
 	});
 
-	hasBoost(localPlayers.values().find(p => p.isPlaying === true));
+	hasBoost(currentPlayer());
 }
 //!SECTION
 
@@ -89,7 +92,7 @@ export function updateMatchState(nextRaw)
 	const validated = validateReceivedMatch(nextRaw);
 
 	localInfo.victory = nextRaw.victory ?? null;
-	console.log("stampiamoci victory: ", localInfo.victory);
+	// console.log("stampiamoci victory: ", localInfo.victory);
 	
 	checkEndTurn(validated);
 	startLocalMatchState(validated);
@@ -105,7 +108,7 @@ export function updateMatchState(nextRaw)
   	}
 }
 
-export function updateLocalBoard(changes)
+function updateLocalBoard(changes)
 {
 	const board = changes.board;
 
@@ -141,7 +144,7 @@ export function updateLocalBoard(changes)
 	}
 }
 
-export function updateLocalPlayers(changes) 
+function updateLocalPlayers(changes) 
 {
 	const players_list = ["p1", "p2", "p3", "p4"];
 
@@ -157,7 +160,7 @@ export function updateLocalPlayers(changes)
 		localPlayers.set(player, {...localPlayers.get(player), ...changes[player]});
 	});
 
-	hasBoost(localPlayers.values().find(p => p.isPlaying === true));
+	hasBoost(currentPlayer());
 }
 //!SECTION
 
@@ -207,4 +210,6 @@ export function clearMatchStorage()
 {
 	sessionStorage.removeItem("match:id");
 	sessionStorage.removeItem("match:myTeam");
+	clearHistory();
+	clearGameMsgs();
 }

@@ -1,10 +1,10 @@
 <script setup>
     import { defaultAvatar, handleAvatarError }	from '../scripts/Helper/CompUtils';
-    import { useAuthStore }	from "../stores/auth.st";
-    import { storeToRefs }	from 'pinia';
-	import { useI18n }		from 'vue-i18n';
-    import { ref }			from 'vue';
-	import router	from '../router/index.js';
+    import { useAuthStore }						from "../stores/auth.st";
+    import { storeToRefs }						from 'pinia';
+	import { useI18n }							from 'vue-i18n';
+    import { ref }								from 'vue';
+	import router								from '../router/index.js';
 	
     const	{ t } = useI18n(),
     	   formData = ref({

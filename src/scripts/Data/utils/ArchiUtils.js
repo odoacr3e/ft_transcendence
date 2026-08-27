@@ -1,5 +1,5 @@
 import { computePosition, offset, flip, shift, autoUpdate }	from "@floating-ui/dom";
-import { emptyCapturedPieces, localBoard, localInfo, localPlayers, Square } 		from "../Variables";
+import { emptyCapturedPieces, localBoard, localInfo, currentPlayer, debug} 		from "../Variables";
 import { clearHighlight }									from "@/scripts/Events/utils/HighlightUtils.js";
 
 let stopAutoUpdate = null;
@@ -18,7 +18,7 @@ export function checkEndTurn(validated)
 {
 	let		newCurP;
 	const	players_list = ["p1", "p2", "p3", "p4"];
-	const	curP = localPlayers.values().find(p => p.isPlaying === true);
+	const	curP = currentPlayer();
 
 	players_list.forEach((player) => {
 		if (validated[player]?.isPlaying) { newCurP = validated[player]; };
@@ -31,7 +31,10 @@ export function checkEndTurn(validated)
 
 export function checkUpgrade()
 {
-	const	curP = localPlayers.values().find(p => p.isPlaying === true);
+	const	curP = currentPlayer();
+
+	if (curP.team !== localInfo.myTeam)
+		return;
 
 	localBoard.forEach((square ,id) => {
 		if (((id.charAt(1) === '1' && curP.team === "black") ||
@@ -79,19 +82,13 @@ export function checkUpgrade()
 	});
 }
 
-/**
- * 
- * @param {string} key 
- * @param {*} val 
- * @returns 
- */
-export function _jsonReviver(key, val)
+export function stopUpgradeMenu()
 {
-	if (val && val.__type == "Set")
-		return (new Set(val.data));
-	if (val && val.__type == "Map")
-		return (new Map(val.data));
-	return val;
+	if (stopAutoUpdate)
+	{
+		stopAutoUpdate();
+		stopAutoUpdate = null;
+	}
 }
 
 export function assignLastMoveSquares(oldSquare, newSquare, newSet)
@@ -111,25 +108,6 @@ export function assignLastMoveSquares(oldSquare, newSquare, newSet)
 		newSet.add(oldSquare.id);
 }
 
-export function isValidTeam(team)
-{
-	if (!team || typeof team != "string")
-		return (false);
-	return ([...localPlayers.values()].some(p => p.team === team));
-}
-
-export function resolveMyTeam(rawTeam)
-{
-	const stored = sessionStorage.getItem("match:myTeam");
-
-	if (isValidTeam(rawTeam.team))
-		return(rawTeam);
-	if (isValidTeam(rawTeam.team))
-		return(stored);
-	console.error("[resolveMyTeam]: myTeam non determinabile", {rawTeam, stored});
-	return (null);
-}
-
 export function resetLocalVars()
 {
 	localInfo.clickedId			= null;
@@ -142,7 +120,7 @@ export function resetLocalVars()
 
 	if (localInfo.victory)
 	{
-		console.log("resettiamo i pezzi catturati");
+		debug("resettiamo i pezzi catturati");
 		localInfo.capturedP		= { white: emptyCapturedPieces(),
 									black: emptyCapturedPieces() };
 	}

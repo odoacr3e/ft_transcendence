@@ -13,7 +13,10 @@ export default defineConfig({
     tailwindcss()
   ],
   server: {
-    allowedHosts: ['edraccan-transcendence.duckdns.org', 'chessz.duckdns.org']
+    allowedHosts: ['edraccan-transcendence.duckdns.org', 'chessz.duckdns.org'],
+    // Il dev server gira in container con ./frontend_dir bind-montato: gli eventi
+    // inotify dell'host non arrivano sempre dentro Docker, quindi l'HMR non scatta.
+    watch: { usePolling: true, interval: 300 }
   },
   resolve: {
     alias: {
