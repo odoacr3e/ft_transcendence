@@ -35,10 +35,9 @@ export function setTimerGame(match)
 			return ;
 		}
 		result = new Result();
+		clientSetState(match.currentPlayer.dbTable.id_user, enumSocketState.NAVIGATING);
 		match.endTurn();
 		result = match.PlayerLost(result, p);
-		for (const user of match.users)
-			clientSetState(user.id_user, enumSocketState.NAVIGATING);
 		result = responseFormatter(match, result, null, null);
 		roomMessage(`match_${match.id}`, "game", result);
 		if (match.playerNum == 1)
@@ -46,6 +45,8 @@ export function setTimerGame(match)
 			result = match.CheckMate();
 			result = responseFormatter(match, result, null, null);
 			roomMessage(`match_${match.id}`, "game", result);
+			for (const user of match.users)
+				clientSetState(user.id_user, enumSocketState.NAVIGATING);
 			if (match.victory != "" && match.id != "0")
 				saveMatch(match);
 		}

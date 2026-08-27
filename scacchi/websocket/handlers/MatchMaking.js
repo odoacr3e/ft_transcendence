@@ -146,7 +146,6 @@ export async function bindPlayersToMatch(match, userSet, result, userIdIndexMap=
 	let	userArray;
 	let	user;
 	let	userId;
-	let	startTeam;
 	let	currTeam;
 	let dbTable;
 	let	tourIndex;

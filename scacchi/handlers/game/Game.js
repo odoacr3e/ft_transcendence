@@ -99,7 +99,7 @@ async function gameWebSocketHandler(req, id_user, socketData)
 		result = await gameHandler(match, req, socketData);
 	if (result.log.status != 200)
 		return (socketError(socketData.socket, result));
-	for (let p of match.users)
+	for (let p of match.loserSet)
 	{
 		user = globals.clientMap.get(p.id_user);
 		if (user)
