@@ -361,6 +361,8 @@ function updateBoard(board, updates)
 {//@ts-ignore
 	if (!updates || !updates.board || updates.ignoreBoard == true)
 		return ;
+	if (updates.board instanceof Map == false)
+		return ;
 	for (const [key, square] of updates.board)
 	{
 		board.set(coordNormify(key), square);
