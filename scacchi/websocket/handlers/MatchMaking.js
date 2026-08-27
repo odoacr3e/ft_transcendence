@@ -7,6 +7,7 @@ import { render } 							from "../../test/render.js";
 import { query } 							from "../../lib/query.js";
 import { responseFormatter }				from "../../utils/response.js";
 import { saveMatch } from "../../utils/saveMatch.js";
+import { rng } from "../../utils/random.js";
 
 /** @typedef {import("../../Classes/Chess/player.js").Player} Player*/
 /** @typedef {import("../../Classes/endPoint/result.js").Result} Result*/
@@ -198,6 +199,10 @@ export async function bindPlayersToMatch(match, userSet, result, userIdIndexMap=
 		match.endTurn();
 	}
 	while (currTeam != match.currentPlayer.team)
-	if (match.playerNum <= 1)
+	if (match.playerNum == 1)
+		match.CheckMate();
+	if (match.playerNum == 0)
+		match.victory = match.users[rng(match.users.length)].team;
+	if (match.victory)
 		saveMatch(match);
 }

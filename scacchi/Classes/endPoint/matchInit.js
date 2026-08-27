@@ -1,5 +1,7 @@
 //@ts-check
 
+import { DEBUG } from "../../Macro/macro.js";
+
 /** @typedef {import("../Chess/match.js").MatchSettings} MatchSettings*/
 
 export class matchMakingOpt
