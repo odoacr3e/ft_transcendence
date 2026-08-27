@@ -64,15 +64,44 @@ function roomMessage(roomName, eventType, result, gameFormatBool=false)
 
 /**
  * 
- * @param {Number} id 
+ * @param {Number | undefined} id 
  */
 function clientSetState(id, state=enumSocketState.NAVIGATING)
 {
-	let	socketInfo = globals.clientMap.get(id);
-
+	let	socketInfo;
+	
+	if (!id)
+		return ;
+	socketInfo = globals.clientMap.get(id);
 	if (!socketInfo)
 		return ;
 	socketInfo.state = state;
+}
+
+/**
+ * 
+ * @param {Set<number> | number | Array<number>} ids 
+ */
+function clientResetData(ids)
+{
+	let	socketData;
+
+	if (typeof(ids) == "number")
+		ids = [ids];
+	for (const id of ids)
+	{
+		socketData = globals.clientMap.get(id);
+		if (!socketData)
+		{
+			console.warn(`clientResetData: socket ${id} already quit. Trace:`);
+			console.trace();
+			continue ;
+		}
+		globals.RemoveFromAllQueues(id, false);
+		globals.DeletePlayer(socketData.matchData?.matchId, socketData.matchData?.team);
+		globals.LeaveRoom(socketData, id);
+		globals.ClearTimer(id);
+	}
 }
 
 /**
@@ -89,4 +118,4 @@ function gameMessage(match, msg, printer=console.log)
 	roomMessage(`match_${match.id}`, `gameMsg`, msg);
 }
 
-export {getReconnectTime, isBusy, roomMessage, gameMessage, clientSetState};
+export {getReconnectTime, isBusy, roomMessage, gameMessage, clientSetState, clientResetData};

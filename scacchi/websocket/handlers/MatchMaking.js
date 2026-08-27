@@ -8,6 +8,7 @@ import { query } 							from "../../lib/query.js";
 import { responseFormatter }				from "../../utils/response.js";
 import { saveMatch } from "../../utils/saveMatch.js";
 import { rng } from "../../utils/random.js";
+import { clientResetData } from "../utils.js";
 
 /** @typedef {import("../../Classes/Chess/player.js").Player} Player*/
 /** @typedef {import("../../Classes/endPoint/result.js").Result} Result*/
@@ -65,12 +66,16 @@ export async function findMatch(queue, user)
 		return createMatchFromQueue(queue, queueNode);
 	else
 		findBool = queue.Find(user);
+	queueNode = queue.get(user.id_user);
+	if (!queueNode)
+		throw (`findMatch, after FIND: node for user ${user.id_user} undefined. ${console.trace()}`);
 	if (findBool && queue.get(user.id_user)?.IsFull())
 		return createMatchFromQueue(queue, queueNode);
 	else if (!findBool)
 		queueNode.increaseDelta(queueNode.eloRange.max + 15, queueNode.eloRange.min + 15);
 	console.log("Adding timer for", user.id_user);
 	globals.timers.set(user.id_user, setTimeout(() => {
+		clearTimeout(globals.timers.get(user.id_user));
 		globals.timers.delete(user.id_user);
 		findMatch(queue, user);
 	}, 5000));
@@ -86,22 +91,25 @@ async function createMatchFromQueue(queue, queueNode)
 	let	match;
 	let	result;
 	let	preset;
+	let	set;
 
 	if (await validateMatch(queueNode) == false)
 		return (false);
+	set = structuredClone(queueNode.userSet);
 	preset = queueNode.matchOptions? queueNode.matchOptions: queueNode.matchType;
+	clientResetData(queueNode.userSet);
 	match = new Match(preset);
 	result = init(match, preset);
 	if (queue.roomType == enumConnection.RANKED)
 		match.settings.room.isRanked = true;
-	globals.lastMatchId = match.CreateId(queueNode.userSet);
+	globals.lastMatchId = match.CreateId(set);
 	globals.matches.set(globals.lastMatchId, match);
 	//@ts-ignore
 	result.id = match.id;
-	await bindPlayersToMatch(match, queueNode.userSet, result);
+	await bindPlayersToMatch(match, set, result);
 	render(match);
 	console.log("CREAZIONE MATCH: ♟️");
-	console.log(queueNode);
+	console.log(set);
 	return (true);
 }
 

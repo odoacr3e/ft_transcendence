@@ -93,10 +93,12 @@ export class Queue extends Map
 		if (!toNode || !fromNode)
 			throw (`Queue, MergeNode: toNode ${toNode} or fromNode ${fromNode} does not exist`);
 		fromRange = fromNode.eloRange;
-		this.set(fromId, toNode);
-//FIXME - Fare in un for per ogni id
-		toNode.userSet.add(fromId);
-		toNode.EloAverage(fromRange.avg);
+		for (const id of toNode.userSet)
+		{
+			this.set(toId, fromNode);
+			fromNode.userSet.add(id);
+		}
+		fromNode.EloAverage(fromRange.avg);
 	}
 	/** @param {dbUser} user */
 	Find(user)
@@ -113,8 +115,9 @@ export class Queue extends Map
 				continue ;
 			if (userNode.matchType != otherNode.matchType)//tipo di match diverso
 				continue ;
-//FIXME - fare size + otherSize <= ...
 			if (otherNode.userSet.size == otherNode.minPlayers)//match gia pieno
+				continue ;
+			if (userNode.userSet.size + otherNode.userSet.size > userNode.minPlayers)//troppi giocatori
 				continue ;
 			if (globals.clientMap.get(key)?.reconnectBool == true)//avversario con problemi di connessione
 				continue ;
@@ -124,11 +127,9 @@ export class Queue extends Map
 					continue ;
 			}
 			foundBool = true;
-//FIXME - fare prima i clear e poi merge
-			this.MergeNode(key, user.id_user);
-//FIXME - fare in un for loop su ogni otherId
 			globals.ClearTimer(key);
 			globals.ClearTimer(user.id_user);
+			this.MergeNode(key, user.id_user);
 			if (this.get(user.id_user)?.IsFull())
 				break ;
 		}
