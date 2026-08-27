@@ -1,11 +1,38 @@
 import { localInfo, localBoard, canAfford, MACRO, debug}	from "@/scripts/Data/Variables";
-import { PIECES_HIGHLIGHT }								from "@/scripts/Helper/piecesHighlights";
-import { clearHighlight }								from "@/scripts/Events/utils/HighlightUtils.js";
-import { stopUpgradeMenu }							from "@/scripts/Data/utils/ArchiUtils.js";
-import { requestToBack }								from "@/scripts/Events/BackLink.js";
-import { useSockStore }									from "../../../stores/sock.st";
+import { PIECES_HIGHLIGHT }									from "@/scripts/Helper/piecesHighlights";
+import { clearHighlight }									from "@/scripts/Events/utils/HighlightUtils.js";
+import { stopUpgradeMenu }									from "@/scripts/Data/utils/ArchiUtils.js";
+import { requestToBack }									from "@/scripts/Events/BackLink.js";
+import { useSockStore }										from "../../../stores/sock.st";
 
 // ANCHOR USER INTERACTION FUNCTIONS
+
+/**
+ * Sposta la selezione su una casella e ne arma l'abilita'.
+ * Deseleziona la casella precedente, perche' due pezzi armati insieme non hanno senso.
+ * @param {string} squareId
+ */
+export function selectAbilitySquare(squareId)
+{
+	const square = localBoard.get(squareId);
+
+	if (!square)
+		return;
+
+	const previous = localBoard.get(localInfo.lastClickedId);
+	if (previous && previous.id !== squareId)
+	{
+		previous.clicked		= false;
+		previous.useAbilityBool	= false;
+	}
+
+	localInfo.clickedId		= squareId;
+	localInfo.lastClickedId	= squareId;
+	square.clicked			= true;
+
+	useAbility(squareId);
+}
+
 export function useAbility(targetId = null)
 {
 	const clickedId = targetId ?? localInfo.clickedId;

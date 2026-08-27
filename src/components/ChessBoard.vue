@@ -9,7 +9,7 @@
 	import { globalEvents }								from '@/scripts/Events/Global';
 	import IconChevronSolid 							from './icons/IconChevronSolid.vue';
 	import { shopAbility, showBoostedMovesHover,
-			 showBoostedMovesLeave, useAbility,
+			 showBoostedMovesLeave, selectAbilitySquare,
 			 upgradeBastard }							from '@/scripts/Events/utils/GlobalUtils.js';
 	import IconDoubleChevron 							from './icons/IconDoubleChevron.vue';
 
@@ -58,27 +58,6 @@
 			return;
 		boostPopup.value = null;
 		showBoostedMovesLeave();
-	}
-
-	function popupAbility(squareId)
-	{
-		const square = localBoard.get(squareId);
-
-		if (!square)
-			return;
-
-		const previous = localBoard.get(localInfo.lastClickedId);
-		if (previous && previous.id !== squareId)
-		{
-			previous.clicked		= false;
-			previous.useAbilityBool = false;
-		}
-
-		localInfo.clickedId 	= squareId;
-		localInfo.lastClickedId = squareId;
-		square.clicked			= true;
-
-		useAbility(squareId);
 	}
 
 	useClickOutside('.boostBadge', closeBoostPopup, { when: boostPopup, escape: true });
@@ -164,7 +143,7 @@
 						<button v-if="canUseAbilitySquare(square)" type="button" class="boostBadge abilityBadge"
 									:class="{	'is-morphing': square?.useAbilityBool,
 												'mini': style === '14x14x4'	 }"
-									@click.stop="popupAbility(square?.id)"
+									@click.stop="selectAbilitySquare(square?.id)"
 									@mousedown.stop>
 								<IconDoubleChevron class="boostBadgeIcon chevronUp"
 									:outline="square?.useAbilityBool ? '#ffe100' : '#f97316'"

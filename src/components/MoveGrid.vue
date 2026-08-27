@@ -1,7 +1,7 @@
 <script setup>
 	//@ts-nocheck
-	import { computed }			from 'vue';
-	import { CODEX_RADIUS }	from '@/scripts/Data/PiecesCodex.js';
+	import { computed }						from 'vue';
+	import { gridCells, arrowSegments }		from '@/scripts/Helper/codexGrid.js';
 
 	const props = defineProps({
 		scene:		 { type: Object, default: null },		//CodexPattern, null = griglia vuota
@@ -9,100 +9,10 @@
 		resolveIcon: { type: Function, default: () => '' },	//(actor) => src, la risolve il padre
 	});
 
-	const SIDE		= CODEX_RADIUS * 2 + 1;
-	const UNIT		= 100 / SIDE;
+	//id univoco del marker SVG: due griglie sulla stessa pagina non devono condividerlo
 	const uid		= `arrow-${Math.random().toString(36).slice(2, 8)}`;
-	const actors	= computed(() => props.scene?.actors ?? []);
-
-	const actorAt = computed(() => {
-		const out = new Map();
-		for (const a of actors.value)
-			out.set(`${a.x},${a.y}`, a);
-		return (out);
-	})
-
-	// Con questa mi disegno le caselle, prendo le scene che ho prefatto oppure le genero, restituisco una mappa "coords" -> move | capture
-	const marks = computed(() => {
-		const out = new Map();
-		if (!props.scene)
-			return (out);
-		
-		for (const m of props.scene.marks ?? [])
-			out.set(`${m.x},${m.y}`, m.kind ?? 'move');
-
-		const pattern = props.scene.pattern;
-		if(!pattern)
-			return (out)
-
-		const src = actors.value[props.scene.patternFrom ?? 0] ?? { x:0, y:0 };
-		const paint = (dirs, kind) => {
-			for (const [dx, dy] of dirs ?? [])
-			{
-				const steps = pattern.slide ? CODEX_RADIUS * 2 : 1;
-				for (let s = 1; s <= steps; s++)
-				{
-					const x = src.x + dx * s;
-					const y = src.y + dy * s;
-					if (Math.abs(x) > CODEX_RADIUS || Math.abs(y) > CODEX_RADIUS)
-						break;
-					if (actorAt.value.has(`${x},${y}`))
-						break;
-					out.set(`${x},${y}`, kind);
-				}	
-			}
-		};
-
-		paint(pattern.dirs, 'move');
-		paint(pattern.capture, 'capture');
-		return (out);
-	});
-
-	const arrowPath = computed(() => {
-		const out = new Set();
-		for (const a of props.scene?.arrows ?? [])
-		{
-			const [fx, fy]	= a.from;
-			const [tx, ty]	= a.to;
-			const dx		= Math.sign(tx - fx);
-			const dy		= Math.sign(ty - fy);
-			const steps		= Math.max(Math.abs(tx - fx), Math.abs(ty - fy));
-
-			if (steps && (dx === 0 || dy === 0 || Math.abs(tx - fx) === Math.abs(ty - fy)))
-				for (let s = 1; s <= steps; s++)
-					out.add(`${fx + dx * s},${fy + dy * s}`);
-			else
-				out.add(`${tx},${ty}`);
-		}
-		return (out);
-	});
-
-	const cells = computed(() => {
-		const out = [];
-		for (let y = -CODEX_RADIUS; y <= CODEX_RADIUS; y++)
-		{
-			for (let x = -CODEX_RADIUS; x <= CODEX_RADIUS; x++)
-			{
-				const key = `${x},${y}`;
-				out.push({
-					key,
-					dark:	(x + y) % 2 !== 0,
-					actor:	actorAt.value.get(key) ?? null,
-					mark:	arrowPath.value.has(key) ? null : marks.value.get(key) ?? null,
-				});
-			}
-		}
-		return (out);
-	});
-
-	const px = (v) => (v + CODEX_RADIUS + 0.5) * UNIT;
-
-	const arrows = computed(() => (props.scene?.arrows ?? []).map(a => ({
-		x1: px(a.from[0]),
-		y1: px(a.from[1]),
-		x2: px(a.to[0]),
-		y2: px(a.to[1]),
-	})));
-
+	const cells		= computed(() => gridCells(props.scene));
+	const arrows	= computed(() => arrowSegments(props.scene));
 </script>
 
 <template>
