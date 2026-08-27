@@ -99,7 +99,9 @@ function handleReconnect(dbUser, socketData, newSocket)
 	{
 		socketData.socket.removeAllListeners();
 		socketData.socket.disconnect();
-	}
+	}//@ts-ignore
+	socketData.socket = null;
+	console.log(`data: => ${JSON.stringify(socketData, null, 2)}`);
 	socketData.socket = newSocket;
 	if (socketData.state == enumSocketState.MATCHMAKING)
 		return (MatchMaking(dbUser));

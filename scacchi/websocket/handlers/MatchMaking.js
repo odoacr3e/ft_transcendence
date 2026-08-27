@@ -61,7 +61,10 @@ export async function findMatch(queue, user)
 
 	queueNode = queue.get(user.id_user);
 	if (!queueNode)
-		throw (`findMatch: node for user ${user.id_user} undefined. ${console.trace()}`);
+	{
+		console.warn(`findMatch: node for user ${user.id_user} undefined. ${console.trace()}`);
+		return ;
+	}
 	if (queue.get(user.id_user)?.IsFull())
 		return createMatchFromQueue(queue, queueNode);
 	else
