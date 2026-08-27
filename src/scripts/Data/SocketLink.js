@@ -7,6 +7,7 @@ import router 														from "@/router";
 import { resetLocalVars } 											from "./utils/ArchiUtils";
 import { pushTurn, reloadHistory } 									from "./History";
 import { pushGameMsg } 												from "./GameMsg";
+import { playAudio } from "../Helper/generalUtils";
 
 let audioFlag = false;
 
@@ -27,8 +28,7 @@ export function listenGameSocket(socket)
 			if (mask & (eSpecialMoves.CHECK | eSpecialMoves.CHECKMATE))
 			{
 				debug("[socket game]: è tempo di blinkare!");
-				if (MACRO.AUDIO)
-					new Audio("/src/assets/audios/tette.mp3").play();
+				playAudio("CHECK");
 				if (raw.check != undefined)
 				{
 					const threatId = new Set([raw.check.to, raw.check.mid, raw.check.from].filter(Boolean));
@@ -72,7 +72,7 @@ export function listenGameSocket(socket)
 		}
 		if (raw.type === "timeout")
 		{
-			debug("[socket game] -> [timeout]: tempo scaduto, victory =", raw.victory);
+			debug("[socket game -> timeout]: tempo scaduto, victory =", raw.victory);
 			if (raw.victory)
 				localInfo.victory = raw.victory;
 			resetLocalVars();
@@ -99,15 +99,13 @@ export function listenGameSocket(socket)
 		if (raw.history)
 			pushTurn(raw.history);
 		clearHighlight();
-		if (MACRO.AUDIO)
-			new Audio("/src/assets/audios/moving.mp3").play();
+		// playAudio("MOVE");
 		const inCheck = (Number(raw.mask) & (eSpecialMoves.CHECK | eSpecialMoves.CHECKMATE)) && raw.giorgi0;
 		setCheckSquare(inCheck ? raw.giorgi0 : null);
 		if (inCheck)
 		{
 			debug("[socket game]: re sotto scacco in", raw.giorgi0);
-			if (MACRO.AUDIO)
-				new Audio("/src/assets/audios/tette.mp3").play();
+			playAudio("CHECK");
 		}
 	});
 

@@ -1,6 +1,7 @@
 // SECTION - LE VARIABILI GLOBALI
 import { boardConverter, getLocalPlayers }	from "../Helper/RenderUtils.js";
 import { reactive }							from "vue";
+import { clearMatchStorage } from "./Archi.js";
 
 /**
  * @typedef {Object} Piece
@@ -138,6 +139,7 @@ export function initLocalBoard(boardData)
 	if (!localMatchState)
 		throw new Error("[initLocalBoard]: Match non inizializzato: chiama prima initLocalMatchState().");
 	localBoard.clear();
+	clearMatchStorage();
 	localInfo.lastMovesSquares = new Set();
 	if (boardData && typeof boardData === 'object') {
 		Object.entries(boardData).forEach(([squareId, squareData]) => {
@@ -170,20 +172,39 @@ export function getRootDiv() {
 
 export const FILES_TWO = ["a", "b", "c", "d", "e", "f", "g", "h"];
 export const FILES_FOUR = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n"];
-export const HIDDEN = new Set( ["a14", "b14", "c14", "a13", "b13", "c13", "a12", "b12", "c12",
-				 "l14", "m14", "n14", "l13", "m13", "n13", "l12", "m12", "n12",
-				 "a3", "b3", "c3", "a2", "b2", "c2", "a1", "b1", "c1",
-				 "l3", "m3", "n3", "l2", "m2", "n2", "l1", "m1", "n1"] );
+export const HIDDEN = new Set( [ "a14", "b14", "c14", "a13", "b13", "c13", "a12", "b12", "c12",
+				 				 "l14", "m14", "n14", "l13", "m13", "n13", "l12", "m12", "n12",
+								 "a3", "b3", "c3", "a2", "b2", "c2", "a1", "b1", "c1",
+								 "l3", "m3", "n3", "l2", "m2", "n2", "l1", "m1", "n1"] );
 
 export let MACRO = Object ({
 	"AUDIO"		: true,
 	"DEBUG"		: import.meta.env.DEV,
-	"LOL"		: true,
-	"CLASSIC"	: false,
+	"AUDIOSET"	: "LOL",
 });
 
-export const AUDIOPATH = Object.freeze({
-	move:	"ciao",
+export const LOLAUDIOPATH = Object.freeze({
+	"move":				{ path: '/src/assets/audios/moving.mp3',		flag: false},
+	"boost":			{ path: '/src/assets/audios/boost.mp3',			flag: false},
+	"moveboost":		{ path: '/src/assets/audios/useAbility.mp3',	flag: false},
+	"check":			{ path: '/src/assets/audios/tette.mp3',			flag: false},
+	"checkmate":		{ path: '',		flag: false},
+	"trans":			{ path: '',		flag: false},
+	"endturn":			{ path: '/src/assets/audios/endTurn.mp3',		flag: false},
+	"RESIGN":			{ path: '',		flag: false},
+	"DRAW":				{ path: '',		flag: false},
+});
+
+export const CLASSICAUDIOPATH = Object.freeze({
+	"move":				{ path: '',	flag: false },
+	"boost":			{ path: '',	flag: false },
+	"moveboost":		{ path: '',	flag: false },
+	"check":			{ path: '',	flag: false },
+	"checkmate":		{ path: '',	flag: false },
+	"trans":			{ path: '',	flag: false },
+	"endturn":			{ path: '',	flag: false },
+	"RESIGN":			{ path: '',	flag: false },
+	"DRAW":				{ path: '',	flag: false },
 })
 
 export function debug(...args)

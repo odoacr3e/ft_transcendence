@@ -142,40 +142,48 @@ boardConverter()
 	▫ 	refactor di archi nel caso la board non esista
 
 //FIXME - Bugs
-	✓	Delle volte quando finisci una mossa l'immagine del pezzo mosso si sdoppia e rimane lì 
+- [x]	Delle volte quando finisci una mossa l'immagine del pezzo mosso si sdoppia e rimane lì 
 		per tutta la partita
-	✓	EndTurn pulisce le evidenziazioni delle ultime mosse fatte
-	✓	quando finisci l'esecuzione di una mossa boostata di un pedone e clicchi su
+- [x]	EndTurn pulisce le evidenziazioni delle ultime mosse fatte
+- [x]	quando finisci l'esecuzione di una mossa boostata di un pedone e clicchi su
 		un'altro pezzo	dello stesso colore del pedone appena mosso lancia eccezione
-	✓	Quando  hai un pezzo potenziato il prezzo non si aggiorna come si deve
-	✓	Pezzi mangiati avversario invisibili
-	✓	Bottoni non presenti dopo reload
-	✓	Con il reload si bugga anche il timer
-	✓	Evidenziamento Give Up buttion da ripensare
-	✓	Quandoa fai use ability si creano in contemporanea sia i tondini
-	✓	Il pulsante use ability rimane interagibile e cliccabile anche 
+- [x]	Quando  hai un pezzo potenziato il prezzo non si aggiorna come si deve
+- [x]	Pezzi mangiati avversario invisibili
+- [x]	Bottoni non presenti dopo reload
+- [x]	Con il reload si bugga anche il timer
+- [x]	Evidenziamento Give Up buttion da ripensare
+- [x]	Quandoa fai use ability si creano in contemporanea sia i tondini
+- [x]	Il pulsante use ability rimane interagibile e cliccabile anche 
 		se il pezzo si è appena mosso
-	✓	Quando ho un pezzo potenziato e diventa il mio turno diventa
+- [x]	Quando ho un pezzo potenziato e diventa il mio turno diventa
 		disponibile l'utilizza abilità anche se selezioni un pezzo non potenziato
-	✓	Timer che continua nella schermata di fine gioco
-	✓	Quando uno dei due finisce il tempo il backend crasha
-	✓	Il clicked non dovrebbe stare sotto l'evidenziazione di ultima mossa
-	✓	Le flag clickedId e lastclicked non dovrebbero restare popolate
-	✓	Timer che parte da solo prima della prima mossa del bianco
-	✓	Quando fai reload non segna correttamente i turni
-	✓	Ogni volta che entri in playpage si avvia il reload
-	✓	Quando vado a promozione con il pedone si oscura tutta la scacchiera 
+- [x]	Timer che continua nella schermata di fine gioco
+- [x]	Quando uno dei due finisce il tempo il backend crasha
+- [x]	Il clicked non dovrebbe stare sotto l'evidenziazione di ultima mossa
+- [x]	Le flag clickedId e lastclicked non dovrebbero restare popolate
+- [x]	Timer che parte da solo prima della prima mossa del bianco
+- [x]	Quando fai reload non segna correttamente i turni
+- [x]	Ogni volta che entri in playpage si avvia il reload
+- [x]	Quando vado a promozione con il pedone si oscura tutta la scacchiera 
 		e non va
-	✓	Rimangono i pezzi mangiati il playerinfo anche da una partita all'altra se ne
+- [x]	Rimangono i pezzi mangiati il playerinfo anche da una partita all'altra se ne
 		fai una di seguito all'altra
-	✓	Quando tocca all'avversario se clicchi sui suoi pezzi puoi vedere le loro targetzones	
-	✓	Quando tocca all'avversario se trascini sui suoi pezzi puoi vedere le loro targetzones
-	✓	Andare avanti e indietro nelle pagine non funziona quando sei sulla playpage
-	▫	Quando finisci l'esecuzione di una mossa boostata di un pedone e al turno 
+- [x]	Quando tocca all'avversario se clicchi sui suoi pezzi 
+		puoi vedere le loro targetzones	
+- [x]	Quando tocca all'avversario se trascini sui suoi pezzi puoi 
+		vedere le loro targetzones
+- [x]	Andare avanti e indietro nelle pagine non funziona quando sei sulla playpage
+- [x]	Quando finisci l'esecuzione di una mossa boostata di un pedone e al turno 
 		dopo vuoi muovere lo stesso pedone manda eccezione (ma penso sia dovuto al backend) mosso senza voler utilizzare l'abilità
-	▫	Quando fai una mossa boostata di un pedone se vuoi muovere un pezzo dopo aver 
+- [x]	Quando fai una mossa boostata di un pedone se vuoi muovere un pezzo dopo aver 
 		mosso il pedone, che passa dove prima c’era il pedone mi viene fuoir eccezione
 		ma in modi casuali non riesco ancora a capire cosa succede
+- [ ]	Se fai partire una partita e refreshi il timer parte anche 
+		quando non dovrebbe partire
+- [ ]	Anche quando non è il tuo turno se tocchi le tue pedine ci sono highlights vari
+- [ ]	Se fai una partita e mangi un pezzo, se questa partita finisce per timer
+		i pezzi mangiati rimangono nella prossima partita
+- [ ]	Qualche volta quando dragghi non compaiano i highlights
 
 #TODO FRONTEND - 
 - [x]	websocket per lo stato online
@@ -185,7 +193,8 @@ boardConverter()
 - [x]	pagina di modifica delle info utente
 - [x]	reset della password (sia dal login page che dalla pagina utente loggato)
 - [x]	dettagli info sui match
-- [x]	refactor pagina di gioco, pulsanti con tipi di partite, creazione stanze, sfida amici
+- [x]	refactor pagina di gioco, pulsanti con tipi di partite, 
+		creazione stanze, sfida amici
 - [x]	websocket per la partita
 - [x]	test login e resgiter con OTP e opzioni di toglierlo nelle impostazioni
 - [x]	pagina della leaderboard
@@ -199,21 +208,23 @@ boardConverter()
 - [ ]	reattività delle pagine [MAVI]
 - [ ]	reworkare il design delle pagine di gioco appena sono pronte
 - [ ]	info dei profili per le partitre a 4
-- [x]	Sia per poter potenziare i pezzi che per usare l'abilità
-		aggiungere un bottoncino sul pezzo (bl o br) stile overwatch
-- [x]	Tutte le info/bottoni attuali a destra in un unico div in 
-		futuro tutorial/info pezzi a sinistra
-- [ ]	Compilare le scene per i tutorial
-- [ ]	Sistemare gli audio
-- [ ]	Pagina contro IA
-- [ ]	Shadow GMU
-- [ ]	Pagina a 4 giocatori
-- [ ]	Frecce sulla scaccchiera
-- [ ]	Icone e nomi dei pezzi che cambiano quando vengono potenziati
-- [ ]	Cambiare l'aura dei pezzi potenziati con l'aura di goku
+- [x]	Sia per poter potenziare i pezzi che per usare l'abilità aggiungere 
+		un bottoncino sul pezzo (bl o br) stile overwatch
+- [x]	Tutte le info/bottoni attuali a destra in un unico div in futuro
+		tutorial/info pezzi a sinistra
+- [ ]	Sistemare i suoni
+- [ ]	Pareggio, listen su evento "draw"-> invio oggetto:
+		{ type: "draw", draw: false | true} per chiedere, ascolto su 
+		evento per promptare la conferma e invio la stessa cosa
+- [ ]	fare la pagina di gioco contro IA
+- [ ]	GMU ghost
+- [ ]	Pagina partite a 4
+- [ ]	Completare le info a sinistra della scacchiera (scene)
+- [ ]	Fare in modo che il boost cambi le skin e i nomi dei pezzi
+- [ ]	Boost aura da goku
 
 //NOTE - Testing
-	✓	nome utente in grassetto
+- [ ]	nome utente in grassetto
 
 //NOTE
 La api di reload funziona quando lanciata da connessione socket già stabilita

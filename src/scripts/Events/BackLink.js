@@ -1,7 +1,7 @@
 import { ePlaying, localBoard, localInfo, debug}	from "@/scripts/Data/Variables";
 import { getTarget }						from "./utils/MovementUtils.js";
-// import { MACRO } 						from "@/scripts/Data/Variables";
 import { useSockStore } 					from "../../stores/sock.st.js";
+import { playAudio } from "../Helper/generalUtils.js";
 
 export async function sendToBackend(fromId, toId, flag)
 {
@@ -47,7 +47,12 @@ export async function requestToBack(fromSquare, toSquare, opType)
 		sockStore.socket?.emit("game", { type, from: fromSquare, to: toSquare }, (result) => {
 			// console.log(`request: type: ${type}, from: ${fromSquare}, to:${toSquare}`)
 			clearTimeout(timeout);
-			resolve(result?.log?.status === 200);
+			const ok = result?.log?.status === 200;
+			if (ok)
+			{
+				debug(`richiesta: ${type}`);
+				playAudio(type);
+			}
 		});
 
 	});

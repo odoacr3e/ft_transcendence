@@ -64,11 +64,11 @@ export async function globalEvents()
 		localInfo.drag = null;
 	});
 
-	document.getElementById("wrapping").addEventListener("keydown", async function(event)
+	document.getElementById("wrapping")?.addEventListener("keydown", async function(event)
 	{
 		if (event.code === "Space" && localInfo.secondTurn)
 			await sendEndTurn();
-		if (event.code === "Enter" && localBoard.get(localInfo.clickedId)?.piece.team === currentPlayer().team)
+		if (event.code === "Enter" && localBoard.get(localInfo.clickedId)?.piece?.team === currentPlayer().team)
 			shopAbility();
 		if (event.code === "ShiftLeft" && localBoard.get(localInfo.clickedId)?.piece.isBoostedBool)
 			useAbility();

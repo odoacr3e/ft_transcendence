@@ -1,7 +1,7 @@
 import { initLocalBoard, localMatchState, 
 		 localBoard, localPlayers,
 		 startLocalMatchState, localInfo,
-		 currentPlayer }						from "./Variables.js";
+		 currentPlayer, emptyCapturedPieces }	from "./Variables.js";
 import { checkEndTurn, hasBoost, 
 		 checkUpgrade, assignLastMoveSquares }	from "./utils/ArchiUtils.js";
 import { beginPendingAbility } 					from "../Helper/abilityMovement.js";
@@ -169,6 +169,7 @@ export function reloadMatchState(raw)
 	const validated = validateReceivedMatch(raw);
 	startLocalMatchState(validated);
 
+
 	initLocalBoard(localMatchState.board);
 	initLocalPlayers();
 
@@ -210,6 +211,8 @@ export function clearMatchStorage()
 {
 	sessionStorage.removeItem("match:id");
 	sessionStorage.removeItem("match:myTeam");
+	localInfo.capturedP = { white: emptyCapturedPieces(),
+							black: emptyCapturedPieces() };
 	clearHistory();
 	clearGameMsgs();
 }
