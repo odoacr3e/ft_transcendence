@@ -12,8 +12,13 @@ down:
 
 delete:
 	docker system prune -a -f
+	docker volume prune -a -f
 
 re: down delete up
+
+restart:
+	docker restart backend
+	docker restart frontend
 
 setup:
 	@printf '\033[1;31mATTENZIONE\033[0m: $(DIRS) verranno cancellate e ricreate.\n'

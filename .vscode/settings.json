@@ -1,0 +1,4 @@
+{
+  // Non attenuare/colorare i file ignorati da git nell'Explorer
+  "explorer.decorations.colors": false
+}
