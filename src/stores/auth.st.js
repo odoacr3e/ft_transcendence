@@ -86,7 +86,7 @@ export const useAuthStore = defineStore('auth', {
 				useSockStore().disconnect();
 				this.user = null;
 			}
-			catch(err) { console.log(err); }
+			catch(err) { console.error(err); }
 		},
 
 		async update(credentials)

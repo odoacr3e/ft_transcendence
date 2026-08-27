@@ -1,4 +1,4 @@
-import { ePlaying, localBoard, localInfo }	from "@/scripts/Data/Variables";
+import { ePlaying, localBoard, localInfo, debug}	from "@/scripts/Data/Variables";
 import { getTarget }						from "./utils/MovementUtils.js";
 // import { MACRO } 						from "@/scripts/Data/Variables";
 import { useSockStore } 					from "../../stores/sock.st.js";
@@ -88,7 +88,7 @@ export async function amIPlaying()
 
 	if (!await waitForSocketToBeReady())
 	{
-		console.log("[BackLink] -> [amIPlaying]: socket mai connesso");
+		debug("[BackLink] -> [amIPlaying]: socket mai connesso");
 		return (ePlaying.UNKNOWN);
 	}
 	try {
@@ -96,14 +96,14 @@ export async function amIPlaying()
 		return (resp === true ? ePlaying.YES : ePlaying.NO);
 	}
 	catch {
-		console.log("[BackLink] -> [amIPlaying]: nessuna risposta dal back");
+		debug("[BackLink] -> [amIPlaying]: nessuna risposta dal back");
 		return (ePlaying.UNKNOWN);
 	}
 }
 
 export function reloadMatch()
 {
-	console.log("chiamata di reload!");
+	debug("chiamata di reload!");
 	const sockStore = useSockStore();
 	if (!sockStore.socket)
 		return (Promise.resolve(false));
@@ -139,7 +139,7 @@ export function reloadMatch()
 			//le risposte d'errore non hanno type: inutile continuare a riprovare
 			if (raw?.log?.status && raw.log.status !== 200)
 			{
-				console.log("[reload] il back rifiuta:", raw.log.msg);
+				debug("[reload] il back rifiuta:", raw.log.msg);
 				return finish(false);
 			}
 		};

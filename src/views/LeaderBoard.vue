@@ -28,7 +28,7 @@ onMounted(async () => {
         top3.value = lBoard.value.slice(0, 3);
         last7.value = lBoard.value.slice(3, 10);
     }
-    catch (err) { console.log(err); }
+    catch (err) { console.error(err); }
 });
 </script>
 

@@ -8,27 +8,40 @@
 		team: {type: String, default: 'black'}
 	})
 
-	const	countDown = ref(props.millis * +1),
-			min = computed(() => Math.floor(countDown.value / 60000)),
-			sec = computed(() => Math.floor((countDown.value % 60000) / 1000))
-	let		timeoutId = null,
-			running = false;
+	/*
+		Il tempo residuo non viene decrementato a mano: mentre il timer gira si tiene una
+		scadenza assoluta e a ogni tick si ricalcola la differenza dall'orologio di sistema.
+		Cosi' un tick in ritardo (o una scheda in background, dove il browser strozza i timer)
+		non fa perdere secondi: il conteggio si riallinea da solo al tick successivo.
+		Quando il timer e' fermo `remaining` resta congelato sull'ultimo valore letto.
+	*/
+	const	remaining	= ref(props.millis),
+			totalSec	= computed(() => Math.ceil(remaining.value / 1000)),
+			min			= computed(() => Math.floor(totalSec.value / 60)),
+			sec			= computed(() => totalSec.value % 60);
+	let		intervalId	= null,
+			deadline	= 0;
 
-	function stopTimer() {
-		if (timeoutId) {
-			clearTimeout(timeoutId);
-			timeoutId = null;
-		}
+	const TICK = 250;
+
+	function tick() {
+		remaining.value = Math.max(0, deadline - Date.now());
+		if (remaining.value === 0)
+			stopTimer();
 	}
 
-	function countDownTimer() {
-		if (countDown.value > 0 && running) {
-			timeoutId = setTimeout(() => {
-				countDown.value -= 1000;
-				timeoutId = null;
-				countDownTimer();
-			}, 1000)
-		}
+	function startTimer() {
+		if (intervalId)
+			return;
+		deadline = Date.now() + remaining.value;
+		intervalId = setInterval(tick, TICK);
+	}
+
+	function stopTimer() {
+		if (!intervalId)
+			return;
+		clearInterval(intervalId);
+		intervalId = null;
 	}
 
 	function pad(num) {
@@ -36,29 +49,24 @@
 		else return num;
 	}
 
+	//il back manda un tempo aggiornato: e' lui la verita', si riparte da li'
 	watch(() => props.millis, (val) => {
-		countDown.value = val;
-		if (running) {
+		remaining.value = val;
+		if (intervalId)
+		{
 			stopTimer();
-			countDownTimer();
+			startTimer();
 		}
 	});
 
 	watch(() => props.go, (val) => {
-		if (val) { 
-			if (!running) 
-			{ running = true; countDownTimer(); } 
-		}
-		else { 
-			if (running) 
-			{ running = false; stopTimer(); }
-		}
+		if (val)
+			startTimer();
+		else
+			stopTimer();
 	}, { immediate: true });
 
-	onUnmounted(() => {
-		running = false;
-		stopTimer();
-	});
+	onUnmounted(stopTimer);
 </script>
 
 <template>

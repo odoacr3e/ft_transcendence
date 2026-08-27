@@ -11,7 +11,7 @@
 	    await initLocalMatchState();
 	    ready.value = true;
 	  } catch (err) {
-	    console.log(`${err}`);
+	    console.error(`${err}`);
 	  }
 	})
 </script>

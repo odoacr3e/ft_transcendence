@@ -1,4 +1,4 @@
-import { localInfo, localBoard, currentPlayer }	from "../Data/Variables.js";
+import { localInfo, localBoard, currentPlayer, debug}	from "../Data/Variables.js";
 import { setHighlightTrue, clearHighlight }		from "../Events/utils/HighlightUtils.js";
 import { PIECES_HIGHLIGHT } 					from "./piecesHighlights.js";
 import { sendToBackend }						from "../Events/BackLink.js";
@@ -31,7 +31,7 @@ async function moveBastard(fromId, toId, flag)
 		}
 		else
 		{
-			console.log("[sendToBackend]: Mossa non valida");
+			debug("[sendToBackend]: Mossa non valida");
 			return;
 		}
 	}
@@ -58,7 +58,7 @@ async function moveBastard(fromId, toId, flag)
 
 async function moveKing()
 {
-	console.log("Va bene mavi, la smetto");
+	debug("Va bene mavi, la smetto");
 }
 
 async function moveJesterNValkirya(fromId, toId)
@@ -97,7 +97,7 @@ async function moveMinoNChamp(fromId, toId, flag)
 		}
 		else
 		{
-			console.log("[sendToBackend]: Prima mossa non valida");
+			debug("[sendToBackend]: Prima mossa non valida");
 			return;
 		}
 	}
@@ -109,7 +109,7 @@ async function moveMinoNChamp(fromId, toId, flag)
 			boostHlOnClick();
 		if (localInfo.savedBoostedMap.has(toId))
 		{
-			console.log(`from: ${fromId}, to: ${toId}`);
+			debug(`from: ${fromId}, to: ${toId}`);
 			const result = await sendToBackend(fromId, toId, true);
 			if(!result)
 				throw new Error("[bostedMovent]: Seconda mossa non valida");

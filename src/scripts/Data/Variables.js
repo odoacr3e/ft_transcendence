@@ -176,8 +176,17 @@ export const HIDDEN = new Set( ["a14", "b14", "c14", "a13", "b13", "c13", "a12",
 				 "l3", "m3", "n3", "l2", "m2", "n2", "l1", "m1", "n1"] );
 
 export let MACRO = Object ({
-	"AUDIO" : true,
+	"AUDIO"		: true,
+	"DEBUG"		: import.meta.env.DEV,
+	"LOL"		: true,
+	"CLASSIC"	: false,
 });
+
+export function debug(...args)
+{
+	if (MACRO.DEBUG)
+		console.log(...args);
+}
 
 export const ePlaying = Object.freeze({ YES: "yes", NO: "no", UNKNOWN: "unknown" });
 

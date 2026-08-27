@@ -9,6 +9,7 @@
 	import { api }			from '../router/api/client';
 	import router			from '../router/index.js';
 	
+import { debug } from "@/scripts/Data/Variables";
 	defineOptions({ inheritAttrs: false });
 	
 	const	{ t, locale } = useI18n({ useScope: 'global' }),
@@ -52,7 +53,7 @@
 			msg.status = 'read';
 			try {
 				await api.patch("/api/notifications", { id_notification: Number(msg.id_notification) }); }
-			catch(err) { console.log(err); }
+			catch(err) { console.error(err); }
 		}
 	}
 
@@ -77,13 +78,13 @@
 		//solo per test
 		try {
 			await api.post("/api/tournaments/addPlayers", {id_tournament: tourOpen.value.id_tournament, id_users: [user.value.id_user]}); }
-		catch(err) { console.log(err); }
+		catch(err) { console.error(err); }
 		closePopup();
 		router.push(`/tournament/${tourOpen.value.id_tournament}`);
 	}
 
 	async function rejectInvite() {
-		console.log("Per ora e' inutile :)");
+		debug("Per ora e' inutile :)");
 	}
 
 	const closePopup = () => { popUp.value = false; };
@@ -91,7 +92,7 @@
 	onMounted(async () => {
 		try {
 			if (user.value) { db.value = (await api.get("/api/users")).data.users; } }
-		catch { console.log("user non loggato, impossibile fare fetch su db");}
+		catch { debug("user non loggato, impossibile fare fetch su db");}
     });
 </script>
 

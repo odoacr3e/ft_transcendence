@@ -1,4 +1,4 @@
-import { localInfo, localBoard, currentPlayer }	from "@/scripts/Data/Variables";
+import { localInfo, localBoard, currentPlayer, debug}	from "@/scripts/Data/Variables";
 import { PIECES_HIGHLIGHT }						from "@/scripts/Helper/piecesHighlights";
 
 // UTILS - HIGHLIGHT AND SELECT FUNCTIONS
@@ -82,12 +82,12 @@ export function rightClickSelect(event)
 		if (event.target.localName === "img")
 		{
 			targetSquare = localBoard.get(event.target.parentNode.id);
-			console.log(targetSquare.id);
+			debug(targetSquare.id);
 		}
 		else
 		{	
 			targetSquare = localBoard.get(event.target.id);
-			console.log(targetSquare.id);
+			debug(targetSquare.id);
 		}
 
 		//sul re sotto scacco il selected spegnerebbe il rosso: si lascia stare
@@ -115,7 +115,7 @@ export function setCheckSquare(id)
 	if (square)
 		square.inCheck = true;
 	else
-		console.log("[setCheckSquare]: square non trovato ->", id);
+		debug("[setCheckSquare]: square non trovato ->", id);
 }
 
 export function clearHighlight(flag)

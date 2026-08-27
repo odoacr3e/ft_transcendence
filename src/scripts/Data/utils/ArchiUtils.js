@@ -1,5 +1,5 @@
 import { computePosition, offset, flip, shift, autoUpdate }	from "@floating-ui/dom";
-import { emptyCapturedPieces, localBoard, localInfo, currentPlayer } 		from "../Variables";
+import { emptyCapturedPieces, localBoard, localInfo, currentPlayer, debug} 		from "../Variables";
 import { clearHighlight }									from "@/scripts/Events/utils/HighlightUtils.js";
 
 let stopAutoUpdate = null;
@@ -120,7 +120,7 @@ export function resetLocalVars()
 
 	if (localInfo.victory)
 	{
-		console.log("resettiamo i pezzi catturati");
+		debug("resettiamo i pezzi catturati");
 		localInfo.capturedP		= { white: emptyCapturedPieces(),
 									black: emptyCapturedPieces() };
 	}

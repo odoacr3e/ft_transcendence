@@ -76,7 +76,7 @@
                         id_receiver: u.id_user });
             }
         }
-        catch(err) { console.log(err); }
+        catch(err) { console.error(err); }
     }
 
 	async function startTour() {

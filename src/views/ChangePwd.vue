@@ -6,11 +6,6 @@
     import { ref }								from 'vue';
 	import router								from '../router/index.js';
 	
-console.log = () => 
-{
-	console.debug("PERICOLO MUCCHE");
-};
-
     const	{ t } = useI18n(),
     	   formData = ref({
 	              password: ''

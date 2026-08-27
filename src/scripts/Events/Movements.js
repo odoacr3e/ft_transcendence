@@ -1,4 +1,4 @@
-import { localBoard, localInfo }	from "@/scripts/Data/Variables";
+import { localBoard, localInfo, debug}	from "@/scripts/Data/Variables";
 import { clearHighlight }			from "@/scripts/Events/utils/HighlightUtils.js";
 import { sendToBackend }			from "./BackLink.js";
 import { PIECES_ABILITY } 			from "@/scripts/Helper/abilityMovement";
@@ -49,7 +49,7 @@ export async function onDrop(event, toSquare)
 	const isValidMove = fromSquareId !== toSquareId && localBoard.get(toSquareId).highlight;
 	if (!isValidMove)
 	{
-		console.log("[onDrop]: mossa non valida!");
+		debug("[onDrop]: mossa non valida!");
 		return
 	}
 

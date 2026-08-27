@@ -1,4 +1,4 @@
-import { localInfo, localBoard, canAfford, MACRO }	from "@/scripts/Data/Variables";
+import { localInfo, localBoard, canAfford, MACRO, debug}	from "@/scripts/Data/Variables";
 import { PIECES_HIGHLIGHT }								from "@/scripts/Helper/piecesHighlights";
 import { clearHighlight }								from "@/scripts/Events/utils/HighlightUtils.js";
 import { stopUpgradeMenu }							from "@/scripts/Data/utils/ArchiUtils.js";
@@ -24,7 +24,7 @@ export function useAbility(targetId = null)
 		localInfo.usingAbility = square.piece?.type ? square.piece.type : "";
 		if (MACRO.AUDIO)
 			new Audio("/src/assets/audios/useAbility.mp3").play();
-		console.log(`who the fuck i am: ${localInfo.usingAbility}`);
+		debug(`who the fuck i am: ${localInfo.usingAbility}`);
 	}
 	PIECES_HIGHLIGHT[square.piece.type](clickedId);
 }
@@ -45,7 +45,7 @@ export function shopAbility(targetId = null)
 				if (MACRO.AUDIO)
 					new Audio("/src/assets/audios/boost.mp3").play(); 
 			}},
-			function(value) {if (!value) { console.log("Shop non completato correttamente"); }}
+			function(value) {if (!value) { debug("Shop non completato correttamente"); }}
 		);
 }
 
@@ -61,7 +61,7 @@ export async function sendEndTurn()
 			new Audio("/src/assets/audios/endTurn.mp3").play();
 	}
 	else
-		console.log("End turn non mandato correttamente");
+		debug("End turn non mandato correttamente");
 }
 
 export async function sendGiveUp()
@@ -76,7 +76,7 @@ export async function sendGiveUp()
 			new Audio("vedemmu");
 	}
 	else
-		console.log("Give up non mandato correttamente")
+		debug("Give up non mandato correttamente")
 }
 
 export function upgradeBastard(newType)
@@ -90,7 +90,7 @@ export function upgradeBastard(newType)
 			if (MACRO.AUDIO)
 				new Audio("/src/assets/audios/transformation.mp3").play();
 		}},
-		function(value) {if (!value) { console.log("Mossa non valida"); }}
+		function(value) {if (!value) { debug("Mossa non valida"); }}
 	);
 }
 
@@ -172,10 +172,10 @@ export async function showBoostedMovesHover(fromId)
 	const square	= localBoard.get(fromId);
 	if (!square)
 		return;
-	console.log(response);	
+	debug(response);	
 	if (response?.log?.status !== 200)
 	{
-		console.log("[showBoostedMovesHover]: response status != 200!", response);
+		debug("[showBoostedMovesHover]: response status != 200!", response);
 		return;
 	}
 	const futureBoostedZones = new Map(
@@ -194,7 +194,7 @@ export async function showBoostedMovesHover(fromId)
 			const pieceTeam = piece?.team;	
 			if ((isValkirya || isJester) && pieceTeam === localInfo.myTeam)
 			{
-				console.log("vediamo: ", pieceTeam !== localInfo.myTeam);
+				debug("vediamo: ", pieceTeam !== localInfo.myTeam);
 				continue;
 			}
 			else

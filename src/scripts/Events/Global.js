@@ -5,7 +5,7 @@ import { usingAbility, checkPermision,
 		useAbility}											from "./utils/GlobalUtils.js";
 import { rightClickSelect, highlightOnClick,
 		highlightOnDrag, clearHighlight }					from "./utils/HighlightUtils.js";
-import { localInfo, getRootDiv, localBoard, currentPlayer }	from "@/scripts/Data/Variables";
+import { localInfo, getRootDiv, localBoard, currentPlayer, debug}	from "@/scripts/Data/Variables";
 import { PIECES_ABILITY } 									from "@/scripts/Helper/abilityMovement";
 import { sendToBackend }									from "./BackLink.js";
 
@@ -24,13 +24,13 @@ export async function globalEvents()
 			clearHighlight(); 
 			return;
 		}	
-		console.log(`CID: ${localInfo.clickedId}, LCID: ${localInfo.lastClickedId}`);
+		debug(`CID: ${localInfo.clickedId}, LCID: ${localInfo.lastClickedId}`);
 		if (checkForHighlightMove()) 
 		{
-			console.log("dentro check");
+			debug("dentro check");
 			if (usingAbility())
 			{
-				console.log(`Boosted Piece: ${localInfo.usingAbility}`);
+				debug(`Boosted Piece: ${localInfo.usingAbility}`);
 				await PIECES_ABILITY[localInfo.usingAbility](localInfo.lastClickedId, localInfo.clickedId, "click");
 				return;
 			}
@@ -49,7 +49,7 @@ export async function globalEvents()
 		if (((localInfo.secondMove && localInfo.savedBoostedMap && 
 			localInfo.savedBoostedMap.has(event.target.parentNode.id)) || !localInfo.secondTurn) && localBoard.get(event.target.parentNode.id)?.piece?.team === localInfo.myTeam)
 			{
-				console.log("sono qui");				
+				debug("sono qui");				
 				highlightOnDrag(event);
 			}
 	});

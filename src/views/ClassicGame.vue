@@ -1,5 +1,5 @@
 <script setup>
-	import { localMatchState, localInfo, DOMPlayer, ePlaying }	from '@/scripts/Data/Variables';
+	import { localMatchState, localInfo, DOMPlayer, ePlaying, debug}	from '@/scripts/Data/Variables';
 	import { onMounted, ref, computed, onUnmounted, watch }       			from 'vue';
 	import { reloadMatch, amIPlaying, requestToBack }					from '@/scripts/Events/BackLink.js';
 	import PlayerInfo               					from '../components/PlayerInfo.vue';
@@ -19,7 +19,7 @@ import GameMsgBox from '@/components/GameMsgBox.vue';
 	let		alive		= true;
 
 	onMounted(async () => {
-		console.log("[ClassicGame]: OnMounted");		
+		debug("[ClassicGame]: OnMounted");		
 		try{
 			if (!localMatchState)
 			{
@@ -36,14 +36,14 @@ import GameMsgBox from '@/components/GameMsgBox.vue';
 
 				if (playing === ePlaying.NO)
 				{
-					console.log("[ClassicGame]: non sono in partita, reloaddami sta ciola");
+					debug("[ClassicGame]: non sono in partita, reloaddami sta ciola");
 					clearMatchStorage();
 					router.replace({ name: "playpage" });
 					return;
 				}
 				if (playing === ePlaying.UNKNOWN)
 				{
-					console.log("[ClassicGame]: stato incerto, back ma che combini?");
+					debug("[ClassicGame]: stato incerto, back ma che combini?");
 					router.replace({ name: "playpage" });
 					return;
 				}
@@ -61,7 +61,7 @@ import GameMsgBox from '@/components/GameMsgBox.vue';
 			}
 			ready.value = true;
 		} catch (err) {
-			console.log(`${err}`);
+			console.error(`${err}`);
 		}
 	})
 
