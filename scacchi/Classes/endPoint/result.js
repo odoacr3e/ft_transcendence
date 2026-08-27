@@ -62,6 +62,7 @@ class Result
 									this.specialMoves = new bitMaskMoves();
 /** @type {string | undefined} */	this.team = undefined;
 		/** @type {Match | null} */	this.match = null;
+		/** @type {boolean | undefined} */	this.draw = undefined;
 
 		//@ts-ignore
 		this.board = {};

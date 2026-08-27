@@ -18,6 +18,7 @@ import { render } from "../../test/render.js";
 import { aiSpeech } from "./AIprofiles/speech.js";
 import { zobristGenerateTable, zobristInitHash } from "../../utils/zobrist.js";
 import { rng } from "../../utils/random.js";
+import { clientSetState } from "../../websocket/utils.js";
 
 /** @typedef {import("../Globals/Queue.js").QueueNode} QueueNode*/
 /** @typedef {import("./Pieces/pieces.js").Piece} Piece*/
@@ -57,6 +58,7 @@ class Match
 		this.playerNum = this.settings.players.number;
 		this.loserSet = new Set();
 		this.victory = "";
+		this.drawPendingBool = false;
 		/** @type {Timer | null} */ this.timer = null;
 		if (this.settings.players.number == 4)
 			this.currentPlayer = this.yellow;
@@ -278,6 +280,7 @@ class Match
 			return (new Result());
 		this.victory = this.currentPlayer.team;
 		this.history.victory = this.victory;
+		clientSetState(this.currentPlayer?.dbTable?.id_user);
 		this.UpdateElo(this.currentPlayer, true);
 		for (const user of this.users)
 		{
@@ -314,6 +317,7 @@ class Match
 		this.history.Last().loserSet.add(player.id);
 		this.UpdateElo(player, false);
 		this.DeletePlayer(player);
+		clientSetState(player.dbTable?.id_user);
 		this.history.Last().lastLost = player.team;
 		if (!result)
 			result = new Result();

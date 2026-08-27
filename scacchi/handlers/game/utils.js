@@ -97,7 +97,7 @@ function copyOnlyBoardUpdates(match)
 	return (newBoard);
 }
 
-/** @typedef {{from: string, to: string, type: string}} RequestBody*/
+/** @typedef {{from: string, to: string, type: string, draw: boolean}} RequestBody*/
 
 /**
  * 

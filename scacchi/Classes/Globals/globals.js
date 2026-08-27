@@ -11,6 +11,7 @@ import { SocketInfo } from "./socketInfo.js";
 import fs from "fs";
 import { zobristGenerateTable } from "../../utils/zobrist.js";
 import { Tournament } from "../Chess/tournament.js";
+import { clientSetState } from "../../websocket/utils.js";
 
 /** @typedef {import("../Chess/chessBoard.js").ChessBoard} ChessBoard*/
 /** @typedef {import("../Chess/player.js").Player} Player*/
@@ -168,7 +169,10 @@ class Globals
 			match.endTurn();
 		render(match);
 		if (match.playerNum <= 1)
-			return (match.CheckMate(null)); 
+		{
+			result = match.CheckMate(null);
+			clientSetState(match.currentPlayer.dbTable.id_user);
+		} 
 		return (result);
 	}
 	/** 

@@ -28,6 +28,7 @@ import { saveMatch } from "../../utils/saveMatch.js";
 import { checkKingDanger } from "../../utils/checkDanger.js";
 import { reload } from "./reload.js";
 import { AItraining } from "../../Classes/Chess/AIprofiles/training.js";
+import { drawHandler } from "./draw.js";
 
 /** @typedef {import("express").Request} Request*/
 /** @typedef {import("express").Response} Response*/
@@ -63,7 +64,7 @@ async function gameHttpHandler(req, res)
 
 /**
  * 
- * @param {{from: *, to: *, type: string}} req 
+ * @param {import("./utils.js").RequestBody} req
  * @param {number} id_user 
  * @param {import("../../Classes/Globals/globals.js").Socket | undefined} socketData 
  */
@@ -212,7 +213,7 @@ async function gamePlayerNotificationHandler(match, body, socketData)
 {
 	let	result;
 
-	result = new Result();
+	result = new Result().Success();
 	if (body.type == "giveup")
 	{
 		match.PlayerLost(result, match.GetPlayer(socketData?.matchData?.team));
@@ -225,8 +226,7 @@ async function gamePlayerNotificationHandler(match, body, socketData)
 	}
 	else if (body.type == "draw")
 	{
-		result.Success();//@ts-ignore
-		result.history = match.history.clientEvents[match.history.clientEvents.length - 1];
+		result = drawHandler(match, body, socketData);
 	}
 	else
 		throw ("gameInfoHandler: invalid type " + body.type);

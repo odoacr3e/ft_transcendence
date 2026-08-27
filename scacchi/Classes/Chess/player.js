@@ -53,6 +53,7 @@ class Player
 		this.prev = data.prev;
 		this.ally = data.ally;
 		this.allieGuardianCoord = "";
+		this.drawAcceptedBool = false;
 		/** @type {AI<null> | null} */
 		this.ai = null;
 		if (ai)

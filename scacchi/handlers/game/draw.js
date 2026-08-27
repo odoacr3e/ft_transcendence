@@ -1,0 +1,96 @@
+//@ts-check
+
+import { Result } from "./utils.js";
+
+/**
+ * handler of draw requests
+ * @param {import("../../Classes/Chess/match.js").Match} match
+ * @param {import("./utils.js").RequestBody} body
+ * @param {import("../../Classes/Globals/globals.js").Socket | null} socketData
+ */
+export function drawHandler(match, body, socketData)
+{
+	if (!socketData)
+		return (new Result().Error("no socketData", 500));
+	if (!match.drawPendingBool && !body.draw)
+		return (new Result().Success());
+	if (!body.draw)
+		return (declineDraw(match, body, socketData));
+	if (!match.drawPendingBool)
+		return (offerDraw(match, body, socketData));
+	return (acceptDraw(match, body, socketData));
+}
+
+/**
+ * decline draw
+ * @param {import("../../Classes/Chess/match.js").Match} match
+ * @param {import("./utils.js").RequestBody} body
+ * @param {import("../../Classes/Globals/globals.js").Socket} socketData
+ */
+function declineDraw(match, body, socketData)
+{
+	let	currTeam;
+	let	result;
+
+	match.drawPendingBool = false;
+	currTeam = match.currentPlayer.team;
+	do
+	{
+		match.currentPlayer.drawAcceptedBool = false;
+		match.endTurn();
+	}
+	while (currTeam != match.currentPlayer.team)
+	result = new Result().Success();
+	result.draw = false;
+	socketData.socket.to(`match_${match.id}`).emit("draw", result);
+	return (result);
+}
+
+/**
+ * accept draw
+ * @param {import("../../Classes/Chess/match.js").Match} match
+ * @param {import("./utils.js").RequestBody} body
+ * @param {import("../../Classes/Globals/globals.js").Socket} socketData
+ */
+function offerDraw(match, body, socketData)
+{
+	let	result;
+
+	match.drawPendingBool = true;
+	match.GetPlayer(socketData.matchData?.team).drawAcceptedBool = true;
+	result = new Result().Success();
+	result.draw = true;
+	socketData.socket.to(`match_${match.id}`).emit("draw", result);
+	return (result);
+}
+
+/**
+ * accept draw
+ * @param {import("../../Classes/Chess/match.js").Match} match
+ * @param {import("./utils.js").RequestBody} body
+ * @param {import("../../Classes/Globals/globals.js").Socket} socketData
+ */
+function acceptDraw(match, body, socketData)
+{
+	let	currTeam;
+	let	acceptAll;
+	let	result;
+
+	match.GetPlayer(socketData.matchData?.team).drawAcceptedBool = true;
+	currTeam = match.currentPlayer.team;
+	acceptAll = true;
+	do
+	{
+		if (!match.currentPlayer.drawAcceptedBool)
+		{
+			acceptAll = false;
+			break ;
+		}
+		match.endTurn();
+	}
+	while (currTeam != match.currentPlayer.team)
+	if (acceptAll == false)
+		return (new Result().Success());
+	result = match.DrawMatch(null, `Player decision`);
+	return (result);
+}
