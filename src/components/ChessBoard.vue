@@ -271,7 +271,7 @@
 		display: block;
 		margin: auto;
 		border-radius: 50%;
-		background-color: rgb(99, 221, 0);
+		background-color: rgb(99, 221, 0); /* #01a76f */
 	}
 
 	.selectedB

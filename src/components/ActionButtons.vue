@@ -68,19 +68,19 @@
 			<button class="action" 		
 				v-bind:class="[
 				canUseAbility ? 'on' : 'off',
-				abilityArmed ? 'armed bg-orange-500 hover:bg-orange-600'
-							 : 'bg-amber-300 hover:bg-orange-400'
+				abilityArmed ? 'armed bg-[#c76d19] hover:bg-[#d66317]'
+							 : 'bg-[#c78a19] hover:bg-[#d69317]'
 				]"
 				@click="useAbility()">
 				<IconEnergyArrow class="icon"/>
-				<b>{{ abilityArmed ? "Ability ON!..." : "Use Ability!"}}</b>
+				<b>{{ abilityArmed ? "Ability ON!" : "Use Ability!"}}</b>
 			</button>
 		</div>
 
 		<span class="msgs">THEN</span>
 
 		<div class="mid-row">
-			<button class="action end-turn bg-blue-500 hover:bg-indigo-500"
+			<button class="action end-turn bg-sky-700 hover:bg-[#0074bd]"
 				v-bind:class="canEndTurn ? 'on' : 'off'"
 				@click="sendEndTurn()">
 				<IconHourglass class="icon"/>
@@ -89,7 +89,7 @@
 
 			<span class="msgs">OR</span>
 
-			<button class="action bg-emerald-400 hover:bg-emerald-500"
+			<button class="action bg-emerald-600 hover:bg-[#01a76f]"
 				v-bind:class="canBoost ? 'on' : 'off'"
 				@click="shopAbility()"
 				@mouseenter="showBoostedMovesHover(localInfo.clickedId)"
@@ -101,13 +101,13 @@
 		
 		<div class="bottom-section" ref="panelEl">
 			<div class="btm-row">
-				<button class="action mini bg-red-400 hover:bg-red-500"
+				<button class="action mini bg-[#d63134] hover:bg-[#e2292c]"
 					v-bind:class="'on'"
 					@click="askGiveUp()">
 					<IconFlag class="icon"/>
 					<b>Give Up!</b>
 				</button>
-				<button class="action mini on bg-amber-300 hover:bg-orange-400"
+				<button class="action mini on bg-[#c78a19] hover:bg-[#d69317]"
 					@click="askDraw()">
 					<IconHandshake class="icon"/>
 					<b>Chiedi Pareggio</b>
@@ -117,11 +117,11 @@
 				<div class="confirm-col" v-if="pending">
 					<span class="confirm-msg">{{ confirmMessage }}</span>
 					<div class="confirm-row">
-						<button class="action confirm-btn on bg-emerald-400 hover:bg-emerald-500"
+						<button class="action confirm-btn on bg-text-win-open hover:bg-[#02c04e]"
 							@click="confirmPending()">
 							<b>Sì</b>
 						</button>
-						<button class="action confirm-btn on bg-red-400 hover:bg-red-500"
+						<button class="action confirm-btn on bg-[#d12f32] hover:bg-text-lose-closed"
 							@click="cancelPending()">
 							<b>No</b>
 						</button>
@@ -178,7 +178,7 @@
 	{
 		flex: 0 0 auto;
 		align-self: center;
-		color: #e5e5e5;
+		color: var(--color-text-default);
 		font-size: .8rem;
 		font-weight: 700;
 		letter-spacing: .08rem;
@@ -192,7 +192,7 @@
 		gap: 6px;
 		padding: 12px;
 		border-radius: 8px;
-		color: #1b1b1b;
+		color: var(--color-text-default);
 		transition: opacity .3s ease-in-out, filter .3s ease-in-out, transform .2s ease-in-out;
 	}
 
@@ -222,7 +222,7 @@
 
 	.action.armed
 	{
-		color: #fff1e6;
+		color: var(--color-text-default);
 		animation: armed-pulse 1.4s ease-out infinite;
 	}
 
@@ -280,7 +280,7 @@
 
 	.confirm-msg
 	{
-		color: #e5e5e5;
+		color: var(--color-text-default);
 		font-size: .9rem;
 		font-weight: 600;
 		text-align: center;

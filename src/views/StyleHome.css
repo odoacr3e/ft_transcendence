@@ -18,6 +18,7 @@
 	--color-bg-WSelect: var(--current-bg-WSelect);
 	--color-bg-BSelect: var(--current-bg-BSelect);
 	--color-bg-highlight: var(--current-bg-highlight);
+	--color-bg-historyM: var(--current-bg-historyM);
 
 	--color-notif-on: var(--current-notif-on);
 	--color-online-accept: var(--current-online-accept);
@@ -73,6 +74,7 @@
 --current-bg-WSelect: #bb4232;
 --current-bg-BSelect: #801a12;
 --current-bg-highlight: #a52a2a;
+--current-bg-historyM: #ffb2942e;
 
 --current-notif-on: #c41c1c;
 --current-online-accept: var(--color-green-500);	/*#00c950*/ /*NOTE - usato sia per l'online che per text-accept*/
@@ -104,6 +106,7 @@
 --current-bg-WSelect: #3E93CC;
 --current-bg-BSelect: #176AA1;
 --current-bg-highlight: #2C75A5;
+--current-bg-historyM: #94CDFF2E;
 
 --current-notif-on: #c41c1c;					/*SAME*/
 --current-online-accept: var(--color-green-500);	/*SAME*/
@@ -135,6 +138,7 @@
 --current-bg-WSelect: #37BB32;
 --current-bg-BSelect: #168012;
 --current-bg-highlight: #2EA52A;
+--current-bg-historyM: #94FF942E;
 
 --current-notif-on: #c41c1c;					/*SAME*/
 --current-online-accept: var(--color-green-500);	/*SAME*/
@@ -166,6 +170,7 @@
 --current-bg-WSelect: #BB9B32;
 --current-bg-BSelect: #806412;
 --current-bg-highlight: #A5872A;
+--current-bg-historyM: #FFF4942E;
 
 --current-notif-on: #c41c1c;					/*SAME*/
 --current-online-accept: var(--color-green-500);	/*SAME*/

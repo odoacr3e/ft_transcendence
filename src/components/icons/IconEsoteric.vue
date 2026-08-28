@@ -1,6 +1,6 @@
 <script setup>
 	defineProps({
-		fill: { type: String, default: '#882a2a' }
+		fill: { type: String, default: 'var(--color-main-color)' }
 	});
 </script>
 

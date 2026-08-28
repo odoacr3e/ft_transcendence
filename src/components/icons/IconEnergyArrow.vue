@@ -1,7 +1,7 @@
 <script setup>
 	defineProps({
-		fill:	{ type: String, default: '#1f2937' },
-		stroke:	{ type: String, default: '#1f2937' }
+		fill:	{ type: String, default: 'var(--color-text-default)' },
+		stroke:	{ type: String, default: 'var(--color-text-default)' }
 	});
 </script>
 

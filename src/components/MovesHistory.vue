@@ -22,7 +22,7 @@
 </script>
 
 <template>
-	<div class="wrap flex flex-col overflow-hidden">
+	<div class="select-none flex flex-col overflow-hidden">
 		<div ref="scroller" class="grow overflow-y-auto scroll-smooth">
 			<p v-if="!localHistory.length" class="px-4 py-8 text-center text-white/35 text-sm">
 				No moves yet
@@ -44,11 +44,6 @@
 </template>
 
 <style scoped>
-	.wrap
-	{
-		user-select: none;
-	}
-
 	.row
 	{
 		display: flex;
@@ -56,7 +51,7 @@
 		gap: 8px;
 		width: 100%;
 		padding: 7px 10px;
-		color: #e8e8e8;
+		color: var(--color-text-second);
 		font-size: 0.9rem;
 		text-align: left;
 		transition: background-color .15s ease;
@@ -64,13 +59,13 @@
 
 	.row:nth-child(even)	{ background-color: rgba(255, 255, 255, .03); }
 	.row:hover				{ background-color: rgba(255, 255, 255, .07); }
-	.row.is-last			{ background-color: rgba(255, 178, 148, .18); color: #fff1e6;}
+	.row.is-last			{ background-color: var(--color-bg-historyM); color: var(--color-text-error); }
 
 	.num
 	{
 		width: 2.2rem;
 		flex-shrink: 0;
-		color: rgba(255, 255, 255, .35);
+		color: var(--color-text-third);
 		font-size: 0.85rem;
 	}
 
@@ -86,7 +81,7 @@
 	.time
 	{
 		flex-shrink: 0;
-		color: rgba(255, 255, 255, .3);
+		color: var(--color-text-third);
 		font-size: 0.75rem;
 	}
 

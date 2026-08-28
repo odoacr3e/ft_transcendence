@@ -57,17 +57,17 @@
 <template>
 	<div class="wrap">
 
-		<div class="codex">
+		<div class="flex flex-col">
 			<div class="title">
 				<IconEsoteric class="codex-svg"/>
 				<h1 class="title-txt">
 					<span class="title-top">KING'S</span>
-					<span class="title-bottom">CODEX</span>
+					<span class="ml-[50%]">CODEX</span>
 				</h1>
 			</div>
-			<hr class="sep-line mt-1.5">
+			<hr class="w-[110%] self-center text-text-last mt-1.5 mx-4">
 
-			<div class="metadata" :class="{ 'is-hidden' : !piece }">
+			<div class="metadata" :class="{ 'invisible' : !piece }">
 				<div class="mb-8 mt-10">
 					<div class="page-head">
 						<img v-if="piecePath" :src="piecePath" alt="" :draggable="false" class="piece-icon">
@@ -80,7 +80,7 @@
 					</div>
 				</div>
 				<div class="moves">
-					<div class="tabs">
+					<div class="flex w-full">
 						<button type="button" class="tab" :class="{ active: tab === 'base' }" @click="tab = 'base'">Base</button>
 						<button type="button" class="tab" :class="{ active: tab === 'boost' }" :disabled="!entry?.boost && !entry?.boostScenes?.length" @click="tab = 'boost'">Boost</button>
 					</div>
@@ -123,7 +123,7 @@
 		display: flex;
 		flex-direction: column;
 		line-height: 1;
-		color: #ffffff;
+		color: var(--color-text-default);
 		font-weight: 1000;
 		font-size: x-large;
 		letter-spacing: .08rem;
@@ -137,24 +137,13 @@
 		flex-direction: column;
 		gap: .8rem;
 		margin-top: 1rem;
-		color: #ffffff;
+		color: var(--color-text-default);
 		font-weight: 700;
 		font-size: x-large;
 		letter-spacing: .08rem;
 		line-height: 1;
 		font-family: Arial, Helvetica, sans-serif;
 		text-transform: uppercase;
-	}
-
-	.title-bottom
-	{
-		margin-left: 50%;
-	}
-
-	.codex
-	{
-		display: flex;
-		flex-direction: column;
 	}
 
 	.codex-svg
@@ -170,13 +159,8 @@
 		align-items: center;
 		gap: 1rem;
 		text-align: center;
-		color: #ffffff;
+		color: var(--color-text-default);
 		font-family: Arial, Helvetica, sans-serif;
-	}
-
-	.is-hidden
-	{
-		visibility: hidden;
 	}
 
 	.page-head
@@ -220,12 +204,6 @@
 		padding-right: 1rem;
 	}
 
-	.tabs
-	{
-		display: flex;
-		width: 100%;
-	}
-
 	.move-desc
 	{
 		position: relative;
@@ -246,7 +224,7 @@
 		position: absolute;
 		width: 3.5rem;
 		height: 25rem;
-		border: 1px solid rgb(66, 59, 59, 1);
+		border: 1px solid var(--color-border-default);
 		pointer-events: none;
 		top: .9rem;
 		left: -2.5rem;
@@ -261,7 +239,7 @@
 		position: absolute;
 		width: 3.5rem;
 		height: 25rem;
-		border: 1px solid rgb(66, 59, 59, 1);
+		border: 1px solid var(--color-border-default);
 		pointer-events: none;
 		top: .9rem;
 		right: -2.5rem;
@@ -294,21 +272,13 @@
 	.tab.active
 	{
 		opacity: 1;
-		background-color: rgba(160, 158, 156, .18);
+		background-color: var(--color-bg-second);
 	}
 
 	.tab:disabled
 	{
 		/* opacity: .15; */
 		cursor: not-allowed;
-	}
-
-	.cost
-	{
-		font-size: 1rem;
-		font-weight: 1000;
-		letter-spacing: .06rem;
-		color: aliceblue;
 	}
 
 	.scenes
@@ -336,12 +306,5 @@
 		line-height: 1.25;
 		opacity: .75;
 		text-align: center;
-	}
-
-	.sep-line
-	{
-		margin-left: -1rem;
-		margin-right: -1rem;
-		color: rgb(66, 59, 59, 1);
 	}
 </style>

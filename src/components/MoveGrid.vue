@@ -44,16 +44,16 @@
 		grid-template-columns: repeat(5, 1fr);
 		width: 100%;
 		aspect-ratio: 1;
-		border: 1px solid rgba(74, 52, 24, .55);
-		--felt: rgb(174, 163, 142, 1);	/* sfondo della griglia */
-		--ink: rgba(120, 88, 52, .30);	/* Velo sopra la scacchiera, ti permette di scurirla o schiarirla */
-		--mark-color: brown;			/* stesso colore di .highlight sulla board */
+		border: 1px solid color-mix(in srgb, var(--color-bg-square) 55%, transparent);
+		--felt: var(--color-bg-WSquare);	/* sfondo della griglia */
+		--ink: var(--color-bg-square);	/* Velo sopra la scacchiera, ti permette di scurirla o schiarirla */
+		--mark-color: var(--color-bg-highlight);			/* stesso colore di .highlight sulla board */
 		background-color: var(--felt);
 	}
 
 	.move-grid.boosted
 	{
-		--mark-color: rgb(99, 221, 0);	/* stesso colore di .boostedHighlight sulla board */
+		--mark-color: rgb(99, 221, 0); /* #01a76f |  stesso colore di .boostedHighlight sulla board */
 	}
 
 	.cell

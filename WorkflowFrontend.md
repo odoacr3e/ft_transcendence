@@ -196,14 +196,22 @@ boardConverter()
 - [x]	update delle preferenze di colore degli utenti
 - [x]	pagina della lore
 - [x]	reworkare i temi chiari
-- [ ]	reattività delle pagine [MAVI]
-- [ ]	reworkare il design delle pagine di gioco appena sono pronte
-- [ ]	info dei profili per le partitre a 4
-- [ ]	Sia per poter potenziare i pezzi che per usare l'abilità aggiungere un bottoncino sul pezzo (bl o br) stile overwatch
-- [ ]	Tutte le info/bottoni attuali a destra in un unico div in futuro tutorial/info pezzi a sinistra
+- [x]	Sia per poter potenziare i pezzi che per usare l'abilità aggiungere un bottoncino sul pezzo (bl o br) stile overwatch
+- [x]	Tutte le info/bottoni attuali a destra in un unico div in futuro tutorial/info pezzi a sinistra
+- [ ]	reworkare il design delle pagine di gioco appena sono pronte [MAVI]
+	- [ ] colori boosted
+- [ ]	reattività delle pagine
+- [ ]	chat minimale in game
+- [ ]	aggiornamento delle TagTittle
 
-//NOTE - Testing
-	✓	nome utente in grassetto
+
+
+#TODO - EXTRA - perche' noi non ci accontentiamo mai
+- [ ]	info dei profili per le partitre a 4
+- [ ]	testing dei tornei in toto
+
+
+
 
 //NOTE
 La api di reload funziona quando lanciata da connessione socket già stabilita

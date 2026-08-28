@@ -23,9 +23,9 @@
 	const showReopen = computed(() => outcome.value !== null && dismissed.value);
 
 	const content = computed(() => ({
-		win: { img: winImg, title: 'You Win!', cls:'text-emerald-400'},
-		lose: { img: loseImg, title: 'You Lose!', cls:'text-red-400'},
-		draw: { img: drawImg, title: 'Draw!', cls:'text-amber-300'},
+		win: { img: winImg, title: 'You Win!', cls:'text-text-win-open'},
+		lose: { img: loseImg, title: 'You Lose!', cls:'text-text-lose-closed'},
+		draw: { img: drawImg, title: 'Draw!', cls:'text-text-draw-await'},
 	}[outcome.value] ?? { img: '', title: '', cls: ''}));
 
 	watch(victory, (v) => {
@@ -56,17 +56,17 @@
 
 		<div class="flex flex-col gap-3 w-56">
 			<button @click="playAgain"
-					class="py-3 rounded-xl bg-emerald-400 hover:bg-emerald-500 text-[#1b1b1b] font-bold
+					class="py-3 rounded-xl bg-text-win-open hover:bg-[#02c04e] text-text-default font-bold
 						transition hover:-translate-y-0.5">
 				Gioca Ancora
 			</button>
 			<button @click="watchBoard"
-					class="py-3 rounded-xl bg-blue-500 hover:bg-indigo-500 text-white font-bold
-						transition hover:translate-y-0.5">
+					class="py-3 rounded-xl bg-sky-700 hover:bg-[#0074bd] text-text-default font-bold
+						transition hover:-translate-y-0.5">
 				Guarda la Scacchiera
 			</button>
 			<button @click="goHome"
-					class="py-3 rounded-xl bg-neutral-600 hover:bg-neutral-500 text-white font-bold
+					class="py-3 rounded-xl bg-neutral-600 hover:bg-neutral-500 text-text-default font-bold
 						transition hover:-translate-y-0.5">
 				Torna alla Home
 			</button>
@@ -75,7 +75,7 @@
 
 	<button v-if="showReopen" @click="reopen"
 			class="absolute top-2 right-2 z-20 px-3 py-2 rounded-lg text-sm font-bold
-				bg-black/60 text-white hover:bg-black/80 transition select-none">
+				bg-black/60 text-text-default hover:bg-black/80 transition select-none">
 		Fine Partita ↩
 	</button>
 </template>
