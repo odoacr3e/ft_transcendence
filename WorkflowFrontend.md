@@ -184,6 +184,7 @@ boardConverter()
 - [ ]	Se fai una partita e mangi un pezzo, se questa partita finisce per timer
 		i pezzi mangiati rimangono nella prossima partita
 - [ ]	Qualche volta quando dragghi non compaiano i highlights
+- [ ]	Quando fai arrocco e al turno dopo clicchi sul re il re rimane rosso
 
 #TODO FRONTEND - 
 - [x]	websocket per lo stato online

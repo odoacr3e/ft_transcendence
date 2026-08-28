@@ -82,11 +82,7 @@ export async function sendEndTurn()
 
 	response = await requestToBack(null, null);
 	if (response) 
-	{ 
 		clearHighlight();
-		if (MACRO.AUDIO)
-			new Audio("/src/assets/audios/endTurn.mp3").play();
-	}
 	else
 		debug("End turn non mandato correttamente");
 }

@@ -28,7 +28,7 @@ export function listenGameSocket(socket)
 			if (mask & (eSpecialMoves.CHECK | eSpecialMoves.CHECKMATE))
 			{
 				debug("[socket game]: è tempo di blinkare!");
-				playAudio("CHECK");
+				playAudio("check");
 				if (raw.check != undefined)
 				{
 					const threatId = new Set([raw.check.to, raw.check.mid, raw.check.from].filter(Boolean));
@@ -118,7 +118,7 @@ export function listenGameSocket(socket)
 		if (inCheck)
 		{
 			debug("[socket game]: re sotto scacco in", raw.giorgi0);
-			playAudio("CHECK");
+			playAudio("check");
 		}
 	});
 
