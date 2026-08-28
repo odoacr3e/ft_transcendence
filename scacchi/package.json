@@ -31,7 +31,7 @@
   "main": "main.js",
   "scripts": {
     "start": "clear;node main.js",
-    "dev": "clear; ./node_modules/.bin/nodemon main.js",
+    "dev": "clear; ./node_modules/.bin/nodemon --env-file=.env main.js",
     "devNode": "clear; node main.js",
     "confprisma": "npm install prisma --save-dev; npm install @prisma/client; npm install @prisma/adapter-pg --save; npx prisma generate; npm i --save-dev @types/node",
     "pulldb": "npx prisma db pull && npx prisma generate",

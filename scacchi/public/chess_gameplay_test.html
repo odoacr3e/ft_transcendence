@@ -742,7 +742,7 @@
             document.getElementById('ai-profile-chip').innerText = profiloCasuale;
 
             const inviaRichiesta = () => {
-                socket.emit("create_ai_match", { req: profiloCasuale }, (ack) => {
+                socket.emit("create_ai_match", { profile: profiloCasuale }, (ack) => {
                     // Callback di ack, se il server la supporta
                     if (ack) {
                         logAI(`ACK create_ai_match: ${JSON.stringify(ack)}`, ack.log && ack.log.status === 200 ? "ok" : "err");

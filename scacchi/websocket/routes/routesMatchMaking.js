@@ -18,7 +18,7 @@ export function routesMatchMaking(socket, user)
 {
 	let	socketData;
 
-	socket.on('create_ai_match', async(/** @type {string} */profile, callback) => 
+	socket.on('create_ai_match', async(/** @type {{profile: string}} */req, callback) => 
 	{
 		let result = new Result();
 		let	match;
@@ -27,17 +27,18 @@ export function routesMatchMaking(socket, user)
 		socketData = globals.clientMap.get(user.id_user);
 		if (!socketData)
 			result = result.Error("Player data are lost", 500);
-		else if (profile == undefined)// @ts-ignore
+		else if (!req || !req.profile)// @ts-ignore
 			result.aiProfiles = AIprofilesArray;
-		else if (AIprofilesArray.indexOf(profile) == -1)
+		else if (AIprofilesArray.indexOf(req.profile) == -1)
 			result.Error("Profile does not exist", 404);
 		else
 		{
 			setting = new MatchSettings(eMatchPresets.ClassicTwoPlayers);
-			setting.SetAiProfile(profile);
+			setting.SetAiProfile(req.profile);
 			match = new Match();
 			result = init(match, setting);
 			socketData.matchData = match.currentPlayer.ai? match.NextPlayer() : match.currentPlayer;
+			socketData.state = enumSocketState.PLAYING;
 		}
 		socket.emit('create_ai_match', result);
 		if (typeof(callback) == 'function')

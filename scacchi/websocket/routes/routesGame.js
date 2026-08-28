@@ -6,7 +6,7 @@ import { globals } from "../../Classes/Globals/globals.js";
 import { boost, gameWebSocketHandler } from "../../handlers/game/Game.js";
 import { enumConnection, enumSocketState } from "../../Macro/enums.js";
 import { historyGetMatchState } from "../../utils/history.js";
-import { isBusy } from "../utils.js";
+import { gameMessage, isBusy } from "../utils.js";
 import { fakeBoost } from "../../handlers/game/boost.js";
 import { AIexecuteTurn } from "../../GameLogic/aiTurn.js";
 import { sockio } from "../websocket.js";
@@ -34,7 +34,7 @@ export function routesGame(socket, user)
 			callback(isPlaying);
 	});
 
-	socket.on("game", async(/** @type {{from: *, to: *, type: string}}*/req, callback) =>
+	socket.on("game", async(/** @type {{from: *, to: *, type: string, draw: boolean}}*/req, callback) =>
 	{
 		let	status;
 
@@ -111,15 +111,31 @@ export function routesGame(socket, user)
 			callback(result);
 	});
 
-	socket.on("gameMsg", async(/** @type {{Author: string, Message: string}}*/req, callback) => 
+	socket.on("gameMsg", async(/** @type {{author: string, msg: string}}*/req, callback) => 
 	{
 		let	result;
 		let	socketData;
+		let	match;
 
 		socketData = globals.clientMap.get(user.id_user);
-		if (!socketData)
+		if (!req || !req.author || !req.msg)
+			result = new Result().Error(`missing 'author' or 'msg' in ${req}`, 400);
+		else if (!socketData)
 			result = new Result().Error("Server lost your data", 500);
-
+		else if (socketData.matchData && !(match = globals.matches.get(`${socketData.matchData.matchId}`)))
+			result = new Result().Error("Cannot find match " + socketData.matchData.matchId, 500);
+		else if (socketData.spectateData && !(match = globals.matches.get(`${socketData.spectateData}`)))
+			result = new Result().Error("Cannot find match " + socketData.spectateData, 500);
+		else if (!socketData.matchData && !socketData.spectateData)
+			result = new Result().Error("You are not playing any match", 401);
+		else
+		{
+			gameMessage(match, req.msg, req.author, console.log);
+			result = new Result().Success("OK", "msg");
+		}
+		socket.emit("gameMsg", result);
+		if (typeof(callback) == "function")
+			callback(result);
 	});
 
 	socket.on("start_ai_match", async(req, callback) => 

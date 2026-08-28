@@ -14,6 +14,7 @@ import { MATCH_RECONNECT_TIMER, TOURNAMENT_WAIT_TIMER, SOCKET_RECONNECT_TIMER } 
 import { globals } from "../Classes/Globals/globals.js";
 import { sockio } from "./websocket.js";
 import { responseFormatter } from "../utils/response.js";
+import { Result } from "../Classes/endPoint/result.js";
 
 /** @typedef {import("../Classes/endPoint/result.js").Result} Result*/
 /** @typedef {import("../Classes/Chess/match.js").Match} Match*/
@@ -113,8 +114,8 @@ function clientResetData(ids)
  */
 function gameMessage(match, msg, author="server", printer=console.log)
 {
-	let	chatBox;
 	let	id;
+	let	result;
 
 	if (match == undefined)
 		return ;
@@ -126,12 +127,10 @@ function gameMessage(match, msg, author="server", printer=console.log)
 		printer(msg);
 	if (match.socketBool == false)
 		return ;
-	chatBox = 
-	{
-		Author: author,
-		Message: msg 
-	}
-	roomMessage(`match_${match.id}`, `gameMsg`, chatBox);
+	result = new Result().Success("OK", "msg");//@ts-ignore
+	result.author = author;
+	result.msg = msg;
+	roomMessage(`match_${match.id}`, `game`, result);
 }
 
 export {getReconnectTime, isBusy, roomMessage, gameMessage, clientSetState, clientResetData};
