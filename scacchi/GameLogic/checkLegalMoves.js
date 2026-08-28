@@ -13,6 +13,7 @@ import { isDangerous } from "../utils/checkDanger.js";
 import { isOneOf } from "../utils/string.js";
 import { render } from "../test/render.js";
 import fs from "fs";
+import { simulation } from "./simulation.js";
 
 /** @typedef {import("../Classes/Chess/match").Match} Match*/
 /** @typedef {{from: string, to: string}} Move */
@@ -39,12 +40,14 @@ export function getLegalMoves(match, team=match.currentPlayer.team, infoBool=tru
 	let	legalMovesArray = new Array();
 	/** @type {Player} */
 	let	player;
+	let tmp;
 
 	for (const [coord, square] of match.board)
 	{
+		tmp = structuredClone(square.targetZones);
 		if (square.piece?.team != team)
 			continue ;
-		for (const targetCoord of square.targetZones)
+		for (const targetCoord of tmp)
 		{
 			targetSquare = match.board.get(targetCoord);
 			if (targetSquare.piece?.team == square.piece?.team)
@@ -54,8 +57,26 @@ export function getLegalMoves(match, team=match.currentPlayer.team, infoBool=tru
 				if (isDangerous(match, targetSquare.dangerZones, square.piece?.team))
 					continue ;
 			}
-			if (infoBool == false)//@ts-ignore
-				return (false);
+			if (infoBool == false)
+			{
+				if (square.piece.type != enumNames.KING)//@ts-ignore
+					return false;
+				else
+				{
+					let currTeam = match.currentPlayer.team;
+					match.endTurn();
+					if (targetSquare.piece && targetSquare.piece?.team == match.board.get(coord).piece?.team)
+						continue ;
+					if (simulation([coord, targetCoord], match) == true)
+					{
+						while (currTeam != match.currentPlayer.team)
+							match.endTurn();//@ts-ignore
+						return false;
+					}
+					while (currTeam != match.currentPlayer.team)
+						match.endTurn();
+				}
+			}
 			if (targetSquare.piece)
 			{
 				if (legalMovesEatMap.has(coord) == false)
@@ -79,7 +100,7 @@ export function getLegalMoves(match, team=match.currentPlayer.team, infoBool=tru
 				if (targetSquare.piece?.team == square.piece?.team)
 					continue ;	
 				if (infoBool == false)//@ts-ignore
-					return (false);
+					return false;
 				if (legalBoostedMovesMap.has(coord) == false)
 					legalBoostedMovesMap.set(coord, new Set());
 				legalBoostedMovesMap.get(coord)?.add(target);

@@ -83,6 +83,8 @@ function checkMateCheckAll(match, result)
 	{
 		return (match.DrawMatch(result, "Spare"), true);
 	}
+	while (currTeam != match.currentPlayer.team)
+		match.endTurn();
 	return (false);
 }
 
@@ -158,6 +160,17 @@ function isStoppable(match, kingSquare, enemyCoord, enemySquare=null, recBool=fa
 	else if ((enemySquare.piece.type == enumNames.CHAMPION) && enemySquare.piece.isBoostedBool && !recBool)
 		return (match.cursor.square = tmpCursor, canStopTheChampion(match, kingSquare, enemySquare, enemyCoord));
 	dir = getDirection(match, kingSquare, enemyCoord);
+	if (enemySquare.piece.type == enumNames.MINOTAURUS && enemySquare.piece.isBoostedBool && !enemySquare.targetZones.has(kingSquare))
+	{
+		for (let [key, val] of enemySquare.boostedTargetZones)
+		{
+			if (val.has(kingSquare))
+			{
+				dir = getDirection(match, kingSquare, key);
+				break ;
+			}
+		}
+	}
 	// if (!movePiece(match, dir.diffCol, dir.diffRow))
 	// 	return true;
 	startPos = match.cursor.square;
@@ -213,12 +226,12 @@ function isStoppable(match, kingSquare, enemyCoord, enemySquare=null, recBool=fa
 			}
 			if (guardianRegularSave)
 			{
-				if (!simBool || simulation([x, match.cursor.square], match, null) == true)
+				if (/* !simBool ||  */simulation([x, match.cursor.square], match, null) == true)
 					normalSaveBool = true;
 			}
 			if (guardianBoostedSave)
 			{
-				if (!simBool || simulation([x, match.cursor.square], match, null) == true)
+				if (/* !simBool ||  */simulation([x, match.cursor.square], match, null) == true)
 					match.currentPlayer.guardianPieces.add({coord: x, target: match.cursor.square});
 			}
 		}

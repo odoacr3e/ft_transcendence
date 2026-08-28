@@ -36,8 +36,6 @@ export function AI_gmu_eval(match, ai, turns)
 	if (boostedPiece && boostedPiece.piece && boostedPiece.piece.type)
 	{
 		if (boostedPiece.piece.type == enumNames.BASTARDS)
-			score += boostedPiece.piece.price;
-		else
 			score += boostedPiece.piece.price * 7;
 	}
 	//3)	MENO valore pezzo boostato avversario
@@ -54,7 +52,7 @@ export function AI_gmu_eval(match, ai, turns)
 		// 	score += 75;
 		// }
 		if (ai.evalSimulation == true)
-			score *= 2;
+			score += score * 2;
 		else
 		{
 			ai.evalSimulation = true;
@@ -67,7 +65,7 @@ export function AI_gmu_eval(match, ai, turns)
 	}
 	//5)	MENO se il nostro re e' in pericolo
 	if (checkKingDanger(match, match.currentPlayer.team))
-		score /= 2;
+		score -= score / 2;
 	lastTurn = turns[turns.length - 1];
 	if (lastTurn.boost)
 	{
@@ -79,30 +77,44 @@ export function AI_gmu_eval(match, ai, turns)
 	}
 	for (let [key, square] of match.board)
 	{
-		for (let x of square.dangerZones)
+		if (!square.piece)
+			continue ;
+		else if (square.piece.team == match.currentPlayer.team)
 		{
-			if (match.board.get(x).piece?.team == match.currentPlayer.team)
-				score += 10;
-			else
-				score -= 10;
+			for (let x of square.dangerZones)
+			{
+				if (match.board.get(x).piece?.team == nextPlayer.team)//@ts-ignore
+					score -= 5 * match.board.get(x).piece?.price;
+			}
+			for (let x of square.targetZones)
+			{
+				if (match.board.get(x).piece?.team == nextPlayer.team)
+					score += 5 *square.piece.price;
+			}
 		}
-		for (let x of square.targetZones)
+		else if (square.piece.team == nextPlayer.team)
 		{
-			if (match.board.get(x).piece?.team != match.currentPlayer.team)
-				score += 10;
-			else
-				score -= 10;
+			for (let x of square.dangerZones)
+			{
+				if (match.board.get(x).piece?.team == match.currentPlayer.team)
+					score += 5 * square.piece.price;
+			}
+			for (let x of square.targetZones)
+			{
+				if (match.board.get(x).piece?.team == match.currentPlayer.team)// @ts-ignore
+					score -= 5 * match.board.get(x).piece?.price;
+			}
 		}
 	}
-	lastTurn = turns[turns.length - 2];
-	if (lastTurn?.boost)
-	{
-		price = match.board.get(lastTurn.boost).piece?.price;
-		price = price? price : 0;
-		score -= 4 * price;
-		for (const [key, boostTarget] of match.board.get(lastTurn.boost).boostedTargetZones)
-			score += boostTarget.size;
-	}
+	// lastTurn = turns[turns.length - 2];
+	// if (lastTurn?.boost)
+	// {
+	// 	price = match.board.get(lastTurn.boost).piece?.price;
+	// 	price = price? price : 0;
+	// 	score -= 4 * price;
+	// 	for (const [key, boostTarget] of match.board.get(lastTurn.boost).boostedTargetZones)
+	// 		score += boostTarget.size;
+	// }
 	// if (score == 0)
 	// 	return (Math.floor(Math.random() * 10000) * (Math.floor(Math.random()) == 1? 1 : -1));
 	return (score);

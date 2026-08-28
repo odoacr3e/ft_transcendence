@@ -122,14 +122,13 @@ function getBestTurn(match, depth=undefined)
 		// render(match);
 		playableTurn.push(turn);
 		newTurns = getLegalMoves(match);
-		if (checkKingDanger(match, eTeam.White) && match.currentPlayer.team == eTeam.Black)
+		if (checkKingDanger(match, match.NextPlayer().team))
 			console.log("aaaaaaaaaaaaaa");
 		if (match.zobristIndex in ai.memory && (!DEBUG_AI_TRAINING ||
 		rngProportional(100, 50)))
 		{
 			val.score = ai.memory[match.zobristIndex][0];
-			if (ai.evalSimulation)
-				debugReaction(match, ai.memory[match.zobristIndex]);
+			debugReaction(match, ai.memory[match.zobristIndex]);
 		}
 		else if (match.victory)
 			val.score = victoryScore(match);
@@ -243,14 +242,13 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 			pastTurns.push(turn);
 			// console.log(turn);
 			ai.Simulate(match, ai);
-			if (checkKingDanger(match, eTeam.White) && match.currentPlayer.team == eTeam.Black)
+			if (checkKingDanger(match, match.NextPlayer().team))
 				console.log("aaaaaaaaaaaaaa");
 			if (match.zobristIndex in ai.memory && (!DEBUG_AI_TRAINING ||
 			rngProportional(100, 50)))
 			{
 				val = ai.memory[match.zobristIndex][0];
-				if (ai.evalSimulation)
-					debugReaction(match, ai.memory[match.zobristIndex]);
+				debugReaction(match, ai.memory[match.zobristIndex]);
 			}
 			else if (match.victory)
 				val = victoryScore(match);
@@ -287,15 +285,14 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 			// 	console.log(arrayTurns.length);
 			pastTurns.push(turn);
 			// console.log(turn);
-			if (checkKingDanger(match, eTeam.White) && match.currentPlayer.team == eTeam.Black)
+			if (checkKingDanger(match, match.NextPlayer().team))
 				console.log("aaaaaaaaaaaaaa");
 			ai.Simulate(match, ai);//@ts-ignore
 			if (match.zobristIndex in ai.memory && (!DEBUG_AI_TRAINING ||
 			rngProportional(100, 50)))
 			{
 				val = ai.memory[match.zobristIndex][0];
-				if (ai.evalSimulation)
-					debugReaction(match, ai.memory[match.zobristIndex]);
+				debugReaction(match, ai.memory[match.zobristIndex]);
 			}
 			else if (match.victory)
 				val = victoryScore(match);
@@ -360,14 +357,14 @@ function victoryScore(match)
  */
 function debugReaction(match, data)
 {
-	console.log(`Mi ricordo.. gia vista ${data[1]} volte`);
-	if (match.currentPlayer.team == eTeam.White && data[0] >= 0 || match.currentPlayer.team == eTeam.Black && data[0] < 0)
-		console.log(`Roba buona, punteggio ${data[0]}`);
-	else
-		console.log(`Molto male, punteggio ${data[0]}`);
-	render(match);
-	console.log("<======================>");
-	console.log("<======================>");
+	// console.log(`Mi ricordo.. gia vista ${data[1]} volte`);
+	// if (match.currentPlayer.team == eTeam.White && data[0] >= 0 || match.currentPlayer.team == eTeam.Black && data[0] < 0)
+	// 	console.log(`Roba buona, punteggio ${data[0]}`);
+	// else
+	// 	console.log(`Molto male, punteggio ${data[0]}`);
+	// render(match);
+	// console.log("<======================>");
+	// console.log("<======================>");
 }
 
 export {getBestTurn};
