@@ -90,11 +90,11 @@ export function routesGame(socket, user)
 			callback(result);
 	});
 
-	socket.on("spectate", async(/** @type {{matchId: number}} */req, callback) =>
+	socket.on("spectate", async(/** @type {{matchId: number, exitBool: boolean}} */req, callback) =>
 	{
 		let	result;
 		let	socketData;
-
+//FIXME - gestione exitBool
 		socketData = globals.clientMap.get(user.id_user);
 		if (!socketData)
 			result = new Result().Error("Server lost your data", 500);
@@ -109,6 +109,17 @@ export function routesGame(socket, user)
 		socket.emit("spectate", result);
 		if (typeof(callback) == "function")
 			callback(result);
+	});
+
+	socket.on("gameMsg", async(/** @type {{Author: string, Message: string}}*/req, callback) => 
+	{
+		let	result;
+		let	socketData;
+
+		socketData = globals.clientMap.get(user.id_user);
+		if (!socketData)
+			result = new Result().Error("Server lost your data", 500);
+
 	});
 
 	socket.on("start_ai_match", async(req, callback) => 

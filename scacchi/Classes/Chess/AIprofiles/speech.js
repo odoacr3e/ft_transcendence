@@ -1,7 +1,7 @@
 //@ts-check
 
 import { getDotColor } from "../../../test/render.js";
-import { roomMessage } from "../../../websocket/utils.js";
+import { gameMessage, roomMessage } from "../../../websocket/utils.js";
 
 /** @typedef {import("../match").Match} Match */
 
@@ -49,7 +49,7 @@ export function aiSpeech(match, type, vars=[], currPlayerBool=true, oppoSpeechBo
 		i++;
 	}
 	console.debug(`${ai.profile}${getDotColor(player.team)}: ${msg}`);
-	roomMessage(`match_${match.id}`, "aiMsg", {msg: msg});
+	gameMessage(match, msg, ai.profile, null);
 	oppoSpeech(match, type, vars, currPlayerBool, oppoSpeechBool);
 }
 

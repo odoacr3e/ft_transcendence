@@ -13,6 +13,7 @@ import { AIProfileConstructor } from "./AIprofiles/constructors.js";
 import fs from "fs";
 import { isOneOf } from "../../utils/string.js";
 import { DEBUG_AI_TRAINING } from "../../Macro/macro.js";
+import { gameMessage } from "../../websocket/utils.js";
 
 /** @typedef {import("./match.js").Match} Match*/
 /** @typedef {{from: string, to: string}} Move */
@@ -96,7 +97,7 @@ function getBestTurn(match, depth=undefined)
 	ai = match.currentPlayer.ai;
 	if (!ai)
 		throw (`getBestTurn: you are not a machine!`);
-	console.log("Calculating best move...");
+	gameMessage(match, "Calculating best move...");
 	alpha = -Infinity;
 	beta = +Infinity;
 	if (depth == undefined)

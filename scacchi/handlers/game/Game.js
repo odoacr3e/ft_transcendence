@@ -22,7 +22,7 @@ const { openMatch, createUsersMatch } = query.gameQuery;
 import { Match} from "../../Classes/Chess/match.js";
 import { isOneOf } from "../../utils/string.js";
 import { updateTournament } from "../../websocket/handlers/tournament.js";
-import { roomMessage } from "../../websocket/utils.js";
+import { gameMessage, roomMessage } from "../../websocket/utils.js";
 import { eEvents, enumSocketState } from "../../Macro/enums.js";
 import { saveMatch } from "../../utils/saveMatch.js";
 import { checkKingDanger } from "../../utils/checkDanger.js";
@@ -93,13 +93,13 @@ async function gameWebSocketHandler(req, id_user, socketData)
 	else if (isOneOf(req.type, "giveup", "draw"))
 		result = await gamePlayerNotificationHandler(match, req, socketData);
 	else if (match.currentPlayer.team != socketData.matchData?.team)
-		return (socketError(socketData.socket, null, 401, "Socket: it's not your turn, mr.greedy cheeta"));
+		return (socketError(socketData.socket, null, 401, "Socket: it's not your turn, mr.greedy cheeta", match));
 	else if (!req.type)
-		return (socketError(socketData.socket, null, 403, "Socket: missing param type in request"));
+		return (socketError(socketData.socket, null, 403, "Socket: missing param type in request", match));
 	else
 		result = await gameHandler(match, req, socketData);
 	if (result.log.status != 200)
-		return (socketError(socketData.socket, result));
+		return (socketError(socketData.socket, result, result.log.status, result.log.msg, match));
 	for (let p of match.loserSet)
 	{
 		user = globals.clientMap.get(p.id_user);
@@ -282,6 +282,10 @@ function socketError(socket=null, result=null, status=0, msg=null, match=null, r
 		console.log(`status: ${result.log.status}\nmsg: ${result.log.msg}`);
 		if (renderBool == true)
 			render(match);
+	}
+	if (match)
+	{
+		gameMessage(match, result.log.msg);
 	}
 	if (socket)
 		socket.emit("game", jsonParser(result));

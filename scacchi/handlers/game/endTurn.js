@@ -20,6 +20,7 @@ import { Timer }	from "../../Classes/Chess/match.js";
 import { setTimerGame } from "../../GameLogic/timer.js";
 import { AIexecuteTurn } from "../../GameLogic/aiTurn.js";
 import { aiSpeech } from "../../Classes/Chess/AIprofiles/speech.js";
+import { gameMessage } from "../../websocket/utils.js";
 
 /**
  * goes to the next turn
@@ -103,7 +104,7 @@ function updateTurn(match, result)
 	if (player.bonusPointCounter == MOVEMENT_BONUS_POINT - 1)
 	{
 		if (match.aiSimulation == false)
-			console.log("⚖️Punti bonus concessi⚖️");
+			gameMessage(match, "⚖️Punti bonus concessi⚖️");
 		player.nPoints += 1;
 		player.bonusPointCounter = 0;
 	}

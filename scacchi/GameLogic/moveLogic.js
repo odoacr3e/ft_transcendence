@@ -13,6 +13,7 @@ import {error, Result} from "../handlers/game/utils.js";
 import {printSwap, render} from "../test/render.js";
 import { moveCastling } from "./Castling.js";
 import { Square } from "../Classes/Chess/chessBoard.js";
+import { gameMessage } from "../websocket/utils.js";
 
 let	DEB = 0;
 
@@ -56,7 +57,7 @@ function updateChessboard(coords=[], result, match, boostBool)
 	if (to.piece && to.piece.team != from.piece.team)
 	{
 		if (match.aiSimulation == false)
-			console.log(`player ${match.currentPlayer.team} + ${to.piece.price}💲`);
+			gameMessage(match, `player ${match.currentPlayer.team} + ${to.piece.price}💲`);
 		match.currentPlayer.nPoints += to.piece.price;//@ts-ignore
 		match[to.piece.team].nPieces -= 1;
 		if (to.piece.isBoostedBool == true)//@ts-ignore

@@ -20,6 +20,8 @@ export class SocketInfo
 		this.state = enumSocketState.NAVIGATING;
 		/** @type {Player | null} */
 		this.matchData = null;
+		/** @type {number | null} */
+		this.spectateData = null;
 		/** @type {Room | null} */
 		this.roomData = null;
 		/** @type {tournamentData | null} */

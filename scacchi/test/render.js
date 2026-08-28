@@ -140,20 +140,20 @@ function displayPlayerInfo(board, match)
 		return ;
 	player = match.currentPlayer;
 	col = getDotColor(match.currentPlayer.team);
-	gameMessage(match, `It's ${col} turn.`, printer);
-	gameMessage(match, `points: ${player.nPoints}💲, bonus: ${player.bonusPointCounter}⚖️`, printer);
+	printer(`It's ${col} turn.`);
+	printer(`points: ${player.nPoints}💲, bonus: ${player.bonusPointCounter}⚖️`);
 	if (match.currentPlayer.boostedPiece)
-		gameMessage(match, `Boosted piece: ${match.currentPlayer.boostedPiece}`, printer);
+		printer(`Boosted piece: ${match.currentPlayer.boostedPiece}`);
 	if (match.lastMenace.from)
-		gameMessage(match, `⚠️: ${match.lastMenace.from} => ${match.lastMenace.mid} => ${match.lastMenace.to}`, printer);
+		printer(`⚠️: ${match.lastMenace.from} => ${match.lastMenace.mid} => ${match.lastMenace.to}`);
 	if (match.currentPlayer.useBoostBool == true)
-		gameMessage(match, `Ready to use boost!`, printer);
+		printer(`Ready to use boost!`);
 	else
-		gameMessage(match, `Boost NOT used`, printer);
+		printer(`Boost NOT used`);
 	if (kingThreat(board, match) == true)
-		gameMessage(match, `${player.team} king is threatened💀`, printer);
-	gameMessage(match, `match: ${match?.timer?.time}`, printer);
-	gameMessage(match, `player: ${match.currentPlayer.time}`, printer);
+		printer(match, `${player.team} king is threatened💀`);
+	printer(`match: ${match?.timer?.time}`);
+	printer(`player: ${match.currentPlayer.time}`);
 	
 	
 }
@@ -200,7 +200,7 @@ function printSwap(match, coords, from, to, result=null)
 	fromString = match.cursor.Normify();
 	match.cursor.set(coords[1]);
 	toString = match.cursor.Normify();
-	gameMessage(match, `from ${fromString} to ${toString}`, printer);
+	printer(`from ${fromString} to ${toString}`);
 	match.cursor.Restore();
 	if (toType == enumNames.CHAMPION)
 	{

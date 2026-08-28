@@ -8,7 +8,7 @@ import { move } from "../handlers/game/move.js";
 import { makeTransfiguration } from "../handlers/game/transfiguration.js";
 import { eEvents } from "../Macro/enums.js";
 import { render, boardStringify } from "../test/render.js";
-import { roomMessage } from "../websocket/utils.js";
+import { gameMessage, roomMessage } from "../websocket/utils.js";
 
 /** @typedef {import("../Classes/Chess/match").Match} Match */
 
@@ -38,6 +38,7 @@ export function AIexecuteTurn(match)
 	team = match.currentPlayer.team;
 	if (match.currentPlayer.ai?.defeatStatus == 1)
 	{
+		//FIXME - aggiungere evento aiSpeech
 		console.log("AI: qua si mette male");
 		aiDefeatBool = true;
 		match.currentPlayer.ai.defeatStatus = 2;
@@ -75,9 +76,11 @@ export function AIexecuteTurn(match)
 	// render(match);
 	if (aiDefeatBool)
 	{
+		//FIXME - aggiungere evento aiSpeech
 		result = new Result().Success(`😭Pareggiamo please senpai😭`);
 		console.log(result.msg);
-		roomMessage(`match_${match.id}`, "gameDraw", result);
+		result.type = "draw";
+		gameMessage(match, "DRAW", match.PrevPlayer().ai?.profile, null);
 	}
 	// console.profileEnd();
 	// console.log(`Killo processo.`);

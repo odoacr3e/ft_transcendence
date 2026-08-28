@@ -14,7 +14,7 @@ import { SocketInfo } from "../../Classes/Globals/socketInfo.js";
 import { announceMeOnline } from "../onlineStatus.js";
 import { enumSocketState } from "../../Macro/enums.js";
 import { MatchMaking } from "./MatchMaking.js";
-import { getReconnectTime, roomMessage } from "../utils.js";
+import { gameMessage, getReconnectTime, roomMessage } from "../utils.js";
 
 /**
  * 
@@ -52,6 +52,7 @@ async function websocketConnectionHandler(socket, friendsId)
 async function websocketDisconnectionHandler(socket, user) 
 {
 	let socketData;
+	const	msgDisconnect = "setting reconnection timeout for user";
 
 	socket.on('disconnect', async () => 
 	{
@@ -61,7 +62,8 @@ async function websocketDisconnectionHandler(socket, user)
 			return (console.error("ERROR: invalid socket during disconnect"));
 		socketData.reconnectBool = true;
 		//NOTE - after SOCKET_RECONNECT_TIMER, user is considered disconnected
-		console.log("setting reconnection timeout for user", user.id_user);
+		console.log(`${msgDisconnect} ${user.id_user}`);
+		gameMessage(socketData.matchData?.matchId, `${msgDisconnect} ${user.username}`);
 		globals.timers.set(user.id_user, setTimeout(
 		handleLogout, getReconnectTime(socketData.state), socket, user));
 	});
@@ -93,7 +95,9 @@ async function firstConnection(user, socket, friendsId)
  */
 function handleReconnect(dbUser, socketData, newSocket)
 {
-	console.log(`reconnect user ${dbUser.id_user}...`);
+	const	msgReconnect = "reconnect user";
+
+	console.log(`${msgReconnect} ${dbUser.id_user}...`);
 	socketData.reconnectBool = false;
 	if (socketData.socket.id != newSocket.id)
 	{
@@ -108,7 +112,8 @@ function handleReconnect(dbUser, socketData, newSocket)
 	else if (socketData.state == enumSocketState.PLAYING)
 	{
 		if (!socketData.matchData)
-			return (console.log("ERROR: data for player are lost! OH NO!"));		
+			return (console.log("ERROR: data for player are lost! OH NO!"));
+		gameMessage(socketData.matchData?.matchId, `${msgReconnect} ${dbUser?.username}`);
 		socketData.socket.join(`match_${socketData.matchData.matchId}`);
 	}
 }
@@ -120,18 +125,20 @@ function handleReconnect(dbUser, socketData, newSocket)
  * */
 function handleLogout(socket, user)
 {
-		let	result;
-		let	socketData;
+		let		result;
+		let		socketData;
+		const 	msgLogout = `has disconnected`;
 
 		socketData = globals.clientMap.get(user.id_user);
 		if (!socketData)
 			return (console.log(`disconnect: socketData is empty`));
 		globals.ClearTimer(user.id_user);
-		console.log(`User with id ${user.id_user} disconnected`);
+		console.log(`${user?.id_user} ${msgLogout}`);
 		globals.RemoveFromAllQueues(user.id_user);
 		result = globals.DeletePlayer(socketData.matchData?.matchId, socketData.matchData?.team);
 		if (socketData.matchData)
 			roomMessage(`match_${socketData.matchData.matchId}`, `game`, result);
+		gameMessage(socketData.matchData?.matchId, `${user?.username} ${msgLogout}`);
 		result = globals.LeaveRoom(socketData, user.id_user);
 		if (socketData.roomData)
 			roomMessage(`room_${socketData.roomData.id}`, "leave_room", result);

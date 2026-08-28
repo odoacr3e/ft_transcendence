@@ -14,7 +14,6 @@ import { Square, copyBoard } from "../../Classes/Chess/chessBoard.js";
 import {Result} from "../../Classes/endPoint/result.js";
 import {jsonParser} from "../../utils/response.js";
 import {coordNormify} from "../../Classes/Chess/cursor.js";
-import { trace } from "node:console";
 import { enumNames } from "../../Macro/enums.js";
 import { DEBUG_CURL } from "../../Macro/macro.js";
 import { isDangerous } from "../../utils/checkDanger.js";

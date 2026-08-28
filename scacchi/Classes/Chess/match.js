@@ -18,7 +18,7 @@ import { render } from "../../test/render.js";
 import { aiSpeech } from "./AIprofiles/speech.js";
 import { zobristGenerateTable, zobristInitHash } from "../../utils/zobrist.js";
 import { rng } from "../../utils/random.js";
-import { clientSetState } from "../../websocket/utils.js";
+import { clientSetState, gameMessage } from "../../websocket/utils.js";
 
 /** @typedef {import("../Globals/Queue.js").QueueNode} QueueNode*/
 /** @typedef {import("./Pieces/pieces.js").Piece} Piece*/
@@ -510,7 +510,7 @@ class Match
 		if (!player.expectedElo)
 			throw (`UpdateElo: elo not initializated`);
 		newElo = this.elo.updateRating(player.expectedElo, winBool? 1: 0, player.dbTable.points);
-		console.log(`UpdateElo: user ${player.id} old elo is ${player.dbTable.points}, new is ${newElo}`);
+		gameMessage(this, `UpdateElo: user ${player.dbTable.username} old elo is ${player.dbTable.points}, new is ${newElo}`);
 		query.usersQuery.updateUserELO(player.id, newElo);
 	}
 }

@@ -106,16 +106,32 @@ function clientResetData(ids)
 
 /**
  * 
- * @param {Match} match 
+ * @param {Match | number | undefined} match 
  * @param {string} msg 
- * @param {function} printer 
+ * @param {string} author
+ * @param {function | null} printer 
  */
-function gameMessage(match, msg, printer=console.log)
+function gameMessage(match, msg, author="server", printer=console.log)
 {
-	printer(msg);
+	let	chatBox;
+	let	id;
+
+	if (match == undefined)
+		return ;
+	if (typeof(match) == "number")
+		match = globals.matches.get(`${match}`);
+	if (!match)
+		return ;
+	if (printer)
+		printer(msg);
 	if (match.socketBool == false)
 		return ;
-	roomMessage(`match_${match.id}`, `gameMsg`, msg);
+	chatBox = 
+	{
+		Author: author,
+		Message: msg 
+	}
+	roomMessage(`match_${match.id}`, `gameMsg`, chatBox);
 }
 
 export {getReconnectTime, isBusy, roomMessage, gameMessage, clientSetState, clientResetData};
