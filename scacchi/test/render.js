@@ -151,7 +151,7 @@ function displayPlayerInfo(board, match)
 	else
 		printer(`Boost NOT used`);
 	if (kingThreat(board, match) == true)
-		printer(match, `${player.team} king is threatened💀`);
+		printer(`${player.team} king is threatened💀`);
 	printer(`match: ${match?.timer?.time}`);
 	printer(`player: ${match.currentPlayer.time}`);
 	
@@ -194,7 +194,7 @@ function printSwap(match, coords, from, to, result=null)
 		toType = "Square";
 	else
 		toType = `\x1b[33m${toType}\x1b[0m`;
-	gameMessage(match, `SWAP ${fromType} with ${toType}`, printer);
+	gameMessage(match, `SWAP ${fromType} with ${toType}`);
 	match.cursor.Save();
 	match.cursor.set(coords[0]);
 	fromString = match.cursor.Normify();

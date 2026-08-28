@@ -312,13 +312,14 @@ function updateBoostedChampions(match, coords=["", ""])
 	for (const x of arr)
 	{
 		piece = match.board.get(x).piece;
-		if (!piece && x == coords[0])
+		if (!piece&& x == coords[0])
 			piece = match.board.get(coords[1]).piece;
-		else if (!piece && x == coords[1])
+		if (!piece&& x == coords[1])
 			piece = match.board.get(coords[0]).piece;
 		if (!piece)
 		{
-			render(match);
+			render(match, [], "", true, console.log);
+			console.trace();
 			throw (`updateBoostedChampions: piece in ${x} does not exist`);
 		}
 		if (piece.type != enumNames.CHAMPION || piece.isBoostedBool == false)

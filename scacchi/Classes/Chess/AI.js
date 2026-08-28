@@ -112,6 +112,8 @@ function getBestTurn(match, depth=undefined)
 		DEB++;
 		// console.log(`Turns: ${i}/${arrayTurns.length}`);
 		const turn = arrayTurns[i];
+		if (turn.move?.from == "d1" && turn.move.to == "b3" && turn.moveBoost?.from == "b3" && turn.moveBoost.to == "g8")
+			console.log("daje");
 		if (match.currentPlayer.team == eTeam.White)
 			alpha = getBestNumber([alpha, bestTurns[0]?.score, bestTurns[1]?.score], false);
 		else if (match.currentPlayer.team == eTeam.Black)

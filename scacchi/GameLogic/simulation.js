@@ -12,6 +12,8 @@ import { movePiece } from "../utils/dangerUpdate.js";
 import { dangerUpdateMoved } from "../utils/dangerUpdate.js";
 import { isDangerous, checkKingDanger } from "../utils/checkDanger.js";
 import { getLegalMoves } from "./checkLegalMoves.js";
+import { isOneOf } from "../utils/string.js";
+import { render } from "../test/render.js";
 
 /** @typedef {import("../Classes/Chess/match").Match} Match*/
 /** @typedef {import("../Classes/Chess/chessBoard.js").Square} Square*/
@@ -24,9 +26,10 @@ import { getLegalMoves } from "./checkLegalMoves.js";
  * @param {Match} match
  * @param {Result | null} result
  * @param {Array<string> | null} otherCoords
+ * @param {boolean} recBool
  * @returns {boolean}
  */
-export function simulation(coords, match, result=null, otherCoords=null)
+export function simulation(coords, match, result=null, otherCoords=null, recBool=false)
 {
 	let tmpPiece = null;
 	let tmpSquare = null;
@@ -36,6 +39,7 @@ export function simulation(coords, match, result=null, otherCoords=null)
 	let	kingCoord;
 	let	dangerBool;
 	let	tmpCursor;
+	let tmpBoostZones;
 
 	tmpCursor = match.cursor.square;
 	from = match.board.get(coords[0]);
@@ -49,6 +53,8 @@ export function simulation(coords, match, result=null, otherCoords=null)
 		tmpSquare = to.Copy();
 		tmpPiece = tmpSquare.piece;
 	}
+	if (from.piece?.isBoostedBool)
+		tmpBoostZones = structuredClone(from.boostedTargetZones.get(coords[1]));
 	if (!result || result.specialMoves.CheckSniperMove() == 0)
 	{
 		to.piece = from.piece;
@@ -63,6 +69,20 @@ export function simulation(coords, match, result=null, otherCoords=null)
 	}
 	dangerUpdateMoved(match, coords);
 	dangerBool = isDangerous(match, king.dangerZones, king.piece?.team, true, kingCoord);
+	if (dangerBool && tmpBoostZones && !recBool && to.piece?.isBoostedBool && isOneOf(to.piece.type, enumNames.CHAMPION, enumNames.MINOTAURUS))
+	{//@ts-ignore
+		for (let boostTarget of tmpBoostZones)
+		{
+			match.currentPlayer.boostedPiece = coords[1];
+			if (simulation([coords[1], boostTarget], match), null, null, true)
+			{
+				dangerBool = false;
+				match.currentPlayer.boostedPiece = coords[0];
+				break ;
+			}
+			match.currentPlayer.boostedPiece = coords[0];
+		}
+	}
 	if (!dangerBool)
 		dangerBool = checkDoubleMoveMate(match, coords, result);
 	if (!dangerBool && otherCoords)
