@@ -137,7 +137,7 @@ export function routesGame(socket, user)
 //@ts-ignore
 			match = globals.matches.get(socketData.matchData?.matchId);
 			if (match?.history.events.length != 0)
-				result = new Result().Error("The is already started", 404);
+				result = new Result().Error("The game is already started", 400);
 			else if (!match.currentPlayer.ai)
 				result = new Result().Success();
 			else

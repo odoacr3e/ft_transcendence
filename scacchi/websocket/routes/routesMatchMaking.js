@@ -8,7 +8,7 @@ import { isOneOf } from "../../utils/string.js";
 import { MatchMaking } from "../handlers/MatchMaking.js";
 import { isBusy } from "../utils.js";
 import { init } from "../../handlers/game/init.js";
-import { MatchSettings } from "../../Classes/Chess/match.js";
+import { Match, MatchSettings } from "../../Classes/Chess/match.js";
 
 /** 
  * @param {import("socket.io").Socket} socket
@@ -21,9 +21,13 @@ export function routesMatchMaking(socket, user)
 	socket.on('create_ai_match', async(/** @type {string} */profile, callback) => 
 	{
 		let result = new Result();
+		let	match;
 		let setting;
 
-		if (profile == undefined)// @ts-ignore
+		socketData = globals.clientMap.get(user.id_user);
+		if (!socketData)
+			result = result.Error("Player data are lost", 500);
+		else if (profile == undefined)// @ts-ignore
 			result.aiProfiles = AIprofilesArray;
 		else if (AIprofilesArray.indexOf(profile) == -1)
 			result.Error("Profile does not exist", 404);
@@ -31,7 +35,9 @@ export function routesMatchMaking(socket, user)
 		{
 			setting = new MatchSettings(eMatchPresets.ClassicTwoPlayers);
 			setting.SetAiProfile(profile);
-			result = init(null, setting);
+			match = new Match();
+			result = init(match, setting);
+			socketData.matchData = match.currentPlayer.ai? match.NextPlayer() : match.currentPlayer;
 		}
 		socket.emit('create_ai_match', result);
 		if (typeof(callback) == 'function')
