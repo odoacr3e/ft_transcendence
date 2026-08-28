@@ -100,13 +100,6 @@ async function gameWebSocketHandler(req, id_user, socketData)
 		result = await gameHandler(match, req, socketData);
 	if (result.log.status != 200)
 		return (socketError(socketData.socket, result, result.log.status, result.log.msg, match));
-	for (let p of match.loserSet)
-	{
-		user = globals.clientMap.get(p.id_user);
-		if (user)
-			user.state = enumSocketState.NAVIGATING;
-	}
-	match.loserSet.clear();
 	result = jsonParser(result);
 	//@ts-ignore
 	result.type = req.type; //Leo per capire quando la riposta che ci mandate si tratta di una reload
@@ -230,6 +223,7 @@ async function gamePlayerNotificationHandler(match, body, socketData)
 	}
 	else
 		throw ("gameInfoHandler: invalid type " + body.type);
+	result = responseFormatter(match, result, result.log.msg, result.log.status);
 	return (result);
 }
 
