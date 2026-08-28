@@ -117,6 +117,8 @@ export function resetLocalVars()
 	localInfo.secondTurn		= false;
 	localInfo.secondMove		= false;
 	localInfo.drag				= null;
+	localInfo.pending			= null;
+	localInfo.drawOffer			= null;
 
 	localBoard.forEach(square => {
 		if (square.useAbilityBool)

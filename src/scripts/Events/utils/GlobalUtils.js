@@ -97,13 +97,21 @@ export async function sendGiveUp()
 
 	response = await requestToBack(null, null, 'giveUp');
 	if (response)
-	{
 		clearHighlight();
-		if (MACRO.AUDIO)
-			new Audio("vedemmu");
-	}
 	else
-		debug("Give up non mandato correttamente")
+		debug("Give up non mandato correttamente");
+}
+
+export async function sendDraw(accepted) 
+{
+	localInfo.drawOffer = (accepted === true && localInfo.drawOffer !== "received") ? "sent" : null;
+	localInfo.pending 	= null;
+
+	if (!await requestToBack(null, null, "askdraw", accepted))
+	{
+		debug("Draw non mandato correttamente!");
+		localInfo.drawOffer = null;
+	}
 }
 
 export function upgradeBastard(newType)

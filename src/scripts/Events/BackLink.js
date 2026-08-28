@@ -1,7 +1,7 @@
 import { ePlaying, localBoard, localInfo, debug}	from "@/scripts/Data/Variables";
-import { getTarget }						from "./utils/MovementUtils.js";
-import { useSockStore } 					from "../../stores/sock.st.js";
-import { playAudio } from "../Helper/generalUtils.js";
+import { getTarget }								from "./utils/MovementUtils.js";
+import { useSockStore } 							from "../../stores/sock.st.js";
+import { playAudio } 								from "../Helper/generalUtils.js";
 
 export async function sendToBackend(fromId, toId, flag)
 {
@@ -19,16 +19,23 @@ export async function sendToBackend(fromId, toId, flag)
 	}
 }
 
-export async function requestToBack(fromSquare, toSquare, opType)
+export async function requestToBack(fromSquare, toSquare, opType, drawValue)
 {
 	const sockStore = useSockStore();
 	let type;
+	let payload;
+
 	if (opType === "showBoost")
 		{type = "simulate_boost"; toSquare = "";}
 	else if (opType === "history")
 		{type = "history"; fromSquare = ""; toSquare = "";}
 	else if (opType === "giveUp")
 		{type = "giveup"; fromSquare = ""; toSquare = ""; }
+	else if (opType === "askdraw")
+		{
+			type = "draw";
+			payload = { type, draw: drawValue === true};
+		}
 	else if (fromSquare === null && toSquare === null && localInfo.secondTurn)
 		{type = "endturn"; fromSquare = ""; toSquare = ""; }
 	else if (fromSquare && toSquare === null)
@@ -38,23 +45,24 @@ export async function requestToBack(fromSquare, toSquare, opType)
 	else if (fromSquare && toSquare && ((localInfo.secondMove && localInfo.secondTurn) || localBoard.get(fromSquare).useAbilityBool))
 		{type = "moveboost";}
 	else {type = "move";}
-	let	timeout;
 
-	timeout = setTimeout(() => {}, 1000 * 1);
-	// console.log("req: type: ", type, "from: ", fromSquare, "to: ", toSquare);
-		
+	if (!payload)
+		payload = { type, from: fromSquare, to: toSquare };
+
 	return new Promise((resolve) => {
-		sockStore.socket?.emit("game", { type, from: fromSquare, to: toSquare }, (result) => {
-			// console.log(`request: type: ${type}, from: ${fromSquare}, to:${toSquare}`)
+		if (!sockStore.socket)
+		{
+			debug("[BackLink.js:65 -> requestToBack()]: socket non connesso");	
+			resolve(false);
+		}
+		const timeout = setTimeout(() => resolve(false), 5000);
+		sockStore.socket?.emit("game", payload, (result) => {
 			clearTimeout(timeout);
 			const ok = result?.log?.status === 200;
 			if (ok)
-			{
-				debug(`richiesta: ${type}`);
 				playAudio(type);
-			}
+			resolve(ok);
 		});
-
 	});
 }
 

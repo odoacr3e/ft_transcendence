@@ -1,63 +1,63 @@
 <script setup>
-	import { localInfo, localBoard, myPlayer, canAfford }	from '@/scripts/Data/Variables.js';
+	import { localInfo, localBoard, myPlayer, 
+			 canAfford }						from '@/scripts/Data/Variables.js';
 	import { useAbility, sendEndTurn, shopAbility, 
 			 sendGiveUp, showBoostedMovesHover,
-			 showBoostedMovesLeave }							from '@/scripts/Events/utils/GlobalUtils';
-	import { computed, ref }							from 'vue'
-	import { useClickOutside }							from '@/scripts/Helper/generalUtils.js';
-	import IconHourglass										from '@/components/icons/IconHourglass.vue';
-	import IconLightning										from '@/components/icons/IconLightning.vue';
-	import IconFlag												from '@/components/icons/IconFlag.vue';
-	import IconHandshake										from '@/components/icons/IconHandshake.vue';
-	import IconEnergyArrow										from './icons/IconEnergyArrow.vue';
+			 showBoostedMovesLeave,  sendDraw}		from '@/scripts/Events/utils/GlobalUtils';
+	import { computed, ref }						from 'vue'
+	import { useClickOutside }						from '@/scripts/Helper/generalUtils.js';
+	import IconHourglass							from '@/components/icons/IconHourglass.vue';
+	import IconLightning							from '@/components/icons/IconLightning.vue';
+	import IconFlag									from './icons/IconFlag.vue';
+	import IconHandshake							from './icons/IconHandshake.vue';
+	import IconEnergyArrow							from './icons/IconEnergyArrow.vue';
+	import IconCheck 								from './icons/IconCheck.vue';
+	import IconCross 								from './icons/IconCross.vue';
 
-	const localPlayer	= computed(() => myPlayer());
-	const myTurn		= computed(() => localPlayer.value?.isPlaying === true);
-	const Piece = computed(() => {
+	const localPlayer			= computed(() => myPlayer());
+	const myTurn				= computed(() => localPlayer.value?.isPlaying === true);
+	const Piece					= computed(() => {
 		if (!localInfo.clickedId)
 			return null;
 		return ( localBoard.get(localInfo.clickedId)?.piece ?? null);
 	})
-	const canUseAbility = computed(() => myTurn.value && Piece.value 
-										&& Piece.value.isBoostedBool
-										&& Piece.value.team === localInfo.myTeam
-										&& !localInfo.secondTurn);
+	const canUseAbility 		= computed(() => myTurn.value && Piece.value && Piece.value.isBoostedBool
+										&& Piece.value.team === localInfo.myTeam && !localInfo.secondTurn);
+	const canBoost 				= computed(() => myTurn.value && Piece.value && !Piece.value.isBoostedBool
+										&& canAfford(Piece.value) && localInfo.secondTurn);
+	const canEndTurn 			= computed(() => myTurn.value && localInfo.secondTurn);
+	const panelEl 				= ref(null);
+	const drawIncoming			= computed(() => localInfo.drawOffer === "received");
+	const drawWaiting			= computed(() => localInfo.drawOffer === "sent");
+	const drawArmed				= computed(() => drawIncoming.value || localInfo.pending === "draw");
+	const giveUpArmed			= computed(() => localInfo.pending === "giveup");
 
-	const canBoost = computed(() => myTurn.value && Piece.value
-									&& !Piece.value.isBoostedBool
-									&& canAfford(Piece.value)
-									&& localInfo.secondTurn);
-
-	const canEndTurn = computed(() => myTurn.value && localInfo.secondTurn);
-	// const canGiveUp = computed(() => myTurn.value || localInfo.secondTurn);
-
-	function requestDraw() {}
-
-	const pending = ref(null);
-	const panelEl = ref(null);
-
-	function askGiveUp()	{ pending.value = (pending.value === 'giveup') ? null : 'giveup'; }
-	function askDraw()		{ pending.value = (pending.value === 'draw') ? null : 'draw'; }
-	function cancelPending()	{ pending.value = null; }
-
-	// chiude la conferma quando si clicca fuori dall'area di conferma
-	useClickOutside(panelEl, cancelPending, { when: pending });
-
-	function confirmPending() {
-		if (pending.value === 'giveup')
-			sendGiveUp();
-		else if (pending.value === 'draw')
-			requestDraw();
-		pending.value = null;
+	function askGiveUp()		{ localInfo.pending = (localInfo.pending === 'giveup') ? null : 'giveup'; }
+	function askDraw()			{ localInfo.pending = (localInfo.pending === 'draw') ? null : 'draw'; }
+	function cancelPending(event)
+	{
+		if (event?.target && !document.contains(event.target))
+			return;
+		localInfo.pending = null;
 	}
 
-	const confirmMessage = computed(() => {
-		if (pending.value === 'giveup')
-			return "Abbandoni?";
-		if (pending.value === 'draw')
-			return "Chiedere il pareggio?";
-		return "";
-	});
+	useClickOutside(panelEl, cancelPending, { when: () => localInfo.pending });
+
+	function confirmGiveUp() 
+	{
+		localInfo.pending = null;
+			sendGiveUp();
+	}
+
+	function confirmDraw()	{sendDraw(true);}
+
+	function refuseDraw()
+	{
+		if (drawIncoming.value)
+			sendDraw(false);
+		else
+			cancelPending();
+	}
 
 	const abilityArmed = computed(() => localInfo.usingAbility !== '' && localBoard.get(localInfo.clickedId)?.useAbilityBool === true);
 </script>
@@ -65,7 +65,7 @@
 <template>
 	<div class="wrapper" v-if="localPlayer">
 		<div class="top-row">
-			<button class="action" 		
+			<button class="action-btn" 		
 				v-bind:class="[
 				canUseAbility ? 'on' : 'off',
 				abilityArmed ? 'armed bg-orange-500 hover:bg-orange-600'
@@ -80,7 +80,7 @@
 		<span class="msgs">THEN</span>
 
 		<div class="mid-row">
-			<button class="action end-turn bg-blue-500 hover:bg-indigo-500"
+			<button class="action-btn end-turn bg-blue-500 hover:bg-indigo-500"
 				v-bind:class="canEndTurn ? 'on' : 'off'"
 				@click="sendEndTurn()">
 				<IconHourglass class="icon"/>
@@ -89,7 +89,7 @@
 
 			<span class="msgs">OR</span>
 
-			<button class="action bg-emerald-400 hover:bg-emerald-500"
+			<button class="action-btn bg-emerald-400 hover:bg-emerald-500"
 				v-bind:class="canBoost ? 'on' : 'off'"
 				@click="shopAbility()"
 				@mouseenter="showBoostedMovesHover(localInfo.clickedId)"
@@ -101,29 +101,38 @@
 		
 		<div class="bottom-section" ref="panelEl">
 			<div class="btm-row">
-				<button class="action mini bg-red-400 hover:bg-red-500"
-					v-bind:class="'on'"
-					@click="askGiveUp()">
-					<IconFlag class="icon"/>
-					<b>Give Up!</b>
-				</button>
-				<button class="action mini on bg-amber-300 hover:bg-orange-400"
-					@click="askDraw()">
-					<IconHandshake class="icon"/>
-					<b>Chiedi Pareggio</b>
-				</button>
-			</div>
-			<div class="confirm-slot">
-				<div class="confirm-col" v-if="pending">
-					<span class="confirm-msg">{{ confirmMessage }}</span>
-					<div class="confirm-row">
-						<button class="action confirm-btn on bg-emerald-400 hover:bg-emerald-500"
-							@click="confirmPending()">
-							<b>Sì</b>
+				<div class="give-up">
+					<button v-if="!giveUpArmed"
+							class="on action-btn bg-red-400 hover:bg-red-500"
+							@click="askGiveUp()">
+						<IconFlag class="icon"/>
+						<b>Give Up!</b>
+					</button>
+					<div v-else class="action-btn split">
+						<button class="half yes" title="Confermo" @click="confirmGiveUp()">
+							<IconCheck class="icon"/>
 						</button>
-						<button class="action confirm-btn on bg-red-400 hover:bg-red-500"
-							@click="cancelPending()">
-							<b>No</b>
+						<span class="divider"></span>
+						<button class="half no" title="Annullo" @click="cancelPending()">
+							<IconCross class="icon"/>
+						</button>
+					</div>
+				</div>
+				<div class="draw">
+					<button v-if="!drawArmed"
+							class="action-btn on bg-amber-300 hover:bg-orange-400"
+							v-bind:class="drawWaiting ? 'waiting' : 'on'"
+							@click.stop="askDraw()">
+						<IconHandshake class="icon"/>
+						<b>{{ drawWaiting ? "In attesa..." : "Chiedi pareggio"}}</b>
+					</button>
+					<div v-else class="action-btn split" v-bind:class="{ incoming: drawIncoming}">
+						<button class="half yes" title="Pareggio sì" @click="confirmDraw()">
+							<IconCheck class="icon"/>
+						</button>
+						<span class="divider"/>
+						<button class="half no" title="Pareggio no" @click="refuseDraw()">
+							<IconCross class="icon"/>
 						</button>
 					</div>
 				</div>
@@ -154,24 +163,44 @@
 		margin: 0 auto;		
 	}
 
-	.top-row > .action,
-	.mid-row > .action
+	.top-row > .action-btn,
+	.mid-row > .action-btn
 	{
 		flex: 1 1 0;
 		min-width: 0;
 	}
 
+	.bottom-section
+	{
+		position: relative;
+	}
+
 	.btm-row
 	{
 		display: flex;
-		flex: 1 1 0;
 		align-items: stretch;
 		justify-content: center;
 		gap: 12px;
-		width: 60%;
-		height: 50%;
+		width: 100%;
 		margin: 0 auto;
 		margin-top: 10%;
+	}
+
+	.give-up,
+	.draw
+	{
+		display: flex;
+		flex: 1 1 0;
+		min-width: 0;
+		font-size: .85rem;
+	}
+
+	.give-up > .action-btn,
+	.draw > .action-btn
+	{
+		flex: 1 1 0;
+		min-width: 0;
+		gap: 10px;
 	}
 
 	.msgs
@@ -184,7 +213,7 @@
 		letter-spacing: .08rem;
 	}
 
-	.action
+	.action-btn
 	{
 		display: flex;
 		align-items: center;
@@ -202,7 +231,7 @@
 		font-size: 1.25em;
 	}
 
-	.action.on
+	.action-btn.on
 	{
 		opacity: 1;
 		filter: grayscale(0);
@@ -210,23 +239,84 @@
 		pointer-events: auto;
 	}
 
-	.action.on:hover{
+	.action-btn.on:hover{
 		transform: translateY(-2px) scale(1.05);
 	}
 
-	.action.on:active
+	.action-btn.on:active
 	{
 		transform: scale(.96);
 		transition-duration: .05s;
 	}
 
-	.action.armed
+	.action-btn.off
+	{
+		opacity: .4;
+		filter: grayscale(1);
+		pointer-events: none;
+	}
+
+	.action-btn.armed
 	{
 		color: #fff1e6;
 		animation: armed-pulse 1.4s ease-out infinite;
 	}
 
-	.action.armed .icon { animation: armed-throb .7s ease-in-out infinite alternate; }
+	.action-btn.armed .icon { animation: armed-throb .7s ease-in-out infinite alternate; }
+
+	.action-btn.waiting
+	{
+		opacity: 4;
+		filter: grayscale(.5);
+		pointer-events: none;
+		animation: armed-pulse 1.4s ease-in-out infinite;
+		background: rgb(94, 94, 221);
+	}
+
+	.action-btn.waiting .icon { animation: armed-throb .7s ease-in-out infinite alternate;}
+
+	.action-btn.split
+	{
+		padding: 0;
+		overflow: hidden;
+		gap: 0;
+		align-items: stretch;
+		background: rgba(20, 20, 20, .85);
+		box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .18);
+	}
+
+	.action-btn.split.incoming
+	{
+		animation: armed-pulse 1.4s ease-out infinite;
+	}
+
+	.half
+	{
+		display: flex;
+		flex: 1 1 0;
+		align-items: center;
+		justify-content: center;
+		padding: 12px 0;
+		cursor: pointer;
+		transition: background-color .2s ease-in-out, transform .2s ease-in-out;
+	}
+
+	.half.yes { color: rgb(52, 211, 153); }
+	.half.no  { color: rgb(248, 113, 113); }
+
+	.half.yes:hover { background: rgba(116, 228, 11, 0.527); }
+	.half.no:hover  { background: rgba(218, 12, 12, 0.89); }
+
+	.half:active { transform: scale(.94); }
+
+	.half .icon { font-size: 1.25rem; }
+
+	.divider
+	{
+		flex: 0 0 1px;
+		align-self: stretch;
+		background-color: rgba(255, 255, 255, .25);
+	}
 
 	@keyframes armed-pulse
 	{
@@ -239,66 +329,5 @@
 	{
 		from	{ transform: scale(1); }
 		to		{ transform: scale(1.2); }
-	}
-
-	.action.off
-	{
-		opacity: .4;
-		filter: grayscale(1);
-		pointer-events: none;
-	}
-
-	.bottom-section
-	{
-		position: relative;
-	}
-
-	.confirm-slot
-	{
-		position: absolute;
-		top: 100%;
-		left: 0;
-		right: 0;
-		margin-top: 10px;
-		z-index: 20;
-	}
-
-	.confirm-col
-	{
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 8px;
-	}
-
-	.confirm-row
-	{
-		display: flex;
-		justify-content: center;
-		gap: 12px;
-	}
-
-	.confirm-msg
-	{
-		color: #e5e5e5;
-		font-size: .9rem;
-		font-weight: 600;
-		text-align: center;
-	}
-
-	.action.confirm-btn
-	{
-		padding: 10px 22px;
-		border-radius: 12px;
-		font-size: 1rem;
-	}
-
-	.action.mini
-	{
-		flex: 0 1 150px;
-		gap: 10px;
-		padding: 12px;
-		border-radius: 8px;
-		font-size: .85rem;
 	}
 </style>

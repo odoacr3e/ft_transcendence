@@ -70,6 +70,19 @@ export function listenGameSocket(socket)
 			resetLocalVars();
 			return;
 		}
+		if (raw.type === "draw")
+		{
+			debug("[socket game] -> [draw]: ricevuto draw");
+			if (localInfo.drawOffer === "sent" && raw.draw === true)
+			{
+				playAudio("askdraw");
+				return;
+			}
+			localInfo.drawOffer = (raw.draw === true) ? "received" : null;
+			if (localInfo.drawOffer === "received")
+				playAudio("recdraw");
+			return
+		}
 		if (raw.type === "timeout")
 		{
 			debug("[socket game -> timeout]: tempo scaduto, victory =", raw.victory);

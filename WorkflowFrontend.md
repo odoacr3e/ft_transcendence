@@ -207,21 +207,23 @@ boardConverter()
 - [x]	reworkare i temi chiari
 - [ ]	reattività delle pagine [MAVI]
 - [ ]	reworkare il design delle pagine di gioco appena sono pronte
-- [ ]	info dei profili per le partitre a 4
 - [x]	Sia per poter potenziare i pezzi che per usare l'abilità aggiungere 
 		un bottoncino sul pezzo (bl o br) stile overwatch
 - [x]	Tutte le info/bottoni attuali a destra in un unico div in futuro
 		tutorial/info pezzi a sinistra
-- [ ]	Sistemare i suoni
-- [ ]	Pareggio, listen su evento "draw"-> invio oggetto:
-		{ type: "draw", draw: false | true} per chiedere, ascolto su 
-		evento per promptare la conferma e invio la stessa cosa
+- [x]	Sistemare i suoni
+- [ ]	Chat temporanea con elementi scroller/array e 
+		narratore che dice cosa succede
+- [ ]	Restyling dei bottoni di giveup e pareggio
+- [ ]	Pareggio evento per promptare la conferma e invio la stessa cosa
 - [ ]	fare la pagina di gioco contro IA
-- [ ]	GMU ghost
-- [ ]	Pagina partite a 4
+- [ ]	Registrare e aggiungere i suoni
 - [ ]	Completare le info a sinistra della scacchiera (scene)
+- [ ]	GMU ghost
 - [ ]	Fare in modo che il boost cambi le skin e i nomi dei pezzi
 - [ ]	Boost aura da goku
+- [ ]	Quando tu boosti un pezzo anche il nemico vede temporaneamente le zone
+- [ ]	Pagina partite a 4
 
 //NOTE - Testing
 - [ ]	nome utente in grassetto

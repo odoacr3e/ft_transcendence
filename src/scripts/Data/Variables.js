@@ -68,6 +68,8 @@ export class Square {
  * @property {string|null}						matchId				Id della partita in corso
  * @property {string|null}						myTeam				Squadra del giocatore locale (es. "white" | "black")
  * @property {string|null}						victory				Squadra vincitrice, null se la partita è in corso
+ * @property {string|null}						pending				Variabile utilizzata nel template di actionbuttons per richiesta di giveup o pareggio
+ * @property {"sent"|"received"|null}			drawOffer			Trattativa sul pareggio: 'sent' l'ho offerto io, 'received' me l'ha offerto l'avversario
  * @property {boolean}							matchStarted 		Se la partita è iniziata (il timer parte alla prima mossa del bianco)
  * @property {Set<string>}						lastMovesSquares	Id delle caselle coinvolte nell'ultima mossa
  * @property {Function|null}					blinking 			Callback per fermare il lampeggio delle caselle sotto scacco
@@ -87,6 +89,8 @@ class metaInfo {
 		this.matchId			= null;
 		this.myTeam				= null;
 		this.victory			= null;
+		this.pending			= null;
+		this.drawOffer			= null;
 		this.matchStarted		= false;
 		this.lastMovesSquares	= new Set();
 		this.blinking			= null;
@@ -180,32 +184,35 @@ export const HIDDEN = new Set( [ "a14", "b14", "c14", "a13", "b13", "c13", "a12"
 export let MACRO = Object ({
 	"AUDIO"		: true,
 	"DEBUG"		: import.meta.env.DEV,
+	//"LOL" | "CLASSIC"
 	"AUDIOSET"	: "LOL",
 });
 
 export const LOLAUDIOPATH = Object.freeze({
-	"move":				{ path: '/src/assets/audios/moving.mp3',		flag: false},
-	"boost":			{ path: '/src/assets/audios/boost.mp3',			flag: false},
-	"moveboost":		{ path: '/src/assets/audios/useAbility.mp3',	flag: false},
-	"check":			{ path: '/src/assets/audios/tette.mp3',			flag: false},
-	"checkmate":		{ path: '',		flag: false},
-	"trans":			{ path: '',		flag: false},
-	"endturn":			{ path: '/src/assets/audios/endTurn.mp3',		flag: false},
-	"RESIGN":			{ path: '',		flag: false},
-	"DRAW":				{ path: '',		flag: false},
+	"move":			{ path: new URL("../../assets/audios/moving.mp3", import.meta.url).href,	 playing: false },
+	"boost":		{ path: new URL("../../assets/audios/boost.mp3", import.meta.url).href,		 playing: false },
+	"moveboost":	{ path: new URL("../../assets/audios/useAbility.mp3", import.meta.url).href, playing: false },
+	"check":		{ path: new URL("../../assets/audios/tette.mp3", import.meta.url).href,		 playing: false },
+	"checkmate":	{ path: "",																	 playing: false },
+	"trans":		{ path: "",																	 playing: false },
+	"endturn":		{ path: new URL("../../assets/audios/endTurn.mp3", import.meta.url).href,	 playing: false },
+	"giveup":		{ path: "",																	 playing: false },
+	"recdraw":		{ path: "",																	 playing: false },
+	"askdraw":		{ path: "",																	 playing: false },
 });
 
 export const CLASSICAUDIOPATH = Object.freeze({
-	"move":				{ path: '',	flag: false },
-	"boost":			{ path: '',	flag: false },
-	"moveboost":		{ path: '',	flag: false },
-	"check":			{ path: '',	flag: false },
-	"checkmate":		{ path: '',	flag: false },
-	"trans":			{ path: '',	flag: false },
-	"endturn":			{ path: '',	flag: false },
-	"RESIGN":			{ path: '',	flag: false },
-	"DRAW":				{ path: '',	flag: false },
-})
+	"move":			{ path: new URL("", import.meta.url).href, playing: false },
+	"boost":		{ path: new URL("", import.meta.url).href, playing: false },
+	"moveboost":	{ path: new URL("", import.meta.url).href, playing: false },
+	"check":		{ path: new URL("", import.meta.url).href, playing: false },
+	"checkmate":	{ path: new URL("", import.meta.url).href, playing: false },
+	"trans":		{ path: new URL("", import.meta.url).href, playing: false },
+	"endturn":		{ path: new URL("", import.meta.url).href, playing: false },
+	"giveup":		{ path: new URL("", import.meta.url).href, playing: false },
+	"recdraw":		{ path: new URL("", import.meta.url).href, playing: false },
+	"askdraw":		{ path: new URL("", import.meta.url).href, playing: false },
+});
 
 export function debug(...args)
 {

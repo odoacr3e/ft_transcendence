@@ -6,7 +6,7 @@ import { checkEndTurn, hasBoost,
 		 checkUpgrade, assignLastMoveSquares }	from "./utils/ArchiUtils.js";
 import { beginPendingAbility } 					from "../Helper/abilityMovement.js";
 import { clearHistory } 						from "./History.js";
-import { clearGameMsgs } 					from "./GameMsg.js";
+import { clearGameMsgs } 						from "./GameMsg.js";
 import "./SocketLink.js"
 
 //SECTION - INIT FUNCTIONS
@@ -178,6 +178,7 @@ export function reloadMatchState(raw)
 	localInfo.victory			= raw.victory;
 	localInfo.matchStarted		= true;
 	localInfo.secondTurn		= raw.secondMove ?? false;
+	localInfo.drawOffer 		= raw.pending === true ? true : false;
 
 	restorePendingAbility(raw);
 
@@ -211,8 +212,11 @@ export function clearMatchStorage()
 {
 	sessionStorage.removeItem("match:id");
 	sessionStorage.removeItem("match:myTeam");
-	localInfo.capturedP = { white: emptyCapturedPieces(),
-							black: emptyCapturedPieces() };
+	localInfo.capturedP = { 
+		white: emptyCapturedPieces(), 
+		black: emptyCapturedPieces() 
+	};
+
 	clearHistory();
 	clearGameMsgs();
 }
