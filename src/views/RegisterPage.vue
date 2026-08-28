@@ -7,23 +7,24 @@
 
 <template>
     <div class="flex z-2 bg-bg-darker rounded-3xl">
-        <div class="p-3 bg-bg-default rounded-l-3xl border-r border-border-default">
+        <div class="p-3 bg-bg-default rounded-l-3xl border-r border-border-default max-lg:hidden">
             <img :draggable="false" src="../assets/KingSketch.png" alt="">
         </div>
-        <div class="p-10 flex-col -mt-6 w-lg">
-            <img :draggable="false" src="../assets/CrownIcon.png" alt="" class="w-30 justify-self-center">
-            <h1 class="text-[200%] mb-1 text-text-default justify-self-center">{{  t('login.welcome') }}</h1>
+        <div class="flex-col max-md:w-90 max-md:p-5 max-md:-mt-7 md:w-lg md:p-10 md:-mt-6">
+            <img :draggable="false" src="../assets/CrownIcon.png" alt="" class="justify-self-center max-md:size-22 md:size-30">
+            <h1 class="text-text-default justify-self-center text-[200%] md:mb-1">{{  t('login.welcome') }}</h1>
             <RegisterForm/>
-            <div class="m-5 flex flex-row justify-self-center gap-4">
-                <span class="border-b border-border-default h-4 w-40"></span>
-                <p class="text-[80%] text-text-second mt-1">{{ t('common.or', 2) }}</p>
-                <span class="border-b border-border-default h-4 w-40"></span>
+            <div class="flex flex-row justify-self-center max-md:gap-2 max-md:m-3 md:gap-4 md:m-5">
+                <span class="border-b border-border-default max-md:h-3.5 max-md:w-35.5 md:h-4 md:w-40"></span>
+                <p class="max-md:text-[70%] md:text-[80%] text-text-second mt-1">{{ t('common.or', 2) }}</p>
+                <span class="border-b border-border-default max-md:h-3.5 max-md:w-35.5 md:h-4 md:w-40"></span>
             </div>
-            <div class="justify-self-center">
+            <div class="justify-self-center flex gap-2 mt-5 max-md:text-[70%] md:text-[80%] text-text-second">
+				<p>Hai gia' un account?</p>
                 <RouterLink to="/log">
-                    <u><a class="text-[80%] text-main-color cursor-pointer hover:text-light-button active:text-active-button">{{ t('header.login') }}</a></u>
+                    <u><a class="text-main-color cursor-pointer hover:text-light-button active:text-active-button">{{ t('header.login') }}</a></u>
                 </RouterLink>
-            </div>
+			</div>
         </div>
     </div>
 </template>
