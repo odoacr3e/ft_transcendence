@@ -9,6 +9,7 @@ import { historyGetMatchState } from "../../utils/history.js";
 import { isBusy } from "../utils.js";
 import { fakeBoost } from "../../handlers/game/boost.js";
 import { AIexecuteTurn } from "../../GameLogic/aiTurn.js";
+import { sockio } from "../websocket.js";
 
 /** @typedef {{from: *, to: *}} */
 
@@ -86,7 +87,28 @@ export function routesGame(socket, user)
 			result = await historyGetMatchState(req);
 		socket.emit("replay_game", result);
 		if (typeof(callback) == "function")
-			callback(result?.log);
+			callback(result);
+	});
+
+	socket.on("spectate", async(/** @type {{matchId: number}} */req, callback) =>
+	{
+		let	result;
+		let	socketData;
+
+		socketData = globals.clientMap.get(user.id_user);
+		if (!socketData)
+			result = new Result().Error("Server lost your data", 500);
+		else if (!globals.matches.get(`${req?.matchId}`))
+			result = new Result().Error("Cannot find match " + req?.matchId, 404);
+		else
+		{
+			result = new Result().Success();
+			socket.join(`match_${req.matchId}`);
+			socket.to(`match_${req.matchId}`).emit(`${socketData}`);
+		}
+		socket.emit("spectate", result);
+		if (typeof(callback) == "function")
+			callback(result);
 	});
 
 	socket.on("start_ai_match", async(req, callback) => 
