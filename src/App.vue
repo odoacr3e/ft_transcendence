@@ -27,7 +27,7 @@
 	<BackGround/>
 	<div class="min-h-screen flex flex-col overflow-hidden">
 		<AppHeader class="z-11"/>
-		<div class="grow wrap" :class="{ 'other' : route.name !== 'home', 'home' : route.name === 'home' }">
+		<div class="grow wrap" :class="{ 'other' : route.name !== 'home', 'home lg:grid lg:justify-between max-lg:justify-center max-lg:flex' : route.name === 'home' }">
 			<router-view/>
 		</div>
 	</div>
@@ -45,9 +45,7 @@
 	}
 
 	.home {
-		display: grid;
 		grid-template-columns: 1fr 1fr;
-		justify-content: space-between;
 	}
 
 	.other {

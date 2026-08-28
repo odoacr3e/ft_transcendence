@@ -80,7 +80,6 @@ const routes = [
 	{
 		path: '/codex',
 		name: 'Codex',
-		meta: { requiresAuth: true },
 		component: CodexPage
 	},
 	{
