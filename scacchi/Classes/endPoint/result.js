@@ -53,16 +53,17 @@ class Result
 	 */
 	constructor (other=null)
 	{
-		/** @type {Number | null} */this.status = 200;
-		/** @type {string | null} */this.msg = "OK";
-		/**	@type {*} */			this.log = {status: this.status, msg: this.msg}; 
-		/** @type {Board | null} */	this.board = null;
-	/** @type {boolean | string} */	this.usedBoost = false;
-									this.victory = "";
-									this.specialMoves = new bitMaskMoves();
-/** @type {string | undefined} */	this.team = undefined;
-		/** @type {Match | null} */	this.match = null;
+		/** @type {Number | null} */		this.status = 200;
+		/** @type {string | null} */		this.msg = "OK";
+		/**	@type {*} */					this.log = {status: this.status, msg: this.msg}; 
+		/** @type {Board | null} */			this.board = null;
+	/** @type {boolean | string} */			this.usedBoost = false;
+											this.victory = "";
+											this.specialMoves = new bitMaskMoves();
+/** @type {string | undefined} */			this.team = undefined;
+		/** @type {Match | null} */			this.match = null;
 		/** @type {boolean | undefined} */	this.draw = undefined;
+		/** @type {string | undefined} */	this.type = undefined;
 
 		//@ts-ignore
 		this.board = {};
@@ -75,11 +76,13 @@ class Result
 		if (other.board)
 			this.board = copyBoard(other.board, this.board, this.match);
 	}
-	Success(msg="OK")
+	Success(msg="OK", type="")
 	{
 		this.status = 200;
 		this.msg = msg;
 		this.log = {status: this.status, msg: this.msg};
+		if (type)
+			this.type = type;
 		return (this);
 	}
 	Error(msg="Backend failed for unknown reasons", status=500)

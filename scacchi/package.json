@@ -56,5 +56,13 @@
     "prisma": "^7.9.1",
     "ts-node": "^10.9.2",
     "typescript": "^6.0.3"
-  }
+  },
+  "contributors": 
+  [
+	"alerusso42",
+	"cormax62",
+	"h-mavi",
+	"odoacr3e",
+	"Th3LastCodeBender"
+  ]
 }

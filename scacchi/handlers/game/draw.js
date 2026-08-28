@@ -13,7 +13,7 @@ export function drawHandler(match, body, socketData)
 	if (!socketData)
 		return (new Result().Error("no socketData", 500));
 	if (!match.drawPendingBool && !body.draw)
-		return (new Result().Success());
+		return (new Result().Success("OK", "draw"));
 	if (!body.draw)
 		return (declineDraw(match, body, socketData));
 	if (!match.drawPendingBool)
@@ -40,9 +40,9 @@ function declineDraw(match, body, socketData)
 		match.endTurn();
 	}
 	while (currTeam != match.currentPlayer.team)
-	result = new Result().Success();
+	result = new Result().Success("OK", "draw");
 	result.draw = false;
-	socketData.socket.to(`match_${match.id}`).emit("draw", result);
+	socketData.socket.to(`match_${match.id}`).emit("game", result);
 	return (result);
 }
 
@@ -58,9 +58,9 @@ function offerDraw(match, body, socketData)
 
 	match.drawPendingBool = true;
 	match.GetPlayer(socketData.matchData?.team).drawAcceptedBool = true;
-	result = new Result().Success();
+	result = new Result().Success("OK", "draw");
 	result.draw = true;
-	socketData.socket.to(`match_${match.id}`).emit("draw", result);
+	socketData.socket.to(`match_${match.id}`).emit("game", result);
 	return (result);
 }
 
@@ -90,7 +90,8 @@ function acceptDraw(match, body, socketData)
 	}
 	while (currTeam != match.currentPlayer.team)
 	if (acceptAll == false)
-		return (new Result().Success());
+		return (new Result().Success("OK", "draw"));
 	result = match.DrawMatch(null, `Player decision`);
+	result.type = "draw";
 	return (result);
 }

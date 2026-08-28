@@ -280,7 +280,7 @@ class Match
 			return (new Result());
 		this.victory = this.currentPlayer.team;
 		this.history.victory = this.victory;
-		clientSetState(this.currentPlayer?.dbTable?.id_user);
+		clientSetState(this.currentPlayer.dbTable?.id_user);
 		this.UpdateElo(this.currentPlayer, true);
 		for (const user of this.users)
 		{
@@ -317,7 +317,6 @@ class Match
 		this.history.Last().loserSet.add(player.id);
 		this.UpdateElo(player, false);
 		this.DeletePlayer(player);
-		clientSetState(player.dbTable?.id_user);
 		this.history.Last().lastLost = player.team;
 		if (!result)
 			result = new Result();
@@ -436,6 +435,7 @@ class Match
 		if (!this[player.team])
 			throw (`Delete player: invalid player data`);
 		this.loserSet.add(player.id);
+		clientSetState(player.dbTable?.id_user);
 		// this.board.get(player.King).ClearZones();
 		// this.board.get(player.King).piece = null;
 		this.playerNum--;
