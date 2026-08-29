@@ -15,7 +15,7 @@
 </script>
 
 <template>
-	<div class="msgbox flex items-center px-3 py-2" :class="originClass">
+	<div class="msgbox flex items-center px-3 py-2" v-bind:class="originClass">
 		<p v-if="last" class="line">
 			<span class="author">{{ last.author }}:</span> {{ last.text }}
 		</p>
@@ -56,7 +56,11 @@
 	.author
 	{
 		color: var(--author-color);
+		/* background-color: var(--author-color); */
 		font-weight: 600;
+		text-transform: uppercase;
+		padding: .5rem;
+		margin-right: .5rem;
 	}
 
 	.line.empty
