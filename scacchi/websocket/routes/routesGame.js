@@ -9,7 +9,6 @@ import { historyGetMatchState } from "../../utils/history.js";
 import { gameMessage, isBusy } from "../utils.js";
 import { fakeBoost } from "../../handlers/game/boost.js";
 import { AIexecuteTurn } from "../../GameLogic/aiTurn.js";
-import { sockio } from "../websocket.js";
 
 /** @typedef {{from: *, to: *}} */
 
@@ -164,6 +163,8 @@ export function routesGame(socket, user)
 		}
 		socket.emit('start_ai_match', result);
 		if (typeof(callback) == "function")
-			callback(result?.log);
+			callback(result);
+		if (typeof(req) == "function")
+			req(result);
 	});
 }

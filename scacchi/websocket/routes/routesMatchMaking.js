@@ -38,6 +38,7 @@ export function routesMatchMaking(socket, user)
 			match = new Match();
 			result = init(match, setting);
 			socketData.matchData = match.currentPlayer.ai? match.NextPlayer() : match.currentPlayer;
+			result.team = socketData.matchData.team;
 			socketData.state = enumSocketState.PLAYING;
 		}
 		socket.emit('create_ai_match', result);

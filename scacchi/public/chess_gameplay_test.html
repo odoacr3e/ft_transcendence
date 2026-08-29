@@ -435,20 +435,43 @@
             return (prioritaTeam[teamA] || 90) - (prioritaTeam[teamB] || 90);
         });
 
+        function pulisciMessaggioNessunClient() {
+            const tbody = document.getElementById('game-table-body');
+            const placeholderRow = tbody.querySelector('tr td[colspan="9"]');
+            if (placeholderRow) {
+                tbody.innerHTML = '';
+            }
+        }
+
         if(clientIniziali.length === 0) {
             document.getElementById('game-table-body').innerHTML = `<tr><td colspan="9" style="text-align:center; color:white; background:#262522; padding:2rem;">Nessun client in partita. Avvia un match dal Test Bench precedente.</td></tr>`;
         } else {
             clientIniziali.forEach(c => creaRigaClientGameplay(c.dati, c.matchId, c.team));
         }
 
-        function creaRigaClientGameplay(datiUtente, matchId, teamName) {
+        function creaRigaClientGameplay(datiUtente, matchId, teamName, existingSocket = null) {
+            pulisciMessaggioNessunClient();
             const teamSicuro = teamName || "N/A";
             
-            const socket = io("http://localhost:8080", {
+            // Se esiste un elemento per questo id_user, lo rimuoviamo per aggiornare l'interfaccia
+            const rigaEsistente = document.getElementById(`row-${datiUtente.id_user}`);
+            if (rigaEsistente) {
+                rigaEsistente.remove();
+            }
+
+            // Se viene passato un socket esistente (es. per l'AI match), riusiamo quello
+            const socket = existingSocket || io("http://localhost:8080", {
                 auth: datiUtente,
                 forceNew: true,
                 transports: ['websocket', 'polling']
             });
+
+            // Evitiamo duplicati nel tracciamento
+            const idx = clientSimulati.findIndex(c => c.dati.id_user == datiUtente.id_user);
+            if (idx !== -1) {
+                if (clientSimulati[idx].countdownInterval) clearInterval(clientSimulati[idx].countdownInterval);
+                clientSimulati.splice(idx, 1);
+            }
 
             const clientObj = {
                 dati: datiUtente,
@@ -463,8 +486,10 @@
             const tr = document.createElement('tr');
             tr.id = `row-${datiUtente.id_user}`;
             
+            const isConnected = socket.connected;
+            
             tr.innerHTML = `
-                <td><span id="badge-${datiUtente.id_user}" class="status-badge">Connecting</span></td>
+                <td><span id="badge-${datiUtente.id_user}" class="status-badge ${isConnected ? 'connected' : ''}">${isConnected ? 'Connected' : 'Connecting'}</span></td>
                 <td><span class="team-badge team-${teamSicuro.toLowerCase()}">${teamSicuro}</span></td>
                 <td><strong>${datiUtente.username}</strong><br><small style="color:#444; font-family:monospace;">ID: ${datiUtente.id_user}</small></td>
                 <td>🎯 ${datiUtente.points}</td>
@@ -490,19 +515,20 @@
                 <td id="esito-${datiUtente.id_user}">-</td>
                 <td id="timer-cell-${datiUtente.id_user}">-</td>
                 <td>
-                    <button class="btn-action btn-disconnect" id="btn-toggle-${datiUtente.id_user}" onclick="toggleConnessione('${datiUtente.id_user}')">Stacca Socket</button>
+                    <button class="btn-action btn-disconnect" id="btn-toggle-${datiUtente.id_user}" onclick="toggleConnessione('${datiUtente.id_user}')">${isConnected ? 'Stacca Socket' : 'Attacca Socket'}</button>
                 </td>
             `;
             tbody.appendChild(tr);
 
+            // Rimuove eventuali listener registrati in precedenza sullo stesso canale
+            socket.off("game");
+            socket.off("gameMsg");
+
             // --- LISTENERS WEBSOCKET UNIFICATO ("game") ---
             socket.on("game", (data) => {
-                // Identifichiamo il tipo di evento (es. se data.type === "draw" oppure l'ultimo tipo inviato)
                 const currentEventType = (data && data.type) ? data.type : lastEventType;
-                
                 gestisciRispostaServer(datiUtente.id_user, currentEventType, data);
 
-                // Controllo se è presente un esito finale di partita
                 if (data && data.victory && data.victory !== "") {
                     mostraModalVittoria(data.victory);
                 }
@@ -524,25 +550,39 @@
             });
 
             socket.on('connect', () => {
-                document.getElementById(`badge-${datiUtente.id_user}`).innerText = "Connected";
-                document.getElementById(`badge-${datiUtente.id_user}`).classList.add('connected');
-                document.getElementById(`btn-toggle-${datiUtente.id_user}`).innerText = "Stacca Socket";
-                document.getElementById(`btn-toggle-${datiUtente.id_user}`).style.backgroundColor = "#5c2727";
-                document.getElementById(`timer-cell-${datiUtente.id_user}`).innerText = "-";
+                const badge = document.getElementById(`badge-${datiUtente.id_user}`);
+                if (badge) {
+                    badge.innerText = "Connected";
+                    badge.classList.add('connected');
+                }
+                const btn = document.getElementById(`btn-toggle-${datiUtente.id_user}`);
+                if (btn) {
+                    btn.innerText = "Stacca Socket";
+                    btn.style.backgroundColor = "#5c2727";
+                }
+                const timerCell = document.getElementById(`timer-cell-${datiUtente.id_user}`);
+                if (timerCell) timerCell.innerText = "-";
                 clearInterval(clientObj.countdownInterval);
             });
 
             socket.on('disconnect', () => {
-                document.getElementById(`badge-${datiUtente.id_user}`).innerText = "Disconnected";
-                document.getElementById(`badge-${datiUtente.id_user}`).classList.remove('connected');
-                document.getElementById(`btn-toggle-${datiUtente.id_user}`).innerText = "Attacca Socket";
-                document.getElementById(`btn-toggle-${datiUtente.id_user}`).style.backgroundColor = "var(--accent-green)";
+                const badge = document.getElementById(`badge-${datiUtente.id_user}`);
+                if (badge) {
+                    badge.innerText = "Disconnected";
+                    badge.classList.remove('connected');
+                }
+                const btn = document.getElementById(`btn-toggle-${datiUtente.id_user}`);
+                if (btn) {
+                    btn.innerText = "Attacca Socket";
+                    btn.style.backgroundColor = "var(--accent-green)";
+                }
 
                 let secondiPassati = 0;
                 clearInterval(clientObj.countdownInterval);
                 clientObj.countdownInterval = setInterval(() => {
                     secondiPassati++;
-                    document.getElementById(`timer-cell-${datiUtente.id_user}`).innerText = `Fuori da: ${secondiPassati}s`;
+                    const timerCell = document.getElementById(`timer-cell-${datiUtente.id_user}`);
+                    if (timerCell) timerCell.innerText = `Fuori da: ${secondiPassati}s`;
                 }, 1000);
             });
         }
@@ -590,9 +630,9 @@
                 if (data.draw !== undefined) {
                     infoDraw = data.draw ? " (Richiesta)" : " (Rifiutata)";
                 }
-                esitoCell.innerHTML = `<span class="response-badge res-ok">OK ${eventType}${infoDraw}</span>`;
+                if (esitoCell) esitoCell.innerHTML = `<span class="response-badge res-ok">OK ${eventType}${infoDraw}</span>`;
             } else {
-                esitoCell.innerHTML = `<span class="response-badge res-err">ERRORE (${eventType})</span>`;
+                if (esitoCell) esitoCell.innerHTML = `<span class="response-badge res-err">ERRORE (${eventType})</span>`;
                 
                 const errorMsg = (data && data.log && data.log.msg) ? data.log.msg : "Errore generico non specificato";
                 const errorLogBox = document.getElementById('global-error-log');
@@ -715,15 +755,19 @@
                 logAI(`Errore di connessione: ${err.message}`, "err");
             });
 
-            // Risposta a create_ai_match (se il server risponde sullo stesso canale)
+            // Gestore risposta create_ai_match da evento
             aiSocket.on('create_ai_match', (data) => {
                 logAI(`Risposta create_ai_match: ${JSON.stringify(data)}`, data && data.log && data.log.status === 200 ? "ok" : "err");
-                if (data && data.matchId) {
-                    ultimoMatchIdAI = data.matchId;
+                if (data && data.log && data.log.status === 200) {
+                    if (data.matchId) ultimoMatchIdAI = data.matchId;
+                    
+                    // Inizializza il giocatore con il team ricevuto ("white" o "black")
+                    const teamColor = data.team ? data.team.toLowerCase() : "white";
+                    const authData = getAuthUtenteAI();
+                    creaRigaClientGameplay(authData, data.matchId || ultimoMatchIdAI, teamColor, aiSocket);
                 }
             });
 
-            // Risposta a start_ai_match (se il server risponde sullo stesso canale)
             aiSocket.on('start_ai_match', (data) => {
                 logAI(`Risposta start_ai_match: ${JSON.stringify(data)}`, data && data.log && data.log.status === 200 ? "ok" : "err");
             });
@@ -743,10 +787,16 @@
 
             const inviaRichiesta = () => {
                 socket.emit("create_ai_match", { profile: profiloCasuale }, (ack) => {
-                    // Callback di ack, se il server la supporta
                     if (ack) {
-                        logAI(`ACK create_ai_match: ${JSON.stringify(ack)}`, ack.log && ack.log.status === 200 ? "ok" : "err");
+                        logAI(`ACK create_ai_match: ${ack?.log?.msg || JSON.stringify(ack)}`);
                         if (ack.matchId) ultimoMatchIdAI = ack.matchId;
+
+                        // Se l'ACK restituisce status 200, registriamo il giocatore sulla tabella usando il team ricevuto
+                        if (ack.log && ack.log.status === 200) {
+                            const teamColor = ack.team ? ack.team.toLowerCase() : "white";
+                            const authData = getAuthUtenteAI();
+                            creaRigaClientGameplay(authData, ack.matchId || ultimoMatchIdAI, teamColor, aiSocket);
+                        }
                     }
                 });
                 logAI(`Inviato create_ai_match con req="${profiloCasuale}"`);
@@ -766,7 +816,7 @@
             const inviaRichiesta = () => {
                 socket.emit("start_ai_match", {}, (ack) => {
                     if (ack) {
-                        logAI(`ACK start_ai_match: ${JSON.stringify(ack)}`, ack.log && ack.log.status === 200 ? "ok" : "err");
+                        logAI(`ACK start_ai_match: ${ack?.log?.msg || JSON.stringify(ack)}`);
                     }
                 });
                 logAI("Inviato start_ai_match");
