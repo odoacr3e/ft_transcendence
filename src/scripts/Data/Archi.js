@@ -7,7 +7,7 @@ import { checkEndTurn, hasBoost,
 import { beginPendingAbility } 					from "../Helper/abilityMovement.js";
 import { clearHistory } 						from "./History.js";
 import { clearGameMsgs } 						from "./GameMsg.js";
-import "./SocketLink.js"
+import "./SocketListen.js"
 
 //SECTION - INIT FUNCTIONS
 

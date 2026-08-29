@@ -10,13 +10,11 @@ import { reactive } from "vue";
 export const gameMsg = reactive({ text: "", time: 0 });
 
 /**
- * @param {*} raw
+ * @param {string | null} text
  * @returns {boolean}
  */
-export function pushGameMsg(raw)
+export function pushGameMsg(text)
 {
-	const text = normalizeMsg(raw);
-
 	if (!text)
 		return (false);
 	gameMsg.text = text;
@@ -28,17 +26,4 @@ export function clearGameMsgs()
 {
 	gameMsg.text = "";
 	gameMsg.time = 0;
-}
-
-/**
- * @param {*} raw
- * @returns {string}
- */
-function normalizeMsg(raw)
-{
-	if (typeof raw === "string")
-		return (raw.trim());
-	if (raw && typeof raw === "object" && typeof raw.msg === "string")
-		return (raw.msg.trim());
-	return (console.warn("[GameMsg]: messaggio scartato, payload non valido", raw), "");
 }

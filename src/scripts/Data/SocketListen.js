@@ -1,5 +1,5 @@
-import { updateMatchState, initLocalMatchState, reloadMatchState }	from "./Archi";
-import { localInfo, localMatchState, MACRO, debug}						from "./Variables";
+import { updateMatchState, initLocalMatchState, reloadMatchState }	from "./Archi.js";
+import { localInfo, localMatchState, MACRO, debug}					from "./Variables";
 import { clearHighlight, setCheckSquare }							from "../Events/utils/HighlightUtils";
 import { eSpecialMoves }											from "@/Common/ENUMS";		
 import { blinkSquares } 											from "../Events/utils/GlobalUtils";
@@ -7,7 +7,7 @@ import router 														from "@/router";
 import { resetLocalVars } 											from "./utils/ArchiUtils";
 import { pushTurn, reloadHistory } 									from "./History";
 import { pushGameMsg } 												from "./GameMsg";
-import { playAudio } from "../Helper/generalUtils";
+import { playAudio } 												from "../Helper/generalUtils";
 
 let audioFlag = false;
 
@@ -107,6 +107,12 @@ export function listenGameSocket(socket)
 				debug("{socket game [history]}: nessun turno nel payload", raw);
 			return;
 		}
+		if (raw.type === "msg")
+		{
+			debug("[socket game] -> [msg]: ricevuto messaggio di gioco", raw);
+			pushGameMsg(raw.msg);
+			return;
+		}
 		// console.log("[socket game]: update match");
 		updateMatchState(raw);
 		if (raw.history)
@@ -120,10 +126,5 @@ export function listenGameSocket(socket)
 			debug("[socket game]: re sotto scacco in", raw.giorgi0);
 			playAudio("check");
 		}
-	});
-
-	socket.on("gameMsg", (raw) => {
-		// console.log("{[socket gameMsg]} ricevuto messaggio:", raw);
-		pushGameMsg(raw);
 	});
 }
