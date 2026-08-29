@@ -6,7 +6,7 @@ import { blinkSquares } 											from "../Events/utils/GlobalUtils";
 import router 														from "@/router";
 import { resetLocalVars } 											from "./utils/ArchiUtils";
 import { pushTurn, reloadHistory } 									from "./History";
-import { pushGameMsg } 												from "./GameMsg";
+import { pushGameMsg } 												from "./ChatBox.js";
 import { playAudio } 												from "../Helper/generalUtils";
 
 let audioFlag = false;
@@ -14,8 +14,14 @@ let audioFlag = false;
 export function listenGameSocket(socket)
 {
 	socket.on("game", (raw) => {
-		debug("{[socket game] ricevuta una riposta} tipo: ", raw.type, "response: ", raw);
+		// debug("{[socket game] ricevuta una riposta} tipo: ", raw.type, "response: ", raw);
 
+		if (raw.type === "msg")
+		{
+			debug("[socket game] -> [msg]: ricevuto messaggio di gioco", raw);
+			pushGameMsg(raw.msg);
+			return;
+		}
 		if (localInfo.blinking)
 		{
 			localInfo.blinking();
@@ -105,12 +111,6 @@ export function listenGameSocket(socket)
 				pushTurn(raw.history);
 			else
 				debug("{socket game [history]}: nessun turno nel payload", raw);
-			return;
-		}
-		if (raw.type === "msg")
-		{
-			debug("[socket game] -> [msg]: ricevuto messaggio di gioco", raw);
-			pushGameMsg(raw.msg);
 			return;
 		}
 		// console.log("[socket game]: update match");

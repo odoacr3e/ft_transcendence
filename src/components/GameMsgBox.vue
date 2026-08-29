@@ -1,5 +1,5 @@
 <script setup>
-	import { gameMsg } from '@/scripts/Data/GameMsg';
+	import { gameMsg } from '@/scripts/Data/ChatBox';
 </script>
 
 <template>
