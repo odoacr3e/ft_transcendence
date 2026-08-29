@@ -10,7 +10,7 @@
 	import router 														from '@/router';
 	import MovesHistory													from '@/components/MovesHistory.vue';
 	import KingsCodex													from '@/components/KingsCodex.vue';
-	import GameMsgBox													from '@/components/GameMsgBox.vue';
+	import ChatBox														from '@/components/ChatBox.vue';
 
 	const	ready		= ref(false);
 	const	style		= ref("1v1");
@@ -94,7 +94,7 @@
         	</div>
 		</div>
         <div class="mt-10 w-md px-6 flex flex-col gap-4">
-			<GameMsgBox v-if="ready"/>
+			<ChatBox v-if="ready"/>
 			<MovesHistory v-if="ready" class="h-87.5"/>
 			<ActionButtons v-if="ready"/>
 		</div>

@@ -19,7 +19,7 @@ export function listenGameSocket(socket)
 		if (raw.type === "msg")
 		{
 			debug("[socket game] -> [msg]: ricevuto messaggio di gioco", raw);
-			pushGameMsg(raw.msg);
+			pushGameMsg(raw.msg, raw.author);
 			return;
 		}
 		if (localInfo.blinking)
