@@ -94,9 +94,9 @@
         	</div>
 		</div>
         <div class="mt-10 w-md px-6 flex flex-col gap-4">
-			<ChatBox v-if="ready"/>
 			<MovesHistory v-if="ready" class="h-87.5"/>
 			<ActionButtons v-if="ready"/>
+			<ChatBox	 v-if="ready"/>
 		</div>
     </div>
 </template>

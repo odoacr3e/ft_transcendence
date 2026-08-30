@@ -1,70 +1,164 @@
 <script setup>
-	import { computed }				from 'vue'
+	import { ref, watch, nextTick }	from 'vue'
 	import { chat, resolveAuthor }	from '@/scripts/Data/ChatBox';
+	import { MACRO }				from '@/scripts/Data/Variables';
+	import { sendChatMsg }			from '@/scripts/Events/BackLink';
 
-	const last = computed(() => chat.messages.at(-1) ?? null);
-	const origin = computed(() => last.value ? resolveAuthor(last.value.author) : null);
+	const listEl	= ref(null);
+	const draft		= ref('');
 
-	const	originClass = computed(() => {
-		if (!origin.value)
-			return ('');
-		if (origin.value.kind === 'server')
+	function onKeyDown(event)
+	{
+		if (event.key === 'Enter')
+			send();
+	}
+
+	function send()
+	{
+		const text = draft.value.trim();
+
+		if (!text)
+			return;
+		if (!sendChatMsg(text))
+			return;
+		draft.value = '';
+	}
+
+	function originClass(msg)
+	{
+		const origin = resolveAuthor(msg.author);
+
+		if (origin.kind === 'server')
 			return ('k-server');
-		return (origin.value.team ? `t-${origin.value.team}` : '');
-	});
+		return (origin.team ? `t-${origin.team}` : '');
+	}
+
+	watch(() => chat.messages.at(-1)?.id, async () => {
+
+		const el= listEl.value;
+
+		if (!el)
+			return;
+
+		const	wasAtBottom = (el.scrollHeight - el.scrollTop - el.clientHeight) < 24;
+
+		await nextTick();
+		if (wasAtBottom)
+			el.scrollTop = el.scrollHeight;
+	})
 </script>
 
 <template>
-	<div class="msgbox flex items-center px-3 py-2" v-bind:class="originClass">
-		<p v-if="last" class="line">
-			<span class="author">{{ last.author }}:</span> {{ last.text }}
-		</p>
-		<p v-else class="line empty">No messages yet</p>
+	<div class="msgbox">
+		<div ref="listEl" class="msglist">
+			<p v-for="msg in chat.messages" :key="msg.id" class="line" v-bind:class="originClass(msg)">
+				<span class="author">{{ msg.author }} :</span><span class="text-xs">{{ msg.text }}</span>
+			</p>
+			<p v-if="!chat.messages.length" class="line empty">No messages yet</p>
+		</div>
+
+		<div class="composer">
+			<input v-model="draft"
+					type="text"
+					:maxlength="MACRO.MAX_MSG_LEN"
+					placeholder="Type your message here..."
+					@keydown.stop="onKeyDown">
+			<button type="button" :disabled="!draft.trim()" @click="send">Send</button>
+		</div>
 	</div>
 </template>
 
 <style scoped>
 	.msgbox
 	{
-		--author-color: rgba(255, 255, 255, .35);
-
-		user-select: none;
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
+		user-select:  none;
 		border: 1px solid rgba(255, 255, 255, .35);
-		border-left: 4px solid var(--author-color);
 		border-radius: 10px;
-		background-color: rgba(0, 0, 0, .25);
 	}
 
-	.msgbox.k-server	{ --author-color: #e57373; }
-	.msgbox.t-white		{ --author-color: #ededed; }
-	.msgbox.t-black		{ --author-color: #6b6b6b; }
-	.msgbox.t-red		{ --author-color: #d5493f; }
-	.msgbox.t-blue		{ --author-color: #4a7fd0; }
-	.msgbox.t-green		{ --author-color: #4fa564; }
-	.msgbox.t-yellow	{ --author-color: #d8b13c; }
+	.msglist
+	{
+		height: 6rem;
+		overflow-y: auto;
+		padding: .5rem .75rem;
+	}
 
+	.composer
+	{
+		display: flex;
+		align-items: center;
+		gap: .5rem;
+		padding: .4rem .5rem;
+		border-top: 1px solid rgba(255, 255, 255, .2);
+		user-select: text;
+	}
+
+	.composer input
+	{
+		flex: 1;
+		min-width: 0;
+		border: none;
+		outline: none;
+		background: transparent;
+		color: #e8e8e8;
+		font-size: .9rem;
+	}
+
+	.composer input::placeholder { color: rgba(255, 255, 255, .35); }
+
+	.composer button
+	{
+		flex-shrink: 0;
+		padding: .15rem .6rem;
+		border: 1px solid rgba(255, 255, 255, .35);
+		border-radius: 6px;
+		color: #e8e8e8;
+		font-size: .8rem;
+	}
+
+	.composer button:disabled { opacity: .35; cursor:default }
+	
 	.line
 	{
+		--author-color: rgba(255, 255, 255, .35);
+
 		width: 100%;
+		border-left: 4px solid var(--author-color);
+		/* padding-left: .5rem; */
 		color: #e8e8e8;
 		font-size: 0.9rem;
 		line-height: 1.25rem;
 		text-align: left;
 		word-break: break-word;
+		user-select: text;
 	}
 
+	.line + .line {margin-top: .35rem;}
+
+	.line.k-server	{ --author-color: #e57373; }
+	.line.t-white	{ --author-color: #ededed; }
+	.line.t-black	{ --author-color: #6b6b6b; }
+	.line.t-red		{ --author-color: #d5493f; }
+	.line.t-blue	{ --author-color: #4a7fd0; }
+	.line.t-green	{ --author-color: #4fa564; }
+	.line.t-yellow	{ --author-color: #d8b13c; }
+	
 	.author
 	{
 		color: var(--author-color);
-		/* background-color: var(--author-color); */
 		font-weight: 600;
 		text-transform: uppercase;
-		padding: .5rem;
+		/* padding: .25rem; */
 		margin-right: .5rem;
+		margin-left: .5rem;
 	}
 
 	.line.empty
 	{
+		border-left-color: transparent;
 		color: rgba(255, 255, 255, .35);
 		text-align: center;
 	}

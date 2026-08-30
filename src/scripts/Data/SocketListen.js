@@ -6,7 +6,7 @@ import { blinkSquares } 											from "../Events/utils/GlobalUtils";
 import router 														from "@/router";
 import { resetLocalVars } 											from "./utils/ArchiUtils";
 import { pushTurn, reloadHistory } 									from "./History";
-import { pushGameMsg } 												from "./ChatBox.js";
+import { pushMessage } 												from "./ChatBox.js";
 import { playAudio } 												from "../Helper/generalUtils";
 
 let audioFlag = false;
@@ -19,7 +19,7 @@ export function listenGameSocket(socket)
 		if (raw.type === "msg")
 		{
 			debug("[socket game] -> [msg]: ricevuto messaggio di gioco", raw);
-			pushGameMsg(raw.msg, raw.author);
+			pushMessage(raw.msg, raw.author);
 			return;
 		}
 		if (localInfo.blinking)

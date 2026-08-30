@@ -188,6 +188,7 @@ export let MACRO = Object ({
 	"AUDIOSET"		: "LOL",
 	"MAX_MESSAGES" 	: 100,
 	"SERVER_AUTHOR" : "server",
+	"MAX_MSG_LEN"	: 200,
 });
 
 export const LOLAUDIOPATH = Object.freeze({

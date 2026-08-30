@@ -1,23 +1,18 @@
-import { reactive } 			from "vue";
+import { reactive, computed }	from "vue";
 import { localPlayers, MACRO }	from "./Variables";
 
 
 /** @typedef {{ id: number, author: string, text: string, time: number }} ChatMessages */
-/** @type {{ messages: ChatMessages[] }} */
+/** @type {{ messages: chatMessage[] }} */
 export const	chat = reactive({ messages: [] });
-
 let				nextId = 1;
-
-/** @type {{ text: string, time: number }} */
-export const gameMsg = reactive({ text: "", time: 0 });
 
 /**
  * @param {string | null} text
  * @param {string | null} author
  * @returns {boolean}
  */
-
-export function pushGameMsg(text, author = MACRO.SERVER_AUTHOR)
+export function pushMessage(text, author = MACRO.SERVER_AUTHOR)
 {
 	if (!text)
 		return (false);
@@ -28,19 +23,26 @@ export function pushGameMsg(text, author = MACRO.SERVER_AUTHOR)
 		time: Date.now(),
 	})
 	if (chat.messages.length > MACRO.MAX_MESSAGES)
-		chat.messages.shift();
+		chat.messages.splice(0, chat.messages.length - (MACRO.MAX_MESSAGES - 1));
 	return (true);
 }
+
+const	teamByName = computed(() => {
+	const	map = new Map();
+
+	for (const player of localPlayers.values())
+		map.set(player.name, player.team);
+	return (map);
+});
 
 export function resolveAuthor(author)
 {
 	if (!author || author === MACRO.SERVER_AUTHOR)
 		return ({ kind:"server", team: null });
-	const player = [...localPlayers.values()].find((p) => p?.name === author);
-	return ({ kind: "player", team: player?.team ?? null });
+	return ({ kind: "player", team: teamByName.value.get(author) ?? null });
 }
 
-export function clearGameMsgs()
+export function clearMessages()
 {
 	chat.messages.length = 0;
 	nextId = 1

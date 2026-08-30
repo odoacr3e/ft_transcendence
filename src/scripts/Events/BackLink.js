@@ -1,4 +1,4 @@
-import { ePlaying, localBoard, localInfo, debug}	from "@/scripts/Data/Variables";
+import { ePlaying, localBoard, localInfo, debug, myPlayer}	from "@/scripts/Data/Variables";
 import { getTarget }								from "./utils/MovementUtils.js";
 import { useSockStore } 							from "../../stores/sock.st.js";
 import { playAudio } 								from "../Helper/generalUtils.js";
@@ -176,4 +176,22 @@ export function reloadMatch()
 		else
 			sockStore.socket.once("connect", start);
 	});
+}
+
+/**
+ * @param {string} msg
+ * @returns {boolean} false se il socket non è disponibile
+ */
+export function sendChatMsg(msg)
+{
+	const sockStore = useSockStore();
+	const author	= myPlayer()?.name;
+
+	if (!sockStore.socket)
+	{
+		debug("[BackLink.js -> sendChatMsg()]: socket non connesso");
+		return (false);
+	}
+	sockStore.socket.emit("gameMsg", { author: author ?? "", msg: msg });
+	return (true);
 }
