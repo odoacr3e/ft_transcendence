@@ -52,7 +52,7 @@
 	<div class="msgbox">
 		<div ref="listEl" class="msglist">
 			<p v-for="msg in chat.messages" :key="msg.id" class="line" v-bind:class="originClass(msg)">
-				<span class="author">{{ msg.author }} :</span><span class="text-xs">{{ msg.text }}</span>
+				<span class="author">{{ msg.author }} :</span><span class="text text-xs">{{ msg.text }}</span>
 			</p>
 			<p v-if="!chat.messages.length" class="line empty">No messages yet</p>
 		</div>
@@ -125,6 +125,8 @@
 	{
 		--author-color: rgba(255, 255, 255, .35);
 
+		display: flex;
+		align-items: baseline;
 		width: 100%;
 		border-left: 4px solid var(--author-color);
 		/* padding-left: .5rem; */
@@ -132,7 +134,6 @@
 		font-size: 0.9rem;
 		line-height: 1.25rem;
 		text-align: left;
-		word-break: break-word;
 		user-select: text;
 	}
 
@@ -148,6 +149,8 @@
 	
 	.author
 	{
+		flex: 0 0 auto;
+		white-space: nowrap;
 		color: var(--author-color);
 		font-weight: 600;
 		text-transform: uppercase;
@@ -156,8 +159,16 @@
 		margin-left: .5rem;
 	}
 
+	.text
+	{
+		flex: 1 1 auto;
+		min-width: 0;
+		word-break: break-word;
+	}
+
 	.line.empty
 	{
+		justify-content: center;
 		border-left-color: transparent;
 		color: rgba(255, 255, 255, .35);
 		text-align: center;

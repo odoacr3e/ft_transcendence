@@ -185,6 +185,8 @@ boardConverter()
 		i pezzi mangiati rimangono nella prossima partita
 - [ ]	Qualche volta quando dragghi non compaiano i highlights
 - [ ]	Quando fai arrocco e al turno dopo clicchi sul re il re rimane rosso
+- [ ]	Quando annullo la richiesta di matchmaking non mi resetta lo stato e 
+		mi dice che sto già facendo matchmaking
 
 #TODO FRONTEND - 
 - [x]	websocket per lo stato online
