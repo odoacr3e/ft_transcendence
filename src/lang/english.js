@@ -34,7 +34,7 @@ export const english = {
         menu: {
             userList: "{nUser} users found for \"<b>{search}</b>\"",
             online: "Play online",
-            offline: "Play offline",
+            bot: "Play vs Bot",
             lBoard: "Leader Board",
             codex: "Codex"
         },
@@ -105,10 +105,18 @@ export const english = {
         game: {
             playPgae: {
                 title: "Choose your fate",
+				aiTitle: "Challenge the Machine",
                 opt: {
                     priv: "Private",
                     friend: "Friendly",
                     rank: "Ranked",
+                },
+				ai: {
+                    side: {
+                        white: "White",
+                        black: "Black",
+                        random: "Random"
+                    }
                 },
                 play: "Play!"
             }

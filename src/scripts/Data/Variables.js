@@ -1,7 +1,7 @@
 // SECTION - LE VARIABILI GLOBALI
 import { boardConverter, getLocalPlayers }	from "../Helper/RenderUtils.js";
 import { reactive }							from "vue";
-import { clearMatchStorage } from "./Archi.js";
+import { clearMatchStorage } 				from "./Archi.js";
 
 /**
  * @typedef {Object} Piece
@@ -53,8 +53,6 @@ export class Square {
  */
 
 /**
- * Stato locale dell'interazione dello user con la board (non viene mandato al backend).
- *
  * @property {string|null}						clickedId			Id della casella cliccata adesso
  * @property {string|null}						lastClickedId		Id della casella cliccata in precedenza
  * @property {boolean}							secondTurn			Se il giocatore ha ancora la seconda parte del turno
@@ -73,6 +71,7 @@ export class Square {
  * @property {boolean}							matchStarted 		Se la partita è iniziata (il timer parte alla prima mossa del bianco)
  * @property {Set<string>}						lastMovesSquares	Id delle caselle coinvolte nell'ultima mossa
  * @property {Function|null}					blinking 			Callback per fermare il lampeggio delle caselle sotto scacco
+ * @property {boolean}							aiGame				Flag utilizzata durante il redirect su playpage per sapere se si vuole fare una partita con l'ai
  * @property {Object<string, CapturedCount>} 	capturedP			Pezzi catturati, contati per squadra e per tipo
  */
 class metaInfo {
@@ -94,6 +93,7 @@ class metaInfo {
 		this.matchStarted		= false;
 		this.lastMovesSquares	= new Set();
 		this.blinking			= null;
+		this.aiGame				= false;
 		this.capturedP			= {	white: { Bastards: 0, Minotaurus: 0, Valkirya: 0, Jester: 0, Champion: 0},
 									black: { Bastards: 0, Minotaurus: 0, Valkirya: 0, Jester: 0, Champion: 0} };
 	}

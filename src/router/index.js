@@ -43,14 +43,6 @@ const routes = [
 		path: '/game',
 		name: 'game',
 		meta: { requiresAuth: true },
-		beforeEnter: async () => {
-			if (localMatchState)
-				return (true);
-			const playing = await amIPlaying();
-			if (playing !== ePlaying.YES)
-				return { name: 'playpage' };
-			return true;
-		},
 		component: ClassicGame
 	},
 	{

@@ -66,6 +66,32 @@ export async function requestToBack(fromSquare, toSquare, opType, drawValue)
 	});
 }
 
+const AI_MODELS_STUB = ["giorgio", "giovanna", "giorno giovanna"];
+const USE_STUB = true;
+
+export function fetchAiModels()
+{
+	if (USE_STUB)
+		return (Promise.resolve(AI_MODELS_STUB));
+
+	const sockStore = useSockStore();
+
+	return new Promise((resolve) => {
+		if (!sockStore.socket)
+		{
+			debug("[BackLink -> fetchAiModels()] socket non connesso");
+			return resolve([]);
+		}
+
+		const timeout = setTimeout(() => resolve([]), 5000);
+		sockStore.socket.emit('create_ai_match', (models) => {
+			clearTimeout(timeout);
+			resolve(Array.isArray(models) ? models : []);
+		});
+	});
+}
+
+
 function waitForSocketToBeReady(ms = 5000)
 {
 	const sockStore = useSockStore();

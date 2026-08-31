@@ -1,37 +1,40 @@
 //@ts-check
 
-const eSpecialMoves =
-{
+const eSpecialMoves = Object.freeze({
     NONE: 0,
     CASTLING: 1 << 0,
     TRANSFIGURATION: 1 << 1,
     ENDGAME: 1 << 2,
     CHECK: 1 << 3,
     CHECKMATE: 1 << 4
-}
+});
 
-const	eRoomType = 
-{
+const	eRoomType = Object.freeze({
 	PRIVATE: 'private',
 	FRIENDLY: 'friendly',
 	RANKED: 'ranked',
-	ARENA: 'arena'	
-}
+	ARENA: 'arena',
+});
+
+const eSide = Object.freeze({
+	WHITE: 'white',
+	BLACK: 'black',
+	RANDOM: 'random',
+})
 
 /**
  * @enum {string}
  */
-const eTeam = 
-{
+const eTeam = Object.freeze({
 	Black: 'black',
 	White: 'white',
 	Red: 'red',
 	Blue: 'blue',
 	Green: 'green',
 	Yellow: 'yellow',
-};
+});
 
-const eEvents = 
+const eEvents =  
 {
 	Move: 'move',
 	MoveBoost: 'moveboost',
@@ -41,7 +44,7 @@ const eEvents =
 	GiveUp: 'giveup'
 };
 
-const eMatchPresets =
+const eMatchPresets = 
 {
 	ClassicTwoPlayers: "1v1",
 	ClassicFourPlayers: "2v2",
@@ -192,6 +195,7 @@ const kingMovements =
 	{dx:1, dy:0}, {dx:-1, dy:0},//orizzontale
 ];
 
-export {eTeam, eEvents, enumNames, arrayNames, enumInitNames, getInitialOfTeam, 
-		enumInitTeam, enumValues, enumSpecialMoves, kingMovements, enumConnection, 
-		enumSocketState, getTeamByInitial, eRoomType, eMatchPresets, eSpecialMoves};
+export {eTeam, eEvents, enumNames, eSide, arrayNames, enumInitNames, 
+		getInitialOfTeam, enumInitTeam, enumValues, enumSpecialMoves, kingMovements, 
+		enumConnection, enumSocketState, getTeamByInitial, eRoomType, 
+		eMatchPresets, eSpecialMoves};

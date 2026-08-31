@@ -9,8 +9,6 @@ import { pushTurn, reloadHistory } 									from "./History";
 import { pushMessage } 												from "./ChatBox.js";
 import { playAudio } 												from "../Helper/generalUtils";
 
-let audioFlag = false;
-
 export function listenGameSocket(socket)
 {
 	socket.on("game", (raw) => {
