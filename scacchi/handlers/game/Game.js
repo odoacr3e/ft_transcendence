@@ -109,7 +109,7 @@ async function gameWebSocketHandler(req, id_user, socketData)
 	if (isOneOf(req.type, "reload", "history"))
 		result = await gameInfoHandler(match, req, socketData);
 	else if (isOneOf(req.type, "giveup", "draw"))
-		result = await gamePlayerNotificationHandler(match, req, socketData);
+		result = gamePlayerNotificationHandler(match, req, socketData);
 	else if (match.currentPlayer.team != socketData.matchData?.team)
 		return (socketError(socketData.socket, null, 401, "Socket: it's not your turn, mr.greedy cheeta", match));
 	else if (!req.type)
@@ -220,7 +220,7 @@ async function gameInfoHandler(match, body, socketData=null)
  * @param {import("./utils.js").RequestBody} body
  * @param {import("../../Classes/Globals/globals.js").Socket | null} socketData
  */
-async function gamePlayerNotificationHandler(match, body, socketData)
+function gamePlayerNotificationHandler(match, body, socketData)
 {
 	let	result;
 
@@ -304,4 +304,4 @@ function socketError(socket=null, result=null, status=0, msg=null, match=null, r
 	return (result?.log?.status? result.log.status: 500);
 }
 
-export {gameHttpHandler, gameWebSocketHandler, error, move, endTurn, boost, init};
+export {gameHandler, gameHttpHandler, gameWebSocketHandler, gamePlayerNotificationHandler, error, move, endTurn, boost, init};
