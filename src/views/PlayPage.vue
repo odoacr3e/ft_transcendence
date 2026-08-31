@@ -124,7 +124,7 @@
 						<div class="flex flex-row items-center">
 							<IconRobot v-if="aiGame" class="size-12 mr-8 shrink-0 text-main-color"/>
 							<IconSliders v-else		 class="size-12 mr-8 shrink-0 text-main-color"/>
-							<div v-if="aiGame" class="flex flex-row gap-4 flex-1 justify-start pr-4">
+							<div v-if="aiGame" class="grid grid-cols-3 gap-4 w-fit pr-4">
 								<div v-for="model in aiModels" :key="model"
 										@click="toggle('aiModel', model)"
 										:class="aiModel === model ? 'border-main-color' : 'border-border-default'"

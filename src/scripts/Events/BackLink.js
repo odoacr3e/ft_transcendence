@@ -69,28 +69,33 @@ export async function requestToBack(fromSquare, toSquare, opType, drawValue)
 const AI_MODELS_STUB = ["giorgio", "giovanna", "giorno giovanna"];
 const USE_STUB = false;
 
-export function fetchAiModels()
+export async function fetchAiModels()
 {
 	if (USE_STUB)
-		return (Promise.resolve(AI_MODELS_STUB));
+		return (AI_MODELS_STUB);
 
 	const sockStore = useSockStore();
 
-	return new Promise((resolve) => {
-		if (!sockStore.socket)
-		{
-			debug("[BackLink -> fetchAiModels()] socket non connesso");
-			return resolve([]);
-		}
+	if (!sockStore.socket)
+	{
+		debug("[BackLink -> fetchAiModels()] socket non connesso");
+		return ([]);
+	}
 
-		const timeout = setTimeout(() => resolve([]), 5000);
-		sockStore.socket.emit('create_ai_match', (answer) => {
-			clearTimeout(timeout);
-			// debug("CIAZONEEE");
-			// console.log("risposta: ", answer);
-			resolve(Array.isArray(answer?.aiProfiles) ? answer.aiProfiles : []);
-		});
-	});
+	if (!await waitForSocketToBeReady())
+	{
+		debug("[BackLink -> fetchAiModels()] socket mai connesso");
+		return ([]);
+	}
+
+	try {
+		const answer = await sockStore.socket.timeout(5000).emitWithAck('create_ai_match', {});
+		return (Array.isArray(answer?.aiProfiles) ? answer.aiProfiles : []);
+	}
+	catch {
+		debug("[BackLink -> fetchAiModels()] nessuna risposta dal back");
+		return ([]);
+	}
 }
 
 
