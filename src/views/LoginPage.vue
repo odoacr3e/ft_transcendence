@@ -6,7 +6,7 @@
 </script>
 
 <template>
-    <div class="flex z-2 bg-bg-darker max-md:overflow-y-scroll md:rounded-3xl">
+    <div class="flex z-2 bg-bg-darker max-md:overflow-x-hidden max-md:overflow-y-scroll md:rounded-3xl">
         <div class="p-3 bg-bg-default rounded-l-3xl border-r border-border-default max-lg:hidden">
             <img :draggable="false" src="../assets/KingSketch.png" alt="">
         </div>

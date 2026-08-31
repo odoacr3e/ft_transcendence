@@ -163,23 +163,25 @@
 	<div v-if="popup" class="fixed inset-0 z-50 flex items-center justify-center bg-bg-blur backdrop-blur-xs px-4">
         <div class="w-full max-w-lg rounded-3xl border border-border-default bg-bg-default p-6 text-text-default shadow-2xl">
             <div class="flex items-start justify-between gap-4">
-                <p class="text-sm uppercase tracking-widest text-text-second">{{ t('login.OTP.auth') }}</p>
-				<button type="button" class="text-2xl leading-none text-text-third hover:text-text-default" @click="closePopup">&times;</button>
+                <p class="max-md:text-xs md:text-sm uppercase tracking-widest text-text-second">{{ t('login.OTP.auth') }}</p>
+				<button type="button" class="max-md:text-md md:text-2xl leading-none text-text-third hover:text-text-default" @click="closePopup">&times;</button>
             </div>
 			<hr class="w-[90%] justify-self-start text-text-last mt-1 mb-2">
 			<div class="justify-self-center mt-4">
-				<p class="text-sm justify-self-center">{{ t('login.OTP.desc') }}</p>
-				<p class="text-sm justify-self-center mb-2">{{ t('login.OTP.exp', {date: resp.data.Expiration}) }}</p>
-				<form @submit.prevent="submitOtp" class="justify-self-center">
+				<p class="max-md:text-xs md:text-sm justify-self-center">{{ t('login.OTP.desc') }}</p>
+				<p class="max-md:text-xs md:text-sm justify-self-center mb-2">{{ t('login.OTP.exp', {date: resp.data.Expiration}) }}</p>
+				<form @submit.prevent="submitOtp" class="flex flex-col justify-self-center items-center">
 					<div class="flex">
-						<div v-for="(digit, index) in otpValues" :key="`otp-${index}`" class="otp" id="otpContainer">
-							<input type="text" class="otp-input" maxlength="1"
+						<div v-for="(digit, index) in otpValues" :key="`otp-${index}`" id="otpContainer"
+							class="otp max-md:p-2 max-md:m-1 max-md:gap-2 md:p-3.75 md:m-1.25 md:gap-3.75">
+							<input type="text" class="otp-input max-md:text-xl md:text-[28px]" maxlength="1"
 									:id="`otp-${index}`" :value="digit" :autofocus="popup && index === 0 ? true : false"
 									@input="handleOtpInput(index, $event)" @keydown="handleOtpKeydown(index, $event)" @paste="handleOtpPaste($event)">
 						</div>
 					</div>
 					<input id="submit" type="submit" value="Accedi"
-						class="cursor-pointer justify-self-center w-full my-3 p-3 text-base bg-main-color rounded-[7px] text-text-default hover:bg-linear-to-t from-main-color to-light-button"
+						class="cursor-pointer my-3 p-3 bg-main-color rounded-[7px] text-text-default hover:bg-linear-to-t from-main-color to-light-button
+								max-md:text-sm max-md:w-[80vw] md:text-base md:w-full"
 						:class="{	'pointer-events-none grayscale': otpValues.some(v => !v), 
 									'pointer-events-auto grayscale-0': otpValues.every(v => v) }">
 				</form>
@@ -215,10 +217,7 @@
 
 	.otp {
 	    display: flex;
-	    gap: 15px;
 	    justify-content: center;
-		margin: 5px;
-		padding: 15px;
 		border-width: 1px;
 		border-radius: 7px;
 		border-color: var(--color-border-default);
@@ -226,12 +225,11 @@
 		justify-self: center;
 	}
 
-	.otp input {
+	.otp-input {
 	    width: 20px;
 	    height: 30px;
 	    border: none;
 	    outline: none;
-	    font-size: 28px;
 	    text-align: center;
 	    transition: 0.3s;
 	}

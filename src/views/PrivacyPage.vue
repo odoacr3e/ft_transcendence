@@ -5,7 +5,8 @@ const { t, tm, rt} = useI18n();
 </script>
 
 <template>
-    <div class="flex flex-col p-6 z-2 bg-linear-to-t from-bg-default to-bg-darker md:rounded-3xl w-3xl gap-4">
+    <div class="flex flex-col p-6 z-2 bg-linear-to-t from-bg-default to-bg-darker w-3xl gap-4
+                max-md:pt-20 max-md:h-screen max-md:overflow-y-scroll md:rounded-3xl">
         <h2 class="text-text-default max-md:text-3xl md:text-4xl font-semibold">{{ t('legal.privacy.title') }}</h2>
         <hr class="w-full justify-self-start text-text-last">
         <p class="text-text-second max-md:text-sm md:text-[16px]">{{ t('legal.privacy.desc') }}</p>
