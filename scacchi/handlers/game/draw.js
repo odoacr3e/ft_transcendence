@@ -1,5 +1,6 @@
 //@ts-check
 
+import { IS_CHILD_PROCESS } from "../../Macro/macro.js";
 import { Result } from "./utils.js";
 
 /**
@@ -12,7 +13,7 @@ export function drawHandler(match, body, socketData)
 {
 	let	ai;
 
-	if (process.send)
+	if (IS_CHILD_PROCESS == true)
 	{
 		ai = match.currentPlayer.ai ? match.currentPlayer : match.NextPlayer();
 		if (ai.ai?.defeatStatus)

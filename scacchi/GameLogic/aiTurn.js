@@ -7,6 +7,7 @@ import { endTurn } from "../handlers/game/endTurn.js";
 import { move } from "../handlers/game/move.js";
 import { makeTransfiguration } from "../handlers/game/transfiguration.js";
 import { eEvents } from "../Macro/enums.js";
+import { IS_CHILD_PROCESS } from "../Macro/macro.js";
 import { render, boardStringify } from "../test/render.js";
 import { responseFormatter, sendData } from "../utils/response.js";
 import { gameMessage, roomMessage } from "../websocket/utils.js";
@@ -99,8 +100,8 @@ function sendResult(match, result, type="")
 {
 	if (result.status != 200)
 		throw (`AIExecuteTurn: ${type} failed. Reason: "${result.msg}".Info: ${JSON.stringify(DEBUG_turn, null, 2)}`);
-	if (!process.send)
-		roomMessage(`match_${match.id}`, "game", result, true);
-	else
+	if (IS_CHILD_PROCESS == false)
 		sendData("game", match.id, responseFormatter(match, result, null, null));
+	else
+		roomMessage(`match_${match.id}`, "game", result, true);
 }

@@ -10,7 +10,7 @@
 */
 
 import { eChildEvents, enumSocketState } from "../Macro/enums.js";
-import { MATCH_RECONNECT_TIMER, TOURNAMENT_WAIT_TIMER, SOCKET_RECONNECT_TIMER } from "../Macro/macro.js";
+import { MATCH_RECONNECT_TIMER, TOURNAMENT_WAIT_TIMER, SOCKET_RECONNECT_TIMER, IS_CHILD_PROCESS } from "../Macro/macro.js";
 import { globals } from "../Classes/Globals/globals.js";
 import { sockio } from "./websocket.js";
 import { responseFormatter, sendData } from "../utils/response.js";
@@ -124,7 +124,7 @@ function gameMessage(match, msg, author="server", printer=console.log)
 		return ;
 	if (printer)
 		printer(msg);
-	if (process.send || match.socketBool)
+	if (IS_CHILD_PROCESS || match.socketBool)
 	{
 		result = new Result().Success("OK", "msg");//@ts-ignore
 		result.author = author;
@@ -134,7 +134,7 @@ function gameMessage(match, msg, author="server", printer=console.log)
 		return ;
 	if (match.socketBool)
 		roomMessage(`match_${match.id}`, `game`, result);
-	else if (process.send)
+	else if (IS_CHILD_PROCESS)
 		sendData(eChildEvents.Game, Number(match.id), result);
 }
 

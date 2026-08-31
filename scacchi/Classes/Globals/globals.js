@@ -3,7 +3,7 @@
 import { Match } 										from "../Chess/match.js";
 import { Queue } 										from "./Queue.js";
 import { Room } 										from "./room.js";
-import { AI_PROFILE_PATH, DEBUG, CHILD_NUM}				from "../../Macro/macro.js";
+import { AI_PROFILE_PATH, DEBUG, CHILD_NUM, IS_CHILD_PROCESS}				from "../../Macro/macro.js";
 import { render } 										from "../../test/render.js";
 import { AIprofiles, AIprofilesArray, enumConnection }	from "../../Macro/enums.js";
 import { Result } 										from "../endPoint/result.js";
@@ -59,9 +59,7 @@ class Globals
 		this.AIgameCounter = new Map();
 		this.tournamentMap.set(0, new Tournament("DEBUG"));
 		this.tournamentMap.get(0)?.DEBUGtournament();
-		console.log(`creazione figli da globals..`);
-		console.log(`${process.send}`);
-		if (process.send == undefined)
+		if (IS_CHILD_PROCESS == false)
 			this.CreateChild();
 		this.childId = -1;
 	}

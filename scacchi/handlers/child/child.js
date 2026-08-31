@@ -1,8 +1,6 @@
 // @ts-check
-
 import { Match } from "../../Classes/Chess/match.js";
 import { globals } from "../../Classes/Globals/globals.js";
-import { Child } from "../../Classes/Globals/Child.js";
 import { eTeam, eChildEvents, eEvents } from "../../Macro/enums.js";
 import { responseFormatter, sendData } from "../../utils/response.js";
 import { init } from "../game/init.js";
