@@ -19,6 +19,7 @@ import { aiSpeech } from "./AIprofiles/speech.js";
 import { zobristGenerateTable, zobristInitHash } from "../../utils/zobrist.js";
 import { rng } from "../../utils/random.js";
 import { clientSetState, gameMessage } from "../../websocket/utils.js";
+import { includesOneOf, isOneOf } from "../../utils/string.js";
 
 /** @typedef {import("../Globals/Queue.js").QueueNode} QueueNode*/
 /** @typedef {import("./Pieces/pieces.js").Piece} Piece*/
@@ -657,11 +658,17 @@ class MatchSettings
 				throw (`MatchSettings: invalid preset name "${matchPresetType}"`);
 		}
 	}
-	/** @param {string} profile */
-	SetAiProfile(profile)
+	/** 
+	 * @param {string} profile 
+	 * @param {string | null} team 
+	 */
+	SetAiProfile(profile, team)
 	{
 		this.ai.profile = profile;
-		rng(2) == 0 ? this.ai.team = eTeam.White : this.ai.team = eTeam.Black;
+		if (team && isOneOf(team, eTeam.White, eTeam.Black))
+			team == eTeam.White ? this.ai.team = eTeam.Black : this.ai.team = eTeam.White;
+		else
+			rng(2) == 0 ? this.ai.team = eTeam.White : this.ai.team = eTeam.Black;
 	}
 }
 

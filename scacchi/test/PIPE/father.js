@@ -1,11 +1,14 @@
 //@ts-check
 
 import proc from "node:child_process";
+import { globals } from "../../Classes/Globals/globals.js";
 import fs from "fs";
 
 let	n = 3;
 
 console.log(`father, process.send: ${process.send}`);
+globals.lastMatchId = "69";
+console.log(globals.AIgameCounter);
 TEST();
 
 function TEST()
@@ -37,6 +40,8 @@ function TEST()
 	{
 		console.log(`child message: ${msg}`);
 		child.send(`Ciao figlio, ho ricevuto il tuo msg "${msg}". Non mandero gli alimenti a te e a mamma, le puttane non si pagano da sole.`);
+		console.log(`father: ${globals.lastMatchId}`);
+
 	});
 
 	child.on("error", (err) =>

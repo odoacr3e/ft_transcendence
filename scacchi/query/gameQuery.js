@@ -4,17 +4,19 @@ import { prisma } from "../lib/prisma.js";
 /** @typedef {import("../Classes/Chess/match.js").Match} Match*/
 
 /**
- * @param {Match} match 
+ * @param {Match | null} match 
  */
-export async function openMatch(match) {
+export async function openMatch(match=null) {
 	const m = await prisma.matches.create({
 		data: {
-			start_date: match.start_date,
-			id_tournament: match.tournament_id,
-			round: match.tournament_round
+			start_date: match ? match.start_date : new Date().toISOString(),
+			id_tournament: match ? match.tournament_id : null,
+			round: match ? match.tournament_round : null
 		}
 	});
-	match.id = m.id_match;
+	if (match != null)
+		match.id = m.id_match;
+	return (m.id_match);
 }
 
 /**

@@ -152,7 +152,7 @@ function displayPlayerInfo(board, match)
 		printer(`Boost NOT used`);
 	if (kingThreat(board, match) == true)
 		printer(`${player.team} king is threatened💀`);
-	printer(`match: ${match?.timer?.time}`);
+	printer(`time: ${match?.timer?.time}`);
 	printer(`player: ${match.currentPlayer.time}`);
 	
 	

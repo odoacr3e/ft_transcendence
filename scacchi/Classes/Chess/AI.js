@@ -58,6 +58,7 @@ export class AI
 		if (!profile)
 			profile = AIprofilesArray[i];
 		this.profile = profile;
+		this.difficulty = "easy";
 		/** @type {null | import("./AIprofiles/speech.json")} */
 		this.speechJSON = null;
 		this.defeatStatus = 0;//@ts-ignore

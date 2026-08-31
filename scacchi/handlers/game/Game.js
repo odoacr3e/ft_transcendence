@@ -23,7 +23,7 @@ import { Match} from "../../Classes/Chess/match.js";
 import { isOneOf } from "../../utils/string.js";
 import { updateTournament } from "../../websocket/handlers/tournament.js";
 import { gameMessage, roomMessage } from "../../websocket/utils.js";
-import { eEvents, enumSocketState } from "../../Macro/enums.js";
+import { eEvents, enumSocketState, eChildEvents } from "../../Macro/enums.js";
 import { saveMatch } from "../../utils/saveMatch.js";
 import { checkKingDanger } from "../../utils/checkDanger.js";
 import { reload } from "./reload.js";
@@ -65,6 +65,22 @@ async function gameHttpHandler(req, res)
 /**
  * 
  * @param {import("./utils.js").RequestBody} req
+ * @param {import("../../Classes/Globals/globals.js").Socket | undefined} socketData 
+ */
+async function gameAIHandler(req, socketData)
+{
+	let	child;
+
+	child = globals.childMap.get(socketData?.aiMatchData?.ChildId);
+	if (!child)
+		throw (`gameAIHandler: child of ${socketData?.aiMatchData?.ChildId} not set`);
+	child.Send(eChildEvents.Game, req, socketData?.aiMatchData?.matchId);
+	return (200);
+}
+
+/**
+ * 
+ * @param {import("./utils.js").RequestBody} req
  * @param {number} id_user 
  * @param {import("../../Classes/Globals/globals.js").Socket | undefined} socketData 
  */
@@ -78,6 +94,8 @@ async function gameWebSocketHandler(req, id_user, socketData)
 
 	if (!socketData)
 		return (console.error("ERROR: disconnected player not eliminated"), 500);
+	if (socketData.aiMatchData)
+		return (await gameAIHandler(req, socketData));
 	if (!socketData.matchData)
 		return (socketError(socketData.socket, null, 401, "Socket: you are not a player."));
 	matchId = socketData.matchData.matchId;

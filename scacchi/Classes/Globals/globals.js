@@ -3,7 +3,7 @@
 import { Match } from "../Chess/match.js";
 import { Queue } from "./Queue.js";
 import { Room } from "./room.js";
-import { AI_PROFILE_PATH, DEBUG } from "../../Macro/macro.js";
+import { AI_PROFILE_PATH, DEBUG, CHILD_NUM} from "../../Macro/macro.js";
 import { render } from "../../test/render.js";
 import { AIprofiles, AIprofilesArray, enumConnection } from "../../Macro/enums.js";
 import { Result } from "../endPoint/result.js";
@@ -12,14 +12,13 @@ import fs from "fs";
 import { zobristGenerateTable } from "../../utils/zobrist.js";
 import { Tournament } from "../Chess/tournament.js";
 import { clientSetState } from "../../websocket/utils.js";
+import { Child } from "./Child.js";
 
 /** @typedef {import("../Chess/chessBoard.js").ChessBoard} ChessBoard*/
 /** @typedef {import("../Chess/player.js").Player} Player*/
 /** @typedef {import("./socketInfo.js").SocketInfo} Socket*/
 /** @typedef {Record<string, [number, number]>} ZobristCache*/
-/** @typedef {string} matchId*/
-/** @typedef {import("./Worker.js").worker} worker */
-
+/** @typedef {string} matchId */
 /** @typedef {string} stringifyBoard*/
 
 const	TEST_MATCH = "0";
@@ -36,8 +35,8 @@ class Globals
 		this.matches = new Map();
 		/** @type {Map<number, Socket>} */
 		this.clientMap = new Map();
-		/** @type {Map<number, worker>} */
-		this.workerMap = new Map();
+		/** @type {Map<number | undefined, Child>} */
+		this.childMap = new Map();
 		/** @type {Queue} */
 		this.rankedQueue = new Queue(enumConnection.RANKED);
 		/** @type {Queue} */
@@ -60,7 +59,8 @@ class Globals
 		this.AIgameCounter = new Map();
 		this.tournamentMap.set(0, new Tournament("DEBUG"));
 		this.tournamentMap.get(0)?.DEBUGtournament();
-		console.log(this.tournamentMap.get(0));
+		if (process.send == undefined)
+			this.CreateChild();
 	}
 	/** @param {string} roomType */
 	GetQueue(roomType)
@@ -194,8 +194,31 @@ class Globals
 			return (new Result().Success());
 		return (new Result().Error('User not in this room', 400));
 	}
-	LessBusyWorker()
-	{}
+	CreateChild()
+	{
+		let i = 0;
+
+		while (i < CHILD_NUM)
+		{
+			this.childMap.set(i, new Child(i));
+			++i;
+		}
+	}
+	LessBusyChild()
+	{
+		let	lowMatch = Infinity;
+		let	lowIndex = 0;
+
+		for (const [id, child] of this.childMap)
+		{
+			if (child.matchSet.size < lowMatch)
+			{
+				lowMatch = child.matchSet.size;//@ts-ignore
+				lowIndex = id;
+			}
+		}
+		return lowIndex;
+	}
 }
 
 function getTrainingSchedule()
