@@ -10,6 +10,15 @@ import { Result } from "./utils.js";
  */
 export function drawHandler(match, body, socketData)
 {
+	let	ai;
+
+	if (process.send)
+	{
+		ai = match.currentPlayer.ai ? match.currentPlayer : match.NextPlayer();
+		if (ai.ai?.defeatStatus)
+			return (match.DrawMatch(null, `Player decision`));
+		return (new Result().Success("OK", "draw"));
+	}
 	if (!socketData)
 		return (new Result().Error("no socketData", 500));
 	if (!match.drawPendingBool && !body.draw)

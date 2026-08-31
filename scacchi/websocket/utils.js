@@ -9,14 +9,13 @@
 	-	roomMessage:		emit a message to all client in a socket.io room.
 */
 
-import { enumSocketState } from "../Macro/enums.js";
+import { eChildEvents, enumSocketState } from "../Macro/enums.js";
 import { MATCH_RECONNECT_TIMER, TOURNAMENT_WAIT_TIMER, SOCKET_RECONNECT_TIMER } from "../Macro/macro.js";
 import { globals } from "../Classes/Globals/globals.js";
 import { sockio } from "./websocket.js";
-import { responseFormatter } from "../utils/response.js";
+import { responseFormatter, sendData } from "../utils/response.js";
 import { Result } from "../Classes/endPoint/result.js";
 
-/** @typedef {import("../Classes/endPoint/result.js").Result} Result*/
 /** @typedef {import("../Classes/Chess/match.js").Match} Match*/
 
 /**
@@ -125,12 +124,18 @@ function gameMessage(match, msg, author="server", printer=console.log)
 		return ;
 	if (printer)
 		printer(msg);
-	if (match.socketBool == false)
+	if (process.send || match.socketBool)
+	{
+		result = new Result().Success("OK", "msg");//@ts-ignore
+		result.author = author;
+		result.msg = msg;
+	}
+	else
 		return ;
-	result = new Result().Success("OK", "msg");//@ts-ignore
-	result.author = author;
-	result.msg = msg;
-	roomMessage(`match_${match.id}`, `game`, result);
+	if (match.socketBool)
+		roomMessage(`match_${match.id}`, `game`, result);
+	else if (process.send)
+		sendData(eChildEvents.Game, Number(match.id), result);
 }
 
 export {getReconnectTime, isBusy, roomMessage, gameMessage, clientSetState, clientResetData};

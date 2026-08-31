@@ -624,7 +624,7 @@
         function gestisciRispostaServer(idUser, eventType, data) {
             const esitoCell = document.getElementById(`esito-${idUser}`);
             console.log(`[ON game (${eventType})] Ricevuto per ${idUser}:`, data);
-
+            logAI(`dati ricevuti da:`, `${data.type}`);
             if (data && data.log && data.log.status === 200) {
                 let infoDraw = "";
                 if (data.draw !== undefined) {
@@ -757,7 +757,7 @@
 
             // Gestore risposta create_ai_match da evento
             aiSocket.on('create_ai_match', (data) => {
-                logAI(`Risposta create_ai_match: ${JSON.stringify(data)}`, data && data.log && data.log.status === 200 ? "ok" : "err");
+                logAI(`Risposta create_ai_match: ${data.log.status === 200 ? "ok" : "err"}`);
                 if (data && data.log && data.log.status === 200) {
                     if (data.matchId) ultimoMatchIdAI = data.matchId;
                     
@@ -766,10 +766,6 @@
                     const authData = getAuthUtenteAI();
                     creaRigaClientGameplay(authData, data.matchId || ultimoMatchIdAI, teamColor, aiSocket);
                 }
-            });
-
-            aiSocket.on('start_ai_match', (data) => {
-                logAI(`Risposta start_ai_match: ${JSON.stringify(data)}`, data && data.log && data.log.status === 200 ? "ok" : "err");
             });
 
             return aiSocket;

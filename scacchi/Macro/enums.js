@@ -29,6 +29,7 @@ const eChildEvents =
 	CreateMatch: "create_ai_match",
 	Game: "game",
 	GameMsg: "gameMsg",
+	Error: "Errore"
 };
 
 const eMatchPresets =

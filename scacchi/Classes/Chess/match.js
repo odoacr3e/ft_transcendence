@@ -640,6 +640,7 @@ class MatchSettings
 			this.players = structuredClone(other.players);
 		this.presetType = other.presetType;
 		this.timer = other.timer;
+		this.ai = other.ai;
 	}
 	/** @param {string} matchPresetType */
 	GetPresetByType(matchPresetType)

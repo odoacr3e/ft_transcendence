@@ -61,6 +61,7 @@ class Globals
 		this.tournamentMap.get(0)?.DEBUGtournament();
 		if (process.send == undefined)
 			this.CreateChild();
+		this.childId = -1;
 	}
 	/** @param {string} roomType */
 	GetQueue(roomType)

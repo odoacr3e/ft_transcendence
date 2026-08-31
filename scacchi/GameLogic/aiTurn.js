@@ -8,6 +8,7 @@ import { move } from "../handlers/game/move.js";
 import { makeTransfiguration } from "../handlers/game/transfiguration.js";
 import { eEvents } from "../Macro/enums.js";
 import { render, boardStringify } from "../test/render.js";
+import { responseFormatter, sendData } from "../utils/response.js";
 import { gameMessage, roomMessage } from "../websocket/utils.js";
 
 /** @typedef {import("../Classes/Chess/match").Match} Match */
@@ -73,7 +74,7 @@ export function AIexecuteTurn(match)
 	lastEvents = match.history.LastTurn();
 	for (let event of lastEvents)
 		event.score = turnData.Score;
-	// render(match);
+	render(match);
 	if (aiDefeatBool)
 	{
 		//FIXME - aggiungere evento aiSpeech
@@ -98,5 +99,8 @@ function sendResult(match, result, type="")
 {
 	if (result.status != 200)
 		throw (`AIExecuteTurn: ${type} failed. Reason: "${result.msg}".Info: ${JSON.stringify(DEBUG_turn, null, 2)}`);
-	roomMessage(`match_${match.id}`, "game", result, true);
+	if (!process.send)
+		roomMessage(`match_${match.id}`, "game", result, true);
+	else
+		sendData("game", match.id, responseFormatter(match, result, null, null));
 }

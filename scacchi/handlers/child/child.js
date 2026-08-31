@@ -4,12 +4,13 @@ import { Match } from "../../Classes/Chess/match.js";
 import { globals } from "../../Classes/Globals/globals.js";
 import { Child } from "../../Classes/Globals/Child.js";
 import { eTeam, eChildEvents } from "../../Macro/enums.js";
-import { responseFormatter } from "../../utils/response.js";
+import { responseFormatter, sendData } from "../../utils/response.js";
 import { init } from "../game/init.js";
 import { gameMessage } from "../../websocket/utils.js";
-import { normifyRequest } from "../game/utils.js";
+import { normifyRequest, Result } from "../game/utils.js";
 import { isOneOf } from "../../utils/string.js";
 import { gameHandler, gamePlayerNotificationHandler } from "../game/Game.js";
+import { AIexecuteTurn } from "../../GameLogic/aiTurn.js";
 
 /** @typedef {import("../../Classes/Globals/Child").ChildData} ChildData */
 
@@ -21,16 +22,24 @@ process.on("exit", () => {process.exit()});
 
 process.on("message", (/** @type ChildData */ data) => 
 {
-	if (data.Event == eChildEvents.Init)
+	try
 	{
-		id = data.ChildId;
+		if (data.Event == eChildEvents.Init)
+		{
+			id = data.ChildId;
+			globals.childId = id;
+		}
+		else if (data.Event == eChildEvents.CreateMatch)
+			initMatch(data);
+		else if (data.Event == eChildEvents.Game)
+			matchEvent(data);
+		else if (data.Event == eChildEvents.GameMsg)
+			gameMessage(data.MatchId, data.Data?.msg, data.Data?.author);
 	}
-	else if (data.Event == eChildEvents.CreateMatch)
-		initMatch(data);
-	else if (data.Event == eChildEvents.Game)
-		matchEvent(data);
-	else if (data.Event == eChildEvents.GameMsg)
-		gameMessage(data.MatchId, data.Data?.msg, data.Data?.author);
+	catch(err)
+	{//@ts-ignore
+		sendData(eChildEvents.Error, Number(data.MatchId), err);
+	}
 });
 
 /**
@@ -50,13 +59,15 @@ function initMatch(data)
 	result.team = match.currentPlayer.ai? eTeam.White : eTeam.Black;
 	globals.matches.set(match.id, match);
 	sendData(eChildEvents.CreateMatch, match.id, responseFormatter(match, result, null, null));
+	if (match.currentPlayer.ai)
+		setTimeout(moveAI, 3000, match);
 }
 
 /**
  * 
  * @param {ChildData} data 
  */
-function matchEvent(data)
+async function matchEvent(data)
 {
 	let	match;
 	let	req;
@@ -65,7 +76,7 @@ function matchEvent(data)
 	if (data?.MatchId == undefined)
 		throw (`child, matchEvent: match not found`);
 	//@ts-ignore
-	match = globals.matches.get(data.MatchId);
+	match = globals.matches.get(`${data.MatchId}`);
 	if (!match)
 	{
 		sendData(eChildEvents.Game, data.MatchId, responseFormatter(null, null, "Match not found", 404));
@@ -74,28 +85,30 @@ function matchEvent(data)
 	req = normifyRequest(match.cursor, data.Data);
 	if (!req?.type)
 	{
-		sendData(eChildEvents.Game, data.MatchId, responseFormatter(match, null, `req with no type`, 400));
+		// sendData(eChildEvents.Game, data.MatchId, responseFormatter(match, null, `req with no type`, 400));
 		return ;
 	}
 	if (isOneOf(req.type, "giveup", "draw"))
 		result = gamePlayerNotificationHandler(match, req, null);
 	else
-		result = gameHandler(match, req, null);
+		result = await gameHandler(match, req, null);//@ts-ignore
+	if (!result.victory && match.currentPlayer.ai)
+		setTimeout(moveAI, 1000, match);
 	sendData(eChildEvents.Game, data.MatchId, result);
 }
 
 /**
  * 
- * @param {string} event 
- * @param {string | number} matchId 
- * @param {*} data 
+ * @param {Match} match 
  */
-function sendData(event, matchId, data=null)
+function moveAI(match)
 {
-	/** @type {ChildData} */
-	let	childData;
-
-	childData = {ChildId: id, Event: event, MatchId: Number(matchId), Data: data};
-	//@ts-ignore
-	process.send(childData);
+	try
+	{
+		AIexecuteTurn(match);
+	}
+	catch (error)
+	{
+		sendData(eChildEvents.Error, Number(match.id), error);
+	}
 }

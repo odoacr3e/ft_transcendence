@@ -401,7 +401,7 @@ function cmpBoard(board, other)
 			continue ;
 		if (Fsquare.piece.type != Bsquare.piece.type)
 			return (setError(MSG.PIECE_TYPE, Fsquare.piece, Bsquare.piece));
-		if (Fsquare.piece.team != Bsquare.piece.team)
+		if (Fsquare.piece?.team != Bsquare.piece?.team)
 			return (setError(MSG.PIECE_TEAM, Fsquare.piece, Bsquare.piece));
 		if (Fsquare.piece.pos != Bsquare.piece.pos)
 			return (setError(MSG.PIECE_POS, Fsquare.piece, Bsquare.piece));

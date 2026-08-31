@@ -11,6 +11,7 @@
 import { Match } from "../Classes/Chess/match.js";
 import { Player } from "../Classes/Chess/player.js";
 import { Result } from "../Classes/endPoint/result.js";
+import { globals } from "../Classes/Globals/globals.js";
 import { enumSpecialMoves, eTeam } from "../Macro/enums.js";
 import { DEBUG_CURL } from "../Macro/macro.js";
 
@@ -251,4 +252,20 @@ function jsonSafeParse(key, val)
 
 const jsonResponse = { ResponseError, ResponseSuccess };
 
-export { jsonResponse, jsonParser, responseFormatter, jsonSafeParse };
+/**
+ * 
+ * @param {string} event 
+ * @param {string | number} matchId 
+ * @param {*} data 
+ */
+function sendData(event, matchId, data=null)
+{
+	/** @type {import("../Classes/Globals/Child.js").ChildData} */
+	let	childData;
+
+	childData = {ChildId: globals.childId, Event: event, MatchId: Number(matchId), Data: data};
+	//@ts-ignore
+	process.send(childData);
+}
+
+export { jsonResponse, jsonParser, responseFormatter, jsonSafeParse , sendData};
