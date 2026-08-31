@@ -1,18 +1,18 @@
 // @ts-check
 
-import { Match } from "../Chess/match.js";
-import { Queue } from "./Queue.js";
-import { Room } from "./room.js";
-import { AI_PROFILE_PATH, DEBUG, CHILD_NUM} from "../../Macro/macro.js";
-import { render } from "../../test/render.js";
-import { AIprofiles, AIprofilesArray, enumConnection } from "../../Macro/enums.js";
-import { Result } from "../endPoint/result.js";
-import { SocketInfo } from "./socketInfo.js";
-import fs from "fs";
-import { zobristGenerateTable } from "../../utils/zobrist.js";
-import { Tournament } from "../Chess/tournament.js";
-import { clientSetState } from "../../websocket/utils.js";
-import { Child } from "./Child.js";
+import { Match } 										from "../Chess/match.js";
+import { Queue } 										from "./Queue.js";
+import { Room } 										from "./room.js";
+import { AI_PROFILE_PATH, DEBUG, CHILD_NUM}				from "../../Macro/macro.js";
+import { render } 										from "../../test/render.js";
+import { AIprofiles, AIprofilesArray, enumConnection }	from "../../Macro/enums.js";
+import { Result } 										from "../endPoint/result.js";
+import { SocketInfo } 									from "./socketInfo.js";
+import fs 												from "fs";
+import { zobristGenerateTable } 						from "../../utils/zobrist.js";
+import { Tournament } 									from "../Chess/tournament.js";
+import { clientSetState } 								from "../../websocket/utils.js";
+import { Child } 										from "./Child.js";
 
 /** @typedef {import("../Chess/chessBoard.js").ChessBoard} ChessBoard*/
 /** @typedef {import("../Chess/player.js").Player} Player*/
@@ -59,6 +59,8 @@ class Globals
 		this.AIgameCounter = new Map();
 		this.tournamentMap.set(0, new Tournament("DEBUG"));
 		this.tournamentMap.get(0)?.DEBUGtournament();
+		console.log(`creazione figli da globals..`);
+		console.log(`${process.send}`);
 		if (process.send == undefined)
 			this.CreateChild();
 		this.childId = -1;
@@ -199,6 +201,7 @@ class Globals
 	{
 		let i = 0;
 
+		console.log(`creo i figli`);
 		while (i < CHILD_NUM)
 		{
 			this.childMap.set(i, new Child(i));

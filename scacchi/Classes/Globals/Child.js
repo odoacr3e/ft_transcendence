@@ -1,10 +1,10 @@
 //@ts-check
 
-import { eChildEvents } from "../../Macro/enums.js";
-import { isOneOf } from "../../utils/string.js";
+import { eChildEvents }				from "../../Macro/enums.js";
+import { isOneOf } 					from "../../utils/string.js";
 import { gameMessage, roomMessage } from "../../websocket/utils.js";
-import { fork } from "child_process";
-import { Result } from "../endPoint/result.js";
+import { fork } 					from "child_process";
+import { Result } 					from "../endPoint/result.js";
 
 /**
  * @typedef {{
@@ -20,10 +20,13 @@ class Child
 	/** @param {number} index */
 	constructor(index)
 	{
+		console.log(`creo figlio ${index}`);
 		/** @type {Set<number>} */
 		this.matchSet = new Set;
 		this.id = index;
 		this.child = fork("handlers/child/child.js");
+		if (!this.child)
+			throw (`Child: fork has failed`);
 
 		this.SetListeners();
 	}
@@ -64,6 +67,7 @@ class Child
 		{
 			if (isOneOf(data.Event, eChildEvents.Game, eChildEvents.CreateMatch, eChildEvents.GameMsg))
 			{
+				console.log(`message from ${data.MatchId}, event ${data.Event}, data: ${data.Data}`);
 				roomMessage(`match_${data.MatchId}`, data.Event, data.Data);
 			}
 			else if (data.Event == eChildEvents.Error)

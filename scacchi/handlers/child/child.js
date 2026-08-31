@@ -3,7 +3,7 @@
 import { Match } from "../../Classes/Chess/match.js";
 import { globals } from "../../Classes/Globals/globals.js";
 import { Child } from "../../Classes/Globals/Child.js";
-import { eTeam, eChildEvents } from "../../Macro/enums.js";
+import { eTeam, eChildEvents, eEvents } from "../../Macro/enums.js";
 import { responseFormatter, sendData } from "../../utils/response.js";
 import { init } from "../game/init.js";
 import { gameMessage } from "../../websocket/utils.js";
@@ -55,6 +55,7 @@ function initMatch(data)
 		throw (`child, initMatch: id undefined`);
 	match = new Match();
 	result = init(match, data.Data);
+	result.type = "init";
 	match.id = `${data.MatchId}`;
 	result.team = match.currentPlayer.ai? eTeam.White : eTeam.Black;
 	globals.matches.set(match.id, match);

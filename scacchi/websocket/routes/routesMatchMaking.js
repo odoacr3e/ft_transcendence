@@ -29,30 +29,33 @@ export function routesMatchMaking(socket, user)
 		let ChildId;
 		let child;
 
+		console.log(`entro create_ai_match`);
 		socketData = globals.clientMap.get(user.id_user);
 		if (!socketData)
 			result = result.Error("Player data are lost", 500);
-		else if (!req || !req.profile)
-		{
-			for (let i = 0; i < AIprofilesArray.length; ++i)
-			{
-				switch (AIprofilesArray[i]) {
-					case AIprofiles.FIRST_AI:
-						resArray.push(AIprofilesArray[i] + "_easy");
-						break;
-					case AIprofiles.GMU:
-						resArray.push(AIprofilesArray[i] + "_hard");
-						break;
-					case AIprofiles.DEBUG:
-						// resArray.push(AIprofilesArray[i] + "_medium");
-						break;
-					default:
-						resArray.push(AIprofilesArray[i] + "_medium");
-						break;
-				}
-			} // @ts-ignore
-			result.aiProfiles = resArray;
-		}
+		// else if (!req || !req.profile)
+		// {
+		// 	for (let i = 0; i < AIprofilesArray.length; ++i)
+		// 	{
+		// 		switch (AIprofilesArray[i]) {
+		// 			case AIprofiles.FIRST_AI:
+		// 				resArray.push(AIprofilesArray[i] + "_easy");
+		// 				break;
+		// 			case AIprofiles.GMU:
+		// 				resArray.push(AIprofilesArray[i] + "_hard");
+		// 				break;
+		// 			case AIprofiles.DEBUG:
+		// 				// resArray.push(AIprofilesArray[i] + "_medium");
+		// 				break;
+		// 			default:
+		// 				resArray.push(AIprofilesArray[i] + "_medium");
+		// 				break;
+		// 		}
+		// 	} // @ts-ignore
+		// 	result.aiProfiles = resArray;
+		// }
+		else if (!req || !req.profile) // @ts-ignore
+			result.aiProfiles = AIprofilesArray;
 		else if (AIprofilesArray.indexOf(req.profile) == -1)
 			result.Error("Profile does not exist", 404);
 		else
@@ -69,9 +72,11 @@ export function routesMatchMaking(socket, user)
 			// result.team = socketData.matchData.team;
 			socketData.state = enumSocketState.PLAYING;
 			socketData.aiMatchData = {ChildId: ChildId, matchId: matchId};
+			socket.join(`match_${matchId}`);
+			console.log(`adesso si spacca tutto`);
 			child?.Send(eChildEvents.CreateMatch, setting, matchId);
 		}
-		socket.join(`match_${matchId}`);
+		console.log(`risposta ai match: ${JSON.stringify(result, null, 2)}`);
 		if (typeof(callback) == 'function')
 			callback(result);
 		if (typeof(req) == 'function')//@ts-ignore
