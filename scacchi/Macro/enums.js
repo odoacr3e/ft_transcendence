@@ -23,6 +23,13 @@ const eEvents =
 	GiveUp: 'giveup'
 };
 
+const eWorkerEvents =
+{
+	Init: "init",
+	Game: "game",
+	GameMsg: "gameMsg"
+};
+
 const eMatchPresets =
 {
 	ClassicTwoPlayers: "1v1",
@@ -210,4 +217,4 @@ const AIprofiles =
 
 const AIprofilesArray = Object.values(AIprofiles);
 
-export {eTeam, eEvents, eMatchPresets, enumNames, arrayNames, arrayNamesTransform, arrayNamesDoubleMove, enumInitNames, arrayInitNames, getInitialOfTeam, enumInitTeam, arrayInitTeam, enumValues, enumSpecialMoves, kingMovements, enumConnection, enumSocketState, getTeamByInitial, AIprofiles, AIprofilesArray};
+export {eTeam, eEvents, eWorkerEvents, eMatchPresets, enumNames, arrayNames, arrayNamesTransform, arrayNamesDoubleMove, enumInitNames, arrayInitNames, getInitialOfTeam, enumInitTeam, arrayInitTeam, enumValues, enumSpecialMoves, kingMovements, enumConnection, enumSocketState, getTeamByInitial, AIprofiles, AIprofilesArray};

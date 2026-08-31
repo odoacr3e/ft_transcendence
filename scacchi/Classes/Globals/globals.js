@@ -16,9 +16,9 @@ import { clientSetState } from "../../websocket/utils.js";
 /** @typedef {import("../Chess/chessBoard.js").ChessBoard} ChessBoard*/
 /** @typedef {import("../Chess/player.js").Player} Player*/
 /** @typedef {import("./socketInfo.js").SocketInfo} Socket*/
-/** @typedef {import("../Chess/tournament.js").Tournament} Tournament*/
 /** @typedef {Record<string, [number, number]>} ZobristCache*/
 /** @typedef {string} matchId*/
+/** @typedef {import("./Worker.js").worker} worker */
 
 /** @typedef {string} stringifyBoard*/
 
@@ -36,6 +36,8 @@ class Globals
 		this.matches = new Map();
 		/** @type {Map<number, Socket>} */
 		this.clientMap = new Map();
+		/** @type {Map<number, worker>} */
+		this.workerMap = new Map();
 		/** @type {Queue} */
 		this.rankedQueue = new Queue(enumConnection.RANKED);
 		/** @type {Queue} */
@@ -192,6 +194,8 @@ class Globals
 			return (new Result().Success());
 		return (new Result().Error('User not in this room', 400));
 	}
+	LessBusyWorker()
+	{}
 }
 
 function getTrainingSchedule()

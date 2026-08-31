@@ -5,6 +5,9 @@ import fs from "fs";
 
 let	n = 3;
 
+console.log(`father, process.send: ${process.send}`);
+TEST();
+
 function TEST()
 {
 	const	child = proc.fork("test/PIPE/child.js"
@@ -46,7 +49,6 @@ function TEST()
 		console.log("test " + test);
 	});
 
+	child.send(`Gazzetta dello sport`);
 	setTimeout(() => {child.kill()}, 3000);
 }
-
-TEST();

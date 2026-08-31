@@ -15,6 +15,10 @@ const DEBUG = true;
 //@ts-ignore
 /** @type {string} */const DEBUG_AI_TRAINING = process.env.DEBUG_AI_TRAINING == "true" ? true : false;
 
+//SECTION - worker
+
+const WORKER_NUM = 5;
+
 //SECTION - history
 const HISTORY_PATH = `${DEBUG_HISTORY_PATH}/`;
 const HISTORY_FILE = "HISTORY.json";
