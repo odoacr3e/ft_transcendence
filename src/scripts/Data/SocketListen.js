@@ -12,7 +12,7 @@ import { playAudio } 												from "../Helper/generalUtils";
 export function listenGameSocket(socket)
 {
 	socket.on("game", (raw) => {
-		// debug("{[socket game] ricevuta una riposta} tipo: ", raw.type, "response: ", raw);
+		debug("{[socket game] ricevuta una riposta} tipo: ", raw.type, "response: ", raw);
 
 		if (raw.type === "msg")
 		{

@@ -52,6 +52,8 @@
 		if (!isAi || aiModels.value.length)
 			return;
 		aiModels.value = await fetchAiModels();
+		// console.log("post ricezione: ", aiModels.value);
+		
 	}, { immediate: true });
 
 	function sendPlayRequest()
@@ -61,13 +63,12 @@
 
 		if (aiGame.value)
 		{
-			const payload = { model: aiModel.value, time: time.value };
+			const payload = { profile: aiModel.value };
 
-			//random non e' un colore: si esprime omettendo il campo, e' il server a sorteggiare
 			if (side.value !== eSide.RANDOM)
 				payload.team = side.value;
 
-
+			// { model: "stringa", time: "stringa", team: "stringa" }
 			localInfo.aiGame = true;
 			sockStore.socket.emit('create_ai_match', payload);
 			debug(useAuthStore().username, ` sfida il bot ${aiModel.value}!`);

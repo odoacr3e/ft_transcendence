@@ -67,7 +67,7 @@ export async function requestToBack(fromSquare, toSquare, opType, drawValue)
 }
 
 const AI_MODELS_STUB = ["giorgio", "giovanna", "giorno giovanna"];
-const USE_STUB = true;
+const USE_STUB = false;
 
 export function fetchAiModels()
 {
@@ -84,9 +84,11 @@ export function fetchAiModels()
 		}
 
 		const timeout = setTimeout(() => resolve([]), 5000);
-		sockStore.socket.emit('create_ai_match', (models) => {
+		sockStore.socket.emit('create_ai_match', (answer) => {
 			clearTimeout(timeout);
-			resolve(Array.isArray(models) ? models : []);
+			// debug("CIAZONEEE");
+			// console.log("risposta: ", answer);
+			resolve(Array.isArray(answer?.aiProfiles) ? answer.aiProfiles : []);
 		});
 	});
 }
