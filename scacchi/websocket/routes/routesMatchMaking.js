@@ -74,6 +74,8 @@ export function routesMatchMaking(socket, user)
 		socket.join(`match_${matchId}`);
 		if (typeof(callback) == 'function')
 			callback(result);
+		if (typeof(req) == 'function')//@ts-ignore
+			req(result);
 	});
 
 	socket.on('find_match', async(/** @type {matchMakingOpt}*/options) => 
