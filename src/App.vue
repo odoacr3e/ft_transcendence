@@ -26,7 +26,7 @@
 <template>
 	<BackGround/>
 	<div class="min-h-screen flex flex-col overflow-hidden">
-		<AppHeader class="z-11"/>
+		<AppHeader/>
 		<div class="grow wrap" :class="{ 'other' : route.name !== 'home', 'home lg:grid lg:justify-between max-lg:justify-center max-lg:flex' : route.name === 'home' }">
 			<router-view/>
 		</div>

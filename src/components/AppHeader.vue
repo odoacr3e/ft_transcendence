@@ -100,7 +100,7 @@
 	</datalist>
 
 	<div  v-bind="$attrs" class= "grid z-11 w-lvw bg-bg-default border-b border-border-second
-								  max-md:grid-cols-2 max-md:h-13
+								  max-md:grid-cols-2 max-md:h-13 max-md:fixed max-md:top-0
 								  md:grid-cols-3 md:h-14
 								  lg:h-15">
 		<RouterLink to="/" id="button" class="w-fit">

@@ -107,53 +107,53 @@
 
 <template>
 	<div v-if="error_card" class="flex absolute gap-2.5 translate-x-8 items-center rounded-xl border animate-card inset-ring bg-bg-error text-text-error border-border-error inset-ring-inset-error
-				max-md:translate-x-4.5 max-md:-translate-y-57 max-md:px-6 max-md:py-3 max-md:w-71
+				max-md:hidden
 				md:translate-x-8 md:-translate-y-75 md:px-6 md:py-3 md:w-95 md:mt-1
 				lg:px-5 lg:py-4 lg:w-93 ">
 		<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-text-error">
 			<path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
 		</svg>
 		<div>
-			<h2 class="max-md:text-md">{{ t('login.err.title') }}</h2>
-			<p class="max-md:text-xs md:text-sm">{{ error_msg }}</p>
+			<h2>{{ t('login.err.title') }}</h2>
+			<p class="md:text-sm">{{ error_msg }}</p>
 		</div>
 	</div>
 	<div class="justify-self-center justify-items-center">
-		<form @submit.prevent="submitForm" method="post" enctype="application/json" class="text-text-default max-sm:w-80">
+		<form @submit.prevent="submitForm" method="post" enctype="application/json" class="flex flex-col text-text-default max-sm:w-[80vw]">
 			<div class="form border-border-default text-form-icon 
-				max-md:w-xs max-md:mb-3 max-md:p-3
+				max-md:w-[80vw] max-md:min-w-65 max-md:p-3
 				md:w-sm md:mb-5 md:p-3.75"
-				:class="{ 'animate-shake': error }" @animationend="error = false">
+				:class="{ 'animate-shake': error, 'max-md:mb-5.5' : !error_card, 'max-md:mb-1' : error_card }" @animationend="error = false">
 				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="max-md:size-5 md:size-6">
 					<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
 				</svg>
-				<input :placeholder="'Username ' + t('common.or', 1) + ' email'" class="pl-2 max-md:w-60 max-md:text-[15px] md:w-75 md:text-base" :autofocus="true" type="text" v-model="formData.username">
+				<input :placeholder="'Username ' + t('common.or', 1) + ' email'" class="pl-2 max-md:w-[75vw] max-md:min-w-45 max-md:text-[15px] md:w-75 md:text-base" :autofocus="true" type="text" v-model="formData.username">
 			</div>
+			<p v-if="error_card" class="md:hidden err transition-all text-xs text-main-color mb-0.5 ml-1">{{ error_msg }}</p>
 			<div class="mb-4.5">
 				<div class="form border-border-default text-form-icon mb-0.5
-						max-md:w-xs max-md:p-3
+						max-md:w-[80vw] max-md:min-w-65 max-md:p-3
 						md:w-sm md:p-3.75"
 					:class="{ 'animate-shake': error }" @animationend="error = false">
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="max-md:size-5 md:size-6">
 						<path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
 					</svg>
-					<input placeholder="Password" class="pl-2 max-md:w-60 max-md:text-[15px] md:w-75 md:text-base" v-model="formData.password"
+					<input placeholder="Password" class="pl-2 max-md:w-[65vw] max-md:min-w-40 max-md:text-[15px] md:w-75 md:text-base" v-model="formData.password"
 							:type="visible ? 'text' : 'password'">
-					<button type="button" @click="show()" class="ml-3">
+					<button type="button" @click="show()" class="max-md:ml-auto md:ml-3">
 						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="max-md:size-5 md:size-6">
 							<path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 8.155 7.36 5.5 12 5.5c4.638 0 8.573 2.655 9.963 6.428.07.207.07.431 0 .639C20.577 15.845 16.64 18.5 12 18.5c-4.638 0-8.573-2.655-9.963-6.428Z" />
 							<path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
 							<path v-if="visible" stroke-linecap="round" stroke-linejoin="round" d="M3 3 21 21" />
 						</svg>
-
 					</button>
 				</div>
 				<RouterLink to="/DEBUG/pwd">
 					<u><a class="justify-self-center max-md:text-[70%] md:text-[80%] text-main-color cursor-pointer hover:text-light-button active:text-active-button">{{ t('login.forgot') }}</a></u>
-                </RouterLink>
+				</RouterLink>
 			</div>
 			<input id="submit" class="cursor-pointer justify-self-center bg-main-color rounded-[7px] text-text-default hover:bg-linear-to-t from-main-color to-light-button
-					mt-1.5 p-3 text-base max-md:w-xs md:w-sm"
+					mt-1.5 p-3 text-base max-md:w-[80vw] max-md:min-w-50 md:w-sm"
 					v-bind:class="{'pointer-events-none grayscale': !formData.username || !formData.password,
 						'pointer-events-auto grayscale-0 ': formData.username && formData.password }"        
 					type="submit" :value="t('header.login')">
@@ -191,9 +191,9 @@
 <style scoped>
 	div.form {
 		display: flex;
+		flex-direction: row;
 		border-width: 1px;
 		border-radius: 7px;
-		justify-self: center;
 	}
 
 	div.form:focus-within {
@@ -243,5 +243,18 @@
 	div.otp:hover {
 		border-color: #f1e8e870;
 		transition: border 0.25s ease-in-out;
+	}
+
+	.err {
+	  animation: error 200ms ease-out both;
+	}
+
+	@keyframes error {
+	  from {
+	    opacity: 0;
+	  }
+	  to {
+	    opacity: 100;
+	  }
 	}
 </style>
