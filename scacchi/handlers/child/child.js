@@ -58,7 +58,7 @@ function initMatch(data)
 	match.id = `${data.MatchId}`;
 	result.team = match.currentPlayer.ai? eTeam.White : eTeam.Black;
 	globals.matches.set(match.id, match);
-	sendData(eChildEvents.CreateMatch, match.id, responseFormatter(match, result, null, null));
+	sendData(eChildEvents.Game, match.id, responseFormatter(match, result, null, null));
 	if (match.currentPlayer.ai)
 		setTimeout(moveAI, 3000, match);
 }
