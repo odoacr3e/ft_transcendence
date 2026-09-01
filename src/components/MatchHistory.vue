@@ -37,9 +37,13 @@
                     <p>VS.</p>
                     <RouterLink :to="{ name: 'user_page', params: { username: game.opponent } }"
                             class="hover:underline">
-                        <p v-if="game.opponent && game.opponent.length > 11">
+                        <p class="max-[375px]:hidden" v-if="game.opponent && game.opponent.length > 11">
                             {{ game.opponent.slice(0, 10) + "..." }}</p>
-                        <p v-if="game.opponent && game.opponent.length <= 11">
+                        <p class="max-[375px]:hidden" v-if="game.opponent && game.opponent.length <= 11">
+                            {{ game.opponent }}</p>
+                        <p class="min-[375px]:hidden" v-if="game.opponent && game.opponent.length > 7">
+                            {{ game.opponent.slice(0, 6) + "..." }}</p>
+                        <p class="min-[375px]:hidden" v-if="game.opponent && game.opponent.length <= 7">
                             {{ game.opponent }}</p>
                     </RouterLink>
                 </div>
