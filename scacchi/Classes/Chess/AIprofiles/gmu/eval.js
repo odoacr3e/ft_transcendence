@@ -52,20 +52,20 @@ export function AI_gmu_eval(match, ai, turns)
 		// 	score += 75;
 		// }
 		if (ai.evalSimulation == true)
-			score += score * 2;
+			score += 100;
 		else
 		{
 			ai.evalSimulation = true;
-			val = getBestTurn(match, 2).Score;
+			val = getBestTurn(match).Score;
+			ai.evalSimulation = false;
 			if (Math.abs(val) == Infinity)
 				return (match.currentPlayer.team == eTeam.White ? Infinity : -Infinity)
-			score += (val * 3) / 4;
-			ai.evalSimulation = false;
+			score += val;
 		}
 	}
 	//5)	MENO se il nostro re e' in pericolo
 	if (checkKingDanger(match, match.currentPlayer.team))
-		score -= score / 2;
+		score -= 100;
 	lastTurn = turns[turns.length - 1];
 	if (lastTurn.boost)
 	{
@@ -83,13 +83,13 @@ export function AI_gmu_eval(match, ai, turns)
 		{
 			for (let x of square.dangerZones)
 			{
-				if (match.board.get(x).piece?.team == nextPlayer.team)//@ts-ignore
-					score -= 5 * match.board.get(x).piece?.price;
+				if (match.board.get(x).piece?.team == nextPlayer.team)
+					score -= 5 * square.piece.price;
 			}
 			for (let x of square.targetZones)
 			{
-				if (match.board.get(x).piece?.team == nextPlayer.team)
-					score += 5 *square.piece.price;
+				if (match.board.get(x).piece?.team == nextPlayer.team)//@ts-ignore
+					score += 5 * match.board.get(x).piece?.price;
 			}
 		}
 		else if (square.piece.team == nextPlayer.team)
