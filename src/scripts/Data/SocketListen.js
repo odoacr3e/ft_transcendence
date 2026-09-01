@@ -43,7 +43,7 @@ export function listenGameSocket(socket)
 			}
 			return;
 		}
-		if (raw.id !== undefined)
+		if (raw.id !== undefined || raw.type === "init")
 		{
 			debug("[socket game] ID NEW GAME TROVATO!");
 			initLocalMatchState(raw);
@@ -112,11 +112,11 @@ export function listenGameSocket(socket)
 			return;
 		}
 		// console.log("[socket game]: update match");
-		updateMatchState(raw);
+		const outcome = updateMatchState(raw);
 		if (raw.history)
 			pushTurn(raw.history);
 		clearHighlight();
-		// playAudio("MOVE");
+
 		const inCheck = (Number(raw.mask) & (eSpecialMoves.CHECK | eSpecialMoves.CHECKMATE)) && raw.giorgi0;
 		setCheckSquare(inCheck ? raw.giorgi0 : null);
 		if (inCheck)
@@ -124,5 +124,11 @@ export function listenGameSocket(socket)
 			debug("[socket game]: re sotto scacco in", raw.giorgi0);
 			playAudio("check");
 		}
+		else if (outcome.captured)
+			playAudio("capture");
+		else if (outcome.transformed)
+			playAudio("trans");
+		else if (outcome.moved)
+			playAudio(raw.type === "moveboost" ? "moveboost" : "move");
 	});
 }

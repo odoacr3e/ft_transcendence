@@ -1,4 +1,5 @@
 import { localInfo, localBoard, currentPlayer, debug}	from "@/scripts/Data/Variables";
+import { playAudio } from "@/scripts/Helper/generalUtils";
 import { PIECES_HIGHLIGHT }						from "@/scripts/Helper/piecesHighlights";
 
 // UTILS - HIGHLIGHT AND SELECT FUNCTIONS
@@ -39,6 +40,7 @@ export function highlightOnClick(event)
 		if (!localInfo.secondTurn || (localInfo.secondTurn && localInfo.secondMove))
 			PIECES_HIGHLIGHT[piece](localInfo.clickedId);
 		localBoard.get(localInfo.clickedId).clicked = true;
+		playAudio("clicked");
 		localInfo.lastClickedId = localInfo.clickedId;
 	}
 	else

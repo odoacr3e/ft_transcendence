@@ -1,5 +1,5 @@
 <script setup>
-	import { DOMPlayer, localInfo }	from '@/scripts/Data/Variables';
+	import { DOMPlayer, localInfo }				from '@/scripts/Data/Variables';
 	import { defaultAvatar, handleAvatarError }	from '../scripts/Helper/CompUtils';
 	import { computed }							from 'vue';
 	import	TimerClock							from "./TimerClock.vue"
@@ -12,6 +12,7 @@
 	const	player	= computed(() => DOMPlayer(prop.p)),
 			playing	= computed(() => player.value.isPlaying),
 			running	= computed(() => playing.value && localInfo.matchStarted && !localInfo.victory),
+			active	= computed(() => playing.value && !localInfo.victory),
 			up		= prop.pos === 'top',
 			down	= prop.pos === 'bottom';
 
@@ -50,7 +51,7 @@
 				<CapturedPieces :player="player"/>
 			</div>
 		</div>
-		<TimerClock :millis="player.time" :go="running" :team="player.team" class="ml-auto"/>
+		<TimerClock :millis="player.time" :go="running" :active="active" :team="player.team" class="ml-auto"/>
 	</div>
 </template>
 

@@ -5,16 +5,10 @@
 	const props = defineProps({
 		millis: { type: Number, default: 0 },
 		go: { type: Boolean, default: false },
+		active: { type: Boolean, default: false},
 		team: {type: String, default: 'black'}
 	})
 
-	/*
-		Il tempo residuo non viene decrementato a mano: mentre il timer gira si tiene una
-		scadenza assoluta e a ogni tick si ricalcola la differenza dall'orologio di sistema.
-		Cosi' un tick in ritardo (o una scheda in background, dove il browser strozza i timer)
-		non fa perdere secondi: il conteggio si riallinea da solo al tick successivo.
-		Quando il timer e' fermo `remaining` resta congelato sull'ultimo valore letto.
-	*/
 	const	remaining	= ref(props.millis),
 			totalSec	= computed(() => Math.ceil(remaining.value / 1000)),
 			min			= computed(() => Math.floor(totalSec.value / 60)),
@@ -49,7 +43,6 @@
 		else return num;
 	}
 
-	//il back manda un tempo aggiornato: e' lui la verita', si riparte da li'
 	watch(() => props.millis, (val) => {
 		remaining.value = val;
 		if (intervalId)
@@ -73,7 +66,7 @@
 	<div class="rounded-lg text-2xl mr-2 flex items-center gap-2 tabular-nums w-36 h-10 justify-center self-center p-2"
 		style="font-weight: 700;"
 		:class="{
-			'opacity-50': !props.go,
+			'opacity-50': !props.active,
 			'bg-bg-darker text-white': props.team === 'black',
 			'bg-[#ededed] text-black': props.team === 'white'
 		}">

@@ -184,25 +184,46 @@ export const HIDDEN = new Set( [ "a14", "b14", "c14", "a13", "b13", "c13", "a12"
 export let MACRO = Object ({
 	"AUDIO"			: true,
 	"DEBUG"			: import.meta.env.DEV,
-	//"LOL" | "CLASSIC"
+	//"LOL" | "CLASSIC" | "JOJO"
 	"AUDIOSET"		: "LOL",
 	"MAX_MESSAGES" 	: 100,
 	"SERVER_AUTHOR" : "server",
 	"MAX_MSG_LEN"	: 200,
 });
 
+export const BOARD_AUDIO = new Set(["move", "moveboost", "trans"]);
+
 export const LOLAUDIOPATH = Object.freeze({
-	"move":			{ path: new URL("../../assets/audios/moving.mp3",		import.meta.url).href, playing: false },
-	"boost":		{ path: new URL("../../assets/audios/boost.mp3",		import.meta.url).href, playing: false },
-	"moveboost":	{ path: new URL("../../assets/audios/useAbility.mp3",	import.meta.url).href, playing: false },
-	"check":		{ path: new URL("../../assets/audios/tette.mp3",		import.meta.url).href, playing: false },
-	"checkmate":	{ path: "",																		playing: false },
-	"trans":		{ path: "",																	 	playing: false },
-	"endturn":		{ path: new URL("../../assets/audios/endTurn.mp3",		import.meta.url).href, playing: false },
-	"giveup":		{ path: "",																	 playing: false },
-	"recdraw":		{ path: "",																	 playing: false },
-	"askdraw":		{ path: "",																	 playing: false },
+	"move":			{ path: new URL("../../assets/audios/lolMoving.mp3",	import.meta.url).href, playing: false },
+	"boost":		{ path: new URL("../../assets/audios/lolBoost.mp3",			import.meta.url).href, playing: false },
+	"moveboost":	{ path: new URL("../../assets/audios/lolUseAbility.mp3",	import.meta.url).href, playing: false },
+	"check":		{ path: new URL("../../assets/audios/lolCheck.mp3",			import.meta.url).href, playing: false },
+	"checkmate":	{ path: new URL("../../assets/audios/lolCheckmate.mp3",		import.meta.url).href, playing: false },
+	"trans":		{ path: new URL("../../assets/audios/lolTransform.mp3",		import.meta.url).href, playing: false },
+	"endturn":		{ path: new URL("../../assets/audios/lolEndTurn.mp3",		import.meta.url).href, playing: false },
+	"giveup":		{ path: new URL("../../assets/audios/lolGiveup.mp3",		import.meta.url).href, playing: false },
+	"recdraw":		{ path: new URL("../../assets/audios/lolRecDraw.mp3",		import.meta.url).href, playing: false },
+	"askdraw":		{ path: new URL("../../assets/audios/lolAskDraw.mp3",		import.meta.url).href, playing: false },
+	"checkboost":	{ path: new URL("../../assets/audios/lolCheckBoost.mp3",	import.meta.url).href, playing: false },
+	"clicked":		{ path: new URL("../../assets/audios/lolClicked.mp3",		import.meta.url).href, playing: false },
+	"badmove":		{ path: new URL("../../assets/audios/lolBadMove.mp3",		import.meta.url).href, playing: false },
+	"capture":		{ path: new URL("../../assets/audios/lolCapture.mp3",		import.meta.url).href, playing: false },
 });
+
+// lolMoving.mp3		-> MOVIMENTO
+// lolBoost.mp3			-> POTENZIAMENTO
+// lolUseAbility.mp3	-> USO ABILITÀ
+// lolCheck.mp3			-> TETTE
+// lolCheckmate.mp3		-> HAI PIERSO
+// lolTransform.mp3		-> MI SENTO DIVERSO (voce gay)
+// lolEndTurn.mp3		-> PASSO
+// lolGiveup.mp3		-> IL NEMICO È TROPPO POTENTE (chao)
+// lolRecDraw.mp3		-> HA HAAA IL NEMICO PROVA BATTERCI CON TATTICHE DA PUSILLANIME
+// lolAskDraw.mp3		-> MA CE SE PÒ ACCORDÀ? (romanaccio)
+// lolCheckBoost.mp3	-> MMMM CHE FA STO COSO (fattone)
+// lolClicked.mp3		-> CLICK
+// lolBadMove.mp3		-> BELIN MA CHE MI COMBINI
+// lolCapture.mp3		-> GNAM GNAM
 
 export const CLASSICAUDIOPATH = Object.freeze({
 	"move":			{ path: new URL("", import.meta.url).href, playing: false },

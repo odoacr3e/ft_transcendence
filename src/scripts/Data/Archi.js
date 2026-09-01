@@ -1,7 +1,7 @@
 import { initLocalBoard, localMatchState, 
 		 localBoard, localPlayers,
 		 startLocalMatchState, localInfo,
-		 currentPlayer, emptyCapturedPieces }	from "./Variables.js";
+		 currentPlayer, emptyCapturedPieces, debug }	from "./Variables.js";
 import { checkEndTurn, hasBoost, 
 		 checkUpgrade, assignLastMoveSquares }	from "./utils/ArchiUtils.js";
 import { beginPendingAbility } 					from "../Helper/abilityMovement.js";
@@ -55,6 +55,7 @@ export function initLocalMatchState(raw)
 
 	localInfo.matchId = raw.id;
 	localInfo.myTeam = raw.team;
+	debug("il mio team :", localInfo.myTeam);
 	localInfo.victory = raw.victory;
 	localInfo.matchStarted = false;	//il timer non parte finché il bianco non ha mosso
 
@@ -88,11 +89,11 @@ function initLocalPlayers()
 
 export function updateMatchState(nextRaw)
 {
-	localInfo.drag = null;
+	const outcome = { moved: false, captured: false, transformed: false };
 	const validated = validateReceivedMatch(nextRaw);
-
+	
+	localInfo.drag = null;
 	localInfo.victory = nextRaw.victory ?? null;
-	// console.log("stampiamoci victory: ", localInfo.victory);
 	
 	checkEndTurn(validated);
 	startLocalMatchState(validated);
@@ -106,9 +107,10 @@ export function updateMatchState(nextRaw)
 	catch(err){
 		console.error("[updateLocalMatchState]: Errore di update del Match!\n" + err);
   	}
+	return (outcome);
 }
 
-function updateLocalBoard(changes)
+function updateLocalBoard(changes, outcome)
 {
 	const board = changes.board;
 
@@ -129,18 +131,25 @@ function updateLocalBoard(changes)
 				)
 			);
 			const oldSquare = localBoard.get(squareKey);
+			const oldPiece	= oldSquare?.piece;
+			const newPiece	= newSquare.piece;
+
 			assignLastMoveSquares(oldSquare, newSquare, movedSquares);
-			if (oldSquare.piece && newSquare.piece && oldSquare.piece.team !== newSquare.piece.team)
-				localInfo.capturedP[newSquare.piece.team][oldSquare.piece.type] += 1;
-			oldSquare.piece = newSquare.piece;
-			oldSquare.targetZones = newSquare.targetZones;
-			oldSquare.boostedTargetZones = newSquare.boostedTargetZones;
+
+			if (oldPiece && newPiece && oldPiece.team !== newPiece.team)
+			{
+				localInfo.capturedP[newPiece.team][oldPiece.type] += 1;
+				outcome.captured = true;
+			}
+			else if (oldPiece && newPiece && oldPiece.type !== newPiece.type)
+				outcome.transformed = true;
 		}
 	});
 	if (movedSquares.size > 0)
 	{
 		localInfo.lastMovesSquares = movedSquares;
 		localInfo.matchStarted = true;
+		outcome.moved = true;
 	}
 }
 
@@ -176,7 +185,7 @@ export function reloadMatchState(raw)
 	localInfo.myTeam			= raw.team ?? sessionStorage.getItem("match:myTeam");	
 	localInfo.matchId			= sessionStorage.getItem("match:id");
 	localInfo.victory			= raw.victory;
-	localInfo.matchStarted		= true;
+	localInfo.matchStarted		= false;
 	localInfo.secondTurn		= raw.secondMove ?? false;
 	localInfo.drawOffer 		= raw.pending === true ? true : false;
 

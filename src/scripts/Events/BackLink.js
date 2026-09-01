@@ -1,4 +1,5 @@
-import { ePlaying, localBoard, localInfo, debug, myPlayer}	from "@/scripts/Data/Variables";
+import { ePlaying, localBoard, localInfo, debug, 
+		 myPlayer, BOARD_AUDIO }					from "@/scripts/Data/Variables";
 import { getTarget }								from "./utils/MovementUtils.js";
 import { useSockStore } 							from "../../stores/sock.st.js";
 import { playAudio } 								from "../Helper/generalUtils.js";
@@ -59,7 +60,7 @@ export async function requestToBack(fromSquare, toSquare, opType, drawValue)
 		sockStore.socket?.emit("game", payload, (result) => {
 			clearTimeout(timeout);
 			const ok = result?.log?.status === 200;
-			if (ok)
+			if (ok && !BOARD_AUDIO.has(type))
 				playAudio(type);
 			resolve(ok);
 		});

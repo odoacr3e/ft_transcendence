@@ -49,8 +49,6 @@ export function useAbility(targetId = null)
 	{ 
 		square.useAbilityBool = true;
 		localInfo.usingAbility = square.piece?.type ? square.piece.type : "";
-		if (MACRO.AUDIO)
-			new Audio("/src/assets/audios/useAbility.mp3").play();
 		debug(`who the fuck i am: ${localInfo.usingAbility}`);
 	}
 	PIECES_HIGHLIGHT[square.piece.type](clickedId);
@@ -66,12 +64,10 @@ export function shopAbility(targetId = null)
 	
 	if (!Piece?.isBoostedBool && canAfford(Piece) && localInfo.secondTurn)
 		requestToBack(squareId, null).then(
-			function(value) {if (value) 
-			{ 
+			function(value) {
+			if (value) 
 				clearHighlight();
-				if (MACRO.AUDIO)
-					new Audio("/src/assets/audios/boost.mp3").play(); 
-			}},
+			},
 			function(value) {if (!value) { debug("Shop non completato correttamente"); }}
 		);
 }
@@ -118,8 +114,6 @@ export function upgradeBastard(newType)
 			localInfo.goatId = null; 
 			stopUpgradeMenu();
 			clearHighlight(); 
-			if (MACRO.AUDIO)
-				new Audio("/src/assets/audios/transformation.mp3").play();
 		}},
 		function(value) {if (!value) { debug("Mossa non valida"); }}
 	);

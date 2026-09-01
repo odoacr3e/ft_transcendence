@@ -110,14 +110,14 @@ export const PIECES_CODEX = Object.freeze({
 		name:		"Bastards",
 		move:		{ dirs: [[0,-1]], slide: false, capture: [[-1,-1], [1,-1]] },
 		boost:		{ dirs: [[0,-1], [0,-2]], slide: false, capture: [[-1,-1], [1,-1]] },
-		baseText:	"MOSSA BASE DEGLI SCACCHI",
+		baseText:	"MOSSA BASE DEGLI SCACCHI\
+					\n\n Avanza di una casella. \nDue se non si e' ancora mosso.\nMangia solo in diagonale.",
 		boostText:	"DUE MOSSE IN UN TURNO\
-					\n\n - Un movimento regolare da scacchi classico\
-					\n - Muove un pezzo che si trovava a distanza 1 dalla sua posizione precedente.",
+					\n\n 1. Un movimento classico del pedone\
+					\n 2. Nello stesso turno muovi un pezzo che si trova a distanza 1 dalla casella precedente.",
 		baseScenes: [
 			{
-				caption:	"Avanza di una casella, due se non si e' ancora mosso.\
-							 Mangia solo in diagonale.",
+				caption:	"",
 				actors:		[ self(0, 1) ],
 				marks:		[
 					{ x:  0, y:  0 },

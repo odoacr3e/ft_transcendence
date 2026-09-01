@@ -215,11 +215,11 @@ boardConverter()
 - [x]	Tutte le info/bottoni attuali a destra in un unico div in futuro
 		tutorial/info pezzi a sinistra
 - [x]	Sistemare i suoni
-- [ ]	Chat temporanea con elementi scroller/array e 
+- [x]	Chat temporanea con elementi scroller/array e 
 		narratore che dice cosa succede
-- [ ]	Restyling dei bottoni di giveup e pareggio
-- [ ]	Pareggio evento per promptare la conferma e invio la stessa cosa
-- [ ]	fare la pagina di gioco contro IA
+- [x]	Restyling dei bottoni di giveup e pareggio
+- [x]	Pareggio evento per promptare la conferma e invio la stessa cosa
+- [x]	fare la pagina di gioco contro IA
 - [ ]	Registrare e aggiungere i suoni
 - [ ]	Completare le info a sinistra della scacchiera (scene)
 - [ ]	GMU ghost
