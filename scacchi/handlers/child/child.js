@@ -9,6 +9,7 @@ import { normifyRequest, Result } from "../game/utils.js";
 import { isOneOf } from "../../utils/string.js";
 import { gameHandler, gamePlayerNotificationHandler } from "../game/Game.js";
 import { AIexecuteTurn } from "../../GameLogic/aiTurn.js";
+import { getMe } from "../../query/usersQuery.js";
 
 /** @typedef {import("../../Classes/Globals/Child").ChildData} ChildData */
 
@@ -44,10 +45,11 @@ process.on("message", (/** @type ChildData */ data) =>
  * 
  * @param {ChildData} data 
  */
-function initMatch(data)
+async function initMatch(data)
 {
 	let	match;
 	let	result;
+	let	player;
 
 	if (!data.MatchId)
 		throw (`child, initMatch: id undefined`);
@@ -55,8 +57,11 @@ function initMatch(data)
 	result = init(match, data.Data);
 	result.type = "init";
 	match.id = `${data.MatchId}`;
-	result.team = match.currentPlayer.ai? eTeam.White : eTeam.Black;
+	player = match.currentPlayer.ai? match.NextPlayer() : match.currentPlayer;
+	result.team = player.team;
 	globals.matches.set(match.id, match);
+	if (data.userId)//@ts-ignore
+		player.dbTable = await getMe(data.userId);
 	sendData(eChildEvents.Game, match.id, responseFormatter(match, result, null, null));
 	if (match.currentPlayer.ai)
 		setTimeout(moveAI, 3000, match);

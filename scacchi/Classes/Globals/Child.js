@@ -11,6 +11,7 @@ import { Result } 					from "../endPoint/result.js";
  *	ChildId: number,
  *	MatchId: number | undefined,
  *	Event: string,
+ *	userId?: number | undefined,
  *	Data: *,
  * }} ChildData
  */
@@ -35,13 +36,14 @@ class Child
 	 * @param {string} event 
 	 * @param {*} data 
 	 * @param {number | undefined} matchId 
+	 * @param {number | undefined} userId
 	 */
-	Send(event, data, matchId=undefined)
+	Send(event, data, matchId=undefined, userId=undefined)
 	{
 		/** @type {ChildData} */
 		let	childData;
 
-		childData = {ChildId: this.id, MatchId: matchId, Event: event, Data: data};
+		childData = {ChildId: this.id, MatchId: matchId, Event: event, userId: userId, Data: data};
 		this.child.send(childData);
 	}
 	SetListeners()

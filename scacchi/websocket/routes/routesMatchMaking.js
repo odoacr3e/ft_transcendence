@@ -74,7 +74,7 @@ export function routesMatchMaking(socket, user)
 			socketData.aiMatchData = {ChildId: ChildId, matchId: matchId};
 			socket.join(`match_${matchId}`);
 			console.log(`adesso si spacca tutto`);
-			child?.Send(eChildEvents.CreateMatch, setting, matchId);
+			child?.Send(eChildEvents.CreateMatch, setting, matchId, user.id_user);
 		}
 		console.log(`risposta ai match: ${JSON.stringify(result, null, 2)}`);
 		if (typeof(callback) == 'function')
