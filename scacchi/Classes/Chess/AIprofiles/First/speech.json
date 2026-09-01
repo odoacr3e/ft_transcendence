@@ -108,5 +108,23 @@
 	"castlingOppo": 
 	[
 		"Mmm. Forse sai il fatto tuo.."
+	],
+	"draw":
+	[
+		"Io? Alla pari con te? Inaccettabile."
+	],
+	"offerDraw":
+	[
+		"P-propongo un pareggio. Non che sia in difficolta o cose del genere"
+	],
+	"acceptDraw":
+	[
+		"E va bene. Tanto non avevo piu voglia."
+	],
+	"declineDraw":
+	[
+		"Certo che si pareggia! Aspetta premo il pulsantino.. EEEEH VOLEVI! GUARDA CHE FACCIA, NON SE LO ASPETTAVA!",
+		"HAHAHAHAH! no.",
+		"Dimmi, tu sanguini? GRONDERAI."
 	]
 }

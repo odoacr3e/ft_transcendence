@@ -20,7 +20,8 @@ const eEvents =
 	Boost: 'boost',
 	EndTurn: `endturn`,
 	Transform: 'trans',
-	GiveUp: 'giveup'
+	GiveUp: 'giveup',
+	Draw: 'draw'
 };
 
 const eChildEvents =

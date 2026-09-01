@@ -90,5 +90,21 @@
 	"castlingOppo": 
 	[
 		""
+	],
+	"draw":
+	[
+		""
+	],
+	"offerDraw":
+	[
+		""
+	],
+	"acceptDraw":
+	[
+		""
+	],
+	"declineDraw":
+	[
+		""
 	]
 }

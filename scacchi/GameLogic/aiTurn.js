@@ -1,13 +1,14 @@
 //@ts-check
 
 import { getBestTurn } from "../Classes/Chess/AI.js";
+import { aiSpeech } from "../Classes/Chess/AIprofiles/speech.js";
 import { Result } from "../Classes/endPoint/result.js";
 import { boost } from "../handlers/game/boost.js";
 import { endTurn } from "../handlers/game/endTurn.js";
 import { move } from "../handlers/game/move.js";
 import { makeTransfiguration } from "../handlers/game/transfiguration.js";
 import { eEvents } from "../Macro/enums.js";
-import { IS_CHILD_PROCESS } from "../Macro/macro.js";
+import { AI_EVENTS, IS_CHILD_PROCESS } from "../Macro/macro.js";
 import { render, boardStringify } from "../test/render.js";
 import { responseFormatter, sendData } from "../utils/response.js";
 import { gameMessage, roomMessage } from "../websocket/utils.js";
@@ -41,7 +42,6 @@ export function AIexecuteTurn(match)
 	if (match.currentPlayer.ai?.defeatStatus == 1)
 	{
 		//FIXME - aggiungere evento aiSpeech
-		console.log("AI: qua si mette male");
 		aiDefeatBool = true;
 		match.currentPlayer.ai.defeatStatus = 2;
 	}
@@ -78,16 +78,9 @@ export function AIexecuteTurn(match)
 	render(match);
 	if (aiDefeatBool)
 	{
-		//FIXME - aggiungere evento aiSpeech
-		result = new Result().Success(`😭Pareggiamo please senpai😭`);
-		console.log(result.msg);
-		result.type = "draw";
-		gameMessage(match, "DRAW", match.PrevPlayer().ai?.profile, null);
+		aiSpeech(match, AI_EVENTS.offerDraw, [], false);
+		sendData("game", match.id, new Result().Success("OK", eEvents.Draw).Format({draw: true}));
 	}
-	// console.profileEnd();
-	// console.log(`Killo processo.`);
-	// console.log(`Time: ${console.timeEnd()}`);
-	// process.exit(0);
 }
 
 /**
@@ -100,8 +93,5 @@ function sendResult(match, result, type="")
 {
 	if (result.status != 200)
 		throw (`AIExecuteTurn: ${type} failed. Reason: "${result.msg}".Info: ${JSON.stringify(DEBUG_turn, null, 2)}`);
-	if (IS_CHILD_PROCESS == false)
-		sendData("game", match.id, responseFormatter(match, result, null, null));
-	else
-		roomMessage(`match_${match.id}`, "game", result, true);
+	sendData("game", match.id, responseFormatter(match, result, null, null));
 }

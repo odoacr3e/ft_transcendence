@@ -106,7 +106,7 @@ function clientResetData(ids)
 
 /**
  * 
- * @param {Match | number | undefined} match 
+ * @param {Match | number | string | undefined} match 
  * @param {string} msg 
  * @param {string} author
  * @param {function | null} printer 
@@ -120,22 +120,19 @@ function gameMessage(match, msg, author="server", printer=console.log)
 		return ;
 	if (typeof(match) == "number")
 		match = globals.matches.get(`${match}`);
+	else if (typeof(match) == "string")
+		match = globals.matches.get(`${Number(match)}`);
 	if (!match)
 		return ;
 	if (printer)
 		printer(msg);
 	if (IS_CHILD_PROCESS || match.socketBool)
 	{
-		result = new Result().Success("OK", "msg");//@ts-ignore
-		result.author = author;
-		result.msg = msg;
+		result = new Result().Success("OK", "msg").Format({author: author, msg: msg});
 	}
 	else
 		return ;
-	if (match.socketBool)
-		roomMessage(`match_${match.id}`, `game`, result);
-	else if (IS_CHILD_PROCESS)
-		sendData(eChildEvents.Game, Number(match.id), result);
+	sendData(eChildEvents.Game, Number(match.id), result);
 }
 
 export {getReconnectTime, isBusy, roomMessage, gameMessage, clientSetState, clientResetData};

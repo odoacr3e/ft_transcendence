@@ -64,6 +64,7 @@ export class AI
 		this.defeatStatus = 0;//@ts-ignore
 		this.memory = null;
 		this.evalSimulation = false;
+		this.depth = 2;
 		console.log(`A new opponent has spawned: ${profile}... fear its power!`);
 		AIProfileConstructor(this);
 	}
@@ -76,12 +77,12 @@ let DEB = 0;
 /**
  * 
  * @param {Match} match 
- * @param {number | undefined} depth 
  * @return {{Turn: Turn, Score: number}} match 
  */
-function getBestTurn(match, depth=undefined)
+function getBestTurn(match)
 {
 	let	arrayTurns;
+	let	depth;
 	/** @type {Eval} */
 	let	val = {};
 	let newTurns;
@@ -101,8 +102,7 @@ function getBestTurn(match, depth=undefined)
 	gameMessage(match, "Calculating best move...");
 	alpha = -Infinity;
 	beta = +Infinity;
-	if (depth == undefined)
-		depth = 3;
+	depth = ai.depth;
 	if (DEBUG_AI_TRAINING)
 		depth = 0;
 	else if (isOneOf(enumNames.CHAMPION, match.GetBoostedPieceTypes()))

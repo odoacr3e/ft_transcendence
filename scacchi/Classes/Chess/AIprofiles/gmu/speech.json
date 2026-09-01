@@ -66,5 +66,26 @@
 	"castlingOppo": 
 	[
 		"Nooooo, non puoi farlooooo"
+	],
+	"draw":
+	[
+		"Questa e una ingiustizia! Esigo la rivincita!",
+		"ohhhh ho sbagliato tutto uffa."
+	],
+	"offerDraw":
+	[
+		"Devo andare alla Conad, pareggiamo?"
+	],
+	"acceptDraw":
+	[
+		"Ohhh e va bene, se proprio insisti. Tanto non avevo piu voglia."
+	],
+	"declineDraw":
+	[
+		"ohoh, molto spiritoso.",
+		"Vuoi gia andare via? Ho appena iniziato a divertirmi.",
+		"edraccan... vuoi gia arrenderti? Ohohoh, LA TUA PUNIZIONE DEVE ANCORA INIZIARE.",
+		"No.",
+		"Ohohoho, oh si, chiedimelo ancora. Mi rende felice."
 	]
 }

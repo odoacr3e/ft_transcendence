@@ -13,7 +13,8 @@ import { Player } from "../Classes/Chess/player.js";
 import { Result } from "../Classes/endPoint/result.js";
 import { globals } from "../Classes/Globals/globals.js";
 import { enumSpecialMoves, eTeam } from "../Macro/enums.js";
-import { DEBUG_CURL } from "../Macro/macro.js";
+import { DEBUG_CURL, IS_CHILD_PROCESS } from "../Macro/macro.js";
+import { roomMessage } from "../websocket/utils.js";
 
 /**
  * 
@@ -263,6 +264,8 @@ function sendData(event, matchId, data=null)
 	/** @type {import("../Classes/Globals/Child.js").ChildData} */
 	let	childData;
 
+	if (!IS_CHILD_PROCESS)
+		return (roomMessage(`match_${matchId}`, `game`, data));
 	childData = {ChildId: globals.childId, Event: event, MatchId: Number(matchId), Data: data};
 	//@ts-ignore
 	process.send(childData);

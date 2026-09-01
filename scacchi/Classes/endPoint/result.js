@@ -92,6 +92,18 @@ class Result
 		this.log = {status: this.status, msg: this.msg};
 		return (this);
 	}
+	/** @param {object} obj */
+	Format(obj)
+	{
+		let	iterable;
+
+		iterable = Object.entries(obj);
+		for (const [key, val] of iterable)
+		{//@ts-ignore
+			this[key] = val;
+		}
+		return (this);
+	}
 }
 
 export {Result};

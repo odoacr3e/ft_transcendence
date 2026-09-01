@@ -1,6 +1,7 @@
 //@ts-check
 
-import { IS_CHILD_PROCESS } from "../../Macro/macro.js";
+import { aiSpeech } from "../../Classes/Chess/AIprofiles/speech.js";
+import { AI_EVENTS, IS_CHILD_PROCESS } from "../../Macro/macro.js";
 import { Result } from "./utils.js";
 
 /**
@@ -17,8 +18,12 @@ export function drawHandler(match, body, socketData)
 	{
 		ai = match.currentPlayer.ai ? match.currentPlayer : match.NextPlayer();
 		if (ai.ai?.defeatStatus)
+		{
+			aiSpeech(match, AI_EVENTS.acceptDraw, [], match.currentPlayer.ai != null);
 			return (match.DrawMatch(null, `Player decision`));
-		return (new Result().Success("OK", "draw"));
+		}
+		aiSpeech(match, AI_EVENTS.declineDraw, [], match.currentPlayer.ai != null);
+		return (new Result().Success("OK", "draw").Format({draw: false}));
 	}
 	if (!socketData)
 		return (new Result().Error("no socketData", 500));
