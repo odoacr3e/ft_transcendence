@@ -136,6 +136,7 @@ function cancelMove(match, lastEvent)
 		match.spareCountDown = 0;
 	else
 		++match.spareCountDown;
+	match.currMenace = lastEvent.currMenace;
 }
 
 /**
@@ -165,6 +166,7 @@ function cancelBoost(match, lastEvent)
 			updateBoostedChampions(match);
 	}
 	DangerUpdate(match, lastEvent.from);
+	match.currMenace = lastEvent.currMenace;
 }
 
 /**
@@ -191,6 +193,7 @@ function cancelEndTurn(match)
 	counter = match.boardStateMap.get(boardState); 
 	if (counter)
 		match.boardStateMap.set(boardState, counter - 1);
+	match.currMenace = match.history.Last().currMenace;
 }
 
 /**
@@ -213,4 +216,5 @@ function cancelTransform(match, lastEvent)
 	square.piece.isBoostedBool = isBoostedBool;
 	square.piece.moveCount = moveCount;
 	DangerUpdate(match, lastEvent.from);
+	match.currMenace = lastEvent.currMenace;
 }

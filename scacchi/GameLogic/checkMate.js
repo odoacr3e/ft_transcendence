@@ -49,6 +49,7 @@ function CheckMateCheck(match, kingCoord=match.currentPlayer.King)
 		return true;
 	if (!enemyCoord)
 		return false;
+	match.currMenace = enemyCoord;
 	enemySquare = match.board.get(enemyCoord);
 	if (isDangerous(match, enemySquare.dangerZones, enemySquare.piece?.team))
 		return (cantMovePiece(match, enemyCoord, enemySquare, kingCoord));

@@ -126,7 +126,7 @@ function getBestTurn(match)
 		newTurns = getLegalMoves(match);
 		if (checkKingDanger(match, match.NextPlayer().team))
 			console.log("aaaaaaaaaaaaaa");
-		if (match.zobristIndex in ai.memory && (!DEBUG_AI_TRAINING ||
+		if (ai.memory && match.zobristIndex in ai.memory && (!DEBUG_AI_TRAINING ||
 		rngProportional(100, 50)))
 		{
 			val.score = ai.memory[match.zobristIndex][0];
@@ -246,7 +246,7 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 			ai.Simulate(match, ai);
 			if (checkKingDanger(match, match.NextPlayer().team))
 				console.log("aaaaaaaaaaaaaa");
-			if (match.zobristIndex in ai.memory && (!DEBUG_AI_TRAINING ||
+			if (ai.memory && match.zobristIndex in ai.memory && (!DEBUG_AI_TRAINING ||
 			rngProportional(100, 50)))
 			{
 				val = ai.memory[match.zobristIndex][0];
@@ -290,7 +290,7 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 			if (checkKingDanger(match, match.NextPlayer().team))
 				console.log("aaaaaaaaaaaaaa");
 			ai.Simulate(match, ai);//@ts-ignore
-			if (match.zobristIndex in ai.memory && (!DEBUG_AI_TRAINING ||
+			if (ai.memory&& match.zobristIndex in ai.memory && (!DEBUG_AI_TRAINING ||
 			rngProportional(100, 50)))
 			{
 				val = ai.memory[match.zobristIndex][0];

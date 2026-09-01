@@ -26,6 +26,7 @@ import { Match, MatchSettings } from "../Classes/Chess/match.js";
 import { getLegalMoves } from "../GameLogic/checkLegalMoves.js";
 import { AI } from "../Classes/Chess/AI.js";
 import { initFromStr } from "../handlers/game/init.js";
+import { AIexecuteTurn } from "../GameLogic/aiTurn.js";
 
 //SECTION - main: inizializza e fa primo render, mette terminale in ascolto
 function mainTerm()
@@ -56,7 +57,6 @@ function mainTerm()
 	// match.currentPlayer.ai = new AI(AIprofiles.FIRST_AI);
 	match.NextPlayer().ai = new AI(AIprofiles.GMU);
 	match.aiBool = true;
-
 	// move(match, "e5", "f6");
 	console.log(`time to init: ${(process.hrtime.bigint() - time) / 1000n} microseconds`);
 	match.cursor.square = match.currentPlayer.King;
@@ -86,6 +86,8 @@ process.stdin.on('keypress', (str, key) =>
 	let	dx;
 	let	dy;
 
+	if (!match.victory && match.currentPlayer.ai)
+		return (AIexecuteTurn(match));
 	match = globals.GetLastMatch();
 	mutex = true;
 	dx = 0;

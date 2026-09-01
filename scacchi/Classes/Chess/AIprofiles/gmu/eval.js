@@ -52,20 +52,20 @@ export function AI_gmu_eval(match, ai, turns)
 		// 	score += 75;
 		// }
 		if (ai.evalSimulation == true)
-			score += score * 2;
+			score += 200;
 		else
 		{
 			ai.evalSimulation = true;
-			val = getBestTurn(match, 2).Score;
+			val = getBestTurn(match).Score;
 			if (Math.abs(val) == Infinity)
 				return (match.currentPlayer.team == eTeam.White ? Infinity : -Infinity)
-			score += (val * 3) / 4;
+			score += 200;
 			ai.evalSimulation = false;
 		}
 	}
 	//5)	MENO se il nostro re e' in pericolo
 	if (checkKingDanger(match, match.currentPlayer.team))
-		score -= score / 2;
+		score -= 200;
 	lastTurn = turns[turns.length - 1];
 	if (lastTurn.boost)
 	{
