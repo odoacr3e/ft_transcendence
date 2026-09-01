@@ -66,12 +66,8 @@
                     </div>
                 </div>
                 <div class="w-full p-2 h-auto bg-bg-default rounded-3xl border border-border-default">
-                    <h2 id="fr" :data-count="fReq.length" class="relative flex flex-row text-text-default m-1 max-md:text-lg md:text-xl">{{ t('userPage.friendRequest') }} 
-                        <!-- <span v-if="fReq.length > 0" class="absolute rounded-full bg-notif-on
-                            max-md:px-1 max-md:text-[10px] max-md:ml-35
-                            md:px-1.25 md:text-xs
-                            md:ml-40">{{ fReq.length }}</span> -->
-                    </h2>
+                    <h2 id="fr" :data-count="fReq.length" class="relative flex flex-row text-text-default m-1 max-md:text-lg md:text-xl">
+                        {{ t('userPage.friendRequest') }}</h2>
                     <hr class="w-full justify-self-start text-text-last">
                     <FriendRequest :friendReq="fReq" :user="user" class="justify-self-center"/>
                 </div>
