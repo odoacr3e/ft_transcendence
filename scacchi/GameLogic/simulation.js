@@ -27,9 +27,10 @@ import { render } from "../test/render.js";
  * @param {Result | null} result
  * @param {Array<string> | null} otherCoords
  * @param {boolean} recBool
+ * @param {boolean} boostBool
  * @returns {boolean}
  */
-export function simulation(coords, match, result=null, otherCoords=null, recBool=false)
+export function simulation(coords, match, result=null, otherCoords=null, recBool=false, boostBool=false)
 {
 	let tmpPiece = null;
 	let tmpSquare = null;
@@ -67,6 +68,8 @@ export function simulation(coords, match, result=null, otherCoords=null, recBool
 		kingCoord = coords[1];
 		king = to;
 	}
+	if (boostBool && to.piece)
+		to.piece.isBoostedBool = false;
 	dangerUpdateMoved(match, coords);
 	dangerBool = isDangerous(match, king.dangerZones, king.piece?.team, true, kingCoord);
 	if (dangerBool && tmpBoostZones && !recBool && to.piece?.isBoostedBool && isOneOf(to.piece.type, enumNames.CHAMPION, enumNames.MINOTAURUS))
@@ -101,6 +104,8 @@ export function simulation(coords, match, result=null, otherCoords=null, recBool
 	else
 		to.piece = tmpPiece;
 	dangerUpdateMoved(match, [coords[1], coords[0]]);
+	if (boostBool && from.piece)
+		from.piece.isBoostedBool = true;
 	if (dangerBool)
 		dangerBool = checkGuardiansDanger(match, coords);	
 	if (tmpSquare)
@@ -139,7 +144,7 @@ export function simulationGlobal(match, team=match.currentPlayer.team)
 			return (console.log(`SAVE: ${JSON.stringify(turn, null, 2)}`), true);
 		else if (turn.move && !turn.moveBoost && simulation([turn.move.from, turn.move.to], match, null, null, true))
 			return (console.log(`SAVE: ${JSON.stringify(turn, null, 2)}`), true);
-		else if (!turn.move && turn.moveBoost && simulation([turn.moveBoost.from, turn.moveBoost.to], match, null, null, true))
+		else if (!turn.move && turn.moveBoost && simulation([turn.moveBoost.from, turn.moveBoost.to], match, null, null, true, true))
 			return (console.log(`SAVE: ${JSON.stringify(turn, null, 2)}`), true);
 	}
 	return (false);
