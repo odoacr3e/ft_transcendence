@@ -194,27 +194,31 @@ export let MACRO = Object ({
 export const BOARD_AUDIO = new Set(["move", "moveboost", "trans"]);
 
 export const LOLAUDIOPATH = Object.freeze({
-	"move":			{ path: new URL("../../assets/audios/lolMoving.mp3",	import.meta.url).href, playing: false },
-	"boost":		{ path: new URL("../../assets/audios/lolBoost.mp3",			import.meta.url).href, playing: false },
-	"moveboost":	{ path: new URL("../../assets/audios/lolUseAbility.mp3",	import.meta.url).href, playing: false },
-	"check":		{ path: new URL("../../assets/audios/lolCheck.mp3",			import.meta.url).href, playing: false },
-	"checkmate":	{ path: new URL("../../assets/audios/lolCheckmate.mp3",		import.meta.url).href, playing: false },
-	"trans":		{ path: new URL("../../assets/audios/lolTransform.mp3",		import.meta.url).href, playing: false },
-	"endturn":		{ path: new URL("../../assets/audios/lolEndTurn.mp3",		import.meta.url).href, playing: false },
-	"giveup":		{ path: new URL("../../assets/audios/lolGiveup.mp3",		import.meta.url).href, playing: false },
-	"recdraw":		{ path: new URL("../../assets/audios/lolRecDraw.mp3",		import.meta.url).href, playing: false },
-	"askdraw":		{ path: new URL("../../assets/audios/lolAskDraw.mp3",		import.meta.url).href, playing: false },
-	"checkboost":	{ path: new URL("../../assets/audios/lolCheckBoost.mp3",	import.meta.url).href, playing: false },
-	"clicked":		{ path: new URL("../../assets/audios/lolClicked.mp3",		import.meta.url).href, playing: false },
-	"badmove":		{ path: new URL("../../assets/audios/lolBadMove.mp3",		import.meta.url).href, playing: false },
-	"capture":		{ path: new URL("../../assets/audios/lolCapture.mp3",		import.meta.url).href, playing: false },
+	"move":			{ path: new URL("../../assets/audios/lolMoving.mp3",		import.meta.url).href, playing: true },
+	"boost":		{ path: new URL("../../assets/audios/lolBoost.mp3",			import.meta.url).href, playing: true },
+	"armability":	{ path: new URL("../../assets/audios/lolUseAbility.mp3",	import.meta.url).href, playing: true },
+	"check":		{ path: new URL("../../assets/audios/lolCheck.mp3",			import.meta.url).href, playing: true },
+	"lost":			{ path: new URL("../../assets/audios/lolLost.mp3",			import.meta.url).href, playing: true },
+	"victory":		{ path: new URL("../../assets/audios/lolVictory.mp3",		import.meta.url).href, playing: true },
+	"draw":			{ path: new URL("../../assets/audios/lolDraw.mp3",			import.meta.url).href, playing: true },
+	"trans":		{ path: new URL("../../assets/audios/lolTransform.mp3",		import.meta.url).href, playing: true },
+	"endturn":		{ path: new URL("../../assets/audios/lolEndTurn.mp3",		import.meta.url).href, playing: true },
+	"giveup":		{ path: new URL("../../assets/audios/lolGiveup.mp3",		import.meta.url).href, playing: true },
+	"recdraw":		{ path: new URL("../../assets/audios/lolRecDraw.mp3",		import.meta.url).href, playing: true },
+	"askdraw":		{ path: new URL("../../assets/audios/lolAskDraw.mp3",		import.meta.url).href, playing: true },
+	"checkboost":	{ path: new URL("../../assets/audios/lolCheckBoost.mp3",	import.meta.url).href, playing: true },
+	"clicked":		{ path: new URL("../../assets/audios/lolClicked.mp3",		import.meta.url).href, playing: true },
+	"badmove":		{ path: new URL("../../assets/audios/lolBadMove.mp3",		import.meta.url).href, playing: true },
+	"capture":		{ path: new URL("../../assets/audios/lolCapture.mp3",		import.meta.url).href, playing: true },
 });
 
 // lolMoving.mp3		-> MOVIMENTO
 // lolBoost.mp3			-> POTENZIAMENTO
 // lolUseAbility.mp3	-> USO ABILITÀ
 // lolCheck.mp3			-> TETTE
-// lolCheckmate.mp3		-> HAI PIERSO
+// lolLost.mp3			-> HAI PIERSO
+// lolVictory.mp3		-> CELEBERRIMA VITTORIA (ososo)
+// lolVictory.mp3		-> MAH ESALTANTE QUANTO UN REGALO DI NATALE CON IL NULLA COSMICO DENTRO (annoiato)
 // lolTransform.mp3		-> MI SENTO DIVERSO (voce gay)
 // lolEndTurn.mp3		-> PASSO
 // lolGiveup.mp3		-> IL NEMICO È TROPPO POTENTE (chao)
@@ -226,16 +230,16 @@ export const LOLAUDIOPATH = Object.freeze({
 // lolCapture.mp3		-> GNAM GNAM
 
 export const CLASSICAUDIOPATH = Object.freeze({
-	"move":			{ path: new URL("", import.meta.url).href, playing: false },
-	"boost":		{ path: new URL("", import.meta.url).href, playing: false },
-	"moveboost":	{ path: new URL("", import.meta.url).href, playing: false },
-	"check":		{ path: new URL("", import.meta.url).href, playing: false },
-	"checkmate":	{ path: new URL("", import.meta.url).href, playing: false },
-	"trans":		{ path: new URL("", import.meta.url).href, playing: false },
-	"endturn":		{ path: new URL("", import.meta.url).href, playing: false },
-	"giveup":		{ path: new URL("", import.meta.url).href, playing: false },
-	"recdraw":		{ path: new URL("", import.meta.url).href, playing: false },
-	"askdraw":		{ path: new URL("", import.meta.url).href, playing: false },
+	"move":			{ path: new URL("", import.meta.url).href, playing: true },
+	"boost":		{ path: new URL("", import.meta.url).href, playing: true },
+	"moveboost":	{ path: new URL("", import.meta.url).href, playing: true },
+	"check":		{ path: new URL("", import.meta.url).href, playing: true },
+	"checkmate":	{ path: new URL("", import.meta.url).href, playing: true },
+	"trans":		{ path: new URL("", import.meta.url).href, playing: true },
+	"endturn":		{ path: new URL("", import.meta.url).href, playing: true },
+	"giveup":		{ path: new URL("", import.meta.url).href, playing: true },
+	"recdraw":		{ path: new URL("", import.meta.url).href, playing: true },
+	"askdraw":		{ path: new URL("", import.meta.url).href, playing: true },
 });
 
 export function debug(...args)

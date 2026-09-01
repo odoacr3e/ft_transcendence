@@ -59,7 +59,7 @@ export function useClickOutside(target, onOutside, { when = null, escape = false
  * @param {"CLASSIC"|"LOL"|null} which
  * @param {string} use
  */
-export function playAudio(use, flag = false)
+export function playAudio(use, once = false)
 {
 	let audioData;
 
@@ -73,17 +73,17 @@ export function playAudio(use, flag = false)
 		return;
 
 	const audio = audioData[use];
-	if (!audio)
+	if (!audio || !audio.playing || audio.path)
 		return;
 
-	if (!audio.flag && audio.path)
+	if (!audio.once && audio.path)
 	{
 		const track = new Audio(audio.path);
 		track.volume = audio.volume ?? 1;
 		track.play().catch(e => debug(`audio "${use}" fallito:`, e));
 	}
-	if (flag)
-		audio.flag = true;
+	if (once)
+		audio.flag = false;
 }
 
 /**
@@ -100,5 +100,5 @@ export function resetAudioFlags(which = null)
 
 	for (const audioData of sets)
 		for (const audio of Object.values(audioData))
-			audio.flag = false;
+			audio.playing = true;
 }

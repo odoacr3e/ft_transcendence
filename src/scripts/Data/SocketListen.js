@@ -4,7 +4,7 @@ import { clearHighlight, setCheckSquare }							from "../Events/utils/HighlightU
 import { eSpecialMoves }											from "@/Common/ENUMS";		
 import { blinkSquares } 											from "../Events/utils/GlobalUtils";
 import router 														from "@/router";
-import { resetLocalVars } 											from "./utils/ArchiUtils";
+import { resetLocalVars, setVictory } 											from "./utils/ArchiUtils";
 import { pushTurn, reloadHistory } 									from "./History";
 import { pushMessage } 												from "./ChatBox.js";
 import { playAudio } 												from "../Helper/generalUtils";
@@ -52,7 +52,7 @@ export function listenGameSocket(socket)
 		}
 		if (raw.type === "reload")
 		{
-			// console.log("{socket game [reload]} ricevuto reload. localMatchstate =", localMatchState);
+			// debug("{socket game [reload]} ricevuto reload. localMatchstate =", localMatchState);
 			if (!localMatchState)
 			{
 				reloadMatchState(raw);
@@ -70,7 +70,7 @@ export function listenGameSocket(socket)
 		if (raw.type === "giveup")
 		{
 			debug("[socket game] -> [giveup]: ricevuto giveup");
-			localInfo.victory = raw.victory;
+			setVictory(raw.victory);
 			resetLocalVars();
 			return;
 		}
@@ -91,7 +91,7 @@ export function listenGameSocket(socket)
 		{
 			debug("[socket game -> timeout]: tempo scaduto, victory =", raw.victory);
 			if (raw.victory)
-				localInfo.victory = raw.victory;
+				setVictory(raw.victory);
 			resetLocalVars();
 			return;
 		}
@@ -102,7 +102,7 @@ export function listenGameSocket(socket)
 		}
 		if (raw.type === "history")
 		{
-			// console.log("{socket game [history]}: ricevuti turni");
+			// debug("{socket game [history]}: ricevuti turni");
 			if (Array.isArray(raw.history))
 				reloadHistory(raw.history);
 			else if (raw.history)
@@ -111,7 +111,7 @@ export function listenGameSocket(socket)
 				debug("{socket game [history]}: nessun turno nel payload", raw);
 			return;
 		}
-		// console.log("[socket game]: update match");
+		// debug("[socket game]: update match");
 		const outcome = updateMatchState(raw);
 		if (raw.history)
 			pushTurn(raw.history);
@@ -119,6 +119,8 @@ export function listenGameSocket(socket)
 
 		const inCheck = (Number(raw.mask) & (eSpecialMoves.CHECK | eSpecialMoves.CHECKMATE)) && raw.giorgi0;
 		setCheckSquare(inCheck ? raw.giorgi0 : null);
+		if (localInfo.victory)
+			return;
 		if (inCheck)
 		{
 			debug("[socket game]: re sotto scacco in", raw.giorgi0);
@@ -129,6 +131,6 @@ export function listenGameSocket(socket)
 		else if (outcome.transformed)
 			playAudio("trans");
 		else if (outcome.moved)
-			playAudio(raw.type === "moveboost" ? "moveboost" : "move");
+			playAudio(raw.type === "moveboost" ? "armability" : "move");
 	});
 }

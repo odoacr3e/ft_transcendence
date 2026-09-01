@@ -4,6 +4,7 @@ import { clearHighlight }									from "@/scripts/Events/utils/HighlightUtils.js
 import { stopUpgradeMenu }									from "@/scripts/Data/utils/ArchiUtils.js";
 import { requestToBack }									from "@/scripts/Events/BackLink.js";
 import { useSockStore }										from "../../../stores/sock.st";
+import { playAudio }										from "@/scripts/Helper/generalUtils";
 
 // ANCHOR USER INTERACTION FUNCTIONS
 
@@ -49,6 +50,7 @@ export function useAbility(targetId = null)
 	{ 
 		square.useAbilityBool = true;
 		localInfo.usingAbility = square.piece?.type ? square.piece.type : "";
+		playAudio("armability");
 		debug(`who the fuck i am: ${localInfo.usingAbility}`);
 	}
 	PIECES_HIGHLIGHT[square.piece.type](clickedId);

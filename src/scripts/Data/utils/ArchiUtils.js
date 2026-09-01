@@ -1,6 +1,7 @@
 import { computePosition, offset, flip, shift, autoUpdate }	from "@floating-ui/dom";
-import { localBoard, localInfo, currentPlayer } 						from "../Variables";
+import { localBoard, localInfo, currentPlayer } 			from "../Variables";
 import { clearHighlight }									from "@/scripts/Events/utils/HighlightUtils.js";
+import { playAudio } 										from "@/scripts/Helper/generalUtils";
 
 let stopAutoUpdate = null;
 
@@ -27,6 +28,25 @@ export function checkEndTurn(validated)
 	if (curP.name === newCurP.name) { localInfo.secondTurn = true; }
 	else
 		resetLocalVars();
+}
+
+export function setVictory(team, sound = true)
+{
+	const next = team || null;
+
+	if (next === localInfo.victory)
+		return;
+
+	localInfo.victory = next;
+	if (!sound || !next)
+		return
+
+	if (next === "draw")
+		playAudio("draw");
+	else if (next === localInfo.myTeam)
+		playAudio("victory");
+	else 
+		playAudio("lost");
 }
 
 export function checkUpgrade()

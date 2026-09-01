@@ -3,7 +3,8 @@ import { initLocalBoard, localMatchState,
 		 startLocalMatchState, localInfo,
 		 currentPlayer, emptyCapturedPieces, debug }	from "./Variables.js";
 import { checkEndTurn, hasBoost, 
-		 checkUpgrade, assignLastMoveSquares }	from "./utils/ArchiUtils.js";
+		 checkUpgrade, assignLastMoveSquares, 
+		 setVictory}	from "./utils/ArchiUtils.js";
 import { beginPendingAbility } 					from "../Helper/abilityMovement.js";
 import { clearHistory } 						from "./History.js";
 import { clearMessages } 						from "./ChatBox.js";
@@ -56,7 +57,7 @@ export function initLocalMatchState(raw)
 	localInfo.matchId = raw.id;
 	localInfo.myTeam = raw.team;
 	debug("il mio team :", localInfo.myTeam);
-	localInfo.victory = raw.victory;
+	setVictory(raw.victory, false);
 	localInfo.matchStarted = false;	//il timer non parte finché il bianco non ha mosso
 
 	if (localInfo.myTeam)
@@ -93,8 +94,8 @@ export function updateMatchState(nextRaw)
 	const validated = validateReceivedMatch(nextRaw);
 	
 	localInfo.drag = null;
-	localInfo.victory = nextRaw.victory ?? null;
 	
+	setVictory(nextRaw.victory);
 	checkEndTurn(validated);
 	startLocalMatchState(validated);
 	try 
@@ -179,12 +180,12 @@ export function reloadMatchState(raw)
 	startLocalMatchState(validated);
 
 
-	initLocalBoard(localMatchState.board);
+	initLocalBoard(localMatchState?.board);
 	initLocalPlayers();
+	setVictory(raw.victory, false);
 
 	localInfo.myTeam			= raw.team ?? sessionStorage.getItem("match:myTeam");	
 	localInfo.matchId			= sessionStorage.getItem("match:id");
-	localInfo.victory			= raw.victory;
 	localInfo.matchStarted		= false;
 	localInfo.secondTurn		= raw.secondMove ?? false;
 	localInfo.drawOffer 		= raw.pending === true ? true : false;
