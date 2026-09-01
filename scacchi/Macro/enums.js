@@ -220,4 +220,36 @@ const AIprofiles =
 
 const AIprofilesArray = Object.values(AIprofiles);
 
-export {eTeam, eEvents, eChildEvents, eMatchPresets, enumNames, arrayNames, arrayNamesTransform, arrayNamesDoubleMove, enumInitNames, arrayInitNames, getInitialOfTeam, enumInitTeam, arrayInitTeam, enumValues, enumSpecialMoves, kingMovements, enumConnection, enumSocketState, getTeamByInitial, AIprofiles, AIprofilesArray};
+const EloTitle =
+{
+	1: "Paesant",
+	500: enumNames.BASTARDS,
+	800: enumNames.VALKIRYA,
+	1000: enumNames.MINOTAURUS,
+	1200: enumNames.JESTER,
+	1400: enumNames.CHAMPION,
+	1600: enumNames.KING,
+	1800: "Emperor"
+}
+
+const EloTitleMap = Object.entries(EloTitle);
+
+/**
+ * 
+ * @param {number} elo 
+ */
+function getEloTitle(elo)
+{
+	let ret = EloTitle[1];
+
+	for (const [range, title] of EloTitleMap)
+	{
+		if (elo > Number(range))
+			ret = title;
+		else
+			break ;
+	}
+	return ret;
+}
+
+export {eTeam, eEvents, eChildEvents, eMatchPresets, enumNames, arrayNames, arrayNamesTransform, arrayNamesDoubleMove, enumInitNames, arrayInitNames, getInitialOfTeam, enumInitTeam, arrayInitTeam, enumValues, enumSpecialMoves, kingMovements, enumConnection, enumSocketState, getTeamByInitial, AIprofiles, AIprofilesArray, getEloTitle};

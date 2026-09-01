@@ -2,6 +2,8 @@
 import { prisma } from "../lib/prisma.js";
 import { getUserStats } from "./matchHistoryQuery.js";
 
+/** @typedef {import("../Classes/Chess/player.js").Player} Player*/
+
 export async function getAllUsers() {
 	return await prisma.users.findMany({
 		select: {
@@ -325,10 +327,15 @@ export async function deleteUserById(id) {
 	});
 }
 
-export async function updateUserELO(id_user, elo) {
+/** 
+ * 
+ * @param {Player} player 
+ * @param {string} title 
+*/
+export async function updateUserELO(player, title) {
 	return await prisma.users.update({
-		where: { id_user: id_user },
-		data: { points: elo }
+		where: { id_user: player.id },
+		data: { points: player.dbTable.points, title: title }
 	});
 }
 

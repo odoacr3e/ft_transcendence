@@ -132,7 +132,7 @@ function gameMessage(match, msg, author="server", printer=console.log)
 	}
 	else
 		return ;
-	sendData(eChildEvents.Game, Number(match.id), result);
+	sendData(eChildEvents.Game, match.id, result);
 }
 
 export {getReconnectTime, isBusy, roomMessage, gameMessage, clientSetState, clientResetData};

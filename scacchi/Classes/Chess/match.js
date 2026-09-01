@@ -2,7 +2,7 @@
 import fs from "fs";
 
 import {Cursor} from "./cursor.js";
-import {eTeam, eMatchPresets} from "../../Macro/enums.js";
+import {eTeam, eMatchPresets, getEloTitle} from "../../Macro/enums.js";
 import {Square, initBoard, copyBoard, copyBoostedTargetZones, ChessBoard} from "./chessBoard.js";
 import {HISTORY_PATH, CHESSBOARD_W, CHESSBOARD_H, AI_EVENTS} from "../../Macro/macro.js";
 import {Result} from "../endPoint/result.js";
@@ -507,14 +507,24 @@ class Match
 	UpdateElo(player, winBool)
 	{
 		let	newElo;
+		let	title;
 
 		if (this.settings.room.isRanked != true)
 			return ;
 		if (!player.expectedElo)
 			throw (`UpdateElo: elo not initializated`);
 		newElo = this.elo.updateRating(player.expectedElo, winBool? 1: 0, player.dbTable.points);
+		if (player.dbTable.points == newElo)
+			newElo += winBool ? 1 : -1;
 		gameMessage(this, `UpdateElo: user ${player.dbTable.username} old elo is ${player.dbTable.points}, new is ${newElo}`);
-		query.usersQuery.updateUserELO(player.id, newElo);
+		player.dbTable.points = newElo;
+		title = getEloTitle(newElo);
+		query.usersQuery.updateUserELO(player, title);
+		if (title != player.dbTable.title)
+		{
+			//FIXME - mandare notifica
+			console.log(`titolo e cambiato`);
+		}
 	}
 }
 

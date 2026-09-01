@@ -51,7 +51,7 @@ export function AI_gmu_eval(match, ai, turns)
 		// 	score += 75;
 		// }
 		if (ai.evalSimulation == true)
-			score += 100;
+			score += 300;
 		else
 		{
 			ai.evalSimulation = true;
@@ -64,7 +64,7 @@ export function AI_gmu_eval(match, ai, turns)
 	}
 	//5)	MENO se il nostro re e' in pericolo
 	if (checkKingDanger(match, match.currentPlayer.team))
-		score -= 100;
+		score -= 300;
 	lastTurn = turns[turns.length - 1];
 	if (lastTurn.boost)
 	{
