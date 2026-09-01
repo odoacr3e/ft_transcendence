@@ -58,7 +58,7 @@ class Player
 		this.ai = null;
 		if (ai)
 			this.ai = new AI(ai);
-		else if (settings.ai.team == this.team)
+		else if (settings.ai?.team == this.team)
 			this.ai = new AI(settings.ai.profile);
 	}
 }

@@ -133,7 +133,7 @@ class Match
 		this.tournament = null;
 		this.aiSimulation = false;
 		this.aiMove = false;
-		this.aiBool = this.settings.ai.profile != "";
+		this.aiBool = this.settings.ai != undefined && this.settings.ai.profile != "";
 		zobristInitHash(this);
 	}
 	endTurn()
@@ -640,7 +640,8 @@ class MatchSettings
 			this.players = structuredClone(other.players);
 		this.presetType = other.presetType;
 		this.timer = other.timer;
-		this.ai = other.ai;
+		if (other.ai)
+			this.ai = other.ai;
 	}
 	/** @param {string} matchPresetType */
 	GetPresetByType(matchPresetType)
