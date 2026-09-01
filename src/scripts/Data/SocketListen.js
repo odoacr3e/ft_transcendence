@@ -85,7 +85,7 @@ export function listenGameSocket(socket)
 			localInfo.drawOffer = (raw.draw === true) ? "received" : null;
 			if (localInfo.drawOffer === "received")
 				playAudio("recdraw");
-			return
+			return;
 		}
 		if (raw.type === "timeout")
 		{

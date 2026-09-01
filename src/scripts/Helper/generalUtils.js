@@ -64,7 +64,7 @@ export function playAudio(use, once = false)
 	let audioData;
 
 	if (!MACRO.AUDIO)
-		return
+		return;
 	if (MACRO.AUDIOSET === "CLASSIC")
 		audioData = CLASSICAUDIOPATH;
 	else if (MACRO.AUDIOSET === "LOL")
@@ -73,15 +73,13 @@ export function playAudio(use, once = false)
 		return;
 
 	const audio = audioData[use];
-	if (!audio || !audio.playing || audio.path)
+	if (!audio || !audio.playing || !audio.path)
 		return;
 
-	if (!audio.once && audio.path)
-	{
-		const track = new Audio(audio.path);
-		track.volume = audio.volume ?? 1;
-		track.play().catch(e => debug(`audio "${use}" fallito:`, e));
-	}
+	const track = new Audio(audio.path);
+	track.volume = audio.volume ?? 1;
+	track.play().catch(e => debug(`audio "${use}" fallito:`, e));
+
 	if (once)
 		audio.flag = false;
 }

@@ -51,8 +51,8 @@ export async function onDrop(event, toSquare)
 	if (!isValidMove)
 	{
 		debug("[onDrop]: mossa non valida!");
-		playAudio("badmove")
-		return
+		playAudio("badmove");
+		return;
 	}
 
 	const moveAccepted = await sendToBackend(fromSquareId, toSquareId, true);

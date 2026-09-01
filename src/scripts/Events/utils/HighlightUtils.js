@@ -1,6 +1,6 @@
-import { localInfo, localBoard, currentPlayer, debug}	from "@/scripts/Data/Variables";
-import { playAudio } from "@/scripts/Helper/generalUtils";
-import { PIECES_HIGHLIGHT }						from "@/scripts/Helper/piecesHighlights";
+import { localInfo, localBoard, debug, isMyTurn}	from "@/scripts/Data/Variables";
+import { playAudio } 								from "@/scripts/Helper/generalUtils";
+import { PIECES_HIGHLIGHT }							from "@/scripts/Helper/piecesHighlights";
 
 // UTILS - HIGHLIGHT AND SELECT FUNCTIONS
 
@@ -37,7 +37,7 @@ export function highlightOnClick(event)
 		if (localInfo.lastClickedId)
 			localBoard.get(localInfo.lastClickedId).clicked = false;
 		const piece = localBoard.get(localInfo.clickedId).piece.type;
-		if (!localInfo.secondTurn || (localInfo.secondTurn && localInfo.secondMove))
+		if (isMyTurn() && (!localInfo.secondTurn || localInfo.secondMove))
 			PIECES_HIGHLIGHT[piece](localInfo.clickedId);
 		localBoard.get(localInfo.clickedId).clicked = true;
 		playAudio("clicked");
@@ -52,24 +52,28 @@ export function highlightOnClick(event)
 
 export function highlightOnDrag(event)
 {
-	if (event.target.localName === "img")
-	{
-		const clickedId = event.target.parentNode.id;
-		if (clickedId != localInfo.lastClickedId)
-			clearHighlight();
+	if (event.target.localName !== "img")
+		return;
 
-		const Piece = localBoard.get(clickedId).piece;
-		const Player = currentPlayer();
-	 	
-		if (Piece.team != Player.team) { return; }
+	const clickedId = event.target.parentNode.id;
+	const Piece		= localBoard.get(clickedId)?.piece;
 
-		clearHighlight("clicked");
-		PIECES_HIGHLIGHT[Piece.type](clickedId);
-		if (localInfo.savedBoostedMap && localInfo.savedBoostedMap.has(clickedId))
-			localBoard.get(clickedId).boostedHighlight = true;
-		localBoard.get(clickedId).clicked = true;
-		// ciao
-	}
+	if (clickedId != localInfo.lastClickedId)
+		clearHighlight();
+
+	 
+	if (Piece?.team != localInfo.myTeam) 
+		return;
+
+	clearHighlight("clicked");
+	localBoard.get(clickedId).clicked = true;
+
+	if (!isMyTurn())
+		return;
+
+	PIECES_HIGHLIGHT[Piece.type](clickedId);
+	if (localInfo.savedBoostedMap && localInfo.savedBoostedMap.has(clickedId))
+		localBoard.get(clickedId).boostedHighlight = true;
 }
 
 export function rightClickSelect(event)

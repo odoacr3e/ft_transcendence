@@ -5,7 +5,7 @@ import { usingAbility, checkPermision,
 		useAbility}											from "./utils/GlobalUtils.js";
 import { rightClickSelect, highlightOnClick,
 		highlightOnDrag, clearHighlight }					from "./utils/HighlightUtils.js";
-import { localInfo, getRootDiv, localBoard, currentPlayer, debug}	from "@/scripts/Data/Variables";
+import { localInfo, getRootDiv, localBoard, currentPlayer, debug, isMyTurn}	from "@/scripts/Data/Variables";
 import { PIECES_ABILITY } 									from "@/scripts/Helper/abilityMovement";
 import { sendToBackend }									from "./BackLink.js";
 
@@ -70,7 +70,7 @@ export async function globalEvents()
 			await sendEndTurn();
 		if (event.code === "Enter" && localBoard.get(localInfo.clickedId)?.piece?.team === currentPlayer().team)
 			shopAbility();
-		if (event.code === "ShiftLeft" && localBoard.get(localInfo.clickedId)?.piece.isBoostedBool)
+		if (event.code === "ShiftLeft" && isMyTurn() && localBoard.get(localInfo.clickedId)?.piece.isBoostedBool)
 			useAbility();
 	});
 }

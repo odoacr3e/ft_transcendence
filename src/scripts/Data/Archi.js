@@ -101,7 +101,7 @@ export function updateMatchState(nextRaw)
 	try 
 	{
 		if (validated.board)
-			updateLocalBoard(validated);
+			updateLocalBoard(validated, outcome);
 		checkUpgrade();
 		updateLocalPlayers(validated);
 	} 
@@ -134,6 +134,10 @@ function updateLocalBoard(changes, outcome)
 			const oldSquare = localBoard.get(squareKey);
 			const oldPiece	= oldSquare?.piece;
 			const newPiece	= newSquare.piece;
+
+			oldSquare.piece = newSquare.piece;
+			oldSquare.targetZones = newSquare.targetZones;
+			oldSquare.boostedTargetZones = newSquare.boostedTargetZones;
 
 			assignLastMoveSquares(oldSquare, newSquare, movedSquares);
 

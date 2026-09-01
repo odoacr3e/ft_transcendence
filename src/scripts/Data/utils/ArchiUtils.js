@@ -39,7 +39,7 @@ export function setVictory(team, sound = true)
 
 	localInfo.victory = next;
 	if (!sound || !next)
-		return
+		return;
 
 	if (next === "draw")
 		playAudio("draw");

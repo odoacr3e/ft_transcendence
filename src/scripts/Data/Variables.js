@@ -122,6 +122,8 @@ export const emptyCapturedPieces = () => ({Bastards: 0, Minotaurus: 0, Valkirya:
 //Il giocatore seduto a questo client: quello della squadra che il browser controlla.
 export const myPlayer = () => [...localPlayers.values()].find(p => p.team === localInfo.myTeam) ?? null;
 
+export const isMyTurn = () => myPlayer()?.isPlaying === true;
+
 //Il giocatore di turno, che sui client avversari NON coincide con myPlayer().
 export const currentPlayer = () => [...localPlayers.values()].find(p => p.isPlaying === true) ?? null;
 
