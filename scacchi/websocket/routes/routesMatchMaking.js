@@ -6,7 +6,7 @@ import { globals } from "../../Classes/Globals/globals.js";
 import { AIprofilesArray, eMatchPresets, enumConnection, enumInitNames, enumSocketState, eChildEvents, AIprofiles } from "../../Macro/enums.js";
 import { isOneOf } from "../../utils/string.js";
 import { MatchMaking } from "../handlers/MatchMaking.js";
-import { isBusy } from "../utils.js";
+import { clientSetState, isBusy } from "../utils.js";
 import { init } from "../../handlers/game/init.js";
 import { Match, MatchSettings } from "../../Classes/Chess/match.js";
 import { openMatch } from "../../query/gameQuery.js";
@@ -104,5 +104,6 @@ export function routesMatchMaking(socket, user)
 	socket.on('cancel_match', async() => 
 	{
 		globals.RemoveFromAllQueues(user.id_user);
+		clientSetState(user.id_user);
 	});
 }
