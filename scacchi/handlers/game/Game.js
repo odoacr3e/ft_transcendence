@@ -242,6 +242,8 @@ function gamePlayerNotificationHandler(match, body, socketData)
 	else
 		throw ("gameInfoHandler: invalid type " + body.type);
 	result = responseFormatter(match, result, result.log.msg, result.log.status);
+	if (match.victory != "" && match.id != "0")
+		saveMatch(match);
 	return (result);
 }
 

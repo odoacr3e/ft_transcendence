@@ -9,6 +9,7 @@ import { responseFormatter }				from "../../utils/response.js";
 import { saveMatch } from "../../utils/saveMatch.js";
 import { rng } from "../../utils/random.js";
 import { clientResetData } from "../utils.js";
+import { openMatch } from "../../query/gameQuery.js";
 
 /** @typedef {import("../../Classes/Chess/player.js").Player} Player*/
 /** @typedef {import("../../Classes/endPoint/result.js").Result} Result*/
@@ -96,7 +97,7 @@ async function createMatchFromQueue(queue, queueNode)
 	let	preset;
 	let	set;
 
-	if (await validateMatch(queueNode) == false)
+	if (await validateMatch(queueNode) == false) 
 		return (false);
 	set = structuredClone(queueNode.userSet);
 	preset = queueNode.matchOptions? queueNode.matchOptions: queueNode.matchType;
@@ -105,10 +106,10 @@ async function createMatchFromQueue(queue, queueNode)
 	result = init(match, preset);
 	if (queue.roomType == enumConnection.RANKED)
 		match.settings.room.isRanked = true;
-	globals.lastMatchId = match.CreateId(set);
+	match.id = `${await openMatch(match)}`;
+	globals.lastMatchId = match.id;
 	globals.matches.set(globals.lastMatchId, match);
-	//@ts-ignore
-	result.id = match.id;
+	result.Format({id: match.id});
 	await bindPlayersToMatch(match, set, result);
 	render(match);
 	console.log("CREAZIONE MATCH: ♟️");

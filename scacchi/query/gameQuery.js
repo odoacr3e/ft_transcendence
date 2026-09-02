@@ -28,7 +28,7 @@ export async function closeMatch(match) {
 			end_date: new Date().toISOString(),
 			history: match.Log()
 		},
-		where: { id_match: match.id }
+		where: { id_match: Number(match.id)}
 	});
 }
 

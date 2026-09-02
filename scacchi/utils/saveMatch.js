@@ -1,7 +1,7 @@
 // @ts-check
 
 import { Match } from "../Classes/Chess/match.js";
-import { openMatch, createUsersMatch } from "../query/gameQuery.js";
+import { openMatch, createUsersMatch, closeMatch } from "../query/gameQuery.js";
 import { updateTournament } from "../websocket/handlers/tournament.js";
 import { gameMessage } from "../websocket/utils.js";
 
@@ -12,12 +12,12 @@ import { gameMessage } from "../websocket/utils.js";
  */
 export async function saveMatch(match) 
 {
-	try 
+	try
 	{
-		if (match.victory == "draw")
-			throw ("the match ended in a draw");
+		// if (match.victory == "draw")
+		// 	throw ("the match ended in a draw");
 		gameMessage(match, "Salvataggio partita nel database...");
-		await openMatch(match);
+		await closeMatch(match);
 		await createUsersMatch(match);
 		gameMessage(match, "Successo!");
 	}

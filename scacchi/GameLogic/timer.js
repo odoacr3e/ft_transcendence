@@ -7,6 +7,7 @@ import { clientSetState, roomMessage } from "../websocket/utils.js";
 import { saveMatch } from "../utils/saveMatch.js";
 import { responseFormatter } from "../utils/response.js";
 import { enumSocketState } from "../Macro/enums.js";
+import { closeMatch } from "../query/gameQuery.js";
 
 /**
  * 

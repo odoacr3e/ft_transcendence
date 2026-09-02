@@ -91,7 +91,7 @@ model users {
   email                                        String               @unique(map: "unique_email") @db.VarChar(100)
   nationality                                  String               @db.VarChar(50)
   image                                        String?
-  points                                       Int                  @default(0)
+  points                                       Int                  @default(500)
   title                                        String               @default("Newbie") @db.VarChar(200)
   id_preference                                Int                  @default(1)
   mfa                                          Boolean              @default(false)
