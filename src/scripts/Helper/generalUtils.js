@@ -1,6 +1,9 @@
 import { nextTick, onBeforeUnmount, onMounted, unref, watch } from "vue";
 import { CLASSICAUDIOPATH, debug, LOLAUDIOPATH, MACRO } from "../Data/Variables";
 
+
+const EXCLUSIVE = new Set(["giveup", "lost", "victory", "draw"]);
+let currentTrack = null;
 /*
 	Chiude un popup quando si clicca fuori dalla sua area (e, se richiesto, con Escape)
 */
@@ -73,11 +76,23 @@ export function playAudio(use, once = false)
 		return;
 
 	const audio = audioData[use];
-	if (!audio || !audio.playing || !audio.path)
-		return;
-
 	const track = new Audio(audio.path);
+
 	track.volume = audio.volume ?? 1;
+	if (EXCLUSIVE.has(use))
+	{
+		if (currentTrack)
+		{
+			currentTrack.pause();
+			currentTrack.currentTime = 0;
+		}
+		currentTrack = track;
+		track.addEventListener("ended", () => {
+			if (currentTrack === track)
+				currentTrack = null;
+		})
+	}
+
 	track.play().catch(e => debug(`audio "${use}" fallito:`, e));
 
 	if (once)
