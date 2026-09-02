@@ -1,6 +1,6 @@
 // SECTION - LE VARIABILI GLOBALI
 import { boardConverter, getLocalPlayers }	from "../Helper/RenderUtils.js";
-import { reactive }							from "vue";
+import { reactive, ref }					from "vue";
 import { clearMatchStorage } 				from "./Archi.js";
 
 /**
@@ -101,6 +101,8 @@ class metaInfo {
 
 //globale contiene info. riguardante le interazione dello user con la board, utile per il rendering
 export let localInfo = reactive(new metaInfo());
+
+export const codexPiece = ref(null);
 
 //Globale che contiene tutti i dati della partita conservati in locale
 export let localMatchState = null;

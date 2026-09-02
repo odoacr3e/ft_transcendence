@@ -18,8 +18,8 @@
 <template>
 	<div class="move-grid" :class="variant">
 		<div v-for="cell in cells" :key="cell.key" class="cell" :class="{ dark: cell.dark }">
-			<img v-if="cell.actor" :src="resolveIcon(cell.actor)" alt="" :draggable="false" class="cell-piece">
-			<span v-else-if="cell.mark" class="mark" :class="cell.mark"/>
+			<span v-if="cell.mark" class="mark" :class="[cell.mark, { 'on-piece': !!cell.actor }]"/>
+			<img v-if="cell.actor" :src="resolveIcon(cell.actor)" alt="" :draggable="false" class="cell-piece" :class="{ ghost: cell.actor.ghost }">
 		</div>
 
 		<svg v-if="arrows.length" class="arrows" viewBox="0 0 100 100">
@@ -58,6 +58,7 @@
 
 	.cell
 	{
+		position: relative;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -78,8 +79,18 @@
 		object-fit: contain;
 	}
 
+	/* la casella da cui il pezzo e' partito: si vede, ma non e' piu' li' */
+	.cell-piece.ghost
+	{
+		opacity: .28;
+	}
+
 	.mark
 	{
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
 		display: block;
 		width: 15%;
 		aspect-ratio: 1;
@@ -93,6 +104,13 @@
 		width: 62%;
 		background-color: transparent;
 		border: .18rem solid var(--mark-color);
+	}
+
+	/* sopra un pezzo avversario il cerchio lo circonda invece di finirci sotto */
+	.mark.capture.on-piece
+	{
+		width: 94%;
+		border-width: .14rem;
 	}
 
 	.arrows

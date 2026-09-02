@@ -1,14 +1,13 @@
 <script setup>
 	//@ts-nocheck
 	import IconEsoteric											from './icons/IconEsoteric.vue';
-	import { localBoard, localInfo, IMG_PATHS }	from '@/scripts/Data/Variables.js';
+	import { localBoard, localInfo, IMG_PATHS, codexPiece }		from '@/scripts/Data/Variables.js';
 	import { computed, ref, watch }								from 'vue';
 	import { PIECES_CODEX }										from '@/scripts/Data/PiecesCodex.js';
 	import MoveGrid												from './MoveGrid.vue';
 	import IconCoins											from './icons/IconCoins.vue';
 
-	const piece = ref(null);
-
+	const piece = codexPiece;
 	watch(() => localInfo.lastClickedId, (id) => {
 		const selected = localBoard.get(id)?.piece;
 		if (selected && selected.team === localInfo.myTeam)
@@ -24,7 +23,20 @@
 	const piecePath 	= computed(() => piece.value ? IMG_PATHS[piece.value.team + piece.value.type] : "");
 	const entry			= computed(() => piece.value ? PIECES_CODEX[piece.value.type] ?? null : null);
 	const tab			= ref('base');
+	const shownTitle	= computed(() => tab.value === 'base' ? entry.value?.baseTitle : entry.value?.boostTitle);
 	const shownText		= computed(() => tab.value === 'base' ? entry.value?.baseText : entry.value?.boostText);
+	const descLines		= computed(() => {
+		const lines = (shownText.value ?? '')
+			.split('\n')
+			.map(l => l.trim())
+			.filter(Boolean)
+			.map(text => ({ text, step: /^\d+[.)]/.test(text) }));
+
+		//il pallino ha senso s un elenco, non su una frase sola; se le righe sono numerate ci pensa il numero
+		const bullet = lines.length > 1 && lines.every(l => !l.step);
+
+		return (lines.map(l => ({ ...l, bullet })));
+	});
 	const shownScenes	= computed(() => {
 		if (!entry.value)
 			return ([]);
@@ -84,7 +96,12 @@
 						<button type="button" class="tab" :class="{ active: tab === 'base' }" @click="tab = 'base'">Base</button>
 						<button type="button" class="tab" :class="{ active: tab === 'boost' }" :disabled="!entry?.boost && !entry?.boostScenes?.length" @click="tab = 'boost'">Boost</button>
 					</div>
-					<p class="move-desc">{{ shownText }}</p>
+					<div class="move-info">
+						<h3 v-if="shownTitle" class="move-title">{{ shownTitle }}</h3>
+						<div v-if="descLines.length" class="move-desc">
+							<p v-for="(line, i) in descLines" :key="i" class="move-line" :class="{ step: line.step, bullet: line.bullet }">{{ line.text }}</p>
+						</div>
+					</div>
 					<div class="scenes">
 						<figure v-for="(scene, i) in shownScenes" :key="i" class="scene">
 							<MoveGrid :scene="scene" :variant="tab === 'base' ? 'regular' : 'boosted'" :resolve-icon="iconFor"/>
@@ -228,18 +245,67 @@
 		width: 100%;
 	}
 
-	.move-desc
+	.move-info
 	{
 		position: relative;
+		display: flex;
+		flex-direction: column;
+		gap: .55rem;
 		padding: .9rem 1.1rem;
 		width: 25rem;
 		margin-inline: -2rem;
-		white-space: pre-line; /**Per considerare i whitespace nel testo che scrivo*/
 		min-height: 3.5rem;
-		font-size: 1rem;
+	}
+
+	.move-title
+	{
+		font-size: .85rem;
+		font-weight: 1000;
+		letter-spacing: .1rem;
+		text-transform: uppercase;
+	}
+
+	.move-desc
+	{
+		display: flex;
+		flex-direction: column;
+		gap: .35rem;
+		max-width: 20rem;
+		margin-inline: auto;
+		font-size: .75rem;
 		line-height: 1.35;
 		letter-spacing: .02rem;
 		opacity: .8;
+	}
+
+	.move-line
+	{
+		margin: 0;
+	}
+
+	/* righe numerate: andando a capo il testo si allinea al testo, non sotto il numero */
+	.move-line.step
+	{
+		padding-left: 1.5rem;
+		text-indent: -1.5rem;
+		text-align: left;
+	}
+
+	/* elenco puntato: stesso rientro sporgente, con il pallino al posto del numero */
+	.move-line.bullet
+	{
+		padding-left: 1rem;
+		text-indent: -1rem;
+		text-align: left;
+	}
+
+	.move-line.bullet::before
+	{
+		content: '\2022';
+		display: inline-block;
+		width: 1rem;
+		text-indent: 0;
+		opacity: .55;
 	}
 
 	.moves::before

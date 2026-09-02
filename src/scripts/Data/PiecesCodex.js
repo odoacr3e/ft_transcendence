@@ -12,6 +12,8 @@ export const CODEX_RADIUS = 2;
 //role decide solo con che colore viene disegnata l'icona, non la logica.
 const self	= (x, y, opts = {})			=> ({ x, y, role: 'self',		...opts });
 const ally	= (x, y, type, opts = {})	=> ({ x, y, role: 'ally',	type,	...opts });
+const enemy	= (x, y, type, opts = {})	=> ({ x, y, role: 'enemy',	type,	...opts });
+const ghost	= (x, y, opts = {})			=> ({ x, y, role: 'self',	ghost: true,	...opts });
 
 
 /**
@@ -27,6 +29,7 @@ const ally	= (x, y, type, opts = {})	=> ({ x, y, role: 'ally',	type,	...opts });
  * @property {number}  y		Offset dal centro, negativo = verso l'avversario
  * @property {string}  [type]	Tipo del pezzo, default: il pezzo a cui appartiene la entry
  * @property {string}  [role]	'self' | 'ally' | 'enemy', decide il colore dell'icona
+ * @property {boolean} [ghost]	Traccia della casella di partenza, non blocca i pattern
  */
 
 /**
@@ -58,8 +61,10 @@ const ally	= (x, y, type, opts = {})	=> ({ x, y, role: 'ally',	type,	...opts });
  * @property {string}            name			Nome mostrato nel codex
  * @property {CodexPattern}      move			Movimento non potenziato
  * @property {CodexPattern|null} boost			Movimento potenziato, null se il boost non cambia pattern
- * @property {string}            baseText		Cosa fa il pezzo da base
- * @property {string}            boostText		Cosa fa il potenziamento
+ * @property {string}            [baseTitle]	Titolo della mossa base, in testa alla descrizione
+ * @property {string}            [boostTitle]	Titolo del potenziamento
+ * @property {string}            [baseText]		Cosa fa il pezzo da base
+ * @property {string}            [boostText]		Cosa fa il potenziamento
  * @property {CodexScene[]}      [baseScenes]	Scene disegnate a mano, hanno la precedenza su move
  * @property {CodexScene[]}      [boostScenes]	Scene disegnate a mano, hanno la precedenza su boost
 
@@ -71,50 +76,181 @@ export const PIECES_CODEX = Object.freeze({
 		name:		"King",
 		move:		{ dirs: STAR, slide: false },
 		boost:		null,
-		baseText:	"MOSSA BASE DEGLI SCACCHI",
+		baseTitle:	"MOSSA BASE DEGLI SCACCHI",
 		boostText:	"Potenzia a tuo rischio e pericolo.",
 	},
 	Champion: {
 		name:		"Champion",
 		move:		{ dirs: STAR, slide: true },
 		boost:		{ dirs: STAR, slide: true },
-		baseText:	"MOSSA BASE DEGLI SCACCHI",
+		baseTitle:	"MOSSA BASE DEGLI SCACCHI",
 		boostText:	"Due mosse in un turno: si sposta, poi riparte dalla casella\
 					 d'arrivo. Ma attenzione, se si fa scacco al re avversario,\
 					 oppure ci si muove in una casella minacciata da un pezzo\
 					 avversario la mossa boostata si interrompe",
+		baseScenes: [
+			{
+				actors:		[ self(0, 0) ],
+				arrows:		[
+					{ from: [0, 0], to: [ 0, -2] },
+					{ from: [0, 0], to: [ 0,  2] },
+					{ from: [0, 0], to: [-2,  0] },
+					{ from: [0, 0], to: [ 2,  0] },
+					{ from: [0, 0], to: [ 2,  2] },
+					{ from: [0, 0], to: [-2, -2] },
+					{ from: [0, 0], to: [ 2, -2] },
+					{ from: [0, 0], to: [-2,  2] },
+				],
+			},
+		],
+
+		boostScenes: [
+			{
+				caption:	"1. Una mossa normale, lungo una qualsiasi delle sue linee.",
+				actors:		[ self(-2, 2) ],
+				arrows:		[ { from: [-2, 2], to: [0, 0] } ],
+			},
+			{
+				caption:	"2. Dalla casella d'arrivo riparte con una mossa intera.",
+				actors:		[ self(0, 0), ghost(-2, 2) ],
+				pattern:	{ dirs: STAR, slide: true },
+			},
+		],
 	},
 	Minotaurus: {
 		name:		"Minotaurus",
 		move:		{ dirs: ORTHO, slide: true },
 		boost:		{ dirs: ORTHO, slide: true },
-		baseText:	"MOSSA BASE DEGLI SCACCHI",
-		boostText:	"Due mosse in un turno: si sposta, poi riparte dalla casella d'arrivo.",
+		baseTitle:	"MOSSA BASE DEGLI SCACCHI",
+		boostTitle:	"CARICA: due catture in un turno",
+		boostText:	"Due mosse in un turno, ma solo se entrambe catturano un pezzo.\nDalla casella della preda riparte per catturare di nuovo.\nSe una seconda preda non c'e', il boost non parte.",
+		baseScenes: [
+			{
+				actors:		[ self(0, 0) ],
+				arrows:		[
+					{ from: [0, 0], to: [ 0, -2] },
+					{ from: [0, 0], to: [ 0,  2] },
+					{ from: [0, 0], to: [-2,  0] },
+					{ from: [0, 0], to: [ 2,  0] },
+				],
+			},
+		],
+
+		boostScenes: [
+			{
+				caption:	"1. La prima mossa e' una cattura.",
+				actors:		[ self(-2, 0), enemy(0, 0, "Bastards") ],
+				marks:		[ { x: 0, y: 0, kind: 'capture' } ],
+				arrows:		[ { from: [-2, 0], to: [0, 0] } ],
+			},
+			{
+				caption:	"2. Dalla preda riparte solo per catturare ancora: nessuna casella vuota e' un arrivo valido.",
+				actors:		[
+					self(0, 0),
+					ghost(-2, 0),
+					enemy(0, -2, "Bastards"),
+					enemy(2,  0, "Jester"),
+				],
+				arrows: 	[
+					{from: [0, 0], to: [0, -2]},
+					{from: [0, 0], to: [2, 0]}
+				],
+				marks:		[
+					{ x: 0, y: -2, kind: 'capture' },
+					{ x: 2, y:  0, kind: 'capture' },
+				],
+			},
+		],
 	},
 	Jester: {
 		name:		"Jester",
 		move:		{ dirs: KNIGHT, slide: false },
 		boost:		{ dirs: KNIGHT, slide: false },
-		baseText:	"MOSSA BASE DEGLI SCACCHI",
-		boostText:	"Mossa singola, ma su zone extra concesse dall'abilita'.",
+		baseTitle:	"MOSSA BASE DEGLI SCACCHI",
+		baseText:	"Mossa con pattern a \"L\",",
+		boostTitle:	"SCHERZO: Effetto pac-man",
+		boostText:	"Mossa singola, ma su zone extra concesse dall'abilità che\
+					 permettono al jester di sbucare dalla parte opposta della\
+					 scacchiera se si \"salta\" fuori",
+		baseScenes: [
+			{
+				caption:	"",
+				actors:		[ self(0, 2) ],
+				marks:		[
+					{x:-1, y: 0,	kind: "capture"},
+					{x:-2, y: 1,	kind: "capture"},
+					{x:1, y: 0,		kind: "capture"},
+					{x:2, y: 1,		kind: "capture"},
+				]
+			},
+		],
+
+		boostScenes: [
+			{
+				caption:	"",
+				actors:		[ self(0, 2) ],
+				marks:		[
+					{x:-1, y: 0, 	kind: "capture"},
+					{x:-2, y: 1, 	kind: "capture"},
+					{x:1, y: 0, 	kind: "capture"},
+					{x:2, y: 1, 	kind: "capture"},
+					{x:-2, y: -2, 	kind: "capture"},
+					{x:2, y: -2, 	kind: "capture"},
+					{x:-1, y: -1, 	kind: "capture"},
+					{x:1, y: -1, 	kind: "capture"},
+				]
+			},
+		],
 	},
 	Valkirya: {
 		name:		"Valkirya",
 		move:		{ dirs: DIAG, slide: true },
 		boost:		{ dirs: DIAG, slide: true },
-		baseText:	"MOSSA BASE DEGLI SCACCHI",
-		boostText:	"Mossa singola che permette di mangiare un pezzo avversario senza\
-					 muovere la valkirya stessa.\n Salta un qualsiasi pezzo lungo il raggio d'azione'.",
+		baseTitle:	"MOSSA BASE DEGLI SCACCHI",
+		baseText:	"Si muove solo in diagonale di tante caselle quanto vuoi\nMangia pezzi lungo la diagonale muovendosi",
+		boostTitle: "LANCIO: Cattura senza movimento",
+		boostText:	"Mossa singola che permette di catturare un pezzo avversario senza\
+					 muovere la valkirya stessa.\n Salta un solo pezzo qualsiasi lungo il suo raggio d'azione, alleato o avversario",
+		baseScenes: [
+			{
+				caption:	"",
+				actors:		[ self(0, 0) ],
+				arrows:		[
+					{ from: [0, 0], to: [2, 2] }, 
+					{ from: [0, 0], to: [-2, -2] },
+					{ from: [0, 0], to: [2, -2] },
+					{ from: [0, 0], to: [-2, 2] },
+				],
+			},
+		],
+
+		boostScenes: [
+			{
+				caption:	"La Valkirya resta ferma e cattura a distanza. A sinistra scavalca l'alleato e prende il pezzo dietro di lui.",
+				actors:		[
+					self(0, 0),
+					ally(-1, -1, "Bastards"),
+					enemy(-2, -2, "Bastards"),
+					enemy(-2, 2, "Jester"),
+					enemy(1, -1, "Bastards"),
+				],
+				marks:		[
+					{ x: -2, y: -2, kind: 'capture' },
+					{ x:  1, y: -1, kind: 'capture' },
+					{ x:  -2, y: 2, kind: 'capture' },
+				],
+			},
+		],
 	},
 	Bastards: {
 		name:		"Bastards",
 		move:		{ dirs: [[0,-1]], slide: false, capture: [[-1,-1], [1,-1]] },
 		boost:		{ dirs: [[0,-1], [0,-2]], slide: false, capture: [[-1,-1], [1,-1]] },
-		baseText:	"MOSSA BASE DEGLI SCACCHI\
-					\n\n Avanza di una casella. \nDue se non si e' ancora mosso.\nMangia solo in diagonale.",
-		boostText:	"DUE MOSSE IN UN TURNO\
-					\n\n 1. Un movimento classico del pedone\
-					\n 2. Nello stesso turno muovi un pezzo che si trova a distanza 1 dalla casella precedente.",
+		baseTitle:	"MOSSA BASE DEGLI SCACCHI",
+		baseText:	"Si muove solo in avanti \nAvanza di una casella. \nDue se non si e' ancora mosso.\nMangia 1 casella in diagonale in avanti.",
+		boostTitle:	"INVESTITURA: Due mosse in un turno",
+		boostText:	"1. Un movimento classico del pedone\
+					\n 2. Nello stesso turno muove anche un pezzo che era accanto alla casella di partenza, con le sue mosse classiche..",
 		baseScenes: [
 			{
 				caption:	"",
@@ -136,14 +272,12 @@ export const PIECES_CODEX = Object.freeze({
 				arrows:		[ { from: [0, 1], to: [0, -1] } ],
 			},
 			{
-				caption:	"2. Nello stesso turno muove anche il pezzo che gli stava\
-							 accanto, con le sue mosse classiche.",
-				actors:			[ self(0, -1), ally(1, 1, "Valkirya") ],
+				caption:	"2. Ora posso muovere un pezzo vicino alla casella di partenza.",
+				actors:			[ self(0, -1), ally(1, 1, "Valkirya"), ghost(0, 1) ],
 				pattern:		{ dirs: DIAG, slide: true },
 				patternFrom:	1,	
 				arrows:			[ { from: [1, 1], to: [-1, -1] } ],
 			},
 		],
-
 	},
 });
