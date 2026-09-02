@@ -416,7 +416,6 @@
 		display: flex;
 		border-width: 1px;
 		border-radius: 7px;
-		/* justify-self: center; */
 	}
 
 	div.form:focus-within {

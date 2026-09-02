@@ -181,7 +181,7 @@
 
         <div class="flex flex-col m-4 text-text-default bg-bg-default rounded-3xl border border-border-default
                 lg:ml-2 lg:w-[51vw]">
-            <h2 class="text-2xl m-5 p-2">{{ t('userPage.edit.infoU') }}
+            <h2 class="max-md:text-xl md:text-2xl m-5 p-2">{{ t('userPage.edit.infoU') }}
                 <hr class="w-full justify-self-start text-text-last">
             </h2>
             <div class="mb-0 self-center
@@ -192,10 +192,10 @@
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mt-1 size-6 text-form-icon">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                         </svg>
-                        <h3 class="text-xl">{{ t('login.val.name') }}</h3>
+                        <h3 class="max-md:text-lg md:text-xl">{{ t('login.val.name') }}</h3>
                     </div>
                     <div class="form border-border-default text-form-icon flex mb-3 max-lg:w-full lg:w-full">
-                        <input :placeholder="user.name" size="35" class="pl-2 text-base" type="text" v-model="formData.name">
+                        <input :placeholder="user.name" class="w-[75vw] pl-2 text-base" type="text" v-model="formData.name">
                     </div>
                 </div>
 
@@ -204,10 +204,10 @@
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mt-1 size-6 text-form-icon">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                         </svg>
-                        <h3 class="text-xl">{{ t('login.val.surname') }}</h3>
+                        <h3 class="max-md:text-lg md:text-xl">{{ t('login.val.surname') }}</h3>
                     </div>
                     <div class="form border-border-default text-form-icon flex mb-3 max-lg:w-full lg:w-full">
-                        <input :placeholder="user.surname" size="35" class="pl-2 text-base" type="text" v-model="formData.surname">
+                        <input :placeholder="user.surname" class="w-[75vw] pl-2 text-base" type="text" v-model="formData.surname">
                     </div>
                 </div>
 
@@ -216,7 +216,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mt-1 size-6 text-form-icon">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                         </svg>
-                        <h3 class="text-xl">Username</h3>
+                        <h3 class="max-md:text-lg md:text-xl">Username</h3>
                     </div>
                     <div>
 	                	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" id="allert"
@@ -236,7 +236,7 @@
 	                	</div>
 	                </div>
                     <div class="form border-border-default text-form-icon flex mb-3 max-lg:w-full lg:w-full">
-                        <input :placeholder="user.username" size="35" class="pl-2 text-base" type="text" v-model="formData.username">
+                        <input :placeholder="user.username" class="w-[75vw] pl-2 text-base" type="text" v-model="formData.username">
                     </div>
                 </div>
 
@@ -245,7 +245,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mt-1 size-6 text-form-icon">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
                         </svg>
-                        <h3 class="text-xl">Email</h3>
+                        <h3 class="max-md:text-lg md:text-xl">Email</h3>
                     </div>
                     <div class="flex relative p-2.5 border rounded-[7px] border-border-default text-form-icon justify-self-center mb-3 transition-colors duration-200 
                                 max-lg:w-full max-lg:bg-bg-error max-lg:border-inset-error
@@ -255,7 +255,7 @@
                                 lg:translate-x-42 lg:opacity-0">
                             <path fill-rule="evenodd" d="M12 1.5a5.25 5.25 0 0 0-5.25 5.25v3a3 3 0 0 0-3 3v6.75a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3v-6.75a3 3 0 0 0-3-3v-3c0-2.9-2.35-5.25-5.25-5.25Zm3.75 8.25v-3a3.75 3.75 0 1 0-7.5 0v3h7.5Z" clip-rule="evenodd" />
                         </svg>
-                        <input disabled :placeholder="user.email" size="35" class="pl-2 text-base" type="email">
+                        <input disabled :placeholder="user.email" class="pl-2 text-base" type="email">
                     </div>
                 </div>
 
@@ -264,7 +264,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.6" stroke="currentColor" class="mt-1 size-6 text-form-icon">
                             <path stroke-linecap="round" stroke-linejoin="round" d="m20.893 13.393-1.135-1.135a2.252 2.252 0 0 1-.421-.585l-1.08-2.16a.414.414 0 0 0-.663-.107.827.827 0 0 1-.812.21l-1.273-.363a.89.89 0 0 0-.738 1.595l.587.39c.59.395.674 1.23.172 1.732l-.2.2c-.212.212-.33.498-.33.796v.41c0 .409-.11.809-.32 1.158l-1.315 2.191a2.11 2.11 0 0 1-1.81 1.025 1.055 1.055 0 0 1-1.055-1.055v-1.172c0-.92-.56-1.747-1.414-2.089l-.655-.261a2.25 2.25 0 0 1-1.383-2.46l.007-.042a2.25 2.25 0 0 1 .29-.787l.09-.15a2.25 2.25 0 0 1 2.37-1.048l1.178.236a1.125 1.125 0 0 0 1.302-.795l.208-.73a1.125 1.125 0 0 0-.578-1.315l-.665-.332-.091.091a2.25 2.25 0 0 1-1.591.659h-.18c-.249 0-.487.1-.662.274a.931.931 0 0 1-1.458-1.137l1.411-2.353a2.25 2.25 0 0 0 .286-.76m11.928 9.869A9 9 0 0 0 8.965 3.525m11.928 9.868A9 9 0 1 1 8.965 3.525" />
                         </svg>
-                        <h3 class="text-xl">{{ t('login.val.nationality') }}</h3>
+                        <h3 class="max-md:text-lg md:text-xl">{{ t('login.val.nationality') }}</h3>
                     </div>
                     <div class="flex relative p-2.5 border rounded-[7px] border-border-default text-form-icon justify-self-center mb-3 transition-colors duration-200 
                                 max-lg:w-full max-lg:bg-bg-error max-lg:border-inset-error
@@ -274,7 +274,7 @@
                                 lg:translate-x-42 lg:opacity-0">
                           <path fill-rule="evenodd" d="M12 1.5a5.25 5.25 0 0 0-5.25 5.25v3a3 3 0 0 0-3 3v6.75a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3v-6.75a3 3 0 0 0-3-3v-3c0-2.9-2.35-5.25-5.25-5.25Zm3.75 8.25v-3a3.75 3.75 0 1 0-7.5 0v3h7.5Z" clip-rule="evenodd" />
                         </svg>
-                        <input disabled :placeholder="user.nationality" list="country" size="35" class="pl-2 text-base" type="text" v-model="formData.nationality">
+                        <input disabled :placeholder="user.nationality" list="country" class="pl-2 text-base" type="text" v-model="formData.nationality">
                     </div>
                 </div>
 
@@ -286,7 +286,7 @@
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.6" stroke="currentColor" class="mt-1 size-6 text-form-icon">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z" />
                             </svg>
-                            <h3 class="text-xl">{{ t('login.OTP.auth') }}</h3>
+                            <h3 class="max-md:text-lg md:text-xl">{{ t('login.OTP.auth') }}</h3>
                         </div>
                         <div class="flex mb-3 p-2.5 justify-self-center max-md:w-full md:w-sm">
                             <label class="inline-flex items-center me-5 cursor-pointer">
@@ -298,8 +298,8 @@
                             </label>
                         </div>
                     </div>
-                    <RouterLink to="/me/edit/pwd" class="self-center justify-self-center">
-                                <u><a class="text-sm cursor-pointer text-main-color hover:text-light-button active:text-active-button">{{ t('userPage.edit.changePwd') }}</a></u>
+                    <RouterLink to="/me/edit/pwd" class="self-center justify-self-center mt-1 mb-2 cursor-pointer text-main-color hover:text-light-button active:text-active-button">
+                        <u><a class="text-md">{{ t('userPage.edit.changePwd') }}</a></u>
                     </RouterLink>
                 </div>
 
@@ -310,7 +310,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.6" stroke="currentColor" class="mt-1 size-6 text-form-icon">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z" />
                         </svg>
-                        <h3 class="text-xl">{{ t('login.OTP.auth') }}</h3>
+                        <h3 class="max-md:text-lg md:text-xl">{{ t('login.OTP.auth') }}</h3>
                     </div>
                     <div class="flex w-fit mb-3 p-2.5 justify-self-start">
                         <label class="inline-flex items-center me-5 cursor-pointer">
@@ -330,57 +330,62 @@
                             <path fill-rule="evenodd" d="M2.25 4.125c0-1.036.84-1.875 1.875-1.875h5.25c1.036 0 1.875.84 1.875 1.875V17.25a4.5 4.5 0 1 1-9 0V4.125Zm4.5 14.25a1.125 1.125 0 1 0 0-2.25 1.125 1.125 0 0 0 0 2.25Z" clip-rule="evenodd" />
                             <path d="M10.719 21.75h9.156c1.036 0 1.875-.84 1.875-1.875v-5.25c0-1.036-.84-1.875-1.875-1.875h-.14l-8.742 8.743c-.09.089-.18.175-.274.257ZM12.738 17.625l6.474-6.474a1.875 1.875 0 0 0 0-2.651L15.5 4.787a1.875 1.875 0 0 0-2.651 0l-.1.099V17.25c0 .126-.003.251-.01.375Z" />
                         </svg>
-                        <h3 class="text-xl">{{ t('login.val.theme') }}</h3>
+                        <h3 class="max-md:text-lg md:text-xl">{{ t('login.val.theme') }}</h3>
                     </div>
-                    <div class="flex flex-col p-2.5 justify-self-center w-fit max-md:text-md">
-                        <div class="max-md:grid max-md:grid-flow-row max-md:grid-rows-2 max-md:grid-cols-2 max-md:gap-6
-                                    md:flex md:gap-8 lg:gap-10 my-3">
+                    <div class="flex flex-col p-2.5 justify-self-center w-fit">
+                        <div class="max-md:grid max-md:grid-flow-row max-md:grid-rows-2 max-md:grid-cols-2 max-md:gap-8
+                                    md:flex md:gap-2 md:text-[15px]
+                                    lg:gap-10 my-3">
                             <div class="flex gap-2">
-                                <input size="35" class="pl-2 text-base hidden" type="radio" id="1" value="1" v-model="formData.preferences">
+                                <input class="pl-2 hidden" type="radio" id="1" value="1" v-model="formData.preferences">
                                 <label for="1" class="flex gap-2 items-center">
-                                    <div class="grid grid-cols-2 grid-rows-2 rounded-2xl border-2 border-border-second max-md:size-8 md:size-10 lg:size-12">
+                                    <div class="grid grid-cols-2 grid-rows-2 rounded-2xl border-2 border-border-second size-12">
                                         <div class="rounded-tl-2xl bg-[#201e1c]"></div>
                                         <div class="rounded-tr-2xl bg-[#302d2a]"></div>
                                         <div class="rounded-bl-2xl bg-[#2f1818]"></div>
                                         <div class="rounded-br-2xl bg-[#882a2a]"></div>
                                     </div>
-                                    Dark Red
+                                    <p class="md:hidden">Dark<br>Red</p>
+                                    <p class="max-md:hidden">Dark Red</p>
                                 </label>
                             </div>
                             <div class="flex gap-2">
-                                <input size="35" class="pl-2 text-base hidden" type="radio" id="2" value="2" v-model="formData.preferences">
+                                <input class="pl-2 hidden" type="radio" id="2" value="2" v-model="formData.preferences">
                                 <label for="2" class="flex gap-2 items-center">
-                                    <div class="grid grid-cols-2 grid-rows-2 rounded-2xl border-2 border-border-second max-md:size-8 md:size-10 lg:size-12">
+                                    <div class="grid grid-cols-2 grid-rows-2 rounded-2xl border-2 border-border-second size-12">
                                         <div class="rounded-tl-2xl bg-[#1d1d21]"></div>
                                         <div class="rounded-tr-2xl bg-[#2a2b30]"></div>
                                         <div class="rounded-bl-2xl bg-[#17252e]"></div>
                                         <div class="rounded-br-2xl bg-[#2a6287]"></div>
                                     </div>
-                                    Dark Blue
+                                    <p class="md:hidden">Dark<br>Blue</p>
+                                    <p class="max-md:hidden">Dark Blue</p>
                                 </label>
                             </div>
                             <div class="flex gap-2">
-                                <input size="35" class="pl-2 text-base hidden" type="radio" id="3" value="3" v-model="formData.preferences">
+                                <input class="pl-2 hidden" type="radio" id="3" value="3" v-model="formData.preferences">
                                 <label for="3" class="flex gap-2 items-center">
-                                    <div class="grid grid-cols-2 grid-rows-2 rounded-2xl border-2 border-border-second max-md:size-8 md:size-10 lg:size-12">
+                                    <div class="grid grid-cols-2 grid-rows-2 rounded-2xl border-2 border-border-second size-12">
                                         <div class="rounded-tl-2xl bg-[#1d211f]"></div>
                                         <div class="rounded-tr-2xl bg-[#2a302d]"></div>
                                         <div class="rounded-bl-2xl bg-[#182e17]"></div>
                                         <div class="rounded-br-2xl bg-[#2d872a]"></div>
                                     </div>
-                                    Dark Green
+                                    <p class="md:hidden">Dark<br>Green</p>
+                                    <p class="max-md:hidden">Dark Green</p>
                                 </label>
                             </div>
                             <div class="flex gap-2">
-                                <input size="35" class="pl-2 text-base hidden" type="radio" id="4" value="4" v-model="formData.preferences">
+                                <input class="pl-2 hidden" type="radio" id="4" value="4" v-model="formData.preferences">
                                 <label for="4" class="flex gap-2 items-center">
-                                    <div class="grid grid-cols-2 grid-rows-2 rounded-2xl border-2 border-border-second max-md:size-8 md:size-10 lg:size-12">
+                                    <div class="grid grid-cols-2 grid-rows-2 rounded-2xl border-2 border-border-second size-12">
                                         <div class="rounded-tl-2xl bg-[#20211d]"></div>
                                         <div class="rounded-tr-2xl bg-[#2f302a]"></div>
                                         <div class="rounded-bl-2xl bg-[#2e2917]"></div>
                                         <div class="rounded-br-2xl bg-[#87712a]"></div>
                                     </div>
-                                    Dark Yellow
+                                    <p class="md:hidden">Dark<br>Yellow</p>
+                                    <p class="max-md:hidden">Dark Yellow</p>
                                 </label>
                             </div>
                         </div>
