@@ -209,6 +209,7 @@ export async function showBoostedMovesHover(fromId)
 		Object.entries(response.zones || {}).map(([key, value]) =>
 			[key, new Set(Array.isArray(value) ? value : [])])
 	);
+	playAudio("checkboost");
 	localInfo.savedBoostedMap = futureBoostedZones;
 	for (let toHighlight of futureBoostedZones)
 	{

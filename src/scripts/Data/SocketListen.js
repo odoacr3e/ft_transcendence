@@ -70,7 +70,11 @@ export function listenGameSocket(socket)
 		if (raw.type === "giveup")
 		{
 			debug("[socket game] -> [giveup]: ricevuto giveup");
-			setVictory(raw.victory);
+			const iWon = raw.victory === localInfo.myTeam;
+
+			setVictory(raw.victory, iWon);
+			if (!iWon)
+				playAudio("giveup");
 			resetLocalVars();
 			return;
 		}
@@ -85,12 +89,16 @@ export function listenGameSocket(socket)
 			}
 			if (localInfo.drawOffer === "sent" && raw.draw === true)
 			{
+				debug("inviato")
 				playAudio("askdraw");
 				return;
 			}
 			localInfo.drawOffer = (raw.draw === true) ? "received" : null;
 			if (localInfo.drawOffer === "received")
+			{
+				debug("ricevuto");
 				playAudio("recdraw");
+			}
 			return;
 		}
 		if (raw.type === "timeout")
@@ -104,6 +112,11 @@ export function listenGameSocket(socket)
 		if (raw.type == "simulate_boost")
 		{
 			debug("{socket game [simu_boost]}: payload richiesta simulate boots");
+			if (raw.log.status !== 200)
+			{
+				playAudio("checkboost");
+				debug("ma non è possibile");
+			}
 			return;
 		}
 		if (raw.type === "history")

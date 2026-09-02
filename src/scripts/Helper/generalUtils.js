@@ -81,7 +81,7 @@ export function playAudio(use, once = false)
 	track.play().catch(e => debug(`audio "${use}" fallito:`, e));
 
 	if (once)
-		audio.flag = false;
+		audio.playing = false;
 }
 
 /**

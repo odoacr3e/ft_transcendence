@@ -193,7 +193,7 @@ export let MACRO = Object ({
 	"MAX_MSG_LEN"	: 200,
 });
 
-export const BOARD_AUDIO = new Set(["move", "armability", "trans"]);
+export const BOARD_AUDIO = new Set(["move", "armability", "trans", "giveup"]);
 
 export const LOLAUDIOPATH = Object.freeze({
 	"move":			{ path: new URL("../../assets/audios/lolMoving.mp3",		import.meta.url).href, playing: true },

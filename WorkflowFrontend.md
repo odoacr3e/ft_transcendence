@@ -175,18 +175,22 @@ boardConverter()
 - [x]	Andare avanti e indietro nelle pagine non funziona quando sei sulla playpage
 - [x]	Quando finisci l'esecuzione di una mossa boostata di un pedone e al turno 
 		dopo vuoi muovere lo stesso pedone manda eccezione (ma penso sia dovuto al backend) mosso senza voler utilizzare l'abilità
-- [x]	Quando fai una mossa boostata di un pedone se vuoi muovere un pezzo dopo aver 
-		mosso il pedone, che passa dove prima c’era il pedone mi viene fuoir eccezione
+- [x]	Quando fai una mossa boostata di un pedone se vuoi muovere 
+		un pezzo dopo aver mosso il pedone, che passa dove prima 
+		c’era il pedone mi viene fuoir eccezione
 		ma in modi casuali non riesco ancora a capire cosa succede
-- [ ]	Se fai partire una partita e refreshi il timer parte anche 
+- [x]	Se fai partire una partita e refreshi il timer parte anche 
 		quando non dovrebbe partire
-- [ ]	Anche quando non è il tuo turno se tocchi le tue pedine ci sono highlights vari
-- [ ]	Se fai una partita e mangi un pezzo, se questa partita finisce per timer
+- [x]	Anche quando non è il tuo turno se tocchi le tue pedine 
+		ci sono highlights vari
+- [x]	Se fai una partita e mangi un pezzo, se questa partita finisce per timer
 		i pezzi mangiati rimangono nella prossima partita
-- [ ]	Qualche volta quando dragghi non compaiano i highlights
-- [ ]	Quando fai arrocco e al turno dopo clicchi sul re il re rimane rosso
-- [ ]	Quando annullo la richiesta di matchmaking non mi resetta lo stato e 
+- [x]	Qualche volta quando dragghi non compaiano i highlights
+- [x]	Quando fai arrocco e al turno dopo clicchi sul re il re rimane rosso
+- [x]	Quando annullo la richiesta di matchmaking non mi resetta lo stato e 
 		mi dice che sto già facendo matchmaking
+- [	]	Il suono di sconfitta e giveup (quando fai giveup) si sovrappongono
+
 
 #TODO FRONTEND - 
 - [x]	websocket per lo stato online
