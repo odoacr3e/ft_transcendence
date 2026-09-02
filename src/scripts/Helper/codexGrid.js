@@ -95,6 +95,15 @@ export function markMap(scene, actors = actorMap(scene))
 }
 
 /**
+ * I vertici di una freccia. `points` per una spezzata, `from`/`to` per il caso a due punti.
+ * Un vertice fuori dalla griglia e' legittimo: l'SVG taglia al bordo, ed e' cosi' che si
+ * disegna un tratto che esce dalla scacchiera o che vi rientra.
+ * @param {*} arrow
+ * @returns {number[][]}
+ */
+const arrowPoints = (arrow) => arrow.points ?? [arrow.from, arrow.to];
+
+/**
  * Le caselle attraversate da una freccia: li' il pallino di mossa non va disegnato, ci passa gia' la linea.
  * Se il tragitto non e' rettilineo (ne' ortogonale ne' diagonale) si segna solo l'arrivo.
  * @param {*} scene
@@ -106,18 +115,23 @@ export function arrowPath(scene)
 
 	for (const a of scene?.arrows ?? [])
 	{
-		const [fx, fy]	= a.from;
-		const [tx, ty]	= a.to;
-		const dx		= Math.sign(tx - fx);
-		const dy		= Math.sign(ty - fy);
-		const steps		= Math.max(Math.abs(tx - fx), Math.abs(ty - fy));
-		const straight	= dx === 0 || dy === 0 || Math.abs(tx - fx) === Math.abs(ty - fy);
+		const pts = arrowPoints(a);
 
-		if (steps && straight)
-			for (let s = 1; s <= steps; s++)
-				out.add(key(fx + dx * s, fy + dy * s));
-		else
-			out.add(key(tx, ty));
+		for (let i = 1; i < pts.length; i++)
+		{
+			const [fx, fy]	= pts[i - 1];
+			const [tx, ty]	= pts[i];
+			const dx		= Math.sign(tx - fx);
+			const dy		= Math.sign(ty - fy);
+			const steps		= Math.max(Math.abs(tx - fx), Math.abs(ty - fy));
+			const straight	= dx === 0 || dy === 0 || Math.abs(tx - fx) === Math.abs(ty - fy);
+
+			if (steps && straight)
+				for (let s = 1; s <= steps; s++)
+					out.add(key(fx + dx * s, fy + dy * s));
+			else
+				out.add(key(tx, ty));
+		}
 	}
 	return (out);
 }
@@ -155,16 +169,13 @@ export function gridCells(scene)
 }
 
 /**
- * Le frecce gia' convertite in coordinate del viewBox SVG.
+ * Le frecce gia' convertite in coordinate del viewBox SVG, pronte per l'attributo
+ * `points` di un <polyline>. Con due soli vertici il risultato e' una linea dritta.
  * @param {*} scene
- * @returns {Array<{x1: number, y1: number, x2: number, y2: number}>}
+ * @returns {string[]}
  */
 export function arrowSegments(scene)
 {
-	return ((scene?.arrows ?? []).map(a => ({
-		x1: px(a.from[0]),
-		y1: px(a.from[1]),
-		x2: px(a.to[0]),
-		y2: px(a.to[1]),
-	})));
+	return ((scene?.arrows ?? []).map(a =>
+		arrowPoints(a).map(([x, y]) => `${px(x)},${px(y)}`).join(" ")));
 }

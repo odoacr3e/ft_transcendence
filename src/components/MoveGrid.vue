@@ -28,9 +28,10 @@
 					<path d="M0,0 L4,2 L0,4 Z" fill="var(--mark-color)"/>
 				</marker>
 			</defs>
-			<line v-for="(a, i) in arrows" :key="i"
-					:x1="a.x1" :y1="a.y1" :x2="a.x2" :y2="a.y2"
-					stroke="var(--mark-color)" stroke-width="2.5" stroke-linecap="round"
+			<polyline v-for="(pts, i) in arrows" :key="i"
+					:points="pts" fill="none"
+					stroke="var(--mark-color)" stroke-width="2.5"
+					stroke-linecap="round" stroke-linejoin="round"
 					:marker-end="`url(#${uid})`"/>
 		</svg>
 	</div>

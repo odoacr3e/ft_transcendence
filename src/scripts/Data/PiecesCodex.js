@@ -198,6 +198,15 @@ export const PIECES_CODEX = Object.freeze({
 					{x:2, y: -2, 	kind: "capture"},
 					{x:-1, y: -1, 	kind: "capture"},
 					{x:1, y: -1, 	kind: "capture"},
+				],
+				//un salto raccontato per intero: i vertici fuori griglia li taglia l'SVG,
+				//cosi' il primo tratto esce dal bordo e il secondo rientra da quello opposto
+				arrows:		[
+					{ points: [ [0, 2], [0, 3.4] ] },
+					{ points: [ [0, -3.4], [0, -1], [1, -1] ] },
+					{ points: [ [0, -3.4], [0, -1], [-1, -1] ] },
+					{ points: [ [0, -3.4], [0, -2], [-2, -2] ] },
+					{ points: [ [0, -3.4], [0, -2], [2, -2] ] },
 				]
 			},
 		],
