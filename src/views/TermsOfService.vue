@@ -1,5 +1,6 @@
 <script setup>
 import { useI18n } from 'vue-i18n';
+import router from '../router/index';
 
 const { t, tm, rt} = useI18n();
 </script>
@@ -13,6 +14,9 @@ const { t, tm, rt} = useI18n();
                 <h3><b>{{ t('legal.service.date.title') }}</b></h3>
                 <p v-html="t('legal.service.date.desc')"></p>
             </div>
+            <RouterLink to="" id="button" class="w-fit">
+                <button type="button" class="md:ml-4 mr-2 text-2xl leading-none text-text-third hover:text-text-default" @click="router.back()">&times;</button>
+            </RouterLink>
         </div>
         <hr class="w-full justify-self-start text-text-last">
         <div class="text-text-second max-md:text-sm md:text-[16px]">

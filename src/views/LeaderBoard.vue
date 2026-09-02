@@ -60,7 +60,7 @@ onMounted(async () => {
                 </div>
             </div>
 
-            <div class="grid grid-rows-1 grid-cols-2" :class=" top ? 'max-md:mt-10 md:-mt-7' : '-mt-15'">
+            <div class="grid grid-rows-1 grid-cols-2" :class=" top ? 'max-md:mt-10 md:-mt-7' : 'max-md:mt-10 md:-mt-15'">
                 <div v-if="top3" class="justify-items-center">
                     <p class="text-text-second max-md:text-sm">{{ top3[1].points }}</p>
                     <div class="relative">
@@ -134,17 +134,24 @@ onMounted(async () => {
         <div v-if="!top">
             <hr class="text-text-last border-dashed">
             <div class="flex items-center px-4">
-                <h3 class="ml-3 mr-4"><b>Tu</b></h3>
-                <div class="flex m-2 gap-2 items-center">
-                    <img class="size-10 rounded-full object-cover" :src="user.image ? `${user.image}` : defaultAvatar" @error="handleAvatarError"/>
-                    <RouterLink :to="{ name: 'user_page', params: { username: user.username } }">
-                        <p class="text-text-default hover:underline font-semibold">{{ user.username }}</p>
-                    </RouterLink>
-                    <div class="flex items-center gap-1">
-                        <TagTitle :title="user.title" class="mt-1"/>
+                <h3 class="font-semibold max-md:text-sm max-md:-ml-0.5 max-md:mr-2.5
+                        md:ml-3.75 md:mr-4">Tu</h3>
+                <div class="grid grid-cols-2 gap-2 items-center max-md:m-0.5 md:m-1.5">
+                    <div class="flex items-center gap-2 max-md:w-screen md:w-[33vw] lg:w-[20vw]">
+                        <img class="rounded-full object-cover max-md:size-9 md:size-10" :src="user.image ? `${user.image}` : defaultAvatar" @error="handleAvatarError"/>
+                        <RouterLink :to="{ name: 'user_page', params: { username: user.username } }">
+                            <p class="max-md:hidden text-text-default hover:underline font-semibold max-md:text-sm">{{ user.username }}</p>
+                            <p v-if="user.username.length > 9"
+                                class="md:hidden text-text-default hover:underline font-semibold max-md:text-sm">{{ user.username.slice(0, 8) + "..." }}</p>
+                            <p v-if="user.username.length <= 9"
+                                class="md:hidden text-text-default hover:underline font-semibold max-md:text-sm">{{ user.username }}</p>
+                        </RouterLink>
+                        <TagTitle :title="user.title" class="max-[425px]:text-[9px] max-[425px]:py-0.75"/>
+                    </div>
+                    <div class="flex items-center justify-end-safe gap-1 w-full">
                         <!-- <div class="flex gap-2 text-text-second"><p class="text-text-win-open">{{ winRate(user.stats.w, user.stats.total) }}%</p>su {{ user.stats.total }}</div> -->
                         <!-- <p class="text-text-last">|</p> -->
-                        <p class="text-text-second text-sm">ELO: {{ user.points }}</p>
+                        <p class="text-text-second max-md:text-xs md:text-xs">ELO: {{ user.points }}</p>
                     </div>
                 </div>
             </div>
