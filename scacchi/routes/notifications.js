@@ -113,7 +113,7 @@ notifyRouter.patch("/", async (req, res) => {
 	} catch (error) {
 		log.err(`Server error updating notifications: ${error.code}`);
 		if (error.code == 'P2002')
-			return res.status(409).json(jsonResponse.ResponseError("Notification already exists"));
+			return res.status(409).json(jsonResponse.ResponseError("Notification doesn't exists"));
 		return res.status(500).json(jsonResponse.ResponseError("Server error updating notifications"))
 	}
 });
