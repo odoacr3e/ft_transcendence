@@ -66,17 +66,16 @@ export function highlightOnDrag(event)
 		return;
 
 	clearHighlight("clicked");
-	localBoard.get(clickedId).clicked = true;
-
-	if (!isMyTurn())
-		return;
-
-	PIECES_HIGHLIGHT[Piece.type](clickedId);
-	if (localInfo.savedBoostedMap && localInfo.savedBoostedMap.has(clickedId))
+	if (isMyTurn())
 	{
-		localBoard.get(clickedId).boostedHighlight = true;
-		playAudio("clicked");
+		PIECES_HIGHLIGHT[Piece.type](clickedId);
+		if (localInfo.savedBoostedMap && localInfo.savedBoostedMap.has(clickedId))
+		{
+			localBoard.get(clickedId).boostedHighlight = true;
+		}
 	}
+	localBoard.get(clickedId).clicked = true;
+	playAudio("clicked");
 }
 
 export function rightClickSelect(event)
