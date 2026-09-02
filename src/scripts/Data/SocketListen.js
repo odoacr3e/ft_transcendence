@@ -77,6 +77,12 @@ export function listenGameSocket(socket)
 		if (raw.type === "draw")
 		{
 			debug("[socket game] -> [draw]: ricevuto draw");
+			if (raw.victory)
+			{
+				setVictory(raw.victory);
+				resetLocalVars();
+				return;
+			}
 			if (localInfo.drawOffer === "sent" && raw.draw === true)
 			{
 				playAudio("askdraw");

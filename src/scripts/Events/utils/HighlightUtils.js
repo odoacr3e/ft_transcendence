@@ -73,7 +73,10 @@ export function highlightOnDrag(event)
 
 	PIECES_HIGHLIGHT[Piece.type](clickedId);
 	if (localInfo.savedBoostedMap && localInfo.savedBoostedMap.has(clickedId))
+	{
 		localBoard.get(clickedId).boostedHighlight = true;
+		playAudio("clicked");
+	}
 }
 
 export function rightClickSelect(event)

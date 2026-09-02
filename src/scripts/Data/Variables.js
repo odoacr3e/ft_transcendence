@@ -193,7 +193,7 @@ export let MACRO = Object ({
 	"MAX_MSG_LEN"	: 200,
 });
 
-export const BOARD_AUDIO = new Set(["move", "moveboost", "trans"]);
+export const BOARD_AUDIO = new Set(["move", "armability", "trans"]);
 
 export const LOLAUDIOPATH = Object.freeze({
 	"move":			{ path: new URL("../../assets/audios/lolMoving.mp3",		import.meta.url).href, playing: true },
@@ -220,11 +220,11 @@ export const LOLAUDIOPATH = Object.freeze({
 // lolCheck.mp3			-> TETTE
 // lolLost.mp3			-> HAI PIERSO
 // lolVictory.mp3		-> CELEBERRIMA VITTORIA (ososo)
-// lolVictory.mp3		-> MAH ESALTANTE QUANTO UN REGALO DI NATALE CON IL NULLA COSMICO DENTRO (annoiato)
+// lolDraw.mp3			-> MAH ESALTANTE QUANTO UN REGALO DI NATALE CON IL NULLA COSMICO DENTRO (annoiato)
 // lolTransform.mp3		-> MI SENTO DIVERSO (voce gay)
 // lolEndTurn.mp3		-> PASSO
 // lolGiveup.mp3		-> IL NEMICO È TROPPO POTENTE (chao)
-// lolRecDraw.mp3		-> HA HAAA IL NEMICO PROVA BATTERCI CON TATTICHE DA PUSILLANIME
+// lolRecDraw.mp3		-> HA HAAA IL NEMICO PROVA AD EVITARE LA SCONFITTA CON TATTICHE DA PUSILLANIME
 // lolAskDraw.mp3		-> MA CE SE PÒ ACCORDÀ? (romanaccio)
 // lolCheckBoost.mp3	-> MMMM CHE FA STO COSO (fattone)
 // lolClicked.mp3		-> CLICK

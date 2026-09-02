@@ -134,12 +134,13 @@ function updateLocalBoard(changes, outcome)
 			const oldSquare = localBoard.get(squareKey);
 			const oldPiece	= oldSquare?.piece;
 			const newPiece	= newSquare.piece;
+			
+			assignLastMoveSquares(oldSquare, newSquare, movedSquares);
 
 			oldSquare.piece = newSquare.piece;
 			oldSquare.targetZones = newSquare.targetZones;
 			oldSquare.boostedTargetZones = newSquare.boostedTargetZones;
 
-			assignLastMoveSquares(oldSquare, newSquare, movedSquares);
 
 			if (oldPiece && newPiece && oldPiece.team !== newPiece.team)
 			{

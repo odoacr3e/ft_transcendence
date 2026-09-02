@@ -6,7 +6,7 @@
 	import winImg								from '@/assets/CrownIcon.png';
 	import loseImg								from '@/assets/bell.png';
 	import drawImg								from '@/assets/people.png';
-import { playAudio } from '@/scripts/Helper/generalUtils';
+	import { playAudio } 						from '@/scripts/Helper/generalUtils';
 
 	const dismissed = ref(false);
 
@@ -15,10 +15,7 @@ import { playAudio } from '@/scripts/Helper/generalUtils';
 		if (!victory.value)
 			return null;
 		if (victory.value === 'draw')
-		{
-			playAudio("checkmate");
 			return 'draw';
-		}
 		return (victory.value === localInfo.myTeam ? 'win' : 'lose');
 	});
 
