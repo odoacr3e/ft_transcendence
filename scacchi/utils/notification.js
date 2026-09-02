@@ -20,7 +20,7 @@ export async function notify(title, description, user, sender)
 	const dataDb = 
 	{
 		id_sender: id_sender,
-		id_receiver: user.id_user,
+		id_user: user.id_user,
 		title: title,
 		description: title,
 		creation_date: new Date
