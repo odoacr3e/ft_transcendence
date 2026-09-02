@@ -185,6 +185,19 @@ class Match
 	{//@ts-ignore
 		return (this[team]);
 	}
+	/** @param {string} team */
+	GetThreats(team)
+	{
+		let ret = new Array();//@ts-ignore
+		let kingSquare = this.board.get(this[team].King)
+
+		for (let zone of kingSquare.dangerZones)
+		{
+			if (this.board.get(zone).piece && this.board.get(zone).piece?.team != team)
+				ret.push(zone);
+		}
+		return ret;
+	}
 	CheckOtherKingsDanger()
 	{
 		/** @type {Player} */let	player;

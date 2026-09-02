@@ -34,6 +34,7 @@ export function checkMove(coords=[], result, match, boostBool)
 	let	from;
 	let	to;
 	let	king;
+	let threat;
 
 	from = match.board._data.get(coords[0]);
 	to = match.board._data.get(coords[1]);
@@ -74,6 +75,9 @@ export function checkMove(coords=[], result, match, boostBool)
 	{
 		if (result.specialMoves.CheckAllyGuardian())
 			return (error(result, 403, `protect your ally! you can use your ${match.board._data.get(match.currentPlayer.allieGuardianCoord)?.piece?.type} in ${coordNormify(match.currentPlayer.allieGuardianCoord)}`));
+		threat = match.GetThreats(match.currentPlayer.team);
+		if (threat.length == 1 && from.piece.multipleMovesBool && boostBool && from.boostedTargetZones.has(coords[1]) && from.boostedTargetZones.get(coords[1])?.has(threat[0]))
+			return true;
 		if (match.lastMenace.from != "")
 		{//@ts-ignore
 			result.check = match.lastMenace;
