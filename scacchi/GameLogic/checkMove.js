@@ -93,24 +93,26 @@ export function checkMove(coords=[], result, match, boostBool)
  */
 export function checkSecondMove(match, coords)
 {
-	let boostedPiece;
+	let boostedSquare;
 	let type;
 	let	diff;
 
 	if (match.playerNum <= 1)
 		return (false);
 	type = match.board.get(coords[1])?.piece?.type;
-	if ((type == enumNames.CHAMPION || type == enumNames.MINOTAURUS || type == enumNames.BASTARDS) && match.board.get(coords[1])?.piece?.isBoostedBool == true)
+	if (isOneOf(type? type : "", enumNames.CHAMPION, enumNames.MINOTAURUS, enumNames.BASTARDS) && match.board.get(coords[1])?.piece?.isBoostedBool == true)
 		return true;
 	if (!match.currentPlayer.boostedPiece)
 		return false;
-	boostedPiece = match.board.get(match.currentPlayer.boostedPiece).piece;
-	if (!boostedPiece)
+	boostedSquare = match.board.get(match.currentPlayer.boostedPiece);
+	if (!boostedSquare.piece)
 		throw (`checkSecondMove: invalid boosted piece. Player: ${JSON.stringify(match.currentPlayer, null, 2)}`);
-	if (boostedPiece.type != enumNames.BASTARDS)
+	if (boostedSquare.piece.type != enumNames.BASTARDS)
 		return false;
-	diff = match.cursor.Diff(coords[0], match.currentPlayer.boostedPiece);
-	if (diff.col <= 1 && diff.row <= 1)
+	// diff = match.cursor.Diff(coords[0], match.currentPlayer.boostedPiece);
+	// if (diff.col <= 1 && diff.row <= 1)
+	// 	return true;
+	if (boostedSquare.boostedTargetZones.get(match.currentPlayer.boostedPiece)?.has(coords[0]))
 		return true;
 	return false;
 }

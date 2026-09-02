@@ -42,7 +42,7 @@ export async function createUsersMatch(match) {
 	for (const u of match.users) {
 		await prisma.users_matches.create({
 			data: {
-				id_match: match.id,
+				id_match: Number(match.id),
 				id_user: u.id_user,
 				outcome: u.outcome,
 				...(u.startTeam != null && { team: u.startTeam })

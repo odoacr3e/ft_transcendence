@@ -101,7 +101,7 @@ export async function getNotificationById (id_user, id_notification) {
 }
 
 /**
- * @param {{ id_sender: Number, id_receiver: Number, title: String,
+ * @param {{ id_sender: Number | null, id_receiver: Number, title: String,
  * description: String, creation_date: Date }} data
  */
 export async function postNotification (data) {

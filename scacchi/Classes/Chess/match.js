@@ -20,6 +20,7 @@ import { zobristGenerateTable, zobristInitHash } from "../../utils/zobrist.js";
 import { rng } from "../../utils/random.js";
 import { clientSetState, gameMessage } from "../../websocket/utils.js";
 import { includesOneOf, isOneOf } from "../../utils/string.js";
+import { notify } from "../../utils/notification.js";
 
 /** @typedef {import("../Globals/Queue.js").QueueNode} QueueNode*/
 /** @typedef {import("./Pieces/pieces.js").Piece} Piece*/
@@ -522,7 +523,7 @@ class Match
 		query.usersQuery.updateUserELO(player, title);
 		if (title != player.dbTable.title)
 		{
-			//FIXME - mandare notifica
+			notify("N", " ", player.dbTable, null);
 			console.log(`titolo e cambiato`);
 		}
 	}
