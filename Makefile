@@ -4,11 +4,17 @@ FRONTEND_BRANCH = frontend
 CLEAN_IMG  = alpine
 AS_ROOT    = docker run --rm -v "$$PWD:/w" -w /w $(CLEAN_IMG)
 
+# Vault e' opzionale. Il valore di VAULT_ENABLED nel .env decide se il suo container
+# viene creato: solo "true" attiva il profilo, qualsiasi altro valore lo lascia spento,
+# e senza container non c'e' nessuna attesa all'avvio.
+VAULT_ENABLED := $(shell sed -n 's/^VAULT_ENABLED=//p' .env 2>/dev/null | tr -d "\"' " | tail -1)
+VAULT_PROFILE := $(if $(filter true,$(VAULT_ENABLED)),--profile vault,)
+
 up:
-	docker compose up --build -d
+	docker compose $(VAULT_PROFILE) up --build -d
 
 down:
-	docker compose down --remove-orphans
+	docker compose --profile vault down --remove-orphans
 
 delete:
 	docker system prune -a -f
