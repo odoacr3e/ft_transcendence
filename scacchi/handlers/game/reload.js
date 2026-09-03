@@ -15,7 +15,6 @@ export function reload(match, result, team)
 	let	yourTurnBool;
 	let	lastMovedPiece;
 
-	result.Success();
 	if (match.timer && match.timer.start != 0)
 		match.currentPlayer.time = match.timer.time - (Date.now() - match.timer.start);
 	// @ts-ignore

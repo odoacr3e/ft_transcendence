@@ -197,7 +197,7 @@ async function gameInfoHandler(match, body, socketData=null)
 	let	result;
 	let team;
 
-	result = new Result();
+	result = new Result().Success("OK", body.type);
 	if (socketData?.matchData)
 		team = socketData.matchData.team;
 	else if (match.currentPlayer.ai)
@@ -210,7 +210,7 @@ async function gameInfoHandler(match, body, socketData=null)
 	}
 	else if (body.type == "history")
 	{
-		result.Success();//@ts-ignore
+		//@ts-ignore
 		result.history = match.history.clientEvents[match.history.clientEvents.length - 1];
 	}
 	else
@@ -232,7 +232,7 @@ function gamePlayerNotificationHandler(match, body, socketData)
 	let	result;
 	let	team;
 
-	result = new Result().Success();
+	result = new Result().Success("OK", body.type);
 	if (body.type == "giveup")
 	{
 		if (socketData)
