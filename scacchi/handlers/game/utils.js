@@ -172,6 +172,7 @@ function error(result, status, msg)
 {
 	result.msg = msg;
 	result.status = status;
+	result.log = {msg: msg, status: status};
 	return (false);
 }
 

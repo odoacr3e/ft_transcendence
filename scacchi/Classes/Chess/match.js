@@ -56,7 +56,6 @@ class Match
 		this.historyCreateBool = false;
 		this.currentPlayer = this.white;
 		this.lastMenace = {from: "", mid: "", to: ""};
-		this.currMenace = "";
 		this.boostPriority = new Set;
 		this.playerNum = this.settings.players.number;
 		this.loserSet = new Set();
@@ -114,7 +113,6 @@ class Match
 		this.historyCreateBool = false;
 		this.currentPlayer = this.white;
 		this.lastMenace = {from: "", mid: "", to: ""};
-		this.currMenace = "";
 		this.boostPriority = new Set;
 		this.playerNum = this.settings.players.number;
 		this.loserSet = new Set();

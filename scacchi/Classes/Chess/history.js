@@ -238,7 +238,6 @@ function updateMoves(match, square, coords, result, boostBool=false)
 	record.zobristIndex = match.zobristIndex;
 	record.aiSimulation = match.aiSimulation;
 	record.turnCounter = this.turnCounter;
-	record.currMenace = match.currMenace;
 	this.events.push(record);
 	this.moves += 1;
 }
@@ -271,7 +270,6 @@ function updateBoost(match, square, from)
 	record.zobristIndex = match.zobristIndex;
 	record.aiSimulation = match.aiSimulation;
 	record.turnCounter = this.turnCounter;
-	record.currMenace = match.currMenace;
 	this.events.push(record);
 	this.moves += 1;
 }
@@ -305,7 +303,6 @@ function updateTransform(match, square, from, newType)
 	record.zobristIndex = match.zobristIndex;
 	record.aiSimulation = match.aiSimulation;
 	record.turnCounter = this.turnCounter;
-	record.currMenace = match.currMenace;
 	this.events.push(record);
 	this.moves += 1;}
 
@@ -330,7 +327,6 @@ function updateEndTurn(match)
 	record.aiSimulation = match.aiSimulation;
 	record.turnMoves = match.moves;
 	record.turnCounter = this.turnCounter;
-	record.currMenace = match.currMenace;
 	this.events.push(record);
 	if (!record.aiSimulation)
 		this.turnCounter += 1;

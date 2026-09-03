@@ -85,7 +85,7 @@ export function checkMove(coords=[], result, match, boostBool)
 					secondThreat = threat[1];
 			}
 			if (from.piece.multipleMovesBool && boostBool && from.boostedTargetZones.has(coords[1]) && 
-			from.boostedTargetZones.get(coords[1])?.has(threat[0])/*  && simulation(coords, match, result, [coords[1], secondThreat]) */)
+			from.boostedTargetZones.get(coords[1])?.has(threat[0]) && simulation(coords, match, result, [coords[1], secondThreat]))
 				return true;
 		}
 		if (match.lastMenace.from != "")

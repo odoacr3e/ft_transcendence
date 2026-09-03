@@ -805,7 +805,7 @@
       },
       "type": "move",
       "specialMoves": 0,
-      "useBoostBool": false,
+      "useBoostBool": true,
       "counter": 437385,
       "turnCounter": 12,
       "updates": {},

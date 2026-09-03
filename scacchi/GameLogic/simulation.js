@@ -40,7 +40,7 @@ export function simulation(coords, match, result=null, otherCoords=null, recBool
 	let	kingCoord;
 	let	dangerBool;
 	let	tmpCursor;
-	let doubleMoveProtect = false;
+	let	tmpBoost;
 
 	tmpCursor = match.cursor.square;
 	from = match.board.get(coords[0]);
@@ -54,9 +54,6 @@ export function simulation(coords, match, result=null, otherCoords=null, recBool
 		tmpSquare = to.Copy();
 		tmpPiece = tmpSquare.piece;
 	}
-	if (from.boostedTargetZones.size && 
-		from.boostedTargetZones.get(coords[1])?.has(match.currMenace))
-		doubleMoveProtect = true;
 	if (!result || result.specialMoves.CheckSniperMove() == 0)
 	{
 		to.piece = from.piece;
@@ -73,29 +70,16 @@ export function simulation(coords, match, result=null, otherCoords=null, recBool
 		to.piece.isBoostedBool = false;
 	dangerUpdateMoved(match, coords);
 	dangerBool = isDangerous(match, king.dangerZones, king.piece?.team, true, kingCoord);
-	if (dangerBool && doubleMoveProtect && !recBool && to.piece?.isBoostedBool && isOneOf(to.piece.type, enumNames.CHAMPION, enumNames.MINOTAURUS))
-	{//@ts-ignor
-		// for (let boostTarget of tmpBoostZones)
-		// {
-		// 	match.currentPlayer.boostedPiece = coords[1];
-		// 	if (simulation([coords[1], boostTarget], match), null, null, true)
-		// 	{
-		// 		dangerBool = false;
-		// 		match.currentPlayer.boostedPiece = coords[0];
-		// 		break ;
-		// 	}
-		// 	match.currentPlayer.boostedPiece = coords[0];
-		// }
-		match.currentPlayer.boostedPiece = coords[1];
-		if (coords[1] == "b3" && match.currMenace == "g8")
-			console.log();
-		dangerBool = !simulation([coords[1], match.currMenace], match, null, null, true);
-		match.currentPlayer.boostedPiece = coords[0];
-	}
 	if (!dangerBool)
 		dangerBool = checkDoubleMoveMate(match, coords, result);
-	if (!dangerBool && otherCoords)
-		dangerBool = simulation(otherCoords, match, result);
+	if (otherCoords)
+	{
+		tmpBoost = match.currentPlayer.boostedPiece;
+		if (match.currentPlayer.boostedPiece == coords[0])
+			match.currentPlayer.boostedPiece = coords[1];
+		dangerBool = !simulation(otherCoords, match, result);
+		match.currentPlayer.boostedPiece = tmpBoost;
+	}
 	if (!dangerBool && match.settings.players.allies)
 	{
 		dangerBool = checkKingDanger(match, match.currentPlayer.ally);
