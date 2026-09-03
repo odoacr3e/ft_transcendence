@@ -113,7 +113,6 @@ function clientResetData(ids)
  */
 function gameMessage(match, msg, author="server", printer=console.log)
 {
-	let	id;
 	let	result;
 
 	if (match == undefined)
