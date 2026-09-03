@@ -117,13 +117,13 @@ export function routesGame(socket, user)
 
 		socketData = globals.clientMap.get(user.id_user);
 		if (!req || !req.author || !req.msg)
-			result = new Result().Error(`missing 'author' or 'msg' in ${req}`, 400);
+			result = new Result().Error(`missing 'author' or 'msg' in ${req}`, 400, true);
 		else if (!socketData)
-			result = new Result().Error("Server lost your data", 500);
+			result = new Result().Error("Server lost your data", 500, true);
 		else if (!socketData.aiMatchData && !socketData.matchData && !socketData.spectateData)
-			result = new Result().Error("Match does not exist", 404);
+			result = new Result().Error("Match does not exist", 404, true);
 		else if (!socketData.aiMatchData && !(globals.matches.get(`${socketData.GetmatchId()}`)))
-			result = new Result().Error("Match is lost.. " + socketData.GetmatchId(), 500);
+			result = new Result().Error("Match is lost.. " + socketData.GetmatchId(), 500, true);
 		else
 		{
 			gameMessage(socketData.GetmatchId(), req.msg, req.author, console.log);

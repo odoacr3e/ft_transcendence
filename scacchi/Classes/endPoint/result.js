@@ -85,11 +85,13 @@ class Result
 			this.type = type;
 		return (this);
 	}
-	Error(msg="Backend failed for unknown reasons", status=500)
+	Error(msg="Backend failed for unknown reasons", status=500, printBool=false)
 	{
 		this.status = status;
 		this.msg = msg;
 		this.log = {status: this.status, msg: this.msg};
+		if (printBool)
+			console.log(`Error ${status}: ${msg}`);
 		return (this);
 	}
 	/** @param {object} obj */
