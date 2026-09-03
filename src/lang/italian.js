@@ -18,7 +18,7 @@ export const italian = {
         header: {
             inv: {
                 creation: "Creato il {date} @:common.by",
-                desc: "Sei stato invitato al @.lower:common.tournament <b>{tourName}</b> creato @:common.by {tourCreator}.<br>Vuoi partecipare?",
+                desc: "Sei stato invitato al @.lower:common.tournament {tourName} creato @:common.by {tourCreator}.<br>Vuoi partecipare?",
                 expired: "Invito scaduto",
                 friendTitle: "Richiesta di amicizia",
                 tourTitle: "Invito ad un torneo",
@@ -32,7 +32,7 @@ export const italian = {
             login: "Accedi"
         },
         menu: {
-            userList: "{nUser} utenti trovati per \"<b>{search}</b>\"",
+            userList: "{nUser} utenti trovati per \"",
             online: "Gioca online",
             offline: "Gioca offline",
             lBoard: "Classifica",
@@ -130,7 +130,8 @@ export const italian = {
                 date:   {   title: "Ultimo aggiornamento:",
                             desc: "10/08/2026" },
                 intro:  {   title: "Introduzione",
-                            desc: "ChessZ è un'applicazione web sviluppata come progetto studentesco nell'ambito del percorso di 42 Firenze, che permette agli utenti di giocare a scacchi in modalita partita online, torneo e partita locale contro AI, gestire un profilo e interagire con altri utenti. Utilizzando il servizio si accetta interamente i presenti “<b>Termini di Servizio</b>”. Se non si accettano questi termini, si prega di non utilizzare l'applicazione." },
+                            desc_one: "ChessZ è un'applicazione web sviluppata come progetto studentesco nell'ambito del percorso di 42 Firenze, che permette agli utenti di giocare a scacchi in modalita partita online, torneo e partita locale contro AI, gestire un profilo e interagire con altri utenti. Utilizzando il servizio si accetta interamente i presenti \“",
+                            desc_two: "\”. Se non si accettano questi termini, si prega di non utilizzare l'applicazione." },
                 list:   {
                     "Requisiti di accesso" : "Per utilizzare ChessZ è necessario creare un account fornendo un'email valida e uno username. Per i temi trattati e i termini utilizzati, il servizio è utilizzabile per utenti di età non inferiore ai 14 anni; utenti minorenni dovrebbero utilizzare il servizio con il consenso di un genitore o tutore.",
                     "Comportamento utente" : "Utilizzando ChessZ, l'utente si impegna a:",

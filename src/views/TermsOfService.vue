@@ -21,7 +21,7 @@ const { t, tm, rt} = useI18n();
         <hr class="w-full justify-self-start text-text-last">
         <div class="text-text-second max-md:text-sm md:text-[16px]">
             <h3><b>{{ t('legal.service.intro.title') }}</b></h3>
-            <p v-html="t('legal.service.intro.desc')"></p>
+                <p class="whitespace-normal">{{ t('legal.service.intro.desc_one') }}<span class="font-semibold">{{ t('legal.service.title') }}</span>{{ t('legal.service.intro.desc_two') }}</p>
         </div>
         <ul class="text-text-second gap-8 list-decimal
                     max-md:columns-1 max-md:pl-3 max-md:text-[13px]

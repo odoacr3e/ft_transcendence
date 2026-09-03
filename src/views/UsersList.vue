@@ -3,14 +3,16 @@
     import { defaultAvatar, handleAvatarError }    from '../scripts/Helper/CompUtils';
     import { ref, watch }       from 'vue';
     import { api }              from '../router/api/client';
-    
-    const prop = defineProps({
-	    query: {
-	    	type: String,
-	    	default: ''
-	    }
-	}),
-    db = ref([]);
+    import { useI18n } from 'vue-i18n';
+
+    const   { t } = useI18n(),
+            prop = defineProps({
+	            query: {
+	            	type: String,
+	            	default: ''
+	            }
+	        }),
+            db = ref([]);
 
     async function loadUserData(username) {
         try { db.value = (await api.get(`/api/users/?username=${username}`)).data.users; }
@@ -30,8 +32,10 @@
 <template>
     <div class="flex flex-col z-2 bg-bg-default rounded-3xl max-md:mt-10 max-[375px]:w-screen max-[375px]:h-screen">
         <div class="text-text-default text-2xl mx-7.5 mt-7.5 max-md:text-center">
-            <h2 v-if="query.length > 11" v-html="$t('menu.userList', { nUser: db.length, search: query.slice(0, 10) + '...' })"></h2>
-            <h2 v-if="query.length <= 11" v-html="$t('menu.userList', { nUser: db.length, search: query })"></h2>
+            <h2 class="flex" v-if="query.length > 11">{{ t('menu.userList', { nUser: db.length }) }}
+                <p class="font-semibold">{{ query.slice(0, 10) + '...' }}</p>"</h2>
+            <h2 class="flex" v-if="query.length <= 11">{{ t('menu.userList', { nUser: db.length }) }}
+                <span class="font-semibold">{{ query }}</span>"</h2>
             <hr class="text-text-last self-center w-auto">
         </div>
         <div class="p-8 grid max-md:grid-cols-2 md:grid-cols-4 gap-10 w-full justify-items-center" :class="db.length > 8 ? 'max-[375px]:max-h-[80vh] max-h-[75vh] overflow-y-auto' : ''">

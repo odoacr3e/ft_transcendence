@@ -18,7 +18,7 @@ export const english = {
         header: {
             inv: {
                 creation: "Created {date} @:common.by",
-                desc: "You've been invited to the <b>{tourName}</b> @.lower:common.tournament created @:common.by {tourCreator}.<br>Would you like to participate?",
+                desc: "You've been invited to the {tourName} @.lower:common.tournament created @:common.by {tourCreator}.<br>Would you like to participate?",
                 expired: "Invitation no longer valid",
                 friendTitle: "@:common.friend request",
                 tourTitle: "@:common.tournament invitation",
@@ -32,7 +32,7 @@ export const english = {
             login: "Login"
         },
         menu: {
-            userList: "{nUser} users found for \"<b>{search}</b>\"",
+            userList: "{nUser} users found for \"",
             online: "Play online",
             offline: "Play offline",
             lBoard: "Leader Board",
@@ -130,7 +130,8 @@ export const english = {
                 date:   {   title: "Last updated:",
                             desc: "10/08/2026" },
                 intro:  {   title: "Introduction",
-                            desc: "ChessZ is a web application developed as a student project as part of the 42 Firenze program, which allows users to play chess in online, tournament, and local AI matches, manage a profile, and interact with other users. By using the service, you are fully accepting those present “<b>Terms of Service</b>”. If you do not accept these terms, please do not use the application." },
+                            desc_one: "ChessZ is a web application developed as a student project as part of the 42 Firenze program, which allows users to play chess in online, tournament, and local AI matches, manage a profile, and interact with other users. By using the service, you are fully accepting those present \“",
+                            desc_two: "\”. If you do not accept these terms, please do not use the application." },
                 list:   {
                     "Access Requirements" : "To use ChessZ you need to create an account by providing a valid email and username. For the topics covered and the terms used, the service can be used for users no younger than 14 years old; minor users should use the service with the consent of a parent or guardian.",
                     "User behavior" : "By using ChessZ, the user commits to:",
