@@ -111,7 +111,7 @@ function handleReconnect(dbUser, socketData, newSocket)
 		return (MatchMaking(dbUser));
 	else if (socketData.state == enumSocketState.PLAYING)
 	{
-		matchId = socketData.matchData ? socketData.matchData.matchId : socketData.aiMatchData?.matchId;
+		matchId = socketData.GetmatchId();
 		if (!matchId)
 			return (console.log("ERROR: data for player are lost! OH NO!"));
 		gameMessage(matchId, `${msgReconnect} ${dbUser?.username}`);
@@ -138,7 +138,7 @@ function handleLogout(socket, user)
 		globals.RemoveFromAllQueues(user.id_user);
 		result = globals.DeletePlayer(socketData.matchData?.matchId, socketData.matchData?.team);
 		if (socketData.matchData)
-			roomMessage(`match_${socketData.matchData.matchId}`, `game`, result);
+			roomMessage(`match_${socketData.GetmatchId()}`, `game`, result);
 		gameMessage(socketData.matchData?.matchId, `${user?.username} ${msgLogout}`);
 		result = globals.LeaveRoom(socketData, user.id_user);
 		if (socketData.roomData)

@@ -98,7 +98,7 @@ async function gameWebSocketHandler(req, id_user, socketData)
 		return (await gameAIHandler(req, socketData));
 	if (!socketData.matchData)
 		return (socketError(socketData.socket, null, 401, "Socket: you are not a player."));
-	matchId = socketData.matchData.matchId;
+	matchId = socketData.GetmatchId();
 	if (!matchId)
 		return (socketError(socketData.socket, null, 401, `Socket: match ${matchId} does not exist.`));
 	match = globals.matches.get(matchId);

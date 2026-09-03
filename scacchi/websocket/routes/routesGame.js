@@ -114,22 +114,19 @@ export function routesGame(socket, user)
 	{
 		let	result;
 		let	socketData;
-		let	match;
 
 		socketData = globals.clientMap.get(user.id_user);
 		if (!req || !req.author || !req.msg)
 			result = new Result().Error(`missing 'author' or 'msg' in ${req}`, 400);
 		else if (!socketData)
 			result = new Result().Error("Server lost your data", 500);
-		else if (socketData.matchData && !(match = globals.matches.get(`${socketData.matchData.matchId}`)))
-			result = new Result().Error("Cannot find match " + socketData.matchData.matchId, 500);
-		else if (socketData.spectateData && !(match = globals.matches.get(`${socketData.spectateData}`)))
-			result = new Result().Error("Cannot find match " + socketData.spectateData, 500);
-		else if (!socketData.matchData && !socketData.spectateData)
-			result = new Result().Error("You are not playing any match", 401);
+		else if (!socketData.aiMatchData && !socketData.matchData && !socketData.spectateData)
+			result = new Result().Error("Match does not exist", 404);
+		else if (!socketData.aiMatchData && !(globals.matches.get(`${socketData.GetmatchId()}`)))
+			result = new Result().Error("Match is lost.. " + socketData.GetmatchId(), 500);
 		else
 		{
-			gameMessage(match, req.msg, req.author, console.log);
+			gameMessage(socketData.GetmatchId(), req.msg, req.author, console.log);
 			result = new Result().Success("OK", "msg");
 		}
 		socket.emit("gameMsg", result);

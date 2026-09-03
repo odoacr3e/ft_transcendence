@@ -31,4 +31,14 @@ export class SocketInfo
 		/** @type {Array<number>} */
 		this.friendsId = [];
 	}
+	GetmatchId()
+	{
+		let id = this.matchData ? this.matchData.matchId : this.aiMatchData?.matchId;
+
+		if (!id && this.spectateData)
+			id = this.spectateData;
+		if (!id)
+			return undefined;
+		return (`${id}`);
+	}
 }
