@@ -76,8 +76,18 @@ export function checkMove(coords=[], result, match, boostBool)
 		if (result.specialMoves.CheckAllyGuardian())
 			return (error(result, 403, `protect your ally! you can use your ${match.board._data.get(match.currentPlayer.allieGuardianCoord)?.piece?.type} in ${coordNormify(match.currentPlayer.allieGuardianCoord)}`));
 		threat = match.GetThreats(match.currentPlayer.team);
-		if (threat.length == 1 && from.piece.multipleMovesBool && boostBool && from.boostedTargetZones.has(coords[1]) && from.boostedTargetZones.get(coords[1])?.has(threat[0]))
-			return true;
+		if (threat.length <= 2)
+		{
+			let	secondThreat = threat[0];
+			if (threat.length == 2 && (from.targetZones.has(threat[0]) || from.targetZones.has(threat[1])))
+			{
+				if (secondThreat == coords[1])
+					secondThreat = threat[1];
+			}
+			if (from.piece.multipleMovesBool && boostBool && from.boostedTargetZones.has(coords[1]) && 
+			from.boostedTargetZones.get(coords[1])?.has(threat[0])/*  && simulation(coords, match, result, [coords[1], secondThreat]) */)
+				return true;
+		}
 		if (match.lastMenace.from != "")
 		{//@ts-ignore
 			result.check = match.lastMenace;

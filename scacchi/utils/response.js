@@ -156,7 +156,7 @@ function getPlayerData(player, result, num, isPlaying)
 		nPieces: player.nPieces,
 		team: player.team,
 		time: player.time,
-		isPlaying: isPlaying,
+		isPlaying: isPlaying
 	};
 }
 

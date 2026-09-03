@@ -2,7 +2,7 @@
 
 import { eChildEvents }				from "../../Macro/enums.js";
 import { isOneOf } 					from "../../utils/string.js";
-import { gameMessage, roomMessage } from "../../websocket/utils.js";
+import { clientSetState, gameMessage, roomMessage } from "../../websocket/utils.js";
 import { fork } 					from "child_process";
 import { Result } 					from "../endPoint/result.js";
 
@@ -25,14 +25,16 @@ class Child
 		/** @type {Set<number>} */
 		this.matchSet = new Set;
 		this.id = index;
+		/** @type {Map<number | undefined, number>} */
+		this.userIdMap = new Map();
 		this.child = fork("handlers/child/child.js");
 		if (!this.child)
 			throw (`Child: fork has failed`);
 
-		this.SetListeners();
+		this.#SetListeners();
 	}
 	/**
-	 * 
+	 * send data to the child
 	 * @param {string} event 
 	 * @param {*} data 
 	 * @param {number | undefined} matchId 
@@ -43,10 +45,16 @@ class Child
 		/** @type {ChildData} */
 		let	childData;
 
+		if (matchId && userId)
+			this.userIdMap.set(matchId, userId);
 		childData = {ChildId: this.id, MatchId: matchId, Event: event, userId: userId, Data: data};
 		this.child.send(childData);
 	}
-	SetListeners()
+	//SECTION - private methods
+	/** 
+	 * get child data
+	*/
+	#SetListeners()
 	{
 		this.child.on("spawn", () => 
 		{
@@ -55,11 +63,7 @@ class Child
 		this.child.on("close", () => 
 		{
 			console.log(`figlio con id ${this.id} ha chiuso i ponti col padre`);
-			for (let ids of this.matchSet)
-				roomMessage(`match_${ids}`, "error", new Result().Error("game crash", 500));
-			this.child = fork("handlers/child/child.js");
-			this.matchSet.clear();
-			this.SetListeners();
+			this.#Reset();
 		});
 		this.child.on("disconnect", () => 
 		{
@@ -71,6 +75,8 @@ class Child
 			{
 				console.log(`message from ${data.MatchId}, event ${data.Event}, data: ${data.Data}`);
 				roomMessage(`match_${data.MatchId}`, data.Event, data.Data);
+				if (data.Data.victory)
+					this.#EndGame(data.MatchId, this.userIdMap.get(data.MatchId));
 			}
 			else if (data.Event == eChildEvents.Error)
 			{
@@ -82,6 +88,27 @@ class Child
 			else
 				throw (`Not correct child event type`);
 		});
+	}
+	/**
+	 * 
+	 * @param {number | undefined} matchId 
+	 * @param {number | undefined} userId 
+	 */
+	#EndGame(matchId, userId)
+	{
+		clientSetState(userId);
+		this.userIdMap.delete(matchId);
+	}
+	#Reset()
+	{
+		for (let id of this.matchSet)
+		{
+			roomMessage(`match_${id}`, "error", new Result().Error("crash", 500));
+			this.#EndGame(id, this.userIdMap.get(id));
+		}
+		this.child = fork("handlers/child/child.js");
+		this.matchSet.clear();
+		this.#SetListeners();
 	}
 }
 

@@ -223,12 +223,17 @@ async function gameInfoHandler(match, body, socketData=null)
 function gamePlayerNotificationHandler(match, body, socketData)
 {
 	let	result;
+	let	team;
 
 	result = new Result().Success();
 	if (body.type == "giveup")
 	{
-		match.PlayerLost(result, match.GetPlayer(socketData?.matchData?.team));
-		if (match.currentPlayer.team == socketData?.matchData?.team)
+		if (socketData)
+			team = socketData.matchData?.team;
+		else
+			team = match.currentPlayer.ai ? match.NextPlayer().team : match.currentPlayer.team;
+		match.PlayerLost(result, match.GetPlayer(team));
+		if (match.currentPlayer.team == team)
 			match.endTurn();
 		if (match.playerNum <= 1)
 			match.CheckMate(result);

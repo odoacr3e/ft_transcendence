@@ -105,6 +105,24 @@
 
         .status-badge.connected { background-color: var(--accent-green); }
 
+        .playing-badge {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: white;
+            background-color: var(--accent-red);
+            transition: background-color 0.3s ease;
+        }
+
+        .playing-badge.is-playing {
+            background-color: var(--accent-green);
+        }
+
         .btn-action {
             background-color: #312e2b;
             color: white;
@@ -361,6 +379,7 @@
                 <thead>
                     <tr>
                         <th>Stato</th>
+                        <th title="Playing Status">P</th>
                         <th>Team</th>
                         <th>Username (ID Match)</th>
                         <th>points</th>
@@ -437,14 +456,14 @@
 
         function pulisciMessaggioNessunClient() {
             const tbody = document.getElementById('game-table-body');
-            const placeholderRow = tbody.querySelector('tr td[colspan="9"]');
+            const placeholderRow = tbody.querySelector('tr td[colspan="10"]');
             if (placeholderRow) {
                 tbody.innerHTML = '';
             }
         }
 
         if(clientIniziali.length === 0) {
-            document.getElementById('game-table-body').innerHTML = `<tr><td colspan="9" style="text-align:center; color:white; background:#262522; padding:2rem;">Nessun client in partita. Avvia un match dal Test Bench precedente.</td></tr>`;
+            document.getElementById('game-table-body').innerHTML = `<tr><td colspan="10" style="text-align:center; color:white; background:#262522; padding:2rem;">Nessun client in partita. Avvia un match dal Test Bench precedente.</td></tr>`;
         } else {
             clientIniziali.forEach(c => creaRigaClientGameplay(c.dati, c.matchId, c.team));
         }
@@ -490,6 +509,7 @@
             
             tr.innerHTML = `
                 <td><span id="badge-${datiUtente.id_user}" class="status-badge ${isConnected ? 'connected' : ''}">${isConnected ? 'Connected' : 'Connecting'}</span></td>
+                <td style="text-align: center;"><span id="playing-badge-${datiUtente.id_user}" class="playing-badge" title="Stato Playing">P</span></td>
                 <td><span class="team-badge team-${teamSicuro.toLowerCase()}">${teamSicuro}</span></td>
                 <td><strong>${datiUtente.username}</strong><br><small style="color:#444; font-family:monospace;">ID: ${datiUtente.id_user}</small></td>
                 <td>🎯 ${datiUtente.points}</td>
@@ -571,6 +591,10 @@
                     badge.innerText = "Disconnected";
                     badge.classList.remove('connected');
                 }
+                const playingBadge = document.getElementById(`playing-badge-${datiUtente.id_user}`);
+                if (playingBadge) {
+                    playingBadge.classList.remove('is-playing');
+                }
                 const btn = document.getElementById(`btn-toggle-${datiUtente.id_user}`);
                 if (btn) {
                     btn.innerText = "Attacca Socket";
@@ -586,6 +610,24 @@
                 }, 1000);
             });
         }
+
+        // --- POLLING STATO "amiplaying" (OGNI SECONDO) ---
+        setInterval(() => {
+            clientSimulati.forEach(client => {
+                if (client.socket && client.socket.connected) {
+                    client.socket.emit("amiplaying", (isPlaying) => {
+                        const playingBadge = document.getElementById(`playing-badge-${client.dati.id_user}`);
+                        if (playingBadge) {
+                            if (isPlaying) {
+                                playingBadge.classList.add('is-playing');
+                            } else {
+                                playingBadge.classList.remove('is-playing');
+                            }
+                        }
+                    });
+                }
+            });
+        }, 1000);
 
         // --- INVIO COMANDI ---
         function inviaMossa(idUser) {
@@ -762,6 +804,8 @@
                     if (data.matchId) ultimoMatchIdAI = data.matchId;
                     
                     // Inizializza il giocatore con il team ricevuto ("white" o "black")
+					if (!data.team)
+						alert(`data has no team: ${JSON.stringify(data, null, 2)}`);
                     const teamColor = data.team ? data.team.toLowerCase() : "white";
                     const authData = getAuthUtenteAI();
                     creaRigaClientGameplay(authData, data.matchId || ultimoMatchIdAI, teamColor, aiSocket);
