@@ -77,6 +77,7 @@ export const PIECES_CODEX = Object.freeze({
 		move:		{ dirs: STAR, slide: false },
 		boost:		null,
 		baseTitle:	"MOSSA BASE DEGLI SCACCHI",
+		baseText:	"Si muove di una sola casella per volta, in tutte e otto le direzioni.\nCattura allo stesso modo, spostandosi sulla casella del pezzo avversario.",
 		boostText:	"Potenzia a tuo rischio e pericolo.",
 	},
 	Champion: {
@@ -84,12 +85,14 @@ export const PIECES_CODEX = Object.freeze({
 		move:		{ dirs: STAR, slide: true },
 		boost:		{ dirs: STAR, slide: true },
 		baseTitle:	"MOSSA BASE DEGLI SCACCHI",
-		boostText:	"Due mosse in un turno: si sposta, poi riparte dalla casella\
-					 d'arrivo. Ma attenzione, se si fa scacco al re avversario,\
+		baseText:	"Scorre quanto vuole lungo le otto direzioni, ortogonali e diagonali.\nSi ferma sul primo pezzo che incontra e lo cattura se e' avversario.",
+		boostTitle: "Due mosse in un turno",
+		boostText:	"Si sposta di una mossa classica di scacchi ma attenzione, se si fa scacco al re avversario,\
 					 oppure ci si muove in una casella minacciata da un pezzo\
-					 avversario la mossa boostata si interrompe",
+					 avversario la mossa boostata si interrompe\nLa seconda mossa è esattamente uguale alla prima senza le limitazioni",
 		baseScenes: [
 			{
+				caption:	"Le otto linee del Champion: ognuna continua finche' non trova un pezzo o il bordo.",
 				actors:		[ self(0, 0) ],
 				arrows:		[
 					{ from: [0, 0], to: [ 0, -2] },
@@ -122,10 +125,12 @@ export const PIECES_CODEX = Object.freeze({
 		move:		{ dirs: ORTHO, slide: true },
 		boost:		{ dirs: ORTHO, slide: true },
 		baseTitle:	"MOSSA BASE DEGLI SCACCHI",
+		baseText:	"Scorre quanto vuole su righe e colonne, mai in diagonale.\nSi ferma sul primo pezzo che incontra e lo cattura se e' avversario.",
 		boostTitle:	"CARICA: due catture in un turno",
 		boostText:	"Due mosse in un turno, ma solo se entrambe catturano un pezzo.\nDalla casella della preda riparte per catturare di nuovo.\nSe una seconda preda non c'e', il boost non parte.",
 		baseScenes: [
 			{
+				caption:	"Le quattro linee ortogonali: avanti, indietro e sui due lati.",
 				actors:		[ self(0, 0) ],
 				arrows:		[
 					{ from: [0, 0], to: [ 0, -2] },
@@ -167,7 +172,7 @@ export const PIECES_CODEX = Object.freeze({
 		move:		{ dirs: KNIGHT, slide: false },
 		boost:		{ dirs: KNIGHT, slide: false },
 		baseTitle:	"MOSSA BASE DEGLI SCACCHI",
-		baseText:	"Mossa con pattern a \"L\",",
+		baseText:	"Salto a \"L\": due caselle in una direzione e una in quella perpendicolare.\nE' l'unico pezzo che scavalca: chi sta in mezzo non lo ferma.",
 		boostTitle:	"SCHERZO: Effetto pac-man",
 		boostText:	"Mossa singola, ma su zone extra concesse dall'abilità che\
 					 permettono al jester di sbucare dalla parte opposta della\
@@ -175,7 +180,7 @@ export const PIECES_CODEX = Object.freeze({
 					 per ogni casella del movimento hai la possibilità di saltare",
 		baseScenes: [
 			{
-				caption:	"",
+				caption:	"Le otto L partono da qui, ma dal bordo solo quattro restano dentro la scacchiera.",
 				actors:		[ self(0, 2) ],
 				marks:		[
 					{ x:-1, y: 0,	kind: "capture"},
@@ -222,7 +227,7 @@ export const PIECES_CODEX = Object.freeze({
 					 muovere la valkirya stessa.\n Salta un solo pezzo qualsiasi lungo il suo raggio d'azione, alleato o avversario",
 		baseScenes: [
 			{
-				caption:	"",
+				caption:	"Le quattro diagonali: scorre finche' non incontra un pezzo e lo cattura se e' avversario.",
 				actors:		[ self(0, 0) ],
 				arrows:		[
 					{ from: [0, 0], to: [2, 2] }, 
@@ -262,7 +267,7 @@ export const PIECES_CODEX = Object.freeze({
 					\n 2. Nello stesso turno muove anche un pezzo che era accanto alla casella di partenza, con le sue mosse classiche..",
 		baseScenes: [
 			{
-				caption:	"",
+				caption:	"Avanza dritto di una casella, due se non si e' ancora mosso; in diagonale ci va solo per catturare.",
 				actors:		[ self(0, 1) ],
 				marks:		[
 					{ x:  0, y:  0 },
