@@ -6,11 +6,12 @@ import * as lib from "./lib.js";
 import dotenv from "dotenv";
 import { loadSecretsFromVault } from './vault.js';
 
-const VAULT_VAR = false;
-if (VAULT_VAR)
+dotenv.config();
+
+//Vault e' opzionale: solo la stringa "true" lo accende, e i segreti che ne arrivano
+//sovrascrivono quelli del .env. Con qualsiasi altro valore restano quelli del .env.
+if (process.env.VAULT_ENABLED === 'true')
 	await loadSecretsFromVault();
-else
-	dotenv.config();
 
 log.header('ft_transcendence', '1.0.0');
 log.db("Setting up Prisma client...");
