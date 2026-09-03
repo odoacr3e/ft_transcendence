@@ -8,9 +8,9 @@ import { clientBoard } from "./utils.js";
  * 
  * @param {import("../../Classes/Chess/match.js").Match} match
  * @param {import("../../Classes/endPoint/result.js").Result} result
- * @param {import("../../Classes/Globals/globals.js").Socket | null} socketData
+ * @param {string} team
  */
-export function reload(match, result, socketData)
+export function reload(match, result, team)
 {
 	let	yourTurnBool;
 	let	lastMovedPiece;
@@ -21,15 +21,10 @@ export function reload(match, result, socketData)
 	// @ts-ignore
 	result.board = clientBoard(match, true, true);//@ts-ignore
 	result.history = match.history.clientEvents;
-	result.team = socketData?.matchData?.team;
+	result.team = team;
 	if (result.team == undefined)
 		result.team = "spectating";
-	if (!socketData)
-	{//@ts-ignore
-		result.NO_SOCKET = true;
-		return ;
-	}
-	yourTurnBool = socketData?.matchData?.team == match.currentPlayer.team; 
+	yourTurnBool = team == match.currentPlayer.team; 
 	if (yourTurnBool && match.moves != 0)//@ts-ignore
 		result.secondMove = true;
 	else//@ts-ignore

@@ -195,11 +195,18 @@ async function gameHandler(match, body, socketData=null)
 async function gameInfoHandler(match, body, socketData=null)
 {
 	let	result;
+	let team;
 
 	result = new Result();
+	if (socketData?.matchData)
+		team = socketData.matchData.team;
+	else if (match.currentPlayer.ai)
+		team = match.NextPlayer().team;
+	else
+		team = match.currentPlayer.team;
 	if (body.type == "reload")
 	{
-		reload(match, result, socketData);
+		reload(match, result, team);
 	}
 	else if (body.type == "history")
 	{

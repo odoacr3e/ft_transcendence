@@ -38,10 +38,8 @@ async function websocketConnectionHandler(socket, friendsId)
 		await firstConnection(user, socket, friendsId);
 	try {
 		friendsId = await announceMeOnline(sockio, user, globals.clientMap);
-	} catch (error)
-	{
-		//FIXME - ci va sempre
-		// console.error("Server error loading friends:", error);
+	} catch (error) {
+		console.error("Server error loading friends:", error);
 	}
 	return (user);
 }
@@ -113,7 +111,7 @@ function handleReconnect(dbUser, socketData, newSocket)
 		return (MatchMaking(dbUser));
 	else if (socketData.state == enumSocketState.PLAYING)
 	{
-		matchId = socketData.matchData? socketData.matchData.matchId : socketData.aiMatchData?.matchId;
+		matchId = socketData.matchData ? socketData.matchData.matchId : socketData.aiMatchData?.matchId;
 		if (!matchId)
 			return (console.log("ERROR: data for player are lost! OH NO!"));
 		gameMessage(matchId, `${msgReconnect} ${dbUser?.username}`);

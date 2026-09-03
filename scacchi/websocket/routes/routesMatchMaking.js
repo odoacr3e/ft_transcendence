@@ -5,7 +5,7 @@ import { Result } from "../../Classes/endPoint/result.js";
 import { globals } from "../../Classes/Globals/globals.js";
 import { AIprofilesArray, eMatchPresets, enumConnection, enumInitNames, enumSocketState, eChildEvents, AIprofiles } from "../../Macro/enums.js";
 import { isOneOf } from "../../utils/string.js";
-import { MatchMaking, matchMakingAI } from "../handlers/MatchMaking.js";
+import { MatchMaking } from "../handlers/MatchMaking.js";
 import { clientSetState, isBusy } from "../utils.js";
 import { init } from "../../handlers/game/init.js";
 import { Match, MatchSettings } from "../../Classes/Chess/match.js";
@@ -22,7 +22,39 @@ export function routesMatchMaking(socket, user)
 	// TODO - da aggiungere team nel caso
 	socket.on('create_ai_match', async(/** @type {{profile: string, team: string | null}} */req, callback) => 
 	{
-		let result = matchMakingAI(req, user);
+		let result = new Result().Success();
+		let resArray = new Array();
+		let	matchId;
+		let setting;
+		let ChildId;
+		let child;
+
+		console.log(`entro create_ai_match`);
+		socketData = globals.clientMap.get(user.id_user);
+		if (!socketData)
+			result = result.Error("Player data are lost", 500);
+		else if (!req || !req.profile) // @ts-ignore
+			result.aiProfiles = AIprofilesArray;
+		else if (AIprofilesArray.indexOf(req.profile) == -1)
+			result.Error("Profile does not exist", 404);
+		else
+		{
+			setting = new MatchSettings(eMatchPresets.ClassicTwoPlayers);
+			setting.SetAiProfile(req.profile, req.team);
+			ChildId = globals.LessBusyChild();
+			child = globals.childMap.get(ChildId);
+			if (!child)
+				throw (`create_ai_match: child not found`);
+			matchId = await openMatch();
+			child?.matchSet.add(matchId);
+			//FIXME - fare in un handler
+			// result.team = socketData.matchData.team;
+			socketData.state = enumSocketState.PLAYING;
+			socketData.aiMatchData = {ChildId: ChildId, matchId: matchId};
+			socket.join(`match_${matchId}`);
+			console.log(`adesso si spacca tutto`);
+			child?.Send(eChildEvents.CreateMatch, setting, matchId, user.id_user);
+		}
 		console.log(`risposta ai match: ${JSON.stringify(result, null, 2)}`);
 		if (typeof(callback) == 'function')
 			callback(result);

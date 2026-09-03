@@ -1,7 +1,7 @@
 //@ts-check
 import { globals } 							from "../../Classes/Globals/globals.js";
-import { AIprofilesArray, eChildEvents, eMatchPresets, enumConnection, enumSocketState } 	from "../../Macro/enums.js";
-import { Match, MatchSettings } 							from "../../Classes/Chess/match.js";
+import { enumConnection, enumSocketState } 	from "../../Macro/enums.js";
+import { Match } 							from "../../Classes/Chess/match.js";
 import { init } 							from "../../handlers/game/init.js";
 import { render } 							from "../../test/render.js";
 import { query } 							from "../../lib/query.js";
@@ -10,7 +10,6 @@ import { saveMatch } from "../../utils/saveMatch.js";
 import { rng } from "../../utils/random.js";
 import { clientResetData } from "../utils.js";
 import { openMatch } from "../../query/gameQuery.js";
-import { Result } from "../../Classes/endPoint/result.js";
 
 /** @typedef {import("../../Classes/Chess/player.js").Player} Player*/
 /** @typedef {import("../../Classes/endPoint/result.js").Result} Result*/
@@ -218,46 +217,4 @@ export async function bindPlayersToMatch(match, userSet, result, userIdIndexMap=
 		match.victory = match.users[rng(match.users.length)].team;
 	if (match.victory)
 		saveMatch(match);
-}
-
-/**
- * 
- * @param {{profile: string, team: string | null}} req 
- * @param {dbUser} user 
- */
-export async function matchMakingAI(req, user)
-{
-	let	socketData;
-	let result = new Result().Success();
-	let	matchId;
-	let setting;
-	let ChildId;
-	let child;
-
-	console.log(`entro create_ai_match`);
-	socketData = globals.clientMap.get(user.id_user);
-	if (!socketData)
-		result = result.Error("Player data are lost", 500);
-	else if (!req || !req.profile) // @ts-ignore
-		result.aiProfiles = AIprofilesArray;
-	else if (AIprofilesArray.indexOf(req.profile) == -1)
-		result.Error("Profile does not exist", 404);
-	else
-	{
-		setting = new MatchSettings(eMatchPresets.ClassicTwoPlayers);
-		setting.SetAiProfile(req.profile, req.team);
-		ChildId = globals.LessBusyChild();
-		child = globals.childMap.get(ChildId);
-		if (!child)
-			throw (`create_ai_match: child not found`);
-		matchId = await openMatch();
-		child?.matchSet.add(matchId);
-		socketData.state = enumSocketState.PLAYING;
-		socketData.aiMatchData = {ChildId: ChildId, matchId: matchId};
-		socketData.socket.join(`match_${matchId}`);
-		socketData.socket.emit("game", "test");
-		console.log(`adesso si spacca tutto`);
-		child?.Send(eChildEvents.CreateMatch, setting, matchId, user.id_user);
-	}
-	return (result);
 }
