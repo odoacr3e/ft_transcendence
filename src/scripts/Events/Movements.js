@@ -51,7 +51,8 @@ export async function onDrop(event, toSquare)
 	if (!isValidMove)
 	{
 		debug("[onDrop]: mossa non valida!");
-		playAudio("badmove");
+		if (fromSquareId !== toSquareId)
+			playAudio("badmove");
 		return;
 	}
 

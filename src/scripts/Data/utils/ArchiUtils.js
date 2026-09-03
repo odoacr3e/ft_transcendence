@@ -21,11 +21,15 @@ export function checkEndTurn(validated)
 	const	players_list = ["p1", "p2", "p3", "p4"];
 	const	curP = currentPlayer();
 
+	if (!newCurP || !curP) 
+		return (resetLocalVars());
+
 	players_list.forEach((player) => {
 		if (validated[player]?.isPlaying) { newCurP = validated[player]; };
 	});
 
-	if (curP.name === newCurP.name) { localInfo.secondTurn = true; }
+	if (curP.name === newCurP.name && !validated.victory)
+		localInfo.secondTurn = true;
 	else
 		resetLocalVars();
 }
@@ -139,7 +143,9 @@ export function resetLocalVars()
 	localInfo.drag				= null;
 	localInfo.pending			= null;
 	localInfo.drawOffer			= null;
+	localInfo.goatId			= null;
 
+	stopUpgradeMenu();
 	localBoard.forEach(square => {
 		if (square.useAbilityBool)
 			square.useAbilityBool = false;

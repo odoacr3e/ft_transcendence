@@ -4,7 +4,8 @@ import { initLocalBoard, localMatchState,
 		 currentPlayer, emptyCapturedPieces, debug }	from "./Variables.js";
 import { checkEndTurn, hasBoost, 
 		 checkUpgrade, assignLastMoveSquares, 
-		 setVictory}	from "./utils/ArchiUtils.js";
+		 setVictory,
+		 resetLocalVars}	from "./utils/ArchiUtils.js";
 import { beginPendingAbility } 					from "../Helper/abilityMovement.js";
 import { clearHistory } 						from "./History.js";
 import { clearMessages } 						from "./ChatBox.js";
@@ -53,6 +54,7 @@ export function initLocalMatchState(raw)
 
 	initLocalBoard(localMatchState?.board);
 	initLocalPlayers();
+	resetLocalVars();
 
 	localInfo.matchId = raw.id;
 	localInfo.myTeam = raw.team;

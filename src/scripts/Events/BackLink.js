@@ -60,8 +60,12 @@ export async function requestToBack(fromSquare, toSquare, opType, drawValue)
 		sockStore.socket?.emit("game", payload, (result) => {
 			clearTimeout(timeout);
 			const ok = result?.log?.status === 200;
+			const status = result?.log?.status;
+			
 			if (ok && !BOARD_AUDIO.has(type))
 				playAudio(type === "draw" ? "" : type);
+			else if (!ok && status !== undefined)
+				playAudio("badmove");
 			resolve(ok);
 		});
 	});
