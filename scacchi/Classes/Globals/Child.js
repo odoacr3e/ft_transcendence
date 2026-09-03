@@ -2,7 +2,7 @@
 
 import { eChildEvents }				from "../../Macro/enums.js";
 import { isOneOf } 					from "../../utils/string.js";
-import { clientSetState, gameMessage, roomMessage } from "../../websocket/utils.js";
+import { clientResetData, clientSetState, gameMessage, roomMessage } from "../../websocket/utils.js";
 import { fork } 					from "child_process";
 import { Result } 					from "../endPoint/result.js";
 
@@ -96,7 +96,7 @@ class Child
 	 */
 	#EndGame(matchId, userId)
 	{
-		clientSetState(userId);
+		clientResetData(userId);
 		this.userIdMap.delete(matchId);
 	}
 	#Reset()

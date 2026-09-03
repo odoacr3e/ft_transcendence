@@ -80,12 +80,14 @@ function clientSetState(id, state=enumSocketState.NAVIGATING)
 
 /**
  * 
- * @param {Set<number> | number | Array<number>} ids 
+ * @param {Set<number> | number | Array<number> | undefined} ids 
  */
 function clientResetData(ids)
 {
 	let	socketData;
 
+	if (!ids)
+		return ;
 	if (typeof(ids) == "number")
 		ids = [ids];
 	for (const id of ids)
@@ -101,6 +103,7 @@ function clientResetData(ids)
 		globals.DeletePlayer(socketData.matchData?.matchId, socketData.matchData?.team);
 		globals.LeaveRoom(socketData, id);
 		globals.ClearTimer(id);
+		clientSetState(id);
 	}
 }
 
