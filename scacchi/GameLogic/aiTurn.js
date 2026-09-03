@@ -41,7 +41,6 @@ export function AIexecuteTurn(match)
 	team = match.currentPlayer.team;
 	if (match.currentPlayer.ai?.defeatStatus == 1)
 	{
-		//FIXME - aggiungere evento aiSpeech
 		aiDefeatBool = true;
 		match.currentPlayer.ai.defeatStatus = 2;
 	}

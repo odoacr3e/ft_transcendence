@@ -218,3 +218,8 @@ export async function bindPlayersToMatch(match, userSet, result, userIdIndexMap=
 	if (match.victory)
 		saveMatch(match);
 }
+
+async function matchMakingAI()
+{
+	
+}

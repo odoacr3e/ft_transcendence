@@ -161,7 +161,6 @@ export async function initTournament(room)
 		console.log(tournament.userIds);
 		roomMessage(`tournament_${tournament.id}`, "start_tournament", new Result().Success());
 		tournament.nextRound();
-		//FIXME - decidere con frontend, oltre ad eventi, che dati mandare
 		console.log("giving frontend pairings data");
 		console.log(tournament.userIds[tournament.round - 1]);
 		console.log(tournament.userIds[tournament.round]);
@@ -240,8 +239,6 @@ export async function updateTournament(match, drawBool)
 			userSet.add(v.id_user);//@ts-ignore
 			userIdIndexMap.set(v.id_user, v.tour_index);
 		});
-		//FIXME - cosa vuole il frontend?
-		// roomMessage(`tournament_${tournament.id}`, "update_tournament", {data: tournament.userIds[tournament.round], roundId: tournament.round});
 		createMatchTournament(userSet, match.id, tournament.id, userIdIndexMap);
 		return ;
 	}

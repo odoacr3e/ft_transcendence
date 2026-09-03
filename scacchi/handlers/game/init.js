@@ -6,7 +6,6 @@ gameChecks, init
 	list of exports:
 	-	init:	init a match. The preset can be a matchSetting/a preset Str.
 	the matchSetting json can be found in classes/Chess/match.js
-	//FIXME - fare un altro oggetto in Classes/endpoint per controllo
 	the preset strings can be found in Macro/enums.js 	
 */
 

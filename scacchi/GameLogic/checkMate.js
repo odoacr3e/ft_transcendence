@@ -396,16 +396,12 @@ function doubleSave(match, threat)
  * @param {Square} square 
  * @returns 
  */
-function canDodge(match, square) //FIXME - da aggiornare senza fare simulation
+function canDodge(match, square)
 {
 	let	coord;
 	let	newSquare;
 	let	safeSet = new Set();
 	let	piece;
-	// let	row;
-	// let	col;
-	// let	diffRow;
-	// let	diffCol;
 	let	kingTargets;
 
 	piece = square.piece;
@@ -413,9 +409,6 @@ function canDodge(match, square) //FIXME - da aggiornare senza fare simulation
 		throw (`canDodge: square ${square} has undefined piece`);
 	match.cursor.Save();
 	coord = piece.pos;
-	// match.cursor.set(coord);
-	// row = match.cursor.getRow();
-	// col = match.cursor.getCol();
 	kingTargets = structuredClone(square.targetZones);
 	for (let newCoord of kingTargets)//king can dodge?
 	{
@@ -427,9 +420,6 @@ function canDodge(match, square) //FIXME - da aggiornare senza fare simulation
 	{
 		if (simulation([coord, x], match) == true)
 			return (match.cursor.Restore(), true);
-		// match.cursor.set(x);
-		// diffRow = row - match.cursor.getRow();
-		// diffCol = col - match.cursor.getCol();
 	}
 	return (false);
 }

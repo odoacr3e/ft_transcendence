@@ -93,7 +93,7 @@ export function routesGame(socket, user)
 	{
 		let	result;
 		let	socketData;
-//FIXME - gestione exitBool
+		//FIXME - gestione exitBool
 		socketData = globals.clientMap.get(user.id_user);
 		if (!socketData)
 			result = new Result().Error("Server lost your data", 500);

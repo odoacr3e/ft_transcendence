@@ -33,27 +33,6 @@ export function routesMatchMaking(socket, user)
 		socketData = globals.clientMap.get(user.id_user);
 		if (!socketData)
 			result = result.Error("Player data are lost", 500);
-		// else if (!req || !req.profile)
-		// {
-		// 	for (let i = 0; i < AIprofilesArray.length; ++i)
-		// 	{
-		// 		switch (AIprofilesArray[i]) {
-		// 			case AIprofiles.FIRST_AI:
-		// 				resArray.push(AIprofilesArray[i] + "_easy");
-		// 				break;
-		// 			case AIprofiles.GMU:
-		// 				resArray.push(AIprofilesArray[i] + "_hard");
-		// 				break;
-		// 			case AIprofiles.DEBUG:
-		// 				// resArray.push(AIprofilesArray[i] + "_medium");
-		// 				break;
-		// 			default:
-		// 				resArray.push(AIprofilesArray[i] + "_medium");
-		// 				break;
-		// 		}
-		// 	} // @ts-ignore
-		// 	result.aiProfiles = resArray;
-		// }
 		else if (!req || !req.profile) // @ts-ignore
 			result.aiProfiles = AIprofilesArray;
 		else if (AIprofilesArray.indexOf(req.profile) == -1)
@@ -68,7 +47,7 @@ export function routesMatchMaking(socket, user)
 				throw (`create_ai_match: child not found`);
 			matchId = await openMatch();
 			child?.matchSet.add(matchId);
-			//FIXME - fare in un listener
+			//FIXME - fare in un handler
 			// result.team = socketData.matchData.team;
 			socketData.state = enumSocketState.PLAYING;
 			socketData.aiMatchData = {ChildId: ChildId, matchId: matchId};

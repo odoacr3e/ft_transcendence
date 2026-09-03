@@ -185,7 +185,7 @@ function initBoard4v4(match)
 	if (match.settings.board.corners == true)
 		wallBool = true;
 	color = true;
-	diff = (match.board.heigth - 8) / 2;//FIXME - funziona solo con W == H
+	diff = (match.board.heigth - 8) / 2;
 	for (let [key, data] of match.board)
 	{
 		data.piece = null;
@@ -383,7 +383,7 @@ function setRandomKings(match)
 		match.board.get(match.blue.King).piece = new Piece(enumNames.KING, match.blue.King, eTeam.Blue);
 		match.forceYellowTurn();
 	}
-	else//FIXME - handling corretto
+	else// NOTE - gestione in controllo matchSettings
 		throw ("init: match can be of 2 or 4 players. Not implemented.");
 }
 

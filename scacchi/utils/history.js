@@ -42,7 +42,7 @@ function historyRestore(match, path)
 		path += ".json";
 	if (!path || !fs.existsSync(path))
 		throw (`History, restore: path "${path}" invalid`);
-	buffer = fs.readFileSync(path, "utf-8"); // FIXME - HISTORY.json non salva gli hash, percio' tira errori
+	buffer = fs.readFileSync(path, "utf-8");
 	history = JSON.parse(buffer);
 	recreateMatch(match, history);
 }
@@ -56,7 +56,6 @@ async function historyRestoreFromDb(matchId)
 	/** @type {History} */
 	let	history;
 
-	//FIXME - spostare nelle query
 	const dbHistory = await prisma.matches.findUnique(
 	{
 		where:
