@@ -438,6 +438,7 @@
     </div>
 
     <script>
+		console.log("inizio script");
         const clientIniziali = JSON.parse(localStorage.getItem('play_clients')) || [];
         const clientSimulati = [];
         let lastEventType = "init";
@@ -546,7 +547,8 @@
 
             // --- LISTENERS WEBSOCKET UNIFICATO ("game") ---
             socket.on("game", (data) => {
-                const currentEventType = (data && data.type) ? data.type : lastEventType;
+                console.log(`test`);
+				const currentEventType = (data && data.type) ? data.type : lastEventType;
                 gestisciRispostaServer(datiUtente.id_user, currentEventType, data);
 
                 if (data && data.victory && data.victory !== "") {
