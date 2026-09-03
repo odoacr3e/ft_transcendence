@@ -52,6 +52,7 @@ export function routesMatchMaking(socket, user)
 			socketData.state = enumSocketState.PLAYING;
 			socketData.aiMatchData = {ChildId: ChildId, matchId: matchId};
 			socket.join(`match_${matchId}`);
+			console.log("In ascolto su " + `match_${matchId}`);
 			console.log(`adesso si spacca tutto`);
 			child?.Send(eChildEvents.CreateMatch, setting, matchId, user.id_user);
 		}

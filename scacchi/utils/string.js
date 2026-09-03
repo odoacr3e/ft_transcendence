@@ -86,4 +86,22 @@ function isLowerCase(string)
 	return (chr >= 97 && chr <= 122);
 }
 
-export {isOneOf, includesOneOf, strCount, isLowerCase};
+/**
+ * 
+ * @param {string} str 
+ */
+function strDelAnsi(str)
+{
+	let	i;
+	let	j;
+
+	while (str.includes("\x1b"))
+	{
+		i = str.indexOf("\x1b");
+		j = str.indexOf("m");
+		str = str.slice(0, i) + str.slice(j + 1);
+	}
+	return (str);
+}
+
+export {isOneOf, includesOneOf, strCount, isLowerCase, strDelAnsi};

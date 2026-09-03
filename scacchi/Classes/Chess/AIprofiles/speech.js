@@ -1,5 +1,6 @@
 //@ts-check
 
+import { IS_CHILD_PROCESS } from "../../../Macro/macro.js";
 import { getDotColor } from "../../../test/render.js";
 import { gameMessage, roomMessage } from "../../../websocket/utils.js";
 

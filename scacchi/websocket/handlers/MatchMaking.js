@@ -102,6 +102,7 @@ async function createMatchFromQueue(queue, queueNode)
 	set = structuredClone(queueNode.userSet);
 	preset = queueNode.matchOptions? queueNode.matchOptions: queueNode.matchType;
 	clientResetData(queueNode.userSet);
+	console.log(preset);
 	match = new Match(preset);
 	result = init(match, preset);
 	if (queue.roomType == enumConnection.RANKED)

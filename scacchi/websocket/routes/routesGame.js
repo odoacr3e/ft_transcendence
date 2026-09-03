@@ -115,6 +115,8 @@ export function routesGame(socket, user)
 		let	result;
 		let	socketData;
 
+		console.log("messaggio: ");
+		console.log(req);
 		socketData = globals.clientMap.get(user.id_user);
 		if (!req || !req.author || !req.msg)
 			result = new Result().Error(`missing 'author' or 'msg' in ${req}`, 400, true);

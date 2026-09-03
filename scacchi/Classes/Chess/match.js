@@ -665,7 +665,7 @@ class MatchSettings
 		this.presetType = other.presetType;
 		this.timer = other.timer;
 		if (other.ai)
-			this.ai = other.ai;
+			this.ai = structuredClone(other.ai);
 	}
 	/** @param {string} matchPresetType */
 	GetPresetByType(matchPresetType)

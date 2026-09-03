@@ -103,6 +103,9 @@ function clientResetData(ids)
 		globals.DeletePlayer(socketData.matchData?.matchId, socketData.matchData?.team);
 		globals.LeaveRoom(socketData, id);
 		globals.ClearTimer(id);
+		socketData.aiMatchData = null;
+		socketData.matchData = null;
+		socketData.spectateData = null;
 		clientSetState(id);
 	}
 }
@@ -117,24 +120,20 @@ function clientResetData(ids)
 function gameMessage(match, msg, author="server", printer=console.log)
 {
 	let	result;
+	let	id;
 
 	if (match == undefined)
 		return ;
-	if (typeof(match) == "number")
-		match = globals.matches.get(`${match}`);
-	else if (typeof(match) == "string")
-		match = globals.matches.get(`${Number(match)}`);
-	if (!match)
+	if (typeof(match) == "number" || typeof(match) == "string")
+		id = `${match}`;
+	else if (match)
+		id = `${match.id}`;
+	else
 		return ;
 	if (printer)
 		printer(msg);
-	if (IS_CHILD_PROCESS || match.socketBool)
-	{
-		result = new Result().Success("OK", "msg").Format({author: author, msg: msg});
-	}
-	else
-		return ;
-	sendData(eChildEvents.Game, match.id, result);
+	result = new Result().Success("OK", "msg").Format({author: author, msg: msg});
+	sendData(eChildEvents.Game, id, result);
 }
 
 export {getReconnectTime, isBusy, roomMessage, gameMessage, clientSetState, clientResetData};
