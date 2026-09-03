@@ -32,7 +32,6 @@
 			.filter(Boolean)
 			.map(text => ({ text, step: /^\d+[.)]/.test(text) }));
 
-		//il pallino ha senso s un elenco, non su una frase sola; se le righe sono numerate ci pensa il numero
 		const bullet = lines.length > 1 && lines.every(l => !l.step);
 
 		return (lines.map(l => ({ ...l, bullet })));
@@ -283,7 +282,6 @@
 		margin: 0;
 	}
 
-	/* righe numerate: andando a capo il testo si allinea al testo, non sotto il numero */
 	.move-line.step
 	{
 		padding-left: 1.5rem;
@@ -291,7 +289,6 @@
 		text-align: left;
 	}
 
-	/* elenco puntato: stesso rientro sporgente, con il pallino al posto del numero */
 	.move-line.bullet
 	{
 		padding-left: 1rem;
@@ -313,7 +310,7 @@
 		content: '';
 		position: absolute;
 		width: 3.5rem;
-		height: 25rem;
+		height: 26rem;
 		border: 1px solid rgb(66, 59, 59, 1);
 		pointer-events: none;
 		top: .9rem;
@@ -328,7 +325,7 @@
 		content: '';
 		position: absolute;
 		width: 3.5rem;
-		height: 25rem;
+		height: 26rem;
 		border: 1px solid rgb(66, 59, 59, 1);
 		pointer-events: none;
 		top: .9rem;

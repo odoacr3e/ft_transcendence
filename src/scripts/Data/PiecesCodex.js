@@ -171,42 +171,43 @@ export const PIECES_CODEX = Object.freeze({
 		boostTitle:	"SCHERZO: Effetto pac-man",
 		boostText:	"Mossa singola, ma su zone extra concesse dall'abilità che\
 					 permettono al jester di sbucare dalla parte opposta della\
-					 scacchiera se si \"salta\" fuori",
+					 scacchiera se si \"salta\" fuori.\nIl movimento rimane sempre ad L ma\
+					 per ogni casella del movimento hai la possibilità di saltare",
 		baseScenes: [
 			{
 				caption:	"",
 				actors:		[ self(0, 2) ],
 				marks:		[
-					{x:-1, y: 0,	kind: "capture"},
-					{x:-2, y: 1,	kind: "capture"},
-					{x:1, y: 0,		kind: "capture"},
-					{x:2, y: 1,		kind: "capture"},
+					{ x:-1, y: 0,	kind: "capture"},
+					{ x:-2, y: 1,	kind: "capture"},
+					{ x:1, y: 0,	kind: "capture"},
+					{ x:2, y: 1,	kind: "capture"},
 				]
 			},
 		],
 
 		boostScenes: [
 			{
-				caption:	"",
-				actors:		[ self(0, 2) ],
-				marks:		[
-					{x:-1, y: 0, 	kind: "capture"},
-					{x:-2, y: 1, 	kind: "capture"},
-					{x:1, y: 0, 	kind: "capture"},
-					{x:2, y: 1, 	kind: "capture"},
-					{x:-2, y: -2, 	kind: "capture"},
-					{x:2, y: -2, 	kind: "capture"},
-					{x:-1, y: -1, 	kind: "capture"},
-					{x:1, y: -1, 	kind: "capture"},
-				],
-				//un salto raccontato per intero: i vertici fuori griglia li taglia l'SVG,
-				//cosi' il primo tratto esce dal bordo e il secondo rientra da quello opposto
+				caption:	"Il cavallo fa una mossa che sembra farlo andare fuori dalla scacchiera ma sbuca dal lato opposto.",
+				actors:		[ self(-1, 0) ],
 				arrows:		[
-					{ points: [ [0, 2], [0, 3.4] ] },
-					{ points: [ [0, -3.4], [0, -1], [1, -1] ] },
-					{ points: [ [0, -3.4], [0, -1], [-1, -1] ] },
-					{ points: [ [0, -3.4], [0, -2], [-2, -2] ] },
-					{ points: [ [0, -3.4], [0, -2], [2, -2] ] },
+					{ points: [ [-1, 0], [-3.4, 0] ] },
+					{ points: [ [3.4, 0], [2, 0], [2, -1] ] }
+				]
+			},
+			{
+				caption:	"Questa è la mossa più potente del cavallo, warp alla destra della scacchiera per sbucare a sinistra e poi warp verso il basso per sbucare in cima",
+				actors:		[ self(1, 2) ],
+				arrows:		[
+					{ points: [ [1, 2], [2, 2] ] },
+					// { points: [ [1, -3.4], [1, -1], [0, -1] ] },
+					{ points: [ [1, 2], [3.4, 2] ] },
+					{ points: [ [-3.4, 2], [-2, 2], [-2, 3.4] ] },
+					{ points: [ [-3.4, 2], [-2, 2] ]},
+					{ points: [ [-2, -3.4], [-2, -2] ] },
+				],
+				marks: [
+					{ x:-2, y:-2, kind: "capture"},
 				]
 			},
 		],
