@@ -183,8 +183,8 @@ export function usingAbility()
 	const lastSquare  = localBoard.get(localInfo.lastClickedId);
 	const square      = localBoard.get(localInfo.clickedId);
 
-	const lastUseAbility = lastSquare?.useAbilityBool && lastSquare?.piece.isBoostedBool;
-	const useAbility	 = square.useAbilityBool && square.piece.isBoostedBool;
+	const lastUseAbility = lastSquare?.useAbilityBool && lastSquare?.piece?.isBoostedBool;
+	const useAbility	 = square?.useAbilityBool && square.piece?.isBoostedBool;
 
 	return (localInfo.usingAbility !== "" && ((localInfo.lastClickedId && (useAbility || lastUseAbility)) || localInfo.secondTurn));
 }

@@ -135,6 +135,8 @@ export const canAfford = (piece) => {
 	return (typeof points === "number" && typeof piece?.price === "number" && points >= piece.price);
 };
 
+export const isAbilityArmed = (square) => localInfo.usingAbility !== "" && square?.useAbilityBool === true && square?.piece?.isBoostedBool === true;
+
 // Funzioni setter per aggiornare le variabili globali
 export function startLocalMatchState(newMatchState) {
 	localMatchState = newMatchState;

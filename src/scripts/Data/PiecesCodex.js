@@ -200,7 +200,6 @@ export const PIECES_CODEX = Object.freeze({
 				actors:		[ self(1, 2) ],
 				arrows:		[
 					{ points: [ [1, 2], [2, 2] ] },
-					// { points: [ [1, -3.4], [1, -1], [0, -1] ] },
 					{ points: [ [1, 2], [3.4, 2] ] },
 					{ points: [ [-3.4, 2], [-2, 2], [-2, 3.4] ] },
 					{ points: [ [-3.4, 2], [-2, 2] ]},

@@ -1,6 +1,7 @@
 <script setup>
 	import { localInfo, localBoard, myPlayer, 
-			 canAfford }						from '@/scripts/Data/Variables.js';
+			 canAfford, 
+			 isAbilityArmed}						from '@/scripts/Data/Variables.js';
 	import { useAbility, sendEndTurn, shopAbility, 
 			 sendGiveUp, showBoostedMovesHover,
 			 showBoostedMovesLeave,  sendDraw}		from '@/scripts/Events/utils/GlobalUtils';
@@ -59,7 +60,8 @@
 			cancelPending();
 	}
 
-	const abilityArmed = computed(() => localInfo.usingAbility !== '' && localBoard.get(localInfo.clickedId)?.useAbilityBool === true);
+	const abilityArmed = computed(() => isAbilityArmed(localBoard.get(localInfo.clickedId)));
+
 </script>
 
 <template>

@@ -1,9 +1,10 @@
 <script setup>
 //@ts-nocheck
 	import { DOMBoard, localInfo, IMG_PATHS, 
-			 HIDDEN, myPlayer, canAfford, localBoard }	from '@/scripts/Data/Variables';
-	import { onMounted, computed, ref }				from 'vue';
-	import { useClickOutside }						from '@/scripts/Helper/generalUtils.js';
+			 HIDDEN, myPlayer, canAfford, localBoard, 
+			 isAbilityArmed}	from '@/scripts/Data/Variables';
+	import { onMounted, computed, ref }					from 'vue';
+	import { useClickOutside }							from '@/scripts/Helper/generalUtils.js';
 	import { onDragStart, onDrop }						from '@/scripts/Events/Movements';
 	import { getSquareColor } 							from '@/scripts/Helper/RenderUtils';
 	import { globalEvents }								from '@/scripts/Events/Global';
@@ -12,6 +13,7 @@
 			 showBoostedMovesLeave, selectAbilitySquare,
 			 upgradeBastard }							from '@/scripts/Events/utils/GlobalUtils.js';
 	import IconDoubleChevron 							from './icons/IconDoubleChevron.vue';
+	import AuraFx 										from './AuraFx.vue';
 
 	const prop = defineProps({
   	    	style: String
@@ -85,6 +87,7 @@
 								{ 'w-18.75 h-18.75' : style === '1v1', 'w-13 h-13' : style === '14x14x4'},
 								{ 'opacity-0 hidden': style === '14x14x4' && HIDDEN.has(square?.id) },
 								{'outline-4 outline-[#e2dac5c5] -outline-offset-4': dragOver === square?.id},
+								{'hasAura': square?.piece?.isBoostedBool},
 								{'selectedBstW': getSquareColor(square?.id) == 'white' && (square.boostedHighlight && square.piece)},
 								{'selectedBstB': getSquareColor(square?.id) == 'black' && (square.boostedHighlight && square.piece)},
 								{'selectedW': getSquareColor(square?.id) == 'white' && (square.selected !== square.inCheck || square.highlight && square.piece)},
@@ -104,6 +107,11 @@
 										'text-bg-WSelect' : getSquareColor(square.id) == 'black' && square.selected !== square.inCheck }">
 							<b>{{ square.id.charAt(0) }}</b>
 						</p>
+						<AuraFx v-if="isAbilityArmed(square)"
+									class="pieceAura" :speed=".5" :variant="'yellow'"
+									style="--aura-size: 1.6"/>
+						<AuraFx v-else-if="square.piece?.isBoostedBool"
+								class="pieceAura" :speed=".4" :variant="'blue'"/>
 						<img
 							v-if="square?.piece"
 							class="piece"
@@ -170,12 +178,12 @@
 
 	div#overlay
 	{
-		opacity: 0.4;                    	/* fisso, la transizione la gestisci con v-if */
+		opacity: 0.4;
 		background: rgba(0, 0, 0, 0.35);
 		inset: 0;
 		position: fixed;
-		z-index: 14;                     	/* sotto al menu */
-		pointer-events: auto;            	/* blocca i click sotto */
+		z-index: 14;
+		pointer-events: auto;
 		transition: opacity 0.2s ease;
 	}
 
@@ -187,8 +195,8 @@
 		margin-left: 5px;
 		z-index: 13;
 		top: 50%;
-	    left: calc(50% + 300px + 16px); 	/* bordo destro board + gap */
-	    transform: translateY(-50%); 		/* centrato verticalmente rispetto alla board */
+	    left: calc(50% + 300px + 16px);
+	    transform: translateY(-50%);
 	}
 
 	#board
@@ -208,11 +216,28 @@
 		grid-template-rows: repeat(14, 52px);
 	}
 
+	.pieceAura
+	{
+		--aura-size: 1.4;
+		--aura-lift: -20%;
+
+		position: absolute;
+		left: 50%;
+		bottom: var(--aura-lift);
+		width: calc(100% * var(--aura-size));
+		height: auto;
+		transform: translateX(-50%);
+		z-index: 0;
+		max-width: none;
+	}
+
 	.piece
 	{
+		position: relative;
+		z-index: 1;
 		width: 100%;
 		cursor: -webkit-grab;
-    	user-select: none;
+		user-select: none;
 	}
 
 	.piece.dragging {
@@ -236,6 +261,16 @@
 		user-select: none;
 		position: relative;
 		z-index: 0;
+	}
+
+	.square:has(.pieceAura)
+	{
+		z-index: 2;
+	}
+
+	.hasAura
+	{
+		z-index: 2;
 	}
 
 	.lastMoveOverlay {
@@ -292,10 +327,10 @@
 		background-color: rgb(9, 214, 19);
 	}
 
-	.boosted-aura{
+	/* .boosted-aura{
 		animation: auraPulse 0.4s ease-in-out infinite;
 	}
-
+	
 	@keyframes auraPulse
 	{
 		0%, 100%
@@ -312,7 +347,7 @@
     	        drop-shadow(0 0 10px #FFA500)
     	        drop-shadow(0 0 20px #FF4500)
     	}
-	}
+	} */
 
 	.boostBadge
 	{
