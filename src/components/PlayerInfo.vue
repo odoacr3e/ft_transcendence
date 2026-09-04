@@ -1,5 +1,5 @@
 <script setup>
-	import { DOMPlayer, localInfo }	from '@/scripts/Data/Variables';
+	import { DOMPlayer, localInfo }				from '@/scripts/Data/Variables';
 	import { defaultAvatar, handleAvatarError }	from '../scripts/Helper/CompUtils';
 	import { computed }							from 'vue';
 	import	TimerClock							from "./TimerClock.vue"
@@ -12,17 +12,21 @@
 	const	player	= computed(() => DOMPlayer(prop.p)),
 			playing	= computed(() => player.value.isPlaying),
 			running	= computed(() => playing.value && localInfo.matchStarted && !localInfo.victory),
+			active	= computed(() => playing.value && !localInfo.victory),
 			up		= prop.pos === 'top',
 			down	= prop.pos === 'bottom';
 
+	const label = (p) => {
+		const player = DOMPlayer(p);
+		if (!player) return '';
+		return player.elo != null ? `${player.name} [${player.elo}]` : (player.name ?? '');
+	};
+	
 	const nameSize = computed(() => {
-		const len = Math.max(
-			DOMPlayer(1)?.name?.length ?? 0,
-			DOMPlayer(2)?.name?.length ?? 0
-		);
-		if (len <= 12)	{ return 'x-large'; }
-		if (len <= 18)	{ return 'large'; }
-		if (len <= 24)	{ return 'medium'; }
+		const len = Math.max(label(1).length, label(2).length);
+		if (len <= 12)  { return 'x-large'; }
+		if (len <= 18)  { return 'large'; }
+		if (len <= 24)  { return 'medium'; }
 		return 'small';
 	});
 
@@ -38,14 +42,16 @@
 
 		<div class="shrink-0 dim" v-bind:class="{'dim-off':!playing}">
 			<b><h1 class="max-w-56 overflow-hidden text-ellipsis whitespace-nowrap"
-					:style="{ fontSize: nameSize }">{{ player.name }}</h1></b>
+					:style="{ fontSize: nameSize }">
+					{{ player.name }}<span v-if="player.elo != null" class="text-text-default"> [{{ player.elo }}]</span>
+				</h1></b>
 			<div class="flex">
 				<h2>Points: {{ player.nPoints }}</h2>
 				<p class="text-text-last mx-2">|</p>
 				<CapturedPieces :player="player"/>
 			</div>
 		</div>
-		<TimerClock :millis="player.time" :go="running" :team="player.team" class="ml-auto"/>
+		<TimerClock :millis="player.time" :go="running" :active="active" :team="player.team" class="ml-auto"/>
 	</div>
 </template>
 
@@ -73,44 +79,6 @@
 		inherits: false;
 		initial-value: 0deg;
 	}
-
-	/* .wrap::before,
-	.wrap::after
-	{
-		content: "";
-		position: absolute;
-		inset: 0;
-		box-sizing: border-box;
-		padding: var(--frame-thickness);
-		border-radius: inherit;
-		z-index: 11;
-		pointer-events: none;
-		-webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-		-webkit-mask-composite: xor;
-		mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-		mask-composite: exclude;
-	}
-
-	.wrap::before
-	{
-		background: linear-gradient(135deg,
-			var(--frame-dark) 0%, var(--frame-mid) 18%, var(--frame-light) 32%,
-			var(--frame-dark) 50%, var(--frame-light) 68%,
-			var(--frame-mid) 82%, var(--frame-dark) 100%);
-		filter: grayscale(.75) brightness(.45);
-		transition: filter .4s ease, box-shadow .4s ease;
-	}
-
-	.wrap::after
-	{
-		background: conic-gradient(from var(--angle),
-			transparent 0deg, transparent 265deg,
-			rgba(255, 241, 230, 0) 285deg, var(--frame-glint) 305deg,
-			rgba(255, 241, 230, 0) 325deg, transparent 340deg, transparent 360deg);
-		animation: frame-spin var(--frame-speed) linear infinite;
-		opacity: 0;
-		transition: opacity .4s ease;
-	} */
 
 	.wrap.is-turn::before
 	{

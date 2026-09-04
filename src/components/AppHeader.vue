@@ -1,15 +1,15 @@
 <script setup>
 	import { rework_date, defaultAvatar, handleAvatarError }	from '../scripts/Helper/CompUtils';
-	import { useClickOutside }	from '@/scripts/Helper/useClickOutside';
-	import { ref, onMounted }	from 'vue';
-	import { useAuthStore }	from "../stores/auth.st";
-	import { useTourStore }	from '../stores/tour.st';
-	import { useMsgStore }	from '../stores/msg.st';
-	import { storeToRefs }	from 'pinia';
-	import { useI18n }		from 'vue-i18n';
-	import { debug }		from "../scripts/Data/Variables";
-	import { api }			from '../router/api/client';
-	import router			from '../router/index.js';
+	import { ref, onMounted }									from 'vue';
+	import { useClickOutside }									from '@/scripts/Helper/generalUtils';
+	import { useAuthStore }										from "../stores/auth.st";
+	import { useTourStore }										from '../stores/tour.st';
+	import { useMsgStore }										from '../stores/msg.st';
+	import { storeToRefs }										from 'pinia';
+	import { useI18n }											from 'vue-i18n';
+	import { debug }											from "../scripts/Data/Variables";
+	import { api }												from '../router/api/client';
+	import router												from '../router/index.js';
 	
 	defineOptions({ inheritAttrs: false });
 	

@@ -2,16 +2,16 @@ import { usingAbility, checkPermision,
 		checkForHighlightMove, moveDragClone, 
 		sendEndTurn,
 		shopAbility,
-		useAbility}											from "./utils/GlobalUtils.js";
+		useAbility, onKeydown}											from "./utils/GlobalUtils.js";
 import { rightClickSelect, highlightOnClick,
 		highlightOnDrag, clearHighlight }					from "./utils/HighlightUtils.js";
-import { localInfo, getRootDiv, localBoard, currentPlayer, debug}	from "@/scripts/Data/Variables";
+import { localInfo, getRootDiv, localBoard, currentPlayer, debug, isMyTurn}	from "@/scripts/Data/Variables";
 import { PIECES_ABILITY } 									from "@/scripts/Helper/abilityMovement";
 import { sendToBackend }									from "./BackLink.js";
 
 // ANCHOR EVENT-LISTENERS FUNCTIONS
 
-export async function globalEvents()
+export function globalEvents()
 {
 	const ROOT_DIV = getRootDiv();
 	// ROOT_DIV.setAttribute('tabindex', '0'); --> concetti molto interessanti
@@ -64,13 +64,6 @@ export async function globalEvents()
 		localInfo.drag = null;
 	});
 
-	document.getElementById("wrapping").addEventListener("keydown", async function(event)
-	{
-		if (event.code === "Space" && localInfo.secondTurn)
-			await sendEndTurn();
-		if (event.code === "Enter" && localBoard.get(localInfo.clickedId)?.piece.team === currentPlayer().team)
-			shopAbility();
-		if (event.code === "ShiftLeft" && localBoard.get(localInfo.clickedId)?.piece.isBoostedBool)
-			useAbility();
-	});
+	window.addEventListener("keydown", onKeydown);
+	return (() => window.removeEventListener("keydown", onKeydown));
 }

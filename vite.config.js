@@ -1,16 +1,29 @@
 import { fileURLToPath, URL } from 'node:url'
 
 import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import vueDevTools from 'vite-plugin-vue-devtools'
-import tailwindcss from '@tailwindcss/vite'
+import vue 				from '@vitejs/plugin-vue'
+import vueDevTools 		from 'vite-plugin-vue-devtools'
+import tailwindcss 		from '@tailwindcss/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
     vue(),
     vueDevTools(),
-    tailwindcss()
+    tailwindcss(),
+    {
+      // L'HMR parziale su questo modulo lascia il King's Codex in uno stato inconsistente
+      // (il pannello sparisce e non si ripopola). Finche' non e' chiara la causa lato Vue,
+      // un cambio ai dati del codex ricarica l'intera pagina: e' lo stesso Ctrl+R, automatico.
+      name: 'codex-full-reload',
+      handleHotUpdate({ file, server })
+      {
+        if (!file.endsWith('PiecesCodex.js'))
+          return;
+        (server.hot ?? server.ws).send({ type: 'full-reload' });
+        return [];
+      },
+    },
   ],
   server: {
     allowedHosts: ['edraccan-transcendence.duckdns.org', 'chessz.duckdns.org'],

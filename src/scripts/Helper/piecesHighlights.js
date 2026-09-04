@@ -75,8 +75,13 @@ function KingAndBastardsHL(squareId)
 	{
 		if (square.piece.type === "King") //highlight per l'arrocco
 				regularMoves.forEach((highlight) => {
-					if (localBoard.get(highlight).piece && localBoard.get(highlight).piece.type === "Minotaurus")
-						localBoard.get(highlight).highlight = true;
+					const target = localBoard.get(highlight);
+
+					if (!target?.piece || target.piece.type !== "Minotaurus")
+						return;
+					if (target.piece.team !== team || squareDistance(squareId, highlight) < 2)
+						return;
+					target.highlight = true;
 				});
 		setHighlightTrue(regularMoves, "regular", team);
 	}
@@ -113,4 +118,12 @@ function ChampAndMinoHL(squareId)
 		setHighlightTrue(regularMoves, "regular", team);
 	else
 		throw Error("[ChampAndMinoHL]: qualcosa è andato storto");
+}
+
+function squareDistance(idA, idB)
+{
+	const colDiff = Math.abs(idA.charCodeAt(0) - idB.charCodeAt(0));
+	const rowDiff = Math.abs(parseInt(idA.substring(1) - parseInt(idB.substring(1))));
+
+	return (Math.max(colDiff, rowDiff));
 }

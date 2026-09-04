@@ -1,7 +1,8 @@
-import { ePlaying, localBoard, localInfo, debug}	from "@/scripts/Data/Variables";
-import { getTarget }						from "./utils/MovementUtils.js";
-// import { MACRO } 						from "@/scripts/Data/Variables";
-import { useSockStore } 					from "../../stores/sock.st.js";
+import { ePlaying, localBoard, localInfo, debug, 
+		 myPlayer, BOARD_AUDIO }					from "@/scripts/Data/Variables";
+import { getTarget }								from "./utils/MovementUtils.js";
+import { useSockStore } 							from "../../stores/sock.st.js";
+import { playAudio } 								from "../Helper/generalUtils.js";
 
 export async function sendToBackend(fromId, toId, flag)
 {
@@ -19,16 +20,23 @@ export async function sendToBackend(fromId, toId, flag)
 	}
 }
 
-export async function requestToBack(fromSquare, toSquare, opType)
+export async function requestToBack(fromSquare, toSquare, opType, drawValue)
 {
 	const sockStore = useSockStore();
 	let type;
+	let payload;
+
 	if (opType === "showBoost")
 		{type = "simulate_boost"; toSquare = "";}
 	else if (opType === "history")
 		{type = "history"; fromSquare = ""; toSquare = "";}
 	else if (opType === "giveUp")
 		{type = "giveup"; fromSquare = ""; toSquare = ""; }
+	else if (opType === "askdraw")
+		{
+			type = "draw";
+			payload = { type, draw: drawValue === true};
+		}
 	else if (fromSquare === null && toSquare === null && localInfo.secondTurn)
 		{type = "endturn"; fromSquare = ""; toSquare = ""; }
 	else if (fromSquare && toSquare === null)
@@ -38,20 +46,63 @@ export async function requestToBack(fromSquare, toSquare, opType)
 	else if (fromSquare && toSquare && ((localInfo.secondMove && localInfo.secondTurn) || localBoard.get(fromSquare).useAbilityBool))
 		{type = "moveboost";}
 	else {type = "move";}
-	let	timeout;
 
-	timeout = setTimeout(() => {}, 1000 * 1);
-	// console.log("req: type: ", type, "from: ", fromSquare, "to: ", toSquare);
-		
+	if (!payload)
+		payload = { type, from: fromSquare, to: toSquare };
+
 	return new Promise((resolve) => {
-		sockStore.socket?.emit("game", { type, from: fromSquare, to: toSquare }, (result) => {
-			// console.log(`request: type: ${type}, from: ${fromSquare}, to:${toSquare}`)
+		if (!sockStore.socket)
+		{
+			debug("[BackLink.js:65 -> requestToBack()]: socket non connesso");	
+			resolve(false);
+		}
+		const timeout = setTimeout(() => resolve(false), 5000);
+		sockStore.socket?.emit("game", payload, (result) => {
 			clearTimeout(timeout);
-			resolve(result?.log?.status === 200);
-		});
+			const ok = result?.log?.status === 200;
+			const status = result?.log?.status;
 
+			resolve(ok);
+			if (ok && !BOARD_AUDIO.has(type))
+				playAudio(type === "draw" ? "" : type);
+			else if (!ok && status !== undefined)
+				playAudio("badmove");
+		});
 	});
 }
+
+const AI_MODELS_STUB = ["giorgio", "giovanna", "giorno giovanna"];
+const USE_STUB = false;
+
+export async function fetchAiModels()
+{
+	if (USE_STUB)
+		return (AI_MODELS_STUB);
+
+	const sockStore = useSockStore();
+
+	if (!sockStore.socket)
+	{
+		debug("[BackLink -> fetchAiModels()] socket non connesso");
+		return ([]);
+	}
+
+	if (!await waitForSocketToBeReady())
+	{
+		debug("[BackLink -> fetchAiModels()] socket mai connesso");
+		return ([]);
+	}
+
+	try {
+		const answer = await sockStore.socket.timeout(5000).emitWithAck('create_ai_match', {});
+		return (Array.isArray(answer?.aiProfiles) ? answer.aiProfiles : []);
+	}
+	catch {
+		debug("[BackLink -> fetchAiModels()] nessuna risposta dal back");
+		return ([]);
+	}
+}
+
 
 function waitForSocketToBeReady(ms = 5000)
 {
@@ -163,4 +214,22 @@ export function reloadMatch()
 		else
 			sockStore.socket.once("connect", start);
 	});
+}
+
+/**
+ * @param {string} msg
+ * @returns {boolean} false se il socket non è disponibile
+ */
+export function sendChatMsg(msg)
+{
+	const sockStore = useSockStore();
+	const author	= myPlayer()?.name;
+
+	if (!sockStore.socket)
+	{
+		debug("[BackLink.js -> sendChatMsg()]: socket non connesso");
+		return (false);
+	}
+	sockStore.socket.emit("gameMsg", { author: author ?? "", msg: msg });
+	return (true);
 }

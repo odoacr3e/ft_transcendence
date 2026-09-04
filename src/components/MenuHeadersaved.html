@@ -1,0 +1,13 @@
+<div class="justify-self-end translate-x-45 text-text-default">
+    </div>
+    <div class="flex flex-col gap-4 justify-self-end w-full max-w-md translate-x-5">
+        <div class="bg-bg-default text-text-default p-5 rounded-l-xl hover:-translate-x-5 transition-all">
+			<RouterLink :to="{ name: 'playpage' }" class="flex items-center gap-4">
+                <IconGlobe class="size-10"/>
+                <b><h2 class="relative text-4xl">{{ t('menu.online') }}</h2></b>
+            </RouterLink>
+        </div>
+		<div class="bg-bg-default text-text-default p-5 rounded-l-xl hover:-translate-x-5 transition-all">
+            <RouterLink :to="{ name: 'playpage', query: { ai: '1' } }" class="flex items-center gap-4">
+                <IconRobot class="size-10"/>
+                <b><h2 class="relative text-4xl">{{ t('menu.bot') }}</h2></b>

@@ -1,13 +1,15 @@
 import { initLocalBoard, localMatchState, 
 		 localBoard, localPlayers,
 		 startLocalMatchState, localInfo,
-		 currentPlayer }						from "./Variables.js";
+		 currentPlayer, emptyCapturedPieces, debug }	from "./Variables.js";
 import { checkEndTurn, hasBoost, 
-		 checkUpgrade, assignLastMoveSquares }	from "./utils/ArchiUtils.js";
+		 checkUpgrade, assignLastMoveSquares, 
+		 setVictory,
+		 resetLocalVars}	from "./utils/ArchiUtils.js";
 import { beginPendingAbility } 					from "../Helper/abilityMovement.js";
 import { clearHistory } 						from "./History.js";
-import { clearGameMsgs } 					from "./GameMsg.js";
-import "./SocketLink.js"
+import { clearMessages } 						from "./ChatBox.js";
+import "./SocketListen.js"
 
 //SECTION - INIT FUNCTIONS
 
@@ -52,10 +54,12 @@ export function initLocalMatchState(raw)
 
 	initLocalBoard(localMatchState?.board);
 	initLocalPlayers();
+	resetLocalVars();
 
 	localInfo.matchId = raw.id;
 	localInfo.myTeam = raw.team;
-	localInfo.victory = raw.victory;
+	debug("il mio team :", localInfo.myTeam);
+	setVictory(raw.victory, false);
 	localInfo.matchStarted = false;	//il timer non parte finché il bianco non ha mosso
 
 	if (localInfo.myTeam)
@@ -88,27 +92,28 @@ function initLocalPlayers()
 
 export function updateMatchState(nextRaw)
 {
-	localInfo.drag = null;
+	const outcome = { moved: false, captured: false, transformed: false };
 	const validated = validateReceivedMatch(nextRaw);
-
-	localInfo.victory = nextRaw.victory ?? null;
-	// console.log("stampiamoci victory: ", localInfo.victory);
 	
+	localInfo.drag = null;
+	
+	setVictory(nextRaw.victory);
 	checkEndTurn(validated);
 	startLocalMatchState(validated);
 	try 
 	{
 		if (validated.board)
-			updateLocalBoard(validated);
+			updateLocalBoard(validated, outcome);
 		checkUpgrade();
 		updateLocalPlayers(validated);
 	} 
 	catch(err){
 		console.error("[updateLocalMatchState]: Errore di update del Match!\n" + err);
   	}
+	return (outcome);
 }
 
-function updateLocalBoard(changes)
+function updateLocalBoard(changes, outcome)
 {
 	const board = changes.board;
 
@@ -129,18 +134,30 @@ function updateLocalBoard(changes)
 				)
 			);
 			const oldSquare = localBoard.get(squareKey);
+			const oldPiece	= oldSquare?.piece;
+			const newPiece	= newSquare.piece;
+			
 			assignLastMoveSquares(oldSquare, newSquare, movedSquares);
-			if (oldSquare.piece && newSquare.piece && oldSquare.piece.team !== newSquare.piece.team)
-				localInfo.capturedP[newSquare.piece.team][oldSquare.piece.type] += 1;
+
 			oldSquare.piece = newSquare.piece;
 			oldSquare.targetZones = newSquare.targetZones;
 			oldSquare.boostedTargetZones = newSquare.boostedTargetZones;
+
+
+			if (oldPiece && newPiece && oldPiece.team !== newPiece.team)
+			{
+				localInfo.capturedP[newPiece.team][oldPiece.type] += 1;
+				outcome.captured = true;
+			}
+			else if (oldPiece && newPiece && oldPiece.type !== newPiece.type)
+				outcome.transformed = true;
 		}
 	});
 	if (movedSquares.size > 0)
 	{
 		localInfo.lastMovesSquares = movedSquares;
 		localInfo.matchStarted = true;
+		outcome.moved = true;
 	}
 }
 
@@ -169,14 +186,16 @@ export function reloadMatchState(raw)
 	const validated = validateReceivedMatch(raw);
 	startLocalMatchState(validated);
 
-	initLocalBoard(localMatchState.board);
+
+	initLocalBoard(localMatchState?.board);
 	initLocalPlayers();
+	setVictory(raw.victory, false);
 
 	localInfo.myTeam			= raw.team ?? sessionStorage.getItem("match:myTeam");	
 	localInfo.matchId			= sessionStorage.getItem("match:id");
-	localInfo.victory			= raw.victory;
-	localInfo.matchStarted		= true;
+	localInfo.matchStarted		= false;
 	localInfo.secondTurn		= raw.secondMove ?? false;
+	localInfo.drawOffer 		= raw.pending === true ? true : false;
 
 	restorePendingAbility(raw);
 
@@ -210,6 +229,11 @@ export function clearMatchStorage()
 {
 	sessionStorage.removeItem("match:id");
 	sessionStorage.removeItem("match:myTeam");
+	localInfo.capturedP = { 
+		white: emptyCapturedPieces(), 
+		black: emptyCapturedPieces() 
+	};
+
 	clearHistory();
-	clearGameMsgs();
+	clearMessages();
 }

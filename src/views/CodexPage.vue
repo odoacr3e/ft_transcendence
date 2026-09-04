@@ -1,6 +1,8 @@
 <script setup>
-    import { ref }   from 'vue';
+    import { ref }      from 'vue';
     import { useI18n }  from 'vue-i18n';
+    import IconCoins    from '@/components/icons/IconCoins.vue';
+    import IconChevron  from '@/components/icons/IconChevron.vue';
 
     const   { t } = useI18n(),
             select = ref(0),

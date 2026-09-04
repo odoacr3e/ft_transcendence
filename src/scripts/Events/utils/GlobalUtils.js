@@ -4,6 +4,9 @@ import { clearHighlight }									from "@/scripts/Events/utils/HighlightUtils.js
 import { stopUpgradeMenu }									from "@/scripts/Data/utils/ArchiUtils.js";
 import { requestToBack }									from "@/scripts/Events/BackLink.js";
 import { useSockStore }										from "../../../stores/sock.st";
+import { playAudio, isTypingTarget }						from "@/scripts/Helper/generalUtils";
+import { currentPlayer } 									from "@/scripts/Data/Variables";
+import { isMyTurn } 										from "@/scripts/Data/Variables";
 
 // ANCHOR USER INTERACTION FUNCTIONS
 
@@ -49,8 +52,7 @@ export function useAbility(targetId = null)
 	{ 
 		square.useAbilityBool = true;
 		localInfo.usingAbility = square.piece?.type ? square.piece.type : "";
-		if (MACRO.AUDIO)
-			new Audio("/src/assets/audios/useAbility.mp3").play();
+		playAudio("armability");
 		debug(`who the fuck i am: ${localInfo.usingAbility}`);
 	}
 	PIECES_HIGHLIGHT[square.piece.type](clickedId);
@@ -66,12 +68,10 @@ export function shopAbility(targetId = null)
 	
 	if (!Piece?.isBoostedBool && canAfford(Piece) && localInfo.secondTurn)
 		requestToBack(squareId, null).then(
-			function(value) {if (value) 
-			{ 
+			function(value) {
+			if (value) 
 				clearHighlight();
-				if (MACRO.AUDIO)
-					new Audio("/src/assets/audios/boost.mp3").play(); 
-			}},
+			},
 			function(value) {if (!value) { debug("Shop non completato correttamente"); }}
 		);
 }
@@ -82,11 +82,7 @@ export async function sendEndTurn()
 
 	response = await requestToBack(null, null);
 	if (response) 
-	{ 
 		clearHighlight();
-		if (MACRO.AUDIO)
-			new Audio("/src/assets/audios/endTurn.mp3").play();
-	}
 	else
 		debug("End turn non mandato correttamente");
 }
@@ -97,13 +93,21 @@ export async function sendGiveUp()
 
 	response = await requestToBack(null, null, 'giveUp');
 	if (response)
-	{
 		clearHighlight();
-		if (MACRO.AUDIO)
-			new Audio("vedemmu");
-	}
 	else
-		debug("Give up non mandato correttamente")
+		debug("Give up non mandato correttamente");
+}
+
+export async function sendDraw(accepted) 
+{
+	localInfo.drawOffer = (accepted === true && localInfo.drawOffer !== "received") ? "sent" : null;
+	localInfo.pending 	= null;
+
+	if (!await requestToBack(null, null, "askdraw", accepted))
+	{
+		debug("Draw non mandato correttamente!");
+		localInfo.drawOffer = null;
+	}
 }
 
 export function upgradeBastard(newType)
@@ -114,8 +118,6 @@ export function upgradeBastard(newType)
 			localInfo.goatId = null; 
 			stopUpgradeMenu();
 			clearHighlight(); 
-			if (MACRO.AUDIO)
-				new Audio("/src/assets/audios/transformation.mp3").play();
 		}},
 		function(value) {if (!value) { debug("Mossa non valida"); }}
 	);
@@ -183,8 +185,8 @@ export function usingAbility()
 	const lastSquare  = localBoard.get(localInfo.lastClickedId);
 	const square      = localBoard.get(localInfo.clickedId);
 
-	const lastUseAbility = lastSquare?.useAbilityBool && lastSquare?.piece.isBoostedBool;
-	const useAbility	 = square.useAbilityBool && square.piece.isBoostedBool;
+	const lastUseAbility = lastSquare?.useAbilityBool && lastSquare?.piece?.isBoostedBool;
+	const useAbility	 = square?.useAbilityBool && square.piece?.isBoostedBool;
 
 	return (localInfo.usingAbility !== "" && ((localInfo.lastClickedId && (useAbility || lastUseAbility)) || localInfo.secondTurn));
 }
@@ -209,6 +211,7 @@ export async function showBoostedMovesHover(fromId)
 		Object.entries(response.zones || {}).map(([key, value]) =>
 			[key, new Set(Array.isArray(value) ? value : [])])
 	);
+	playAudio("checkboost");
 	localInfo.savedBoostedMap = futureBoostedZones;
 	for (let toHighlight of futureBoostedZones)
 	{
@@ -267,4 +270,19 @@ export function blinkSquares(ids, { times = 3, interval = 300, delay = 300 } = {
 				square.selected = false;
 		});
 	};
+}
+
+export const onKeydown = async function (event) 
+{
+	if (event.repeat || event.ctrlKey || event.metaKey || event.altKey || isTypingTarget(event.target))
+		return;
+	if (event.code === "Space" && localInfo.secondTurn)
+	{
+		event.preventDefault();
+		await sendEndTurn();
+	}	
+	if (event.code === "Enter" && localBoard.get(localInfo.clickedId)?.piece?.team === currentPlayer().team)
+		shopAbility();
+	if (event.code === "ShiftLeft" && isMyTurn() && localBoard.get(localInfo.clickedId)?.piece?.isBoostedBool)
+		useAbility();
 }

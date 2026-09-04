@@ -1,27 +1,27 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import { useAuthStore }	from '@/stores/auth.st'
-import TournamentPage from '../views/TournamentPage.vue'
-import OpenTournament from '../views/OpenTournament.vue'
-import TermsOfService from '../views/TermsOfService.vue'
-import RegisterPage from '../views/RegisterPage.vue'
-import ClassicGame from '../views/ClassicGame.vue'
-import LeaderBoard from '../views/LeaderBoard.vue'
-import PrivacyPage from '../views/PrivacyPage.vue'
-import UserOther from '../views/UserOther.vue'
-import UsersList from '../views/UsersList.vue'
-import LoginPage from '../views/LoginPage.vue'
-import ChangePwd from '../views/ChangePwd.vue'
-import CodexPage from '../views/CodexPage.vue'
-import EditPage from '../views/EditPage.vue'
-import GameFour from '../views/GameFour.vue'
-import PlayPage from '../views/PlayPage.vue'
-import PwdDEBUG from '../views/PwdDEBUG.vue'
-import UserMe from '../views/UserMe.vue'
-import Home from '../views/Home.vue'
-import StartTour from '../views/StartTour.vue'
-import { ePlaying, localMatchState } from '@/scripts/Data/Variables.js'
-import { amIPlaying } from '@/scripts/Events/BackLink.js'
-import { api } from './api/client'
+import { createRouter, createWebHistory }	from 'vue-router'
+import { useAuthStore }						from '@/stores/auth.st'
+import TournamentPage 						from '../views/TournamentPage.vue'
+import OpenTournament 						from '../views/OpenTournament.vue'
+import TermsOfService 						from '../views/TermsOfService.vue'
+import RegisterPage 						from '../views/RegisterPage.vue'
+import ClassicGame 							from '../views/ClassicGame.vue'
+import LeaderBoard 							from '../views/LeaderBoard.vue'
+import PrivacyPage 							from '../views/PrivacyPage.vue'
+import UserOther 							from '../views/UserOther.vue'
+import UsersList 							from '../views/UsersList.vue'
+import LoginPage 							from '../views/LoginPage.vue'
+import ChangePwd 							from '../views/ChangePwd.vue'
+import CodexPage 							from '../views/CodexPage.vue'
+import EditPage 							from '../views/EditPage.vue'
+import GameFour 							from '../views/GameFour.vue'
+import PlayPage 							from '../views/PlayPage.vue'
+import PwdDEBUG 							from '../views/PwdDEBUG.vue'
+import UserMe 								from '../views/UserMe.vue'
+import Home 								from '../views/Home.vue'
+import StartTour 							from '../views/StartTour.vue'
+import { ePlaying, localMatchState }		from '@/scripts/Data/Variables.js'
+import { amIPlaying } 						from '@/scripts/Events/BackLink.js'
+import { api } 								from './api/client'
 
 const routes = [
 	{
@@ -43,14 +43,6 @@ const routes = [
 		path: '/game',
 		name: 'game',
 		meta: { requiresAuth: true },
-		beforeEnter: async () => {
-			if (localMatchState)
-				return (true);
-			const playing = await amIPlaying();
-			if (playing !== ePlaying.YES)
-				return { name: 'playpage' };
-			return true;
-		},
 		component: ClassicGame
 	},
 	{

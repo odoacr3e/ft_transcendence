@@ -2,6 +2,7 @@ import { localBoard, localInfo, debug}	from "@/scripts/Data/Variables";
 import { clearHighlight }			from "@/scripts/Events/utils/HighlightUtils.js";
 import { sendToBackend }			from "./BackLink.js";
 import { PIECES_ABILITY } 			from "@/scripts/Helper/abilityMovement";
+import { playAudio } from "../Helper/generalUtils.js";
 
 const EMPTY_IMG = new Image();
 EMPTY_IMG.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
@@ -50,7 +51,9 @@ export async function onDrop(event, toSquare)
 	if (!isValidMove)
 	{
 		debug("[onDrop]: mossa non valida!");
-		return
+		if (fromSquareId !== toSquareId)
+			playAudio("badmove");
+		return;
 	}
 
 	const moveAccepted = await sendToBackend(fromSquareId, toSquareId, true);

@@ -10,7 +10,7 @@
 	import router 														from '@/router';
 	import MovesHistory													from '@/components/MovesHistory.vue';
 	import KingsCodex													from '@/components/KingsCodex.vue';
-	import GameMsgBox													from '@/components/GameMsgBox.vue';
+	import ChatBox														from '@/components/ChatBox.vue';
 
 	const	ready		= ref(false);
 	const	style		= ref("1v1");
@@ -71,11 +71,11 @@
 	}, { once: true });// questo perchè la history si chiede una volta sola
 		
 
-	onUnmounted(() => { alive = false });
+	onUnmounted(() => { alive = false; clearMatchStorage(); });
 </script>
 
 <template>
-    <div class="flex z-2 bg-bg-darker rounded-3xl">
+    <div id="wrapping" class="flex z-2 bg-bg-darker rounded-3xl">
 		<KingsCodex v-if="ready"/>
         <div class="p-6 bg-bg-default rounded-l-3xl border-r border-border-default">
           <div v-if="ready">
@@ -94,9 +94,9 @@
         	</div>
 		</div>
         <div class="mt-10 w-md px-6 flex flex-col gap-4">
-			<GameMsgBox v-if="ready"/>
 			<MovesHistory v-if="ready" class="h-87.5"/>
 			<ActionButtons v-if="ready"/>
+			<ChatBox	 v-if="ready"/>
 		</div>
     </div>
 </template>

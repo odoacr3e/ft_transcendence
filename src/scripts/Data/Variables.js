@@ -1,6 +1,7 @@
 // SECTION - LE VARIABILI GLOBALI
 import { boardConverter, getLocalPlayers }	from "../Helper/RenderUtils.js";
-import { reactive }							from "vue";
+import { reactive, ref }					from "vue";
+import { clearMatchStorage } 				from "./Archi.js";
 
 /**
  * @typedef {Object} Piece
@@ -52,8 +53,6 @@ export class Square {
  */
 
 /**
- * Stato locale dell'interazione dello user con la board (non viene mandato al backend).
- *
  * @property {string|null}						clickedId			Id della casella cliccata adesso
  * @property {string|null}						lastClickedId		Id della casella cliccata in precedenza
  * @property {boolean}							secondTurn			Se il giocatore ha ancora la seconda parte del turno
@@ -67,9 +66,12 @@ export class Square {
  * @property {string|null}						matchId				Id della partita in corso
  * @property {string|null}						myTeam				Squadra del giocatore locale (es. "white" | "black")
  * @property {string|null}						victory				Squadra vincitrice, null se la partita è in corso
+ * @property {string|null}						pending				Variabile utilizzata nel template di actionbuttons per richiesta di giveup o pareggio
+ * @property {"sent"|"received"|null}			drawOffer			Trattativa sul pareggio: 'sent' l'ho offerto io, 'received' me l'ha offerto l'avversario
  * @property {boolean}							matchStarted 		Se la partita è iniziata (il timer parte alla prima mossa del bianco)
  * @property {Set<string>}						lastMovesSquares	Id delle caselle coinvolte nell'ultima mossa
  * @property {Function|null}					blinking 			Callback per fermare il lampeggio delle caselle sotto scacco
+ * @property {boolean}							aiGame				Flag utilizzata durante il redirect su playpage per sapere se si vuole fare una partita con l'ai
  * @property {Object<string, CapturedCount>} 	capturedP			Pezzi catturati, contati per squadra e per tipo
  */
 class metaInfo {
@@ -86,9 +88,12 @@ class metaInfo {
 		this.matchId			= null;
 		this.myTeam				= null;
 		this.victory			= null;
+		this.pending			= null;
+		this.drawOffer			= null;
 		this.matchStarted		= false;
 		this.lastMovesSquares	= new Set();
 		this.blinking			= null;
+		this.aiGame				= false;
 		this.capturedP			= {	white: { Bastards: 0, Minotaurus: 0, Valkirya: 0, Jester: 0, Champion: 0},
 									black: { Bastards: 0, Minotaurus: 0, Valkirya: 0, Jester: 0, Champion: 0} };
 	}
@@ -96,6 +101,8 @@ class metaInfo {
 
 //globale contiene info. riguardante le interazione dello user con la board, utile per il rendering
 export let localInfo = reactive(new metaInfo());
+
+export const codexPiece = ref(null);
 
 //Globale che contiene tutti i dati della partita conservati in locale
 export let localMatchState = null;
@@ -117,6 +124,8 @@ export const emptyCapturedPieces = () => ({Bastards: 0, Minotaurus: 0, Valkirya:
 //Il giocatore seduto a questo client: quello della squadra che il browser controlla.
 export const myPlayer = () => [...localPlayers.values()].find(p => p.team === localInfo.myTeam) ?? null;
 
+export const isMyTurn = () => myPlayer()?.isPlaying === true;
+
 //Il giocatore di turno, che sui client avversari NON coincide con myPlayer().
 export const currentPlayer = () => [...localPlayers.values()].find(p => p.isPlaying === true) ?? null;
 
@@ -125,6 +134,8 @@ export const canAfford = (piece) => {
 	const points = myPlayer()?.nPoints;
 	return (typeof points === "number" && typeof piece?.price === "number" && points >= piece.price);
 };
+
+export const isAbilityArmed = (square) => localInfo.usingAbility !== "" && square?.useAbilityBool === true && square?.piece?.isBoostedBool === true;
 
 // Funzioni setter per aggiornare le variabili globali
 export function startLocalMatchState(newMatchState) {
@@ -138,6 +149,7 @@ export function initLocalBoard(boardData)
 	if (!localMatchState)
 		throw new Error("[initLocalBoard]: Match non inizializzato: chiama prima initLocalMatchState().");
 	localBoard.clear();
+	clearMatchStorage();
 	localInfo.lastMovesSquares = new Set();
 	if (boardData && typeof boardData === 'object') {
 		Object.entries(boardData).forEach(([squareId, squareData]) => {
@@ -170,16 +182,73 @@ export function getRootDiv() {
 
 export const FILES_TWO = ["a", "b", "c", "d", "e", "f", "g", "h"];
 export const FILES_FOUR = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n"];
-export const HIDDEN = new Set( ["a14", "b14", "c14", "a13", "b13", "c13", "a12", "b12", "c12",
-				 "l14", "m14", "n14", "l13", "m13", "n13", "l12", "m12", "n12",
-				 "a3", "b3", "c3", "a2", "b2", "c2", "a1", "b1", "c1",
-				 "l3", "m3", "n3", "l2", "m2", "n2", "l1", "m1", "n1"] );
+export const HIDDEN = new Set( [ "a14", "b14", "c14", "a13", "b13", "c13", "a12", "b12", "c12",
+				 				 "l14", "m14", "n14", "l13", "m13", "n13", "l12", "m12", "n12",
+								 "a3", "b3", "c3", "a2", "b2", "c2", "a1", "b1", "c1",
+								 "l3", "m3", "n3", "l2", "m2", "n2", "l1", "m1", "n1"] );
 
 export let MACRO = Object ({
-	"AUDIO"		: true,
-	"DEBUG"		: import.meta.env.DEV,
-	"LOL"		: true,
-	"CLASSIC"	: false,
+	"AUDIO"			: true,
+	"DEBUG"			: import.meta.env.DEV,
+	//"LOL" | "CLASSIC" | "JOJO"
+	"AUDIOSET"		: "LOL",
+	"MAX_MESSAGES" 	: 100,
+	"SERVER_AUTHOR" : "server",
+	"MAX_MSG_LEN"	: 200,
+});
+
+//roba da non suonare sull'ack, o lo suona soketListen
+//sull'update della board, o non hanno un suono associato.
+export const BOARD_AUDIO = new Set(["move", "armability", "trans", "giveup",
+									"moveboost", "history", "simulate_boost"]);
+
+export const LOLAUDIOPATH = Object.freeze({
+	"move":			{ path: new URL("../../assets/audios/lolMoving.mp3",		import.meta.url).href, playing: true },
+	"boost":		{ path: new URL("../../assets/audios/lolBoost.mp3",			import.meta.url).href, playing: true },
+	"armability":	{ path: new URL("../../assets/audios/lolUseAbility.mp3",	import.meta.url).href, playing: true },
+	"check":		{ path: new URL("../../assets/audios/lolCheck.mp3",			import.meta.url).href, playing: true },
+	"lost":			{ path: new URL("../../assets/audios/lolLost.mp3",			import.meta.url).href, playing: true },
+	"victory":		{ path: new URL("../../assets/audios/lolVictory.mp3",		import.meta.url).href, playing: true },
+	"draw":			{ path: new URL("../../assets/audios/lolDraw.mp3",			import.meta.url).href, playing: true },
+	"trans":		{ path: new URL("../../assets/audios/lolTransform.mp3",		import.meta.url).href, playing: true },
+	"endturn":		{ path: new URL("../../assets/audios/lolEndTurn.mp3",		import.meta.url).href, playing: true },
+	"giveup":		{ path: new URL("../../assets/audios/lolGiveup.mp3",		import.meta.url).href, playing: true },
+	"recdraw":		{ path: new URL("../../assets/audios/lolRecDraw.mp3",		import.meta.url).href, playing: true },
+	"askdraw":		{ path: new URL("../../assets/audios/lolAskDraw.mp3",		import.meta.url).href, playing: true },
+	"checkboost":	{ path: new URL("../../assets/audios/lolCheckBoost.mp3",	import.meta.url).href, playing: true },
+	"clicked":		{ path: new URL("../../assets/audios/lolClicked.mp3",		import.meta.url).href, playing: true },
+	"badmove":		{ path: new URL("../../assets/audios/lolBadMove.mp3",		import.meta.url).href, playing: true },
+	"capture":		{ path: new URL("../../assets/audios/lolCapture.mp3",		import.meta.url).href, playing: true },
+});
+
+// lolMoving.mp3		-> MOVIMENTO
+// lolBoost.mp3			-> POTENZIAMENTO
+// lolUseAbility.mp3	-> USO ABILITÀ
+// lolCheck.mp3			-> TETTE
+// lolLost.mp3			-> HAI PIERSO
+// lolVictory.mp3		-> CELEBERRIMA VITTORIA (ososo)
+// lolDraw.mp3			-> MAH ESALTANTE QUANTO UN REGALO DI NATALE CON IL NULLA COSMICO DENTRO (annoiato)
+// lolTransform.mp3		-> MI SENTO DIVERSO (voce gay)
+// lolEndTurn.mp3		-> PASSO
+// lolGiveup.mp3		-> IL NEMICO È TROPPO POTENTE (chao)
+// lolRecDraw.mp3		-> HA HAAA IL NEMICO PROVA AD EVITARE LA SCONFITTA CON TATTICHE DA PUSILLANIME
+// lolAskDraw.mp3		-> MA CE SE PÒ ACCORDÀ? (romanaccio)
+// lolCheckBoost.mp3	-> MMMM CHE FA STO COSO (fattone)
+// lolClicked.mp3		-> CLICK
+// lolBadMove.mp3		-> BELIN MA CHE MI COMBINI
+// lolCapture.mp3		-> GNAM GNAM
+
+export const CLASSICAUDIOPATH = Object.freeze({
+	"move":			{ path: new URL("", import.meta.url).href, playing: true },
+	"boost":		{ path: new URL("", import.meta.url).href, playing: true },
+	"moveboost":	{ path: new URL("", import.meta.url).href, playing: true },
+	"check":		{ path: new URL("", import.meta.url).href, playing: true },
+	"checkmate":	{ path: new URL("", import.meta.url).href, playing: true },
+	"trans":		{ path: new URL("", import.meta.url).href, playing: true },
+	"endturn":		{ path: new URL("", import.meta.url).href, playing: true },
+	"giveup":		{ path: new URL("", import.meta.url).href, playing: true },
+	"recdraw":		{ path: new URL("", import.meta.url).href, playing: true },
+	"askdraw":		{ path: new URL("", import.meta.url).href, playing: true },
 });
 
 export function debug(...args)
@@ -191,42 +260,42 @@ export function debug(...args)
 export const ePlaying = Object.freeze({ YES: "yes", NO: "no", UNKNOWN: "unknown" });
 
 export const IMG_PATHS = Object.freeze ({
-	"whiteKing" : new URL("../../assets/pieces/white/king.png", import.meta.url).href,
-	"whiteChampion" : new URL("../../assets/pieces/white/queen.png", import.meta.url).href,
-	"whiteJester" : new URL("../../assets/pieces/white/knight.png", import.meta.url).href,
-	"whiteValkirya" : new URL("../../assets/pieces/white/bishop.png", import.meta.url).href,
+	"whiteKing" : 		new URL("../../assets/pieces/white/king.png", import.meta.url).href,
+	"whiteChampion" : 	new URL("../../assets/pieces/white/queen.png", import.meta.url).href,
+	"whiteJester" : 	new URL("../../assets/pieces/white/knight.png", import.meta.url).href,
+	"whiteValkirya" : 	new URL("../../assets/pieces/white/bishop.png", import.meta.url).href,
 	"whiteMinotaurus" : new URL("../../assets/pieces/white/rook.png", import.meta.url).href,
-	"whiteBastards" : new URL("../../assets/pieces/white/pawn.png", import.meta.url).href,
-	"blackKing" : new URL("../../assets/pieces/black/king.png", import.meta.url).href,
-	"blackChampion" : new URL("../../assets/pieces/black/queen.png", import.meta.url).href,
-	"blackJester" : new URL("../../assets/pieces/black/knight.png", import.meta.url).href,
-	"blackValkirya" : new URL("../../assets/pieces/black/bishop.png", import.meta.url).href,
+	"whiteBastards" : 	new URL("../../assets/pieces/white/pawn.png", import.meta.url).href,
+	"blackKing" : 		new URL("../../assets/pieces/black/king.png", import.meta.url).href,
+	"blackChampion" : 	new URL("../../assets/pieces/black/queen.png", import.meta.url).href,
+	"blackJester" : 	new URL("../../assets/pieces/black/knight.png", import.meta.url).href,
+	"blackValkirya" : 	new URL("../../assets/pieces/black/bishop.png", import.meta.url).href,
 	"blackMinotaurus" : new URL("../../assets/pieces/black/rook.png", import.meta.url).href,
-	"blackBastards" : new URL("../../assets/pieces/black/pawn.png", import.meta.url).href,
-	"yellowKing" : new URL("../../assets/pieces/yellow/king.png", import.meta.url).href,
-	"yellowChampion" : new URL("../../assets/pieces/yellow/queen.png", import.meta.url).href,
-	"yellowJester" : new URL("../../assets/pieces/yellow/knight.png", import.meta.url).href,
-	"yellowValkirya" : new URL("../../assets/pieces/yellow/bishop.png", import.meta.url).href,
+	"blackBastards" : 	new URL("../../assets/pieces/black/pawn.png", import.meta.url).href,
+	"yellowKing" : 		new URL("../../assets/pieces/yellow/king.png", import.meta.url).href,
+	"yellowChampion" : 	new URL("../../assets/pieces/yellow/queen.png", import.meta.url).href,
+	"yellowJester" : 	new URL("../../assets/pieces/yellow/knight.png", import.meta.url).href,
+	"yellowValkirya" : 	new URL("../../assets/pieces/yellow/bishop.png", import.meta.url).href,
 	"yellowMinotaurus" : new URL("../../assets/pieces/yellow/rook.png", import.meta.url).href,
-	"yellowBastards" : new URL("../../assets/pieces/yellow/pawn.png", import.meta.url).href,
-	"blueKing" : new URL("../../assets/pieces/blue/king.png", import.meta.url).href,
-	"blueChampion" : new URL("../../assets/pieces/blue/queen.png", import.meta.url).href,
-	"blueJester" : new URL("../../assets/pieces/blue/knight.png", import.meta.url).href,
-	"blueValkirya" : new URL("../../assets/pieces/blue/bishop.png", import.meta.url).href,
-	"blueMinotaurus" : new URL("../../assets/pieces/blue/rook.png", import.meta.url).href,
-	"blueBastards" : new URL("../../assets/pieces/blue/pawn.png", import.meta.url).href,
-	"redKing" : new URL("../../assets/pieces/red/king.png", import.meta.url).href,
-	"redChampion" : new URL("../../assets/pieces/red/queen.png", import.meta.url).href,
-	"redJester" : new URL("../../assets/pieces/red/knight.png", import.meta.url).href,
-	"redValkirya" : new URL("../../assets/pieces/red/bishop.png", import.meta.url).href,
-	"redMinotaurus" : new URL("../../assets/pieces/red/rook.png", import.meta.url).href,
-	"redBastards" : new URL("../../assets/pieces/red/pawn.png", import.meta.url).href,
-	"greenKing" : new URL("../../assets/pieces/green/king.png", import.meta.url).href,
-	"greenChampion" : new URL("../../assets/pieces/green/queen.png", import.meta.url).href,
-	"greenJester" : new URL("../../assets/pieces/green/knight.png", import.meta.url).href,
-	"greenValkirya" : new URL("../../assets/pieces/green/bishop.png", import.meta.url).href,
+	"yellowBastards" : 	new URL("../../assets/pieces/yellow/pawn.png", import.meta.url).href,
+	"blueKing" : 		new URL("../../assets/pieces/blue/king.png", import.meta.url).href,
+	"blueChampion" : 	new URL("../../assets/pieces/blue/queen.png", import.meta.url).href,
+	"blueJester" : 		new URL("../../assets/pieces/blue/knight.png", import.meta.url).href,
+	"blueValkirya" : 	new URL("../../assets/pieces/blue/bishop.png", import.meta.url).href,
+	"blueMinotaurus" : 	new URL("../../assets/pieces/blue/rook.png", import.meta.url).href,
+	"blueBastards" : 	new URL("../../assets/pieces/blue/pawn.png", import.meta.url).href,
+	"redKing" : 		new URL("../../assets/pieces/red/king.png", import.meta.url).href,
+	"redChampion" : 	new URL("../../assets/pieces/red/queen.png", import.meta.url).href,
+	"redJester" : 		new URL("../../assets/pieces/red/knight.png", import.meta.url).href,
+	"redValkirya" : 	new URL("../../assets/pieces/red/bishop.png", import.meta.url).href,
+	"redMinotaurus" : 	new URL("../../assets/pieces/red/rook.png", import.meta.url).href,
+	"redBastards" : 	new URL("../../assets/pieces/red/pawn.png", import.meta.url).href,
+	"greenKing" : 		new URL("../../assets/pieces/green/king.png", import.meta.url).href,
+	"greenChampion" : 	new URL("../../assets/pieces/green/queen.png", import.meta.url).href,
+	"greenJester" : 	new URL("../../assets/pieces/green/knight.png", import.meta.url).href,
+	"greenValkirya" : 	new URL("../../assets/pieces/green/bishop.png", import.meta.url).href,
 	"greenMinotaurus" : new URL("../../assets/pieces/green/rook.png", import.meta.url).href,
-	"greenBastards" : new URL("../../assets/pieces/green/pawn.png", import.meta.url).href
+	"greenBastards" : 	new URL("../../assets/pieces/green/pawn.png", import.meta.url).href
 });
 
 export class matchMakingOpt

@@ -1,6 +1,7 @@
 import { computePosition, offset, flip, shift, autoUpdate }	from "@floating-ui/dom";
-import { emptyCapturedPieces, localBoard, localInfo, currentPlayer, debug} 		from "../Variables";
+import { localBoard, localInfo, currentPlayer } 			from "../Variables";
 import { clearHighlight }									from "@/scripts/Events/utils/HighlightUtils.js";
+import { playAudio } 										from "@/scripts/Helper/generalUtils";
 
 let stopAutoUpdate = null;
 
@@ -24,9 +25,32 @@ export function checkEndTurn(validated)
 		if (validated[player]?.isPlaying) { newCurP = validated[player]; };
 	});
 
-	if (curP.name === newCurP.name) { localInfo.secondTurn = true; }
+	if (!newCurP || !curP) 
+		return (resetLocalVars());
+
+	if (curP.name === newCurP.name && !validated.victory)
+		localInfo.secondTurn = true;
 	else
 		resetLocalVars();
+}
+
+export function setVictory(team, sound = true)
+{
+	const next = team || null;
+
+	if (next === localInfo.victory)
+		return;
+
+	localInfo.victory = next;
+	if (!sound || !next)
+		return;
+
+	if (next === "draw")
+		playAudio("draw");
+	else if (next === localInfo.myTeam)
+		playAudio("victory");
+	else 
+		playAudio("lost");
 }
 
 export function checkUpgrade()
@@ -117,14 +141,11 @@ export function resetLocalVars()
 	localInfo.secondTurn		= false;
 	localInfo.secondMove		= false;
 	localInfo.drag				= null;
+	localInfo.pending			= null;
+	localInfo.drawOffer			= null;
+	localInfo.goatId			= null;
 
-	if (localInfo.victory)
-	{
-		debug("resettiamo i pezzi catturati");
-		localInfo.capturedP		= { white: emptyCapturedPieces(),
-									black: emptyCapturedPieces() };
-	}
-
+	stopUpgradeMenu();
 	localBoard.forEach(square => {
 		if (square.useAbilityBool)
 			square.useAbilityBool = false;

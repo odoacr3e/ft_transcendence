@@ -40,7 +40,8 @@ export function actorMap(scene)
 
 /**
  * Le caselle marcate: quelle scritte a mano nella scena piu' quelle generate dal pattern.
- * Un pattern si espande in linea finche' non esce dalla griglia o non incontra un pezzo.
+ * Un pattern si espande in linea finche' non esce dalla griglia o non incontra un pezzo;
+ * se il pezzo incontrato e' avversario la sua casella viene marcata come cattura.
  * @param {*} scene
  * @param {Map<string, Actor>} [actors]
  * @returns {Map<string, 'move'|'capture'>}
@@ -62,28 +63,48 @@ export function markMap(scene, actors = actorMap(scene))
 	const src	= (scene.actors ?? [])[scene.patternFrom ?? 0] ?? { x: 0, y: 0 };
 	const steps	= pattern.slide ? CODEX_RADIUS * 2 : 1;
 
-	const paint = (dirs, kind) => {
+	const paint = (dirs, kind, takes) => {
 		for (const [dx, dy] of dirs ?? [])
 		{
 			for (let s = 1; s <= steps; s++)
 			{
 				const x = src.x + dx * s;
 				const y = src.y + dy * s;
+				const k   = key(x, y);
+				const hit = actors.get(k);
 
-				if (!inside(x, y) || actors.has(key(x, y)))
+				if (!inside(x, y))
 					break;
-				out.set(key(x, y), kind);
+				//un ghost e' solo la traccia di dov'era il pezzo, la casella resta libera
+				if (hit && !hit.ghost)
+				{
+					//su un pezzo la linea si ferma, ma se e' avversario la casella si marca: li' si mangia
+					if (takes && hit.role === "enemy")
+						out.set(k, "capture");
+					break;
+				}
+				out.set(k, kind);
 			}
 		}
 	};
 
-	paint(pattern.dirs, "move");
-	paint(pattern.capture, "capture");
+	//se il pezzo ha una lista di catture separata (il Bastards) le dirs di movimento non mangiano
+	paint(pattern.dirs, "move", !pattern.capture);
+	paint(pattern.capture, "capture", true);
 	return (out);
 }
 
 /**
- * Le caselle attraversate da una freccia: li' il marcatore non va disegnato, ci passa gia' la linea.
+ * I vertici di una freccia. `points` per una spezzata, `from`/`to` per il caso a due punti.
+ * Un vertice fuori dalla griglia e' legittimo: l'SVG taglia al bordo, ed e' cosi' che si
+ * disegna un tratto che esce dalla scacchiera o che vi rientra.
+ * @param {*} arrow
+ * @returns {number[][]}
+ */
+const arrowPoints = (arrow) => arrow.points ?? [arrow.from, arrow.to];
+
+/**
+ * Le caselle attraversate da una freccia: li' il pallino di mossa non va disegnato, ci passa gia' la linea.
  * Se il tragitto non e' rettilineo (ne' ortogonale ne' diagonale) si segna solo l'arrivo.
  * @param {*} scene
  * @returns {Set<string>}
@@ -94,18 +115,23 @@ export function arrowPath(scene)
 
 	for (const a of scene?.arrows ?? [])
 	{
-		const [fx, fy]	= a.from;
-		const [tx, ty]	= a.to;
-		const dx		= Math.sign(tx - fx);
-		const dy		= Math.sign(ty - fy);
-		const steps		= Math.max(Math.abs(tx - fx), Math.abs(ty - fy));
-		const straight	= dx === 0 || dy === 0 || Math.abs(tx - fx) === Math.abs(ty - fy);
+		const pts = arrowPoints(a);
 
-		if (steps && straight)
-			for (let s = 1; s <= steps; s++)
-				out.add(key(fx + dx * s, fy + dy * s));
-		else
-			out.add(key(tx, ty));
+		for (let i = 1; i < pts.length; i++)
+		{
+			const [fx, fy]	= pts[i - 1];
+			const [tx, ty]	= pts[i];
+			const dx		= Math.sign(tx - fx);
+			const dy		= Math.sign(ty - fy);
+			const steps		= Math.max(Math.abs(tx - fx), Math.abs(ty - fy));
+			const straight	= dx === 0 || dy === 0 || Math.abs(tx - fx) === Math.abs(ty - fy);
+
+			if (steps && straight)
+				for (let s = 1; s <= steps; s++)
+					out.add(key(fx + dx * s, fy + dy * s));
+			else
+				out.add(key(tx, ty));
+		}
 	}
 	return (out);
 }
@@ -126,13 +152,16 @@ export function gridCells(scene)
 	{
 		for (let x = -CODEX_RADIUS; x <= CODEX_RADIUS; x++)
 		{
-			const k = key(x, y);
+			const k		= key(x, y);
+			const mark	= marks.get(k) ?? null;
 
 			out.push({
 				key:	k,
 				dark:	(x + y) % 2 !== 0,
 				actor:	actors.get(k) ?? null,
-				mark:	arrows.has(k) ? null : marks.get(k) ?? null,
+				//la freccia copre i pallini di mossa che attraversa, ma non i cerchi di
+				//cattura: quelli dicono un'altra cosa e il tratto non li sostituisce
+				mark:	mark === "move" && arrows.has(k) ? null : mark,
 			});
 		}
 	}
@@ -140,16 +169,13 @@ export function gridCells(scene)
 }
 
 /**
- * Le frecce gia' convertite in coordinate del viewBox SVG.
+ * Le frecce gia' convertite in coordinate del viewBox SVG, pronte per l'attributo
+ * `points` di un <polyline>. Con due soli vertici il risultato e' una linea dritta.
  * @param {*} scene
- * @returns {Array<{x1: number, y1: number, x2: number, y2: number}>}
+ * @returns {string[]}
  */
 export function arrowSegments(scene)
 {
-	return ((scene?.arrows ?? []).map(a => ({
-		x1: px(a.from[0]),
-		y1: px(a.from[1]),
-		x2: px(a.to[0]),
-		y2: px(a.to[1]),
-	})));
+	return ((scene?.arrows ?? []).map(a =>
+		arrowPoints(a).map(([x, y]) => `${px(x)},${px(y)}`).join(" ")));
 }

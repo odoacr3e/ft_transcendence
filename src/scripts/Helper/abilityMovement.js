@@ -15,7 +15,7 @@ const PIECES_ABILITY = Object.freeze ({
 
 async function moveBastard(fromId, toId, flag)
 {
-	if (!localInfo.secondTurn)
+	if (!localInfo.secondMove)
 	{
 		const square = localBoard.get(fromId);
 		const boostedZones = square.boostedTargetZones.get(fromId);
@@ -53,6 +53,8 @@ async function moveBastard(fromId, toId, flag)
 				localInfo.savedBoostedMap = null;
 			}
 		}
+		else
+			debug("[moveBastard]: seconda mossa scartata", fromId, toId);
 	}
 }
 
@@ -165,7 +167,7 @@ function boostHlOnClick()
 
 function beginPendingAbility({pieceType, zones, anchorId = null, focusId = null})
 {
-	if (!pieceType || !zones || !zones.size === 0)
+	if (!pieceType || !zones || zones.size === 0)
 		return (false);
 
 	localInfo.usingAbility		= pieceType;

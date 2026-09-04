@@ -1,18 +1,25 @@
-import { updateMatchState, initLocalMatchState, reloadMatchState }	from "./Archi";
-import { localInfo, localMatchState, MACRO, debug}						from "./Variables";
+import { updateMatchState, initLocalMatchState, reloadMatchState }	from "./Archi.js";
+import { localInfo, localMatchState, MACRO, debug}					from "./Variables";
 import { clearHighlight, setCheckSquare }							from "../Events/utils/HighlightUtils";
 import { eSpecialMoves }											from "@/Common/ENUMS";		
 import { blinkSquares } 											from "../Events/utils/GlobalUtils";
 import router 														from "@/router";
-import { resetLocalVars } 											from "./utils/ArchiUtils";
+import { resetLocalVars, setVictory } 											from "./utils/ArchiUtils";
 import { pushTurn, reloadHistory } 									from "./History";
-import { pushGameMsg } 												from "./GameMsg";
+import { pushMessage } 												from "./ChatBox.js";
+import { playAudio } 												from "../Helper/generalUtils";
 
 export function listenGameSocket(socket)
 {
 	socket.on("game", (raw) => {
 		debug("{[socket game] ricevuta una riposta} tipo: ", raw.type, "response: ", raw);
 
+		if (raw.type === "msg")
+		{
+			debug("[socket game] -> [msg]: ricevuto messaggio di gioco", raw);
+			pushMessage(raw.msg, raw.author);
+			return;
+		}
 		if (localInfo.blinking)
 		{
 			localInfo.blinking();
@@ -25,8 +32,7 @@ export function listenGameSocket(socket)
 			if (mask & (eSpecialMoves.CHECK | eSpecialMoves.CHECKMATE))
 			{
 				debug("[socket game]: è tempo di blinkare!");
-				if (MACRO.AUDIO)
-					new Audio("/src/assets/audios/tette.mp3").play();
+				playAudio("check");
 				if (raw.check != undefined)
 				{
 					const threatId = new Set([raw.check.to, raw.check.mid, raw.check.from].filter(Boolean));
@@ -37,7 +43,7 @@ export function listenGameSocket(socket)
 			}
 			return;
 		}
-		if (raw.id !== undefined)
+		if (raw.id !== undefined || raw.type === "init")
 		{
 			debug("[socket game] ID NEW GAME TROVATO!");
 			initLocalMatchState(raw);
@@ -46,7 +52,7 @@ export function listenGameSocket(socket)
 		}
 		if (raw.type === "reload")
 		{
-			// console.log("{socket game [reload]} ricevuto reload. localMatchstate =", localMatchState);
+			// debug("{socket game [reload]} ricevuto reload. localMatchstate =", localMatchState);
 			if (!localMatchState)
 			{
 				reloadMatchState(raw);
@@ -64,26 +70,58 @@ export function listenGameSocket(socket)
 		if (raw.type === "giveup")
 		{
 			debug("[socket game] -> [giveup]: ricevuto giveup");
-			localInfo.victory = raw.victory;
+			const iWon = raw.victory === localInfo.myTeam;
+
+			setVictory(raw.victory, iWon);
+			if (!iWon)
+				playAudio("giveup");
 			resetLocalVars();
+			return;
+		}
+		if (raw.type === "draw")
+		{
+			debug("[socket game] -> [draw]: ricevuto draw");
+			if (raw.victory)
+			{
+				setVictory(raw.victory);
+				resetLocalVars();
+				return;
+			}
+			if (localInfo.drawOffer === "sent" && raw.draw === true)
+			{
+				debug("inviato")
+				playAudio("askdraw");
+				return;
+			}
+			localInfo.drawOffer = (raw.draw === true) ? "received" : null;
+			if (localInfo.drawOffer === "received")
+			{
+				debug("ricevuto");
+				playAudio("recdraw");
+			}
 			return;
 		}
 		if (raw.type === "timeout")
 		{
-			debug("[socket game] -> [timeout]: tempo scaduto, victory =", raw.victory);
+			debug("[socket game -> timeout]: tempo scaduto, victory =", raw.victory);
 			if (raw.victory)
-				localInfo.victory = raw.victory;
+				setVictory(raw.victory);
 			resetLocalVars();
 			return;
 		}
 		if (raw.type == "simulate_boost")
 		{
 			debug("{socket game [simu_boost]}: payload richiesta simulate boots");
+			if (raw.log.status !== 200)
+			{
+				playAudio("checkboost");
+				debug("ma non è possibile");
+			}
 			return;
 		}
 		if (raw.type === "history")
 		{
-			// console.log("{socket game [history]}: ricevuti turni");
+			// debug("{socket game [history]}: ricevuti turni");
 			if (Array.isArray(raw.history))
 				reloadHistory(raw.history);
 			else if (raw.history)
@@ -92,25 +130,26 @@ export function listenGameSocket(socket)
 				debug("{socket game [history]}: nessun turno nel payload", raw);
 			return;
 		}
-		// console.log("[socket game]: update match");
-		updateMatchState(raw);
+		// debug("[socket game]: update match");
+		const outcome = updateMatchState(raw);
 		if (raw.history)
 			pushTurn(raw.history);
 		clearHighlight();
-		if (MACRO.AUDIO)
-			new Audio("/src/assets/audios/moving.mp3").play();
+
 		const inCheck = (Number(raw.mask) & (eSpecialMoves.CHECK | eSpecialMoves.CHECKMATE)) && raw.giorgi0;
 		setCheckSquare(inCheck ? raw.giorgi0 : null);
+		if (localInfo.victory)
+			return;
 		if (inCheck)
 		{
 			debug("[socket game]: re sotto scacco in", raw.giorgi0);
-			if (MACRO.AUDIO)
-				new Audio("/src/assets/audios/tette.mp3").play();
+			playAudio("check");
 		}
-	});
-
-	socket.on("gameMsg", (raw) => {
-		// console.log("{[socket gameMsg]} ricevuto messaggio:", raw);
-		pushGameMsg(raw);
+		else if (outcome.captured)
+			playAudio("capture");
+		else if (outcome.transformed)
+			playAudio("trans");
+		else if (outcome.moved)
+			playAudio(raw.type === "moveboost" ? "armability" : "move");
 	});
 }

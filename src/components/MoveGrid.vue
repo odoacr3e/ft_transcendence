@@ -18,8 +18,8 @@
 <template>
 	<div class="move-grid" :class="variant">
 		<div v-for="cell in cells" :key="cell.key" class="cell" :class="{ dark: cell.dark }">
-			<img v-if="cell.actor" :src="resolveIcon(cell.actor)" alt="" :draggable="false" class="cell-piece">
-			<span v-else-if="cell.mark" class="mark" :class="cell.mark"/>
+			<span v-if="cell.mark" class="mark" :class="[cell.mark, { 'on-piece': !!cell.actor }]"/>
+			<img v-if="cell.actor" :src="resolveIcon(cell.actor)" alt="" :draggable="false" class="cell-piece" :class="{ ghost: cell.actor.ghost }">
 		</div>
 
 		<svg v-if="arrows.length" class="arrows" viewBox="0 0 100 100">
@@ -28,9 +28,10 @@
 					<path d="M0,0 L4,2 L0,4 Z" fill="var(--mark-color)"/>
 				</marker>
 			</defs>
-			<line v-for="(a, i) in arrows" :key="i"
-					:x1="a.x1" :y1="a.y1" :x2="a.x2" :y2="a.y2"
-					stroke="var(--mark-color)" stroke-width="2.5" stroke-linecap="round"
+			<polyline v-for="(pts, i) in arrows" :key="i"
+					:points="pts" fill="none"
+					stroke="var(--mark-color)" stroke-width="2.5"
+					stroke-linecap="round" stroke-linejoin="round"
 					:marker-end="`url(#${uid})`"/>
 		</svg>
 	</div>
@@ -58,6 +59,7 @@
 
 	.cell
 	{
+		position: relative;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -78,8 +80,18 @@
 		object-fit: contain;
 	}
 
+	/* la casella da cui il pezzo e' partito: si vede, ma non e' piu' li' */
+	.cell-piece.ghost
+	{
+		opacity: .28;
+	}
+
 	.mark
 	{
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
 		display: block;
 		width: 15%;
 		aspect-ratio: 1;
@@ -93,6 +105,13 @@
 		width: 62%;
 		background-color: transparent;
 		border: .18rem solid var(--mark-color);
+	}
+
+	/* sopra un pezzo avversario il cerchio lo circonda invece di finirci sotto */
+	.mark.capture.on-piece
+	{
+		width: 94%;
+		border-width: .14rem;
 	}
 
 	.arrows

@@ -3,10 +3,10 @@
 	import { clearMatchStorage }				from '@/scripts/Data/Archi';
 	import { computed, ref, watch }				from 'vue'
 	import router								from '@/router';
-
-	import winImg	from '@/assets/CrownIcon.png';
-	import loseImg	from '@/assets/bell.png';
-	import drawImg	from '@/assets/people.png';
+	import winImg								from '@/assets/CrownIcon.png';
+	import loseImg								from '@/assets/bell.png';
+	import drawImg								from '@/assets/people.png';
+	import { playAudio } 						from '@/scripts/Helper/generalUtils';
 
 	const dismissed = ref(false);
 
