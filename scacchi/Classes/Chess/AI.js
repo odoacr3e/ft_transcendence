@@ -6,13 +6,13 @@ import { checkLostAll } from "../../GameLogic/checkMate.js";
 import { AIprofilesArray, eTeam, enumNames } from "../../Macro/enums.js";
 import { render } from "../../test/render.js";
 import { cancelTurn, execTurn } from "../../utils/AI.js";
-import { checkKingDanger } from "../../utils/checkDanger.js";
+import { checkKingDanger, isDangerous } from "../../utils/checkDanger.js";
 import { getBestNumber } from "../../utils/math.js";
 import { rngProportional } from "../../utils/random.js";
 import { AIProfileConstructor } from "./AIprofiles/constructors.js";
 import fs from "fs";
 import { isOneOf } from "../../utils/string.js";
-import { DEBUG_AI_TRAINING } from "../../Macro/macro.js";
+import { DEBUG_AI_TRAINING, SEED } from "../../Macro/macro.js";
 import { gameMessage } from "../../websocket/utils.js";
 
 /** @typedef {import("./match.js").Match} Match*/
@@ -241,7 +241,7 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 
 	//NOTE = quiescence check
 	console.log(depth);
-	if ((depth <= 0 && !arrayTurns.canEat) || depth <= -5)
+	if ((depth <= 0 && !arrayTurns.canEat) || depth <= -2)
 		return (evalScore(match, ai, pastTurns));
 	lostTeam = checkLostAll(match);
 	if (lostTeam)
@@ -255,7 +255,7 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 			++i;
 			// if (DEB == 11 && turn.move?.from == "d1" && turn.move?.to == "h5")
 			// 	console.log();
-			if (depth <= 0 && turn.canEat == false)
+			if (depth <= 0 && (turn.canEat == false || !SEE(match, turn)))
 				continue ;
 			if (execTurn(match, turn, pastTurns) == false)
 				continue ;
@@ -301,7 +301,7 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 			++i;
 			if (DEB == 3423 && i == 76)
 				console.log("BREAKPOINT");
-			if (depth <= 0 && turn.canEat == false)
+			if (depth <= 0 && (turn.canEat == false || !SEE(match, turn)))
 				continue ;
 			if (execTurn(match, turn, pastTurns) == false)
 				continue ;
@@ -337,6 +337,28 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 		}
 		return (minEval);
 	}
+}
+
+/**
+ * 
+ * @param {Match} match 
+ * @param {Turn} turn 
+ */
+function SEE(match, turn)
+{
+	let piece;
+	let targetSquare;
+	let enemySquare;
+	let pointWin;
+
+	targetSquare = match.board._data.get(turn.move?.to);
+	if (!targetSquare?.piece)
+		return false;
+	piece = match.board.get(turn.move.from).piece;
+	pointWin = targetSquare.piece.price;
+	if (isDangerous(match,targetSquare.dangerZones, match.NextPlayer().team))
+		pointWin -= piece?.price;
+	return pointWin > 1;
 }
 
 /**

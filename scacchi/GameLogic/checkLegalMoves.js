@@ -12,12 +12,12 @@ import { enumNames } from "../Macro/enums.js";
 import { isDangerous } from "../utils/checkDanger.js";
 import { isOneOf } from "../utils/string.js";
 import { render } from "../test/render.js";
-import fs from "fs";
+import fs, { truncate } from "fs";
 import { simulation } from "./simulation.js";
 
 /** @typedef {import("../Classes/Chess/match").Match} Match*/
 /** @typedef {{from: string, to: string}} Move */
-/** @typedef {{move: Move | null, moveBoost: Move | null, transform: string, boost: string, canEat?: boolean}} Turn */
+/** @typedef {{move: Move | null, moveBoost: Move | null, transform: string, boost: string, canEat?: boolean, attacker?: number, eaten?: number}} Turn */
 
 
 /**
@@ -135,14 +135,14 @@ export function getLegalMoves(match, team=match.currentPlayer.team, infoBool=tru
 	for (const [coord, targetSet] of legalBoostedMovesEatMap)
 	{
 		for (const targetCoord of targetSet)
-			pushChildMoves(match, player, legalMovesArray, {from: coord, to: targetCoord}, true, true);
+			pushChildMoves(match, player, legalMovesArray, {from: coord, to: targetCoord}, true, false);
 	}
 	for (const [coord, targetSet] of legalBoostedMovesMap)
 	{
 		for (const targetCoord of targetSet)
 			pushChildMoves(match, player, legalMovesArray, {from: coord, to: targetCoord}, true);
 	}
-	// legalMovesArray.sort(optimizeSort);
+	legalMovesArray.sort(optimizeSort);
 	// render(match);
 	//fs.rmSync("TEST");
 	//fs.writeFileSync("TEST", JSON.stringify(legalMovesArray, null, 2));
@@ -171,6 +171,7 @@ function pushChildMoves(match, player, legalMovesArray, move, boostBool=false, e
 	else
 		currTurn = {move: null, moveBoost: move, boost: "", transform: "", canEat: eatBool};
 	addTransform(match, player, legalMovesArray, currTurn, move.to, match.board.get(move.from));
+	formatMVV(match, currTurn);
 	legalMovesArray.push(currTurn);
 	if (currTurn.transform)
 		return ;
@@ -213,6 +214,43 @@ function pushChildMoves(match, player, legalMovesArray, move, boostBool=false, e
 			legalMovesArray.push(currTurn);
 			pushAllLegalBoost(match, player, legalMovesArray, currTurn, true);
 		}
+	}
+}
+
+/**
+ * 
+ * @param {Match} match 
+ * @param {Turn} currTurn 
+ */
+function formatMVV(match, currTurn)
+{
+	let tmp;
+	let tmp2;
+
+	if (!currTurn.canEat)
+			return ;
+	if (!currTurn.move && currTurn.moveBoost)
+	{
+		currTurn.attacker = match.board.get(currTurn.moveBoost.from).piece?.price;
+		currTurn.eaten = match.board.get(currTurn.moveBoost.to).piece?.price;
+	}
+	else if (currTurn.move && !currTurn.moveBoost)
+	{
+		currTurn.attacker = match.board.get(currTurn.move.from).piece?.price;
+		currTurn.eaten = match.board.get(currTurn.move.to).piece?.price;
+	}
+	else if (currTurn.move && currTurn.moveBoost)
+	{
+		if (currTurn.move.to != currTurn.moveBoost.from)
+			return ;
+		tmp = match.board.get(currTurn.move.to).piece;
+		tmp2 = match.board.get(currTurn.moveBoost.to).piece;
+		currTurn.attacker = match.board.get(currTurn.move.from).piece?.price;
+		currTurn.eaten = 0;
+		if (tmp2) //@ts-ignore
+			currTurn.eaten += match.board.get(currTurn.moveBoost.to).piece?.price;
+		if (tmp) //@ts-ignore
+			currTurn.eaten += match.board.get(currTurn.move.to).piece?.price;
 	}
 }
 
@@ -337,13 +375,11 @@ function addTransform(match, player, legalMovesArray, currTurn, destCoord, squar
  */
 function optimizeSort(turn1, turn2)
 {
-	if (!turn2.boost && turn1.boost)
-		return (-1);
-	else if (turn1.boost && !turn2.boost)
-		return (+1);
-	if (!turn2.moveBoost && turn1.moveBoost)
-		return (+1);
-	else if (turn1.moveBoost && !turn2.moveBoost)
-		return (-1);
-	return (0);
+	if (!turn1.attacker && !turn2.attacker)
+		return 0;
+	else if (!turn1.attacker)
+		return 1;
+	else if (!turn2.attacker)
+		return -1;
+    return (turn2.eaten - turn2.attacker) - (turn1.eaten - turn1.attacker);
 }
