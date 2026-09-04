@@ -11,7 +11,7 @@ VAULT_ENABLED := $(shell sed -n 's/^VAULT_ENABLED=//p' .env 2>/dev/null | tr -d 
 VAULT_PROFILE := $(if $(filter true,$(VAULT_ENABLED)),--profile vault,)
 
 up:
-	docker compose $(VAULT_PROFILE) up --build -d
+	docker compose up --build
 
 down:
 	docker compose --profile vault down --remove-orphans
