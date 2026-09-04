@@ -9,7 +9,8 @@
             "skipFiles": ["<node_internals>/**"],
             "cwd": "${workspaceFolder}/scacchi",
             "program": "${workspaceFolder}/scacchi/test/term.js",
-            "console": "integratedTerminal"
+            "console": "integratedTerminal",
+            "runtimeExecutable": "/home/cormax/.nvm/versions/node/v22.22.2/bin/node"
         }
     ]
 }

@@ -17,7 +17,7 @@ import { simulation } from "./simulation.js";
 
 /** @typedef {import("../Classes/Chess/match").Match} Match*/
 /** @typedef {{from: string, to: string}} Move */
-/** @typedef {{move: Move | null, moveBoost: Move | null, transform: string, boost: string}} Turn */
+/** @typedef {{move: Move | null, moveBoost: Move | null, transform: string, boost: string, canEat?: boolean}} Turn */
 
 
 /**
@@ -36,11 +36,14 @@ export function getLegalMoves(match, team=match.currentPlayer.team, infoBool=tru
 	let	legalMovesEatMap = new Map();
 	/** @type {Map<string, Set<string>>} */
 	let	legalBoostedMovesMap = new Map();
+	/** @type {Map<string, Set<string>>} */
+	let	legalBoostedMovesEatMap = new Map();
 	/** @type {Array<Turn>} */
 	let	legalMovesArray = new Array();
 	/** @type {Player} */
 	let	player;
 	let tmp;
+	let	tmpMap;
 
 	for (const [coord, square] of match.board)
 	{
@@ -81,7 +84,8 @@ export function getLegalMoves(match, team=match.currentPlayer.team, infoBool=tru
 			{
 				if (legalMovesEatMap.has(coord) == false)
 					legalMovesEatMap.set(coord, new Set());
-				legalMovesEatMap.get(coord)?.add(targetCoord);
+				legalMovesEatMap.get(coord)?.add(targetCoord);//@ts-ignore
+				legalMovesArray.canEat = true;
 			}
 			else
 			{
@@ -98,12 +102,19 @@ export function getLegalMoves(match, team=match.currentPlayer.team, infoBool=tru
 			{
 				targetSquare = match.board.get(target);
 				if (targetSquare.piece?.team == square.piece?.team)
-					continue ;	
+					continue ;
 				if (infoBool == false)//@ts-ignore
 					return false;
-				if (legalBoostedMovesMap.has(coord) == false)
-					legalBoostedMovesMap.set(coord, new Set());
-				legalBoostedMovesMap.get(coord)?.add(target);
+				if (targetSquare.piece)
+				{
+					tmpMap = legalBoostedMovesEatMap;//@ts-ignore
+					legalMovesArray.canEat = true;
+				}
+				else
+					tmpMap = legalBoostedMovesMap;
+				if (tmpMap.has(coord) == false)
+					tmpMap.set(coord, new Set());
+				tmpMap.get(coord)?.add(target);
 			}
 		}
 	}
@@ -114,12 +125,17 @@ export function getLegalMoves(match, team=match.currentPlayer.team, infoBool=tru
 	for (const [coord, targetSet] of legalMovesEatMap)
 	{
 		for (const targetCoord of targetSet)
-			pushChildMoves(match, player, legalMovesArray, {from: coord, to: targetCoord});
+			pushChildMoves(match, player, legalMovesArray, {from: coord, to: targetCoord}, false, true);
 	}
 	for (const [coord, targetSet] of legalMovesMap)
 	{
 		for (const targetCoord of targetSet)
 			pushChildMoves(match, player, legalMovesArray, {from: coord, to: targetCoord});
+	}
+	for (const [coord, targetSet] of legalBoostedMovesEatMap)
+	{
+		for (const targetCoord of targetSet)
+			pushChildMoves(match, player, legalMovesArray, {from: coord, to: targetCoord}, true, true);
 	}
 	for (const [coord, targetSet] of legalBoostedMovesMap)
 	{
@@ -143,16 +159,17 @@ export function getLegalMoves(match, team=match.currentPlayer.team, infoBool=tru
  * @param {Array<Turn>} legalMovesArray
  * @param {Move} move
  * @param {boolean} boostBool
+ * @param {boolean} eatBool
  * */
-function pushChildMoves(match, player, legalMovesArray, move, boostBool=false)
+function pushChildMoves(match, player, legalMovesArray, move, boostBool=false, eatBool=false)
 {
 	let	currTurn;
 	let	boostedSquare;
 
 	if (boostBool == false)
-		currTurn = {move: move, moveBoost: null, boost: "", transform: ""};
+		currTurn = {move: move, moveBoost: null, boost: "", transform: "", canEat: eatBool};
 	else
-		currTurn = {move: null, moveBoost: move, boost: "", transform: ""};
+		currTurn = {move: null, moveBoost: move, boost: "", transform: "", canEat: eatBool};
 	addTransform(match, player, legalMovesArray, currTurn, move.to, match.board.get(move.from));
 	legalMovesArray.push(currTurn);
 	if (currTurn.transform)

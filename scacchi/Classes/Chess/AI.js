@@ -17,7 +17,7 @@ import { gameMessage } from "../../websocket/utils.js";
 
 /** @typedef {import("./match.js").Match} Match*/
 /** @typedef {{from: string, to: string}} Move */
-/** @typedef {{move: Move | null, moveBoost: Move | null, transform: string, boost: string}} Turn */
+/** @typedef {{move: Move | null, moveBoost: Move | null, transform: string, boost: string, canEat?: boolean}} Turn */
 /** @typedef {{score: number, index: number}} Eval */
 
 /*
@@ -203,6 +203,24 @@ function getBestTurn(match)
 	return ({Turn: arrayTurns[bestTurnIdx.index], Score: bestTurnIdx.score});
 }
 
+/*
+
+- eval: 			figli 0 mangiate
+- quiescence: 		figli >= 1 mangiate
+- arrayTurns(mosse):salvare bool array?
+- turn:				turn.canEat
+
+round 0 - eval	false
+R0-1
+R0-2
+R0-3
+
+round 0 - eval	true
+R0-1 	scartate?
+R0-2X	quiescence
+R0-3 	scartate?
+
+*/
 
 /**
  * 
@@ -221,7 +239,9 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 	let val;
 	let	lostTeam;
 
-	if ((depth <= 0))
+	//NOTE = quiescence check
+	console.log(depth);
+	if ((depth <= 0 && !arrayTurns.canEat) || depth <= -5)
 		return (evalScore(match, ai, pastTurns));
 	lostTeam = checkLostAll(match);
 	if (lostTeam)
@@ -235,10 +255,13 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 			++i;
 			// if (DEB == 11 && turn.move?.from == "d1" && turn.move?.to == "h5")
 			// 	console.log();
+			if (depth <= 0 && turn.canEat == false)
+				continue ;
 			if (execTurn(match, turn, pastTurns) == false)
 				continue ;
-			if (depth != 1)
-				newTurns = getLegalMoves(match);
+			// if (match.board.get(turn.move?.to).piece || (turn.moveBoost && match.board.get(turn.moveboost?.to).piece))
+			// 	turn.eat = true;
+			newTurns = getLegalMoves(match);
 			// else
 			// 	console.log(arrayTurns.length);
 			pastTurns.push(turn);
@@ -278,11 +301,12 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 			++i;
 			if (DEB == 3423 && i == 76)
 				console.log("BREAKPOINT");
+			if (depth <= 0 && turn.canEat == false)
+				continue ;
 			if (execTurn(match, turn, pastTurns) == false)
 				continue ;
 			// render(match);
-			if (depth != 1)
-				newTurns = getLegalMoves(match);
+			newTurns = getLegalMoves(match);
 			// else
 			// 	console.log(arrayTurns.length);
 			pastTurns.push(turn);

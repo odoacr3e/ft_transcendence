@@ -3,7 +3,7 @@ node_modules
 .codex
 generated/
 .DS_Store
-vscode*
+.vscode*
 history/HISTORY.json
 MOVES
 default.cpuprofile
