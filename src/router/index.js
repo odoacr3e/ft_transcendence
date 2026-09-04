@@ -1,7 +1,5 @@
 import { createRouter, createWebHistory }	from 'vue-router'
 import { useAuthStore }						from '@/stores/auth.st'
-import TournamentPage 						from '../views/TournamentPage.vue'
-import OpenTournament 						from '../views/OpenTournament.vue'
 import TermsOfService 						from '../views/TermsOfService.vue'
 import RegisterPage 						from '../views/RegisterPage.vue'
 import ClassicGame 							from '../views/ClassicGame.vue'
@@ -18,10 +16,12 @@ import PlayPage 							from '../views/PlayPage.vue'
 import PwdDEBUG 							from '../views/PwdDEBUG.vue'
 import UserMe 								from '../views/UserMe.vue'
 import Home 								from '../views/Home.vue'
+import { api, ApiError }					from './api/client'
 import StartTour 							from '../views/StartTour.vue'
+import OpenTournament 						from '../views/OpenTournament.vue'
+import TournamentPage 						from '../views/TournamentPage.vue'
 import { ePlaying, localMatchState }		from '@/scripts/Data/Variables.js'
 import { amIPlaying } 						from '@/scripts/Events/BackLink.js'
-import { api } 								from './api/client'
 
 const routes = [
 	{
@@ -56,12 +56,6 @@ const routes = [
 		name: 'GameFour',
 		meta: { requiresAuth: true },
 		component: GameFour
-	},
-	{
-		path: '/tournaments',
-		name: 'Tournaments',
-		meta: { requiresAuth: true },
-		component: TournamentPage
 	},
 	{
 		path: '/leaderboard',
@@ -118,44 +112,64 @@ const routes = [
 		props: (route) => ({ query: route.params.query ? String(route.params.query) : '' })
 	},
 	{
-		path: '/:username?',
-		name: 'user_page',
-		component: UserOther,
-		meta: { requiresAuth: true },
-		props: (route) => ({ username: String(route.params.username) })
+	    path: '/:username?',
+	    name: 'user_page',
+	    component: UserOther,
+	    meta: { requiresAuth: true },
+	    props: (route) => ({ username: String(route.params.username) }),
+	    beforeEnter: async (to) => {
+	        try {
+	            await api.get(
+	                `/api/users/username/${encodeURIComponent(to.params.username)}`
+	            );
+
+	            return true;
+	        }
+	        catch (error) {
+	            if (error instanceof ApiError && error.status === 404) {
+	                return { name: 'home', replace: true };
+	            }
+
+	            throw error;
+	        }
+	    }
 	},
-	{
-		path: '/tournament/:tournament?',
-		name: 'open_tournament',
-		component: OpenTournament,
-		meta: { requiresAuth: true }, //da aggiungere requisito di essere nel torneo
-		beforeEnter: async (to) => {
-			const id = Number(to.params.tournament);
+	// {
+	// 	path: '/tournaments',
+	// 	name: 'Tournaments',
+	// 	meta: { requiresAuth: true },
+	// 	component: TournamentPage
+	// },
+	// {
+	// 	path: '/tournament/:tournament?',
+	// 	name: 'open_tournament',
+	// 	component: OpenTournament,
+	// 	meta: { requiresAuth: true },
+	// 	beforeEnter: async (to) => {
+	// 		const id = Number(to.params.tournament);
 
-			if (!Number.isInteger(id) || id <= 0) { return { name: 'Tournaments' }; }
+	// 		if (!Number.isInteger(id) || id <= 0) { return { name: 'Tournaments' }; }
 
-			try { if (await api.get(`/api/tournaments/${id}`)) { return true; } }
-			catch { return { name: 'Tournaments' }; }
-		},
-		props: (route) => ({ tournament: Number(route.params.tournament) }) //id
-		// props: (route) => ({ tournament: String(route.params.tournament) })
-	},
-	{
-		path: '/tournament/:tournament?/tree',
-		name: 'start_tournament',
-		component: StartTour,
-		meta: { requiresAuth: true }, //da aggiungere requisito di essere nel torneo
-		beforeEnter: async (to) => {
-			const id = Number(to.params.tournament);
+	// 		try { if (await api.get(`/api/tournaments/${id}`)) { return true; } }
+	// 		catch { return { name: 'Tournaments' }; }
+	// 	},
+	// 	props: (route) => ({ tournament: Number(route.params.tournament) })
+	// },
+	// {
+	// 	path: '/tournament/:tournament?/tree',
+	// 	name: 'start_tournament',
+	// 	component: StartTour,
+	// 	meta: { requiresAuth: true },
+	// 	beforeEnter: async (to) => {
+	// 		const id = Number(to.params.tournament);
 
-			if (!Number.isInteger(id) || id <= 0) { return { name: 'Tournaments' }; }
+	// 		if (!Number.isInteger(id) || id <= 0) { return { name: 'Tournaments' }; }
 
-			try { if (await api.get(`/api/tournaments/${id}`)) { return true; } }
-			catch { return { name: 'Tournaments' }; }
-		},
-		props: (route) => ({ tournament: Number(route.params.tournament) }) //id
-		// props: (route) => ({ tournament: String(route.params.tournament) })
-	}
+	// 		try { if (await api.get(`/api/tournaments/${id}`)) { return true; } }
+	// 		catch { return { name: 'Tournaments' }; }
+	// 	},
+	// 	props: (route) => ({ tournament: Number(route.params.tournament) })
+	// }
 ];
 
 const router = createRouter({

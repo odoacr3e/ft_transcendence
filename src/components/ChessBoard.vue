@@ -211,8 +211,8 @@
 		display: grid;
 		width: fit-content;
 		margin: auto;
-		--piece-clicked-bg: rgba(209, 152, 8, 0.55);
-		--last-move-color: rgba(65, 54, 27, 0.633);
+		--piece-clicked-bg: color-mix(in srgb, var(--color-bg-BSelect) 45%, transparent);
+		--last-move-color: rgba(50, 50, 50, 0.80); /*FIXME - Voglio differenziare i colore tra caselle bianche e nere. */
 	}
 
 	.boardTwo {

@@ -1,6 +1,7 @@
 export const italian = {
     messages: {
         common: {
+            name: "ChessZ",
             search: "Cerca",
             players: "Giocatori",
             tournament: "Torneo | Tornei",
@@ -70,6 +71,7 @@ export const italian = {
             forgot: "Password dimenticata?",
             loginAcc: "@:header.login col tuo account",
             missingAcc: "Non hai ancora un account?",
+            presentAcc: "Hai gia' un account?",
             google: "Continua con Google"
         },
         leaderBoard: {
@@ -93,7 +95,9 @@ export const italian = {
                 changePwd: "Cambia password",
                 newPwd: "Nuova password",
                 saveChanges: "Salva le modifiche",
-                desc: "La password deve avere almeno 8 caratteri, un numero, una maiuscola, una minuscola e un carattere speciale ($,%,#...)"
+                desc: "La password deve avere almeno 8 caratteri, un numero, una maiuscola, una minuscola e un carattere speciale ($,%,#...)",
+                googlePwd_one: "Hai fatto accesso con il tuo account Google e in questo momento non hai una password.",
+                googlePwd_two: "Creane una per la tua sicurezza!"
             },
             friendList: "Lista di amici",
             removeFriend: "Elimina amicizia",
@@ -121,10 +125,16 @@ export const italian = {
                 play: "Gioca!"
             }
         },
+        allert: {
+            title:  "Ci dispiace... :(",
+            desc_one:   "A causa delle 3000 informazioni e feature che servono per giocare a",
+            desc_two:   "le partite possono essere giocate solo su PC.",
+            desc_three:   "Se sei su PC ma vedi comunque questo avviso, prova a de-zoomare la pagina"
+        },
         legal: {
             privacy: {
                 title:  "Privacy policy",
-                desc:   "Questo documento di Privacy Policy descrive come ChessZ, progetto studentesco 42 Firenze, raccoglie, gestisce e utilizza e protegge i dati personali degli utenti che si registrano ed utilizzano l'applicazione.",
+                desc:   "Questo documento di Privacy Policy descrive come @:common.name, progetto studentesco 42 Firenze, raccoglie, gestisce e utilizza e protegge i dati personali degli utenti che si registrano ed utilizzano l'applicazione.",
                 list:   ["I dati che vengono raccolti in fase di registrazione e per l'utilizzo del servizio sono email, nome, cognome, username, nazionalita, avatar;",
                         "I dati elencati precdentemente vengono utilizzati per autenticazione, gestione amicizie, creazione e gestione tornei/partite, autenticazione a due fattori (2FA);",
                         "Per l'invio codice di verifica che concerne la doppia autenticazione verranno utilizzati provider esterni con servizio SMTP (Google) a cui sarà condivisa l'email;",
@@ -138,15 +148,15 @@ export const italian = {
                 date:   {   title: "Ultimo aggiornamento:",
                             desc: "10/08/2026" },
                 intro:  {   title: "Introduzione",
-                            desc_one: "ChessZ è un'applicazione web sviluppata come progetto studentesco nell'ambito del percorso di 42 Firenze, che permette agli utenti di giocare a scacchi in modalita partita online, torneo e partita locale contro AI, gestire un profilo e interagire con altri utenti. Utilizzando il servizio si accetta interamente i presenti \“",
+                            desc_one: "@:common.name è un'applicazione web sviluppata come progetto studentesco nell'ambito del percorso di 42 Firenze, che permette agli utenti di giocare a scacchi in modalita partita online, torneo e partita locale contro AI, gestire un profilo e interagire con altri utenti. Utilizzando il servizio si accetta interamente i presenti \“",
                             desc_two: "\”. Se non si accettano questi termini, si prega di non utilizzare l'applicazione." },
                 list:   {
-                    "Requisiti di accesso" : "Per utilizzare ChessZ è necessario creare un account fornendo un'email valida e uno username. Per i temi trattati e i termini utilizzati, il servizio è utilizzabile per utenti di età non inferiore ai 14 anni; utenti minorenni dovrebbero utilizzare il servizio con il consenso di un genitore o tutore.",
-                    "Comportamento utente" : "Utilizzando ChessZ, l'utente si impegna a:",
-                    "Account" : "L'utente è responsabile della riservatezza delle proprie credenziali di accesso e di tutte le attività svolte tramite il proprio account. ChessZ si riserva il diritto di sospendere o cancellare account che violino queste regole, che presentino attività sospette o fraudolente, o su richiesta dell'utente",
-                    "Contenuto generato dall'utente" : "Gli avatar e gli altri contenuti caricati dall'utente rimangono di proprietà dell'utente stesso, che dichiara di possedere i diritti per caricarli. ChessZ si riserva il diritto rimuovere contenuti ritenuti inappropriati, offensivi o in violazione di diritti di terzi, senza preavviso.",
-                    "Limitazione responsabilità" : "ChessZ è un progetto realizzato a scopo esclusivamente didattico, nell'ambito del curriculum 42Firenze, senza finalità commerciali. Il servizo è foirnito “as is”, senza garanzie di disponibilità continua, assenza di errori o liovelli di serviuzio (SLA). Gli sviluppatori non sono repsponsabili per eventuali perdite di dati, interruzioni di servizio o danni derivanti dall'utilizzo dell'applicazione.",
-                    "Modifiche di termini" : "ChessZ si riserva il diritto di modificare questa pagina Termini di Servizio in qualsiasi momento. Eventuali modifiche sostanziali saranno comunicate agli utenti tramite avviso sull'applicazione o via email. L'uso continuato del servizio dopo una modificacostituisce l'accettazione dei nuovi termini.",
+                    "Requisiti di accesso" : "Per utilizzare @:common.name è necessario creare un account fornendo un'email valida e uno username. Per i temi trattati e i termini utilizzati, il servizio è utilizzabile per utenti di età non inferiore ai 14 anni; utenti minorenni dovrebbero utilizzare il servizio con il consenso di un genitore o tutore.",
+                    "Comportamento utente" : "Utilizzando @:common.name, l'utente si impegna a:",
+                    "Account" : "L'utente è responsabile della riservatezza delle proprie credenziali di accesso e di tutte le attività svolte tramite il proprio account. @:common.name si riserva il diritto di sospendere o cancellare account che violino queste regole, che presentino attività sospette o fraudolente, o su richiesta dell'utente",
+                    "Contenuto generato dall'utente" : "Gli avatar e gli altri contenuti caricati dall'utente rimangono di proprietà dell'utente stesso, che dichiara di possedere i diritti per caricarli. @:common.name si riserva il diritto rimuovere contenuti ritenuti inappropriati, offensivi o in violazione di diritti di terzi, senza preavviso.",
+                    "Limitazione responsabilità" : "@:common.name è un progetto realizzato a scopo esclusivamente didattico, nell'ambito del curriculum 42Firenze, senza finalità commerciali. Il servizo è foirnito “as is”, senza garanzie di disponibilità continua, assenza di errori o liovelli di serviuzio (SLA). Gli sviluppatori non sono repsponsabili per eventuali perdite di dati, interruzioni di servizio o danni derivanti dall'utilizzo dell'applicazione.",
+                    "Modifiche di termini" : "@:common.name si riserva il diritto di modificare questa pagina Termini di Servizio in qualsiasi momento. Eventuali modifiche sostanziali saranno comunicate agli utenti tramite avviso sull'applicazione o via email. L'uso continuato del servizio dopo una modificacostituisce l'accettazione dei nuovi termini.",
                     "Legge applicabile" : "Questi termini sono regolati dalla legge italiana, in quanto progetto svolto nell'ambito del campus 42 Firenze."
                 },
                 behavior:   ["Non utilizzare cheat, bot, script di automazione o altre forme di alterazione del normale svolgimento del gioco;",
@@ -178,7 +188,7 @@ export const italian = {
             },
             champ: {
                 name:   "Il Campione",
-                quote:  "\"...\"",
+                quote:  "\"Forti, robusti e con una posizione di rilievo. Se fossero anche simpatici ti ruberebbero la moglie.\"",
                 lore:   "I Campioni non sono solo valorosi guerrieri scelti dal Re come scorta, ma sono dei veri e propri simboli di forza.\
 	                    Alti, veloci, letali e decisamente di poche parole, ogni cavaliere che si rispetti ha questo titolo come ambizione e spesso\
 	                    giostrano e combattono in tornei e guerriglie per dimostrarsi degni. \
@@ -232,7 +242,7 @@ export const italian = {
             },
             valk: {
                 name:   "La Valchiria",
-                quote:  "\"Le donne non devono stare sul campo di battaglia, a meno che non siano ladre, puttane o valchirie.\"",
+                quote:  "\"Valchirie, donne che cadono a pezzi... Letteralmente.\"",
                 lore:   "Le Valchirie nascono come un gruppo di donne sopravissute alla Grande Guerra che ha devastato le regioni occidentali, lasciando campi un tempo rigogliosi pieni zeppi di cadaveri.\
 	                    Le Valchirie si organizzarono in una società matriarcale che vaga di battaglia in battaglia per dare asilo ai sopravvissuti.\
 	                    I contrasti con gruppi mercenari erano frequenti, fu per questo che svilupparono un nuova branca della medicina, grazie anche all'aiuto della magia oscura.\
@@ -248,7 +258,7 @@ export const italian = {
             bastard: {
                 name:   "I Bastardi",
                 quote:  "\"Non avere pietà di loro. Sono solo dei bastardi, dopotutto.\"",
-                lore:   "I figli bastardi dei principi, avuti probabilmente da qualche puttana o da qualche figlia libertina di un lord minore, \
+                lore:   "I figli bastardi dei principi, avuti probabilmente da qualche amante o da qualche figlia libertina di un lord minore, \
                         per sua volontà o per far ottenere un favore al padre. All'inizio della guerra i Bastardi sono stati costretti a schierarsi \
                         ed a prendere le armi in farvore del loro \"padre\", anche se per molti è difficile dire chi sia dei due. Per loro è più importante \
                         la prospettiva di un futuro roseo in cui vengono ricompensati per il loro coraggio, nella remota possibilità che non vengano catturati, fatti a pezzi o entrambe.\

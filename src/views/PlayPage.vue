@@ -11,7 +11,7 @@
 	import IconSliders										from '@/components/icons/IconSliders.vue';
 	import IconPlayers										from '@/components/icons/IconPlayers.vue';
 	import IconPieces										from '@/components/icons/IconPieces.vue';
-	import gameAllert 										from '@/components/gameAllert.vue';
+	import GameAllert										from '../components/GameAllert.vue';
 	import IconRobot 										from '@/components/icons/IconRobot.vue';
 	import router											from '@/router';
     
@@ -112,7 +112,7 @@
 </script>
 
 <template>
-	<gameAllert class="[@media(min-width:1520px)_and_(min-height:900px)]:hidden"/>
+	<GameAllert class="[@media(min-width:1520px)_and_(min-height:900px)]:hidden"/>
 
     <div class="max-[1520px]:hidden [@media(max-height:900px)]:hidden
 			flex z-2 bg-bg-darker rounded-3xl">

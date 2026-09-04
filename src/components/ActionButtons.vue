@@ -70,8 +70,8 @@
 			<button class="action-btn" 		
 				v-bind:class="[
 				canUseAbility ? 'on' : 'off',
-				abilityArmed ? 'armed bg-[#c76d19] hover:bg-[#d66317]'
-							 : 'bg-[#c78a19] hover:bg-[#d69317]'
+				abilityArmed ? 'armed bg-[#d8ae26] hover:bg-[#ebbd27]'
+							 : 'bg-[#1f9db7] hover:bg-[#29aec9]'
 				]"
 				@click="useAbility()">
 				<IconEnergyArrow class="icon"/>
@@ -82,7 +82,7 @@
 		<span class="msgs">THEN</span>
 
 		<div class="mid-row">
-			<button class="action-btn end-turn bg-blue-500 hover:bg-indigo-500"
+			<button class="action-btn end-turn bg-blue-500 hover:bg-[#3b89ff]"
 				v-bind:class="canEndTurn ? 'on' : 'off'"
 				@click="sendEndTurn()">
 				<IconHourglass class="icon"/>
@@ -91,7 +91,7 @@
 
 			<span class="msgs">OR</span>
 
-			<button class="action-btn bg-emerald-400 hover:bg-emerald-500"
+			<button class="action-btn bg-emerald-600 hover:bg-[#01a76f]"
 				v-bind:class="canBoost ? 'on' : 'off'"
 				@click="shopAbility()"
 				@mouseenter="showBoostedMovesHover(localInfo.clickedId)"
@@ -105,7 +105,7 @@
 			<div class="btm-row">
 				<div class="give-up">
 					<button v-if="!giveUpArmed"
-							class="on action-btn bg-red-400 hover:bg-red-500"
+							class="on action-btn bg-[#d63134] hover:bg-[#e2292c]"
 							@click="askGiveUp()">
 						<IconFlag class="icon"/>
 						<b>Give Up!</b>
@@ -122,7 +122,7 @@
 				</div>
 				<div class="draw">
 					<button v-if="!drawArmed"
-							class="action-btn on bg-amber-300 hover:bg-orange-400"
+							class="action-btn on bg-[#c78a19] hover:bg-[#d69317]"
 							v-bind:class="drawWaiting ? 'waiting' : 'on'"
 							@click.stop="askDraw()">
 						<IconHandshake class="icon"/>
@@ -306,8 +306,8 @@
 	.half.yes { color: rgb(52, 211, 153); }
 	.half.no  { color: rgb(248, 113, 113); }
 
-	.half.yes:hover { background: rgba(116, 228, 11, 0.527); }
-	.half.no:hover  { background: rgba(218, 12, 12, 0.89); }
+	.half.yes:hover { background: rgba(116, 228, 11, 0.30); }
+	.half.no:hover  { background: rgba(218, 12, 12, 0.30); }
 
 	.half:active { transform: scale(.94); }
 

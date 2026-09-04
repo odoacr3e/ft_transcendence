@@ -46,8 +46,8 @@
 		width: 100%;
 		aspect-ratio: 1;
 		border: 1px solid color-mix(in srgb, var(--color-bg-square) 55%, transparent);
-		--felt: var(--color-bg-WSquare);	/* sfondo della griglia */
-		--ink: var(--color-bg-square);	/* Velo sopra la scacchiera, ti permette di scurirla o schiarirla */
+		--felt: color-mix(in srgb, var(--color-bg-square) 80%, var(--color-text-default));	/* sfondo della griglia */
+		--ink: color-mix(in srgb, var(--color-bg-WSquare) 80%, var(--color-bg-square));	/* Velo sopra la scacchiera, ti permette di scurirla o schiarirla */
 		--mark-color: var(--color-bg-highlight);			/* stesso colore di .highlight sulla board */
 		background-color: var(--felt);
 	}

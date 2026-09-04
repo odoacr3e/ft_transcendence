@@ -1,5 +1,5 @@
 <script setup>
-    import gameAllert from '../components/gameAllert.vue';
+    import GameAllert from '../components/GameAllert.vue';
 	import ChessBoard from '@/components/ChessBoard.vue';
 	import { initLocalMatchState }  from '../scripts/Data/Archi';
 	import { onMounted, ref }       from 'vue';
@@ -18,7 +18,7 @@
 </script>
 
 <template>
-    <gameAllert class="[@media(min-width:1520px)_and_(min-height:900px)]:hidden"/>
+    <GameAllert class="[@media(min-width:1520px)_and_(min-height:900px)]:hidden"/>
 
     <div class="max-[1520px]:hidden [@media(max-height:900px)]:hidden
                 flex z-2 bg-bg-darker rounded-3xl">

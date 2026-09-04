@@ -6,10 +6,10 @@ const   { t } = useI18n();
 
 <template>
 	<footer>
-		<RouterLink to="/privacy">
+		<RouterLink to="/privacy" class="cursor-pointer">
 			{{ t('legal.privacy.title') }}
 		</RouterLink> |
-		<RouterLink to="/terms">
+		<RouterLink to="/terms" class="cursor-pointer">
 			{{ t('legal.service.title') }}
 		</RouterLink>
 	</footer>
@@ -26,8 +26,4 @@ const   { t } = useI18n();
 		padding-bottom: 5px;
         font-size: small;
 	}
-
-    footer a {
-        cursor: pointer;
-    }
 </style>

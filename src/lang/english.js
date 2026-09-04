@@ -1,6 +1,7 @@
 export const english = {
     messages: {
         common: {
+            name: "ChessZ",
             search: "Search",
             players: "Players",
             tournament: "Tournament | Tournaments",
@@ -70,6 +71,7 @@ export const english = {
             forgot: "Forgot password?",
             loginAcc: "@:header.login with your account",
             missingAcc: "Don't have an account yet?",
+            presentAcc: "You already have an account?",
             google: "Continue with Google"
         },
         leaderBoard: {
@@ -93,7 +95,9 @@ export const english = {
                 changePwd: "Change password",
                 newPwd: "New password",
                 saveChanges: "Save",
-                desc: "The password must contain at least 8 characters, a number, an uppercase and a lowercase letter and a special character ($,%,#...)"
+                desc: "The password must contain at least 8 characters, a number, an uppercase and a lowercase letter and a special character ($,%,#...)",
+                googlePwd_one: "You created your accont throught Google and right now you don't have a password.",
+                googlePwd_two: "Create one for your security!"
             },
             friendList: "Friends list",
             removeFriend: "Remove @.lower:common.friend",
@@ -121,10 +125,16 @@ export const english = {
                 play: "Play!"
             }
         },
+        allert: {
+            title:  "We're sorry... :(",
+            desc_one:   "Because of the 3000 infos and features that are needed to play",
+            desc_two:   "matches can only be played on PC.",
+            desc_three:   "If you're on PC but still see this warning, try de-zooming the page"
+        },
         legal: {
             privacy: {
                 title: "Privacy policy",
-                desc:   "This Privacy Policy document describes how ChessZ, student project 42 Firenze, collects, manages, uses, and protects the personal data of users who register and use the application.",
+                desc:   "This Privacy Policy document describes how @:common.name, student project 42 Firenze, collects, manages, uses, and protects the personal data of users who register and use the application.",
                 list:   ["The data collected during registration and for using the service are email, first name, last name, username, national identity, avatar;",
                         "The previously listed data is used for authentication, friendship management, tournament/game creation and management, two-factor authentication (2FA);",
                         "To send verification code regarding double authentication, external providers with SMTP (Google) service will be used to share the email;",
@@ -138,15 +148,15 @@ export const english = {
                 date:   {   title: "Last updated:",
                             desc: "10/08/2026" },
                 intro:  {   title: "Introduction",
-                            desc_one: "ChessZ is a web application developed as a student project as part of the 42 Firenze program, which allows users to play chess in online, tournament, and local AI matches, manage a profile, and interact with other users. By using the service, you are fully accepting those present \“",
+                            desc_one: "@:common.name is a web application developed as a student project as part of the 42 Firenze program, which allows users to play chess in online, tournament, and local AI matches, manage a profile, and interact with other users. By using the service, you are fully accepting those present \“",
                             desc_two: "\”. If you do not accept these terms, please do not use the application." },
                 list:   {
-                    "Access Requirements" : "To use ChessZ you need to create an account by providing a valid email and username. For the topics covered and the terms used, the service can be used for users no younger than 14 years old; minor users should use the service with the consent of a parent or guardian.",
-                    "User behavior" : "By using ChessZ, the user commits to:",
-                    "Account" : "The user is responsible for the confidentiality of their login credentials and all activities performed through their account. ChessZ reserves the right to suspend or delete accounts that violate these rules, that present suspicious or fraudulent activity, or at the user's request",
-                    "User-generated content" : "Avatars and other content uploaded by the user remain the property of the user, who claims to own the rights to upload them. ChessZ reserves the right to remove content deemed inappropriate, offensive, or in violation of third-party rights, without notice.",
-                    "Liability limitation" : "ChessZ is a project created exclusively for educational purposes, within the 42Firenze curriculum, without commercial purposes. The service is foirnito “as is”, with no guarantees of continuous availability, absence of errors or liovelli of service (SLA). Developers are not responsible for any data loss, service outages, or damage resulting from using the application.",
-                    "Term Changes" : "ChessZ reserves the right to change this Terms of Service page at any time. Any substantial changes will be communicated to users by notice on the application or by email. Continued use of the service after a change constitutes acceptance of the new terms.",
+                    "Access Requirements" : "To use @:common.name you need to create an account by providing a valid email and username. For the topics covered and the terms used, the service can be used for users no younger than 14 years old; minor users should use the service with the consent of a parent or guardian.",
+                    "User behavior" : "By using @:common.name, the user commits to:",
+                    "Account" : "The user is responsible for the confidentiality of their login credentials and all activities performed through their account. @:common.name reserves the right to suspend or delete accounts that violate these rules, that present suspicious or fraudulent activity, or at the user's request",
+                    "User-generated content" : "Avatars and other content uploaded by the user remain the property of the user, who claims to own the rights to upload them. @:common.name reserves the right to remove content deemed inappropriate, offensive, or in violation of third-party rights, without notice.",
+                    "Liability limitation" : "@:common.name is a project created exclusively for educational purposes, within the 42Firenze curriculum, without commercial purposes. The service is foirnito “as is”, with no guarantees of continuous availability, absence of errors or liovelli of service (SLA). Developers are not responsible for any data loss, service outages, or damage resulting from using the application.",
+                    "Term Changes" : "@:common.name reserves the right to change this Terms of Service page at any time. Any substantial changes will be communicated to users by notice on the application or by email. Continued use of the service after a change constitutes acceptance of the new terms.",
                     "Applicable law" : "These terms are governed by Italian law, as a project carried out within the framework of campus 42 Firenze."
                 },
                 behavior:   ["Do not use cheats, bots, automation scripts, or other forms of altering the normal flow of the game;",
@@ -178,7 +188,7 @@ export const english = {
             },
             champ: {
                 name:   "The Champion",
-                quote:  "\"...\"",
+                quote:  "\"Strong, sturdy and with a prominent role. If they were nice too, they would steal your wife.\"",
                 lore:   "The Champions are not only the King's personal knights, but also a true emblem of strength.\
                         They're tall, fast, deadly and men of few words. Every true knight dreams to earn one day this title and they \
 	                    usually joust and fight in tournaments and warfares to prove themselves worthy.\
@@ -232,7 +242,7 @@ export const english = {
             },
             valk: {
                 name:   "The Valkyrie",
-                quote:  "\"Le donne non devono stare sul campo di battaglia, a meno che non siano ladre, puttane o valchirie.\"",
+                quote:  "\"Valkyries, women who fall apart... Literally.\"",
                 lore:   "Valkyries originated as a gruop of women who survived the Great War which destroyed the west lands, turning once blooming fields into graveyards.\
                         Valkyries organized themself in a matriarchal society which roam from a battlefield to another helping the survivors.\
 	                    Quarrels and disputes with mercenaries happened often, this brouth them to develop a new branch of medicine, with the help of black magic.\
@@ -248,7 +258,7 @@ export const english = {
             bastard: {
                 name:   "The Bastards",
                 quote:  "\"Don't have pity on them. They're only some bastards afterall.\"",
-                lore:   "The bastard children of the royals, born from a whore or licentious daughter of some minor lord, \
+                lore:   "The bastard children of the royals, born from a lover or licentious daughter of some minor lord, \
                         by her own decision or just to to do his father a favour. With the start of the war they were forced to take side \
                         and forearm for their own \"father\", even if for many it's difficult to say which of the two he is. But for these Bastards the only \
                         important thing is the prospect of a bright future where they're rewarded for their bravery, a future where they're not captured, torn to pieces or both.\
