@@ -26,6 +26,7 @@ export const english = {
                 friendNotif : "{sender} sent you a @.lower:common.friend request",
                 tourNotif: "{sender} has invited you to participate in the {tour} @.lower:common.tournament"
             },
+            notifications: "Notifications",
             zeroNotif: "No notifications",
             profile: "Profile",
             settings: "Settings",

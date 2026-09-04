@@ -3,9 +3,9 @@
 	import { clearMatchStorage }				from '@/scripts/Data/Archi';
 	import { computed, ref, watch }				from 'vue'
 	import router								from '@/router';
-	import winImg								from '@/assets/CrownIcon.png';
-	import loseImg								from '@/assets/bell.png';
-	import drawImg								from '@/assets/people.png';
+	import IconCrown							from './icons/IconCrown.vue';
+	import IconCrownBroken						from './icons/IconCrownBroken.vue';
+	import IconKings							from './icons/IconKings.vue';
 	import { playAudio } 						from '@/scripts/Helper/generalUtils';
 
 	const dismissed = ref(false);
@@ -23,10 +23,10 @@
 	const showReopen = computed(() => outcome.value !== null && dismissed.value);
 
 	const content = computed(() => ({
-		win: { img: winImg, title: 'You Win!', cls:'text-text-win-open'},
-		lose: { img: loseImg, title: 'You Lose!', cls:'text-text-lose-closed'},
-		draw: { img: drawImg, title: 'Draw!', cls:'text-text-draw-await'},
-	}[outcome.value] ?? { img: '', title: '', cls: ''}));
+		win: { icon: IconCrown, title: 'You Win!', cls:'text-text-win-open'},
+		lose: { icon: IconCrownBroken, title: 'You Lose!', cls:'text-text-lose-closed'},
+		draw: { icon: IconKings, title: 'Draw!', cls:'text-text-draw-await'},
+	}[outcome.value] ?? { icon: null, title: '', cls: ''}));
 
 	watch(victory, (v) => {
 		if (v) 
@@ -51,7 +51,7 @@
 	<div v-if="showOverlay"
 		class="absolute inset-0 z-20 flex flex-col items-center justify-center
 			gap-6 backdrop-blur-sm bg-black/50 select-none">
-		<img :src="content.img" alt="" :draggable="false" class="w-40 h-40 object-contain drop-shadow-xl">	
+		<component :is="content.icon" v-if="content.icon" :class="content.cls" class="w-40 h-40 drop-shadow-xl"/>
 		<h2 class="text-3xl font-bold" :class="content.cls">{{ content.title }}</h2>
 
 		<div class="flex flex-col gap-3 w-56">

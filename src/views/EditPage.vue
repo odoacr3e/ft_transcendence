@@ -5,6 +5,14 @@
     import { storeToRefs }      from 'pinia';
     import { useI18n }          from 'vue-i18n';
     import router               from '../router/index.js';
+    import IconAlert               from '@/components/icons/IconAlert.vue';
+    import IconAlertSolid          from '@/components/icons/IconAlertSolid.vue';
+    import IconBrush               from '@/components/icons/IconBrush.vue';
+    import IconGlobeOutline        from '@/components/icons/IconGlobeOutline.vue';
+    import IconKey                 from '@/components/icons/IconKey.vue';
+    import IconLockSolid           from '@/components/icons/IconLockSolid.vue';
+    import IconMail                from '@/components/icons/IconMail.vue';
+    import IconUser                from '@/components/icons/IconUser.vue';
 
     const   { t } = useI18n(),
             authStore = useAuthStore(),
@@ -189,9 +197,7 @@
                     lg:grid lg:grid-cols-2 lg:grid-rows-3 lg:gap-5 lg:m-5">
                 <div class="max-lg:w-[75vw]">
                     <div class="flex gap-2 mb-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mt-1 size-6 text-form-icon">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                        </svg>
+                        <IconUser class="mt-1 size-6 text-form-icon"/>
                         <h3 class="max-md:text-lg md:text-xl">{{ t('login.val.name') }}</h3>
                     </div>
                     <div class="form border-border-default text-form-icon flex mb-3 max-lg:w-full lg:w-full">
@@ -201,9 +207,7 @@
 
                 <div class="max-lg:w-[75vw]">
                     <div class="flex gap-2 mb-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mt-1 size-6 text-form-icon">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                        </svg>
+                        <IconUser class="mt-1 size-6 text-form-icon"/>
                         <h3 class="max-md:text-lg md:text-xl">{{ t('login.val.surname') }}</h3>
                     </div>
                     <div class="form border-border-default text-form-icon flex mb-3 max-lg:w-full lg:w-full">
@@ -213,22 +217,17 @@
 
                 <div class="max-lg:w-[75vw] relative">
                     <div class="flex gap-2 mb-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mt-1 size-6 text-form-icon">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                        </svg>
+                        <IconUser class="mt-1 size-6 text-form-icon"/>
                         <h3 class="max-md:text-lg md:text-xl">Username</h3>
                     </div>
                     <div>
-	                	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" id="allert"
+	                	<IconAlertSolid
+	                		id="allert"
 	                		class="absolute size-6 text-text-error animate-error -translate-x-8 translate-y-3 hidden transition-all duration-250 ease-in-out z-11"
-	                		:class="{ 'inline' : error }">
-	                		<path fill-rule="evenodd" d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd" />
-	                	</svg>
+	                		:class="{ 'inline' : error }"/>
 	                	<div class="hidden p-3 animate-pop flex-col items-center text-center z-11 -translate-x-60 -translate-y-6
 	                			gap-2.5 absolute rounded-xl border inset-ring bg-bg-error text-text-error border-border-error inset-ring-inset-error">	
-	                		<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-text-error self-center mx-auto">
-	                			<path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
-	                		</svg>
+	                		<IconAlert class="size-6 text-text-error self-center mx-auto"/>
 	                		<div class="w-45">
 	                			<h2>{{ t('login.err.title') }}</h2>
                                 <p class="text-sm">{{ t('login.err.username') }}</p>
@@ -242,38 +241,32 @@
 
                 <div class="max-lg:w-[75vw]">
                     <div class="flex gap-2 mb-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mt-1 size-6 text-form-icon">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
-                        </svg>
+                        <IconMail class="mt-1 size-6 text-form-icon"/>
                         <h3 class="max-md:text-lg md:text-xl">Email</h3>
                     </div>
                     <div class="flex relative p-2.5 border rounded-[7px] border-border-default text-form-icon justify-self-center mb-3 transition-colors duration-200 
                                 max-lg:w-full max-lg:bg-bg-error max-lg:border-inset-error
                                 lg:w-full lg:hover:bg-bg-error lg:hover:border-inset-error" id="email">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 absolute transition-opacity duration-250
+                        <IconLockSolid
+                        	class="size-6 absolute transition-opacity duration-250
                                 max-lg:left-1/2 max-lg:top-1/2 max-lg:-translate-x-1/2 max-lg:-translate-y-1/2
-                                lg:translate-x-42 lg:opacity-0">
-                            <path fill-rule="evenodd" d="M12 1.5a5.25 5.25 0 0 0-5.25 5.25v3a3 3 0 0 0-3 3v6.75a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3v-6.75a3 3 0 0 0-3-3v-3c0-2.9-2.35-5.25-5.25-5.25Zm3.75 8.25v-3a3.75 3.75 0 1 0-7.5 0v3h7.5Z" clip-rule="evenodd" />
-                        </svg>
+                                lg:translate-x-42 lg:opacity-0"/>
                         <input disabled :placeholder="user.email" class="pl-2 text-base" type="email">
                     </div>
                 </div>
 
                 <div class="max-lg:w-[75vw]">
                     <div class="flex gap-2 mb-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.6" stroke="currentColor" class="mt-1 size-6 text-form-icon">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="m20.893 13.393-1.135-1.135a2.252 2.252 0 0 1-.421-.585l-1.08-2.16a.414.414 0 0 0-.663-.107.827.827 0 0 1-.812.21l-1.273-.363a.89.89 0 0 0-.738 1.595l.587.39c.59.395.674 1.23.172 1.732l-.2.2c-.212.212-.33.498-.33.796v.41c0 .409-.11.809-.32 1.158l-1.315 2.191a2.11 2.11 0 0 1-1.81 1.025 1.055 1.055 0 0 1-1.055-1.055v-1.172c0-.92-.56-1.747-1.414-2.089l-.655-.261a2.25 2.25 0 0 1-1.383-2.46l.007-.042a2.25 2.25 0 0 1 .29-.787l.09-.15a2.25 2.25 0 0 1 2.37-1.048l1.178.236a1.125 1.125 0 0 0 1.302-.795l.208-.73a1.125 1.125 0 0 0-.578-1.315l-.665-.332-.091.091a2.25 2.25 0 0 1-1.591.659h-.18c-.249 0-.487.1-.662.274a.931.931 0 0 1-1.458-1.137l1.411-2.353a2.25 2.25 0 0 0 .286-.76m11.928 9.869A9 9 0 0 0 8.965 3.525m11.928 9.868A9 9 0 1 1 8.965 3.525" />
-                        </svg>
+                        <IconGlobeOutline class="mt-1 size-6 text-form-icon"/>
                         <h3 class="max-md:text-lg md:text-xl">{{ t('login.val.nationality') }}</h3>
                     </div>
                     <div class="flex relative p-2.5 border rounded-[7px] border-border-default text-form-icon justify-self-center mb-3 transition-colors duration-200 
                                 max-lg:w-full max-lg:bg-bg-error max-lg:border-inset-error
                                 lg:w-full lg:hover:bg-bg-error lg:hover:border-inset-error" id="email">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 absolute transition-opacity duration-250
+                        <IconLockSolid
+                        	class="size-6 absolute transition-opacity duration-250
                                 max-lg:left-1/2 max-lg:top-1/2 max-lg:-translate-x-1/2 max-lg:-translate-y-1/2
-                                lg:translate-x-42 lg:opacity-0">
-                          <path fill-rule="evenodd" d="M12 1.5a5.25 5.25 0 0 0-5.25 5.25v3a3 3 0 0 0-3 3v6.75a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3v-6.75a3 3 0 0 0-3-3v-3c0-2.9-2.35-5.25-5.25-5.25Zm3.75 8.25v-3a3.75 3.75 0 1 0-7.5 0v3h7.5Z" clip-rule="evenodd" />
-                        </svg>
+                                lg:translate-x-42 lg:opacity-0"/>
                         <input disabled :placeholder="user.nationality" list="country" class="pl-2 text-base" type="text" v-model="formData.nationality">
                     </div>
                 </div>
@@ -283,9 +276,7 @@
                 <div class="w-[75vw] flex max-md:flex-col lg:hidden ">
                     <div>
                         <div class="flex gap-2 mb-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.6" stroke="currentColor" class="mt-1 size-6 text-form-icon">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z" />
-                            </svg>
+                            <IconKey class="mt-1 size-6 text-form-icon"/>
                             <h3 class="max-md:text-lg md:text-xl">{{ t('login.OTP.auth') }}</h3>
                         </div>
                         <div class="flex mb-3 p-2.5 justify-self-center max-md:w-full md:w-sm">
@@ -307,9 +298,7 @@
                 <!-- Desktop -->
                 <div class="max-lg:hidden">
                     <div class="flex gap-2 mb-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.6" stroke="currentColor" class="mt-1 size-6 text-form-icon">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z" />
-                        </svg>
+                        <IconKey class="mt-1 size-6 text-form-icon"/>
                         <h3 class="max-md:text-lg md:text-xl">{{ t('login.OTP.auth') }}</h3>
                     </div>
                     <div class="flex w-fit mb-3 p-2.5 justify-self-start">
@@ -326,10 +315,7 @@
 
                 <div class="col-span-2 max-md:mt-2 max-lg:w-[75vw]">
                     <div class="flex gap-2 mb-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="mt-1 size-6 text-form-icon">
-                            <path fill-rule="evenodd" d="M2.25 4.125c0-1.036.84-1.875 1.875-1.875h5.25c1.036 0 1.875.84 1.875 1.875V17.25a4.5 4.5 0 1 1-9 0V4.125Zm4.5 14.25a1.125 1.125 0 1 0 0-2.25 1.125 1.125 0 0 0 0 2.25Z" clip-rule="evenodd" />
-                            <path d="M10.719 21.75h9.156c1.036 0 1.875-.84 1.875-1.875v-5.25c0-1.036-.84-1.875-1.875-1.875h-.14l-8.742 8.743c-.09.089-.18.175-.274.257ZM12.738 17.625l6.474-6.474a1.875 1.875 0 0 0 0-2.651L15.5 4.787a1.875 1.875 0 0 0-2.651 0l-.1.099V17.25c0 .126-.003.251-.01.375Z" />
-                        </svg>
+                        <IconBrush class="mt-1 size-6 text-form-icon"/>
                         <h3 class="max-md:text-lg md:text-xl">{{ t('login.val.theme') }}</h3>
                     </div>
                     <div class="flex flex-col p-2.5 justify-self-center w-fit">
@@ -394,9 +380,7 @@
             </div>
             <div v-if="user.setpwd" class="flex items-center max-md:flex-col max-md:text-center max-md:text-sm md:text-[80%] 
                     mt-auto px-5 p-2 rounded-b-3xl border bg-bg-error text-text-error border-border-error inset-ring-inset-error">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-text-error mr-2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
-                </svg>
+                <IconAlert class="size-6 text-text-error mr-2"/>
                 <p>{{ t('userPage.edit.googlePwd_one') }}</p>
                 <RouterLink to="/me/edit/pwd" class="mx-auto">
                     <u><a class="text-sm cursor-pointer text-main-color hover:text-light-button active:text-active-button">{{ t('userPage.edit.googlePwd_two') }}</a></u>

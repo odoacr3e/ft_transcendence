@@ -2,6 +2,10 @@
     import { defaultAvatar, handleAvatarError, acceptRequest, rejectRequest } from '../scripts/Helper/CompUtils';
     import { computed, ref } from 'vue';
     import { useI18n }  from 'vue-i18n';
+    import IconCheck               from './icons/IconCheck.vue';
+    import IconChevronLeft         from './icons/IconChevronLeft.vue';
+    import IconChevronRight        from './icons/IconChevronRight.vue';
+    import IconCross               from './icons/IconCross.vue';
 
     const { t } = useI18n();
     const prop = defineProps({
@@ -36,9 +40,7 @@
             <button @click="goPrev" v-bind:class="{'hidden' : friendReq.length <= 1, 'inline' : friendReq.length > 1 }"
                 :disabled="!currentRequest"
                 class="justify-self-start text-text-second self-center cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="max-lg:size-4.25 md:size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
-                </svg>
+                <IconChevronLeft class="max-lg:size-4.25 md:size-6"/>
             </button>
 
             <div class="flex my-2 justify-self-center">
@@ -61,16 +63,12 @@
                     <button @click="acceptRequest(currentRequest.friend.id_user)"
                         class="p-1.25 cursor-pointer justify-self-end-safe rounded-l-md inset-ring 
                             bg-bg-accept text-online-accept inset-ring-inset-accept">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="max-lg:size-4.25 md:size-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-                        </svg>
+                        <IconCheck class="max-lg:size-4.25 md:size-6" stroke-width="1.5"/>
                     </button>
                     <button @click="rejectRequest(currentRequest.friend.id_user)"
                         class="p-1.25 cursor-pointer justify-self-end-safe rounded-r-md inset-ring 
                             bg-bg-reject text-text-lose-closed inset-ring-inset-reject">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="max-lg:size-4.25 md:size-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-                        </svg>
+                        <IconCross class="max-lg:size-4.25 md:size-6" stroke-width="1.5"/>
                     </button>
                 </div>
             </div>
@@ -78,9 +76,7 @@
             <button @click="goNext" v-bind:class="{'hidden' : friendReq.length <= 1, 'inline' : friendReq.length > 1 }"
                 :disabled="!currentRequest"
                 class="justify-self-end text-text-second self-center cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="max-lg:size-4.25 md:size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-                </svg>
+                <IconChevronRight class="max-lg:size-4.25 md:size-6"/>
 
             </button>
         </div>

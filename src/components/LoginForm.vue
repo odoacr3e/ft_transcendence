@@ -3,6 +3,10 @@
 	import { useI18n }		from 'vue-i18n';
 	import { ref }			from 'vue';
 	import router	from '../router/index.js';
+	import IconAlert               from './icons/IconAlert.vue';
+	import IconEye                 from './icons/IconEye.vue';
+	import IconLock                from './icons/IconLock.vue';
+	import IconUser                from './icons/IconUser.vue';
 
     const	{ t } = useI18n(),
 			formData = ref({
@@ -110,9 +114,7 @@
 				max-md:hidden
 				md:translate-x-8 md:-translate-y-75 md:px-6 md:py-3 md:w-95 md:mt-1
 				lg:px-5 lg:py-4 lg:w-93 ">
-		<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-text-error">
-			<path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
-		</svg>
+		<IconAlert class="size-6 text-text-error"/>
 		<div>
 			<h2>{{ t('login.err.title') }}</h2>
 			<p class="md:text-sm">{{ error_msg }}</p>
@@ -124,9 +126,7 @@
 				max-md:w-[80vw] max-md:min-w-65 max-md:p-3
 				md:w-sm md:mb-5 md:p-3.75"
 				:class="{ 'animate-shake': error, 'max-md:mb-5.5' : !error_card, 'max-md:mb-1' : error_card }" @animationend="error = false">
-				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="max-md:size-5 md:size-6">
-					<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-				</svg>
+				<IconUser class="max-md:size-5 md:size-6"/>
 				<input :placeholder="'Username ' + t('common.or', 1) + ' email'" class="pl-2 max-md:w-[75vw] max-md:min-w-45 max-md:text-[15px] md:w-75 md:text-base" :autofocus="true" type="text" v-model="formData.username">
 			</div>
 			<p v-if="error_card" class="md:hidden err transition-all text-xs text-main-color mb-0.5 ml-1">{{ error_msg }}</p>
@@ -135,17 +135,11 @@
 						max-md:w-[80vw] max-md:min-w-65 max-md:p-3
 						md:w-sm md:p-3.75"
 					:class="{ 'animate-shake': error }" @animationend="error = false">
-					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="max-md:size-5 md:size-6">
-						<path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
-					</svg>
+					<IconLock class="max-md:size-5 md:size-6"/>
 					<input placeholder="Password" class="pl-2 max-md:w-[65vw] max-md:min-w-40 max-md:text-[15px] md:w-75 md:text-base" v-model="formData.password"
 							:type="visible ? 'text' : 'password'">
 					<button type="button" @click="show()" class="max-md:ml-auto md:ml-3">
-						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="max-md:size-5 md:size-6">
-							<path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 8.155 7.36 5.5 12 5.5c4.638 0 8.573 2.655 9.963 6.428.07.207.07.431 0 .639C20.577 15.845 16.64 18.5 12 18.5c-4.638 0-8.573-2.655-9.963-6.428Z" />
-							<path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-							<path v-if="visible" stroke-linecap="round" stroke-linejoin="round" d="M3 3 21 21" />
-						</svg>
+						<IconEye class="max-md:size-5 md:size-6" :slashed="visible"/>
 					</button>
 				</div>
 				<RouterLink to="/DEBUG/pwd">

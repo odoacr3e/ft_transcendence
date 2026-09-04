@@ -5,6 +5,8 @@
 	import { useI18n }							from 'vue-i18n';
     import { ref }								from 'vue';
 	import router								from '../router/index.js';
+	import IconEye                 from '@/components/icons/IconEye.vue';
+	import IconLock                from '@/components/icons/IconLock.vue';
 	
     const	{ t } = useI18n(),
     	   formData = ref({
@@ -43,17 +45,11 @@
 					max-md:w-[80vw] max-md:max-w-110
 					md:w-[50vw]
 					lg:w-[22vw] lg:min-w-100">
-	    		<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="max-md:size-5 md:size-6">
-	    			<path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
-	    		</svg>
+	    		<IconLock class="max-md:size-5 md:size-6"/>
 	    		<input :placeholder="t('userPage.edit.newPwd')"  v-model="formData.password" :type="visible ? 'text' : 'password'" class="pl-2 text-base
 					max-md:w-[48vw] max-md:min-w-17 max-md:text-[15px] md:w-100">
 	    		<button type="button" @click="show()" class="max-md:ml-auto md:ml-3">
-	    			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="max-md:size-5 md:size-6">
-	    				<path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 8.155 7.36 5.5 12 5.5c4.638 0 8.573 2.655 9.963 6.428.07.207.07.431 0 .639C20.577 15.845 16.64 18.5 12 18.5c-4.638 0-8.573-2.655-9.963-6.428Z" />
-	    				<path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-	    				<path v-if="visible" stroke-linecap="round" stroke-linejoin="round" d="M3 3 21 21" />
-	    			</svg>
+	    			<IconEye class="max-md:size-5 md:size-6" :slashed="visible"/>
 	    		</button>
 	    	</div>
             <div class="mx-5 mb-4 mt-1 self-center justify-self-center text-main-color max-md:text-[10px] md:text-xs" 
