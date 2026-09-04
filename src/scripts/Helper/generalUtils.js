@@ -76,6 +76,8 @@ export function playAudio(use, once = false)
 		return;
 
 	const audio = audioData[use];
+	if (!audio?.path)
+		return (console.log(`audio "${use}" non presente nel set ${MACRO.AUDIOSET}`));
 	const track = new Audio(audio.path);
 
 	track.volume = audio.volume ?? 1;
@@ -114,4 +116,17 @@ export function resetAudioFlags(which = null)
 	for (const audioData of sets)
 		for (const audio of Object.values(audioData))
 			audio.playing = true;
+}
+
+/**
+ * Dice se l'evento arriva da un campo di testo, per proteggere mentre scrivi (chat, input, contenteditable).
+ * @param {EventTarget|null} target
+ */
+export function isTypingTarget(target)
+{
+	if (!(target instanceof HTMLElement))
+		return (false);
+	if (target.isContentEditable)
+		return (true);
+	return (/^(input|textarea|select)$/i.test(target.tagName));
 }

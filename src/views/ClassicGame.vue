@@ -75,7 +75,7 @@
 </script>
 
 <template>
-    <div id="wrapping" tabindex="-1" class="flex z-2 bg-bg-darker rounded-3xl">
+    <div id="wrapping" class="flex z-2 bg-bg-darker rounded-3xl">
 		<KingsCodex v-if="ready"/>
         <div class="p-6 bg-bg-default rounded-l-3xl border-r border-border-default">
           <div v-if="ready">

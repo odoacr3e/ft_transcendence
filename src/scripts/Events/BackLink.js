@@ -61,12 +61,12 @@ export async function requestToBack(fromSquare, toSquare, opType, drawValue)
 			clearTimeout(timeout);
 			const ok = result?.log?.status === 200;
 			const status = result?.log?.status;
-			
+
+			resolve(ok);
 			if (ok && !BOARD_AUDIO.has(type))
 				playAudio(type === "draw" ? "" : type);
 			else if (!ok && status !== undefined)
 				playAudio("badmove");
-			resolve(ok);
 		});
 	});
 }

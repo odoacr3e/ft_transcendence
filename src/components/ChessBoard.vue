@@ -3,7 +3,7 @@
 	import { DOMBoard, localInfo, IMG_PATHS, 
 			 HIDDEN, myPlayer, canAfford, localBoard, 
 			 isAbilityArmed}	from '@/scripts/Data/Variables';
-	import { onMounted, computed, ref }					from 'vue';
+	import { onMounted, onUnmounted, computed, ref }	from 'vue';
 	import { useClickOutside }							from '@/scripts/Helper/generalUtils.js';
 	import { onDragStart, onDrop }						from '@/scripts/Events/Movements';
 	import { getSquareColor } 							from '@/scripts/Helper/RenderUtils';
@@ -18,8 +18,14 @@
 	const prop = defineProps({
   	    	style: String
 	    });
+    let stopGlobalEvents = null;
+
     onMounted(() => {
-        globalEvents();
+        stopGlobalEvents = globalEvents();
+    });
+
+    onUnmounted(() => {
+        stopGlobalEvents?.();
     });
 
 	const dragOver 				= ref(null);
@@ -63,6 +69,7 @@
 	}
 
 	useClickOutside('.boostBadge', closeBoostPopup, { when: boostPopup, escape: true });
+
 </script>
 
 <template>

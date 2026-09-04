@@ -197,7 +197,10 @@ export let MACRO = Object ({
 	"MAX_MSG_LEN"	: 200,
 });
 
-export const BOARD_AUDIO = new Set(["move", "armability", "trans", "giveup"]);
+//roba da non suonare sull'ack, o lo suona soketListen
+//sull'update della board, o non hanno un suono associato.
+export const BOARD_AUDIO = new Set(["move", "armability", "trans", "giveup",
+									"moveboost", "history", "simulate_boost"]);
 
 export const LOLAUDIOPATH = Object.freeze({
 	"move":			{ path: new URL("../../assets/audios/lolMoving.mp3",		import.meta.url).href, playing: true },

@@ -4,7 +4,9 @@ import { clearHighlight }									from "@/scripts/Events/utils/HighlightUtils.js
 import { stopUpgradeMenu }									from "@/scripts/Data/utils/ArchiUtils.js";
 import { requestToBack }									from "@/scripts/Events/BackLink.js";
 import { useSockStore }										from "../../../stores/sock.st";
-import { playAudio }										from "@/scripts/Helper/generalUtils";
+import { playAudio, isTypingTarget }						from "@/scripts/Helper/generalUtils";
+import { currentPlayer } 									from "@/scripts/Data/Variables";
+import { isMyTurn } 										from "@/scripts/Data/Variables";
 
 // ANCHOR USER INTERACTION FUNCTIONS
 
@@ -268,4 +270,19 @@ export function blinkSquares(ids, { times = 3, interval = 300, delay = 300 } = {
 				square.selected = false;
 		});
 	};
+}
+
+export const onKeydown = async function (event) 
+{
+	if (event.repeat || event.ctrlKey || event.metaKey || event.altKey || isTypingTarget(event.target))
+		return;
+	if (event.code === "Space" && localInfo.secondTurn)
+	{
+		event.preventDefault();
+		await sendEndTurn();
+	}	
+	if (event.code === "Enter" && localBoard.get(localInfo.clickedId)?.piece?.team === currentPlayer().team)
+		shopAbility();
+	if (event.code === "ShiftLeft" && isMyTurn() && localBoard.get(localInfo.clickedId)?.piece?.isBoostedBool)
+		useAbility();
 }
