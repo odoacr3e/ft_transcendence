@@ -80,8 +80,8 @@ function cancelMove(match, lastEvent)
 	if (lastEvent.specialMoves & enumSpecialMoves.SNIPER && lastEvent.pieceEaten)
 	{
 		toSquare.piece = lastEvent.pieceEaten;
-		match.currentPlayer.nPoints -= lastEvent.pieceEaten.price;//@ts-ignore
-		match[lastEvent.pieceEaten?.team].nPieces -= 1;
+		match.currentPlayer.nPoints -= lastEvent.pieceEaten.price;
+		match.GetPlayer(lastEvent.pieceEaten?.team).nPieces += 1;
 	}
 	else if (lastEvent.specialMoves & enumSpecialMoves.CASTLING)
 	{
@@ -93,10 +93,10 @@ function cancelMove(match, lastEvent)
 	{
 		fromSquare.piece = toSquare.piece;
 		toSquare.piece = lastEvent.pieceEaten;
-		if (toSquare.piece.isBoostedBool)//@ts-ignore
-			match[lastEvent.pieceEaten?.team].boostedPiece = lastEvent.to;
-		match.currentPlayer.nPoints -= lastEvent.pieceEaten.price;//@ts-ignore
-		match[lastEvent.pieceEaten?.team].nPieces += 1;
+		if (toSquare.piece.isBoostedBool)
+			match.GetPlayer(lastEvent.pieceEaten?.team).boostedPiece = lastEvent.to;
+		match.currentPlayer.nPoints -= lastEvent.pieceEaten.price;
+		match.GetPlayer(lastEvent.pieceEaten?.team).nPieces += 1;
 	}
 	else
 	{
