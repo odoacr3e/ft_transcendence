@@ -192,8 +192,8 @@ export let MACRO = Object ({
 	"DEBUG"			: import.meta.env.DEV,
 	//"LOL" | "CLASSIC" | "JOJO"
 	"AUDIOSET"		: "LOL",
-	//"CLASSIC" | "PIXEL" | "GOLD" | "HERALD" | "ROYAL" | "BOOSTED"
-	"PIECESET"		: "BOOSTED",
+	//"CLASSIC" | "FANCY" | "GOLD" | "HERALD" | "ROYAL" | "BOOSTED"
+	"PIECESET"		: "FANCY",
 	"MAX_MESSAGES" 	: 100,
 	"SERVER_AUTHOR" : "server",
 	"MAX_MSG_LEN"	: 200,
