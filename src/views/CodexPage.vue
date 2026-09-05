@@ -1,8 +1,9 @@
 <script setup>
-    import { ref }      from 'vue';
-    import { useI18n }  from 'vue-i18n';
-    import IconCoins    from '@/components/icons/IconCoins.vue';
-    import IconChevron  from '@/components/icons/IconChevron.vue';
+    import { ref }      	from 'vue';
+    import { useI18n }  	from 'vue-i18n';
+    import IconCoins    	from '@/components/icons/IconCoins.vue';
+    import IconChevron  	from '@/components/icons/IconChevron.vue';
+	import { IMG_PATHS }	from '@/scripts/Data/Variables';
 
     const   { t } = useI18n(),
             select = ref(0),
@@ -17,17 +18,17 @@
         <div class="bg-bg-darker rounded-l-3xl flex flex-col gap-7 justify-center max-md:sticky" @click="on = true; bool = false;">
             <span class="text-text-default max-md:text-base lg:text-xl my-0 max-lg:-mb-5">⫘⫘⫘</span>
             <span class="rounded-l-lg cursor-pointer" @click="select = 5;" :class="select == 5 ? 'bg-bg-second' : ''">
-                <img :draggable="false" src="../assets/pieces/white/pawn.png" alt="" class="max-md:size-14 md:size-18 lg:size-20"></span>
+                <img :draggable="false" :src="IMG_PATHS['whiteBastards']" alt="" class="max-md:size-14 md:size-18 lg:size-20"></span>
             <span class="rounded-l-lg cursor-pointer" @click="select = 4;" :class="select == 4 ? 'bg-bg-second' : ''">
-                <img :draggable="false" src="../assets/pieces/white/bishop.png" alt="" class="max-md:size-14 md:size-18 lg:size-20"></span>
+                <img :draggable="false" :src="IMG_PATHS['whiteValkirya']" alt="" class="max-md:size-14 md:size-18 lg:size-20"></span>
             <span class="rounded-l-lg cursor-pointer" @click="select = 3;" :class="select == 3 ? 'bg-bg-second' : ''">
-                <img :draggable="false" src="../assets/pieces/white/knight.png" alt="" class="max-md:size-14 md:size-18 lg:size-20"></span>
+                <img :draggable="false" :src="IMG_PATHS['whiteJester']" alt="" class="max-md:size-14 md:size-18 lg:size-20"></span>
             <span class="rounded-l-lg cursor-pointer" @click="select = 2;" :class="select == 2 ? 'bg-bg-second' : ''">
-                <img :draggable="false" src="../assets/pieces/white/rook.png" alt="" class="max-md:size-14 md:size-18 lg:size-20"></span>
+                <img :draggable="false" :src="IMG_PATHS['whiteMinotaurus']" alt="" class="max-md:size-14 md:size-18 lg:size-20"></span>
             <span class="rounded-l-lg cursor-pointer" @click="select = 1;" :class="select == 1 ? 'bg-bg-second' : ''">
-                <img :draggable="false" src="../assets/pieces/white/queen.png" alt="" class="max-md:size-14 md:size-18 lg:size-20"></span>
+                <img :draggable="false" :src="IMG_PATHS['whiteChampion']" alt="" class="max-md:size-14 md:size-18 lg:size-20"></span>
             <span class="rounded-l-lg cursor-pointer" @click="select = 0;" :class="select == 0 ? 'bg-bg-second' : ''">
-                <img :draggable="false" src="../assets/pieces/white/king.png" alt="" class="max-md:size-14 md:size-18 lg:size-20"></span>
+                <img :draggable="false" :src="IMG_PATHS['whiteKing']" alt="" class="max-md:size-14 md:size-18 lg:size-20"></span>
             <span class="text-text-default max-md:text-base lg:text-xl my-0 max-lg:-mt-5">⫘⫘⫘</span>
         </div>
         <div class="bg-bg-default flex flex-col relative overflow-hidden md:rounded-r-3xl
