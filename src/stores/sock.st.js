@@ -2,8 +2,8 @@ import { io }				from 'socket.io-client'
 import { useMsgStore }      from './msg.st';
 import { defineStore }		from 'pinia';
 import { listenGameSocket } from '../scripts/Data/SocketListen';
+import { debug } 			from "../scripts/Data/Variables.js";
 
-import { debug } from "@/scripts/Data/Variables";
 export const useSockStore = defineStore('sock', {
 	state: () => ({
 		usersOnline: new Set(),
