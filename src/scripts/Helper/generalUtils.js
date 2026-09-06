@@ -1,5 +1,5 @@
 import { nextTick, onBeforeUnmount, onMounted, unref, watch } from "vue";
-import { CLASSICAUDIOPATH, debug, LOLAUDIOPATH, MACRO } from "../Data/Variables";
+import { AUDIO_PATHS, debug, MACRO } from "../Data/Variables";
 
 
 //NOTE - suoni brevi di interfaccia: non troncano quello in corso e non vengono troncati.
@@ -65,18 +65,10 @@ export function useClickOutside(target, onOutside, { when = null, escape = false
  */
 export function playAudio(use, once = false)
 {
-	let audioData;
-
 	if (!MACRO.AUDIO)
 		return;
-	if (MACRO.AUDIOSET === "CLASSIC")
-		audioData = CLASSICAUDIOPATH;
-	else if (MACRO.AUDIOSET === "LOL")
-		audioData = LOLAUDIOPATH;
-	else
-		return;
 
-	const audio = audioData[use];
+	const audio = AUDIO_PATHS[use];
 	if (!audio?.path)
 		return (console.log(`audio "${use}" non presente nel set ${MACRO.AUDIOSET}`));
 	const track = new Audio(audio.path);
@@ -103,20 +95,12 @@ export function playAudio(use, once = false)
 }
 
 /**
- * @param {"CLASSIC"|"LOL"|null} which
+ * Riabilita i suoni spenti da playAudio(use, true) nel set attivo.
  */
-export function resetAudioFlags(which = null)
+export function resetAudioFlags()
 {
-	const sets = [];
-
-	if (which !== "LOL")
-		sets.push(CLASSICAUDIOPATH);
-	if (which !== "CLASSIC")
-		sets.push(LOLAUDIOPATH);
-
-	for (const audioData of sets)
-		for (const audio of Object.values(audioData))
-			audio.playing = true;
+	for (const audio of Object.values(AUDIO_PATHS))
+		audio.playing = true;
 }
 
 /**

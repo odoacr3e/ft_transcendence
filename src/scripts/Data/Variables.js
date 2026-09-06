@@ -193,7 +193,7 @@ export let MACRO = Object ({
 	"AUDIO"			: true,
 	"DEBUG"			: import.meta.env.DEV,
 	//"LOL" | "CLASSIC" | "JOJO"
-	"AUDIOSET"		: "LOL",
+	"AUDIOSET"		: "CLASSIC",
 	//"CLASSIC" | "FANCY" | "GOLD" | "HERALD" | "ROYAL" | "BOOSTED"
 	"PIECESET"		: "FANCY",
 	"BOOSTMORPH"	: true,
@@ -207,48 +207,85 @@ export let MACRO = Object ({
 export const BOARD_AUDIO = new Set(["move", "armability", "trans", "giveup",
 									"moveboost", "history", "simulate_boost"]);
 
-//NOTE - volume attenua soltanto: 1 e' il livello nativo del file, 0 il silenzio.
-//Il tag audio non amplifica, quindi valori sopra 1 vengono riportati a 1 da playAudio.
-export const LOLAUDIOPATH = Object.freeze({
-	"move":			{ path: new URL("../../assets/audios/lolMoving.mp3",		import.meta.url).href, playing: true, volume: 0.84 },
-	"boost":		{ path: new URL("../../assets/audios/lolBoost.mp3",			import.meta.url).href, playing: true, volume: 0.92 },
-	"armability":	{ path: new URL("../../assets/audios/lolUseAbility.mp3",	import.meta.url).href, playing: true, volume: 0.77 },
-	"check":		{ path: new URL("../../assets/audios/lolCheck.mp3",			import.meta.url).href, playing: true, volume: 0.76 },
-	"lost":			{ path: new URL("../../assets/audios/lolLost.mp3",			import.meta.url).href, playing: true, volume: 1.0 },
-	"victory":		{ path: new URL("../../assets/audios/lolVictory.mp3",		import.meta.url).href, playing: true, volume: 0.9 },
-	"draw":			{ path: new URL("../../assets/audios/lolDraw.mp3",			import.meta.url).href, playing: true, volume: 0.89 },
-	"trans":		{ path: new URL("../../assets/audios/lolTransform.mp3",		import.meta.url).href, playing: true, volume: 0.8 },
-	"endturn":		{ path: new URL("../../assets/audios/lolEndTurn.mp3",		import.meta.url).href, playing: true, volume: 0.89 },
-	"giveup":		{ path: new URL("../../assets/audios/lolGiveup.mp3",		import.meta.url).href, playing: true, volume: 0.84 },
-	"recdraw":		{ path: new URL("../../assets/audios/lolRecDraw.mp3",		import.meta.url).href, playing: true, volume: 0.9 },
-	"askdraw":		{ path: new URL("../../assets/audios/lolAskDraw.mp3",		import.meta.url).href, playing: true, volume: 0.89 },
-	"checkboost":	{ path: new URL("../../assets/audios/lolCheckBoost.mp3",	import.meta.url).href, playing: true, volume: 0.79 },
-	"clicked":		{ path: new URL("../../assets/audios/lolClicked.mp3",		import.meta.url).href, playing: true, volume: 0.79 },
-	"badmove":		{ path: new URL("../../assets/audios/lolBadMove.mp3",		import.meta.url).href, playing: true, volume: 0.95 },
-	"capture":		{ path: new URL("../../assets/audios/lolCapture.mp3",		import.meta.url).href, playing: true, volume: 0.92 },
+//NOTE - Vite risolve gli asset solo staticamente: si importa tutta la cartella
+//audios/ e si sceglie il set a runtime in base a MACRO.AUDIOSET.
+const AUDIO_FILES = import.meta.glob("../../assets/audios/*/*.mp3", { eager: true, query: "?url", import: "default" });
+
+const AUDIOSET_DIRS = Object.freeze({ "LOL": "LolSet", "CLASSIC": "ClassicSet" });
+
+//Chiave logica del suono -> nome del file, uguale in ogni set.
+const AUDIO_FILENAMES = Object.freeze({
+	"move":			"moving",
+	"boost":		"boost",
+	"armability":	"useability",
+	"check":		"check",
+	"lost":			"lost",
+	"victory":		"victory",
+	"draw":			"draw",
+	"trans":		"transform",
+	"endturn":		"endturn",
+	"giveup":		"giveup",
+	"recdraw":		"recdraw",
+	"askdraw":		"askdraw",
+	"checkboost":	"checkboost",
+	"clicked":		"clicked",
+	"badmove":		"badmove",
+	"capture":		"capture",
 });
 
-export const CLASSICAUDIOPATH = Object.freeze({
-	"move":			{ path: new URL("", import.meta.url).href, playing: true, volume: 1 },
-	"boost":		{ path: new URL("", import.meta.url).href, playing: true, volume: 1 },
-	"armability":	{ path: new URL("", import.meta.url).href, playing: true, volume: 1 },
-	"check":		{ path: new URL("", import.meta.url).href, playing: true, volume: 1 },
-	"lost":			{ path: new URL("", import.meta.url).href, playing: true, volume: 1 },
-	"victory":		{ path: new URL("", import.meta.url).href, playing: true, volume: 1 },
-	"draw":			{ path: new URL("", import.meta.url).href, playing: true, volume: 1 },
-	"trans":		{ path: new URL("", import.meta.url).href, playing: true, volume: 1 },
-	"endturn":		{ path: new URL("", import.meta.url).href, playing: true, volume: 1 },
-	"giveup":		{ path: new URL("", import.meta.url).href, playing: true, volume: 1 },
-	"recdraw":		{ path: new URL("", import.meta.url).href, playing: true, volume: 1 },
-	"askdraw":		{ path: new URL("", import.meta.url).href, playing: true, volume: 1 },
-	"checkboost":	{ path: new URL("", import.meta.url).href, playing: true, volume: 1 },
-	"clicked":		{ path: new URL("", import.meta.url).href, playing: true, volume: 1 },
-	"badmove":		{ path: new URL("", import.meta.url).href, playing: true, volume: 1 },
-	"capture":		{ path: new URL("", import.meta.url).href, playing: true, volume: 1 },
-	//NOTE - presenti solo qui: nessun playAudio le richiede.
-	"moveboost":	{ path: new URL("", import.meta.url).href, playing: true, volume: 1 },
-	"checkmate":	{ path: new URL("", import.meta.url).href, playing: true, volume: 1 },
+//NOTE - volume attenua soltanto: 1 e' il livello nativo del file, 0 il silenzio.
+//Il tag audio non amplifica, quindi valori sopra 1 vengono riportati a 1 da playAudio.
+//I valori di LolSet vengono dalla misura EBU R128 dei file, pareggiata a -14.2 LUFS.
+const AUDIO_VOLUMES = Object.freeze({
+	"LolSet": {
+		"move":			0.84,
+		"boost":		0.92,
+		"armability":	0.77,
+		"check":		0.76,
+		"lost":			1.0,
+		"victory":		0.9,
+		"draw":			0.89,
+		"trans":		0.8,
+		"endturn":		0.89,
+		"giveup":		1.0,
+		"recdraw":		0.9,
+		"askdraw":		0.89,
+		"checkboost":	0.79,
+		"clicked":		0.79,
+		"badmove":		0.95,
+		"capture":		0.92,
+	},
+	"ClassicSet": {},	//da misurare quando i file ci saranno
 });
+
+function audioFile(dir, name)
+{
+	return (AUDIO_FILES[`../../assets/audios/${dir}/${name}.mp3`]);
+}
+
+/**
+ * Mappa "<chiave>" -> { path, playing, volume } per il set richiesto.
+ * I suoni che il set non ha ancora restano fuori dalla mappa: playAudio
+ * li segnala in console e tira dritto, come faceva con i path vuoti.
+ * @param {string} set
+ */
+function buildAudioPaths(set)
+{
+	const dir = AUDIOSET_DIRS[set], volumes = AUDIO_VOLUMES[dir] ?? {}, paths = {};
+
+	if (!dir)
+		return (Object.freeze(paths));
+	for (const [key, name] of Object.entries(AUDIO_FILENAMES))
+	{
+		const path = audioFile(dir, name);
+
+		if (path)
+			paths[key] = { path, playing: true, volume: volumes[key] ?? 1 };
+	}
+	return (Object.freeze(paths));
+}
+
+export const AUDIO_PATHS = buildAudioPaths(MACRO.AUDIOSET);
 
 export function debug(...args)
 {
