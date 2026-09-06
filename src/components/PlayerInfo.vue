@@ -4,6 +4,7 @@
 	import { computed }							from 'vue';
 	import	TimerClock							from "./TimerClock.vue"
 	import	CapturedPieces						from "./CapturedPieces.vue"
+	import	TagTitle							from "./TagTitle.vue"
 
 	const prop = defineProps({
   		p: Number,
@@ -36,9 +37,13 @@
 	<div class="wrap"
 		v-bind:class="{'rounded-t-md mb-1':up, 'rounded-b-md mt-1':down, 'is-turn':playing}">
 
-		<img :src="player.image ? `${player.image}` : defaultAvatar" @error="handleAvatarError"
-			alt="User Icon" :draggable="false" class="rounded-full object-cover size-18.75 shrink-0 stretch 0 dim"
-			v-bind:class="{ 'dim-off':!playing }">
+		<!--NOTE - il tag del titolo e' gia' agganciato: comparira' da solo appena il
+		match state portera' player.title, come lo porta gia' l'utente fuori dalla partita.-->
+		<div class="relative shrink-0 dim" v-bind:class="{ 'dim-off':!playing }">
+			<img :src="player.image ? `${player.image}` : defaultAvatar" @error="handleAvatarError"
+				alt="User Icon" :draggable="false" class="rounded-full object-cover size-18.75 stretch 0">
+			<TagTitle v-if="player?.title" :title="player.title" class="absolute -bottom-1 -right-2"/>
+		</div>
 
 		<div class="shrink-0 dim" v-bind:class="{'dim-off':!playing}">
 			<b><h1 class="max-w-56 overflow-hidden text-ellipsis whitespace-nowrap"

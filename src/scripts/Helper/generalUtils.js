@@ -2,7 +2,8 @@ import { nextTick, onBeforeUnmount, onMounted, unref, watch } from "vue";
 import { CLASSICAUDIOPATH, debug, LOLAUDIOPATH, MACRO } from "../Data/Variables";
 
 
-const EXCLUSIVE = new Set(["giveup", "lost", "victory", "draw"]);
+//NOTE - suoni brevi di interfaccia: non troncano quello in corso e non vengono troncati.
+const UI_SOUNDS = new Set(["clicked", "badmove"]);
 let currentTrack = null;
 /*
 	Chiude un popup quando si clicca fuori dalla sua area (e, se richiesto, con Escape)
@@ -59,8 +60,8 @@ export function useClickOutside(target, onOutside, { when = null, escape = false
 }
 
 /**
- * @param {"CLASSIC"|"LOL"|null} which
  * @param {string} use
+ * @param {boolean} once
  */
 export function playAudio(use, once = false)
 {
@@ -80,8 +81,8 @@ export function playAudio(use, once = false)
 		return (console.log(`audio "${use}" non presente nel set ${MACRO.AUDIOSET}`));
 	const track = new Audio(audio.path);
 
-	track.volume = audio.volume ?? 1;
-	if (EXCLUSIVE.has(use))
+	track.volume = Math.min(Math.max(audio.volume ?? 1, 0), 1);
+	if (!UI_SOUNDS.has(use))
 	{
 		if (currentTrack)
 		{

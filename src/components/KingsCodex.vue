@@ -1,7 +1,7 @@
 <script setup>
 	//@ts-nocheck
 	import IconEsoteric											from './icons/IconEsoteric.vue';
-	import { localBoard, localInfo, IMG_PATHS, codexPiece }		from '@/scripts/Data/Variables.js';
+	import { localBoard, localInfo, skinSrc, codexPiece }		from '@/scripts/Data/Variables.js';
 	import { computed, ref, watch }								from 'vue';
 	import { PIECES_CODEX }										from '@/scripts/Data/PiecesCodex.js';
 	import MoveGrid												from './MoveGrid.vue';
@@ -20,9 +20,10 @@
 			piece.value = null;
 	});
 
-	const piecePath 	= computed(() => piece.value ? IMG_PATHS[piece.value.team + piece.value.type] : "");
-	const entry			= computed(() => piece.value ? PIECES_CODEX[piece.value.type] ?? null : null);
 	const tab			= ref('base');
+	//nel codex la skin segue il tab aperto, non lo stato reale del pezzo in board
+	const piecePath 	= computed(() => piece.value ? skinSrc(piece.value.team, piece.value.type, tab.value === 'boost') : "");
+	const entry			= computed(() => piece.value ? PIECES_CODEX[piece.value.type] ?? null : null);
 	const shownTitle	= computed(() => tab.value === 'base' ? entry.value?.baseTitle : entry.value?.boostTitle);
 	const shownText		= computed(() => tab.value === 'base' ? entry.value?.baseText : entry.value?.boostText);
 	const descLines		= computed(() => {
@@ -57,7 +58,8 @@
 	const iconFor		= (actor) => {
 		const team = actor.role === 'enemy' ? enemyTeam.value : piece.value?.team;
 		const type = actor.type ?? piece.value?.type;
-		return IMG_PATHS[team + type] ?? '';
+		//si morfa solo il pezzo descritto ('self', ghost incluso): alleati e nemici restano base
+		return (skinSrc(team, type, actor.role === 'self' && tab.value === 'boost'));
 	}
 
 	watch(piece, () => tab.value = 'base');

@@ -1,4 +1,4 @@
-import { localBoard, localInfo, debug}	from "@/scripts/Data/Variables";
+import { localBoard, localInfo, debug, isAbilityArmed}	from "@/scripts/Data/Variables";
 import { clearHighlight }			from "@/scripts/Events/utils/HighlightUtils.js";
 import { sendToBackend }			from "./BackLink.js";
 import { PIECES_ABILITY } 			from "@/scripts/Helper/abilityMovement";
@@ -16,11 +16,13 @@ export function onDragStart(event, square)
 	event.dataTransfer.setDragImage(EMPTY_IMG, 0, 0);
 
 	localInfo.drag = {
-		src:	event.target.src,
-		size:	event.target.offsetWidth,
-		x:		event.clientX,
-		y:		event.clientY,
-		from:	square.id
+		src:		event.target.src,
+		size:		event.target.offsetWidth,
+		x:			event.clientX,
+		y:			event.clientY,
+		from:		square.id,
+		boosted:	square.piece?.isBoostedBool === true,
+		armed:		isAbilityArmed(square),
 	};
 
 	localInfo.lastClickedId = event.target.parentNode.id;

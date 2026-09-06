@@ -2,7 +2,8 @@
 //@ts-nocheck
 	import { DOMBoard, localInfo, IMG_PATHS, 
 			 HIDDEN, myPlayer, canAfford, localBoard, 
-			 isAbilityArmed}	from '@/scripts/Data/Variables';
+			 isAbilityArmed,
+			 pieceSrc}	from '@/scripts/Data/Variables';
 	import { onMounted, onUnmounted, computed, ref }	from 'vue';
 	import { useClickOutside }							from '@/scripts/Helper/generalUtils.js';
 	import { onDragStart, onDrop }						from '@/scripts/Events/Movements';
@@ -36,6 +37,7 @@
 	const localPlayer			= computed(() => myPlayer());
 	const myTurn				= computed(() => localPlayer.value?.isPlaying === true);
 	const boostPopup			= ref(null);
+	const dragging				= (square) => localInfo.drag?.hideSource && localInfo.drag.from === square?.id;
 	const promoTeam				= computed(() => localBoard.get(localInfo.goatId)?.piece?.team ?? localInfo.myTeam);
 	const canBoostSquare		= (square) => !!square?.piece && square.piece.team === localInfo.myTeam
 												&& !square.piece.isBoostedBool && myTurn.value
@@ -76,12 +78,17 @@
     <div id="root">
 		<div v-if="localInfo.goatId" id="overlay" v-bind:class="{ 'opacity-60 pointer-events-auto':localInfo.goatId }"></div>
 		<Teleport to="body">
-			<img v-if="localInfo.drag" class="floatingPiece"
-					:src="localInfo.drag.src" 
+			<div v-if="localInfo.drag" class="floatingPiece"
 					:style="{width: localInfo.drag.size + 'px',
 							 height: localInfo.drag.size + 'px',
 							 left: localInfo.drag.x + 'px',
-							 top: localInfo.drag.y + 'px'}"/>
+							 top: localInfo.drag.y + 'px'}">
+				<AuraFx v-if="localInfo.drag.armed" class="pieceAura" 
+							:speed=".5" :variant="'yellow'" style="--aura-size: 1.6"/>
+				<AuraFx v-else-if="localInfo.drag.boosted" class="pieceAura"
+							:speed=".4" :variant="'blue'"/>
+				<img class="piece" :src="localInfo.drag.src"/>
+			</div>
 		</Teleport>
 		<div id="board" oncontextmenu="return false;" :class="{ 'boardTwo' : style === '1v1', 'boardFour' : style === '14x14x4'}">
 				<div v-for="row in domBoardComputed" :key="row[0]?.id" class="grid" :class="{ 'rowTwo' : style === '1v1', 'rowFour' : style === '14x14x4'}">
@@ -114,16 +121,16 @@
 										'text-bg-WSelect' : getSquareColor(square.id) == 'black' && square.selected !== square.inCheck }">
 							<b>{{ square.id.charAt(0) }}</b>
 						</p>
-						<AuraFx v-if="isAbilityArmed(square)"
+						<AuraFx v-if="isAbilityArmed(square) && !(dragging(square))"
 									class="pieceAura" :speed=".5" :variant="'yellow'"
 									style="--aura-size: 1.6"/>
-						<AuraFx v-else-if="square.piece?.isBoostedBool"
+						<AuraFx v-else-if="square.piece?.isBoostedBool && !dragging(square)"
 								class="pieceAura" :speed=".4" :variant="'blue'"/>
 						<img
 							v-if="square?.piece"
 							class="piece"
-							v-bind:class="{ 'boosted-aura':square.piece.isBoostedBool, 'invisible': localInfo.drag?.hideSource && localInfo.drag.from === square?.id }"
-							:src="IMG_PATHS[square.piece.team + square.piece.type]"
+							v-bind:class="{ 'boosted-aura':square.piece.isBoostedBool, 'invisible': dragging(square) }"
+							:src="pieceSrc(square.piece)"
 							:draggable="true"
 							@dragstart="onDragStart($event, square)"/>
 						<p 	class="absolute" 
@@ -413,6 +420,9 @@
 
 	.floatingPiece
 	{
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		position: fixed;
 		z-index: 13;
 		pointer-events: none;

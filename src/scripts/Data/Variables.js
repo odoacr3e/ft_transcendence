@@ -41,6 +41,8 @@ export class Square {
  * @property {number}  y           Coordinata Y del cursore
  * @property {string}  from        Id della casella di partenza
  * @property {boolean} [hideSource] Se nascondere il pezzo nella casella di partenza
+ * @property {boolean} boosted		Se il pezzo draggato è boostato
+ * @property {boolean} armed		Se il pezzo draggato sta usanto abilità
  */
 
 /**
@@ -194,6 +196,7 @@ export let MACRO = Object ({
 	"AUDIOSET"		: "LOL",
 	//"CLASSIC" | "FANCY" | "GOLD" | "HERALD" | "ROYAL" | "BOOSTED"
 	"PIECESET"		: "FANCY",
+	"BOOSTMORPH"	: true,
 	"MAX_MESSAGES" 	: 100,
 	"SERVER_AUTHOR" : "server",
 	"MAX_MSG_LEN"	: 200,
@@ -204,53 +207,47 @@ export let MACRO = Object ({
 export const BOARD_AUDIO = new Set(["move", "armability", "trans", "giveup",
 									"moveboost", "history", "simulate_boost"]);
 
+//NOTE - volume attenua soltanto: 1 e' il livello nativo del file, 0 il silenzio.
+//Il tag audio non amplifica, quindi valori sopra 1 vengono riportati a 1 da playAudio.
 export const LOLAUDIOPATH = Object.freeze({
-	"move":			{ path: new URL("../../assets/audios/lolMoving.mp3",		import.meta.url).href, playing: true },
-	"boost":		{ path: new URL("../../assets/audios/lolBoost.mp3",			import.meta.url).href, playing: true },
-	"armability":	{ path: new URL("../../assets/audios/lolUseAbility.mp3",	import.meta.url).href, playing: true },
-	"check":		{ path: new URL("../../assets/audios/lolCheck.mp3",			import.meta.url).href, playing: true },
-	"lost":			{ path: new URL("../../assets/audios/lolLost.mp3",			import.meta.url).href, playing: true },
-	"victory":		{ path: new URL("../../assets/audios/lolVictory.mp3",		import.meta.url).href, playing: true },
-	"draw":			{ path: new URL("../../assets/audios/lolDraw.mp3",			import.meta.url).href, playing: true },
-	"trans":		{ path: new URL("../../assets/audios/lolTransform.mp3",		import.meta.url).href, playing: true },
-	"endturn":		{ path: new URL("../../assets/audios/lolEndTurn.mp3",		import.meta.url).href, playing: true },
-	"giveup":		{ path: new URL("../../assets/audios/lolGiveup.mp3",		import.meta.url).href, playing: true },
-	"recdraw":		{ path: new URL("../../assets/audios/lolRecDraw.mp3",		import.meta.url).href, playing: true },
-	"askdraw":		{ path: new URL("../../assets/audios/lolAskDraw.mp3",		import.meta.url).href, playing: true },
-	"checkboost":	{ path: new URL("../../assets/audios/lolCheckBoost.mp3",	import.meta.url).href, playing: true },
-	"clicked":		{ path: new URL("../../assets/audios/lolClicked.mp3",		import.meta.url).href, playing: true },
-	"badmove":		{ path: new URL("../../assets/audios/lolBadMove.mp3",		import.meta.url).href, playing: true },
-	"capture":		{ path: new URL("../../assets/audios/lolCapture.mp3",		import.meta.url).href, playing: true },
+	"move":			{ path: new URL("../../assets/audios/lolMoving.mp3",		import.meta.url).href, playing: true, volume: 0.84 },
+	"boost":		{ path: new URL("../../assets/audios/lolBoost.mp3",			import.meta.url).href, playing: true, volume: 0.92 },
+	"armability":	{ path: new URL("../../assets/audios/lolUseAbility.mp3",	import.meta.url).href, playing: true, volume: 0.77 },
+	"check":		{ path: new URL("../../assets/audios/lolCheck.mp3",			import.meta.url).href, playing: true, volume: 0.76 },
+	"lost":			{ path: new URL("../../assets/audios/lolLost.mp3",			import.meta.url).href, playing: true, volume: 1.0 },
+	"victory":		{ path: new URL("../../assets/audios/lolVictory.mp3",		import.meta.url).href, playing: true, volume: 0.9 },
+	"draw":			{ path: new URL("../../assets/audios/lolDraw.mp3",			import.meta.url).href, playing: true, volume: 0.89 },
+	"trans":		{ path: new URL("../../assets/audios/lolTransform.mp3",		import.meta.url).href, playing: true, volume: 0.8 },
+	"endturn":		{ path: new URL("../../assets/audios/lolEndTurn.mp3",		import.meta.url).href, playing: true, volume: 0.89 },
+	"giveup":		{ path: new URL("../../assets/audios/lolGiveup.mp3",		import.meta.url).href, playing: true, volume: 0.84 },
+	"recdraw":		{ path: new URL("../../assets/audios/lolRecDraw.mp3",		import.meta.url).href, playing: true, volume: 0.9 },
+	"askdraw":		{ path: new URL("../../assets/audios/lolAskDraw.mp3",		import.meta.url).href, playing: true, volume: 0.89 },
+	"checkboost":	{ path: new URL("../../assets/audios/lolCheckBoost.mp3",	import.meta.url).href, playing: true, volume: 0.79 },
+	"clicked":		{ path: new URL("../../assets/audios/lolClicked.mp3",		import.meta.url).href, playing: true, volume: 0.79 },
+	"badmove":		{ path: new URL("../../assets/audios/lolBadMove.mp3",		import.meta.url).href, playing: true, volume: 0.95 },
+	"capture":		{ path: new URL("../../assets/audios/lolCapture.mp3",		import.meta.url).href, playing: true, volume: 0.92 },
 });
 
-// lolMoving.mp3		-> MOVIMENTO
-// lolBoost.mp3			-> POTENZIAMENTO
-// lolUseAbility.mp3	-> USO ABILITÀ
-// lolCheck.mp3			-> TETTE
-// lolLost.mp3			-> HAI PIERSO
-// lolVictory.mp3		-> CELEBERRIMA VITTORIA (ososo)
-// lolDraw.mp3			-> MAH ESALTANTE QUANTO UN REGALO DI NATALE CON IL NULLA COSMICO DENTRO (annoiato)
-// lolTransform.mp3		-> MI SENTO DIVERSO (voce gay)
-// lolEndTurn.mp3		-> PASSO
-// lolGiveup.mp3		-> IL NEMICO È TROPPO POTENTE (chao)
-// lolRecDraw.mp3		-> HA HAAA IL NEMICO PROVA AD EVITARE LA SCONFITTA CON TATTICHE DA PUSILLANIME
-// lolAskDraw.mp3		-> MA CE SE PÒ ACCORDÀ? (romanaccio)
-// lolCheckBoost.mp3	-> MMMM CHE FA STO COSO (fattone)
-// lolClicked.mp3		-> CLICK
-// lolBadMove.mp3		-> BELIN MA CHE MI COMBINI
-// lolCapture.mp3		-> GNAM GNAM
-
 export const CLASSICAUDIOPATH = Object.freeze({
-	"move":			{ path: new URL("", import.meta.url).href, playing: true },
-	"boost":		{ path: new URL("", import.meta.url).href, playing: true },
-	"moveboost":	{ path: new URL("", import.meta.url).href, playing: true },
-	"check":		{ path: new URL("", import.meta.url).href, playing: true },
-	"checkmate":	{ path: new URL("", import.meta.url).href, playing: true },
-	"trans":		{ path: new URL("", import.meta.url).href, playing: true },
-	"endturn":		{ path: new URL("", import.meta.url).href, playing: true },
-	"giveup":		{ path: new URL("", import.meta.url).href, playing: true },
-	"recdraw":		{ path: new URL("", import.meta.url).href, playing: true },
-	"askdraw":		{ path: new URL("", import.meta.url).href, playing: true },
+	"move":			{ path: new URL("", import.meta.url).href, playing: true, volume: 1 },
+	"boost":		{ path: new URL("", import.meta.url).href, playing: true, volume: 1 },
+	"armability":	{ path: new URL("", import.meta.url).href, playing: true, volume: 1 },
+	"check":		{ path: new URL("", import.meta.url).href, playing: true, volume: 1 },
+	"lost":			{ path: new URL("", import.meta.url).href, playing: true, volume: 1 },
+	"victory":		{ path: new URL("", import.meta.url).href, playing: true, volume: 1 },
+	"draw":			{ path: new URL("", import.meta.url).href, playing: true, volume: 1 },
+	"trans":		{ path: new URL("", import.meta.url).href, playing: true, volume: 1 },
+	"endturn":		{ path: new URL("", import.meta.url).href, playing: true, volume: 1 },
+	"giveup":		{ path: new URL("", import.meta.url).href, playing: true, volume: 1 },
+	"recdraw":		{ path: new URL("", import.meta.url).href, playing: true, volume: 1 },
+	"askdraw":		{ path: new URL("", import.meta.url).href, playing: true, volume: 1 },
+	"checkboost":	{ path: new URL("", import.meta.url).href, playing: true, volume: 1 },
+	"clicked":		{ path: new URL("", import.meta.url).href, playing: true, volume: 1 },
+	"badmove":		{ path: new URL("", import.meta.url).href, playing: true, volume: 1 },
+	"capture":		{ path: new URL("", import.meta.url).href, playing: true, volume: 1 },
+	//NOTE - presenti solo qui: nessun playAudio le richiede.
+	"moveboost":	{ path: new URL("", import.meta.url).href, playing: true, volume: 1 },
+	"checkmate":	{ path: new URL("", import.meta.url).href, playing: true, volume: 1 },
 });
 
 export function debug(...args)
@@ -277,6 +274,8 @@ const PIECE_FILES = Object.freeze({
 
 const PIECE_TEAMS = Object.freeze(["white", "black", "yellow", "blue", "red", "green"]);
 const PIECESET_FALLBACK = "classic";
+const BOOSTED_SET = "boosted";
+const BOOSTED_IMG_PATH = buildImgPaths(BOOSTED_SET, null);
 
 function pieceImg(set, team, type)
 {
@@ -286,22 +285,44 @@ function pieceImg(set, team, type)
 /**
  * Mappa "<team><Tipo>" -> url del png, per il set richiesto.
  * Solo classic ha tutti e sei i team: per gli altri set i team mancanti
- * ricadono su classic invece di restare senza immagine.
+ * ricadono sul set di fallback invece di restare senza immagine.
+ * Con fallback null le caselle mancanti restano "": serve al set boosted,
+ * che deve ricadere sul set scelto dall'utente e non su classic.
  * @param {string} set
+ * @param {string|null} [fallback]
  */
-function buildImgPaths(set)
+function buildImgPaths(set, fallback = PIECESET_FALLBACK)
 {
 	const paths = {}, dir = String(set).toLowerCase();
 
 	for (const team of PIECE_TEAMS)
 		for (const type of Object.keys(PIECE_FILES))
 			paths[team + type] = pieceImg(dir, team, type)
-							  ?? pieceImg(PIECESET_FALLBACK, team, type)
+							  ?? (fallback ? pieceImg(fallback, team, type) : null)
 							  ?? "";
 	return (Object.freeze(paths));
 }
 
 export const IMG_PATHS = buildImgPaths(MACRO.PIECESET);
+
+/**
+ * Url dello skin di un pezzo. Con boosted a true e MACRO.BOOSTMORPH attivo
+ * usa il set potenziato, ricadendo sul set corrente dove quello manca.
+ * Prende team e type sciolti perche' il codex mostra la skin boosted in base
+ * al tab selezionato, non allo stato reale del pezzo in board.
+ * @param {string} team
+ * @param {string} type
+ * @param {boolean} boosted
+ */
+export const skinSrc = (team, type, boosted) => {
+	const key = team + type;
+
+	if (MACRO.BOOSTMORPH && boosted)
+		return (BOOSTED_IMG_PATH[key] || IMG_PATHS[key] || "");
+	return (IMG_PATHS[key] || "");
+}
+
+export const pieceSrc = (piece) => piece ? skinSrc(piece.team, piece.type, piece.isBoostedBool) : "";
 
 export class matchMakingOpt
 {
