@@ -92,7 +92,7 @@ model users {
   nationality                                  String               @db.VarChar(50)
   image                                        String?
   points                                       Int                  @default(500)
-  title                                        String               @default("Newbie") @db.VarChar(200)
+  title                                        String               @default("Paesant") @db.VarChar(200)
   id_preference                                Int                  @default(1)
   mfa                                          Boolean              @default(false)
   google_id                                    String?              @unique(map: "users_unique") @db.VarChar
@@ -113,7 +113,7 @@ model users_matches {
   id_match     Int
   outcome      matches_outcome?
   team         Json             @default("[\n  {\"type\": \"Sovrano\", \"count\": 1, \"cost\": 0},\n  {\"type\": \"Campione\", \"count\": 1, \"cost\": 10},\n  {\"type\": \"Valchiria\", \"count\": 2, \"cost\": 3},\n  {\"type\": \"Minotauro\", \"count\": 2, \"cost\": 5},\n  {\"type\": \"Giullare\", \"count\": 2, \"cost\": 5},\n  {\"type\": \"Bastardo\", \"count\": 8, \"cost\": 1}\n]") @db.Json
-  matches      matches          @relation(fields: [id_match], references: [id_match], onDelete: NoAction, map: "fk_id_match")
+  matches      matches          @relation(fields: [id_match], references: [id_match], onDelete: Cascade, onUpdate: NoAction, map: "fk_id_match")
   users        users            @relation(fields: [id_user], references: [id_user], onDelete: NoAction, map: "fk_id_user")
 }
 
