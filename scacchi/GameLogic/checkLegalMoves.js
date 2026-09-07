@@ -283,10 +283,10 @@ function pushAllLegalBoost(match, player, legalMovesArray, currTurn, usedBoostBo
 		return ;
 	for (const [coord, square] of match.board)
 	{
-		if (coord != to)
-			toPiece = square.piece;
+		if (coord == to)//@ts-ignore
+			toPiece = match.board.get(from).piece;
 		else
-			toPiece = match.board.get(from);
+			toPiece = square.piece;
 		if (!toPiece)
 			continue ;
 		if (toPiece.team != player.team)

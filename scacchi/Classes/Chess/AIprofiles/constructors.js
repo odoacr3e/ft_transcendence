@@ -31,8 +31,8 @@ function AIProfileConstructor(ai)
 			ai.quiescenceBool = true;
 			break ;
 		case (AIprofiles.GMU):
-			ai.memory = globals.AITraining.get(AIprofiles.GMU);
-			ai.Eval = AI_gmu_eval; // TODO - da scrivere/fixare altre eval functions
+			// ai.memory = globals.AITraining.get(AIprofiles.GMU);
+			ai.Eval = AI_first_eval; // TODO - da scrivere/fixare altre eval functions
 			ai.difficulty = "hard";
 			ai.depth = 3;
 			break ;

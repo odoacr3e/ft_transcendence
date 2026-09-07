@@ -1,7 +1,7 @@
 //@ts-check
 
 import { enumNames, eTeam } from "../../../../Macro/enums.js";
-import { checkKingDanger } from "../../../../utils/checkDanger.js";
+import { checkKingDanger, isDangerous } from "../../../../utils/checkDanger.js";
 import { getBestTurn } from "../../AI.js";
 
 /** @typedef {import("../../match.js").Match} Match*/
@@ -40,29 +40,7 @@ export function AI_gmu_eval(match, ai, turns)
 	//3)	MENO valore pezzo boostato avversario
 	if (otherBoostedPiece && otherBoostedPiece.piece)
 		score -= otherBoostedPiece.piece.price * 7;
-	//4)	PIU quanto minaccio il re avversario
-	if (checkKingDanger(match, nextPlayer.team))
-	{
-		// for (const dangerCoord of match.board.get(nextPlayer.King).dangerZones)
-		// {
-		// 	square = match.board.get(dangerCoord);
-		// 	if (!square.piece || square.piece.team == match.currentPlayer.team)
-		// 		continue ;
-		// 	score += 75;
-		// }
-		if (ai.evalSimulation == true)
-			score += 300;
-		else
-		{
-			ai.evalSimulation = true;
-			val = getBestTurn(match).Score;
-			ai.evalSimulation = false;
-			if (Math.abs(val) == Infinity)
-				return (match.currentPlayer.team == eTeam.White ? Infinity : -Infinity)
-			score += val;
-		}
-	}
-	//5)	MENO se il nostro re e' in pericolo
+	//4)	MENO se il nostro re e' in pericolo
 	if (checkKingDanger(match, match.currentPlayer.team))
 		score -= 300;
 	lastTurn = turns[turns.length - 1];
@@ -105,15 +83,7 @@ export function AI_gmu_eval(match, ai, turns)
 			}
 		}
 	}
-	// lastTurn = turns[turns.length - 2];
-	// if (lastTurn?.boost)
-	// {
-	// 	price = match.board.get(lastTurn.boost).piece?.price;
-	// 	price = price? price : 0;
-	// 	score -= 4 * price;
-	// 	for (const [key, boostTarget] of match.board.get(lastTurn.boost).boostedTargetZones)
-	// 		score += boostTarget.size;
-	// }
+	lastTurn = turns[turns.length - 2];
 	// if (score == 0)
 	// 	return (Math.floor(Math.random() * 10000) * (Math.floor(Math.random()) == 1? 1 : -1));
 	return (score);

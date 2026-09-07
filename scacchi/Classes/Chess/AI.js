@@ -86,6 +86,7 @@ function getBestTurn(match)
 	let	depth;
 	/** @type {Eval} */
 	let	val = {};
+	let	score;
 	let newTurns;
 	/** @type {Array<Eval>} */
 	let bestTurns = new Array();
@@ -125,19 +126,20 @@ function getBestTurn(match)
 		// render(match);
 		playableTurn.push(turn);
 		newTurns = getLegalMoves(match);
-		if (checkKingDanger(match, match.NextPlayer().team))
-			console.log("aaaaaaaaaaaaaa");
+		if (turn.move?.from == "a7" && turn.move.to == "g1")
+			console.log("B");
 		if (ai.memory && match.zobristIndex in ai.memory && (!DEBUG_AI_TRAINING ||
 		rngProportional(100, 50)))
 		{
-			val.score = ai.memory[match.zobristIndex][0];
+			score = ai.memory[match.zobristIndex][0];
 			debugReaction(match, ai.memory[match.zobristIndex]);
 		}
 		else if (match.victory)
-			val.score = victoryScore(match);
+			score = victoryScore(match);
 		else
-			val.score = minMax(match, ai, newTurns, depth, [turn], alpha, beta);
+			score = minMax(match, ai, newTurns, depth, [turn], alpha, beta);
 		val.index = i;
+		val.score = score;
 		if (match.currentPlayer.team == DEBUGTEAM)
 			throw (`AI: Team has NOT changed..`);
 		cancelTurn(match, turn);
@@ -241,7 +243,7 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 	let	lostTeam;
 
 	//NOTE = quiescence check
-	console.log(depth);//@ts-ignore
+	// console.log(depth);//@ts-ignore
 	if ((depth == 0 && !ai.quiescenceBool) || (depth <= 0 && !arrayTurns.canEat) || depth <= -2)
 		return (evalScore(match, ai, pastTurns));
 	lostTeam = checkLostAll(match);
@@ -249,14 +251,14 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 		return (evalScore(match, ai, pastTurns, lostTeam));
 	if (match.currentPlayer.team == eTeam.White)
 	{
-		let maxEval = -Infinity;
+		let maxEval = undefined;
 		let i = -1;
 		for (const turn of arrayTurns)
 		{
+			if (depth == 2 && turn.move?.from == "d1" && turn.move.to == "b3")
+				console.log("B");
 			++i;
-			// if (DEB == 11 && turn.move?.from == "d1" && turn.move?.to == "h5")
-			// 	console.log();
-			if (depth <= 0 && (turn.canEat == false || !SEE(match, turn)))
+			if (depth <= 0 && (turn.canEat == false || !checkEatChain(match, turn)))
 				continue ;
 			if (execTurn(match, turn, pastTurns) == false)
 				continue ;
@@ -268,8 +270,6 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 			pastTurns.push(turn);
 			// console.log(turn);
 			ai.Simulate(match, ai);
-			if (checkKingDanger(match, match.NextPlayer().team))
-				console.log("aaaaaaaaaaaaaa");
 			if (ai.memory && match.zobristIndex in ai.memory && (!DEBUG_AI_TRAINING ||
 			rngProportional(100, 50)))
 			{
@@ -280,6 +280,13 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 				val = victoryScore(match);
 			else //@ts-ignore
 				val = minMax(match, ai, newTurns, depth - 1, pastTurns, alpha, beta);
+			if (val == undefined)
+			{
+				cancelTurn(match, turn);
+				continue ;
+			}
+			if (maxEval == undefined)
+				maxEval = -Infinity;
 			ai.Cancel(match, ai);
 			pastTurns.pop();
 			maxEval = Math.max(val, maxEval);
@@ -291,18 +298,20 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 				break ;
 			// render(match);
 		}
+		if (maxEval == undefined)
+			return (evalScore(match, ai, pastTurns));
 		return (maxEval);
 	}
 	else
 	{
-		let minEval = +Infinity;
+		let minEval = undefined;
 		let i = -1;
 		for (const turn of arrayTurns)
 		{
 			++i;
-			if (DEB == 3423 && i == 76)
-				console.log("BREAKPOINT");
-			if (depth <= 0 && (turn.canEat == false || !SEE(match, turn)))
+			// if (depth == 1 && turn.move?.from != "a1")
+			// 	console.log();
+			if (depth <= 0 && (turn.canEat == false || !checkEatChain(match, turn)))
 				continue ;
 			if (execTurn(match, turn, pastTurns) == false)
 				continue ;
@@ -312,8 +321,6 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 			// 	console.log(arrayTurns.length);
 			pastTurns.push(turn);
 			// console.log(turn);
-			if (checkKingDanger(match, match.NextPlayer().team))
-				console.log("aaaaaaaaaaaaaa");
 			ai.Simulate(match, ai);//@ts-ignore
 			if (ai.memory&& match.zobristIndex in ai.memory && (!DEBUG_AI_TRAINING ||
 			rngProportional(100, 50)))
@@ -325,6 +332,13 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 				val = victoryScore(match);
 			else //@ts-ignore
 				val = minMax(match, ai, newTurns, depth - 1, pastTurns, alpha, beta);
+			if (val == undefined)
+			{
+				cancelTurn(match, turn);
+				continue ;
+			}
+			if (minEval == undefined)
+				minEval = Infinity;
 			ai.Cancel(match, ai);
 			pastTurns.pop();
 			minEval = Math.min(val, minEval);
@@ -336,6 +350,8 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 				break ;
 			// render(match);
 		}
+		if (minEval == undefined)
+			return (evalScore(match, ai, pastTurns));
 		return (minEval);
 	}
 }
@@ -345,7 +361,7 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
  * @param {Match} match 
  * @param {Turn} turn 
  */
-function SEE(match, turn)
+function checkEatChain(match, turn)
 {
 	let piece;
 	let targetSquare;
