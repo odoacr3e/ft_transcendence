@@ -101,7 +101,7 @@ Regarding communication and collaboration, several tools were used. **Slack** wa
 
 ## Technical Stack
 
-| Level | Tecnologia | Motivo |
+| Level | Tecnology | Reason |
 |-|-|-|
 | ***Frontend*** | *Vue.js* | Progressive frontend framework based on reusable components, with responsiveness system for automatically updating the UI based on state changes. |
 |  | *Tailwind* | Utility-first CSS framework that allows you to stylize components directly in markup using predefined classes, without writing separate custom CSS. |
@@ -236,12 +236,109 @@ In questo progetto sono state implementate diverse feature da tutto il gruppo di
 | Friendship Management | Allows the user to send, accept, and reject friendship requests | edraccan, mfanelli |
 | Offline Matches (vs AI) | Allows the user to play offline against an AI implemented to play ChessZ | mbiagi, alerusso, lparolis |
 | Online Matchmaking | Allows the user to play online against other players | mbiagi, alerusso, lparolis |
-| Tournament Creation and Participation | Allows the user to create and participate in an 8-player single-elimination tournament | edraccan, mfanelli, mbiagi, alerusso |
-| Rankings | Users can view global rankings, managed through an ELO system where they win/lose points based on the outcomes of their matches | edraccan, mfanelli, mbiagi, alerusso |
-| Guide book | Allows the user to consult a game guide that explains the movements of each piece, their abilities, and their historical background | edraccan, mfanelli, mbiagi |
+| Guide book (Codex) | Allows the user to consult a game guide that explains the movements of each piece, their abilities, and their historical background | edraccan, mfanelli, mbiagi |
 | User Search | Allows the user to search for other users registered with the application | edraccan, mfanelli |
 | 2FA | Allows the user to receive a one-time code on their email at login to authenticate | edraccan, mfanelli |
 | Language Change | Allows the user to change the application language | mfanelli |
+
+
+## Modules
+
+### Summary
+
+| Module | Type | Points |
+|-|-:|-:|
+| Use a **framework** for both the frontend and backend. | Major | 2 |
+| Implement real-time features using WebSockets or similar technology. | Major | 2 |
+| Allow users to interact with other users. The minimum requirements are: **basic chat**, **profile** and **friends** systems. | Major | 2 |
+| Use an **ORM** for the database. | Minor | 1 |
+| Custom-made design system with reusable components, including a proper color palette, typography, and icons | Minor | 1 |
+| Support for additional browsers. Full compatibility with at least 2 additional browsers. | Minor | 2 |
+| Standard user management and authentication. | Major | 2 |
+| Game statistics and match history (requires a game module). | Minor | 1 |
+| Implement remote authentication with OAuth 2.0. | Minor | 1 |
+| Implement a complete 2FA (Two-Factor Authentication) system for the users. | Minor | 1 |
+| Introduce an AI Opponent for games. | Major | 2 |
+| Implement WAF/ModSecurity (hardened) + HashiCorp Vault for secrets | Major | 2 |
+| Implement a complete web-based game where users can play against each other. | Major | 2 |
+| Remote players — Enable two players on separate computers to play the same game in real-time. | Major | 2 |
+
+***Total points:*** 23
+
+### Use a framework for both the frontend and backend. (Major - 2pt)
+
+#### Reason of using
+Vue.js was chosen because it is recommended for 2D games and because it is beginner friendly, Express.js because it is simple, fast and optimally manages routes with middleware.
+
+#### Implementation
+The two frameworks were used for the entire frontend and backend implementation respectively
+
+### Implement real-time features using WebSockets or similar technology. (Major - 2pt)
+
+#### Reason of using
+To instantly send the user changes within the application and to make it possible to play between two players live
+
+#### Implementation
+We used web sockets to receive notifications, update friends' online status, search for a match, and the match itself between two players
+
+### (Major - 2pt)
+
+#### Reason of using
+
+#### Implementation
+
+
+### (Major - 2pt)
+
+#### Reason of using
+
+#### Implementation
+
+
+### (Major - 2pt)
+
+#### Reason of using
+
+#### Implementation
+
+
+
+- Allow users to interact with other users. The minimum requirements are:
+  - A **basic chat** system (send/receive messages between users).
+  - A **profile** system (view user information).
+  - A **friends** system (add/remove friends, see friends list).
+
+**Minor**
+- Use an ORM for the database (**Prisma**).
+- A complete notification system for all creation, update, and deletion actions.
+- Custom-made design system with reusable components, including a proper
+color palette, typography, and icons (minimum: 10 reusable components).
+
+### Accessibility and Internationalization
+
+**Major**
+- Support for additional browsers.
+  - Full compatibility with at least 2 additional browsers (Firefox, Safari, Edge,
+etc.).
+  - Test and fix all features in each browser.
+  - Document any browser-specific limitations.
+  - Consistent UI/UX across all supported browsers.
+
+### User Management
+
+**Major**
+- Standard user management and authentication.
+  - Users can update their profile information.
+  - Users can upload an avatar (with a default avatar if none provided).
+  - Users can add other users as friends and see their online status.
+  - Users have a profile page displaying their information.
+
+**Minor**
+- Game statistics and match history (requires a game module).
+  - Track user game statistics (wins, losses, ranking, level, etc.).
+  - Display match history (1v1 games, dates, results, opponents).
+  - Show achievements and progression.
+  - Leaderboard integration.
 
 
 <!-- This template should help get you started developing with Vue 3 in Vite.
