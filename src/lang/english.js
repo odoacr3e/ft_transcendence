@@ -113,26 +113,46 @@ export const english = {
             playPgae: {
                 title: "Choose your fate",
 				aiTitle: "Challenge the Machine",
+                reload: "Reloading game",
                 opt: {
                     priv: "Private",
                     friend: "Friendly",
                     rank: "Ranked",
+                    looking: "Looking for opponent"
                 },
 				ai: {
                     side: {
                         white: "White",
                         black: "Black",
-                        random: "Random"
+                        random: "Random",
+                        looking: "Waking the machine"
                     }
                 },
-                play: "Play!"
+                play: "Play!",
+                cancel: "Cancel"
+                
+            },
+            ChessBoard: {
+                moveHistory:    "No moves yet",
+                chatHistory:    "No messages yet",
+                chatPrompt:     "Type here your message...",
+                send:           "Send",
+                buttons: {
+                    useAbility: "Use ability!",
+                    abilityOn:  "Ability ON!",
+                    endTurn:    "End turn!",
+                    boostPiece: "Boost piece!",
+                    giveUp:     "Give Up",
+                    askDraw:    "Ask for a draw",
+                    waiting:     "Waiting..."
+                }
             }
         },
         allert: {
-            title:  "We're sorry... :(",
+            title:      "We're sorry... :(",
             desc_one:   "Because of the 3000 infos and features that are needed to play",
             desc_two:   "matches can only be played on PC.",
-            desc_three:   "If you're on PC but still see this warning, try de-zooming the page"
+            desc_three:  "If you're on PC but still see this warning, try de-zooming the page"
         },
         legal: {
             privacy: {

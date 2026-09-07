@@ -228,11 +228,11 @@ boardConverter()
 - [x]	Boost aura da goku
 - [x]	shadow sotto le info card
 - [x]	event listener down
+- [x]	tradurre la scacchiera e la pagina a fine partita
 
 
 - [ ]	Registrare e aggiungere i suoni [LEO]
-- [ ]	tradurre la scacchiera e la pagina a fine partita [MAVI]
-- [ ]	colori frecce boost
+- [ ]	colori frecce boost  [MAVI]
 - [ ]	pulire in gerenale il mio codice
 - [ ]	check errori
 

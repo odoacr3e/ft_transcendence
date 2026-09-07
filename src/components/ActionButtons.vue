@@ -6,6 +6,7 @@
 			 sendGiveUp, showBoostedMovesHover,
 			 showBoostedMovesLeave,  sendDraw}		from '@/scripts/Events/utils/GlobalUtils';
 	import { computed, ref }						from 'vue'
+	import { useI18n }								from 'vue-i18n';
 	import { useClickOutside }						from '@/scripts/Helper/generalUtils.js';
 	import IconHourglass							from '@/components/icons/IconHourglass.vue';
 	import IconLightning							from '@/components/icons/IconLightning.vue';
@@ -15,6 +16,7 @@
 	import IconCheck 								from './icons/IconCheck.vue';
 	import IconCross 								from './icons/IconCross.vue';
 
+	const { t, locale } = useI18n({ useScope: 'global' });
 	const localPlayer			= computed(() => myPlayer());
 	const myTurn				= computed(() => localPlayer.value?.isPlaying === true);
 	const Piece					= computed(() => {
@@ -75,7 +77,7 @@
 				]"
 				@click="useAbility()">
 				<IconEnergyArrow class="icon"/>
-				<b>{{ abilityArmed ? "Ability ON!" : "Use Ability!"}}</b>
+				<b>{{ abilityArmed ? t('game.ChessBoard.buttons.abilityOn') : t('game.ChessBoard.buttons.useAbility') }}</b>
 			</button>
 		</div>
 
@@ -86,7 +88,7 @@
 				v-bind:class="canEndTurn ? 'on' : 'off'"
 				@click="sendEndTurn()">
 				<IconHourglass class="icon"/>
-				<b>End Turn!</b>
+				<b :class="{ 'text-[.95rem] whitespace-nowrap' : locale == 'it' }">{{ t('game.ChessBoard.buttons.endTurn') }}</b>
 			</button>
 
 			<span class="msgs">OR</span>
@@ -97,7 +99,7 @@
 				@mouseenter="showBoostedMovesHover(localInfo.clickedId)"
 				@mouseleave="showBoostedMovesLeave()">
 				<IconLightning class="icon"/>
-				<b>Boost Piece!</b>
+				<b :class="{ 'text-[.85rem] whitespace-nowrap' : locale == 'it' }">{{ t('game.ChessBoard.buttons.boostPiece') }}</b>
 			</button>
 		</div>
 		
@@ -108,7 +110,7 @@
 							class="on action-btn bg-[#d63134] hover:bg-[#e2292c]"
 							@click="askGiveUp()">
 						<IconFlag class="icon"/>
-						<b>Give Up!</b>
+						<b>{{ t('game.ChessBoard.buttons.giveUp') }}</b>
 					</button>
 					<div v-else class="action-btn split">
 						<button class="half yes" title="Confermo" @click="confirmGiveUp()">
@@ -126,7 +128,7 @@
 							v-bind:class="drawWaiting ? 'waiting' : 'on'"
 							@click.stop="askDraw()">
 						<IconHandshake class="icon"/>
-						<b>{{ drawWaiting ? "In attesa..." : "Chiedi pareggio"}}</b>
+						<b>{{ drawWaiting ? t('game.ChessBoard.buttons.waiting') : t('game.ChessBoard.buttons.askDraw') }}</b>
 					</button>
 					<div v-else class="action-btn split" v-bind:class="{ incoming: drawIncoming}">
 						<button class="half yes" title="Pareggio sì" @click="confirmDraw()">

@@ -3,10 +3,11 @@
 	import { localHistory }									from '@/scripts/Data/History';
 	import { mainAction, teamDot, turnDuration, turnLabel }	from "@/scripts/Helper/Historyutils.js"
 	import { IMG_PATHS }									from '@/scripts/Data/Variables';
+	import { useI18n }										from 'vue-i18n';
 	
 	//@ts-ignore
 	const emit = defineEmits(['select']);
-
+	const { t } = useI18n();
 	const scroller = ref(null), 
 					 lastTurn = computed(() => localHistory.length ? localHistory[localHistory.length - 1].turn : -1);
 	const iconOf = (turn) => {
@@ -25,7 +26,7 @@
 	<div class="select-none flex flex-col overflow-hidden">
 		<div ref="scroller" class="grow overflow-y-auto scroll-smooth">
 			<p v-if="!localHistory.length" class="px-4 py-8 text-center text-white/35 text-sm">
-				No moves yet
+				{{ t('game.ChessBoard.moveHistory') }}
 			</p>
 
 			<button v-for="t in localHistory" :key="t.turn"

@@ -113,26 +113,45 @@ export const italian = {
             playPgae: {
                 title: "Scegli il tuo destino",
 				aiTitle: "Sfida la macchina",
+                reload: "Ricaricando la partita",
                 opt: {
                     priv: "Private",
                     friend: "Amichevoli",
-                    rank: "Ranked"
+                    rank: "Ranked",
+                    looking: "Alla ricerca d'un avversario"
                 },
 				ai: {
                     side: {
                         white: "Bianchi",
                         black: "Neri",
-                        random: "Casuale"
+                        random: "Casuale",
+                        looking: "Risvegliando la macchina"
                     }
                 },
-                play: "Gioca!"
+                play: "Gioca!",
+                cancel: "Annulla"
+            },
+            ChessBoard: {
+                moveHistory:    "Ancora nessun movimento",
+                chatHistory:    "Ancora nessun messaggio",
+                chatPrompt:     "Scrivi qui il tuo messaggio...",
+                send:           "Invia",
+                buttons: {
+                    useAbility: "Usa l'abilità!",
+                    abilityOn: "Abilità attivata!",
+                    endTurn:    "Finisci il turno",
+                    boostPiece: "Potenzia il pezzo!",
+                    giveUp:     "Abbandona",
+                    askDraw:    "Chiedi pareggio",
+                    waiting:     "In attesa..."
+                }
             }
         },
         allert: {
-            title:  "Ci dispiace... :(",
+            title:      "Ci dispiace... :(",
             desc_one:   "A causa delle 3000 informazioni e feature che servono per giocare a",
             desc_two:   "le partite possono essere giocate solo su PC.",
-            desc_three:   "Se sei su PC ma vedi comunque questo avviso, prova a de-zoomare la pagina"
+            desc_three:  "Se sei su PC ma vedi comunque questo avviso, prova a de-zoomare la pagina"
         },
         legal: {
             privacy: {

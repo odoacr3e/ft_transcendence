@@ -1,9 +1,11 @@
 <script setup>
 	import { ref, watch, nextTick }	from 'vue'
 	import { chat, resolveAuthor }	from '@/scripts/Data/ChatBox';
-	import { MACRO }				from '@/scripts/Data/Variables';
 	import { sendChatMsg }			from '@/scripts/Events/BackLink';
-
+	import { useI18n }				from 'vue-i18n';
+	import { MACRO }		 		from '@/scripts/Data/Variables';
+	
+	const { t } = useI18n();
 	const listEl	= ref(null);
 	const draft		= ref('');
 
@@ -54,16 +56,16 @@
 			<p v-for="msg in chat.messages" :key="msg.id" class="line" v-bind:class="originClass(msg)">
 				<span class="author">{{ msg.author }} :</span><span class="text text-xs">{{ msg.text }}</span>
 			</p>
-			<p v-if="!chat.messages.length" class="line empty">No messages yet</p>
+			<p v-if="!chat.messages.length" class="line empty">{{ t('game.ChessBoard.chatHistory') }}</p>
 		</div>
 
 		<div class="composer">
 			<input v-model="draft"
 					type="text"
 					:maxlength="MACRO.MAX_MSG_LEN"
-					placeholder="Type your message here..."
+					:placeholder="t('game.ChessBoard.chatPrompt')"
 					@keydown.stop="onKeyDown">
-			<button type="button" :disabled="!draft.trim()" @click="send">Send</button>
+			<button type="button" :disabled="!draft.trim()" @click="send">{{ t('game.ChessBoard.send') }}</button>
 		</div>
 	</div>
 </template>

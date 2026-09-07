@@ -180,14 +180,14 @@
 			<div v-else class="flex flex-col items-center justify-center gap-6 py-20">
 				<div class="w-16 h-16 border-4 border-main-color border-t-transparent rounded-full animate-spin"></div>
 				<p v-if="!reloading" class="text-text-default text-xl tracking-wide">
-					{{ aiGame ? 'Waking the machine' : 'Looking for opponent' }}<span class="dot dot-1">.</span><span class="dot dot-2">.</span><span class="dot dot-3">.</span>
+					{{ aiGame ? t('game.playPgae.ai.side.looking') : t('game.playPgae.opt.looking') }}<span class="dot dot-1">.</span><span class="dot dot-2">.</span><span class="dot dot-3">.</span>
 				</p>
 				<p v-else class="text-text-default text-xl tracking-wide">
-					Reloading game<span class="dot dot-1">.</span><span class="dot dot-2">.</span><span class="dot dot-3">.</span>
+					{{ t('game.playPgae.reload') }}<span class="dot dot-1">.</span><span class="dot dot-2">.</span><span class="dot dot-3">.</span>
 				</p>
 				<button @click="waiting = false; sockStore.socket?.emit('cancel_match')"
 						class="cursor-pointer justify-self-center w-[70%] my-3 p-3 text-base bg-main-color rounded-[7px] text-text-default hover:bg-linear-to-t from-main-color to-light-button">
-						Cancel
+						{{ t('game.playPgae.cancel') }}
 				</button>
 			</div>
     	</div>
