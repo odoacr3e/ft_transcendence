@@ -194,7 +194,7 @@
             </h2>
             <div class="mb-0 self-center
                     max-lg:flex max-lg:flex-col max-lg:items-center
-                    lg:grid lg:grid-cols-2 lg:grid-rows-3 lg:gap-5 lg:m-5">
+                    lg:grid lg:grid-cols-2 lg:grid-rows-3 lg:gap-5 lg:px-8 lg:py-5">
                 <div class="max-lg:w-[75vw]">
                     <div class="flex gap-2 mb-2">
                         <IconUser class="mt-1 size-6 text-form-icon"/>
@@ -378,7 +378,7 @@
                     </div>
                 </div>
             </div>
-            <div v-if="user.setpwd" class="flex items-center max-md:flex-col max-md:text-center max-md:text-sm md:text-[80%] 
+            <div v-if="!user.setpwd" class="flex items-center max-md:flex-col max-md:text-center max-md:text-sm md:text-[80%] 
                     mt-auto px-5 p-2 rounded-b-3xl border bg-bg-error text-text-error border-border-error inset-ring-inset-error">
                 <IconAlert class="size-6 text-text-error mr-2"/>
                 <p>{{ t('userPage.edit.googlePwd_one') }}</p>

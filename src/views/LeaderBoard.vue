@@ -35,7 +35,7 @@ onMounted(async () => {
 </script>
 
 <template>
-    <div class="flex flex-col z-2 bg-bg-darker text-text-default
+    <div v-if="lBoard.length != 0" class="flex flex-col z-2 bg-bg-darker text-text-default
         max-md:w-screen max-md:h-screen max-md:pt-15 max-md:overflow-y-scroll max-md:overflow-x-hidden
         md:rounded-3xl md:w-[95vw] md:h-fit
         lg:w-[55vw]">

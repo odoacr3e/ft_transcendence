@@ -138,7 +138,7 @@
 						<span class="absolute inline-flex translate-x-5.5 -translate-y-3.5 size-3 animate-ping rounded-full bg-notif-on opacity-75"></span>
 						<span class="absolute justify-self-end translate-x-5.5 -translate-y-3.5 size-3 rounded-full bg-notif-on"></span>
 					</div>
-					<IconBell class="place-self-center text-text-default max-md:size-8 md:size-9 lg:mr-4"/>
+					<IconBell class="place-self-center text-form-icon max-md:size-8 md:size-9 lg:mr-4"/>
 				</button>
 				<Transition
 					class="	max-lg:origin-[70%_0%] max-md:-translate-x-45 max-lg:translate-y-1
@@ -160,7 +160,8 @@
 												'bg-text-third' : m.status === 'read' }"/> <!--NOTE ✓-->
 								<h3 v-if="m.description[0] === ' ' && m.title === 'F'" class="text-md">{{ t('header.inv.friendTitle') }}</h3>
 								<h3 v-if="m.description[0] === ' ' && m.title === 'T'" class="text-md">{{ t('header.inv.tourTitle') }}</h3>
-								<h3 v-if="m.title !== 'F' && m.title !== 'T'" class="text-md">{{ m.title }}</h3>
+								<h3 v-if="m.description[0] === ' ' && m.title === 'N'" class="text-md">{{ t('header.inv.tagTitle') }}</h3>
+								<h3 v-if="!['F', 'T', 'N'].includes(m.title)" class="text-md">{{ m.title }}</h3>
 								<p class="text-text-last">|</p>
 								<p class="text-xs text-text-third">{{ rework_date(m.creation_date) }}</p>
 							</div>
@@ -179,6 +180,13 @@
 										<p class="hover:underline">{{ t('header.inv.tourNotif', {sender: m.sender.username, tour: m.description.slice(1, m.description.indexOf('|'))}) }}</p>
 									</div>
 								</div>
+
+								<RouterLink v-if="m.description[0] === ' ' && m.title === 'N'" :to="{ name: 'me_page' }"
+									@click="n_bool = false; readMsg(m);">
+									<div class="flex gap-1 text-text-second text-sm pt-2.5 pb-1">
+										<p class="hover:underline">{{ t('header.inv.tagNotif', {rank: user.title }) }}</p>
+									</div>
+								</RouterLink>
 
 								<div v-if="m.description[0] !== ' '">
 									<p class="text-text-second text-sm pt-2.5 pb-1">{{ m.description }}</p>

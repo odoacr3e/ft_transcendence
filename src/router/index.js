@@ -17,11 +17,11 @@ import PwdDEBUG 							from '../views/PwdDEBUG.vue'
 import UserMe 								from '../views/UserMe.vue'
 import Home 								from '../views/Home.vue'
 import { api, ApiError }					from './api/client'
-import StartTour 							from '../views/StartTour.vue'
-import OpenTournament 						from '../views/OpenTournament.vue'
-import TournamentPage 						from '../views/TournamentPage.vue'
-import { ePlaying, localMatchState }		from '@/scripts/Data/Variables.js'
-import { amIPlaying } 						from '@/scripts/Events/BackLink.js'
+// import StartTour 							from '../views/StartTour.vue'
+// import OpenTournament 						from '../views/OpenTournament.vue'
+// import TournamentPage 						from '../views/TournamentPage.vue'
+// import { ePlaying, localMatchState }		from '@/scripts/Data/Variables.js'
+// import { amIPlaying } 						from '@/scripts/Events/BackLink.js'
 
 const routes = [
 	{

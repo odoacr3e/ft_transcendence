@@ -23,8 +23,10 @@ export const italian = {
                 expired: "Invito scaduto",
                 friendTitle: "Richiesta di amicizia",
                 tourTitle: "Invito ad un torneo",
+                tagTitle:   "Il tuo rango è aumentato!",
                 friendNotif : "{sender} ti ha inviato una richiesta di amicizia",
-                tourNotif: "{sender} ti ha invitato a partecipare al @.lower:common.tournament {tour}"
+                tourNotif: "{sender} ti ha invitato a partecipare al @.lower:common.tournament {tour}",
+                tagNotif:   "Complimenti! Grazie alle tue vittorie in tuo rango è salito a {rank}"
             },
             notifications: "Notifiche",
             zeroNotif: "Nessuna notifica",
