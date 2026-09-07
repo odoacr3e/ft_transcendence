@@ -2,11 +2,11 @@
 	import { useAuthStore }	from "../stores/auth.st";
 	import { useI18n }		from 'vue-i18n';
 	import { ref }			from 'vue';
-	import router	from '../router/index.js';
-	import IconAlert               from './icons/IconAlert.vue';
-	import IconEye                 from './icons/IconEye.vue';
-	import IconLock                from './icons/IconLock.vue';
-	import IconUser                from './icons/IconUser.vue';
+	import IconAlert    from './icons/IconAlert.vue';
+	import IconLock     from './icons/IconLock.vue';
+	import IconUser     from './icons/IconUser.vue';
+	import IconEye      from './icons/IconEye.vue';
+	import router		from '../router/index.js';
 
     const	{ t } = useI18n(),
 			formData = ref({
@@ -57,7 +57,7 @@
 
 	function handleOtpInput(index, event) {
 		const value = event.target.value;
-		if (value && /^\d$/.test(value)) // /^\d$/ ^ -> inziio stringa, \d = digit 0-9, $ = fine stringa
+		if (value && /^\d$/.test(value)) // /^\d$/ ^ -> inzio stringa, \d = digit 0-9, $ = fine stringa
 		{
 			otpValues.value[index] = value;
 			if (index < 5)
@@ -93,18 +93,18 @@
 		event.preventDefault();
 
 		const	pasted = event.clipboardData.getData('text').trim(),
-				digits = pasted.replace(/\D/g, '').split(''); // solo le cifre
+				digits = pasted.replace(/\D/g, '').split('');
 
 		if (digits.length === 0)
 			return;
 
 		let currentIndex = 0;
 		for (let i = 0; i < digits.length && currentIndex < 6; i++) {
-			otpValues.value[currentIndex] = digits[i]; // Riempi gli input
+			otpValues.value[currentIndex] = digits[i];
 			currentIndex++;
 		}
 
-		const focusIndex = Math.min(currentIndex, 5);  // focus sull'ultimo campo 
+		const focusIndex = Math.min(currentIndex, 5);
 		setTimeout(() => document.getElementById(`otp-${focusIndex}`)?.focus(), 0);
 	}
 </script>

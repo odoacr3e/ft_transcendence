@@ -1,22 +1,4 @@
 <script setup>
-/**
- * TournamentBracket.vue
- * Bracket a eliminazione diretta per 8 giocatori (Quarti -> Semifinali -> Finale).
- *
- * Come usarlo:
- * <TournamentBracket :players="tournament.players" :matches="tournament.matches" />
- *
- * - "players": array di 8 oggetti { id, name }, nell'ordine dei tabelloni
- *   (posizione 0 vs 1, 2 vs 3, 4 vs 5, 6 vs 7 nei quarti).
- * - "matches" (opzionale): se vuoi mostrare i vincitori già decisi, passa una
- *   struttura tipo:
- *   [
- *     [ {winnerId}, {winnerId}, {winnerId}, {winnerId} ], // quarti
- *     [ {winnerId}, {winnerId} ],                          // semifinali
- *     [ {winnerId} ]                                        // finale
- *   ]
- *   Se non lo passi, i round successivi al primo mostrano "TBD".
- */
 import { computed } from 'vue';
 import { defaultAvatar, handleAvatarError }	from '../scripts/Helper/CompUtils';
 

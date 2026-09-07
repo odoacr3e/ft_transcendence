@@ -54,7 +54,6 @@
 		if (!isAi || aiModels.value.length)
 			return;
 		aiModels.value = await fetchAiModels();
-		// console.log("post ricezione: ", aiModels.value);
 		
 	}, { immediate: true });
 

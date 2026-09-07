@@ -151,7 +151,8 @@
 						<span v-if="square?.boostedHighlight && !square?.piece" class="boostedHighlight"
 								v-bind:class="{'w-3.75 h-3.75': style === '1v1', 'w-2.5 h-2.5': style === '14x14x4'}"></span>
 						<span v-if="localInfo.lastMovesSquares.has(square?.id) && !square?.selected && !square?.inCheck"
-								class="lastMoveOverlay"></span>
+								class="lastMoveOverlay"
+								:class="getSquareColor(square.id) == 'white' ? 'Owhite' : 'Oblack'"/>
 						<button v-if="canBoostSquare(square)" type="button" class="boostBadge"
 									:class="{	'is-morphing': boostPopup === square?.id,
 												'mini': style === '14x14x4'	 }"
@@ -178,9 +179,9 @@
 			</div>
 
 			<div v-if="localInfo.goatId" id="choseMenu" class="flex absolute pointer-events-none size-75 z-14 gap-0.5 p-1.5 
-					border-2 border-[#1b0000] rounded-md bg-[#fafafa] max-h-[10%]">
+					border-2 border-bg-error rounded-md bg-[#fafafa] max-h-[10%]">
 				<button v-for="type in ['Champion', 'Jester', 'Minotaurus', 'Valkirya']" :key="type"
-						@click="upgradeBastard(type)" class="rounded-md p-1 hover:bg-[#a52a2a]">
+						@click="upgradeBastard(type)" class="rounded-md p-1 hover:bg-bg-highlight">
 					<img :src="IMG_PATHS[promoTeam + type]" :alt="type" :draggable="false">
 				</button>
 			</div>
@@ -219,7 +220,6 @@
 		width: fit-content;
 		margin: auto;
 		--piece-clicked-bg: color-mix(in srgb, var(--color-bg-BSelect) 45%, transparent);
-		--last-move-color: rgba(50, 50, 50, 0.80); /*FIXME - Voglio differenziare i colore tra caselle bianche e nere. */
 	}
 
 	.boardTwo {
@@ -292,7 +292,14 @@
 		inset: 0;
 		z-index: -1;
 		pointer-events: none;
-		background-color: var(--last-move-color);
+	}
+
+	.lastMoveOverlay.Owhite {
+		background-color: rgba(50, 50, 50, 0.5);
+	}
+
+	.lastMoveOverlay.Oblack {
+		background-color: rgba(100, 100, 100, 0.8);
 	}
 	
 	.white{
@@ -320,7 +327,7 @@
 		display: block;
 		margin: auto;
 		border-radius: 50%;
-		background-color: rgb(99, 221, 0); /* #01a76f */
+		background-color: #00ffff; /* #01a76f */
 	}
 
 	.selectedB
@@ -334,11 +341,11 @@
 	}
 
 	.selectedBstB{
-		background-color: rgb(173, 187, 50);
+		background-color: #2589a1;
 	}
 
 	.selectedBstW{
-		background-color: rgb(9, 214, 19);
+		background-color: #78cccc;
 	}
 
 	/* .boosted-aura{

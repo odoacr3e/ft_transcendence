@@ -20,7 +20,6 @@ function JesterHL(squareId)
 	const team = square.piece.team;
 	const regularMoves = square.targetZones;
 	const boostedMoves = square.boostedTargetZones.get(squareId);
-	// console.log(`boosted moves ${boostedMoves}, useAbility: ${useAbility}, team: ${team}`);
 	
 	clearHighlight();
 	if (useAbility && boostedMoves)
@@ -43,7 +42,6 @@ function ValkiryaHL(squareId)
 	const team = square.piece.team;
 	const regularMoves = square.targetZones;
 	const boostedMoves = square.boostedTargetZones.get(squareId);
-	// console.log(`boosted moves ${boostedMoves}, useAbility: ${useAbility}`);
 	
 	clearHighlight();
 	if (useAbility && boostedMoves)
@@ -63,7 +61,6 @@ function KingAndBastardsHL(squareId)
 	const team = square.piece.team;
 	const regularMoves = square.targetZones;
 	const boostedMoves = square.boostedTargetZones.get(squareId);
-	// console.log(`boosted moves ${boostedMoves.size}, useAbility: ${useAbility}`);
 	
 	clearHighlight();
 	if (useAbility && boostedMoves)
@@ -98,7 +95,6 @@ function ChampAndMinoHL(squareId)
 	const team = square.piece.team;
 	const regularMoves = square.targetZones;
 	const boostedMoves = new Map(square.boostedTargetZones);
-	// console.log(`boosted moves ${boostedMoves}, useAbility: ${useAbility}, team: ${team}`);
 	
 	clearHighlight();
 	if (useAbility && boostedMoves)

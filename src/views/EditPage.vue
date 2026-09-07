@@ -26,8 +26,8 @@
                 mfa: !!user.value.mfa,
                 preferences: 0
 	        }),
-            avatarFile = ref(null),      // il File vero e proprio
-            avatarPreview = ref(null),   // URL per l'anteprima
+            avatarFile = ref(null),
+            avatarPreview = ref(null),
             error = ref(false),
             removeAvatar = ref(false);
 
@@ -43,7 +43,6 @@
         if (removeAvatar.value) { removeAvatar.value = false; }
         if (formData.value.preset) { formData.value.preset = ''; }
 
-        // validazione base
         const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
         if (!allowedTypes.includes(file.type)) {
             alert('Formato non supportato. Usa JPG, PNG o WEBP.');

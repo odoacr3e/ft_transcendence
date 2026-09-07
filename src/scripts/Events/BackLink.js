@@ -165,7 +165,6 @@ export function reloadMatch()
 		let done	= false;
 
 		const emit = () => {
-			// console.log("[reload] emit");
 			sockStore.socket.emit("game", {
 				type: "reload",
 				from: sessionStorage.getItem("match:myTeam"),

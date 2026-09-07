@@ -60,7 +60,6 @@ export function reloadHistory(list)
 	localHistory.splice(0);
 	if (Array.isArray(list))
 		list.forEach(pushTurn);
-	// console.log(`[History]: caricati ${localHistory.length} turni`);
 }
 
 export function clearHistory()

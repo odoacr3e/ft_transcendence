@@ -54,7 +54,7 @@
 
 	.move-grid.boosted
 	{
-		--mark-color: rgb(99, 221, 0); /* #01a76f |  stesso colore di .boostedHighlight sulla board */
+		--mark-color: #00ffff;
 	}
 
 	.cell

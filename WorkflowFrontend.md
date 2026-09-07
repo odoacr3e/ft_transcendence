@@ -229,12 +229,11 @@ boardConverter()
 - [x]	shadow sotto le info card
 - [x]	event listener down
 - [x]	tradurre la scacchiera e la pagina a fine partita
-
+- [x]	pulire in gerenale il mio codice
+- [x]	colori frecce boost
 
 - [ ]	Registrare e aggiungere i suoni [LEO]
-- [ ]	colori frecce boost  [MAVI]
-- [ ]	pulire in gerenale il mio codice
-- [ ]	check errori
+- [ ]	check errori [MAVI]
 
 
 #TODO EXTRAS - 

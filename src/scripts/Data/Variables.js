@@ -162,7 +162,6 @@ export function initLocalBoard(boardData)
 				
 				const boostedTargetZones = new Map(
 				  Object.entries(squareData.boostedTargetZones || {}).map(([key, value]) => {
-					// console.log(`key: ${key}, value: ${value}`);
 					return [key, new Set(Array.isArray(value) ? value : [])];
 				  })
 				);

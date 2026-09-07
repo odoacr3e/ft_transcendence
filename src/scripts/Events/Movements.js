@@ -39,12 +39,9 @@ export async function onDrop(event, toSquare)
 	const fromSquareId	= event.dataTransfer.getData('fromSquareId');
 	const toSquareId	= toSquare.id;
 	
-	// console.log("[onDrop]: Entrato in onDrop!");
-	
 	const isAbilityMove	= localBoard.get(fromSquareId).useAbilityBool || localInfo.secondMove;
 	if (isAbilityMove)
 	{
-		// console.log("[onDrop]: Entrato nell'if delle abilità");
 		await PIECES_ABILITY[localInfo.usingAbility](fromSquareId, toSquareId, "");
 		return;
 	}
@@ -61,7 +58,6 @@ export async function onDrop(event, toSquare)
 	const moveAccepted = await sendToBackend(fromSquareId, toSquareId, true);
 	if (moveAccepted)
 	{
-		// console.log("[onDrop]: Mossa valida!");	
 		clearHighlight();
 		localInfo.usingAbility = "";
 	}

@@ -70,7 +70,7 @@ export function playAudio(use, once = false)
 
 	const audio = AUDIO_PATHS[use];
 	if (!audio?.path)
-		return (console.log(`audio "${use}" non presente nel set ${MACRO.AUDIOSET}`));
+		return (debug(`audio "${use}" non presente nel set ${MACRO.AUDIOSET}`));
 	const track = new Audio(audio.path);
 
 	track.volume = Math.min(Math.max(audio.volume ?? 1, 0), 1);
