@@ -15,6 +15,7 @@ import { globals } from "../Classes/Globals/globals.js";
 import { sockio } from "./websocket.js";
 import { responseFormatter, sendData } from "../utils/response.js";
 import { Result } from "../Classes/endPoint/result.js";
+import { strDelAnsi } from "../utils/string.js";
 
 /** @typedef {import("../Classes/Chess/match.js").Match} Match*/
 

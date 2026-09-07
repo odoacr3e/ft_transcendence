@@ -2,7 +2,7 @@
  * 
  * @param {string} str 
  */
-function strDelAnsi(str)
+export function strDelAnsi(str)
 {
 	let	i;
 	let	j;
