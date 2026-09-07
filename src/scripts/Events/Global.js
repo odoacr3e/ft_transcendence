@@ -17,53 +17,66 @@ export function globalEvents()
 	// ROOT_DIV.setAttribute('tabindex', '0'); --> concetti molto interessanti
 	// ROOT_DIV.focus();
 
-	ROOT_DIV.addEventListener("click", async function(event) 
-	{
-		if (!checkPermision(event))
-		{
-			clearHighlight(); 
-			return;
-		}	
-		debug(`CID: ${localInfo.clickedId}, LCID: ${localInfo.lastClickedId}`);
-		if (checkForHighlightMove()) 
-		{
-			debug("dentro check");
-			if (usingAbility())
+	const	onClick = async function (event) {
+			if (!checkPermision(event))
 			{
-				debug(`Boosted Piece: ${localInfo.usingAbility}`);
-				await PIECES_ABILITY[localInfo.usingAbility](localInfo.lastClickedId, localInfo.clickedId, "click");
+				clearHighlight(); 
 				return;
-			}
-			sendToBackend(localInfo.lastClickedId, localInfo.clickedId); 
-		}
-		else
-			highlightOnClick(event);
-	});
-
-	ROOT_DIV.addEventListener("mousedown", function(event) {
-		rightClickSelect(event);
-	});
-
-	ROOT_DIV.addEventListener("dragstart", function(event)
-	{
-		if (((localInfo.secondMove && localInfo.savedBoostedMap && 
-			localInfo.savedBoostedMap.has(event.target.parentNode.id)) || !localInfo.secondTurn) && localBoard.get(event.target.parentNode.id)?.piece?.team === localInfo.myTeam)
+			}	
+			debug(`CID: ${localInfo.clickedId}, LCID: ${localInfo.lastClickedId}`);
+			if (checkForHighlightMove()) 
 			{
-				debug("sono qui");				
-				highlightOnDrag(event);
+				debug("dentro check");
+				if (usingAbility())
+				{
+					debug(`Boosted Piece: ${localInfo.usingAbility}`);
+					await PIECES_ABILITY[localInfo.usingAbility](localInfo.lastClickedId, localInfo.clickedId, "click");
+					return;
+				}
+				sendToBackend(localInfo.lastClickedId, localInfo.clickedId); 
 			}
-	});
+			else
+				highlightOnClick(event);
+		},
 
-	ROOT_DIV.addEventListener("drag", function(event) {
-		moveDragClone(event);
-	});
+		onMouseDown = function (event) {
+			rightClickSelect(event);
+		},
 
-	ROOT_DIV.addEventListener("dragend", function() 
-	{
-		clearHighlight("clicked");
-		localInfo.drag = null;
-	});
+		onDragStart = function (event)
+		{
+			if (((localInfo.secondMove && localInfo.savedBoostedMap && 
+				localInfo.savedBoostedMap.has(event.target.parentNode.id)) || !localInfo.secondTurn) && localBoard.get(event.target.parentNode.id)?.piece?.team === localInfo.myTeam)
+				{
+					debug("sono qui");				
+					highlightOnDrag(event);
+				}
+		},
 
+		onDrag = function(event) {
+			moveDragClone(event);
+		},
+
+		onDragEnd = function()
+		{
+			clearHighlight("clicked");
+			localInfo.drag = null;
+		};
+
+	ROOT_DIV.addEventListener("click", onClick);
+    ROOT_DIV.addEventListener("mousedown", onMouseDown);
+    ROOT_DIV.addEventListener("dragstart", onDragStart);
+    ROOT_DIV.addEventListener("drag", onDrag);
+    ROOT_DIV.addEventListener("dragend", onDragEnd);
 	window.addEventListener("keydown", onKeydown);
-	return (() => window.removeEventListener("keydown", onKeydown));
+
+	return function stopGlobalEvents()
+    {
+        ROOT_DIV.removeEventListener("click", onClick);
+        ROOT_DIV.removeEventListener("mousedown", onMouseDown);
+        ROOT_DIV.removeEventListener("dragstart", onDragStart);
+        ROOT_DIV.removeEventListener("drag", onDrag);
+        ROOT_DIV.removeEventListener("dragend", onDragEnd);
+        window.removeEventListener("keydown", onKeydown);
+    };
 }

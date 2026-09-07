@@ -34,8 +34,13 @@
 </script>
 
 <template>
-	<div class="wrap"
-		v-bind:class="{'rounded-t-md mb-1':up, 'rounded-b-md mt-1':down, 'is-turn':playing}">
+	<div class="wrap w-150" 
+		v-bind:class="{
+		'rounded-t-md':up,
+		'rounded-b-md':down,
+		'is-turn':playing,
+		'pos-up':up,
+		'pos-down':down}">
 
 		<!--NOTE - il tag del titolo e' gia' agganciato: comparira' da solo appena il
 		match state portera' player.title, come lo porta gia' l'utente fuori dalla partita.-->
@@ -62,38 +67,27 @@
 
 <style scoped>
 	.wrap {
-		--frame-thickness: 5px;
-		--frame-dark: #1b0000;
-		--frame-mid: #801a12;
-		--frame-light: #bb4232;
-		--frame-glint: #fff1e6;
-		--frame-speed: 4s;
 		display: flex;
 		flex-direction: row;
-		z-index: 10;
+		z-index: 5;
 		position: relative;
 		background-color: #2c2c2c;
 		align-self: center;
-		width: 600px;
 		user-select: none;
 		padding: 1.5%;
+		box-shadow: 0 0 0 0 transparent;
+		transition: box-shadow .4s ease;
 	}
 
-	@property --angle {
-		syntax: '<angle>';
-		inherits: false;
-		initial-value: 0deg;
+	.wrap.pos-down.is-turn {
+		box-shadow: 0 2px 25px 5px rgba(255, 255, 255, 0.297);
 	}
 
-	.wrap.is-turn::before
-	{
-		filter: none;
-		box-shadow: inset 0 0 12px 3px rgba(0, 0, 0, .6),
-					inset 0 0 22px 6px rgba(255, 178, 148, .55);
+	.wrap.pos-up.is-turn {
+		box-shadow: 0 -2px 25px 5px rgba(255, 255, 255, 0.297);
 	}
+
 	.wrap.is-turn::after { opacity: 1; }
-
-	@keyframes frame-spin { to { --angle: 360deg; } }
 
 	.dim {
 		transition: opacity .4s ease;
@@ -103,13 +97,13 @@
 	}
 
 	h1 {
-		color: white;
+		color: var(--color-text-default);
 		padding: 3px;
 		padding-left: 8px;
 	}
 
 	h2 {
-		color: white;
+		color: var(--color-text-default);
 		font-size: large;
 		padding-left: 8px;
 	}

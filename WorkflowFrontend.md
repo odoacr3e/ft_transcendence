@@ -137,8 +137,8 @@ boardConverter()
 	✓	Bottone ed evento per chiedere pareggio
 	✓	Barra di caricamento durante il loading delle partite
 	✓	history delle mosse durante la partita
-	▫	re-design dei pezzi
-	▫	history delle partite
+	✓	re-design dei pezzi
+	✓	history delle partite
 	▫ 	refactor di archi nel caso la board non esista
 
 //FIXME - Bugs
@@ -212,8 +212,7 @@ boardConverter()
 - [x]	update delle preferenze di colore degli utenti
 - [x]	pagina della lore
 - [x]	reworkare i temi chiari
-- [ ]	reattività delle pagine [MAVI]
-- [ ]	reworkare il design delle pagine di gioco appena sono pronte
+- [x]	reattività delle pagine
 - [x]	Sia per poter potenziare i pezzi che per usare l'abilità aggiungere 
 		un bottoncino sul pezzo (bl o br) stile overwatch
 - [x]	Tutte le info/bottoni attuali a destra in un unico div in futuro
@@ -224,16 +223,25 @@ boardConverter()
 - [x]	Restyling dei bottoni di giveup e pareggio
 - [x]	Pareggio evento per promptare la conferma e invio la stessa cosa
 - [x]	fare la pagina di gioco contro IA
-- [ ]	Registrare e aggiungere i suoni
-- [ ]	Completare le info a sinistra della scacchiera (scene)
+- [x]	Completare le info a sinistra della scacchiera (scene)
+- [x]	Fare in modo che il boost cambi le skin e i nomi dei pezzi
+- [x]	Boost aura da goku
+- [x]	shadow sotto le info card
+- [x]	event listener down
+
+
+- [ ]	Registrare e aggiungere i suoni [LEO]
+- [ ]	tradurre la scacchiera e la pagina a fine partita [MAVI]
+- [ ]	colori frecce boost
+- [ ]	pulire in gerenale il mio codice
+- [ ]	check errori
+
+
+#TODO EXTRAS - 
 - [ ]	GMU ghost
-- [ ]	Fare in modo che il boost cambi le skin e i nomi dei pezzi
-- [ ]	Boost aura da goku
 - [ ]	Quando tu boosti un pezzo anche il nemico vede temporaneamente le zone
 - [ ]	Pagina partite a 4
 
-//NOTE - Testing
-- [ ]	nome utente in grassetto
 
 //NOTE
 La api di reload funziona quando lanciata da connessione socket già stabilita
