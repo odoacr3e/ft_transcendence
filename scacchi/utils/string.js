@@ -95,11 +95,22 @@ function strDelAnsi(str)
 	let	i;
 	let	j;
 
-	while (str.includes("\x1b"))
+	try
 	{
-		i = str.indexOf("\x1b");
-		j = str.indexOf("m");
-		str = str.slice(0, i) + str.slice(j + 1);
+		while (str.includes("\x1b"))
+		{
+			i = str.indexOf("\x1b");
+			j = str.indexOf("m", i);
+			if (j == -1)
+				break ;
+			str = str.slice(0, i) + str.slice(j + 1);
+		}
+	}
+	catch(err)
+	{
+		console.log("strDelAnsi failed with error " + err);
+		console.log(str);
+		process.exit(1);
 	}
 	return (str);
 }
