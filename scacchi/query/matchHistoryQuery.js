@@ -51,7 +51,7 @@ export async function getAllUserMatches(id_user) {
 		},
 		orderBy: {
 			matches: {
-				id_match: 'desc'
+				id_match: 'asc'
 			}
 		}
 	});
