@@ -215,21 +215,21 @@ const AIprofiles =
 	DEBUG: "Debug",
 	AM: "AM",
 	HAL9000: "HAL9000",
-	GRIEVOUS: "Grievous"
+	GRIEVOUS: "Grievous",
+	BASTARD: enumNames.BASTARDS
 }
 
 const AIprofilesArray = Object.values(AIprofiles);
 
 const EloTitle =
 {
-	1: "Paesant",
-	500: enumNames.BASTARDS,
-	800: enumNames.VALKIRYA,
-	1000: enumNames.MINOTAURUS,
-	1200: enumNames.JESTER,
-	1400: enumNames.CHAMPION,
-	1600: enumNames.KING,
-	1800: "Emperor"
+	1: enumNames.BASTARDS,
+	500: enumNames.VALKIRYA,
+	800: enumNames.MINOTAURUS,
+	1000: enumNames.JESTER,
+	1200: enumNames.CHAMPION,
+	1400: enumNames.KING,
+	1600: "Emperor"
 }
 
 const EloTitleMap = Object.entries(EloTitle);

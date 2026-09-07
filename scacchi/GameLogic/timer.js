@@ -36,7 +36,7 @@ export function setTimerGame(match)
 			return ;
 		}
 		result = new Result();
-		clientSetState(match.currentPlayer.dbTable.id_user, enumSocketState.NAVIGATING);
+		clientSetState(match.currentPlayer.dbTable?.id_user, enumSocketState.NAVIGATING);
 		match.endTurn();
 		result = match.PlayerLost(result, p);
 		result = responseFormatter(match, result, null, null);

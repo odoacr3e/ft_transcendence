@@ -84,7 +84,10 @@ class Match
 		//if any of the players is an AI
 		this.aiBool = false;
 		this.zobristIndex = 0;
+		/** @type {Array<number>} */
 		this.zobristTable = [];
+		/** @type {Map<number, number>} */
+		this.simulationMap = new Map();
 	}
 	/** @param {MatchSettings | string | null} preset*/
 	Reset(preset=null)

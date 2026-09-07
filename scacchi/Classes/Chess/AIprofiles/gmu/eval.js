@@ -3,6 +3,7 @@
 import { enumNames, eTeam } from "../../../../Macro/enums.js";
 import { checkKingDanger, isDangerous } from "../../../../utils/checkDanger.js";
 import { getBestTurn } from "../../AI.js";
+import { basicEval } from "../evalUtils.js";
 
 /** @typedef {import("../../match.js").Match} Match*/
 /** @typedef {import("../../AI.js").AI<null>} AI*/
@@ -28,30 +29,7 @@ export function AI_gmu_eval(match, ai, turns)
 
 	nextPlayer = match.NextPlayer();
 	//1)	differenza punti
-	score = (match.currentPlayer.nPoints - nextPlayer.nPoints) * 5;
-	boostedPiece = match.board._data.get(match.currentPlayer.boostedPiece);
-	otherBoostedPiece = match.board._data.get(nextPlayer.boostedPiece);
-	//2)	PIU valore pezzo boostato nostro
-	if (boostedPiece && boostedPiece.piece && boostedPiece.piece.type)
-	{
-		if (boostedPiece.piece.type == enumNames.BASTARDS)
-			score += boostedPiece.piece.price * 7;
-	}
-	//3)	MENO valore pezzo boostato avversario
-	if (otherBoostedPiece && otherBoostedPiece.piece)
-		score -= otherBoostedPiece.piece.price * 7;
-	//4)	MENO se il nostro re e' in pericolo
-	if (checkKingDanger(match, match.currentPlayer.team))
-		score -= 300;
-	lastTurn = turns[turns.length - 1];
-	if (lastTurn.boost)
-	{
-		price = match.board.get(lastTurn.boost).piece?.price;
-		price = price? price : 0;
-		score -= 4 * price;
-		for (const [key, boostTarget] of match.board.get(lastTurn.boost).boostedTargetZones)
-			score += boostTarget.size * 2;
-	}
+	score = basicEval(match, ai, turns);
 	for (let [key, square] of match.board)
 	{
 		if (!square.piece)
@@ -84,7 +62,5 @@ export function AI_gmu_eval(match, ai, turns)
 		}
 	}
 	lastTurn = turns[turns.length - 2];
-	// if (score == 0)
-	// 	return (Math.floor(Math.random() * 10000) * (Math.floor(Math.random()) == 1? 1 : -1));
 	return (score);
 }

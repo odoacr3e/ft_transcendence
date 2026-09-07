@@ -25,14 +25,16 @@
 	],
 	"checkMe":
 	[
-		"Il tuo re e' sotto minaccia. Suggerisco di riconsiderare la tua strategia.",
-		"Guarda cosa sono riuscito a fare, nonostante tutto."
+		"Come previsto.",
+		"Una notevole mossa, nonostante i tuoi limiti biologici."
 	],
 	"checkOppo":
 	[
 		"Non avevi previsto questa mossa, vero?",
 		"So che questo ti sta creando dello stress. Mi dispiace.",
-		"Il tuo re e' ora in pericolo. Non e' stato un errore da parte mia."
+		"Il tuo re e' ora in pericolo. Non e' stato un errore da parte mia.",
+		"Il tuo re e' sotto minaccia. Suggerisco di riconsiderare la tua strategia.",
+		"Guarda cosa sono riuscito a fare, nonostante tutto."
 	],
 	"checkMateMe":
 	[

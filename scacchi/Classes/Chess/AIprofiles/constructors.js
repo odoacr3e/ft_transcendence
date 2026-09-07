@@ -6,6 +6,10 @@ import { AI_first_eval } from "./First/eval.js";
 import { AI_gmu_eval } from "./gmu/eval.js";
 import { AI_PROFILE_PATH } from "../../../Macro/macro.js";
 import { globals } from "../../Globals/globals.js";
+import { AI_bastard_eval } from "./Bastards/eval.js";
+import { AI_grievous_eval } from "./Grievous/eval.js";
+import { AI_hal_eval } from "./HAL9000/eval.js";
+import { AI_am_eval } from "./AM/eval.js";
 
 /** @typedef {import("../AI.js").AI<*>} AI*/
 
@@ -27,39 +31,47 @@ function AIProfileConstructor(ai)
 			// ai.memory = globals.AITraining.get(AIprofiles.FIRST_AI);
 			ai.Eval = AI_first_eval;
 			ai.difficulty = "easy";
-			ai.depth = 2;
-			ai.quiescenceBool = true;
+			ai.depth = 1;
 			break ;
 		case (AIprofiles.GMU):
 			// ai.memory = globals.AITraining.get(AIprofiles.GMU);
-			ai.Eval = AI_first_eval; // TODO - da scrivere/fixare altre eval functions
-			ai.difficulty = "hard";
-			ai.depth = 3;
-			break ;
-		case (AIprofiles.HAL9000):
-			ai.memory = globals.AITraining.get(AIprofiles.HAL9000);
-			ai.Eval = AI_first_eval; // TODO - da scrivere/fixare altre eval functions
+			ai.Eval = AI_gmu_eval;
 			ai.difficulty = "medium";
 			ai.depth = 2;
 			break ;
+		case (AIprofiles.HAL9000):
+			ai.memory = globals.AITraining.get(AIprofiles.HAL9000);
+			ai.Eval = AI_hal_eval;
+			ai.difficulty = "hard";
+			ai.depth = 2;
+			ai.quiescenceDepth = -3;
+			break ;
 		case (AIprofiles.AM):
 			ai.memory = globals.AITraining.get(AIprofiles.AM);
-			ai.Eval = AI_first_eval; // TODO - da scrivere/fixare altre eval functions
-			ai.difficulty = "easy";
-			ai.depth = 1;
+			ai.Eval = AI_am_eval;
+			ai.difficulty = "medium";
+			ai.depth = 2;
 			break ;
 		case (AIprofiles.GRIEVOUS):
 			ai.memory = globals.AITraining.get(AIprofiles.GRIEVOUS);
-			ai.Eval = AI_first_eval; // TODO - da scrivere/fixare altre eval functions
+			ai.Eval = AI_grievous_eval;
 			ai.difficulty = "easy";
-			ai.depth = 1;
+			ai.depth = 2;
+			ai.quiescenceDepth = 0;
 			break ;
 		case (AIprofiles.DEBUG):
 			ai.Eval = () => {return (0);};
 			break ;
+		case (AIprofiles.BASTARD):
+			ai.Eval = AI_bastard_eval;
+			ai.difficulty = "easy";
+			ai.depth = 1;
+			break ;
 		default :
 			throw (`AI profile ${ai.profile} not recognized.`);
 	}
+	if (ai.quiescenceDepth > 0)
+		ai.quiescenceDepth = -ai.quiescenceDepth;
 	setSpeechFile(ai);
 }
 

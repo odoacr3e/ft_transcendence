@@ -63,7 +63,7 @@ export class AI
 		this.speechJSON = null;
 		this.defeatStatus = 0;//@ts-ignore
 		this.memory = null;
-		this.quiescenceBool = true;
+		this.quiescenceDepth = -2;
 		this.evalSimulation = false;
 		this.depth = 2;
 		console.log(`A new opponent has spawned: ${profile}... fear its power!`);
@@ -74,6 +74,7 @@ export class AI
 //SECTION - utils
 
 let DEB = 0;
+
 //15832
 /**
  * 
@@ -101,6 +102,7 @@ function getBestTurn(match)
 	ai = match.currentPlayer.ai;
 	if (!ai)
 		throw (`getBestTurn: you are not a machine!`);
+	match.simulationMap.clear();
 	gameMessage(match, "Calculating best move...");
 	alpha = -Infinity;
 	beta = +Infinity;
@@ -184,6 +186,7 @@ function getBestTurn(match)
 			}
 		}
 	}
+	match.simulationMap.clear();
 	if (match.currentPlayer.team != DEBUGTEAM)
 		throw (`AI: Team has changed..`);
 	// console.log(`Turns: ${arrayTurns.length}/${arrayTurns.length}`);
@@ -231,9 +234,9 @@ R0-3 	scartate?
  * @param {AI<null>} ai 
  * @param {Array<Turn>} arrayTurns 
  * @param {number} depth 
- * @param {Array<Turn>} pastTurns
- * @param {number} alpha
- * @param {number} beta
+ * @param {Array<Turn>} pastTurns 
+ * @param {number} alpha 
+ * @param {number} beta 
  * @returns 
  */
 function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
@@ -241,10 +244,16 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 	let	newTurns;
 	let val;
 	let	lostTeam;
+	let	score;
 
+	score = match.simulationMap.get(match.zobristIndex);
+	if (score)
+	{
+		return (score);
+	}
 	//NOTE = quiescence check
 	// console.log(depth);//@ts-ignore
-	if ((depth == 0 && !ai.quiescenceBool) || (depth <= 0 && !arrayTurns.canEat) || depth <= -2)
+	if ((depth == ai.quiescenceDepth) || (depth <= 0 && !arrayTurns.canEat))
 		return (evalScore(match, ai, pastTurns));
 	lostTeam = checkLostAll(match);
 	if (lostTeam)
@@ -255,8 +264,8 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 		let i = -1;
 		for (const turn of arrayTurns)
 		{
-			if (depth == 2 && turn.move?.from == "d1" && turn.move.to == "b3")
-				console.log("B");
+			// if (depth == 2 && turn.move?.from == "d1" && turn.move.to == "b3")
+			// 	console.log("B");
 			++i;
 			if (depth <= 0 && (turn.canEat == false || !checkEatChain(match, turn)))
 				continue ;
@@ -391,12 +400,14 @@ function evalScore(match, ai, turns, lostTeam="")
 	let	score;
 
 	if (lostTeam == match.currentPlayer.team)
-		return (match.currentPlayer.team == eTeam.Black? +Infinity : -Infinity);
+		score = match.currentPlayer.team == eTeam.Black? +Infinity : -Infinity;
 	else if (lostTeam)
-		return (match.currentPlayer.team == eTeam.Black? -Infinity : +Infinity);
-	score = ai.Eval(match, ai, turns);
-	if (match.currentPlayer.team == eTeam.Black)
+		score = match.currentPlayer.team == eTeam.Black? -Infinity : +Infinity;
+	else
+		score = ai.Eval(match, ai, turns);
+	if (score != +Infinity && score != -Infinity && match.currentPlayer.team == eTeam.Black)
 		score = -score;
+	match.simulationMap.set(match.zobristIndex, score);
 	return (score);
 }
 
