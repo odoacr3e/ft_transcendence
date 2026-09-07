@@ -40,7 +40,7 @@
     "aitest": "node --env-file=.env test/aiTest.js",
     "term": "clear ; node --trace-uncaught --env-file=.env test/term.js",
     "debugTerm": "clear ; node --trace-uncaught --inspect --env-file=.env test/term.js",
-    "profileGame": "clear; node --prof --env-file=.env test/term.js"
+    "profileGame": "rm -f profile.cpuprofile && node --cpu-prof --cpu-prof-name=test/performance/profile.cpuprofile --env-file=.env test/term.js"
   },
   "keywords": [],
   "author": "",
