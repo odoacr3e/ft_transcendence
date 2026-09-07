@@ -63,6 +63,7 @@ export class AI
 		this.speechJSON = null;
 		this.defeatStatus = 0;//@ts-ignore
 		this.memory = null;
+		this.quiescenceBool = true;
 		this.evalSimulation = false;
 		this.depth = 2;
 		console.log(`A new opponent has spawned: ${profile}... fear its power!`);
@@ -240,8 +241,8 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 	let	lostTeam;
 
 	//NOTE = quiescence check
-	console.log(depth);
-	if ((depth <= 0 && !arrayTurns.canEat) || depth <= -2)
+	console.log(depth);//@ts-ignore
+	if ((depth == 0 && !ai.quiescenceBool) || (depth <= 0 && !arrayTurns.canEat) || depth <= -2)
 		return (evalScore(match, ai, pastTurns));
 	lostTeam = checkLostAll(match);
 	if (lostTeam)

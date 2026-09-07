@@ -283,19 +283,23 @@ function pushAllLegalBoost(match, player, legalMovesArray, currTurn, usedBoostBo
 		return ;
 	for (const [coord, square] of match.board)
 	{
-		if (!square.piece)
+		if (coord != to)
+			toPiece = square.piece;
+		else
+			toPiece = match.board.get(from);
+		if (!toPiece)
 			continue ;
-		if (square.piece.team != player.team)
+		if (toPiece.team != player.team)
 			continue ;
-		if (square.piece.price > points)
+		if (toPiece.price > points)
 			continue ;
 		if (coord == from)
 			continue ;
 		if (coord == player.boostedPiece || (coord == to && from == player.boostedPiece))
 			continue ;
-		if (!bestBoost || square.piece.price > bestBoost.price)
-			bestBoost = {coord: coord, price: square.piece.price};
-		else if (square.piece.type == enumNames.JESTER && square.piece.moveCount == 0)
+		if (!bestBoost || toPiece.price > bestBoost.price)
+			bestBoost = {coord: coord, price: toPiece.price};
+		else if (toPiece.type == enumNames.JESTER && toPiece.moveCount == 0)
 		{
 			pushOneBoost(coord, legalMovesArray, currTurn);
 		}

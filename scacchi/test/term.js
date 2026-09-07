@@ -28,6 +28,8 @@ import { AI } from "../Classes/Chess/AI.js";
 import { initFromStr } from "../handlers/game/init.js";
 import { AIexecuteTurn } from "../GameLogic/aiTurn.js";
 
+const aiOppo = AIprofiles.FIRST_AI;
+
 //SECTION - main: inizializza e fa primo render, mette terminale in ascolto
 function mainTerm()
 {
@@ -55,8 +57,11 @@ function mainTerm()
 	// if (lib.include.fs.existsSync(HISTORY_DEFAULT))
 	// 	historyRestore(match, HISTORY_DEFAULT);
 	// match.currentPlayer.ai = new AI(AIprofiles.FIRST_AI);
-	match.NextPlayer().ai = new AI(AIprofiles.GMU);
-	match.aiBool = true;
+	if (aiOppo)
+	{
+		match.NextPlayer().ai = new AI(aiOppo);
+		match.aiBool = true;
+	}
 	// move(match, "e5", "f6");
 	console.log(`time to init: ${(process.hrtime.bigint() - time) / 1000n} microseconds`);
 	match.cursor.square = match.currentPlayer.King;
@@ -191,8 +196,11 @@ process.stdin.on('keypress', (str, key) =>
 			if (!name)
 				name = HISTORY_FILE;
 			historyRestore(match, HISTORY_PATH + name);
-			// match.NextPlayer().ai = new AI(AIprofiles.FIRST_AI);
-			// match.aiBool = true;
+			if (aiOppo)
+			{
+				match.NextPlayer().ai = new AI(aiOppo);
+				match.aiBool = true;
+			}
 			break ;
 		}
 		case (cmd.CANCEL_EVENT):

@@ -28,6 +28,7 @@ function AIProfileConstructor(ai)
 			ai.Eval = AI_first_eval;
 			ai.difficulty = "easy";
 			ai.depth = 2;
+			ai.quiescenceBool = true;
 			break ;
 		case (AIprofiles.GMU):
 			ai.memory = globals.AITraining.get(AIprofiles.GMU);
