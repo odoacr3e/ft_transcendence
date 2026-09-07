@@ -51,7 +51,7 @@ export async function getAllUserMatches(id_user) {
 		},
 		orderBy: {
 			matches: {
-				end_date: 'asc'
+				id_match: 'desc'
 			}
 		}
 	});
