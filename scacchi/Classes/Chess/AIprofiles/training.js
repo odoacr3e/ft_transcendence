@@ -91,12 +91,8 @@ function evaluateEvent(match, event, oldVal, counter)
 	let delta;
 	let val;
 
-	if (oldVal == undefined || oldVal == null || Number.isNaN(oldVal))
-		console.log("B");
 	delta = getDelta(match, event);
 	val = oldVal - (delta - oldVal) / counter;//NOTE - media incrementale: una mossa viene penalizzata meno se e' ripetuta piu' volte
-	if (val == undefined || val == null || Number.isNaN(val))
-		console.log("B");
 	return Math.trunc(val);
 }
 

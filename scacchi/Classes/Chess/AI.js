@@ -128,8 +128,6 @@ function getBestTurn(match)
 		// render(match);
 		playableTurn.push(turn);
 		newTurns = getLegalMoves(match);
-		if (turn.move?.from == "a7" && turn.move.to == "g1")
-			console.log("B");
 		if (ai.memory && match.zobristIndex in ai.memory && (!DEBUG_AI_TRAINING ||
 		rngProportional(100, 50)))
 		{
@@ -264,8 +262,6 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 		let i = -1;
 		for (const turn of arrayTurns)
 		{
-			// if (depth == 2 && turn.move?.from == "d1" && turn.move.to == "b3")
-			// 	console.log("B");
 			++i;
 			if (depth <= 0 && (turn.canEat == false || !checkEatChain(match, turn)))
 				continue ;
