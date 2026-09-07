@@ -132,6 +132,7 @@ function gameMessage(match, msg, author="server", printer=console.log)
 		return ;
 	if (printer)
 		printer(msg);
+	msg = strDelAnsi(msg);
 	result = new Result().Success("OK", "msg").Format({author: author, msg: msg});
 	sendData(eChildEvents.Game, id, result);
 }
