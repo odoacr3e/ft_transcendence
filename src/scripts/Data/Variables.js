@@ -216,7 +216,7 @@ const AUDIOSET_DIRS = Object.freeze({ "LOL": "LolSet", "CLASSIC": "ClassicSet" }
 //Chiave logica del suono -> nome del file, uguale in ogni set.
 const AUDIO_FILENAMES = Object.freeze({
 	"move":			"moving",
-	"boost":		"boost",
+	"boost":		"boost2",
 	"armability":	"useability",
 	"check":		"check",
 	"lost":			"lost",
@@ -231,15 +231,14 @@ const AUDIO_FILENAMES = Object.freeze({
 	"clicked":		"clicked",
 	"badmove":		"badmove",
 	"capture":		"capture",
+	"begin":		"begin",
+	"tap":			"buttontap",
 });
 
-//NOTE - volume attenua soltanto: 1 e' il livello nativo del file, 0 il silenzio.
-//Il tag audio non amplifica, quindi valori sopra 1 vengono riportati a 1 da playAudio.
-//I valori di LolSet vengono dalla misura EBU R128 dei file, pareggiata a -14.2 LUFS.
 const AUDIO_VOLUMES = Object.freeze({
 	"LolSet": {
 		"move":			0.84,
-		"boost":		0.92,
+		"boost":		1,
 		"armability":	0.77,
 		"check":		0.76,
 		"lost":			1.0,
@@ -255,7 +254,19 @@ const AUDIO_VOLUMES = Object.freeze({
 		"badmove":		0.95,
 		"capture":		0.92,
 	},
-	"ClassicSet": {},	//da misurare quando i file ci saranno
+
+	"ClassicSet": {
+		"begin":		0.51,
+		"boost":		0.35,
+		"capture":		1.0,
+		"draw":			0.57,
+		"endturn":		0.57,
+		"lost":			1.0,
+		"move":			0.59,
+		"recdraw":		0.66,
+		"tap":			0.5,
+		"victory":		1.0,
+	},
 });
 
 function audioFile(dir, name)

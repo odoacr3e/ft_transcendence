@@ -7,7 +7,7 @@
 			 showBoostedMovesLeave,  sendDraw}		from '@/scripts/Events/utils/GlobalUtils';
 	import { computed, ref }						from 'vue'
 	import { useI18n }								from 'vue-i18n';
-	import { useClickOutside }						from '@/scripts/Helper/generalUtils.js';
+	import { useClickOutside, playAudio }			from '@/scripts/Helper/generalUtils.js';
 	import IconHourglass							from '@/components/icons/IconHourglass.vue';
 	import IconLightning							from '@/components/icons/IconLightning.vue';
 	import IconFlag									from './icons/IconFlag.vue';
@@ -64,10 +64,18 @@
 
 	const abilityArmed = computed(() => isAbilityArmed(localBoard.get(localInfo.clickedId)));
 
+	//NOTE - un solo listener in capture sul wrapper: intercetta ogni bottone del pannello
+	//prima che lo @click.stop di askDraw fermi la risalita dell'evento.
+	function tap(event)
+	{
+		if (event.target?.closest?.("button"))
+			playAudio("tap");
+	}
+
 </script>
 
 <template>
-	<div class="wrapper" v-if="localPlayer">
+	<div class="wrapper" v-if="localPlayer" @click.capture="tap">
 		<div class="top-row">
 			<button class="action-btn" 		
 				v-bind:class="[

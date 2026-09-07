@@ -87,8 +87,7 @@ export const PIECES_CODEX = Object.freeze({
 		baseTitle:	"MOSSA BASE DEGLI SCACCHI",
 		baseText:	"Scorre quanto vuole lungo le otto direzioni, ortogonali e diagonali.\nSi ferma sul primo pezzo che incontra e lo cattura se e' avversario.",
 		boostTitle: "Due mosse in un turno",
-		boostText:	"Si sposta di una mossa classica di scacchi ma attenzione, se si fa scacco al re avversario,\
-					 oppure ci si muove in una casella minacciata da un pezzo\
+		boostText:	"Si sposta di una mossa classica di scacchi ma attenzione, se ci si muove in una casella minacciata da un pezzo\
 					 avversario la mossa boostata si interrompe\nLa seconda mossa è esattamente uguale alla prima senza le limitazioni",
 		baseScenes: [
 			{

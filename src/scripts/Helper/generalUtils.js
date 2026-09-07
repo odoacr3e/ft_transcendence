@@ -3,7 +3,7 @@ import { AUDIO_PATHS, debug, MACRO } from "../Data/Variables";
 
 
 //NOTE - suoni brevi di interfaccia: non troncano quello in corso e non vengono troncati.
-const UI_SOUNDS = new Set(["clicked", "badmove"]);
+const UI_SOUNDS = new Set(["clicked", "badmove", "tap"]);
 let currentTrack = null;
 /*
 	Chiude un popup quando si clicca fuori dalla sua area (e, se richiesto, con Escape)

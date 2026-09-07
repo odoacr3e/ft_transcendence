@@ -47,6 +47,7 @@ export function listenGameSocket(socket)
 		{
 			debug("[socket game] ID NEW GAME TROVATO!");
 			initLocalMatchState(raw);
+			playAudio("begin");
 			router.replace( {name: raw.p3 ? "GameFour" : "game"});
 			return;
 		}
