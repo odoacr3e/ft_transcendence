@@ -10,6 +10,7 @@ import { isOneOf } from "../../utils/string.js";
 import { gameHandler, gamePlayerNotificationHandler } from "../game/Game.js";
 import { AIexecuteTurn } from "../../GameLogic/aiTurn.js";
 import { getMe } from "../../query/usersQuery.js";
+import { HISTORY_FILE } from "../../Macro/macro.js";
 
 /** @typedef {import("../../Classes/Globals/Child").ChildData} ChildData */
 
@@ -114,5 +115,6 @@ function moveAI(match)
 	catch (error)
 	{
 		sendData(eChildEvents.Error, Number(match.id), error);
+		match.Log(`CRASH_${match.id}`);
 	}
 }

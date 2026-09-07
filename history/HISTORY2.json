@@ -1,0 +1,67 @@
+{
+  "moves": 2,
+  "turnCounter": 1,
+  "victory": "",
+  "finalBoard": "|M|J|V|C|K|V|J|M|\n|B|B|B|B|B|B|B|B|\n| | | | | | | | |\n| | | | | | | | |\n| | | | |B| | | |\n| | | | | | | | |\n|B|B|B|B| |B|B|B|\n|M|J|V|C|K|V|J|M|\n",
+  "matchSettings": "1v1",
+  "events": [
+    {
+      "from": "e2",
+      "to": "e4",
+      "movedPiece": "Bastards",
+      "team": "white",
+      "points": {
+        "WHITE": 0,
+        "BLACK": 0,
+        "YELLOW": 0,
+        "BLUE": 0,
+        "RED": 0,
+        "GREEN": 0
+      },
+      "type": "move",
+      "specialMoves": 64,
+      "useBoostBool": false,
+      "counter": 0,
+      "turnCounter": 0,
+      "updates": {},
+      "turnMoves": 0,
+      "error": false,
+      "time": 900000,
+      "prevBoost": "",
+      "aiSimulation": false,
+      "score": 0,
+      "zobristHash": "398720968216056344",
+      "zobristIndex": 299544,
+      "currMenace": ""
+    },
+    {
+      "from": "",
+      "to": "",
+      "movedPiece": "",
+      "team": "white",
+      "points": {
+        "WHITE": 0,
+        "BLACK": 0,
+        "YELLOW": 0,
+        "BLUE": 0,
+        "RED": 0,
+        "GREEN": 0
+      },
+      "type": "endturn",
+      "specialMoves": 0,
+      "useBoostBool": false,
+      "counter": 1,
+      "turnCounter": 0,
+      "updates": {},
+      "turnMoves": 1,
+      "error": false,
+      "time": 900000,
+      "prevBoost": "",
+      "aiSimulation": false,
+      "score": 0,
+      "zobristHash": "0",
+      "zobristIndex": 0,
+      "currMenace": ""
+    }
+  ]
+}

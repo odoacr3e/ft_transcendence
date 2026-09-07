@@ -92,7 +92,7 @@ process.stdin.on('keypress', (str, key) =>
 	let	dy;
 
 	if (!match.victory && match.currentPlayer.ai)
-		return (AIexecuteTurn(match));
+		return (execEvent(match, "", ""));
 	match = globals.GetLastMatch();
 	mutex = true;
 	dx = 0;
@@ -251,6 +251,8 @@ function execEvent(match, eventType, newPieceType="")
 {
 	try
 	{
+		if (!match.victory && match.currentPlayer.ai)
+			return (execEvent(match, "", ""));
 		switch (eventType)
 		{
 			case (eEvents.Move): case (eEvents.MoveBoost):
