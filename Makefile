@@ -13,6 +13,20 @@ VAULT_PROFILE := $(if $(filter true,$(VAULT_ENABLED)),--profile vault,)
 up:
 	docker compose up --build
 
+firstRun:
+	clear
+	docker system prune -a -f
+	docker volume prune -a -f
+	docker compose --profile vault down --remove-orphans
+	$(AS_ROOT) rm -rf $(DIRS); \
+	git worktree prune; \
+	git fetch origin backend frontend; \
+	git worktree add backend_dir backend; \
+	cp .env ./backend_dir/scacchi
+	git worktree add frontend_dir $(FRONTEND_BRANCH)
+	@make pull
+	docker compose up --build
+
 down:
 	docker compose --profile vault down --remove-orphans
 

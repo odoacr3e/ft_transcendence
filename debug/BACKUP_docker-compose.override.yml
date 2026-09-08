@@ -1,0 +1,8 @@
+services:
+  backend:
+    ports:
+      - "9229:9229"
+    command: >
+      sh -c "redis-server --daemonize yes ;
+      npx prisma generate &&
+      nodemon --inspect=0.0.0.0:9229 main.js"
