@@ -51,7 +51,7 @@ class Result
 	 * 
 	 * @param {Result | null} other
 	 */
-	constructor (other=null)
+	constructor (other=null, type="")
 	{
 		/** @type {Number | null} */		this.status = 200;
 		/** @type {string | null} */		this.msg = "OK";
@@ -63,7 +63,7 @@ class Result
 /** @type {string | undefined} */			this.team = undefined;
 		/** @type {Match | null} */			this.match = null;
 		/** @type {boolean | undefined} */	this.draw = undefined;
-		/** @type {string | undefined} */	this.type = undefined;
+		/** @type {string | undefined} */	this.type = type ? type : undefined;
 
 		//@ts-ignore
 		this.board = {};

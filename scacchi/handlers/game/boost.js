@@ -14,7 +14,7 @@ import { endTurn } from "./endTurn.js";
 import {checkMateCheckAll} from "../../GameLogic/checkMate.js";
 import { AI_EVENTS, BOOSTED_MAX, MOVEMENT_MIN } from "../../Macro/macro.js";
 import { checkKingDanger } from "../../utils/checkDanger.js";
-import { enumNames } from "../../Macro/enums.js";
+import { eEvents, enumNames } from "../../Macro/enums.js";
 import { jsonParser } from "../../utils/response.js";
 import { aiSpeech } from "../../Classes/Chess/AIprofiles/speech.js";
 import { render } from "../../test/render.js";
@@ -109,13 +109,13 @@ function tryBoost(match, result, from)
  */
 function fakeBoost(match, from)
 {
-	let	result = new Result;
+	let	result = new Result(null, eEvents.SimulateBoost);
 	let	square;
 	let	player;
 	let	prevBoost;
 
 	if (!from)
-		return (result.Error(`boost: coord from ${from} does not exist`));
+		return (result.Error(`boost: coord from ${from} does not exist`, 400));
 	if (!match.board.has(from))
 		return (result.Error(`boost: coord from ${from} does not exist`));
 	square = match.board.get(from);

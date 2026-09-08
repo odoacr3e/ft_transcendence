@@ -318,4 +318,4 @@ function socketError(socket=null, result=null, status=0, msg=null, match=null, r
 	return (result?.log?.status? result.log.status: 500);
 }
 
-export {gameHandler, gameHttpHandler, gameWebSocketHandler, gamePlayerNotificationHandler, error, move, endTurn, boost, init};
+export {gameHandler, gameHttpHandler, gameWebSocketHandler, gamePlayerNotificationHandler, gameAIHandler, error, move, endTurn, boost, init};

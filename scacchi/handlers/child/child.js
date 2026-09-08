@@ -11,6 +11,7 @@ import { gameHandler, gamePlayerNotificationHandler } from "../game/Game.js";
 import { AIexecuteTurn } from "../../GameLogic/aiTurn.js";
 import { getMe } from "../../query/usersQuery.js";
 import { HISTORY_FILE } from "../../Macro/macro.js";
+import { fakeBoost } from "../game/boost.js";
 
 /** @typedef {import("../../Classes/Globals/Child").ChildData} ChildData */
 
@@ -90,16 +91,17 @@ async function matchEvent(data)
 	req = normifyRequest(match.cursor, data.Data);
 	if (!req?.type)
 	{
-		// sendData(eChildEvents.Game, data.MatchId, responseFormatter(match, null, `req with no type`, 400));
 		return ;
 	}
 	if (isOneOf(req.type, "giveup", "draw"))
 		result = gamePlayerNotificationHandler(match, req, null);
+	else if (req.type == eEvents.SimulateBoost)
+		result = fakeBoost(match, req.from);
 	else
 		result = await gameHandler(match, req, null);//@ts-ignore
-	if (!result.victory && match.currentPlayer.ai)
+	if (!result.victory && match.currentPlayer.ai && !match.aiSimulation)
 		setTimeout(moveAI, 1000, match);
-	sendData(eChildEvents.Game, data.MatchId, result);
+	sendData(eChildEvents.SimulateBoost, data.MatchId, result);
 }
 
 /**

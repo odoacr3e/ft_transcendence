@@ -21,7 +21,8 @@ const eEvents =
 	EndTurn: `endturn`,
 	Transform: 'trans',
 	GiveUp: 'giveup',
-	Draw: 'draw'
+	Draw: 'draw',
+	SimulateBoost: "simulate_boost"
 };
 
 const eChildEvents =
@@ -30,6 +31,7 @@ const eChildEvents =
 	CreateMatch: "create_ai_match",
 	Game: "game",
 	GameMsg: "gameMsg",
+	SimulateBoost: eEvents.SimulateBoost,
 	Error: "Errore"
 };
 

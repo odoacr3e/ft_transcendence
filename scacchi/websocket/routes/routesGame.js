@@ -3,8 +3,8 @@
 import { callbackify } from "node:util";
 import { Result } from "../../Classes/endPoint/result.js";
 import { globals } from "../../Classes/Globals/globals.js";
-import { boost, gameWebSocketHandler } from "../../handlers/game/Game.js";
-import { enumConnection, enumSocketState } from "../../Macro/enums.js";
+import { boost, gameAIHandler, gameWebSocketHandler } from "../../handlers/game/Game.js";
+import { eEvents, enumConnection, enumSocketState } from "../../Macro/enums.js";
 import { historyGetMatchState } from "../../utils/history.js";
 import { gameMessage, isBusy } from "../utils.js";
 import { fakeBoost } from "../../handlers/game/boost.js";
@@ -64,6 +64,13 @@ export function routesGame(socket, user)
 		let match;
 
 		socketData = globals.clientMap.get(user.id_user);
+		if (socketData?.aiMatchData)
+		{
+			if (typeof(callback) == 'function')
+				callback(new Result().Success("OK"));
+			req.type = eEvents.SimulateBoost;
+			return (gameAIHandler(req, socketData));
+		}
 		match = globals.matches.get(socketData?.matchData?.matchId);//@ts-ignore
 		if (!match || !match[socketData?.matchData?.team])
 			result = new Result().Error("You can't simulate the boost", 403);

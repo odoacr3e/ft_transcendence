@@ -71,7 +71,7 @@ class Child
 		});
 		this.child.on("message", (/** @type {ChildData} */data) => 
 		{
-			if (isOneOf(data.Event, eChildEvents.Game, eChildEvents.CreateMatch, eChildEvents.GameMsg))
+			if (isOneOf(data.Event, eChildEvents.Game, eChildEvents.CreateMatch, eChildEvents.GameMsg, eChildEvents.SimulateBoost))
 			{
 				console.log(`message from ${data.MatchId}, event ${data.Event}, data: ${data.Data}`);
 				roomMessage(`match_${data.MatchId}`, data.Event, data.Data);
