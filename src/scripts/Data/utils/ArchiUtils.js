@@ -26,12 +26,12 @@ export function checkEndTurn(validated)
 	});
 
 	if (!newCurP || !curP) 
-		return (resetLocalVars());
+		return (spreadDemocracy());
 
 	if (curP.name === newCurP.name && !validated.victory)
 		localInfo.secondTurn = true;
 	else
-		resetLocalVars();
+		spreadDemocracy();
 }
 
 export function setVictory(team, sound = true)
@@ -132,7 +132,7 @@ export function assignLastMoveSquares(oldSquare, newSquare, newSet)
 		newSet.add(oldSquare.id);
 }
 
-export function resetLocalVars()
+export function spreadDemocracy()
 {
 	localInfo.clickedId			= null;
 	localInfo.lastClickedId		= null;

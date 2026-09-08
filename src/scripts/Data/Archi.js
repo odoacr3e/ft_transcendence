@@ -1,11 +1,12 @@
 import { initLocalBoard, localMatchState, 
 		 localBoard, localPlayers,
 		 startLocalMatchState, localInfo,
-		 currentPlayer, emptyCapturedPieces, debug }	from "./Variables.js";
+		 currentPlayer, emptyCapturedPieces, debug, 
+		 isMatchLoaded}	from "./Variables.js";
 import { checkEndTurn, hasBoost, 
 		 checkUpgrade, assignLastMoveSquares, 
 		 setVictory,
-		 resetLocalVars}	from "./utils/ArchiUtils.js";
+		 spreadDemocracy}	from "./utils/ArchiUtils.js";
 import { beginPendingAbility } 					from "../Helper/abilityMovement.js";
 import { clearHistory } 						from "./History.js";
 import { clearMessages } 						from "./ChatBox.js";
@@ -56,7 +57,7 @@ export function initLocalMatchState(raw)
 	
 		initLocalBoard(localMatchState?.board);
 		initLocalPlayers();
-		resetLocalVars();
+		spreadDemocracy();
 	
 		localInfo.matchId = raw.id;
 		localInfo.myTeam = raw.team;
@@ -97,6 +98,11 @@ function initLocalPlayers()
 export function updateMatchState(nextRaw)
 {
 	const outcome = { moved: false, captured: false, transformed: false };
+	if (!isMatchLoaded())
+	{
+		debug("[updateMatchState]: stato locale vuoto, update ignorato");
+		return;
+	}
 	try 
 	{
 		const validated = validateReceivedMatch(nextRaw);
@@ -117,6 +123,11 @@ export function updateMatchState(nextRaw)
 
 function updateLocalBoard(changes, outcome)
 {
+	if (!isMatchLoaded())
+	{
+		debug("[updateLocalBoard]: stato locale vuoto, update ignorato");
+		return;
+	}
 	const board = changes.board;
 
 	if (!board) { throw new Error("[updateLocalBoard]: Board expected but no object received!"); }
@@ -165,6 +176,11 @@ function updateLocalBoard(changes, outcome)
 
 function updateLocalPlayers(changes) 
 {
+	if (!isMatchLoaded())
+	{
+		debug("[updateLocalPlayers]: stato locale vuoto, update ignorato");
+		return;
+	}
 	const players_list = ["p1", "p2", "p3", "p4"];
 
 	players_list.forEach((player) => {
@@ -199,6 +215,7 @@ export function reloadMatchState(raw)
 		localInfo.matchStarted		= false;
 		localInfo.secondTurn		= raw.secondMove ?? false;
 		localInfo.drawOffer 		= raw.pending === true ? true : false;
+		localInfo.aiGame			= raw.aiGame;
 	
 		restorePendingAbility(raw);
 	

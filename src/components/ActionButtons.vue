@@ -24,10 +24,8 @@
 			return null;
 		return ( localBoard.get(localInfo.clickedId)?.piece ?? null);
 	})
-	const canUseAbility 		= computed(() => myTurn.value && Piece.value && Piece.value.isBoostedBool
-										&& Piece.value.team === localInfo.myTeam && !localInfo.secondTurn);
-	const canBoost 				= computed(() => myTurn.value && Piece.value && !Piece.value.isBoostedBool
-										&& canAfford(Piece.value) && localInfo.secondTurn);
+	const canUseAbility 		= computed(() => myTurn.value && Piece.value && Piece.value.isBoostedBool && Piece.value.team === localInfo.myTeam && !localInfo.secondTurn);
+	const canBoost 				= computed(() => myTurn.value && Piece.value && !Piece.value.isBoostedBool && canAfford(Piece.value) && localInfo.secondTurn);
 	const canEndTurn 			= computed(() => myTurn.value && localInfo.secondTurn);
 	const panelEl 				= ref(null);
 	const drawIncoming			= computed(() => localInfo.drawOffer === "received");

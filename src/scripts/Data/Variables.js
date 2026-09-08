@@ -128,6 +128,8 @@ export const myPlayer = () => [...localPlayers.values()].find(p => p.team === lo
 
 export const isMyTurn = () => myPlayer()?.isPlaying === true;
 
+export const isMatchLoaded = () => !!localMatchState && localBoard.size > 0 && localPlayers.size > 0;
+
 //Il giocatore di turno, che sui client avversari NON coincide con myPlayer().
 export const currentPlayer = () => [...localPlayers.values()].find(p => p.isPlaying === true) ?? null;
 
@@ -144,6 +146,9 @@ export function startLocalMatchState(newMatchState) {
 	localMatchState = newMatchState;
 }
 
+export const isCheck = (raw) => Boolean(Number(raw.mask) & CHECK_MASK);
+
+export const getCheckSquares = (raw) => (isCheck(raw) && raw.spreadDEMOCRACY) ? raw.spreadDEMOCRACY : null;
 
 //inizializzazione della variabile localBoard utilizzando la variabile board presente in LocalMatchState
 export function initLocalBoard(boardData)
@@ -201,6 +206,30 @@ export let MACRO = Object ({
 	"MAX_MSG_LEN"	: 200,
 });
 
+export const eSpecialMoves = Object.freeze({
+	NONE: 0,
+	CASTLING: 1 << 0,
+	TRANSFIGURATION: 1 << 1,
+	ENDGAME: 1 << 2,
+	CHECK: 1 << 3,
+	CHECKMATE: 1 << 4
+});
+
+export const eRoomType = Object.freeze({
+	PRIVATE: 'private',
+	FRIENDLY: 'friendly',
+	RANKED: 'ranked',
+	ARENA: 'arena',
+});
+
+export const eSide = Object.freeze({
+	WHITE: 'white',
+	BLACK: 'black',
+	RANDOM: 'random',
+});
+
+export const CHECK_MASK = eSpecialMoves.CHECK | eSpecialMoves.CHECKMATE;
+
 //Elenco finto di modelli AI: con USE_STUB attivo fetchAiModels lo restituisce
 //senza interpellare il back, per lavorare sulla PlayPage a server spento.
 export const AI_MODELS_STUB = ["giorgio", "giovanna", "giorno giovanna"];
@@ -220,7 +249,7 @@ const AUDIOSET_DIRS = Object.freeze({ "LOL": "LolSet", "CLASSIC": "ClassicSet" }
 //Chiave logica del suono -> nome del file, uguale in ogni set.
 const AUDIO_FILENAMES = Object.freeze({
 	"move":			"moving",
-	"boost":		"boost2",
+	"boost":		"boost",
 	"armability":	"useability",
 	"check":		"check",
 	"lost":			"lost",
@@ -309,30 +338,6 @@ export function debug(...args)
 }
 
 export const ePlaying = Object.freeze({ YES: "yes", NO: "no", UNKNOWN: "unknown" });
-
-//NOTE - ex Common/ENUMS.js: di quel file solo questi tre enum erano usati,
-//il resto era una copia morta degli enum del back.
-export const eSpecialMoves = Object.freeze({
-	NONE: 0,
-	CASTLING: 1 << 0,
-	TRANSFIGURATION: 1 << 1,
-	ENDGAME: 1 << 2,
-	CHECK: 1 << 3,
-	CHECKMATE: 1 << 4
-});
-
-export const eRoomType = Object.freeze({
-	PRIVATE: 'private',
-	FRIENDLY: 'friendly',
-	RANKED: 'ranked',
-	ARENA: 'arena',
-});
-
-export const eSide = Object.freeze({
-	WHITE: 'white',
-	BLACK: 'black',
-	RANDOM: 'random',
-});
 
 //NOTE - Vite risolve gli asset solo staticamente: si importa tutta la cartella
 //pieces/ e si sceglie il set a runtime in base a MACRO.PIECESET.

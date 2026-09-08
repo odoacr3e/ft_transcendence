@@ -184,7 +184,6 @@ export function reloadMatch()
 		const onResponse = (raw) => {
 			if (raw?.type === "reload")
 				return finish(raw?.log?.status === 200);
-			//le risposte d'errore non hanno type: inutile continuare a riprovare
 			if (raw?.log?.status && raw.log.status !== 200)
 			{
 				debug("[reload] il back rifiuta:", raw.log.msg);

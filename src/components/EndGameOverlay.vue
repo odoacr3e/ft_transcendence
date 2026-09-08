@@ -38,10 +38,16 @@
 	function leaveMatch() {
 		clearMatchStorage();
 		localInfo.victory = null;
+		localInfo.aiGame = false;
 		startLocalMatchState(null);
 	}
 
-	function playAgain() { leaveMatch(); router.replace({name: 'playpage'}); }
+	function playAgain() 
+	{
+		const wasAi = localInfo.aiGame === true; 
+		leaveMatch();
+		router.replace({name: 'playpage', query:  wasAi ? { ai: '1' } : {}});
+	}
 	function goHome() { leaveMatch(); router.push({name: 'home'}); }
 	function watchBoard() { dismissed.value = true; }
 	function reopen() { dismissed.value = false; }
