@@ -74,6 +74,8 @@ class Child
 			if (isOneOf(data.Event, eChildEvents.Game, eChildEvents.CreateMatch, eChildEvents.GameMsg))
 			{
 				console.log(`message from ${data.MatchId}, event ${data.Event}, data: ${data.Data}`);
+				if (data.Event == eChildEvents.Game && !data.Data.type)
+					data.Data.type = "update";
 				roomMessage(`match_${data.MatchId}`, data.Event, data.Data);
 				if (data.Data.victory)
 					this.#EndGame(data.MatchId, this.userIdMap.get(data.MatchId));

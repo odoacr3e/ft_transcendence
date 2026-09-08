@@ -117,7 +117,8 @@ async function gameWebSocketHandler(req, id_user, socketData)
 		return (socketError(socketData.socket, result, result.log.status, result.log.msg, match));
 	result = jsonParser(result);
 	//@ts-ignore
-	result.type = req.type; //Leo per capire quando la riposta che ci mandate si tratta di una reload
+	if (!result.type)//@ts-ignore
+		result.type = "update"; //Leo per capire quando la riposta che ci mandate si tratta di una reload
 	socketData.socket.emit("game", result);	
 	socketData.socket.to(`match_${id}`).emit("game", result);
 	console.log(socketData.socket.rooms);
