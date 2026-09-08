@@ -12,7 +12,7 @@ import { enumNames } from "../Macro/enums.js";
 import { isDangerous } from "../utils/checkDanger.js";
 import { isOneOf } from "../utils/string.js";
 import { render } from "../test/render.js";
-import fs, { truncate } from "fs";
+import fs from "fs";
 import { simulation } from "./simulation.js";
 
 /** @typedef {import("../Classes/Chess/match").Match} Match*/

@@ -366,7 +366,6 @@ class Match
 			this.victory = "draw";
 			return (new Result());
 		}
-		console.trace();
 		console.log("ed e' un pareggioooooooo!!!!");
 		render(this);
 		this.victory = "draw";

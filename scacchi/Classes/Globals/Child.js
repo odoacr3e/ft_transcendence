@@ -21,7 +21,7 @@ class Child
 	/** @param {number} index */
 	constructor(index)
 	{
-		console.log(`creo figlio ${index}`);
+		// console.log(`creo figlio ${index}`);
 		/** @type {Set<number>} */
 		this.matchSet = new Set;
 		this.id = index;

@@ -91,7 +91,7 @@ process.stdin.on('keypress', (str, key) =>
 	let	dx;
 	let	dy;
 
-	if (!match.victory && match.currentPlayer.ai)
+	if (!match.victory && match.currentPlayer.ai && match.history.Last().team != match.currentPlayer.team && match.history.events.length != 0)
 		return (execEvent(match, "", ""));
 	match = globals.GetLastMatch();
 	mutex = true;
@@ -251,8 +251,8 @@ function execEvent(match, eventType, newPieceType="")
 {
 	try
 	{
-		if (!match.victory && match.currentPlayer.ai)
-			return (execEvent(match, "", ""));
+		if (!eventType)
+			return (AIexecuteTurn(match));
 		switch (eventType)
 		{
 			case (eEvents.Move): case (eEvents.MoveBoost):
@@ -271,6 +271,7 @@ function execEvent(match, eventType, newPieceType="")
 	}
 	catch(err)
 	{
+		console.log(err?.stack);
 		console.error("GAME CRASHED.");
 		console.error(err);
 		console.profileEnd();
