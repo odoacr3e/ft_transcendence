@@ -69,7 +69,7 @@
                     <FriendButton :user="otherUser" v-if="otherUser.username !== user.username"/>
                 </div>
                 <h3 class="text-text-second self-center -mt-0.5 
-                    max-[375px]:text-xs min-[375px]:text-sm max-md:whitespace-nowrap md:text-md">{{ otherUser.name }} {{ otherUser.surname }}</h3>
+                    max-[375px]:text-xs min-[375px]:text-sm max-md:whitespace-nowrap md:text-base">{{ otherUser.name }} {{ otherUser.surname }}</h3>
                 <div class="lg:hidden flex max-md:mt-3 md:mt-4 gap-2">
                     <TagTitle :title="otherUser?.title" class="max-[375px]:text-[9px] max-[375px]:py-px"/>
                     <p class="text-text-last">|</p>

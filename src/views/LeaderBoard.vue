@@ -51,8 +51,8 @@ onMounted(async () => {
                         lg:-bottom-3 lg:right-0"/>
                 </div>
                 <RouterLink :to="{ name: 'user_page', params: { username: top3[0].username } }" class="flex items-center gap-2 mt-3">
-                    <h3 class="max-md:text-md md:text-xl"><b>1°</b></h3>
-                    <p class="hover:underline max-md:text-md">{{ top3[0].username }}</p>
+                    <h3 class="max-md:text-base md:text-xl"><b>1°</b></h3>
+                    <p class="hover:underline max-md:text-base">{{ top3[0].username }}</p>
                 </RouterLink>
                 <div class="flex gap-2 max-md:text-sm">
                     <p class="text-text-win-open">{{ winRate(top3[0].stats.w, top3[0].stats.total) }}%</p>
@@ -71,8 +71,8 @@ onMounted(async () => {
                             lg:-bottom-3 lg:-right-1"/>
                     </div>
                     <RouterLink :to="{ name: 'user_page', params: { username: top3[1].username } }" class="flex items-center gap-2 mt-3">
-                        <h3 class="max-md:text-md md:text-xl"><b>2°</b></h3>
-                        <p class="hover:underline max-md:text-md">{{ top3[1].username }}</p>
+                        <h3 class="max-md:text-base md:text-xl"><b>2°</b></h3>
+                        <p class="hover:underline max-md:text-base">{{ top3[1].username }}</p>
                     </RouterLink>
                     <div class="flex gap-2 max-md:text-sm">
                         <p class="text-text-win-open">{{ winRate(top3[1].stats.w, top3[1].stats.total) }}%</p>
@@ -90,8 +90,8 @@ onMounted(async () => {
                             lg:-bottom-3 lg:-right-1"/>
                     </div>
                     <RouterLink :to="{ name: 'user_page', params: { username: top3[2].username } }" class="flex items-center gap-2 mt-3">
-                        <h3 class="max-md:text-md md:text-xl"><b>3°</b></h3>
-                        <p class="hover:underline max-md:text-md">{{ top3[2].username }}</p>
+                        <h3 class="max-md:text-base md:text-xl"><b>3°</b></h3>
+                        <p class="hover:underline max-md:text-base">{{ top3[2].username }}</p>
                     </RouterLink>
                     <div class="flex gap-2 max-md:text-sm">
                         <p class="text-text-win-open">{{ winRate(top3[2].stats.w, top3[2].stats.total) }}%</p>

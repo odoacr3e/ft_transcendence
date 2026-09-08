@@ -43,7 +43,7 @@
                 <h2 class="text-text-default mt-5 max-[375px]:text-lg min-[375px]:text-2xl md:text-3xl">{{ user.username }}</h2>
                 <div class="md:flex gap-3 my-1">
                     <h3 class="text-text-second self-center 
-                        max-[375px]:text-xs min-[375px]:text-sm max-md:whitespace-nowrap md:text-md">{{ user.name }} {{ user.surname }}</h3>
+                        max-[375px]:text-xs min-[375px]:text-sm max-md:whitespace-nowrap md:text-base">{{ user.name }} {{ user.surname }}</h3>
                     <p class="max-md:hidden text-text-last">|</p>
                     <h4 class="text-text-third self-center max-[375px]:text-[10px] min-[375px]:text-xs md:text-sm">{{ user.email }}</h4>
                 </div>

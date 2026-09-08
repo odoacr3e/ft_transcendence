@@ -1,5 +1,6 @@
-import { taskApi }			from '../router/api/task.api';
+import { useAuthStore }		from './auth.st';
 import { defineStore }		from 'pinia';
+import { taskApi }			from '../router/api/task.api';
 
 export const useMsgStore = defineStore('msg', {
 	state: () => ({
@@ -19,6 +20,8 @@ export const useMsgStore = defineStore('msg', {
 		},
 
         add(msg) {
+			if (msg.title == "N") { return (useAuthStore().fetchMe(true)); }
+
             msg.status = "not_read";
 			if (this.msgRecevied.size === 10)
 			{

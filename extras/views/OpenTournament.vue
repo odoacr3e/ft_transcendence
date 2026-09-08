@@ -173,7 +173,7 @@
                             <div v-for="p in players" class="flex m-3 items-center" :class="{ 'ml-[18vh]' : !admin }">
                                     <img :src="p.image ? `${p.image}` : defaultAvatar" @error="handleAvatarError" :draggable="false"
                                         alt="" class="rounded-full object-cover mx-2" :class="{ 'size-25' : !admin, 'size-15' : admin }">
-                                    <div :class="{ 'text-2xl mx-2' : !admin, 'text-md' : admin }">
+                                    <div :class="{ 'text-2xl mx-2' : !admin, 'text-base' : admin }">
                                         <p>{{ p.username }}</p>
                                         <p v-if="p.username != tournament.created_by.username">Pronto!</p>
                                         <p v-if="p.username == tournament.created_by.username">Admin</p>

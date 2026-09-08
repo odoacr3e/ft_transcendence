@@ -104,6 +104,8 @@
 								{'hasAura': square?.piece?.isBoostedBool},
 								{'selectedBstW': getSquareColor(square?.id) == 'white' && (square.boostedHighlight && square.piece)},
 								{'selectedBstB': getSquareColor(square?.id) == 'black' && (square.boostedHighlight && square.piece)},
+								{'dangerW': getSquareColor(square?.id) == 'white' && (square.inCheck && !square.highlight && square?.piece.type == 'King')},
+								{'dangerB': getSquareColor(square?.id) == 'black' && (square.inCheck && !square.highlight && square?.piece.type == 'King')},
 								{'selectedW': getSquareColor(square?.id) == 'white' && (square.selected !== square.inCheck || square.highlight && square.piece)},
 								{'selectedB': getSquareColor(square?.id) == 'black' && (square.selected !== square.inCheck || square.highlight && square.piece)},
 								{'pieceClicked': square.piece && square.piece.team === localInfo.myTeam && square.clicked}]"
@@ -330,23 +332,17 @@
 		background-color: #00ffff; /* #01a76f */
 	}
 
-	.selectedB
-	{
-		background-color: var(--color-bg-BSelect);
-	}
+	.selectedB { background-color: var(--color-bg-BSelect); }
 
-	.selectedW
-	{
-		background-color: var(--color-bg-WSelect);
-	}
+	.selectedW { background-color: var(--color-bg-WSelect);	}
 
-	.selectedBstB{
-		background-color: #2589a1;
-	}
+	.dangerB { background-color: #801a12; }
 
-	.selectedBstW{
-		background-color: #78cccc;
-	}
+	.dangerW { background-color: #bb4232; }
+
+	.selectedBstB { background-color: #2589a1; }
+
+	.selectedBstW { background-color: #78cccc; }
 
 	/* .boosted-aura{
 		animation: auraPulse 0.4s ease-in-out infinite;

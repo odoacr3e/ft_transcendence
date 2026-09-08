@@ -13,7 +13,7 @@ import "./SocketListen.js"
 
 //SECTION - INIT FUNCTIONS
 
-export function  validateReceivedMatch(rawJson)
+function  validateReceivedMatch(rawJson)
 {
 	if (!rawJson || typeof rawJson !== "object" || Array.isArray(rawJson))
 		throw new Error("Payload non valido: root deve essere un oggetto.");
@@ -49,23 +49,27 @@ export function  validateReceivedMatch(rawJson)
 
 export function initLocalMatchState(raw)
 {
-	const validated = validateReceivedMatch(raw);
-	startLocalMatchState(validated);
-
-	initLocalBoard(localMatchState?.board);
-	initLocalPlayers();
-	resetLocalVars();
-
-	localInfo.matchId = raw.id;
-	localInfo.myTeam = raw.team;
-	debug("il mio team :", localInfo.myTeam);
-	setVictory(raw.victory, false);
-	localInfo.matchStarted = false;	//il timer non parte finché il bianco non ha mosso
-
-	if (localInfo.myTeam)
-		sessionStorage.setItem("match:myTeam", localInfo.myTeam);
-	if (raw.id !== undefined && raw.id !== null)
-		sessionStorage.setItem("match:id", raw.id);
+	try
+	{
+		const validated = validateReceivedMatch(raw);
+		startLocalMatchState(validated);
+	
+		initLocalBoard(localMatchState?.board);
+		initLocalPlayers();
+		resetLocalVars();
+	
+		localInfo.matchId = raw.id;
+		localInfo.myTeam = raw.team;
+		debug("il mio team :", localInfo.myTeam);
+		setVictory(raw.victory, false);
+		localInfo.matchStarted = false;	//il timer non parte finché il bianco non ha mosso
+	
+		if (localInfo.myTeam)
+			sessionStorage.setItem("match:myTeam", localInfo.myTeam);
+		if (raw.id !== undefined && raw.id !== null)
+			sessionStorage.setItem("match:id", raw.id);
+	}
+	catch(err) { debug("[initLocalMatchState]: Errore di init del Match!" + err); }
 }
 
 function initLocalPlayers()
@@ -93,23 +97,21 @@ function initLocalPlayers()
 export function updateMatchState(nextRaw)
 {
 	const outcome = { moved: false, captured: false, transformed: false };
-	const validated = validateReceivedMatch(nextRaw);
-	
-	localInfo.drag = null;
-	
-	setVictory(nextRaw.victory);
-	checkEndTurn(validated);
-	startLocalMatchState(validated);
 	try 
 	{
+		const validated = validateReceivedMatch(nextRaw);
+		
+		localInfo.drag = null;
+		
+		setVictory(nextRaw.victory);
+		checkEndTurn(validated);
+		startLocalMatchState(validated);
 		if (validated.board)
 			updateLocalBoard(validated, outcome);
 		checkUpgrade();
 		updateLocalPlayers(validated);
 	} 
-	catch(err){
-		console.error("[updateLocalMatchState]: Errore di update del Match!\n" + err);
-  	}
+	catch(err) { debug("[updateLocalMatchState]: Errore di update del Match!\n" + err); }
 	return (outcome);
 }
 
@@ -183,24 +185,28 @@ function updateLocalPlayers(changes)
 
 export function reloadMatchState(raw)
 {
-	const validated = validateReceivedMatch(raw);
-	startLocalMatchState(validated);
+	try
+	{
+		const validated = validateReceivedMatch(raw);
+		startLocalMatchState(validated);
+	
+		initLocalBoard(localMatchState?.board);
+		initLocalPlayers();
+		setVictory(raw.victory, false);
+	
+		localInfo.myTeam			= raw.team ?? sessionStorage.getItem("match:myTeam");	
+		localInfo.matchId			= sessionStorage.getItem("match:id");
+		localInfo.matchStarted		= false;
+		localInfo.secondTurn		= raw.secondMove ?? false;
+		localInfo.drawOffer 		= raw.pending === true ? true : false;
+	
+		restorePendingAbility(raw);
+	
+		if (localInfo.myTeam)
+			sessionStorage.setItem("match:myTeam", localInfo.myTeam);
+	}
+	catch (err) { debug("[reloadMatchState]: Errore di update del Match!\n" + err); }
 
-
-	initLocalBoard(localMatchState?.board);
-	initLocalPlayers();
-	setVictory(raw.victory, false);
-
-	localInfo.myTeam			= raw.team ?? sessionStorage.getItem("match:myTeam");	
-	localInfo.matchId			= sessionStorage.getItem("match:id");
-	localInfo.matchStarted		= false;
-	localInfo.secondTurn		= raw.secondMove ?? false;
-	localInfo.drawOffer 		= raw.pending === true ? true : false;
-
-	restorePendingAbility(raw);
-
-	if (localInfo.myTeam)
-		sessionStorage.setItem("match:myTeam", localInfo.myTeam);
 }
 
 function restorePendingAbility(raw)

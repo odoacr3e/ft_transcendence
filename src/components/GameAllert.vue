@@ -7,7 +7,7 @@
 </script>
 
 <template>
-    <div class="flex flex-col z-2 g-linear-to-t from-bg-default to-bg-darker rounded-3xl text-text-default text-center items-center px-10 pb-7 h-fit relative
+    <div class="flex flex-col z-2 bg-linear-to-t from-bg-default to-bg-darker rounded-3xl text-text-default text-center items-center px-10 pb-7 h-fit relative
 		max-md:w-[90vw]
 		md:w-[65vw] md:place-content-center
 		lg:w-[50vw]">

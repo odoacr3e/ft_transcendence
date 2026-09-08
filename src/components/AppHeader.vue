@@ -158,10 +158,11 @@
 								<span class="py-1 block size-2 rounded-full"
 									:class="{	'bg-notif-on' : m.status === 'not_read',
 												'bg-text-third' : m.status === 'read' }"/> <!--NOTE ✓-->
-								<h3 v-if="m.description[0] === ' ' && m.title === 'F'" class="text-md">{{ t('header.inv.friendTitle') }}</h3>
-								<h3 v-if="m.description[0] === ' ' && m.title === 'T'" class="text-md">{{ t('header.inv.tourTitle') }}</h3>
-								<h3 v-if="m.description[0] === ' ' && m.title === 'N'" class="text-md">{{ t('header.inv.tagTitle') }}</h3>
-								<h3 v-if="!['F', 'T', 'N'].includes(m.title)" class="text-md">{{ m.title }}</h3>
+								<h3 v-if="m.description[0] === ' ' && m.title === 'F'" class="text-base">{{ t('header.inv.friendTitle') }}</h3>
+								<h3 v-if="m.description[0] === ' ' && m.title === 'T'" class="text-base">{{ t('header.inv.tourTitle') }}</h3>
+								<h3 v-if="m.description[0] === ' ' && m.title === 'N'" class="text-[15px]">{{ t('header.inv.tagTitle') }}</h3>
+								<h3 v-if="!['F', 'T', 'N'].includes(m.title) || ['F', 'T', 'N'].includes(m.title) && m.description[0] !== ' '"
+									class="text-base">{{ m.title }}</h3>
 								<p class="text-text-last">|</p>
 								<p class="text-xs text-text-third">{{ rework_date(m.creation_date) }}</p>
 							</div>
@@ -188,7 +189,7 @@
 									</div>
 								</RouterLink>
 
-								<div v-if="m.description[0] !== ' '">
+								<div v-if="m.description[0] !== ' '" @click="readMsg(m);">
 									<p class="text-text-second text-sm pt-2.5 pb-1">{{ m.description }}</p>
 									<div class="ml-auto -mt-3.5 flex gap-1 h-fit w-fit" v-if="m.sender">
 										<p class="text-xs text-text-third">

@@ -154,7 +154,7 @@
                 <input id="avatar-input" type="file" accept="image/png, image/jpeg, image/webp"
                     class="hidden" @change="handleAvatarChange">
                 <label for="avatar-input" class="absolute inset-0 size-50 flex flex-col items-center justify-center rounded-full
-                    bg-bg-blur opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                    bg-bg-blur opacity-0 transition-opacity duration-200 hover:opacity-100">
                     <p class="text-text-default">{{ t('userPage.edit.changeAvatar') }}</p>
                     <p class="text-text-default text-xl leading-none">+</p>
                 </label>
@@ -289,7 +289,7 @@
                         </div>
                     </div>
                     <RouterLink to="/me/edit/pwd" class="self-center justify-self-center mt-1 mb-2 cursor-pointer text-main-color hover:text-light-button active:text-active-button">
-                        <u><a class="text-md">{{ t('userPage.edit.changePwd') }}</a></u>
+                        <u><a class="text-base">{{ t('userPage.edit.changePwd') }}</a></u>
                     </RouterLink>
                 </div>
 
