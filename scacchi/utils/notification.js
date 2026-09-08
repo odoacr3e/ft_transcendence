@@ -22,13 +22,13 @@ export async function notify(title, description, user, sender)
 		id_sender: id_sender,
 		id_user: user.id_user,
 		title: title,
-		description: title,
+		description: description,
 		creation_date: new Date
 	};
 	const dataSocket = 
 	{
 		title: title,
-		description: title,
+		description: description,
 		id_user: user.id_user,
 		sender: 
 		{
