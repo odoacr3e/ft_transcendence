@@ -23,7 +23,7 @@
             </div>
             <div class="justify-self-center flex gap-2 mt-5 max-md:text-[70%] md:text-[80%] text-text-second">
 				<p>{{ t('login.presentAcc') }}</p>
-                <RouterLink to="/log">
+                <RouterLink to="/login">
                     <u><a class="text-main-color cursor-pointer hover:text-light-button active:text-active-button">{{ t('header.login') }}</a></u>
                 </RouterLink>
 			</div>

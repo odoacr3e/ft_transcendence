@@ -81,7 +81,7 @@ export const useAuthStore = defineStore('auth', {
 					await api.post('/auth/forceLogout', { id_user: this.user.id_user })
 				else
 					await authApi.logout({ id_user: this.user.id_user });
-				await router.push('/log');
+				await router.push('/login');
 				useMsgStore().clear();
 				useSockStore().socket.emit("logout");
 				useSockStore().disconnect();

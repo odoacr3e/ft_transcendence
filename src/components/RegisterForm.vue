@@ -337,7 +337,7 @@
 				<p class="text-sm whitespace-pre-line" v-if="error.clone[1]">{{ error_msg.clone }}</p>
 				<p class="text-sm whitespace-pre-line" v-if="error.email[1]">{{ error_msg.email }}</p>
 				<p class="text-sm whitespace-pre-line" v-if="error.password[1]">{{ error_msg.password }}</p>
-				<RouterLink to="/log" v-if="error.clone[1]">
+				<RouterLink to="/login" v-if="error.clone[1]">
                     <u><a class="text-sm cursor-pointer hover:text-light-button active:text-active-button">{{ t('header.login') }}</a></u>
                 </RouterLink>
 			</div>

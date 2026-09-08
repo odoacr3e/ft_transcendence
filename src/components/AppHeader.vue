@@ -59,8 +59,21 @@
 			msg.status = 'read';
 			try {
 				await api.patch("/api/notifications", { id_notification: Number(msg.id_notification) }); }
-			catch(err) { console.error(err); }
+			catch(err) { debug("[readMsg]: Errore di update delle notifiche!" + err); }
 		}
+	}
+
+	async function readAllMsg()
+	{
+		msgStore.msgRecevied.forEach(async msg => {
+			if (msg.status === "not_read")
+			{
+				msg.status = 'read';
+				try {
+					await api.patch("/api/notifications", { id_notification: Number(msg.id_notification) }); }
+				catch(err) { debug("[readAllMsg]: Errore di update delle notifiche!" + err); }
+			}
+		});
 	}
 
 	async function fetchTour(msg) {
@@ -152,7 +165,10 @@
 					leave-to-class="opacity-0 scale-70">
 					<div v-if="n_bool" class="mt-1.25 px-2 absolute bg-bg-darker border border-border-second w-76.5"
 						:class="msgStore.msgRecevied.size > 3 ? 'w-79 max-h-[40vh] overflow-y-auto' : ''">
-						<div v-if="msgStore.msgRecevied" v-for="m in [...msgStore.msgRecevied].reverse()"
+						<span v-if="msgStore.msgRecevied && Array.from(msgStore.msgRecevied).find(m => m.status === 'not_read') !== undefined"
+							class="mx-auto text-notif-on text-sm underline cursor-pointer transition-all"  @click.stop="readAllMsg()">
+							Read all </span>
+						<div v-if="msgStore.msgRecevied" v-for="m in msgStore.msgRecevied"
 							class="bg-bg-default p-2 my-2 rounded-sm text-text-default">
 							<div class="flex gap-2 pb-1 items-center">
 								<span class="py-1 block size-2 rounded-full"
@@ -283,7 +299,7 @@
 		</div>
  
 		<div v-if="user === null" class="justify-self-end place-self-center">
-			<RouterLink to="/log" class="flex mr-3">
+			<RouterLink to="/login" class="flex mr-3">
 				<button class="flex cursor-pointer w-25 justify-center p-2 text-base bg-main-color rounded-[7px] text-text-default
 								hover:bg-linear-to-t from-main-color to-light-button">{{ t('header.login') }}</button>
 			</RouterLink>

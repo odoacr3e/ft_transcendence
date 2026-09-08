@@ -4,7 +4,7 @@
     import MatchHistory     from '../components/MatchHistory.vue';
     import FriendRequest    from '../components/FriendRequest.vue';
     import { defaultAvatar, handleAvatarError }    from '../scripts/Helper/CompUtils';
-    import { ref, onMounted }   from 'vue';
+    import { ref, onMounted, watch }   from 'vue';
     import { useAuthStore }     from "../stores/auth.st";
     import { storeToRefs }      from 'pinia';
     import { useI18n }          from 'vue-i18n';
@@ -15,19 +15,27 @@
     const authStore = useAuthStore();
 	const { user } = storeToRefs(authStore);
 
+    async function getFriends()
+    {
+        friends.value = await taskApi.friendlist();
+        fReq.value = [];
+
+        friends.value.forEach(friendship => {
+            if (friendship.friend_status === "pending" && friendship.sender.username !== user.value.username)
+                fReq.value.push(friendship);
+        });
+    }
+
     onMounted(async () => {
         try
         {
-            friends.value = await taskApi.friendlist();
+            await getFriends();
             matches.value = await taskApi.matchlist();
-    
-            friends.value.forEach(friendship => {
-                if (friendship.friend_status === "pending" && friendship.sender.username !== user.value.username)
-                    fReq.value.push(friendship);
-            });
         }
         catch {}
     });
+
+    watch(() => user.value, getFriends, { deep: true });
 </script>
 
 <template>

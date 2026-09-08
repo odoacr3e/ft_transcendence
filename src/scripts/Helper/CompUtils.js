@@ -1,5 +1,5 @@
-import router from '@/router/index.js';
 import { api } from '@/router/api/client';
+import { useAuthStore } from '@/stores/auth.st';
 
 function asset(path) {
 	return new URL('../' + path, import.meta.url).href;
@@ -16,7 +16,7 @@ export async function acceptRequest(id_user)
 {
     try{
         await api.patch("/api/friends", { id_friend: id_user });
-        router.go(0);
+        useAuthStore().fetchMe(true);
     }
     catch{}
 }
@@ -25,7 +25,7 @@ export async function rejectRequest(id_user)
 {
     try{
         await api.delete("/api/friends", { id_friend: id_user });
-        router.go(0);
+        useAuthStore().fetchMe(true);
     }
     catch{}
 }

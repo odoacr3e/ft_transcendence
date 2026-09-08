@@ -1,7 +1,7 @@
 <script setup>
-	import router from '@/router/index.js';
 	import { acceptRequest, rejectRequest }	from '../scripts/Helper/CompUtils';
 	import { ref, onMounted, watch }		from 'vue';
+	import { useAuthStore }					from '@/stores/auth.st';
 	import { taskApi }						from '../router/api/task.api';
 	import { useI18n }						from 'vue-i18n';
 	import { api }							from '../router/api/client';
@@ -9,12 +9,6 @@
 	import IconCross               from './icons/IconCross.vue';
 	import IconUserGroup           from './icons/IconUserGroup.vue';
 	import IconUserPlus            from './icons/IconUserPlus.vue';
-
-	
-	//NOTE - Se volgio fare in modo che il bottone cambi appena clicckato (senza reload)
-	// basta fare updateState dopo il sendReq, l'accetazione/rifiutoReq
-	// Una cosa che però rimane non dinamica è se elimini l'amicizia da UserMe dalla lista
-
 
     const   { t } = useI18n();
 	const   prop = defineProps({
@@ -56,9 +50,21 @@
 							{	title: "F",
 								description: " ",
 								id_receiver: prop.user.id_user });
+			await useAuthStore().fetchMe(true);
+			updateState();
 		}
 		catch(err) { console.error(err); }
-		router.go(0);
+		
+	}
+
+	async function hiddenReload(func) {
+		try {
+    	    await func(prop.user.id_user);
+    	    await updateState();
+    	}
+    	catch (err) {
+    	    console.error(err);
+		}
 	}
 	
 </script>
@@ -77,13 +83,13 @@
 	<div class="w-max justify-self-end-safe" v-if="state ==  1">
 		<button class="cursor-pointer rounded-l-md inset-ring p-2.5
 					bg-bg-accept text-online-accept inset-ring-inset-accept"
-			@click="acceptRequest(user.id_user)">
+			@click="hiddenReload(acceptRequest)">
 			<p class="max-md:hidden">{{ t('common.accept') }}</p>
 			<IconCheck class="md:hidden size-5" stroke-width="1.5"/>
 		</button>
 		<button class="cursor-pointer rounded-r-md inset-ring p-2.5
 						bg-bg-reject text-text-lose-closed inset-ring-inset-reject"
-				@click="rejectRequest(user.id_user)">
+				@click="hiddenReload(rejectRequest)">
 			<p class="max-md:hidden">{{ t('common.reject') }}</p>
 			<IconCross class="md:hidden size-5" stroke-width="1.5"/>
 		</button>

@@ -69,7 +69,7 @@ const routes = [
 		component: CodexPage
 	},
 	{
-		path: '/log',
+		path: '/login',
 		name: 'log',
 		meta: { requiresGuest: true },
 		component: LoginPage

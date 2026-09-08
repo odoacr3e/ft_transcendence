@@ -13,22 +13,32 @@ export const useMsgStore = defineStore('msg', {
 		async getMsg()
 		{
 			try {
-				const resp = await taskApi.msglist();
-				Array.from(resp).slice(-10).reverse().forEach(m => this.msgRecevied.add(m));
+				const	resp = await taskApi.msglist(),
+						messages = Array.from(resp).sort((a, b) =>
+				{
+        		    const 	unreadA = a.status === "not_read",
+        		    		unreadB = b.status === "not_read";
+				
+        		    if (unreadA !== unreadB)
+        		        return unreadB - unreadA;
+
+        		    return new Date(b.creation_date) - new Date(a.creation_date);
+        		}).slice(0, 10);
+				
+        		this.msgRecevied.clear();
+        		messages.forEach(message => this.msgRecevied.add(message));
 			}
 			catch (err) { this.error = err.message; }
 		},
 
-        add(msg) {
-			if (msg.title == "N") { return (useAuthStore().fetchMe(true)); }
+        async add(msg) {
+			await useAuthStore().fetchMe(true);
+			
+			//if (msg.title == "N") { return (useAuthStore().fetchMe(true)); }
 
-            msg.status = "not_read";
-			if (this.msgRecevied.size === 10)
-			{
-				const firstRead = Array.from(this.msgRecevied).find(m => m.status === "read");
-				if (firstRead) { this.msgRecevied.delete(firstRead); }
-			}
-			this.msgRecevied.add(msg);
+            //msg.status = "not_read";
+			//const messages = [ msg, ...this.msgRecevied ].slice(0, 10); //ricreo il set da zero per mettere l'ultimo messaggio in cima
+    		//this.msgRecevied = new Set(messages);
 		},
 
 		clear() { this.msgRecevied.clear(); }
