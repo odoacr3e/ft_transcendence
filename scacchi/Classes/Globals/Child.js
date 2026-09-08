@@ -71,7 +71,7 @@ class Child
 		});
 		this.child.on("message", (/** @type {ChildData} */data) => 
 		{
-			if (isOneOf(data.Event, eChildEvents.Game, eChildEvents.CreateMatch, eChildEvents.GameMsg, eChildEvents.SimulateBoost))
+			if (isOneOf(data.Event, eChildEvents.Game, eChildEvents.CreateMatch, eChildEvents.GameMsg))
 			{
 				console.log(`message from ${data.MatchId}, event ${data.Event}, data: ${data.Data}`);
 				roomMessage(`match_${data.MatchId}`, data.Event, data.Data);
@@ -84,6 +84,10 @@ class Child
 				console.log(JSON.stringify(data, null, 2));
 				console.trace();//@ts-ignore
 				roomMessage(`match_${data.MatchId}`, "error", new Result().Error((data.Data), 500));
+			}
+			else if (data.Event == eChildEvents.Log)
+			{
+				console.log(`child log: ${data.Data}`);
 			}
 			else
 				throw (`Not correct child event type`);

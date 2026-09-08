@@ -5,8 +5,8 @@ import { globals } from "../Classes/Globals/globals.js";
 import { Match, Timer } from "../Classes/Chess/match.js";
 import { clientSetState, roomMessage } from "../websocket/utils.js";
 import { saveMatch } from "../utils/saveMatch.js";
-import { responseFormatter } from "../utils/response.js";
-import { enumSocketState } from "../Macro/enums.js";
+import { responseFormatter, sendData } from "../utils/response.js";
+import { eChildEvents, eEvents, enumSocketState } from "../Macro/enums.js";
 import { closeMatch } from "../query/gameQuery.js";
 
 /**
@@ -40,12 +40,12 @@ export function setTimerGame(match)
 		match.endTurn();
 		result = match.PlayerLost(result, p);
 		result = responseFormatter(match, result, null, null);
-		roomMessage(`match_${match.id}`, "game", result);
+		sendData(eChildEvents.Game, match.id, result);
 		if (match.playerNum == 1)
 		{
 			result = match.CheckMate();
 			result = responseFormatter(match, result, null, null);
-			roomMessage(`match_${match.id}`, "game", result);
+			sendData(eChildEvents.Game, match.id, result);
 			for (const user of match.users)
 				clientSetState(user.id_user, enumSocketState.NAVIGATING);
 			if (match.victory != "" && match.id != "0")

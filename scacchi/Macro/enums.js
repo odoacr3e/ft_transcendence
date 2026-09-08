@@ -31,8 +31,8 @@ const eChildEvents =
 	CreateMatch: "create_ai_match",
 	Game: "game",
 	GameMsg: "gameMsg",
-	SimulateBoost: eEvents.SimulateBoost,
-	Error: "Errore"
+	Error: "Errore",
+	Log: "log"
 };
 
 const eMatchPresets =

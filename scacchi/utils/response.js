@@ -259,7 +259,7 @@ const jsonResponse = { ResponseError, ResponseSuccess };
  * @param {string | number} matchId 
  * @param {*} data 
  */
-function sendData(event, matchId, data=null)
+function sendData(event, matchId=0, data=null)
 {
 	/** @type {import("../Classes/Globals/Child.js").ChildData} */
 	let	childData;
