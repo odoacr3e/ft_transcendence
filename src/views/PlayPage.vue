@@ -1,8 +1,8 @@
 <script setup>
 	import { ref, computed, watch, onMounted, onUnmounted }	from 'vue';
-	import { ePlaying, matchMakingOpt, debug, localInfo}	from '@/scripts/Data/Variables.js';
+	import { ePlaying, matchMakingOpt, debug, localInfo,
+			 eRoomType, eSide }							from '@/scripts/Data/Variables.js';
 	import { amIPlaying, fetchAiModels }					from '@/scripts/Events/BackLink';
-	import { eRoomType, eSide }								from '@/Common/ENUMS.js';
 	import { useAuthStore } 								from '@/stores/auth.st.js';
 	import { useSockStore }									from '@/stores/sock.st';
 	import { useRoute }										from 'vue-router'

@@ -1,5 +1,6 @@
 import { ePlaying, localBoard, localInfo, debug, 
-		 myPlayer, BOARD_AUDIO }					from "@/scripts/Data/Variables";
+		 myPlayer, BOARD_AUDIO,
+		 AI_MODELS_STUB, USE_STUB }				from "@/scripts/Data/Variables";
 import { getTarget }								from "./utils/MovementUtils.js";
 import { useSockStore } 							from "../../stores/sock.st.js";
 import { playAudio } 								from "../Helper/generalUtils.js";
@@ -70,9 +71,6 @@ export async function requestToBack(fromSquare, toSquare, opType, drawValue)
 		});
 	});
 }
-
-const AI_MODELS_STUB = ["giorgio", "giovanna", "giorno giovanna"];
-const USE_STUB = false;
 
 export async function fetchAiModels()
 {

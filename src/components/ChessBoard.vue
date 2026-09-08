@@ -2,8 +2,7 @@
 //@ts-nocheck
 	import { DOMBoard, localInfo, IMG_PATHS, 
 			 HIDDEN, myPlayer, canAfford, localBoard, 
-			 isAbilityArmed,
-			 pieceSrc}	from '@/scripts/Data/Variables';
+			 isAbilityArmed, pieceSrc}					from '@/scripts/Data/Variables';
 	import { onMounted, onUnmounted, computed, ref }	from 'vue';
 	import { useClickOutside }							from '@/scripts/Helper/generalUtils.js';
 	import { onDragStart, onDrop }						from '@/scripts/Events/Movements';
@@ -11,8 +10,8 @@
 	import { globalEvents }								from '@/scripts/Events/Global';
 	import IconChevronSolid 							from './icons/IconChevronSolid.vue';
 	import { shopAbility, showBoostedMovesHover,
-			 showBoostedMovesLeave, selectAbilitySquare,
-			 upgradeBastard }							from '@/scripts/Events/utils/GlobalUtils.js';
+			 showBoostedMovesLeave, 
+			 selectAbilitySquare, upgradeBastard }		from '@/scripts/Events/utils/GlobalUtils.js';
 	import IconDoubleChevron 							from './icons/IconDoubleChevron.vue';
 	import AuraFx 										from './AuraFx.vue';
 

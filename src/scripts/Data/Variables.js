@@ -201,6 +201,11 @@ export let MACRO = Object ({
 	"MAX_MSG_LEN"	: 200,
 });
 
+//Elenco finto di modelli AI: con USE_STUB attivo fetchAiModels lo restituisce
+//senza interpellare il back, per lavorare sulla PlayPage a server spento.
+export const AI_MODELS_STUB = ["giorgio", "giovanna", "giorno giovanna"];
+export const USE_STUB = false;
+
 //roba da non suonare sull'ack, o lo suona soketListen
 //sull'update della board, o non hanno un suono associato.
 export const BOARD_AUDIO = new Set(["move", "armability", "trans", "giveup",
@@ -304,6 +309,30 @@ export function debug(...args)
 }
 
 export const ePlaying = Object.freeze({ YES: "yes", NO: "no", UNKNOWN: "unknown" });
+
+//NOTE - ex Common/ENUMS.js: di quel file solo questi tre enum erano usati,
+//il resto era una copia morta degli enum del back.
+export const eSpecialMoves = Object.freeze({
+	NONE: 0,
+	CASTLING: 1 << 0,
+	TRANSFIGURATION: 1 << 1,
+	ENDGAME: 1 << 2,
+	CHECK: 1 << 3,
+	CHECKMATE: 1 << 4
+});
+
+export const eRoomType = Object.freeze({
+	PRIVATE: 'private',
+	FRIENDLY: 'friendly',
+	RANKED: 'ranked',
+	ARENA: 'arena',
+});
+
+export const eSide = Object.freeze({
+	WHITE: 'white',
+	BLACK: 'black',
+	RANDOM: 'random',
+});
 
 //NOTE - Vite risolve gli asset solo staticamente: si importa tutta la cartella
 //pieces/ e si sceglie il set a runtime in base a MACRO.PIECESET.

@@ -1,10 +1,10 @@
 import { updateMatchState, initLocalMatchState, reloadMatchState }	from "./Archi.js";
-import { localInfo, localMatchState, MACRO, debug}					from "./Variables";
+import { localInfo, localMatchState, debug,
+		 eSpecialMoves }											from "./Variables";
 import { clearHighlight, setCheckSquare }							from "../Events/utils/HighlightUtils";
-import { eSpecialMoves }											from "@/Common/ENUMS";		
 import { blinkSquares } 											from "../Events/utils/GlobalUtils";
 import router 														from "@/router";
-import { resetLocalVars, setVictory } 											from "./utils/ArchiUtils";
+import { resetLocalVars, setVictory } 								from "./utils/ArchiUtils";
 import { pushTurn, reloadHistory } 									from "./History";
 import { pushMessage } 												from "./ChatBox.js";
 import { playAudio } 												from "../Helper/generalUtils";

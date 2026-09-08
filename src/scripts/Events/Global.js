@@ -1,11 +1,9 @@
 import { usingAbility, checkPermision, 
-		checkForHighlightMove, moveDragClone, 
-		sendEndTurn,
-		shopAbility,
-		useAbility, onKeydown}											from "./utils/GlobalUtils.js";
+		checkForHighlightMove, 
+		moveDragClone, onKeydown }							from "./utils/GlobalUtils.js";
 import { rightClickSelect, highlightOnClick,
 		highlightOnDrag, clearHighlight }					from "./utils/HighlightUtils.js";
-import { localInfo, getRootDiv, localBoard, currentPlayer, debug, isMyTurn}	from "@/scripts/Data/Variables";
+import { localInfo, getRootDiv, localBoard, debug }			from "@/scripts/Data/Variables";
 import { PIECES_ABILITY } 									from "@/scripts/Helper/abilityMovement";
 import { sendToBackend }									from "./BackLink.js";
 
