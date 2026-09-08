@@ -4,20 +4,14 @@ FRONTEND_BRANCH = frontend
 CLEAN_IMG  = alpine
 AS_ROOT    = docker run --rm -v "$$PWD:/w" -w /w $(CLEAN_IMG)
 
-# Vault e' opzionale. Il valore di VAULT_ENABLED nel .env decide se il suo container
-# viene creato: solo "true" attiva il profilo, qualsiasi altro valore lo lascia spento,
-# e senza container non c'e' nessuna attesa all'avvio.
-VAULT_ENABLED := $(shell sed -n 's/^VAULT_ENABLED=//p' .env 2>/dev/null | tr -d "\"' " | tail -1)
-VAULT_PROFILE := $(if $(filter true,$(VAULT_ENABLED)),--profile vault,)
-
 up:
 	docker compose up --build
 
 firstRun:
 	clear
 	docker system prune -a -f
-	docker volume prune -a -f
-	docker compose --profile vault down --remove-orphans
+		docker volume prune -a -f
+		docker compose down --remove-orphans
 	$(AS_ROOT) rm -rf $(DIRS); \
 	git worktree prune; \
 	git fetch origin backend frontend; \
@@ -28,7 +22,7 @@ firstRun:
 	docker compose up --build
 
 down:
-	docker compose --profile vault down --remove-orphans
+	docker compose down --remove-orphans
 
 delete:
 	docker system prune -a -f
@@ -54,9 +48,6 @@ setup:
 	cp .env ./backend_dir/scacchi
 	git worktree add frontend_dir $(FRONTEND_BRANCH)
 	@make pull
-
-setup_leo: FRONTEND_BRANCH = frontGame
-setup_leo: setup
 
 #menate su menate
 own:

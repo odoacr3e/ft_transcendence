@@ -12,9 +12,7 @@ services:
   backend:
     image: backend
     container_name: backend
-    build:
-      context: .
-      dockerfile: backend/Dockerfile
+    build: ./backend
     env_file:
       - .env
     environment:
@@ -23,12 +21,12 @@ services:
       - vault-shared:/vault/shared
       # - ./backend_dir/scacchi:/app
       # - /app/node_modules
+    depends_on:
+      - postgres
   frontend:
     image: frontend
     container_name: frontend
-    build:
-      context: .
-      dockerfile: frontend/Dockerfile
+    build: ./frontend
     # volumes:
     #   - ./frontend_dir:/app
     #   - /app/node_modules
@@ -43,16 +41,12 @@ services:
     volumes:
       - vault-shared:/vault/shared
       - postgres-data:/var/lib/postgresql/data
-  # Il profilo "vault" e' attivato dal Makefile quando VAULT_ENABLED=true nel .env.
-  # Senza profilo attivo il container non viene nemmeno creato: niente build, niente
-  # healthcheck, niente attesa all'avvio. L'ordinamento con postgres non e' piu' un
-  # depends_on ma un'attesa dentro il suo entrypoint, che vale solo quando serve.
+    depends_on:
+      - vault
   vault:
     container_name: vault
     build: ./vault
     restart: unless-stopped
-    profiles:
-      - vault
     cap_add:
       - IPC_LOCK
     volumes:

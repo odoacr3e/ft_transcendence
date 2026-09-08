@@ -1,7 +1,7 @@
 import { updateMatchState, reloadMatchState, 
 		 initLocalMatchState }							from "./Archi.js";
 import { localInfo,  debug, isMatchLoaded, 
-		 getCheckSquares }							from "./Variables.js";
+		 getCheckSquares }								from "./Variables.js";
 import { stopBlinking, handleErrors, playMoveAudio }	from "./utils/socketListenUtils.js";
 import { clearHighlight, setCheckSquare }				from "../Events/utils/HighlightUtils.js";
 import { spreadDemocracy, setVictory } 					from "./utils/ArchiUtils.js";
@@ -13,7 +13,7 @@ import router 											from "@/router/index.js";
 export function listenGameSocket(socket)
 {
 	socket.on("game", (raw) => {
-		debug("[socketgame] ricevuta risposta di tipo:", raw.type);
+		debug("[socketgame] ricevuta risposta di tipo:", raw.type, raw);
 
 		if (raw.type === "msg")
 			return (pushMessage(raw.msg, raw.author));
@@ -82,9 +82,7 @@ function typeReload(raw)
 	}
 	reloadMatchState(raw);
 	typeHistory(raw);
-	const checkSquares = getCheckSquares(raw);
-	if (checkSquares)
-		setCheckSquare(checkSquares);
+	setCheckSquare(getCheckSquares(raw));
 }
 
 function typeTimeout(raw)
@@ -124,12 +122,10 @@ function typeMoveUpdate(raw)
 		pushTurn(raw.history);
 	clearHighlight();
 
-	const checkSquares = getCheckSquares(raw);
-	if (checkSquares)
-		setCheckSquare(checkSquares);
+	setCheckSquare(getCheckSquares(raw));
 	if (localInfo.victory)
 		return;
-	playMoveAudio(raw, outcome, checkSquares);
+	playMoveAudio(raw, outcome, getCheckSquares(raw));
 }
 
 // export function listenGameSocket(socket)

@@ -1,7 +1,5 @@
 FROM node:24-alpine
 
-RUN npm install -g nodemon
-
 WORKDIR /app
 
 RUN apk add redis
@@ -12,6 +10,9 @@ RUN npm install
 
 COPY ./app/prisma ./prisma
 
+COPY ./script/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
 EXPOSE 8080
 
-CMD ["sh", "-c", "redis-server --daemonize yes ; npx prisma generate && nodemon main.js"]
+CMD ["/entrypoint.sh"]
