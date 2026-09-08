@@ -8,11 +8,11 @@
 
 The project is set in a dark fantasy aesthetic, with an original character/piece design that reinforces the game's visual identity.
 
-### Obiettivi
+### Goals
 
 - Offer a renewed and more dynamic chess experience, maintaining familiar ground rules but introducing mechanics that reward tactical aggression and long-term planning.
 - Allow real-time multiplayer matches between remote users, with reconnection management.
-- Offer a tournament system with brackets, leaderboards, and game history, to give players long-term goals beyond a single game.
+- Offer a elo system and leaderboards, to give players long-term goals beyond a single game.
 - Build a comprehensive infrastructure (secure authentication, user profiles, friendship system, real-time notifications) that makes ChessZ a true gaming platform.
 - Apply full-stack development skills, containerized infrastructure management, and structured teamwork to a real-world project.
 
@@ -28,6 +28,11 @@ The following requirements are required to get the project started:
 - **.env file** (configured from *env.example* file)
 
 **Note:** *Node.js*, *PostgreSQL*, *Redis*, or other locally installed runtimes are not required — everything runs containerized via *Docker Compose*.
+
+First run with a single command:
+```bash
+make firstRun
+```
 
 Start all containers in the background:
 ```bash
@@ -55,11 +60,17 @@ docker logs <container_name>
 ```
 
 ## Resources
-Le risorse che sono state utilizzate sono state le seguenti:
+For this project, we have used the following resources:
 
 ### Backend
 - [Esercizi Javascript](https://github.com/AlbertoOlla/esercizi-di-programmazione-javascript "github.com/AlbertoOlla/esercizi-di-programmazione-javascript")
+- [Javascript tutorial w3school]("https://www.w3schools.com/js/")
+- [Socket.io docs]("https://socket.io/docs/v4/")
 - [Web Socket](https://www.youtube.com/watch?v=pnj3Jbho5Ck "How WebSocket work")
+
+## AI
+- [minmax and alpha-beta pruning]("https://www.youtube.com/watch?v=l-hh51ncgDI")
+- [zobrist hash]("https://youtu.be/QYNRvMolN20?is=TnUvxDBb8HBCAOBB")
 
 ### Database
 - [Prisma ORM docs](https://www.prisma.io/docs/orm "Prisma ORM docs")
@@ -216,15 +227,15 @@ The database is composed of 10 tables with the following relationships:
 [x] Amicizie (invio richiesta, visualizzazione lista)
 [x] Partite offline vs AI
 [x] Matchmaking online
+[x] 2FA
 [] Tornei
 [] Classifiche
 [] Libro guida e tutorial
 [] Ricerca utenti
-[] 2FA
 [] Cambio lingua
  -->
 
-In questo progetto sono state implementate diverse feature da tutto il gruppo di lavoro.
+Feature list:
 
 | Feature | Description | Team Member(s) |
 |-|-|-|
@@ -246,24 +257,27 @@ In questo progetto sono state implementate diverse feature da tutto il gruppo di
 
 ### Summary
 
-| Module | Type | Points |
-|-|-:|-:|
-| Use a **framework** for both the frontend and backend. | Major | 2 |
-| Implement real-time features using WebSockets or similar technology. | Major | 2 |
-| Allow users to interact with other users. The minimum requirements are: **basic chat**, **profile** and **friends** systems. | Major | 2 |
-| Use an **ORM** for the database. | Minor | 1 |
-| Custom-made design system with reusable components, including a proper color palette, typography, and icons | Minor | 1 |
-| Support for additional browsers. Full compatibility with at least 2 additional browsers. | Minor | 2 |
-| Standard user management and authentication. | Major | 2 |
-| Game statistics and match history (requires a game module). | Minor | 1 |
-| Implement remote authentication with OAuth 2.0. | Minor | 1 |
-| Implement a complete 2FA (Two-Factor Authentication) system for the users. | Minor | 1 |
-| Introduce an AI Opponent for games. | Major | 2 |
-| Implement WAF/ModSecurity (hardened) + HashiCorp Vault for secrets | Major | 2 |
-| Implement a complete web-based game where users can play against each other. | Major | 2 |
-| Remote players — Enable two players on separate computers to play the same game in real-time. | Major | 2 |
+| Module | Type | Points | Team Member(s) |
+|-|-:|-:|-:|
+| Use a **framework** for both the frontend and backend. | Major | 2 | everyone |
+| Implement real-time features using WebSockets or similar technology. | Major | 2 | everyone |
+| Allow users to interact with other users. The minimum requirements are: **basic chat**, **profile** and **friends** systems. | Major | 2 | edraccan, mfanelli |
+| Standard user management and authentication. | Major | 2 | edraccan, mfanelli |
+| Introduce an AI Opponent for games. | Major | 2 | mbiagi, alerusso |
+| Implement a complete web-based game where users can play against each other. | Major | 2 | everyone |
+| Remote players — Enable two players on separate computers to play the same game in real-time. | Major | 2 | everyone |
+| Implement a complete 2FA (Two-Factor Authentication) system for the users. | Minor | 1 | edraccan |
+| Use an **ORM** for the database. | Minor | 1 | edraccan |
+| Custom-made design system with reusable components, including a proper color palette, typography, and icons | Minor | 1 | mfanelli, lparolis |
+| Game statistics and match history (requires a game module). | Minor | 1 | everyone |
+| Implement remote authentication with OAuth 2.0. | Minor | 1 | mbiagi, edraccan |
+| Support for additional browsers. Full compatibility with at least 2 additional browsers. | Minor | 1 | mfanelli, lparolis |
+| Notification system | Minor | 1 | edraccan, mfanelli |
+| Gamification (XP/level, badge, leaderboard) | Minor | 1 | everyone |
 
-***Total points:*** 23
+***Total points:*** 22
+
+## Module Implementations
 
 ### Use a framework for both the frontend and backend. (Major - 2pt)
 
@@ -273,6 +287,8 @@ Vue.js was chosen because it is recommended for 2D games and because it is begin
 #### Implementation
 The two frameworks were used for the entire frontend and backend implementation respectively
 
+---
+
 ### Implement real-time features using WebSockets or similar technology. (Major - 2pt)
 
 #### Reason of using
@@ -281,64 +297,297 @@ To instantly send the user changes within the application and to make it possibl
 #### Implementation
 We used web sockets to receive notifications, update friends' online status, search for a match, and the match itself between two players
 
-### (Major - 2pt)
+---
+
+### Allow users to interact with other users. The minimum requirements are: **basic chat**, **profile** and **friends** systems. (Major - 2pt)
 
 #### Reason of using
+⚠️ **To be provided**
+
+#### Implementation
+⚠️ **To be provided**
+
+---
+
+### Standard user management and authentication. (Major - 2pt)
+
+#### Reason of using
+⚠️ **To be provided**
+
+#### Implementation
+⚠️ **To be provided**
+
+---
+
+### Introduce an AI Opponent for games. (Major - 2pt)
+
+#### Reason of using
+To provide single-player gameplay experience and allow users to practice
 
 #### Implementation
 
+**Architecture:**
+- **Server-side execution**: AI runs on the backend using Node.js subprocesses to prevent blocking the main server process
+- **Isolation**: Each AI game instance runs in a separate subprocess
 
-### (Major - 2pt)
+**AI Algorithm:**
+- **Minimax algorithm**: Core decision-making algorythm (it does not evaluate the moves itself)
+- **Zobrist hashing**: Efficient position caching and transposition table management to optimize search depth and memory usage
+- **Eval**: Personalized chessboard evaluation function based on the AI profile
+
+**AI Profiles:**
+Multiple configurable AI personalities, each with:
+- **Dedicated memory**: Per-profile transposition tables and evaluation caches
+- **Custom eval function**: Different eval function 
+- **Personalized messages**: AI-specific in-game messages and responses based on profile
+- **Adjustable depth**: Minimax search depth varies per profile to control difficulty level
+
+**Technical Flow:**
+0.	When starts, backend spawns 5 subprocess
+1.	Player requests match vs. AI
+2.	Backend finds the least busy subprocess
+3.	Player selects the move
+	1. The server validates the player socket
+	2. The server sends the move to the correct subprocess
+	3. The subprocess updates the match state, checks the checkmate
+	4. The subprocess sends the data to the server. The server sends the data to the player 
+	5. AI evaluates position using Minimax + Zobrist, then choose its move
+	6. Repeat 3 and 4
+	7. The server waits for new moves from the player
+
+---
+
+### Implement a complete web-based game where users can play against each other. (Major - 2pt)
 
 #### Reason of using
+To provide a complete interactive and challenging gaming experience
 
 #### Implementation
 
+**Game Choice:** Chess
 
-### (Major - 2pt)
+**State Management:**
+- **Dynamic JavaScript objects**: Game state represented as mutable objects that respond to multiple input types
+- **Multi-source input handling**: State transitions driven by:
+  - **HTTP requests**: RESTful API calls (only for debug)
+  - **WebSocket events**: Real-time state synchronization between players
+  - **Keyboard input**: Using terminal for rendering and input (only for debug)
+  - **File-based restoration**: Chess notation files (history json, database record) for match state recovery and replay
+
+**Rendering Architecture:**
+- **Backend responsibility**: Logic, validation, state management via Express.js
+- **Frontend responsibility**: All visual rendering via Vue.js components
+
+---
+
+### Remote players — Enable two players on separate computers to play the same game in real-time. (Major - 2pt)
 
 #### Reason of using
+To enable competitive multiplayer
 
 #### Implementation
 
+**Technology:** Socket.io WebSocket library for real-time bidirectional communication
 
+**Connection Management:**
+- **Initial connection**: Player joins game room via WebSocket handshake
+- **Active gameplay**: Moves transmitted instantly between players and server
+- **State synchronization**: Authoritative server maintains single source of truth for board state
 
-- Allow users to interact with other users. The minimum requirements are:
-  - A **basic chat** system (send/receive messages between users).
-  - A **profile** system (view user information).
-  - A **friends** system (add/remove friends, see friends list).
+**Disconnection & Reconnection Protocol:**
+1. **Disconnection detected**: Client socket disconnects (network failure, browser close, etc.)
+2. **Reconnection timer initiated**: Server-side timeout begins (duration configurable)
+3. **Timer expiration**: If reconnection doesn't occur within time window, disconnected player loses
+4. **Successful reconnection**: Player reconnects before timer expires
+   - Timer resets
+   - Game state resynchronized to reconnecting player
+   - Gameplay resumes normally
+   - Player can continue without penalty
 
-**Minor**
-- Use an ORM for the database (**Prisma**).
-- A complete notification system for all creation, update, and deletion actions.
-- Custom-made design system with reusable components, including a proper
-color palette, typography, and icons (minimum: 10 reusable components).
+---
 
-### Accessibility and Internationalization
+### Implement a complete 2FA (Two-Factor Authentication) system for the users. (Minor - 1pt)
 
-**Major**
-- Support for additional browsers.
-  - Full compatibility with at least 2 additional browsers (Firefox, Safari, Edge,
-etc.).
-  - Test and fix all features in each browser.
-  - Document any browser-specific limitations.
-  - Consistent UI/UX across all supported browsers.
+#### Reason of using
+⚠️ **To be provided**
 
-### User Management
+#### Implementation
+⚠️ **To be provided**
 
-**Major**
-- Standard user management and authentication.
-  - Users can update their profile information.
-  - Users can upload an avatar (with a default avatar if none provided).
-  - Users can add other users as friends and see their online status.
-  - Users have a profile page displaying their information.
+---
 
-**Minor**
-- Game statistics and match history (requires a game module).
-  - Track user game statistics (wins, losses, ranking, level, etc.).
-  - Display match history (1v1 games, dates, results, opponents).
-  - Show achievements and progression.
-  - Leaderboard integration.
+### Use an **ORM** for the database. (Minor - 1pt)
+⚠️ **To be provided**
+#### Reason of using
+To abstract database queries, improve code maintainability, provide type safety, and enable easy schema migrations.
+
+#### Implementation
+
+**ORM Choice:** Prisma
+
+**Database:** PostgreSQL
+
+**Benefits:**
+- **Type-safe queries**: TypeScript integration prevents runtime query errors
+- **Schema migrations**: Version-controlled database schema changes
+- **Query builder**: Intuitive syntax for complex queries
+- **Relation management**: Automatic foreign key and relationship handling
+- **Performance**: Connection pooling and query optimization built-in
+
+**Data Models (Example domains):**
+- User (authentication, profiles)
+- Game (chess matches, state history)
+- Move (game actions, move sequences)
+- GameStatistics (ratings, match history)
+- Notification (user notifications)
+
+---
+
+### Custom-made design system with reusable components, including a proper color palette, typography, and icons (Minor - 1pt)
+⚠️to be provided/*
+#### Reason of using
+To ensure visual consistency across the application, improve development speed, and provide a cohesive user experience.
+
+#### Implementation
+⚠️to be provided/*
+
+---
+
+### Game statistics and match history (requires a game module). (Minor - 1pt)
+
+#### Reason of using
+To track player performance, provide competitive rankings
+
+#### Implementation
+
+**Database Schema:**
+- Stores all completed games with timestamps
+- Tracks moves in sequence (moveset history)
+- Records player IDs, results, and game duration
+- Enables filtering by date, opponent, result
+
+**Frontend Display:**
+- Paginated match history view
+- Statistics dashboard (win/loss ratio, average game duration)
+
+---
+
+### Implement remote authentication with OAuth 2.0. (Minor - 1pt)
+
+#### Reason of using
+To allow users to authenticate via third-party identity providers and reduce friction in account creation.
+
+#### Implementation
+
+⚠️ **To be provided**
+
+---
+
+### Support for additional browsers. Full compatibility with at least 2 additional browsers. (Minor - 1pt)
+
+#### Reason of using
+To ensure accessible gameplay across multiple browsers and reduce compatibility issues for players.
+
+#### Implementation
+⚠️ Edge???
+**Primary browsers tested:**
+- Chrome
+- Brave
+- Edge
+
+---
+
+### Notification system (Minor - 1pt)
+⚠️ Pending
+#### Reason of using
+To keep players informed of friend activity, game invites, match results, and other real-time events.
+
+#### Implementation
+
+**Hybrid notification delivery:**
+
+**Real-time notifications (WebSockets):**
+- Friend status changes (online/offline)
+- Game invitations
+- Match start/end events
+- Chat messages
+- Transmitted via Socket.io connection with instant delivery
+
+**On-demand notifications (HTTP queries):**
+- Frontend periodically queries `/api/notifications` endpoint
+- Fetches unread notifications from database
+- Reduces WebSocket message volume for non-urgent updates
+- Ensures notifications persist even if user was offline
+
+**Storage:**
+- Notifications persisted in PostgreSQL via Prisma ORM
+- Queryable by user, status (read/unread), and timestamp
+
+**Frontend handling:**
+- Vue.js notification center displays real-time and queried notifications
+- User can dismiss, read, and archive notifications
+
+---
+
+### Gamification (XP/level, badge, leaderboard) (Minor - 1pt)
+
+#### Reason of using
+Encourage competitive play through ranking systems
+
+#### Implementation
+
+**Rating System:** ELO-based competitive ranking (library elo-rank used)
+
+**ELO Formula:**
+- Winner gains points proportional to opponent strength
+- Loser loses points; steeper loss against weaker opponent
+- Initial rating: 500 (or configurable baseline)
+
+**Tier/Title System:**
+Players advance through ranked tiers based on cumulative ELO:
+
+```javascript
+const EloTitle = {
+  1: "Bastard",         // ELO 1–499
+  500: "Valkyrie",      // ELO 500–799
+  800: "Minotaurus",    // ELO 800–999
+  1000: "Jester",       // ELO 1000–1199
+  1200: "Champion",     // ELO 1200–1399
+  1400: "King",         // ELO 1400–1599
+  1600: "Emperor"       // ELO 1600+
+}
+```
+
+**Tier advancement:**
+- Automatic title assignment based on current ELO
+- Title displayed on player profile and leaderboard
+- Visual indicators (badges, ranks) in UI
+
+**Leaderboard:**
+- Ranked by ELO score (descending)
+- Displays top N players (configurable)
+
+---
+
+## Summary of Status
+
+| Module | Status | Notes |
+|--------|--------|-------|
+| Framework | ✅ Complete | Vue.js + Express.js |
+| WebSockets | ✅ Complete | Socket.io implementation |
+| User interaction | ⚠️ Pending | Chat/profile/friends details needed |
+| User management | ⚠️ Pending | Authentication details needed |
+| AI Opponent | ✅ Complete | Minimax + Zobrist, subprocess isolation |
+| Complete game | ✅ Complete | Chess with dynamic objects |
+| Remote players | ✅ Complete | Socket.io + reconnection timer |
+| 2FA | ⚠️ Pending | Implementation details needed |
+| ORM | ⚠️ Pending | Prisma + PostgreSQL |
+| Design system | ⚠️ Pending | Vue.js components |
+| Game statistics | ✅ Complete | Move history + match persistence |
+| OAuth 2.0 | ⚠️ Pending | Implementation details needed |
+| Browser support | ⚠️ Pending | Chrome, Brave, Edge |
+| Notifications | ✅ Complete | Hybrid WebSocket + HTTP polling |
+| Gamification | ✅ Complete | ELO-based with tier titles |
 
 
 <!-- This template should help get you started developing with Vue 3 in Vite.
