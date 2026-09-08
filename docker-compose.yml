@@ -14,24 +14,24 @@ services:
     container_name: backend
     build:
       context: .
-      dockerfile: Dockerfile/Dockerfile.be
+      dockerfile: backend/Dockerfile
     env_file:
       - .env
     environment:
       - VAULT_ADDR=http://vault:8200
     volumes:
       - vault-shared:/vault/shared
-      - ./backend_dir/scacchi:/app
-      - /app/node_modules
+      # - ./backend_dir/scacchi:/app
+      # - /app/node_modules
   frontend:
     image: frontend
     container_name: frontend
     build:
       context: .
-      dockerfile: Dockerfile/Dockerfile.fe
-    volumes:
-      - ./frontend_dir:/app
-      - /app/node_modules
+      dockerfile: frontend/Dockerfile
+    # volumes:
+    #   - ./frontend_dir:/app
+    #   - /app/node_modules
   postgres:
     container_name: postgres
     build: ./postgres

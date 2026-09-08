@@ -62,6 +62,8 @@ fi
 vault write auth/approle/role/backend-role token_policies="backend-policy" token_ttl=1h token_max_ttl=4h
 echo "AppRole connected to backend-policy ..."
 
+# --- retrieve vault 
+
 # creating roleID
 ROLE_ID_FILE="/vault/shared/role-id"
 ROLE_ID=$(vault read -format=json auth/approle/role/backend-role/role-id | jq -r '.data.role_id')
