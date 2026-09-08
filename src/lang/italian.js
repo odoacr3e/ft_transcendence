@@ -156,7 +156,7 @@ export const italian = {
         legal: {
             privacy: {
                 title:  "Privacy policy",
-                desc:   "Questo documento di Privacy Policy descrive come @:common.name, progetto studentesco 42 Firenze, raccoglie, gestisce e utilizza e protegge i dati personali degli utenti che si registrano ed utilizzano l'applicazione.",
+                desc:   "Questo documento di Privacy Policy descrive come @:{'common.name'}, progetto studentesco 42 Firenze, raccoglie, gestisce e utilizza e protegge i dati personali degli utenti che si registrano ed utilizzano l'applicazione.",
                 list:   ["I dati che vengono raccolti in fase di registrazione e per l'utilizzo del servizio sono email, nome, cognome, username, nazionalita, avatar;",
                         "I dati elencati precdentemente vengono utilizzati per autenticazione, gestione amicizie, creazione e gestione tornei/partite, autenticazione a due fattori (2FA);",
                         "Per l'invio codice di verifica che concerne la doppia autenticazione verranno utilizzati provider esterni con servizio SMTP (Google) a cui sarà condivisa l'email;",
@@ -174,7 +174,7 @@ export const italian = {
                             desc_two: "\”. Se non si accettano questi termini, si prega di non utilizzare l'applicazione." },
                 list:   {
                     "Requisiti di accesso" : "Per utilizzare @:common.name è necessario creare un account fornendo un'email valida e uno username. Per i temi trattati e i termini utilizzati, il servizio è utilizzabile per utenti di età non inferiore ai 14 anni; utenti minorenni dovrebbero utilizzare il servizio con il consenso di un genitore o tutore.",
-                    "Comportamento utente" : "Utilizzando @:common.name, l'utente si impegna a:",
+                    "Comportamento utente" : "Utilizzando @:{'common.name'}, l'utente si impegna a:",
                     "Account" : "L'utente è responsabile della riservatezza delle proprie credenziali di accesso e di tutte le attività svolte tramite il proprio account. @:common.name si riserva il diritto di sospendere o cancellare account che violino queste regole, che presentino attività sospette o fraudolente, o su richiesta dell'utente",
                     "Contenuto generato dall'utente" : "Gli avatar e gli altri contenuti caricati dall'utente rimangono di proprietà dell'utente stesso, che dichiara di possedere i diritti per caricarli. @:common.name si riserva il diritto rimuovere contenuti ritenuti inappropriati, offensivi o in violazione di diritti di terzi, senza preavviso.",
                     "Limitazione responsabilità" : "@:common.name è un progetto realizzato a scopo esclusivamente didattico, nell'ambito del curriculum 42Firenze, senza finalità commerciali. Il servizo è foirnito “as is”, senza garanzie di disponibilità continua, assenza di errori o liovelli di serviuzio (SLA). Gli sviluppatori non sono repsponsabili per eventuali perdite di dati, interruzioni di servizio o danni derivanti dall'utilizzo dell'applicazione.",

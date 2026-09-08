@@ -157,7 +157,7 @@ export const english = {
         legal: {
             privacy: {
                 title: "Privacy policy",
-                desc:   "This Privacy Policy document describes how @:common.name, student project 42 Firenze, collects, manages, uses, and protects the personal data of users who register and use the application.",
+                desc:   "This Privacy Policy document describes how @:{'common.name'}, student project 42 Firenze, collects, manages, uses, and protects the personal data of users who register and use the application.",
                 list:   ["The data collected during registration and for using the service are email, first name, last name, username, national identity, avatar;",
                         "The previously listed data is used for authentication, friendship management, tournament/game creation and management, two-factor authentication (2FA);",
                         "To send verification code regarding double authentication, external providers with SMTP (Google) service will be used to share the email;",
@@ -175,7 +175,7 @@ export const english = {
                             desc_two: "\”. If you do not accept these terms, please do not use the application." },
                 list:   {
                     "Access Requirements" : "To use @:common.name you need to create an account by providing a valid email and username. For the topics covered and the terms used, the service can be used for users no younger than 14 years old; minor users should use the service with the consent of a parent or guardian.",
-                    "User behavior" : "By using @:common.name, the user commits to:",
+                    "User behavior" : "By using @:{'common.name'}, the user commits to:",
                     "Account" : "The user is responsible for the confidentiality of their login credentials and all activities performed through their account. @:common.name reserves the right to suspend or delete accounts that violate these rules, that present suspicious or fraudulent activity, or at the user's request",
                     "User-generated content" : "Avatars and other content uploaded by the user remain the property of the user, who claims to own the rights to upload them. @:common.name reserves the right to remove content deemed inappropriate, offensive, or in violation of third-party rights, without notice.",
                     "Liability limitation" : "@:common.name is a project created exclusively for educational purposes, within the 42Firenze curriculum, without commercial purposes. The service is foirnito “as is”, with no guarantees of continuous availability, absence of errors or liovelli of service (SLA). Developers are not responsible for any data loss, service outages, or damage resulting from using the application.",
