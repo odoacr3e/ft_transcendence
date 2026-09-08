@@ -101,6 +101,7 @@ async function matchEvent(data)
 		result = await gameHandler(match, req, null);//@ts-ignore
 	if (!result.victory && match.currentPlayer.ai && !match.aiSimulation)
 		setTimeout(moveAI, 1000, match);
+	result.Format({"aiGame" : true});
 	sendData(eChildEvents.Game, data.MatchId, result);
 }
 

@@ -118,7 +118,7 @@ async function gameWebSocketHandler(req, id_user, socketData)
 	result = jsonParser(result);
 	//@ts-ignore
 	if (!result.type)//@ts-ignore
-		result.type = "update"; //Leo per capire quando la riposta che ci mandate si tratta di una reload
+		result.type = eEvents.Move;
 	socketData.socket.emit("game", result);	
 	socketData.socket.to(`match_${id}`).emit("game", result);
 	console.log(socketData.socket.rooms);

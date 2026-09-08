@@ -92,5 +92,6 @@ function sendResult(match, result, type="")
 {
 	if (result.status != 200)
 		throw (`AIExecuteTurn: ${type} failed. Reason: "${result.msg}".Info: ${JSON.stringify(DEBUG_turn, null, 2)}`);
+	result.Format({"aiGame": true});
 	sendData("game", match.id, responseFormatter(match, result, null, null));
 }

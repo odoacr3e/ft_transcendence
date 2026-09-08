@@ -1,6 +1,6 @@
 //@ts-check
 
-import { eChildEvents }				from "../../Macro/enums.js";
+import { eChildEvents, eEvents }				from "../../Macro/enums.js";
 import { isOneOf } 					from "../../utils/string.js";
 import { clientResetData, clientSetState, gameMessage, roomMessage } from "../../websocket/utils.js";
 import { fork } 					from "child_process";
@@ -75,7 +75,7 @@ class Child
 			{
 				console.log(`message from ${data.MatchId}, event ${data.Event}, data: ${data.Data}`);
 				if (data.Event == eChildEvents.Game && !data.Data.type)
-					data.Data.type = "update";
+					data.Data.type = eEvents.Move;
 				roomMessage(`match_${data.MatchId}`, data.Event, data.Data);
 				if (data.Data.victory)
 					this.#EndGame(data.MatchId, this.userIdMap.get(data.MatchId));

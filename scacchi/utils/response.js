@@ -15,6 +15,7 @@ import { globals } from "../Classes/Globals/globals.js";
 import { enumSpecialMoves, eTeam } from "../Macro/enums.js";
 import { DEBUG_CURL, IS_CHILD_PROCESS } from "../Macro/macro.js";
 import { roomMessage } from "../websocket/utils.js";
+import { checkKingDanger } from "./checkDanger.js";
 
 /**
  * 
@@ -94,11 +95,13 @@ function responseFormatter(match, result, msg, status)
 		result.log.msg = "Game Error: " + result.log.msg;
 	result.match = null;
 	delete result.match;
-	if (result.specialMoves)
+	if (result.specialMoves && match)
 	{
 		result.mask = result.specialMoves._mask;
-		if (result.specialMoves.CheckKingDanger() || result.specialMoves.CheckKingCheck())
-			result.giorgi0 = match?.currentPlayer.King;
+		if (checkKingDanger(match))
+			result.spreadDEMOCRACY = match?.currentPlayer.King;
+		else if (checkKingDanger(match, match.currentPlayer.next))
+			result.spreadDEMOCRACY = match?.NextPlayer().King;
 	}
 	return (result);
 }
