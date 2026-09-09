@@ -35,11 +35,6 @@ function move(match, from, to, boostBool=false)
 	let secondMoveBool = false;
 
 	result = new Result();
-	if (match.history.moves == 321371 && to == "f5")
-	{
-		render(match);
-		console.log("BREAKPOINT");
-	}
 	if (!paramCheck(result, from, to))
 		return (result);
 	if (!checkMove([from, to], result, match, boostBool))
