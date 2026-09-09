@@ -5,16 +5,45 @@ import { playAudio } 										from "@/scripts/Helper/generalUtils";
 
 let stopAutoUpdate = null;
 
-export function hasBoost (curP)
+/**
+ * Funzione astratta che scorre la scacchiera e aggiorna la variabile in localinfo
+ * che indica se il giocatore di cui è il turno ha un pezzo potenziato
+ *
+ * Con un giocatore nullo o senza squadra il flag resta a false e la board non viene
+ * nemmeno scorsa: currentPlayer() torna null in mezzo a un cambio di turno o su uno
+ * stato non ancora inizializzato, e li' la risposta giusta e' comunque "nessun boost".
+ *
+ * @param	{Object}	curP		Giocatore di cui controllare i pezzi, di solito quello di turno
+ * @returns	{void}
+ */
+export function hasPlayerBoostedPiece (curP)
 {
-	localInfo.hasBoost = false;
+	localInfo.hasBoostedPiece = false;
+	if (!curP || curP.team)
+		return;
 	localBoard.forEach(square => {
 		if (square.piece && square.piece.isBoostedBool)
 			if (square.piece.team === curP.team)
-				localInfo.hasBoost = true;
+				localInfo.hasBoostedPiece = true;
 	});
 }
 
+/**
+ * Decide, guardando l'aggiornamento appena arrivato, se il turno e' passato all'avversario
+ * o se lo stesso giocatore ha ancora la seconda meta' del suo turno.
+ *
+ * Confronta chi era di turno con chi lo e' nel payload il confronto usa il nome e
+ * non l'oggetto dato che i giocatori del payload sono ricostruiti da
+ * JSON a ogni messaggio, quindi due riferimenti allo stesso giocatore non sono mai lo
+ * stesso oggetto.
+ *
+ * Stesso giocatore e partita ancora aperta significa secontTurn = true.
+ * In ogni altro caso cambio di giocatore o partita finita, si passa da spreadDemocracy() che azzera
+ * l'interazione per sicurezza dato che questa funzione viene sempre chiamata a fine turno.
+ *
+ * @param	{Object}	validated		Payload validato, da cui si legge chi ha isPlaying
+ * @returns	{void}
+ */
 export function checkEndTurn(validated)
 {
 	let		newCurP;
@@ -34,9 +63,25 @@ export function checkEndTurn(validated)
 		spreadDemocracy();
 }
 
-export function setVictory(team, sound = true)
+/**
+ * Aggiorna la variabile localInfo.victory  con il valore che viene passato e in base
+ * al valore suona con il mp3 giusto.
+ *
+ * Esce subito se l'esito non cambia. Serve piu' del risparmio: lo stesso esito puo'
+ * arrivare in piu' messaggi di fila, e senza questo controllo il suono di vittoria
+ * ripartirebbe a ogni update.
+ *
+ * Il parametro sound spegne l'audio quando l'esito viene solo ricostruito invece che
+ * vissuto: init e reload lo passano a false, perche' rimontare una partita gia' decisa
+ * non deve suonare come vincerla adesso. Anche azzerare l'esito e' sempre muto.
+ *
+ * @param	{string|null}	newValue	Valore con cui modofoicare localInfo.victory
+ * @param	{boolean}		[sound]		Se accompagnare il cambio di esito con il suono
+ * @returns	{void}
+ */
+export function setVictory(newValue, sound = true)
 {
-	const next = team || null;
+	const next = newValue || null;
 
 	if (next === localInfo.victory)
 		return;
@@ -53,9 +98,34 @@ export function setVictory(team, sound = true)
 		playAudio("lost");
 }
 
+<<<<<<< Updated upstream
 //NOTE - Funzione per il controllo e l'inserimento dell'elemento DOM per il potenziamento del pedone
 //		 fromEl = elemento DOM dello square dove il pedone che si deve potenziare si trova
 //		 menuEl = elemento DOM del menu' che deve comparire sopra fromEl. La sua posizione e' quindi dinamica
+=======
+/**
+ * Cerca un Bastards arrivato sull'ultima traversa e, se lo trova, apre il menu di
+ * promozione ancorandolo alla sua casella.
+ *
+ * Il menu si apre solo sul client del giocatore che deve scegliere: gli avversari vedono
+ * la board com'e' e aspettano il pezzo scelto nel prossimo update. 
+ * È rimasto il calcolo che decideva su quale fila mostrare la selezione, è roba vecchia 
+ * ma la nostalgia non ce lo fa togliere
+ *
+ * Trovato il pezzo, l'id finisce in localInfo.goatId, che e' cio' che il template usa per
+ * mostrare menu e overlay, e secondTurn viene abbassato: finche' la promozione e' aperta
+ * il giocatore non puo' fare altro, deve prima scegliere.
+ *
+ * Da li' in poi lavora Floating UI. computePosition calcola dove sta la casella, con flip
+ * e shift che tengono il menu dentro la finestra, mentre top e left fissi ribaltano il
+ * riquadro sopra o sotto la casella a seconda della traversa. autoUpdate ripete il calcolo
+ * a ogni scroll o resize e restituisce la funzione per fermarlo, tenuta nel modulo in
+ * stopAutoUpdate: quella precedente va sempre chiusa prima di aprirne un'altra, altrimenti
+ * resterebbe un osservatore vivo su una casella che non serve piu'.
+ *
+ * @returns	{void}
+ */
+>>>>>>> Stashed changes
 export function checkUpgrade()
 {
 	const	curP = currentPlayer();
@@ -109,6 +179,21 @@ export function checkUpgrade()
 	});
 }
 
+/**
+ * Stacca l'osservatore di Floating UI che tiene il menu di promozione incollato alla sua
+ * casella, e dimentica la funzione di stop.
+ *
+ * Chiudere il menu nascondendolo non basta: autoUpdate resta agganciato a scroll, resize e
+ * ridimensionamenti dell'elemento anche quando il menu non si vede piu', e continuerebbe a
+ * ricalcolare la posizione di un riquadro che non serve a nessuno.
+ *
+ * Chiamarla quando non c'e' niente da fermare e' innocuo, ed e' voluto: le due strade che
+ * la usano non sanno se il menu fosse aperto. La prima e' la promozione andata a buon fine
+ * in upgradeBastard(), la seconda e' spreadDemocracy(), che ripulisce tutto senza fare
+ * distinzioni.
+ *
+ * @returns	{void}
+ */
 export function stopUpgradeMenu()
 {
 	if (stopAutoUpdate)
@@ -118,6 +203,18 @@ export function stopUpgradeMenu()
 	}
 }
 
+/**
+ * Guarda una singola casella prima e dopo l'aggiornamento e, se il pezzo che ci sta sopra
+ * e' cambiato, ne aggiunge l'id all'insieme delle caselle toccate dall'ultima mossa.
+ * Questo al fine di ottenere un set con le due caselle che rappresentano l'ultima mossa
+ * di modo da rentere più facile al giocatore cosa è stato mosso dall'avversario
+ *
+ * @param	{Square}	oldSquare		La casella locale, ancora com'era prima dell'update
+ * @param	{Square}	newSquare		La stessa casella nel payload appena arrivato
+ * @param	{Set<string>} newSet		Parametro di uscita: raccoglie gli id delle caselle
+ *										toccate, riempito una casella per volta dal chiamante
+ * @returns	{void}
+ */
 export function assignLastMoveSquares(oldSquare, newSquare, newSet)
 {
 	const oldPiece	 = oldSquare.piece;
@@ -135,6 +232,10 @@ export function assignLastMoveSquares(oldSquare, newSquare, newSet)
 		newSet.add(oldSquare.id);
 }
 
+/**
+ * PER LA DEMOCRAZIA
+ * @returns	{void}
+ */
 export function spreadDemocracy()
 {
 	localInfo.clickedId			= null;
@@ -154,4 +255,14 @@ export function spreadDemocracy()
 			square.useAbilityBool = false;
 	});
 	clearHighlight();
-}
+} 
+//  Azzera tutto lo stato di interazione del client: selezione, abilita' armata, seconda
+//  mossa, trascinamento, trattative in corso e menu di promozione, piu' gli highlight e i
+//  flag useAbilityBool sparsi per la board. Il nome e' uno scherzo, la funzione e' il
+//  bottone rosso: dopo, il giocatore si ritrova davanti una scacchiera pulita.
+//  Serve ovunque il filo del turno si spezzi e non abbia senso portarsi dietro cio' che il
+//  giocatore stava facendo: il turno passa all'avversario, un errore invalida la mossa in
+//  corso, il tempo scade, qualcuno abbandona, oppure comincia una partita nuova.
+//  Tocca solo lo stato di interazione. Board, giocatori, esito, pezzi catturati e caselle
+//  dell'ultima mossa non vengono sfiorati: quelli descrivono la partita, non cio' che il
+//  giocatore stava facendo con il mouse.

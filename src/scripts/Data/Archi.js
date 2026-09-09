@@ -1,19 +1,36 @@
 import { initLocalBoard, localMatchState, 
 		 localBoard, localPlayers,
 		 startLocalMatchState, localInfo,
-		 currentPlayer, emptyCapturedPieces, debug, 
-		 isMatchLoaded}	from "./Variables.js";
-import { checkEndTurn, hasBoost, 
-		 checkUpgrade, assignLastMoveSquares, 
-		 setVictory,
-		 spreadDemocracy}	from "./utils/ArchiUtils.js";
+		 currentPlayer, emptyCapturedPieces, 
+		 debug, isMatchLoaded}					from "./Variables.js";
+import { checkEndTurn, hasPlayerBoostedPiece, 
+		 checkUpgrade, setVictory, 
+		 assignLastMoveSquares,
+		 spreadDemocracy }						from "./utils/ArchiUtils.js";
 import { beginPendingAbility } 					from "../Helper/abilityMovement.js";
 import { clearHistory } 						from "./History.js";
 import { clearMessages } 						from "./ChatBox.js";
-import "./SocketListen.js"
+import 												 "./SocketListen.js"
 
 //SECTION - INIT FUNCTIONS
-
+/**
+ * Verifica e approva il payload di partita ricevuto dal server e lo normalizza nella forma
+ * { p1, p2, p3, p4, board? } che verra' salvata in localMatchState.
+ *
+ * Le partite a 2 giocatori arrivano senza p3/p4: i due slot mancanti escono a null.
+ * La board puo' mancare solo durante la seconda parte del turno (localInfo.secondTurn),
+ * quando il server manda il solo aggiornamento dei giocatori: in quel caso la chiave
+ * board non viene inclusa nel risultato, cosi' chi chiama sa di non doverla aggiornare.
+ *
+ * I campi extra del raw (id, team, victory, ...) non vengono copiati: chi chiama
+ * li legge direttamente dal payload originale.
+ *
+ * @param	{Object}	rawJson		Payload grezzo del match arrivato dal server
+ * @returns	{{p1: Object, p2: Object, p3: Object|null, p4: Object|null, board: Object}}
+ *			Stato di partita validato e normalizzato
+ * @throws	{Error}		Se il root non e' un oggetto, se board non e' una mappa di
+ *						caselle, o se mancano i giocatori attesi per il tipo di partita
+ */
 function  validateReceivedMatch(rawJson)
 {
 	if (!rawJson || typeof rawJson !== "object" || Array.isArray(rawJson))
@@ -48,6 +65,17 @@ function  validateReceivedMatch(rawJson)
 	}
 }
 
+/**
+ * Costruisce da zero lo stato locale di una partita nuova: e' il punto d'ingresso
+ * chiamato da typeInit() quando il socket annuncia un match appena creato.
+ *
+ * matchId e myTeam finiscono anche in sessionStorage per
+ * sopravvivere a un refresh della pagina, dove li recupera reloadMatchState().
+ *
+ * @param	{Object}	raw			Payload del match dal server: i giocatori e la board
+ *									piu' i campi id, team e victory
+ * @returns	{void}
+ */
 export function initLocalMatchState(raw)
 {
 	try
@@ -73,6 +101,22 @@ export function initLocalMatchState(raw)
 	catch(err) { debug("[initLocalMatchState]: Errore di init del Match!" + err); }
 }
 
+/**
+ * Aggiorna la mappa reattiva localPlayers leggendo i giocatori da localMatchState
+ * già validato in precedenza
+ *
+ * Parte da una clear(): la mappa viene ricostruita da zero, mai aggiornata a pezzi.
+ * Gli slot a null (p3 e p4 nelle partite 1v1) vengono saltati, quindi localPlayers
+ * contiene solo i giocatori realmente in campo e la sua size dice se il match e' a 2
+ * o a 4. Le chiavi restano le sigle "p1".."p4", non i nomi dei giocatori.
+ *
+ * hasPlayerBoostedPiece() ricalcola localInfo.hasBoostedPiece guardando se il giocatore
+ * di turno ha almeno un pezzo potenziato in board.
+ *
+ * @returns	{void}
+ * @throws	{Error}		Se uno slot giocatore atteso e' assente da localMatchState
+ *						o non e' un oggetto
+ */
 function initLocalPlayers()
 {
 	const players_list = ["p1", "p2", "p3", "p4"];
@@ -89,12 +133,28 @@ function initLocalPlayers()
 		localPlayers.set(player, localMatchState[player]);
 	});
 
-	hasBoost(currentPlayer());
+	hasPlayerBoostedPiece(currentPlayer());
 }
 //!SECTION
 
 //SECTION - UPDATE FUNCTIONS
 
+/**
+ * aggiorna sul posto le caselle e i giocatori esistenti, cosi' la
+ * reattivita' di Vue ridisegna solo quello che e' cambiato davvero.
+ *
+ * L'oggetto outcome serve a playMoveAudio() per scegliere quale suono sparare
+ *
+ * Ignoro l'update se lo stato locale è vuoto con una guardia
+ * tipo un messaggio arriva prima dell'init o dopo un cambio pagina
+ *
+ * si azzera il drag, si aggiorna l'esito, si guarda se il turno e' finito PRIMA di sovrascrivere
+ * localMatchState ,* poi si aggiornano board e giocatori.
+ *
+ * @param	{Object}	nextRaw		Payload di aggiornamento dal server: i giocatori, la
+ *									board e victory
+ * @returns	{{moved: boolean, captured: boolean, transformed: boolean}|undefined} info per audio
+ */
 export function updateMatchState(nextRaw)
 {
 	const outcome = { moved: false, captured: false, transformed: false };
@@ -121,6 +181,30 @@ export function updateMatchState(nextRaw)
 	return (outcome);
 }
 
+/**
+ * aggiorna localBoard con il payload pre validato e riporta in outcome cosa e' cambiato.
+ *
+ * Aggiorna le caselle sul posto invece di sostituirle: l'oggetto Square resta lo stesso,
+ * si rimpiazzano solo piece, targetZones e boostedTargetZones. Serve a non perdere i
+ * flag di interfaccia che vivono solo sul client (highlight, selected, inCheck, clicked)
+ * e a non rompere i riferimenti reattivi che Vue ha gia' agganciato alle caselle.
+ * Ignoro tutto ciò di cui non ho bisogno.
+ *
+ * Il payload è un JSON, quindi le zone di movimento sono array e oggetti: qui le riporto 
+ * a Set e a Map di Set.
+ *
+ * Confrontanto ogni square con il suo precedente aggiorno le catture in capturedP  
+ * e le trasformazioni dei bastards.
+ *
+ * Le caselle toccate dalla mossa finiscono in localInfo.lastMovesSquares per l'highlight
+ * dell'ultima mossa. 
+ * Aggiorno matchstarted alla non prima mossa del bianco.
+ *
+ * @param	{Object}	changes		Payload scacchiea validato
+ * @param	{{moved: boolean, captured: boolean, transformed: boolean}} outcome Info per audio
+ * @returns	{void}
+ * @throws	{Error}		Se la board manca o non e' una mappa di caselle
+ */
 function updateLocalBoard(changes, outcome)
 {
 	if (!isMatchLoaded())
@@ -174,6 +258,25 @@ function updateLocalBoard(changes, outcome)
 	}
 }
 
+/**
+ * Aggiorna i giocatori in localPlayers coi dati del payload validato.
+ *
+ * Lo spread {...vecchio, ...nuovo} fa un merge, non una sostituzione: il server puo'
+ * mandare un giocatore parziale, con i soli campi cambiati, e i campi assenti restano
+ * quelli di prima invece di sparire. Al posto della mutazione sul posto usata per le
+ * caselle qui si scrive un oggetto nuovo nella mappa, cosi' Vue vede il cambiamento.
+ *
+ * Diversamente da initLocalPlayers(), uno slot assente o a null non e' un errore ma un
+ * caso normale: durante la partita il payload puo' portare solo i giocatori toccati
+ * dalla mossa. Restano vietati i tipi sbagliati.
+ *
+ * Chiude ricalcolando localInfo.hasBoostedPiece sul giocatore di turno, che dopo il merge
+ * potrebbe essere cambiato.
+ *
+ * @param	{Object}	changes		Payload validato con i cambiamenti
+ * @returns	{void}
+ * @throws	{Error}		Se uno slot giocatore presente nel payload non e' un oggetto
+ */
 function updateLocalPlayers(changes) 
 {
 	if (!isMatchLoaded())
@@ -195,10 +298,22 @@ function updateLocalPlayers(changes)
 		localPlayers.set(player, {...localPlayers.get(player), ...changes[player]});
 	});
 
-	hasBoost(currentPlayer());
+	hasPlayerBoostedPiece(currentPlayer());
 }
 //!SECTION
 
+/**
+ * Ripopola localMatchState con i dati di una partita in cui partecipa lo user dopo 
+ * un refresh della pagina.
+ *
+ * Dopo un F5 la memoria del browser e' vuota: myTeam ricade su sessionStorage se il
+ * payload non lo porta, e matchId viene riletto solo da li'. I due valori vanno riscritti
+ * dopo initLocalBoard(), che al suo interno passa da clearMatchStorage() e li cancella.
+ * 
+ * @param	{Object}	raw			Payload di reload: giocatori e board piu' team, victory,
+ *									secondMove, pending, aiGame, usedBoost e oldBoosted
+ * @returns	{void}
+ */
 export function reloadMatchState(raw)
 {
 	try
@@ -212,7 +327,7 @@ export function reloadMatchState(raw)
 	
 		localInfo.myTeam			= raw.team ?? sessionStorage.getItem("match:myTeam");	
 		localInfo.matchId			= sessionStorage.getItem("match:id");
-		localInfo.matchStarted		= false;
+		localInfo.matchStarted		= true;
 		localInfo.secondTurn		= raw.secondMove ?? false;
 		localInfo.drawOffer 		= raw.pending === true ? true : false;
 		localInfo.aiGame			= raw.aiGame;
@@ -226,6 +341,23 @@ export function reloadMatchState(raw)
 
 }
 
+/**
+ * Gestione del reload quando viene fatto nel bel mezzo di un secondTurn quando 
+ * la seconda mossa non è ancora stata fatta
+ *
+ * Leggendo usedBoost dal payload si capisce se il pezzo ha utilizzato l'abilità oppure
+ * l'ha lasciata armata ed è in attesa.
+ * Leggendo la mappa oldBoost so quali zone vanno highlightate con useBilityBool nel caso
+ * il pezzo abbia l'abilità armata.
+ * Il Bastards e' l'eccezione: passa con anchorId a null, cosi' la sua casella non viene
+ * marcata con useAbilityBool dato che la sua seconda mossa parte da un altro pezzo e non
+ * da se stesso
+ * 
+ * Se anche solo una delle info manca resetto lo stado dell'uso abilità a zero per sicurezza.
+ *
+ * @param	{Object}	raw			Payload di reload, da cui si leggono usedBoost e oldBoosted
+ * @returns	{void}
+ */
 function restorePendingAbility(raw)
 {
 	const anchorId	= raw.usedBoost || null;
@@ -248,6 +380,11 @@ function restorePendingAbility(raw)
 	})
 }
 
+/**
+ * Reset totale delle variabili locali legate ad una partita in corso
+ *
+ * @returns	{void}
+ */
 export function clearMatchStorage()
 {
 	sessionStorage.removeItem("match:id");
