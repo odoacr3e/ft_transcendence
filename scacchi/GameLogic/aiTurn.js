@@ -35,7 +35,6 @@ export function AIexecuteTurn(match)
 	match.aiSimulation = true;
 	turnData = getBestTurn(match);
 	turn = turnData.Turn;
-	// render(match);
 	DEBUG_turn = turn;
 	match.aiSimulation = false;
 	team = match.currentPlayer.team;

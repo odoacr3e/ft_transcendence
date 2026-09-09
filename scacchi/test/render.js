@@ -121,7 +121,6 @@ function getCoords(match)
 	if (!coords.playerSquare)
 	{
 		coords.playerSquare = new Square();
-		// throw ("Render, getCoords: invalid cursor");
 	}
 	return (coords);
 }
@@ -380,23 +379,5 @@ function boardOtherInfo(match)
 	while(match.currentPlayer.team != currTeam)
 	return buffer;
 }
-
-// /** @param {Match} match */
-// function boardHash(match)
-// {
-// 	let	hash;
-// 	let	squareHash;
-// 	let	counter;
-
-// 	hash = 0;
-// 	counter = -1;
-// 	for (const [key, square] of match.board)
-// 	{
-// 		++counter;
-// 		squareHash = 0;
-
-// 		if (!square.piece)
-// 	}
-// }
 
 export {render, getDotColor, printSwap, boardStringify};

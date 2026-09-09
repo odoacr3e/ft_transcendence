@@ -87,7 +87,6 @@ export class Queue extends Map
 		let	fromNode;
 		let fromRange;
 
-		// this.DelNode(fromId);
 		fromNode = this.get(fromId);
 		toNode = this.get(toId);
 		if (!toNode || !fromNode)

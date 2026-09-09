@@ -63,7 +63,7 @@ export function AItraining(match)
 		{
 			val = evaluateEvent(match, event, event.score, 1);
 			data[event.zobristIndex] = [val, 1];
-		}//407746
+		}
 	}//@ts-ignore
 	if (dataW != undefined && globals.AIgameCounter.get(profileW) % 20 == 0)
 	{
@@ -145,7 +145,6 @@ function updateTrainingData(data)
 	entries.sort(([, [scoreA, counterA]], [, [scoreB, counterB]]) => 
 		getImportance(scoreB, counterB) - getImportance(scoreA, counterA)
 	);
-	// garbageIndex = entries.length * CUTOFF;
 	if (entries.length > AI_MAX_DATA)
 		garbageIndex = AI_MAX_DATA;
 	else

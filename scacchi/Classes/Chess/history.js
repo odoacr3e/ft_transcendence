@@ -226,8 +226,6 @@ function updateMoves(match, square, coords, result, boostBool=false)
 	if (!square)
 		throw (`History: invalid square`);
 	to = match.board.get(coords[1]);
-	// if (!square.piece)
-	// 	throw (`History: missing piece in square: ${square}`);
 	eName = eEvents.Move;
 	if (result.usedBoost || boostBool == true)
 		eName = eEvents.MoveBoost;
@@ -270,8 +268,6 @@ function updateBoost(match, square, from)
 		throw (`History: invalid from coord`);
 	if (!square)
 		throw (`History: invalid square`);
-	// if (!square.piece)
-	// 	throw (`History: missing piece in square: ${square}`);
 	record = new HistoryEvent(this.moves, eEvents.Boost, square.piece?.team, match.board.updates, square.piece?.type, from);
 	record.updates = structuredClone(match.board.updates);
 	record.time = match.currentPlayer.time;
@@ -303,8 +299,6 @@ function updateTransform(match, square, from, newType)
 		throw (`History: invalid from coord`);
 	if (!square)
 		throw (`History: invalid square`);
-	// if (!square.piece)
-	// 	throw (`History: missing piece in square: ${square}`);
 	record = new HistoryEvent(this.moves, eEvents.Transform, square.piece?.team, match.board.updates, newType, from);
 	record.to = newType;
 	record.updates = structuredClone(match.board.updates);

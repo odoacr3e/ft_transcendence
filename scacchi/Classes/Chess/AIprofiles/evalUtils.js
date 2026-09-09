@@ -72,17 +72,6 @@ export function basicEval(match, ai, turns)
 				score -= 1;
 		}
 	}
-	//5)	differenza valore pezzi
-	// let	lastMove = match.history.LastTurn()[0];
-	// let	pieceValueDelta;
-	// let pieceValueDeltaPrev;
-	// let delta;
-	// pieceValueDeltaPrev = lastMove.pieceValue.WHITE - lastMove.pieceValue.BLACK;
-	// pieceValueDelta = match.white.pieceValue - match.black.pieceValue;
-	// pieceValueDelta = (match.currentPlayer.team == eTeam.White ? pieceValueDelta : -pieceValueDelta);
-	// pieceValueDeltaPrev = (match.currentPlayer.team == eTeam.White ? pieceValueDelta : -pieceValueDeltaPrev);
-	// delta = pieceValueDelta - pieceValueDeltaPrev;
-	// score += (pieceValueDelta + (delta / 2)) * 9;
 	return (score);
 }
 

@@ -46,7 +46,6 @@ function initSavedBoard(match)
 				curr = rows[i]?.slice(0, indexSep);// curr = C
 				//@ts-ignore
 				rows[i] = rows[i]?.slice(indexSep + 1);// next = B|...
-				// console.log(curr, match.cursor.square);
 				assignPieceByType(match, curr);
 			}
 		}

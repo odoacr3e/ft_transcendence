@@ -65,7 +65,6 @@ function cancelMove(match, lastEvent)
 	let	toSquare;
 	let	tmp;
 
-	// console.log(Object.prototype.toString.call(lastEvent.updates));
 	if (!lastEvent.updates || lastEvent.updates.size == 0 || Object.prototype.toString.call(lastEvent.updates) != "[object Set]")
 		return (console.error("cancelMove: History does not have the updates array"));
 	fromSquare = match.board.get(lastEvent.from);
@@ -100,7 +99,7 @@ function cancelMove(match, lastEvent)
 		match.currentPlayer.nPoints -= lastEvent.pieceEaten.price;
 		match.GetPlayer(lastEvent.pieceEaten?.team).nPieces += 1;
 		match.white.pieceValue = lastEvent.pieceValue.WHITE;
-		match.black.pieceValue = lastEvent.pieceValue.BLACK;// FIXME - nel cas anche per 4 giocatori
+		match.black.pieceValue = lastEvent.pieceValue.BLACK;// FIXME - nel caso anche per 4 giocatori
 	}
 	else
 	{
@@ -120,7 +119,6 @@ function cancelMove(match, lastEvent)
 			throw (`cancelMove: boostedPiece does not exist, in ${boostedSquare}`);
 		boostedSquare.piece.isBoostedBool = true;
 		match.currentPlayer.boostedPiece = lastEvent.prevBoost;
-		// console.log(`Event: ${lastEvent}, prevBoost: ${lastEvent.prevBoost}`);
 	}
 	if (fromSquare.piece)
 	{

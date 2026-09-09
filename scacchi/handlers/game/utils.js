@@ -43,11 +43,7 @@ function clientBoard(match, copyAll=false, avoidReset=false)
 	if (copyAll == true)
 		dest = copyBoard(src, null, match);
 	else
-	{
 		dest = copyOnlyBoardUpdates(match);
-	}
-	// console.log("updates:");
-	// console.log(match.board.updates);
 	if (avoidReset == false)
 		match.board.updates.clear();
 	modifyBoard(dest);
@@ -78,7 +74,6 @@ function copyOnlyBoardUpdates(match)
 
 	src = match.board;
 	newBoard = new Map();
-	// console.log(`Board updates: ${match.board.updates.size}`);
 	for (const coord of match.board.updates)
 	{
 		square = src.get(coord);

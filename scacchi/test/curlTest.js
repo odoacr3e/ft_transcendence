@@ -41,8 +41,6 @@ async function testerMain()
 	let	matchName;
 	let	matchPath;
 
-	// exec("npm run start", (err, stdout, stderr) =>{if (err){console.error(`${err} ${stderr}`)}});
-	// await msleep(1000);
 	globals.matches.set("0", new Match());
 	matchName = process.argv.at(2);
 	if (!matchName)
@@ -124,12 +122,6 @@ async function execTest(matchPath)
 		boards = highLightBoardDiff(history.finalBoard, board);
 		return (gameFail(MSG.BOARD, boards.correct, boards.wrong));
 	}
-	// else if (history.victory && !match.victory)
-	// 	return (gameFail(MSG.WIN_MISS, history.victory));
-	// else if (!history.victory && match.victory)
-	// 	return (gameFail(MSG.WIN_WRONG));
-	// else if (history.victory != match.victory)
-	// 	return (gameFail(MSG.WIN_PLAYER), match.victory);
 	success();
 }
 
@@ -157,7 +149,6 @@ async function executeEvents(match, history)
 		settings = "0";
 	//@ts-ignore
 	res = await curlSender("init", settings, "", objectCmd);
-	// console.debug(res);
 	updateBoard(match.board, res);
 	backendBoard = await getBackBoard();
 	if (cmpBoard(match.board, backendBoard) == false)
@@ -332,8 +323,6 @@ async function curlSender(type, from="", to="", cmd=curlCmd)
 	resp = execSync(cmd, {maxBuffer: 1 << 28}).toString();
 	//@ts-ignore
 	json = jsonParser(resp);
-	// console.debug(`cmd: ${cmd}: =>`);
-	// console.debug(json);
 	if (json.log.status != 200)
 	{
 		if (json.log.msg == "Game Error: You need to move first")

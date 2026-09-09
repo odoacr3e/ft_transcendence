@@ -87,7 +87,6 @@ function responseFormatter(match, result, msg, status)
 		result.board = new Map();//@ts-ignore
 		result.ignoreBoard = true;
 	}
-	// delete result.board;
 	result.log = log;
 	if (!result.victory)
 		result.victory = match? match.victory: "";

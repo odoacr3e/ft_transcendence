@@ -38,7 +38,6 @@ function mainTerm()
 	let	seed;
 	let	time;
 
-	// console.log = ()=>{};
 	console.time();
 	console.profile();
 	termInit();
@@ -50,32 +49,17 @@ function mainTerm()
 	seed = "1v1";
 	time = process.hrtime.bigint();
 	init(match, seed);
-	// historyRestore(match, HISTORY_DEFAULT);
-	// move(match, "e2", "e4");
-	// move(match, "g8", "f6");
-	// move(match, "e4", "e5");
-	// move(match, "h8", "g8");
-	// if (lib.include.fs.existsSync(HISTORY_DEFAULT))
-	// 	historyRestore(match, HISTORY_DEFAULT);
-	// match.currentPlayer.ai = new AI(AIprofiles.FIRST_AI);
 	if (aiOppo)
 	{
 		match.NextPlayer().ai = new AI(aiOppo);
 		match.aiBool = true;
 	}
-	// move(match, "e5", "f6");
 	console.log(`time to init: ${(process.hrtime.bigint() - time) / 1000n} microseconds`);
 	match.cursor.square = match.currentPlayer.King;
 	render(match);
 	return (match);
 }
 
-// console.log(await prisma.matches.findMany());
-// await historyGetMatchState({matchId: 235, moveId: 2});
-// await historyGetMatchState({matchId: 235, moveId: 1});
-// await historyGetMatchState({matchId: 235, moveId: 0});
-// await historyGetMatchState({matchId: 235, moveId: -1});
-// process.exit();
 let match = mainTerm();
 let	helpBool = true;
 let	mutex = false;
@@ -145,8 +129,6 @@ process.stdin.on('keypress', (str, key) =>
 			result = execEvent(match, eEvents.Boost);
 			if (result.status != 200)
 				return (saveWrongMove(match, result, eEvents.Boost));
-			// console.log(`index => ${match.zobristIndex}`);
-			// console.log(`hash => ${match._zobristHash}`);
 			selected = [];
 			break ;
 		case (cmd.USE_BOOST) :
@@ -163,8 +145,6 @@ process.stdin.on('keypress', (str, key) =>
 					return (saveWrongMove(match, result, eEvents.MoveBoost));
 				else if (result.status != 200)
 					return (saveWrongMove(match, result, eEvents.Move));
-				// console.log(`index => ${match.zobristIndex}`);
-				// console.log(`hash => ${match._zobristHash}`);
 				selected = [];
 			}
 			break ;
@@ -303,7 +283,6 @@ function execEvent(match, eventType, newPieceType="")
  */
 function print(key)
 {
-	// console.log(getLegalMoves(match));
 	console.log("\n\n\nrow", match.cursor.getRow(), ", col", match.cursor.getCol(), ", cursor", match.cursor.Normify(), `(${match.cursor.square})`);
 	if (TargetDangerSwitch != "None")
 		console.log(`Visualizing ${TargetDangerSwitch} zones`);

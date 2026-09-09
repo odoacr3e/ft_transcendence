@@ -72,8 +72,6 @@ class Globals
 				return (this.rankedQueue);
 			case (enumConnection.FRIENDLY):
 				return (this.friendlyQueue);
-			// case (enumConnection.ARENA):
-			// 	return (this.arenaQueue);
 			case (enumConnection.PRIVATE):
 				throw (`GetQueue: roomType ${roomType} invalid for matchmaking`);
 			default:
@@ -95,14 +93,11 @@ class Globals
 			throw ("FindQueue: please give an empty object as second parameter.");
 		queueNodeArray.push(this.rankedQueue.get(userId));
 		queueNodeArray.push(this.friendlyQueue.get(userId));
-		// queueNodeArray.push(this.arenaQueue.get(userId));
 		console.log(this.friendlyQueue);
 		if (queueNodeArray[0])
 			queue = this.rankedQueue;
 		else if (queueNodeArray[1])
 			queue = this.friendlyQueue;
-		// else if (queueNodeArray[2])
-		// 	queue = this.arenaQueue;
 		else
 			throw ("FindQueue: user " + userId + " is not in any queue");
 		queueNode = queue.get(userId);
@@ -118,7 +113,6 @@ class Globals
 	{
 		this.friendlyQueue.DelNode(userId, resetTimerBool);
 		this.rankedQueue.DelNode(userId, resetTimerBool);
-		// this.arenaQueue.DelNode(userId, resetTimerBool);
 	}
 	/** @param {number} timerId */
 	ClearTimer(timerId)

@@ -54,7 +54,6 @@ async function gameHttpHandler(req, res)
 		globals.matches.set("0", match);
 	}
 	else
-		// result = await gameHandler(match, body, {matchData: {team: "white"}});
 		result = await gameHandler(match, body);
 	res.status(result.log.status).json(result);
 }

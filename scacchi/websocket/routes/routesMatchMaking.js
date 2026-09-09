@@ -19,7 +19,6 @@ export function routesMatchMaking(socket, user)
 {
 	let	socketData;
 
-	// TODO - da aggiungere team nel caso
 	socket.on('create_ai_match', async(/** @type {{profile: string, team: string | null}} */req, callback) => 
 	{
 		let result = new Result().Success();
@@ -48,7 +47,6 @@ export function routesMatchMaking(socket, user)
 			matchId = await openMatch();
 			child?.matchSet.add(matchId);
 			//FIXME - fare in un handler
-			// result.team = socketData.matchData.team;
 			socketData.state = enumSocketState.PLAYING;
 			socketData.aiMatchData = {ChildId: ChildId, matchId: matchId};
 			socket.join(`match_${matchId}`);
