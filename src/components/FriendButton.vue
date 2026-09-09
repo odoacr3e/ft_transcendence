@@ -4,6 +4,7 @@
 	import { useAuthStore }					from '@/stores/auth.st';
 	import { taskApi }						from '../router/api/task.api';
 	import { useI18n }						from 'vue-i18n';
+	import { debug }						from '../scripts/Data/Variables';
 	import { api }							from '../router/api/client';
 	import IconCheck               from './icons/IconCheck.vue';
 	import IconCross               from './icons/IconCross.vue';
@@ -53,7 +54,7 @@
 			await useAuthStore().fetchMe(true);
 			updateState();
 		}
-		catch(err) { console.error(err); }
+		catch(err) { debug("[sendRequest]: Errore nel mandare richeste d'amicizia!\n" + err); }
 		
 	}
 
@@ -63,7 +64,7 @@
     	    await updateState();
     	}
     	catch (err) {
-    	    console.error(err);
+    	    debug("[hiddenReload]: Errore nel reload nascosto!\n" + err);
 		}
 	}
 	

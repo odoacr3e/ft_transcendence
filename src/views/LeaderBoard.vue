@@ -6,6 +6,7 @@ import { useAuthStore } from "../stores/auth.st";
 import { storeToRefs }  from 'pinia';
 import { useI18n }      from 'vue-i18n';
 import { api }          from '../router/api/client';
+import { debug }        from '../scripts/Data/Variables.js'
 
 const   { t } = useI18n(),
         lBoard = ref([]),
@@ -30,7 +31,7 @@ onMounted(async () => {
         if (lBoard.value.find((u) => u.id_user == user.value.id_user))
             top.value = true;
     }
-    catch (err) { console.error(err); }
+    catch (err) { debug("[mounted di LeaderBoard]: Errore nel mounting!\n" + err) }
 });
 </script>
 

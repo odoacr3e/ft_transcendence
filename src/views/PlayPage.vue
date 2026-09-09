@@ -118,7 +118,7 @@
 			flex z-2 bg-bg-darker rounded-3xl">
         <div class="px-1 pb-16 flex flex-col items-center w-180">
     		<IconLogo class="size-35"/>
-			<h1 class="text-[200%] mb-1 text-text-default justify-self-center whitespace-nowrap">{{ aiGame ? t('game.playPgae.aiTitle') : t('game.playPgae.title') }}</h1>
+			<h1 class="text-[200%] mb-1 text-text-default justify-self-center whitespace-nowrap">{{ aiGame ? t('game.playPage.aiTitle') : t('game.playPage.title') }}</h1>
 			<hr class="w-[80%] justify-self-center text-text-last">
 			<div v-if="!waiting" >
 				<div class="translate-y-9 w-full" :class="aiGame ? 'px-4' : 'pl-18'">
@@ -135,9 +135,9 @@
 								</div>
 							</div>
 							<div v-else class="flex flex-row gap-4 flex-1 justify-center pr-30">
-								<div @click="toggle('roomType', 'PRIVATE')"  :class="roomType === 'PRIVATE'  ? 'border-main-color' : 'border-border-default'" class="opt border-2 cursor-pointer">{{ t('game.playPgae.opt.priv') }}</div>
-								<div @click="toggle('roomType', 'FRIENDLY')" :class="roomType === 'FRIENDLY' ? 'border-main-color' : 'border-border-default'" class="opt border-2 cursor-pointer">{{ t('game.playPgae.opt.friend') }}</div>
-								<div @click="toggle('roomType', 'RANKED')"   :class="roomType === 'RANKED'   ? 'border-main-color' : 'border-border-default'" class="opt border-2 cursor-pointer">{{ t('game.playPgae.opt.rank') }}</div>
+								<div @click="toggle('roomType', 'PRIVATE')"  :class="roomType === 'PRIVATE'  ? 'border-main-color' : 'border-border-default'" class="opt border-2 cursor-pointer">{{ t('game.playPage.opt.priv') }}</div>
+								<div @click="toggle('roomType', 'FRIENDLY')" :class="roomType === 'FRIENDLY' ? 'border-main-color' : 'border-border-default'" class="opt border-2 cursor-pointer">{{ t('game.playPage.opt.friend') }}</div>
+								<div @click="toggle('roomType', 'RANKED')"   :class="roomType === 'RANKED'   ? 'border-main-color' : 'border-border-default'" class="opt border-2 cursor-pointer">{{ t('game.playPage.opt.rank') }}</div>
 							</div>
 						</div>
 						<div class="flex flex-row items-center">
@@ -147,7 +147,7 @@
 								<div v-for="s in sides" :key="s"
 									 @click="toggle('side', s)"
 									 :class="side === s ? 'border-main-color' : 'border-border-default'"
-									 class="opt border-2 cursor-pointer">{{ t(`game.playPgae.ai.side.${s}`) }}</div>
+									 class="opt border-2 cursor-pointer">{{ t(`game.playPage.ai.side.${s}`) }}</div>
 							</div>
 							<div v-else class="flex flex-row gap-4 flex-1 justify-center pr-30">
 								<div @click="players = players === '1v1'     ? null : '1v1'"     :class="players === '1v1'     ? 'border-main-color' : 'border-border-default'" class="opt border-2 cursor-pointer">1v1</div>
@@ -172,21 +172,21 @@
 							:class="canPlay ? 'pointer-events-auto grayscale-0' : 'pointer-events-none grayscale'"
 							class=	"py-4 px-12 text-3xl text-text-default rounded-2xl transition-all duration-150
 									bg-main-color hover:bg-linear-to-t from-main-color to-light-button cursor-pointer">
-						{{ t('game.playPgae.play') }}
+						{{ t('game.playPage.play') }}
 					</button>
 				</div>
 			</div>
 			<div v-else class="flex flex-col items-center justify-center gap-6 py-20">
 				<div class="w-16 h-16 border-4 border-main-color border-t-transparent rounded-full animate-spin"></div>
 				<p v-if="!reloading" class="text-text-default text-xl tracking-wide">
-					{{ aiGame ? t('game.playPgae.ai.side.looking') : t('game.playPgae.opt.looking') }}<span class="dot dot-1">.</span><span class="dot dot-2">.</span><span class="dot dot-3">.</span>
+					{{ aiGame ? t('game.playPage.ai.side.looking') : t('game.playPage.opt.looking') }}<span class="dot dot-1">.</span><span class="dot dot-2">.</span><span class="dot dot-3">.</span>
 				</p>
 				<p v-else class="text-text-default text-xl tracking-wide">
-					{{ t('game.playPgae.reload') }}<span class="dot dot-1">.</span><span class="dot dot-2">.</span><span class="dot dot-3">.</span>
+					{{ t('game.playPage.reload') }}<span class="dot dot-1">.</span><span class="dot dot-2">.</span><span class="dot dot-3">.</span>
 				</p>
 				<button @click="waiting = false; sockStore.socket?.emit('cancel_match')"
 						class="cursor-pointer justify-self-center w-[70%] my-3 p-3 text-base bg-main-color rounded-[7px] text-text-default hover:bg-linear-to-t from-main-color to-light-button">
-						{{ t('game.playPgae.cancel') }}
+						{{ t('game.playPage.cancel') }}
 				</button>
 			</div>
     	</div>

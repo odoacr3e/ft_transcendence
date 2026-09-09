@@ -165,9 +165,10 @@
 					leave-to-class="opacity-0 scale-70">
 					<div v-if="n_bool" class="mt-1.25 px-2 absolute bg-bg-darker border border-border-second w-76.5"
 						:class="msgStore.msgRecevied.size > 3 ? 'w-79 max-h-[40vh] overflow-y-auto' : ''">
-						<span v-if="msgStore.msgRecevied && Array.from(msgStore.msgRecevied).find(m => m.status === 'not_read') !== undefined"
-							class="mx-auto text-notif-on text-sm underline cursor-pointer transition-all"  @click.stop="readAllMsg()">
-							Read all </span>
+						<button :class="msgStore.msgRecevied && Array.from(msgStore.msgRecevied).find(m => m.status === 'not_read') !== undefined ? 'h-fit' : 'h-0 hidden'"
+							class="cursor-pointer mx-auto mt-2 -mb-2 bg-main-color rounded-[7px] text-text-default hover:bg-linear-to-t from-main-color to-light-button
+									text-sm w-full transition-transform"
+							@click.stop="readAllMsg()">{{ t('header.readAll') }}</button>
 						<div v-if="msgStore.msgRecevied" v-for="m in msgStore.msgRecevied"
 							class="bg-bg-default p-2 my-2 rounded-sm text-text-default">
 							<div class="flex gap-2 pb-1 items-center">

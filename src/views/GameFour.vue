@@ -3,6 +3,7 @@
 	import ChessBoard from '@/components/ChessBoard.vue';
 	import { initLocalMatchState }  from '../scripts/Data/Archi';
 	import { onMounted, ref }       from 'vue';
+    import { debug }                   from '../scripts/Data/Variables.js';
 
 	const ready = ref(false);
 	const style = ref("14x14x4");
@@ -11,9 +12,7 @@
 	  try{
 	    await initLocalMatchState();
 	    ready.value = true;
-	  } catch (err) {
-	    console.error(`${err}`);
-	  }
+	  } catch (err) { debug("[mounted di GameFour]: Errore nel mounting!\n" + err) }
 	})
 </script>
 

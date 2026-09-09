@@ -29,6 +29,7 @@ export const italian = {
                 tagNotif:   "Complimenti! Grazie alle tue vittorie in tuo rango è salito a {rank}"
             },
             notifications: "Notifiche",
+            readAll: "Segna tutto come letto",
             zeroNotif: "Nessuna notifica",
             profile: "Profilo",
             settings: "Impostazioni",
@@ -110,7 +111,7 @@ export const italian = {
             sendRequest: "Manda amicizia"
         },
         game: {
-            playPgae: {
+            playPage: {
                 title: "Scegli il tuo destino",
 				aiTitle: "Sfida la macchina",
                 reload: "Ricaricando la partita",

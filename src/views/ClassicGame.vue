@@ -1,5 +1,5 @@
 <script setup>
-	import { localMatchState, localInfo, DOMPlayer, ePlaying, debug}	from '@/scripts/Data/Variables';
+	import { localMatchState, localInfo, DOMPlayer, ePlaying, debug }	from '@/scripts/Data/Variables';
 	import { onMounted, ref, computed, onUnmounted, watch }       		from 'vue';
 	import { reloadMatch, amIPlaying, requestToBack }					from '@/scripts/Events/BackLink.js';
 	import PlayerInfo               									from '../components/PlayerInfo.vue';
@@ -60,9 +60,7 @@
 				}
 			}
 			ready.value = true;
-		} catch (err) {
-			console.error(`${err}`);
-		}
+		} catch (err) { debug("[mounted di ClassicGame]: Errore nel mounting!\n" + err) }
 	})
 
 	watch(ready, (val) => {

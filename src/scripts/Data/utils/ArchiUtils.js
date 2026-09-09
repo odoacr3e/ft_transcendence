@@ -1,5 +1,5 @@
 import { computePosition, offset, flip, shift, autoUpdate }	from "@floating-ui/dom";
-import { localBoard, localInfo, currentPlayer } 			from "../Variables";
+import { localBoard, localInfo, currentPlayer, debug } 			from "../Variables";
 import { clearHighlight }									from "@/scripts/Events/utils/HighlightUtils.js";
 import { playAudio } 										from "@/scripts/Helper/generalUtils";
 
@@ -97,7 +97,7 @@ export function checkUpgrade()
 						}
 						menuEl.style.transform = `translate(${Math.round(x)}px, ${Math.round(y)}px)`;
 					})
-					.catch(console.error);
+					.catch(err){debug("[updatePosition]\n" + err)};
 				}
 				if (stopAutoUpdate) { stopAutoUpdate(); stopAutoUpdate = null; }
                 stopAutoUpdate = autoUpdate(fromEl, menuEl, updatePosition);

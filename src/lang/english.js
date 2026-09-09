@@ -30,6 +30,7 @@ export const english = {
             },
             notifications: "Notifications",
             zeroNotif: "No notifications",
+            readAll: "Read all",
             profile: "Profile",
             settings: "Settings",
             logout: "Logout",
@@ -110,7 +111,7 @@ export const english = {
             sendRequest: "Send @.lower:common.friend request"
         },
         game: {
-            playPgae: {
+            playPage: {
                 title: "Choose your fate",
 				aiTitle: "Challenge the Machine",
                 reload: "Reloading game",
