@@ -17,7 +17,7 @@ export function drawHandler(match, body, socketData)
 	if (IS_CHILD_PROCESS == true)
 	{
 		ai = match.currentPlayer.ai ? match.currentPlayer : match.NextPlayer();
-		if (ai.ai?.defeatStatus)
+		if (ai.ai?.defeatStatus || body.draw == true)
 		{
 			aiSpeech(match, AI_EVENTS.acceptDraw, [], match.currentPlayer.ai != null);
 			return (match.DrawMatch(null, `Player decision`));
@@ -29,7 +29,7 @@ export function drawHandler(match, body, socketData)
 		return (new Result().Error("no socketData", 500));
 	if (!match.drawPendingBool && !body.draw)
 		return (new Result().Success("OK", "draw"));
-	if (!body.draw)
+	if (body.draw == false)
 		return (declineDraw(match, body, socketData));
 	if (!match.drawPendingBool)
 		return (offerDraw(match, body, socketData));
