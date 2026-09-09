@@ -45,11 +45,10 @@ onMounted(async () => {
             <div v-if="top3" class="relative justify-items-center justify-self-center -mb-7 z-2">
                 <p class="text-text-second max-md:text-sm">{{ top3[0].points }}</p>
                 <div class="relative">
-                    <img class="rounded-full object-cover max-md:size-25 md:size-27" :src="top3[0].image ? `${top3[0].image}` : defaultAvatar" @error="handleAvatarError"/>
+                    <img class="rounded-full object-cover max-md:size-25 md:size-27" :src="top3[0].image ? `${top3[0].image}` : defaultAvatar" @error="handleAvatarError" :draggable="false"/>
                     <TagTitle :title="top3[0].title" class="absolute 
                         max-md:-bottom-1 max-md:-right-5
-                        md:-bottom-2 md:-right-4
-                        lg:-bottom-3 lg:right-0"/>
+                        md:-bottom-2 md:-right-4"/>
                 </div>
                 <RouterLink :to="{ name: 'user_page', params: { username: top3[0].username } }" class="flex items-center gap-2 mt-3">
                     <h3 class="max-md:text-base md:text-xl"><b>1°</b></h3>
@@ -65,11 +64,11 @@ onMounted(async () => {
                 <div v-if="top3" class="justify-items-center">
                     <p class="text-text-second max-md:text-sm">{{ top3[1].points }}</p>
                     <div class="relative">
-                        <img class="rounded-full object-cover max-md:size-20 md:size-22" :src="top3[1].image ? `${top3[1].image}` : defaultAvatar" @error="handleAvatarError"/>
+                        <img class="rounded-full object-cover max-md:size-20 md:size-22" :src="top3[1].image ? `${top3[1].image}` : defaultAvatar" @error="handleAvatarError" :draggable="false"/>
                         <TagTitle :title="top3[1].title" class="absolute
                             max-md:-bottom-1 max-md:-right-5
                             md:-bottom-2 md:-right-4
-                            lg:-bottom-3 lg:-right-1"/>
+                            lg:-bottom-2 lg:-right-7"/>
                     </div>
                     <RouterLink :to="{ name: 'user_page', params: { username: top3[1].username } }" class="flex items-center gap-2 mt-3">
                         <h3 class="max-md:text-base md:text-xl"><b>2°</b></h3>
@@ -84,11 +83,11 @@ onMounted(async () => {
                 <div v-if="top3" class="justify-items-center">
                     <p class="text-text-second max-md:text-sm">{{ top3[2].points }}</p>
                     <div class="relative">
-                        <img class="rounded-full object-cover max-md:size-20 md:size-22" :src="top3[2].image ? `${top3[2].image}` : defaultAvatar" @error="handleAvatarError"/>
+                        <img class="rounded-full object-cover max-md:size-20 md:size-22" :src="top3[2].image ? `${top3[2].image}` : defaultAvatar" @error="handleAvatarError" :draggable="false"/>
                         <TagTitle :title="top3[2].title" class="absolute
                             max-md:-bottom-1 max-md:-right-5
                             md:-bottom-2 md:-right-4
-                            lg:-bottom-3 lg:-right-1"/>
+                            lg:-bottom-2 lg:-right-7"/>
                     </div>
                     <RouterLink :to="{ name: 'user_page', params: { username: top3[2].username } }" class="flex items-center gap-2 mt-3">
                         <h3 class="max-md:text-base md:text-xl"><b>3°</b></h3>
@@ -108,7 +107,7 @@ onMounted(async () => {
                     <h3 class="max-md:ml-1 md:ml-3 max-md:text-sm" :class="{ 'max-md:mr-1 md:mr-2' : index == 6, 'max-md:mr-3 md:mr-5' : index != 6 }"><b>{{ index + 4 }}°</b></h3>
                     <div class="grid grid-cols-2 gap-2 items-center" :class=" top ? 'max-md:m-1 md:m-2' : 'max-md:m-0.5 md:m-1.5'">
                         <div class="flex items-center gap-2 max-md:w-screen md:w-[33vw] lg:w-[20vw]">
-                            <img class="rounded-full object-cover max-md:size-9 md:size-10" :src="p.image ? `${p.image}` : defaultAvatar" @error="handleAvatarError"/>
+                            <img class="rounded-full object-cover max-md:size-9 md:size-10" :src="p.image ? `${p.image}` : defaultAvatar" @error="handleAvatarError" :draggable="false"/>
                             <RouterLink :to="{ name: 'user_page', params: { username: p.username } }">
                                 <p class="max-md:hidden text-text-default hover:underline max-md:text-sm" :class="p.username == user.username ? 'font-semibold' : ''">{{ p.username }}</p>
                                 <p v-if="p.username.length > 9" :class="p.username == user.username ? 'font-semibold' : ''"
@@ -139,7 +138,7 @@ onMounted(async () => {
                         md:ml-3.75 md:mr-4">Tu</h3>
                 <div class="grid grid-cols-2 gap-2 items-center max-md:m-0.5 md:m-1.5">
                     <div class="flex items-center gap-2 max-md:w-screen md:w-[33vw] lg:w-[20vw]">
-                        <img class="rounded-full object-cover max-md:size-9 md:size-10" :src="user.image ? `${user.image}` : defaultAvatar" @error="handleAvatarError"/>
+                        <img class="rounded-full object-cover max-md:size-9 md:size-10" :src="user.image ? `${user.image}` : defaultAvatar" @error="handleAvatarError" :draggable="false"/>
                         <RouterLink :to="{ name: 'user_page', params: { username: user.username } }">
                             <p class="max-md:hidden text-text-default hover:underline font-semibold max-md:text-sm">{{ user.username }}</p>
                             <p v-if="user.username.length > 9"

@@ -51,7 +51,7 @@
             md:w-[90vw] md:h-full
             2xl:max-w-[50vw] 2xl:h-[80vh]">
         <div class="flex relative p-2 m-4 mb-2 bg-bg-default rounded-3xl border border-border-default">
-            <img :src="otherUser.image ? `${otherUser.image}` : defaultAvatar" @error="handleAvatarError"
+            <img :src="otherUser.image ? `${otherUser.image}` : defaultAvatar" @error="handleAvatarError" :draggable="false"
                     alt="avatar" class="rounded-full place-self-start object-cover
                     max-[425px]:m-1.5 max-[425px]:size-25 min-[425px]:m-3 min-[425px]:size-30 md:size-35 max-lg:m-3 lg:m-5">
             <StatusOnline v-if="user.id_user === otherUser.id_user || friends?.find((frie) => frie.friend.id_user === user.id_user && frie.friend_status !== 'pending')"

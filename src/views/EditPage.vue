@@ -116,7 +116,7 @@
             <!-- Small Devices -->
             <div class="lg:hidden flex flex-col">
                 <div class="cursr-pointer relative m-5 mb-1 rounded-full overflow-hidden">
-                    <img :src="avatarSrc" @error="handleAvatarError" alt="avatar" class="size-40 rounded-full object-cover">
+                    <img :src="avatarSrc" @error="handleAvatarError" alt="avatar" class="size-40 rounded-full object-cover" :draggable="false">
                     <input id="avatar-input" type="file" accept="image/png, image/jpeg, image/webp" class="hidden" @change="handleAvatarChange">
                     <label for="avatar-input" class="absolute inset-0 size-40 rounded-full opacity-0"/>
                 </div>
@@ -126,9 +126,9 @@
             </div>
             <div class="max-md:hidden md:flex md:flex-col lg:hidden gap-3 mt-5 mx-2.5">
                 <div class="flex w-full justify-evenly my-0.5">
-                    <img @click="formData.preset = 'bastardo'; avatarPreview = '/media/presetIcon/bastardo.PNG'" 
+                    <img @click="formData.preset = 'bastardo'; avatarPreview = '/media/presetIcon/bastardo.PNG'" :draggable="false"
                         :src="'/media/presetIcon/bastardo.PNG'" title="Bastardo" class="size-16 rounded-full object-cover cursor-pointer">
-                    <img @click="formData.preset = 'sovrano'; avatarPreview = '/media/presetIcon/sovrano.PNG'"
+                    <img @click="formData.preset = 'sovrano'; avatarPreview = '/media/presetIcon/sovrano.PNG'" :draggable="false"
                         :src="'/media/presetIcon/sovrano.PNG'" title="Sovrano" class="size-16 rounded-full object-cover cursor-pointer">
                     <!-- altri 2 preset-->
                 </div>
@@ -150,7 +150,7 @@
 
             <!-- Desktop -->
             <div class="max-lg:hidden cursr-pointer relative m-5 mb-1 rounded-full overflow-hidden">
-                <img :src="avatarSrc" @error="handleAvatarError" alt="" class="size-50 rounded-full object-cover">
+                <img :src="avatarSrc" @error="handleAvatarError" alt="" class="size-50 rounded-full object-cover" :draggable="false">
                 <input id="avatar-input" type="file" accept="image/png, image/jpeg, image/webp"
                     class="hidden" @change="handleAvatarChange">
                 <label for="avatar-input" class="absolute inset-0 size-50 flex flex-col items-center justify-center rounded-full
@@ -164,9 +164,9 @@
             </button>
             <div class="max-lg:hidden flex flex-col gap-3 mt-5 mx-2.5">
                 <div class="flex w-full justify-evenly my-0.5">
-                    <img @click="formData.preset = 'bastardo'; avatarPreview = '/media/presetIcon/bastardo.PNG'" 
+                    <img @click="formData.preset = 'bastardo'; avatarPreview = '/media/presetIcon/bastardo.PNG'" :draggable="false"
                         :src="'/media/presetIcon/bastardo.PNG'" title="Bastardo" class="size-21 rounded-full object-cover cursor-pointer">
-                    <img @click="formData.preset = 'sovrano'; avatarPreview = '/media/presetIcon/sovrano.PNG'"
+                    <img @click="formData.preset = 'sovrano'; avatarPreview = '/media/presetIcon/sovrano.PNG'" :draggable="false"
                         :src="'/media/presetIcon/sovrano.PNG'" title="Sovrano" class="size-21 rounded-full object-cover cursor-pointer">
                 </div>
                 <!-- altri 4 preset-->

@@ -41,7 +41,7 @@
         <div class="p-8 grid max-md:grid-cols-2 md:grid-cols-4 gap-10 w-full justify-items-center" :class="db.length > 8 ? 'max-[375px]:max-h-[80vh] max-h-[75vh] overflow-y-auto' : ''">
             <div v-for="user in db" v-if="db" class="w-fit">
                 <RouterLink :to="{ name: 'user_page', params: { username: user.username } }">
-                    <img :src="user.image ? `${user.image}` : defaultAvatar" @error="handleAvatarError"
+                    <img :src="user.image ? `${user.image}` : defaultAvatar" @error="handleAvatarError" :draggable="false"
 				        alt="" class="max-md:size-25 md:size-35 rounded-t-md place-self-center object-cover bg-linear-to-t from-main-color to-bg-default">
                     <div class="bg-bg-darker py-2 grid grid-cols-1 border-b border-x border-border-default rounded-b-md w-full justify-items-center">
                         <h3 class="text-text-default max-md:text-xs" v-if="user.username.length > 11">{{ user.username.slice(0, 10) + "..."}}</h3>

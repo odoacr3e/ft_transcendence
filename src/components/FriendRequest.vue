@@ -12,24 +12,23 @@
   	    	friendReq: Array,
             user: Object
 	    });
-    let     men_index = ref(0);
-    const   currentRequest = computed(() => prop.friendReq[men_index.value] ?? null);
+    let     index = ref(0);
+    const   currentRequest = computed(() => prop.friendReq[index.value] ?? null);
 
     const goPrev = () => {
-        if (men_index.value > 0)
-            men_index.value--;
+        if (index.value > 0)
+            index.value--;
         else
-            men_index.value = prop.friendReq.length - 1;
+            index.value = prop.friendReq.length - 1;
     };
 
     const goNext = () => {
-        if (men_index.value < prop.friendReq.length - 1)
-            men_index.value++;
+        if (index.value < prop.friendReq.length - 1)
+            index.value++;
         else
-            men_index.value = 0;
+            index.value = 0;
     };
 </script>
-<!-- md:w-70 md:mx-4 -->
 
 <template>
     <div class="my-2
@@ -45,7 +44,7 @@
 
             <div class="flex my-2 justify-self-center">
                 <RouterLink :to="{ name: 'user_page', params: { username: currentRequest.friend.username } }" class="flex items-center">
-                    <img class="rounded-full object-cover max-lg:size-12 md:size-13"
+                    <img class="rounded-full object-cover max-lg:size-12 md:size-13" :draggable="false"
                         :src="currentRequest.friend.image ? `${currentRequest.friend.image}` : defaultAvatar" @error="handleAvatarError"/>
                     <div class="mx-2">
                         <p class="max-[375px]:hidden text-text-default max-lg:text-sm" v-if="currentRequest.friend.username.length > 12">

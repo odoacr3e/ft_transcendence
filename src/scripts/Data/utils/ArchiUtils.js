@@ -1,5 +1,5 @@
 import { computePosition, offset, flip, shift, autoUpdate }	from "@floating-ui/dom";
-import { localBoard, localInfo, currentPlayer, debug } 			from "../Variables";
+import { localBoard, localInfo, currentPlayer } 			from "../Variables";
 import { clearHighlight }									from "@/scripts/Events/utils/HighlightUtils.js";
 import { playAudio } 										from "@/scripts/Helper/generalUtils";
 
@@ -53,6 +53,9 @@ export function setVictory(team, sound = true)
 		playAudio("lost");
 }
 
+//NOTE - Funzione per il controllo e l'inserimento dell'elemento DOM per il potenziamento del pedone
+//		 fromEl = elemento DOM dello square dove il pedone che si deve potenziare si trova
+//		 menuEl = elemento DOM del menu' che deve comparire sopra fromEl. La sua posizione e' quindi dinamica
 export function checkUpgrade()
 {
 	const	curP = currentPlayer();

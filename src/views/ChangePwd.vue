@@ -34,7 +34,7 @@
         <h2 class="text-text-default self-center m-9 max-md:text-2xl md:text-3xl">
 			{{ t('userPage.edit.changePwd') }}</h2>
         <div class="flex flex-col justify-center w-fit px-8 py-5 mb-4 mx-auto bg-bg-default rounded-3xl border border-border-default">
-            <img :src="user.image ? `${user.image}` : defaultAvatar" @error="handleAvatarError"
+            <img :src="user.image ? `${user.image}` : defaultAvatar" @error="handleAvatarError" :draggable="false"
                     alt="" class="rounded-full m-5 mx-auto object-cover max-md:size-30  md:size-35 ">
             <h3 class="text-text-default self-center max-md:text-xl md:text-2xl">{{ user.username }}</h3>
             <h4 class="text-text-second self-center max-md:text-sm md:text-base">{{ user.name }} {{ user.surname }}</h4>

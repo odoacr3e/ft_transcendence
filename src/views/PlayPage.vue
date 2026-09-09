@@ -127,9 +127,10 @@
 							<IconRobot v-if="aiGame" class="size-12 mr-8 shrink-0 text-main-color"/>
 							<IconSliders v-else		 class="size-12 mr-8 shrink-0 text-main-color"/>
 							<div v-if="aiGame" class="grid grid-cols-3 gap-4 w-fit pr-4">
-								<div v-for="model in aiModels" :key="model"
+								<div v-for="(model, index) in aiModels" :key="model"
 										@click="toggle('aiModel', model)"
-										:class="aiModel === model ? 'border-main-color' : 'border-border-default'"
+										:class="[ aiModel === model ? 'border-main-color' : 'border-border-default',
+    										    { 'col-start-2': index === aiModels.length - 1 } ]"
 										class="opt opt-ai border-2 cursor-pointer">
 									{{ model }}
 								</div>
@@ -166,7 +167,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="flex justify-center mt-30">
+				<div class="flex justify-center mt-20">
 					<button @click="sendPlayRequest()"
 							:disabled="!canPlay"
 							:class="canPlay ? 'pointer-events-auto grayscale-0' : 'pointer-events-none grayscale'"
@@ -215,7 +216,7 @@
 		text-align: center;
 	}
 
-	.opt-ai { width: auto; min-width: 88px; padding-inline: 10px; }
+	.opt-ai { width: auto; min-width: 96px; padding-inline: 10px; }
 
 	.opt:hover { background: var(--color-border-default); }
 </style>

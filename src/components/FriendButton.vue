@@ -17,6 +17,11 @@
 			}),
 			friends = ref(null), state = ref(null);
  
+	//NOTE - Funzione che serve a settare il bottone nelle pagine utenti in modo corretto tra le 4 opzioni:
+	//		 -1 = user loggato e utente della pagina non sono amici -> chiedi amicizia
+	//		  0 = l'amizia tra i due e' in pending ed e' l'utente loggato ad aver chiesto l'amicizia -> pending
+	//		  1 = l'amizia tra i due e' in pending e l'utente loggato deve accettarla o rifiutarla -> accetta o rifiuta
+	//		  2 = i due utenti sono amici
 	async function updateState() {
 		try
 		{
@@ -32,15 +37,11 @@
 					else
 						state.value = 0;
 				}
-			} else {
-				state.value = -1;
 			}
+			else { state.value = -1; }
 		}
-		catch {}
+		catch(err) { debug("[updateState]: Errore di update dello stato dei bottoni!\n" + err); }
 	}
-
-	onMounted(updateState); 
-	watch(() => prop.user, updateState, { deep: true });
 
 	async function sendRequest()
 	{
@@ -63,10 +64,11 @@
     	    await func(prop.user.id_user);
     	    await updateState();
     	}
-    	catch (err) {
-    	    debug("[hiddenReload]: Errore nel reload nascosto!\n" + err);
-		}
+    	catch (err) { debug("[hiddenReload]: Errore nel reload nascosto!\n" + err); }
 	}
+
+	onMounted(updateState); 
+	watch(() => prop.user, updateState, { deep: true });
 	
 </script>
 

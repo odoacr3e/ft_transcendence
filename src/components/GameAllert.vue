@@ -1,7 +1,7 @@
 <script setup>
 	import { useI18n }	from 'vue-i18n';
-	import router	from '@/router';
-	import IconLogo	from './icons/IconLogo.vue';
+	import IconLogo		from './icons/IconLogo.vue';
+	import router		from '@/router';
 
 	const { t } = useI18n();
 </script>

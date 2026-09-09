@@ -14,13 +14,11 @@ export const useMsgStore = defineStore('msg', {
 		{
 			try {
 				const	resp = await taskApi.msglist(),
-						messages = Array.from(resp).sort((a, b) =>
-				{
+						messages = Array.from(resp).sort((a, b) => {
         		    const 	unreadA = a.status === "not_read",
         		    		unreadB = b.status === "not_read";
 				
-        		    if (unreadA !== unreadB)
-        		        return unreadB - unreadA;
+        		    if (unreadA !== unreadB) { return unreadB - unreadA; }
 
         		    return new Date(b.creation_date) - new Date(a.creation_date);
         		}).slice(0, 10);

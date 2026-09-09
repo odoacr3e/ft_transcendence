@@ -26,7 +26,7 @@
                 <a href="/auth/google_login" class="flex cursor-pointer bg-zinc-300 rounded-[7px] text-gray-700 hover:bg-linear-to-t from-zinc-300 to-zinc-100 justify-center
                         max-md:w-[80vw] max-md:min-w-50 max-md:text-sm max-md:p-3 max-md:px-0 max-md:gap-2 max-md:whitespace-nowrap
                         md:w-full md:text-base md:p-3 md:px-22 md:gap-2">
-                        <img src="../assets/google-icon.svg" alt="google-icon" class="max-md:size-5 md:size-6">
+                        <img src="../assets/google-icon.svg" alt="google-icon" class="max-md:size-5 md:size-6" :draggable="false">
                         <p>{{ t('login.google') }}</p>
                 </a>
 				<div class="flex gap-2 mt-5 max-md:text-[70%] md:text-[80%] text-text-second">

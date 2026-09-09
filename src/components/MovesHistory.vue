@@ -1,7 +1,7 @@
 <script setup>
+	import { mainAction, teamDot, turnDuration, turnLabel }	from "@/scripts/Helper/Historyutils.js"
 	import { computed, nextTick, ref, watch }				from 'vue';
 	import { localHistory }									from '@/scripts/Data/History';
-	import { mainAction, teamDot, turnDuration, turnLabel }	from "@/scripts/Helper/Historyutils.js"
 	import { IMG_PATHS }									from '@/scripts/Data/Variables';
 	import { useI18n }										from 'vue-i18n';
 	

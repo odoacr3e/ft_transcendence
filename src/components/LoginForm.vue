@@ -142,9 +142,9 @@
 						<IconEye class="max-md:size-5 md:size-6" :slashed="visible"/>
 					</button>
 				</div>
-				<RouterLink to="/DEBUG/pwd">
+				<!-- <RouterLink to="/DEBUG/pwd">
 					<u><a class="justify-self-center max-md:text-[70%] md:text-[80%] text-main-color cursor-pointer hover:text-light-button active:text-active-button">{{ t('login.forgot') }}</a></u>
-				</RouterLink>
+				</RouterLink> -->
 			</div>
 			<input id="submit" class="cursor-pointer justify-self-center bg-main-color rounded-[7px] text-text-default hover:bg-linear-to-t from-main-color to-light-button
 					mt-1.5 p-3 text-base max-md:w-[80vw] max-md:min-w-50 md:w-sm"

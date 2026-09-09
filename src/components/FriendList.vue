@@ -19,7 +19,7 @@
         <div v-for="(besties, index) in visibleFriendlist" :key="besties.friend.id_user">
             <RouterLink :to="{ name: 'user_page', params: { username: besties.friend.username } }">
                 <div class="flex ml-2 relative max-lg:my-2.5 md:my-3">
-                    <img class="rounded-full object-cover max-lg:size-12 md:size-13"
+                    <img class="rounded-full object-cover max-lg:size-12 md:size-13" :draggable="false"
                         :src="besties.friend.image ? `${besties.friend.image}` : defaultAvatar" @error="handleAvatarError"/>
                     <StatusOnline :user_id="besties.friend.id_user" v-if="removeF"/>
                     <div class="mx-2">
