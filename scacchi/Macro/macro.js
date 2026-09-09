@@ -41,7 +41,7 @@ export const AI_EVENTS = Object.fromEntries(
 );
 
 //SECTION - timers
-const MATCHTIMER = 15 * 60 * 1000;//15 minutes
+const MATCHTIMER = 1 * 10 * 1000;//15 minutes
 const SOCKET_RECONNECT_TIMER = 3 * 1 * 1000;//3 seconds
 const MATCH_RECONNECT_TIMER = 60 * 1 * 1000;//60 seconds
 const TOURNAMENT_WAIT_TIMER = 60 * 5 * 1000;//5 minutes
