@@ -97,7 +97,7 @@ export function checkUpgrade()
 						}
 						menuEl.style.transform = `translate(${Math.round(x)}px, ${Math.round(y)}px)`;
 					})
-					.catch(err){debug("[updatePosition]\n" + err)};
+					.catch(console.error);
 				}
 				if (stopAutoUpdate) { stopAutoUpdate(); stopAutoUpdate = null; }
                 stopAutoUpdate = autoUpdate(fromEl, menuEl, updatePosition);
