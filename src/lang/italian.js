@@ -294,6 +294,77 @@ export const italian = {
                     cost:   "1"
                 }
             }
+        },
+        tutorialCodex: {
+            baseTitle:  "MOSSA BASE DEGLI SCACCHI",
+            king: {
+                baseText:   "Si muove di una sola casella per volta, in tutte e otto le direzioni.\nCattura allo stesso modo, spostandosi sulla casella del pezzo avversario",
+                boostText:  "Potenzia a tuo rischio e pericolo"
+            },
+            champion: {
+                baseText:   "Scorre quanto vuole lungo le otto direzioni, ortogonali e diagonali.\nSi ferma sul primo pezzo che incontra e lo cattura se e' avversario",
+		        boostTitle: "GIURAMENTO: due mosse in un turno",
+		        boostText:  "Si sposta di una mossa classica di scacchi ma attenzione, se ci si muove in una casella minacciata da un pezzo \
+		        			avversario la mossa boostata si interrompe\nLa seconda mossa è esattamente uguale alla prima senza le limitazioni",
+                scenes: {
+                    base:   "Le otto linee del Champion: ognuna continua finche' non trova un pezzo o il bordo",
+                    bost: {
+                        one:    "1. Una mossa normale, lungo una qualsiasi delle sue linee",
+                        two:    "2. Dalla casella d'arrivo riparte con una mossa intera"
+                    }
+                }
+            },
+            minotaurus: {
+                baseText:   "Scorre quanto vuole su righe e colonne, mai in diagonale.\nSi ferma sul primo pezzo che incontra e lo cattura se e' avversario",
+		        boostTitle: "BERSERK: due catture in un turno",
+		        boostText:  "Due mosse in un turno, ma solo se entrambe catturano un pezzo.\nDalla casella della preda riparte per catturare di nuovo.\nSe una seconda preda non c'e', il boost non parte",
+                scenes: {
+                    base:   "Le quattro linee ortogonali: avanti, indietro e sui due lati",
+                    bost: {
+                        one:    "1. La prima mossa e' una cattura",
+                        two:    "2. Dalla preda riparte solo per catturare ancora: nessuna casella vuota e' un arrivo valido"
+                    }
+                }
+            },
+            jester: {
+                baseText:   "Salto a \"L\": due caselle in una direzione e una in quella perpendicolare.\nE' l'unico pezzo che scavalca: chi sta in mezzo non lo ferma",
+		        boostTitle: "SCHERZO: Effetto Pac-Man",
+		        boostText:  "Mossa singola, ma su zone extra concesse dall'abilità che \
+					        permettono al jester di sbucare dalla parte opposta della \
+					        scacchiera se si \"salta\" fuori.\nIl movimento rimane sempre ad L ma \
+					        per ogni casella del movimento hai la possibilità di saltare",
+                scenes: {
+                    base:   "Le otto L partono da qui, ma dal bordo solo quattro restano dentro la scacchiera",
+                    bost: {
+                        one:    "Il cavallo fa una mossa che sembra farlo andare fuori dalla scacchiera ma sbuca dal lato opposto",
+                        two:    "Questa è la mossa più potente del cavallo, warp alla destra della scacchiera per sbucare a sinistra e poi warp verso il basso per sbucare in cima"
+                    }
+                }
+            },
+            valkirya: {
+                baseText:   "Si muove solo in diagonale di tante caselle quanto vuoi\nMangia pezzi lungo la diagonale muovendosi",
+		        boostTitle: "LANCIO: Cattura senza movimento",
+		        boostText:  "Mossa singola che permette di catturare un pezzo avversario senza \
+					        muovere la valkirya stessa.\n Salta un solo pezzo qualsiasi lungo il suo raggio d'azione, alleato o avversario",
+                scenes: {
+                    base:   "Le quattro diagonali: scorre finche' non incontra un pezzo e lo cattura se e' avversario",
+                    bost:   "La Valkirya resta ferma e cattura a distanza. A sinistra scavalca l'alleato e prende il pezzo dietro di lui"
+                }
+            },
+            bastards: {
+                baseText:   "Si muove solo in avanti \nAvanza di una casella. \nDue se non si e' ancora mosso.\nMangia 1 casella in diagonale in avanti",
+		        boostTitle: "INVESTITURA: Una mossa per due pezzi in un turno",
+		        boostText:  "1. Un movimento classico del pedone\
+					        \n2. Nello stesso turno muove anche un pezzo che era accanto alla casella di partenza, con le sue mosse classiche...",
+                scenes: {
+                    base:   "Avanza dritto di una casella, due se non si e' ancora mosso; in diagonale ci va solo per catturare",
+                    bost: {
+                        one:    "1. Il Bastardo potenziato fa la sua mossa normale, \
+							    qui l'avanzata doppia",
+                        two:    "2. Ora posso muovere un pezzo vicino alla casella di partenza"
+                    }
+                }
+            }
         }
     }
 }
