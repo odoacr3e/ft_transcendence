@@ -237,8 +237,7 @@ export async function getUserByEmail(email) {
 				preferences: {
 					select: {
 						name: true,
-						description: true,
-						colors: true,
+						id_preference: true
 					}
 				}
 			},
