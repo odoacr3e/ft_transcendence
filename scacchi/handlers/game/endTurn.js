@@ -92,7 +92,7 @@ function updateTurn(match, result)
 	let	king;
 
 	if (match.playerNum <= 1)
-		return (false);
+		return (error(result, 500, "No players"));
 	if (checkKingDanger(match) == true)
 		return (error(result, 403, "Your king is in danger"));
 	player = match.currentPlayer;

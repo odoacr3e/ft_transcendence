@@ -20,6 +20,10 @@ import { gameMessage } from "../../websocket/utils.js";
 /** @typedef {{move: Move | null, moveBoost: Move | null, transform: string, boost: string, canEat?: boolean}} Turn */
 /** @typedef {{score: number, index: number}} Eval */
 
+/** @type {null | string} */
+let DEBUGresultBUFFER = null;
+let DEB = 0;
+
 /*
 
 	g1: win {t1, t2, t3} => {b1, b2, b3} 
@@ -73,8 +77,6 @@ export class AI
 
 //SECTION - utils
 
-let DEB = 0;
-
 //15832
 /**
  * 
@@ -114,7 +116,6 @@ function getBestTurn(match)
 	arrayTurns = getLegalMoves(match);
 	for (let i = 0; i != arrayTurns.length; i++)
 	{
-		DEB++;
 		// console.log(`Turns: ${i}/${arrayTurns.length}`);
 		const turn = arrayTurns[i];
 		if (match.currentPlayer.team == eTeam.White)
@@ -138,6 +139,8 @@ function getBestTurn(match)
 			score = victoryScore(match);
 		else
 			score = minMax(match, ai, newTurns, depth, [turn], alpha, beta);
+		if (DEBUGresultBUFFER != null)
+			DEBUGresultBUFFER += `|depth: ${depth}|val: ${score}|i: ${DEB++}|team: ${match.currentPlayer.team == eTeam.White ? "⚪" : "⚫️"}|\n`;
 		val.index = i;
 		val.score = score;
 		if (match.currentPlayer.team == DEBUGTEAM)
@@ -185,6 +188,12 @@ function getBestTurn(match)
 		}
 	}
 	match.simulationMap.clear();
+	if (DEBUGresultBUFFER)
+	{
+		fs.writeFileSync("AI_log", DEBUGresultBUFFER);
+		DEBUGresultBUFFER = "";
+		DEB = 0;
+	}
 	if (match.currentPlayer.team != DEBUGTEAM)
 		throw (`AI: Team has changed..`);
 	// console.log(`Turns: ${arrayTurns.length}/${arrayTurns.length}`);
@@ -290,6 +299,8 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 				cancelTurn(match, turn);
 				continue ;
 			}
+			if (DEBUGresultBUFFER != null)
+				DEBUGresultBUFFER += `|depth: ${depth}|val: ${val}|i: ${DEB++}|team: ${match.currentPlayer.team == eTeam.White ? "⚪" : "⚫️"}|\n`;
 			if (maxEval == undefined)
 				maxEval = -Infinity;
 			ai.Cancel(match, ai);
@@ -342,6 +353,8 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 				cancelTurn(match, turn);
 				continue ;
 			}
+			if (DEBUGresultBUFFER != null)
+				DEBUGresultBUFFER += `|depth: ${depth}|val: ${val}|i: ${DEB++}|team: ${match.currentPlayer.team == eTeam.White ? "⚪" : "⚫️"}|\n`;
 			if (minEval == undefined)
 				minEval = Infinity;
 			ai.Cancel(match, ai);
@@ -370,7 +383,6 @@ function checkEatChain(match, turn)
 {
 	let piece;
 	let targetSquare;
-	let enemySquare;
 	let pointWin;
 
 	targetSquare = match.board._data.get(turn.move?.to);

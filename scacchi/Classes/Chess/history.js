@@ -165,6 +165,15 @@ export class HistoryEvent
 			RED: 0,
 			GREEN: 0
 		};
+		this.pieceValue =
+		{
+			WHITE: 0,
+			BLACK: 0,
+			YELLOW: 0,
+			BLUE: 0,
+			RED: 0,
+			GREEN: 0
+		};
 		this.type = eventType;
 		this.pieceBoosterTargetZones = null;
 		this.specialMoves = 0;
@@ -232,6 +241,8 @@ function updateMoves(match, square, coords, result, boostBool=false)
 	record.prevBoost = match.currentPlayer.boostedPiece;
 	record.points.WHITE = match.white.nPoints;
 	record.points.BLACK = match.white.nPoints;
+	record.pieceValue.WHITE = match.white.pieceValue;
+	record.pieceValue.BLACK = match.black.pieceValue;
 	record.fromHash = zobristPieceHash(square.index, square.piece);
 	record.toHash = zobristPieceHash(to.index, to.piece);
 	record.zobristHash = match._zobristHash;

@@ -154,8 +154,9 @@ function displayPlayerInfo(board, match)
 		printer(`${player.team} king is threatened💀`);
 	printer(`time: ${match?.timer?.time}`);
 	printer(`player: ${match.currentPlayer.time}`);
-	
-	
+	printer(`⚪ piece value: ${match.white.pieceValue}`);
+	printer(`⚫️ piece value: ${match.black.pieceValue}`);
+	printer(`PLAYERNUM: ${match.playerNum}`);
 }
 
 /**

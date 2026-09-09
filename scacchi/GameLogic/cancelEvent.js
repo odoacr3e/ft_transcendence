@@ -82,6 +82,8 @@ function cancelMove(match, lastEvent)
 		toSquare.piece = lastEvent.pieceEaten;
 		match.currentPlayer.nPoints -= lastEvent.pieceEaten.price;
 		match.GetPlayer(lastEvent.pieceEaten?.team).nPieces += 1;
+		match.white.pieceValue = lastEvent.pieceValue.WHITE;
+		match.black.pieceValue = lastEvent.pieceValue.BLACK;
 	}
 	else if (lastEvent.specialMoves & enumSpecialMoves.CASTLING)
 	{
@@ -97,6 +99,8 @@ function cancelMove(match, lastEvent)
 			match.GetPlayer(lastEvent.pieceEaten?.team).boostedPiece = lastEvent.to;
 		match.currentPlayer.nPoints -= lastEvent.pieceEaten.price;
 		match.GetPlayer(lastEvent.pieceEaten?.team).nPieces += 1;
+		match.white.pieceValue = lastEvent.pieceValue.WHITE;
+		match.black.pieceValue = lastEvent.pieceValue.BLACK;// FIXME - nel cas anche per 4 giocatori
 	}
 	else
 	{

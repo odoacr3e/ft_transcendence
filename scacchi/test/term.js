@@ -29,6 +29,7 @@ import { initFromStr } from "../handlers/game/init.js";
 import { AIexecuteTurn } from "../GameLogic/aiTurn.js";
 
 const aiOppo = AIprofiles.HAL9000;
+// const aiOppo = "";
 
 //SECTION - main: inizializza e fa primo render, mette terminale in ascolto
 function mainTerm()
@@ -79,6 +80,7 @@ let match = mainTerm();
 let	helpBool = true;
 let	mutex = false;
 let	newType = "";
+let	aiCanMove = false;
 
 //SECTION - eventLoop: binda i tasti per fare cose
 
@@ -91,8 +93,11 @@ process.stdin.on('keypress', (str, key) =>
 	let	dx;
 	let	dy;
 
-	if (!match.victory && match.currentPlayer.ai && match.history.Last().team != match.currentPlayer.team && match.history.events.length != 0)
-		return (execEvent(match, "", ""));
+	aiCanMove = !match.victory && !!match.currentPlayer.ai && match.history.Last().team != match.currentPlayer.team;
+	if (key.name != cmd.CANCEL_EVENT && !(key.ctrl && key.name == "c") && aiCanMove)
+	{
+		execEvent(match, "", "");
+	}
 	match = globals.GetLastMatch();
 	mutex = true;
 	dx = 0;
@@ -249,28 +254,39 @@ process.stdin.on('keypress', (str, key) =>
  */
 function execEvent(match, eventType, newPieceType="")
 {
+	let	result;
+
 	try
 	{
 		if (!eventType)
-			return (AIexecuteTurn(match));
+			return (AIexecuteTurn(match), new Result().Success());
 		switch (eventType)
 		{
 			case (eEvents.Move): case (eEvents.MoveBoost):
-				return (move(match, selected[0], selected[1], match.currentPlayer.useBoostBool));
+				result = move(match, selected[0], selected[1], match.currentPlayer.useBoostBool);
+				break ;
 			case (eEvents.Boost):
-				return (boost(match, match.cursor.square));
+				result = boost(match, match.cursor.square);
+				break ;
 			case (eEvents.EndTurn):
-				return (endTurn(match));
+				result = endTurn(match);
+				break ;
 			case (eEvents.Transform):
-				return (makeTransfiguration(match, match.cursor.square, newPieceType));
+				result = makeTransfiguration(match, match.cursor.square, newPieceType);
+				break ;
 			case ("cancel"):
-				return (cancelEvent(match));
+				result = cancelEvent(match);
+				break ;
 			default:
 				throw (`eventType ${eventType} unknown`);
 		}
+		aiCanMove = !match.victory && !!match.currentPlayer.ai && match.history.Last().team != match.currentPlayer.team;
+		if (aiCanMove)
+			console.log(`Press any key except "${cmd.CANCEL_EVENT}" to let the AI move..`);
+		return (result);
 	}
 	catch(err)
-	{
+	{//@ts-ignore
 		console.log(err?.stack);
 		console.error("GAME CRASHED.");
 		console.error(err);
