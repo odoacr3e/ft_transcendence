@@ -26,4 +26,4 @@ pull:
 restore:
 	@for d in $(DIRS); do git -C $$d restore .; done
 
-.PHONY: up down delete re setup setup_leo own pull restore
+.PHONY: up down delete re restart pull restore
