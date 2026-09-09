@@ -32,6 +32,8 @@ export function routesMatchMaking(socket, user)
 		socketData = globals.clientMap.get(user.id_user);
 		if (!socketData)
 			result = result.Error("Player data are lost", 500);
+		if (isBusy(user.id_user))
+			result.Error("Player is busy", 403, true);
 		else if (!req || !req.profile) // @ts-ignore
 			result.aiProfiles = AIprofilesArray;
 		else if (AIprofilesArray.indexOf(req.profile) == -1)
