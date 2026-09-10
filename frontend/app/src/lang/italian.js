@@ -81,6 +81,7 @@ export const italian = {
         leaderBoard: {
             title: "Top 10 @.lower:common.players",
             outOf: "su {games}",
+            empty: "Nessun giocatore in classifica",
         },
         tournaments: {
             newTour: "Crea un nuovo @.lower:{'common.tournament'}!",
