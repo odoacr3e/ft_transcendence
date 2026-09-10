@@ -81,6 +81,7 @@ export const english = {
         leaderBoard: {
             title: "Top 10 @.lower:common.players",
             outOf: "out of {games}",
+            empty: "No players on the leaderboard yet",
         },
         tournaments: {
             newTour: "Create a new @.lower:{'common.tournament'}!",
