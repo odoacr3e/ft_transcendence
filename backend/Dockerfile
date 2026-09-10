@@ -5,9 +5,9 @@ WORKDIR /app
 RUN apk add redis
 
 COPY ./app/package*.json ./
-COPY ./app/ ./
 RUN npm install
 
+COPY ./app/ ./
 COPY ./app/prisma ./prisma
 
 COPY ./script/entrypoint.sh /entrypoint.sh

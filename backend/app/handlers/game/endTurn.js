@@ -11,7 +11,7 @@ import {enumNames} from "../../Macro/enums.js";
 import {Match} from "../../Classes/Chess/match.js";
 import {error, Result, checkMateAlert} from "./utils.js";
 import {DangerUpdate} from "../../utils/dangerUpdate.js";
-import {clientBoard} from "./utils.js";
+import {clientBoard} from "../../handlers/game/utils.js";
 import { checkKingDanger } from "../../utils/checkDanger.js";
 import { checkInsuficientResources } from "../../GameLogic/checkSpare.js";
 import { boardStringify } from "../../test/render.js";
@@ -63,7 +63,6 @@ function endTurn(match, sendBoardBool=true)
 		p.time = match.timer.time - (Date.now() - match.timer.start);
 	}
 	setTimerGame(match);
-	// console.log(`Now it's ${match.currentPlayer.team} turn.`);
 	if (checkKingDanger(match, match.currentPlayer.team))
 	{
 		result.specialMoves.SetKingDanger();
@@ -92,7 +91,7 @@ function updateTurn(match, result)
 	let	king;
 
 	if (match.playerNum <= 1)
-		return (false);
+		return (error(result, 500, "No players"));
 	if (checkKingDanger(match) == true)
 		return (error(result, 403, "Your king is in danger"));
 	player = match.currentPlayer;

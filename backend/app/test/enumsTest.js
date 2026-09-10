@@ -1,4 +1,4 @@
-import { colors as color } from "./colorsOld.js";
+import { colors as color } from "../test/colorsOld.js";
 
 const cmd = 
 {

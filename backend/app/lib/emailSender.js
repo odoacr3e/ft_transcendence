@@ -1,9 +1,6 @@
 
 import nodemailer from 'nodemailer'
 
-// console.log('EMAIL_USER:', process.env.GMAIL_APP_USER);
-// console.log('EMAIL_PASS defined:', process.env.GMAIL_APP_PWD);
-
 const sender = nodemailer.createTransport({
 	service: 'gmail',
 	auth: {

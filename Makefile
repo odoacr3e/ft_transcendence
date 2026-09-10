@@ -1,9 +1,5 @@
 
 up:
-	docker compose up --build -d vault
-	chmod +x retrieve_env_for_vault.sh
-	sleep 3
-	bash retrieve_env_for_vault.sh
 	docker compose up --build
 
 down:

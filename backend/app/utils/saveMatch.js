@@ -14,8 +14,6 @@ export async function saveMatch(match)
 {
 	try
 	{
-		// if (match.victory == "draw")
-		// 	throw ("the match ended in a draw");
 		gameMessage(match, "Salvataggio partita nel database...");
 		await closeMatch(match);
 		await createUsersMatch(match);

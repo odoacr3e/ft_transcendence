@@ -344,8 +344,6 @@ class Match
 			result.msg = "you lost!!!";
 			result.status = 200;
 			result.specialMoves.SetCheckMate();
-			//@ts-ignore
-			// result.board = clientBoard(this);
 		}
 		else
 			return (new Result());
@@ -370,7 +368,6 @@ class Match
 		render(this);
 		this.victory = "draw";
 		console.debug(reason);
-		// console.log("Premi un qualsiasi tasto per concludere...");
 		tmp = this.currentPlayer;
 		player = tmp.next;
 		for (let x of this.users)
@@ -402,8 +399,6 @@ class Match
 		result.Success("it's a spare!!!");
 		result.victory = this.victory;
 		result.specialMoves.SetDraw();
-		//@ts-ignore
-		// result.board = clientBoard(this);
 		return (result);
 	}
 	/** @param {string} team */
@@ -454,8 +449,6 @@ class Match
 			throw (`Delete player: invalid player data`);
 		this.loserSet.add(player.id);
 		clientSetState(player.dbTable?.id_user);
-		// this.board.get(player.King).ClearZones();
-		// this.board.get(player.King).piece = null;
 		this.playerNum--;
 		if (!player.prev)
 			return ;

@@ -198,9 +198,7 @@ function recreateMatch(match, history, cacheMatchBool=false)
 				DEBUGCounter++;
 			}
 			else
-				error(null, result, 0, null, false);
-			// if (match.victory)
-			// 	console.debug(`this move give invalid victory for ${match.victory}. \nevent: ${JSON.stringify(event)}`);
+				error(null, result, 0, null, false);			
 			if (event.lastLost && playerNum == match.playerNum)
 				throw(`player ${event.lastLost} should have lost. \nevent: ${JSON.stringify(event)}`);
 			if (!event.lastLost && playerNum != match.playerNum)
@@ -231,8 +229,6 @@ function printResponse(match, event, result)
 	console.debug("\x1b[33m");
 	console.debug(JSON.stringify(event, null, 2));
 	console.debug("\x1b[0m");
-	//console.debug(JSON.stringify(result.board, null, 2));
-	// console.log("data for g5:\n\n" + JSON.stringify(match.board.get("g5").targetZones, null, 2));
 	console.debug("*--------------------*\n");
 }
 

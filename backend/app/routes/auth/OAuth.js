@@ -35,9 +35,9 @@ OAuthRouter.get("/google_login/callback",
 		try {
 			const user = req.user;
 			await createJwt(req, res);
-			return res.redirect("http://localhost:8000");
+			return res.redirect("https://localhost:8000");
 		} catch (error) {
 			console.log("Error: ", error);
-			return res.redirect("http://localhost:8000");
+			return res.redirect("https://localhost:8000");
 		}
 });

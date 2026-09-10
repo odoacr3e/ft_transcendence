@@ -32,7 +32,6 @@ function berserkMode(pos, match)
 				targetSquare.dangerZones.add(pos);
 				match.board.get(pos)?.boostedTargetZones.get(startPos)?.add(match.cursor.square);
 			}
-			//if (piece.type  == enumNames.MINOTAURUS)
 			match.board.AddInfluence(pos, match.cursor.square);
 			if (targetSquare.piece != null)
 			{

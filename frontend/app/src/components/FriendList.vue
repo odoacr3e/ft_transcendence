@@ -1,7 +1,8 @@
 <script setup>
+    import UserAvatar from '@/components/UserAvatar.vue';
     import TagTitle from './TagTitle.vue';
     import StatusOnline from './StatusOnline.vue';
-    import { defaultAvatar, rejectRequest, handleAvatarError } from '../scripts/Helper/CompUtils.js';
+    import { rejectRequest } from '../scripts/Helper/CompUtils';
     import { computed } from 'vue';
     import { useI18n }  from 'vue-i18n';
 
@@ -19,8 +20,8 @@
         <div v-for="(besties, index) in visibleFriendlist" :key="besties.friend.id_user">
             <RouterLink :to="{ name: 'user_page', params: { username: besties.friend.username } }">
                 <div class="flex ml-2 relative max-lg:my-2.5 md:my-3">
-                    <img class="rounded-full object-cover max-lg:size-12 md:size-13"
-                        :src="besties.friend.image ? `${besties.friend.image}` : defaultAvatar" @error="handleAvatarError"/>
+                    <UserAvatar class="rounded-full object-cover max-lg:size-12 md:size-13"
+                        :src="besties.friend.image" />
                     <StatusOnline :user_id="besties.friend.id_user" v-if="removeF"/>
                     <div class="mx-2">
                         <p class="text-text-default hover:underline max-lg:text-sm" v-if="besties.friend.username.length <= 15">

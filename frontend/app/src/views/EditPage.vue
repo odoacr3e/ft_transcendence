@@ -1,18 +1,18 @@
 <script setup>
-    import { defaultAvatar, handleAvatarError }    from '../scripts/Helper/CompUtils';
+    import UserAvatar 			from '@/components/UserAvatar.vue';
     import { ref, computed }	from 'vue';
-    import { useAuthStore }     from "../stores/auth.st";
-    import { storeToRefs }      from 'pinia';
-    import { useI18n }          from 'vue-i18n';
-    import router               from '../router/index.js';
-    import IconAlert               from '@/components/icons/IconAlert.vue';
-    import IconAlertSolid          from '@/components/icons/IconAlertSolid.vue';
-    import IconBrush               from '@/components/icons/IconBrush.vue';
-    import IconGlobeOutline        from '@/components/icons/IconGlobeOutline.vue';
-    import IconKey                 from '@/components/icons/IconKey.vue';
-    import IconLockSolid           from '@/components/icons/IconLockSolid.vue';
-    import IconMail                from '@/components/icons/IconMail.vue';
-    import IconUser                from '@/components/icons/IconUser.vue';
+    import { useAuthStore }		from "../stores/auth.st";
+    import { storeToRefs } 		from 'pinia';
+    import { useI18n }     		from 'vue-i18n';
+    import router          		from '../router/index.js';
+    import IconAlert       		from '@/components/icons/IconAlert.vue';
+    import IconAlertSolid  		from '@/components/icons/IconAlertSolid.vue';
+    import IconBrush       		from '@/components/icons/IconBrush.vue';
+    import IconGlobeOutline		from '@/components/icons/IconGlobeOutline.vue';
+    import IconKey         		from '@/components/icons/IconKey.vue';
+    import IconLockSolid   		from '@/components/icons/IconLockSolid.vue';
+    import IconMail        		from '@/components/icons/IconMail.vue';
+    import IconUser        		from '@/components/icons/IconUser.vue';
 
     const   { t } = useI18n(),
             authStore = useAuthStore(),
@@ -32,9 +32,9 @@
             removeAvatar = ref(false);
 
     const avatarSrc = computed(() => {
-        if (avatarPreview.value)
-            return avatarPreview.value;
-        return user.value.image ? user.value.image : defaultAvatar;
+        if (avatarPreview.value)    { return avatarPreview.value; }
+        if (removeAvatar.value)     { return null; }
+        return user.value.image || null;
     });
 
     function handleAvatarChange(event) {
@@ -66,12 +66,12 @@
         if (avatarFile.value || formData.value.preset)
         {
             formData.value.preset = '';
-            avatarPreview.value = user.value.image ? user.value.image : defaultAvatar;
+            avatarPreview.value = user.value.image || null;
         }
         else
         {
             if (user.value.image) { removeAvatar.value = true; }
-            avatarPreview.value = defaultAvatar;
+            avatarPreview.value = null;
         }
         avatarFile.value = null;
     }
@@ -116,7 +116,7 @@
             <!-- Small Devices -->
             <div class="lg:hidden flex flex-col">
                 <div class="cursr-pointer relative m-5 mb-1 rounded-full overflow-hidden">
-                    <img :src="avatarSrc" @error="handleAvatarError" alt="avatar" class="size-40 rounded-full object-cover">
+                    <UserAvatar :src="avatarSrc" alt="avatar" class="size-40 rounded-full object-cover" />
                     <input id="avatar-input" type="file" accept="image/png, image/jpeg, image/webp" class="hidden" @change="handleAvatarChange">
                     <label for="avatar-input" class="absolute inset-0 size-40 rounded-full opacity-0"/>
                 </div>
@@ -126,9 +126,9 @@
             </div>
             <div class="max-md:hidden md:flex md:flex-col lg:hidden gap-3 mt-5 mx-2.5">
                 <div class="flex w-full justify-evenly my-0.5">
-                    <img @click="formData.preset = 'bastardo'; avatarPreview = '/media/presetIcon/bastardo.PNG'" 
+                    <img @click="formData.preset = 'bastardo'; avatarPreview = '/media/presetIcon/bastardo.PNG'" :draggable="false"
                         :src="'/media/presetIcon/bastardo.PNG'" title="Bastardo" class="size-16 rounded-full object-cover cursor-pointer">
-                    <img @click="formData.preset = 'sovrano'; avatarPreview = '/media/presetIcon/sovrano.PNG'"
+                    <img @click="formData.preset = 'sovrano'; avatarPreview = '/media/presetIcon/sovrano.PNG'" :draggable="false"
                         :src="'/media/presetIcon/sovrano.PNG'" title="Sovrano" class="size-16 rounded-full object-cover cursor-pointer">
                     <!-- altri 2 preset-->
                 </div>
@@ -150,7 +150,7 @@
 
             <!-- Desktop -->
             <div class="max-lg:hidden cursr-pointer relative m-5 mb-1 rounded-full overflow-hidden">
-                <img :src="avatarSrc" @error="handleAvatarError" alt="" class="size-50 rounded-full object-cover">
+                <UserAvatar :src="avatarSrc" alt="" class="size-50 rounded-full object-cover" />
                 <input id="avatar-input" type="file" accept="image/png, image/jpeg, image/webp"
                     class="hidden" @change="handleAvatarChange">
                 <label for="avatar-input" class="absolute inset-0 size-50 flex flex-col items-center justify-center rounded-full
@@ -164,9 +164,9 @@
             </button>
             <div class="max-lg:hidden flex flex-col gap-3 mt-5 mx-2.5">
                 <div class="flex w-full justify-evenly my-0.5">
-                    <img @click="formData.preset = 'bastardo'; avatarPreview = '/media/presetIcon/bastardo.PNG'" 
+                    <img @click="formData.preset = 'bastardo'; avatarPreview = '/media/presetIcon/bastardo.PNG'" :draggable="false"
                         :src="'/media/presetIcon/bastardo.PNG'" title="Bastardo" class="size-21 rounded-full object-cover cursor-pointer">
-                    <img @click="formData.preset = 'sovrano'; avatarPreview = '/media/presetIcon/sovrano.PNG'"
+                    <img @click="formData.preset = 'sovrano'; avatarPreview = '/media/presetIcon/sovrano.PNG'" :draggable="false"
                         :src="'/media/presetIcon/sovrano.PNG'" title="Sovrano" class="size-21 rounded-full object-cover cursor-pointer">
                 </div>
                 <!-- altri 4 preset-->

@@ -1,5 +1,7 @@
 <script setup>
-	import { rework_date, defaultAvatar, handleAvatarError }	from '../scripts/Helper/CompUtils';
+	import UserAvatar from '@/components/UserAvatar.vue';
+	import IconSearch from '@/components/icons/IconSearch.vue';
+	import { rework_date }	from '../scripts/Helper/CompUtils';
 	import { ref, onMounted }									from 'vue';
 	import { useClickOutside }									from '@/scripts/Helper/generalUtils';
 	import { useAuthStore }										from "../stores/auth.st";
@@ -9,25 +11,25 @@
 	import { useI18n }											from 'vue-i18n';
 	import { debug }											from "../scripts/Data/Variables";
 	import { api }												from '../router/api/client';
-	import router												from '../router/index.js';
-	import IconBell											from './icons/IconBell.vue';
-	import IconChevron             from './icons/IconChevron.vue';
-	import IconLogo                from './icons/IconLogo.vue';
-	import IconSmile               from './icons/IconSmile.vue';
+	import router		from '../router/index.js';
+	import IconBell		from './icons/IconBell.vue';
+	import IconLogo     from './icons/IconLogo.vue';
+	import IconSmile    from './icons/IconSmile.vue';
+	import IconChevron  from './icons/IconChevron.vue';
 	
 	defineOptions({ inheritAttrs: false });
 	
 	const	{ t, locale } = useI18n({ useScope: 'global' }),
 			msgStore = useMsgStore(),
-			authStore = useAuthStore(),
 			tourStore = useTourStore(),
+			authStore = useAuthStore(),
 			{ user } = storeToRefs(authStore),
-			p_bool = ref(false),
-			n_bool = ref(false),
-			l_bool = ref(false),
+			p_bool = ref(false),	//profile bool
+			n_bool = ref(false),	//notification bool
+			l_bool = ref(false),	//language bool
 			p_dropdown = ref(null),
 			n_dropdown = ref(null),
-			lang_dropdown = ref(null),
+			l_dropdown = ref(null),
 			popUp = ref(false),
 			tourOpen = ref(null),
 			db = ref([]),
@@ -39,8 +41,8 @@
 
 	function goToUser() {
 		const username = searchUser.value.trim();
-		if (!username) { return; }
 		searchUser.value = "";
+		if (!username) { return; }
 		if (db.value.find(x => x.username === username))
 			router.push(`/${encodeURIComponent(username)}`);
 		else
@@ -48,9 +50,9 @@
 	}
 
 	//un dropdown per chiamata: il listener resta attaccato solo mentre quel menu e' aperto
-	useClickOutside(p_dropdown,    () => { p_bool.value = false; }, { when: p_bool });
-	useClickOutside(n_dropdown,    () => { n_bool.value = false; }, { when: n_bool });
-	useClickOutside(lang_dropdown, () => { l_bool.value = false; }, { when: l_bool });
+	useClickOutside(p_dropdown,	() => { p_bool.value = false; }, { when: p_bool });
+	useClickOutside(n_dropdown,	() => { n_bool.value = false; }, { when: n_bool });
+	useClickOutside(l_dropdown,	() => { l_bool.value = false; }, { when: l_bool });
 
 	async function readMsg(msg)
 	{
@@ -65,15 +67,7 @@
 
 	async function readAllMsg()
 	{
-		msgStore.msgRecevied.forEach(async msg => {
-			if (msg.status === "not_read")
-			{
-				msg.status = 'read';
-				try {
-					await api.patch("/api/notifications", { id_notification: Number(msg.id_notification) }); }
-				catch(err) { debug("[readAllMsg]: Errore di update delle notifiche!" + err); }
-			}
-		});
+		msgStore.msgRecevied.forEach(async msg => { readMsg(msg) });
 	}
 
 	async function fetchTour(msg) {
@@ -103,17 +97,15 @@
 
 	onMounted(async () => {
 		try {
-			if (user.value) { db.value = (await api.get("/api/users")).data.users; } }
+			if (user.value) { db.value = (await api.get("/api/users")).data.users; }
+		}
 		catch { debug("user non loggato, impossibile fare fetch su db");}
     });
 </script>
 
 <template>
 	<datalist id="users">
-		<!-- idk e' l'unico modo che ho trovato per far in modo che dopo il click sull'option questo non ricompaia -->
-		<RouterLink to="/">
-			<option v-for="user in db" :key="user.username" :value="user.username"></option> <!-- la key va messa per permettere a vue di indicizzare i contenuti così da midificare il DOM solo per le cose che sono cambiate --> 
-		</RouterLink>
+		<option v-for="user in db" :key="user.username" :value="user.username"></option>
 	</datalist>
 
 	<div  v-bind="$attrs" class= "grid z-11 w-lvw bg-bg-default border-b border-border-second
@@ -130,13 +122,13 @@
 					max-md:hidden
 					md:w-[120%] md:h-10 md:justify-self-start
 					lg:w-[150%] lg:h-11 lg:justify-self-center">
-			<img src="../assets/search.png" alt="" class="md:size-7 lg:size-7 self-center ml-3" :draggable="false">
+			<IconSearch stroke="#AFB1B5" class="md:size-7 lg:size-7 self-center ml-3" />
 			<form @submit.prevent="goToUser">
 				<input v-model="searchUser" type="search" name="searchBar" id="searchBar" :placeholder="t('common.search')" autocomplete="off"
 					class="justify-self-center rounded-4xl pl-3 text-text-default
 					md:h-9 md:w-71 md:text-xl md:pt-0.5
 					lg:h-10 lg:w-235 lg:text-[16px] lg:pt-1"
-					:list="searchUser ? 'users' : null">
+					:list="searchUser.length >= 2 ? 'users' : null">
 			</form>
 		</div>
 		<div v-if="user" class="flex justify-self-end place-self-center">
@@ -165,9 +157,10 @@
 					leave-to-class="opacity-0 scale-70">
 					<div v-if="n_bool" class="mt-1.25 px-2 absolute bg-bg-darker border border-border-second w-76.5"
 						:class="msgStore.msgRecevied.size > 3 ? 'w-79 max-h-[40vh] overflow-y-auto' : ''">
-						<span v-if="msgStore.msgRecevied && Array.from(msgStore.msgRecevied).find(m => m.status === 'not_read') !== undefined"
-							class="mx-auto text-notif-on text-sm underline cursor-pointer transition-all"  @click.stop="readAllMsg()">
-							Read all </span>
+						<button :class="msgStore.msgRecevied && Array.from(msgStore.msgRecevied).find(m => m.status === 'not_read') !== undefined ? 'h-fit' : 'h-0 hidden'"
+							class="cursor-pointer mx-auto mt-2 -mb-2 bg-main-color rounded-[7px] text-text-default hover:bg-linear-to-t from-main-color to-light-button
+									text-sm w-full transition-transform"
+							@click.stop="readAllMsg()">{{ t('header.readAll') }}</button>
 						<div v-if="msgStore.msgRecevied" v-for="m in msgStore.msgRecevied"
 							class="bg-bg-default p-2 my-2 rounded-sm text-text-default">
 							<div class="flex gap-2 pb-1 items-center">
@@ -242,9 +235,9 @@
 						max-lg:mr-1.5 md:text-lg
 						lg:hidden">{{ user.username }}</h2>
 					<h2 class="text-text-default place-self-center mr-2 max-lg:hidden">{{ user.username }}</h2>
-					<img
-						:src="user.image ? `${user.image}` : defaultAvatar" @error="handleAvatarError" :draggable="false"
-						class="rounded-full place-self-center mr-1 object-cover max-md:size-10 md:size-11 lg:size-12">
+					<UserAvatar
+						:src="user.image"
+						class="rounded-full place-self-center mr-1 object-cover max-md:size-10 md:size-11 lg:size-12" />
 					<IconChevron class="size-4 text-text-default transition-transform duration-200 max-lg:hidden" :class="{ 'rotate-180': p_bool }"/>
 				</button>
 				<Transition
@@ -265,7 +258,7 @@
 							<p class="text-text-default hover:underline">{{ t('header.settings') }}</p>
 						</RouterLink>
 						<hr class="w-full justify-self-start text-text-last">
-						<div class="relative" ref="lang_dropdown">
+						<div class="relative" ref="l_dropdown">
 							<button
 								type="button"
 								class="flex w-full items-center justify-between gap-3 text-text-default hover:underline"

@@ -21,7 +21,6 @@ class Child
 	/** @param {number} index */
 	constructor(index)
 	{
-		// console.log(`creo figlio ${index}`);
 		/** @type {Set<number>} */
 		this.matchSet = new Set;
 		this.id = index;
@@ -84,7 +83,6 @@ class Child
 			{
 				console.log(`child ${this.id} error`);
 				console.log(JSON.stringify(data, null, 2));
-				console.trace();//@ts-ignore
 				roomMessage(`match_${data.MatchId}`, "error", new Result().Error((data.Data), 500));
 			}
 			else if (data.Event == eChildEvents.Log)

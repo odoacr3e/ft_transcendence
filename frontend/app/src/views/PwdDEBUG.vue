@@ -1,6 +1,6 @@
 <script setup>
 	import router	from '../router/index.js';
-	import { api }	from '../router/api/client.js'
+	import { api }	from '../router/api/client'
 	import { ref }	from 'vue';
 	import IconEye                 from '@/components/icons/IconEye.vue';
 	import IconLock                from '@/components/icons/IconLock.vue';

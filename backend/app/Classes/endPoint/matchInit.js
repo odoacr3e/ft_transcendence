@@ -22,9 +22,3 @@ export class matchMakingOpt
 		this.matchSettings = options.matchSettings;
 	}
 }
-
-// {
-// 	matchType: "1v1" | "2v2" | "1v1v1v1",
-// 	roomType: "private" | "ranked" | "friendly" | "arena",
-// 	MatchSettings: null
-// }

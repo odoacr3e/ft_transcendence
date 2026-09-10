@@ -142,35 +142,4 @@ export function routesGame(socket, user)
 		if (typeof(callback) == "function")
 			callback(result);
 	});
-
-	socket.on("start_ai_match", async(req, callback) => 
-	{
-		let result;
-
-		socketData = globals.clientMap.get(user.id_user);
-		if (!socketData)
-			throw ("start_ai_match: socketData not found");
-		if (socketData.state != enumSocketState.PLAYING)
-			result = new Result().Error("Player is not playing any match", 404);
-		else
-		{
-			let match;
-//@ts-ignore
-			match = globals.matches.get(socketData.matchData?.matchId);
-			if (match?.history.events.length != 0)
-				result = new Result().Error("The game is already started", 400);
-			else if (!match.currentPlayer.ai)
-				result = new Result().Success();
-			else
-			{
-				AIexecuteTurn(match);
-				result = new Result().Success();
-			}
-		}
-		socket.emit('start_ai_match', result);
-		if (typeof(callback) == "function")
-			callback(result);
-		if (typeof(req) == "function")
-			req(result);
-	});
 }

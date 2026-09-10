@@ -8,16 +8,16 @@ const props = defineProps({
 		glow:		{ type: Number, default: 1 }
 	});
 
-	const files = import.meta.glob('../assets/aura-*.{webm,gif}', { eager: true, query: '?url', import: 'default' });
+	const files = import.meta.glob('../assets/aura/aura-*.{webm,gif}', { eager: true, query: '?url', import: 'default' });
 
 	const source = computed(() =>
 	{
-		const webm = files[`../assets/aura-${props.variant}.webm`];
+		const webm = files[`../assets/aura/aura-${props.variant}.webm`];
 
 		if (webm)
 			return { url: webm, video: true };
 
-		const gif = files[`../assets/aura-${props.variant}.gif`];
+		const gif = files[`../assets/aura/aura-${props.variant}.gif`];
 
 		return gif ? { url: gif, video: false } : null;
 	});

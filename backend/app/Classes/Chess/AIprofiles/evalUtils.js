@@ -1,5 +1,6 @@
 //@ts-check
 
+import { eTeam } from "../../../Macro/enums.js";
 import { checkKingDanger } from "../../../utils/checkDanger.js";
 
 /** @typedef {import("../match.js").Match} Match*/

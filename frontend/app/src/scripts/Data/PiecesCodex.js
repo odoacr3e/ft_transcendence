@@ -1,6 +1,16 @@
 // SECTION - I DATI STATICI DEL KING'S CODEX
+//
+// Il codex e' la schermata che spiega i pezzi: per ognuno mostra come muove, come cambia
+// una volta potenziato, e alcune situazioni disegnate su una griglia di anteprima.
+//
+// qui costruisco una o più scacchiere per spiegare le abilità dei pezzi, con costruzione 
+// dinamica di frecce punti di cattura e pezzi alleati e non, la costruzione è diversa da 
+// quella della scacchiera, mi sono ispirato alla compilazione dello schermo di openGL
+//
+// Le coordinate sono offset dal centro della griglia, non caselle della scacchiera: y
+// negativo punta verso il lato avversario.
 
-//direzioni base, dy negativo = verso il lato avversario
+//direzioni base, dy negativo = verso alto
 const ORTHO		= [[ 0,-1], [ 0, 1], [-1, 0], [ 1, 0]];
 const DIAG		= [[-1,-1], [ 1,-1], [-1, 1], [ 1, 1]];
 const STAR		= [...ORTHO, ...DIAG];
@@ -8,6 +18,7 @@ const KNIGHT	= [[ 1, 2], [ 2, 1], [ 2,-1], [ 1,-2], [-1,-2], [-2,-1], [-2, 1], [
 
 //raggio della griglia di anteprima: 2 -> 5x5 con il pezzo al centro
 export const CODEX_RADIUS = 2;
+
 //helper per scrivere le scene in modo compatto.
 //role decide solo con che colore viene disegnata l'icona, non la logica.
 const self	= (x, y, opts = {})			=> ({ x, y, role: 'self',		...opts });
@@ -70,7 +81,13 @@ const ghost	= (x, y, opts = {})			=> ({ x, y, role: 'self',	ghost: true,	...opts
 
  */
 
-/** @type {Object<string, CodexEntry>} */
+/**
+ * Il contenuto del codex, una voce per tipo di pezzo. Le chiavi sono gli stessi tipi che
+ * il server usa per i pezzi, cosi' dalla board si arriva alla voce senza traduzioni.
+ *
+ * Congelato perche' e' contenuto, non stato: si legge e basta.
+ * @type {Object<string, CodexEntry>}
+ */
 export const PIECES_CODEX = Object.freeze({
 	King: {
 		name:		"King",

@@ -87,7 +87,6 @@ function responseFormatter(match, result, msg, status)
 		result.board = new Map();//@ts-ignore
 		result.ignoreBoard = true;
 	}
-	// delete result.board;
 	result.log = log;
 	if (!result.victory)
 		result.victory = match? match.victory: "";
@@ -159,7 +158,8 @@ function getPlayerData(player, result, num, isPlaying)
 		nPieces: player.nPieces,
 		team: player.team,
 		time: player.time,
-		isPlaying: isPlaying
+		isPlaying: isPlaying,
+		title: player.dbTable?.title
 	};
 }
 

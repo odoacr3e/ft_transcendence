@@ -123,9 +123,7 @@ export function checkSecondMove(match, coords)
 		throw (`checkSecondMove: invalid boosted piece. Player: ${JSON.stringify(match.currentPlayer, null, 2)}`);
 	if (boostedSquare.piece.type != enumNames.BASTARDS)
 		return false;
-	// diff = match.cursor.Diff(coords[0], match.currentPlayer.boostedPiece);
-	// if (diff.col <= 1 && diff.row <= 1)
-	// 	return true;
+
 	if (boostedSquare.boostedTargetZones.get(match.currentPlayer.boostedPiece)?.has(coords[0]))
 		return true;
 	return false;
@@ -257,8 +255,6 @@ function checkDoubleBastardMove(match, result, coords)
 		if (match.cursor.square == other)
 		{
 			result.usedBoost = true;
-			// bastardSquare.piece.isBoostedBool = false;
-			// from.piece.isBoostedBool = false;
 			match.cursor.set(tmpCursor);
 			match.board.updates.add(bastardNewCoord);
 			return true;

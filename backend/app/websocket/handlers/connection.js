@@ -26,16 +26,18 @@ async function websocketConnectionHandler(socket, friendsId)
 	let user;
 	let	socketData;
 
-	if (DEBUG_WEBSOCKETS == false)//@ts-ignore
+	if (DEBUG_WEBSOCKETS == true)
+	user = socket.handshake.auth;
+	else//@ts-ignore
 		user = socket.request.user;
-	else
-		user = socket.handshake.auth;
 	globals.ClearTimer(user.id_user);
 	socketData = globals.clientMap.get(user.id_user);
 	if (socketData?.reconnectBool == true || socketData?.state)
 		await handleReconnect(user, socketData, socket);
 	else
 		await firstConnection(user, socket, friendsId);
+	if (DEBUG_WEBSOCKETS == true)
+		return (user);
 	try {
 		friendsId = await announceMeOnline(sockio, user, globals.clientMap);
 	} catch (error) {

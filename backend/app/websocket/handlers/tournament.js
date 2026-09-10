@@ -147,10 +147,8 @@ export async function initTournament(room)
 	{
 		console.log("initTournament: proviamo a crearlo dai..");
 		tournament = new Tournament(room.name, room.matchType, room.maxPlayers);
-		// tournament.id = (await tournamentsQuery.createTournament(room.name, room.ownerId)).id_tournament;
 		tournament.id = room.tournamentId;
 		tournament.adminId = room.ownerId;
-		// await tournamentsQuery.addPlayersToTournament(tournament.id, Array.from(room.players));
 		globals.tournamentMap.set(tournament.id, tournament);
 		tournament.startUserIds = new Set(room.players);
 		tournament.userIds[0] = new Array();
@@ -210,7 +208,6 @@ export async function createMatchTournament(players, matchId, tournamentId, user
 	//@ts-ignore
 	result.id = match.id;
 	await bindPlayersToMatch(match, players, result, userIdIndexMap);
-	// render(match);
 	console.log("CREAZIONE MATCH: ♟️");
 	return (match);
 }

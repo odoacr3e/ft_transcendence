@@ -121,7 +121,6 @@ function getCoords(match)
 	if (!coords.playerSquare)
 	{
 		coords.playerSquare = new Square();
-		// throw ("Render, getCoords: invalid cursor");
 	}
 	return (coords);
 }
@@ -154,8 +153,9 @@ function displayPlayerInfo(board, match)
 		printer(`${player.team} king is threatened💀`);
 	printer(`time: ${match?.timer?.time}`);
 	printer(`player: ${match.currentPlayer.time}`);
-	
-	
+	printer(`⚪ piece value: ${match.white.pieceValue}`);
+	printer(`⚫️ piece value: ${match.black.pieceValue}`);
+	printer(`PLAYERNUM: ${match.playerNum}`);
 }
 
 /**
@@ -379,23 +379,5 @@ function boardOtherInfo(match)
 	while(match.currentPlayer.team != currTeam)
 	return buffer;
 }
-
-// /** @param {Match} match */
-// function boardHash(match)
-// {
-// 	let	hash;
-// 	let	squareHash;
-// 	let	counter;
-
-// 	hash = 0;
-// 	counter = -1;
-// 	for (const [key, square] of match.board)
-// 	{
-// 		++counter;
-// 		squareHash = 0;
-
-// 		if (!square.piece)
-// 	}
-// }
 
 export {render, getDotColor, printSwap, boardStringify};

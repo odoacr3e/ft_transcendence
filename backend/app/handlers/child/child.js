@@ -113,6 +113,8 @@ function moveAI(match)
 {
 	try
 	{
+		if (!match.currentPlayer.ai)
+			return ;
 		AIexecuteTurn(match);
 	}
 	catch (error)

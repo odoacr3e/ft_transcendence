@@ -3,7 +3,7 @@ import * as lib from "../lib/lib.js";
 import * as usersUtils from "./users.js"
 import { query } from "../lib/query.js";
 import ms from "ms";
-import { jsonResponse } from "./response.js";
+import { jsonResponse } from "../utils/response.js";
 import { createTestAccount } from "nodemailer";
 const { usersQuery } = query;
 const { jwt } = lib.auth;

@@ -1,5 +1,4 @@
 // @ts-check
-// const {Match} = require("../Chess/match.js");
 import {movePiece} from "../../../utils/dangerUpdate.js";
 import {dangerUpdateBastards} from "../../../utils/dangerUpdate.js";
 
@@ -31,7 +30,6 @@ let movementBastards = function (match)
 		}
 		while (movePiece(match, dy, dx))
 		{
-			// usedBoard.get(match.cursor.square)?.dangerZones.add(startPos);
 			usedBoard.get(startPos)?.targetZones.add(match.cursor.square);
 			match.board.AddInfluence(startPos, match.cursor.square);
 			if (piece.moveLongRangeDEBUG == false || usedBoard.get(match.cursor.square)?.piece != null)

@@ -143,9 +143,6 @@ export function getLegalMoves(match, team=match.currentPlayer.team, infoBool=tru
 			pushChildMoves(match, player, legalMovesArray, {from: coord, to: targetCoord}, true);
 	}
 	legalMovesArray.sort(optimizeSort);
-	// render(match);
-	//fs.rmSync("TEST");
-	//fs.writeFileSync("TEST", JSON.stringify(legalMovesArray, null, 2));
 	return (legalMovesArray);
 }
 
@@ -178,7 +175,6 @@ function pushChildMoves(match, player, legalMovesArray, move, boostBool=false, e
 	pushAllLegalBoost(match, player, legalMovesArray, currTurn);
 	if (boostBool == true)
 		return ;
-	// se puoi fare un boost a partire da li
 	boostedSquare = null;
 	if (player.boostedPiece != '')
 		boostedSquare = match.board.get(player.boostedPiece);
@@ -291,6 +287,8 @@ function pushAllLegalBoost(match, player, legalMovesArray, currTurn, usedBoostBo
 			continue ;
 		if (toPiece.team != player.team)
 			continue ;
+		if (toPiece.type == enumNames.KING)
+			continue ;
 		if (toPiece.price > points)
 			continue ;
 		if (coord == from)
@@ -358,18 +356,8 @@ function addTransform(match, player, legalMovesArray, currTurn, destCoord, squar
 	match.cursor.Restore();
 	if (!bastardEdgeBool)
 		return false;
-	//NOTE - AI prova a transformare solo in champion
-	//turnWithTransform = structuredClone(currTurn);
-	//turnWithTransform.transform = enumNames.CHAMPION;
 	currTurn.transform = enumNames.CHAMPION;
-	//legalMovesArray.push(turnWithTransform);
 	return true;
-	// for (const type of arrayNamesTransform)
-	// {
-	// 	turnWithTransform = structuredClone(currTurn);
-	// 	turnWithTransform.transform = type;
-	// 	legalMovesArray.push(turnWithTransform);
-	// }
 }
 
 /**

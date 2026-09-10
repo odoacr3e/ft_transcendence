@@ -165,6 +165,15 @@ export class HistoryEvent
 			RED: 0,
 			GREEN: 0
 		};
+		this.pieceValue =
+		{
+			WHITE: 0,
+			BLACK: 0,
+			YELLOW: 0,
+			BLUE: 0,
+			RED: 0,
+			GREEN: 0
+		};
 		this.type = eventType;
 		this.pieceBoosterTargetZones = null;
 		this.specialMoves = 0;
@@ -217,8 +226,6 @@ function updateMoves(match, square, coords, result, boostBool=false)
 	if (!square)
 		throw (`History: invalid square`);
 	to = match.board.get(coords[1]);
-	// if (!square.piece)
-	// 	throw (`History: missing piece in square: ${square}`);
 	eName = eEvents.Move;
 	if (result.usedBoost || boostBool == true)
 		eName = eEvents.MoveBoost;
@@ -232,6 +239,8 @@ function updateMoves(match, square, coords, result, boostBool=false)
 	record.prevBoost = match.currentPlayer.boostedPiece;
 	record.points.WHITE = match.white.nPoints;
 	record.points.BLACK = match.white.nPoints;
+	record.pieceValue.WHITE = match.white.pieceValue;
+	record.pieceValue.BLACK = match.black.pieceValue;
 	record.fromHash = zobristPieceHash(square.index, square.piece);
 	record.toHash = zobristPieceHash(to.index, to.piece);
 	record.zobristHash = match._zobristHash;
@@ -259,8 +268,6 @@ function updateBoost(match, square, from)
 		throw (`History: invalid from coord`);
 	if (!square)
 		throw (`History: invalid square`);
-	// if (!square.piece)
-	// 	throw (`History: missing piece in square: ${square}`);
 	record = new HistoryEvent(this.moves, eEvents.Boost, square.piece?.team, match.board.updates, square.piece?.type, from);
 	record.updates = structuredClone(match.board.updates);
 	record.time = match.currentPlayer.time;
@@ -292,8 +299,6 @@ function updateTransform(match, square, from, newType)
 		throw (`History: invalid from coord`);
 	if (!square)
 		throw (`History: invalid square`);
-	// if (!square.piece)
-	// 	throw (`History: missing piece in square: ${square}`);
 	record = new HistoryEvent(this.moves, eEvents.Transform, square.piece?.team, match.board.updates, newType, from);
 	record.to = newType;
 	record.updates = structuredClone(match.board.updates);

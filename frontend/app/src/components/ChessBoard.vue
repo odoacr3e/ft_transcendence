@@ -103,8 +103,8 @@
 								{'hasAura': square?.piece?.isBoostedBool},
 								{'selectedBstW': getSquareColor(square?.id) == 'white' && (square.boostedHighlight && square.piece)},
 								{'selectedBstB': getSquareColor(square?.id) == 'black' && (square.boostedHighlight && square.piece)},
-								{'dangerW': getSquareColor(square?.id) == 'white' && (square.inCheck && !square.highlight && square?.piece?.type == 'King')},
-								{'dangerB': getSquareColor(square?.id) == 'black' && (square.inCheck && !square.highlight && square?.piece?.type == 'King')},
+								{'dangerW': getSquareColor(square?.id) == 'white' && (square.inCheck && !square.highlight && square?.piece.type == 'King')},
+								{'dangerB': getSquareColor(square?.id) == 'black' && (square.inCheck && !square.highlight && square?.piece.type == 'King')},
 								{'selectedW': getSquareColor(square?.id) == 'white' && (square.selected !== square.inCheck || square.highlight && square.piece)},
 								{'selectedB': getSquareColor(square?.id) == 'black' && (square.selected !== square.inCheck || square.highlight && square.piece)},
 								{'pieceClicked': square.piece && square.piece.team === localInfo.myTeam && square.clicked}]"

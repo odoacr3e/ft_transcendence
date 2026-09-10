@@ -41,6 +41,8 @@ class Player
 		this.bonusPointCounter = 0;
 		this.useBoostBool = false;
 		this.nPieces = 16;
+		//FIXME - statico per 8x8 2 giocatori (usato solo qui)
+		this.pieceValue = 44;
 		this.King = "";
 		this.boostedPiece = "";
 		/** @type {Set<{coord: string, target: string}>} */

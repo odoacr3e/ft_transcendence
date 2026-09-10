@@ -205,6 +205,8 @@ export async function getUserWithPwd (user) {
 			]
 		}
 	});
+	if (!u)
+		return null;
 	return ({
 		id_user: u.id_user,
 		name: u.name,
@@ -237,8 +239,7 @@ export async function getUserByEmail(email) {
 				preferences: {
 					select: {
 						name: true,
-						description: true,
-						colors: true,
+						id_preference: true
 					}
 				}
 			},

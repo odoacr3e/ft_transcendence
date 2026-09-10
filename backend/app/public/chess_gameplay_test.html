@@ -828,7 +828,7 @@
             document.getElementById('ai-profile-chip').innerText = profiloCasuale;
 
             const inviaRichiesta = () => {
-                socket.emit("create_ai_match", { profile: profiloCasuale }, (ack) => {
+                socket.emit("create_ai_match", { profile: profiloCasuale, team: "black" }, (ack) => {
                     if (ack) {
                         logAI(`ACK create_ai_match: ${ack?.log?.msg || JSON.stringify(ack)}`);
                         if (ack.matchId) ultimoMatchIdAI = ack.matchId;

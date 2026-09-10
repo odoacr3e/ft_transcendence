@@ -10,6 +10,26 @@ import { pushMessage } 									from "./ChatBox.js";
 import { playAudio } 									from "../Helper/generalUtils.js";
 import router 											from "@/router/index.js";
 
+/**
+ * Aggancia al socket il listener sull'evento "game" su cui arrivano tutti gli aggiornamenti
+ * relativi alla partiuta
+ *
+ * L'ordine dei controlli prima dello switch conta:
+ * - i messaggi di chat escono subito, non sono eventi di gioco e non devono fermare il
+ *   lampeggio dello scacco ne' passare dal controllo di stato
+ * - stopBlinking() spegne il lampeggio precedente: qualunque cosa sia arrivata, la
+ *   segnalazione di prima e' vecchia
+ * - un log diverso da 200 e' un rifiuto del server e finisce in handleErrors(), mai negli
+ *   handler di aggiornamento
+ * - la presenza di un id, o il tipo init, vuol dire partita nuova: va riconosciuta prima
+ *   dello switch, altrimenti il default la tratterebbe come una mossa
+ *
+ * Nello switch il default non e' un caso di scarto ma la strada normale: le mosse arrivano
+ * con tipi diversi (move, moveboost, trans...) e finiscono tutte in typeMoveUpdate().
+ *
+ * @param	{Object}	socket		Il socket di gioco gia' connesso
+ * @returns	{void}
+ */
 export function listenGameSocket(socket)
 {
 	socket.on("game", (raw) => {
@@ -38,6 +58,20 @@ export function listenGameSocket(socket)
 	});
 }
 
+/**
+ * Entra in una partita appena creata: monta lo stato locale, suona l'ingresso e porta il
+ * giocatore sulla pagina di gioco.
+ *
+ * La rotta si sceglie dalla presenza di p3: con quattro giocatori serve la board a croce,
+ * altrimenti quella classica peccato che la partia classica sia l'unica variante che esiste HEHE. 
+ * Si usa replace() e non push() perche' tornare indietro alla pagina da cui
+ *  si aspettava il match non avrebbe senso a partita iniziata per via dei controlli che faccio
+ * che ti ributterebbero diretto sulla pagina di gioco, darebbe come l'impressione che le
+ * frecce non funzionino.
+ *
+ * @param	{Object}	raw			Payload della partita nuova
+ * @returns	{void}
+ */
 function typeInit(raw)
 {
 	debug("[socket game]: New game trovato!");
@@ -46,6 +80,15 @@ function typeInit(raw)
 	router.replace({name: raw.p3 ? "GameFour" : "game" });
 }
 
+/**
+ * Chiude la partita dopo un abbandono, sullo schermo di entrambi i giocatori.
+ *
+ * Chi ha abbandonato si riconosce dal confronto fra la squadra vincitrice e la propria: lo
+ * stesso payload arriva a tutti, e ognuno ne ricava la propria parte.
+ *
+ * @param	{Object}	raw			Payload di abbandono, con la squadra vincitrice
+ * @returns	{void}
+ */
 function typeGiveUp(raw)
 {
 	debug("[giveup]: ricevuto giveup");
@@ -58,6 +101,21 @@ function typeGiveUp(raw)
 	spreadDemocracy();
 }
 
+/**
+ * Gestisce il pareggio, dall'offerta alla risposta.
+ *
+ * Tre strade: 
+ * 	Se il payload porta un esito la trattativa e' finita con un si'
+ *  Se invece porta un'offerta e questo client e' quello che l'ha mandata dato
+ *  che l'offerta viene mandata a tutti isocket nella room della partita
+ * In tutti gli altri casi l'offerta arriva dall'avversario, oppure e' stata ritirata.
+ *
+ * Chi legge drawOffer sono i bottoni di partita, per sapere se mostrare "attendi risposta"
+ * o "accetta / rifiuta".
+ *
+ * @param	{Object}	raw			Payload di pareggio: draw per l'offerta, victory per l'esito
+ * @returns	{void}
+ */
 function typeDraw(raw)
 {
 	if (raw.victory)
@@ -73,6 +131,16 @@ function typeDraw(raw)
 		playAudio("recdraw");
 }
 
+/**
+ * Rimette il giocatore dentro una partita gia' in corso dopo un refresh: stato, cronologia
+ * delle mosse e caselle sotto scacco.
+ *
+ * Se lo stato locale c'e' gia' il payload viene lasciato cadere, può succedere 
+ * e l'ho messo come protezione. 
+ *
+ * @param	{Object}	raw			Payload di reload, con partita, cronologia e stato di scacco
+ * @returns	{void}
+ */
 function typeReload(raw)
 {
 	if (isMatchLoaded())
@@ -85,14 +153,26 @@ function typeReload(raw)
 	setCheckSquare(getCheckSquares(raw));
 }
 
+/**
+ * Chiude la partita quando scade il tempo di un giocatore.
+ *
+ * L'esito lo decide il server e arriva gia' pronto indicato nella variabile victory 
+ * del payload.
+ *
+ * @param	{Object}	raw			Payload di timeout, con la squadra vincitrice se c'e'
+ * @returns	{void}
+ */
 function typeTimeout(raw)
 {
 	debug("[socket game -> timeout]: tempo scaduto, victory =", raw.victory);
 	if (raw.victory)
 		setVictory(raw.victory);
+	else
+		debug("[socket game -> timeout]: come mai victory è vuoto?", raw.victory);
 	spreadDemocracy();
 }
 
+//futuro sviluppo, va convertito da ack a qui nel listen
 function typeSimulateBoost(raw)
 {
 	debug("{socket game [simu_boost]}: payload richiesta simulate boots");
@@ -103,6 +183,22 @@ function typeSimulateBoost(raw)
 	}
 }
 
+/**
+ * Ricezione dei vari turni da displayare nella history che seguono il formato
+ * stabilito di un array in cui buttare ogni mossa con un push.
+ * I turni derivano dal sistema di history del backend che si aggiorna ad ogni mossa fattta
+ * 
+ * In questa funzione entrano due strade diverse. Dallo switch arriva il messaggio di tipo
+ * history, che porta il singolo turno appena chiuso e va accodato con pushTurn(). Da
+ * typeReload() arriva invece il payload del rientro, il cui campo history e' l'array di
+ * tutta la partita: li' serve reloadHistory(), che svuota la cronologia locale e la
+ * ricostruisce da capo, altrimenti i turni si sommerebbero a quelli gia' presenti.
+ *
+ * A scegliere la strada e' la forma del campo, non il chiamante.
+ *
+ * @param	{Object}	raw			Payload con il campo history, array di turni o turno singolo
+ * @returns	{void}
+ */
 function typeHistory(raw)
 {
 	debug("{socket game [history]}: ricevuti turni");
@@ -114,6 +210,23 @@ function typeHistory(raw)
 		debug("{socket game [history]}: nessun turno nel payload", raw);
 }
 
+/**
+ * La strada normale di ogni mossa: aggiorna la partita, accoda il turno se e' stato chiuso,
+ * ripulisce gli highlight, segnala l'eventuale scacco e suona.
+ *
+ * Ci arriva tutto cio' che lo switch non riconosce, perche' le mosse viaggiano con tipi
+ * diversi (move, moveboost, trans, boost, endturn...) ma vanno trattate allo stesso modo.
+ *
+ * L'outcome restituito da updateMatchState() e' cio' che permette di scegliere il suono:
+ * il payload dice cosa e' stato chiesto, l'outcome dice cosa e' cambiato davvero in board.
+ *
+ * Se la mossa ha chiuso la partita si esce prima di suonare: il jingle di vittoria o
+ * sconfitta l'ha gia' fatto partire setVictory() dentro l'update, e sovrapporgli il suono
+ * della mossa sarebbe solo confusione.
+ *
+ * @param	{Object}	raw			Payload della mossa, con la board aggiornata e il turno chiuso
+ * @returns	{void}
+ */
 function typeMoveUpdate(raw)
 {
 	const outcome = updateMatchState(raw);
@@ -127,151 +240,3 @@ function typeMoveUpdate(raw)
 		return;
 	playMoveAudio(raw, outcome, getCheckSquares(raw));
 }
-
-// export function listenGameSocket(socket)
-// {
-// 	socket.on("game", (raw) => {
-// 		debug("{[socket game] ricevuta una riposta} tipo: ", raw.type, "response: ", raw);
-
-// 		if (raw.type === "msg")
-// 		{
-// 			debug("[socket game] -> [msg]: ricevuto messaggio di gioco", raw);
-// 			pushMessage(raw.msg, raw.author);
-// 			return;
-// 		}
-// 		if (localInfo.blinking)
-// 		{
-// 			localInfo.blinking();
-// 			localInfo.blinking = null;
-// 		}
-// 		if (raw.log?.status != 200)
-// 		{
-// 			debug("[socket game]: errore -", raw.log?.msg);
-// 			const mask = Number(raw.mask);
-// 			if (mask & (eSpecialMoves.CHECK | eSpecialMoves.CHECKMATE))
-// 			{
-// 				debug("[socket game]: è tempo di blinkare!");
-// 				playAudio("check");
-// 				if (raw.check != undefined)
-// 				{
-// 					const threatId = new Set([raw.check.to, raw.check.mid, raw.check.from].filter(Boolean));
-// 					localInfo.blinking = blinkSquares(threatId, {interval: 450, delay: 600});
-// 					spreadDemocracy();
-// 					return;
-// 				}
-// 			}
-// 			return;
-// 		}
-// 		if (raw.id !== undefined || raw.type === "init")
-// 		{
-// 			debug("[socket game] ID NEW GAME TROVATO!");
-// 			initLocalMatchState(raw);
-// 			playAudio("begin");
-// 			router.replace( {name: raw.p3 ? "GameFour" : "game"});
-// 			return;
-// 		}
-// 		if (raw.type === "reload")
-// 		{
-// 			// debug("{socket game [reload]} ricevuto reload. localMatchstate =", localMatchState);
-// 			if (!localMatchState)
-// 			{
-// 				reloadMatchState(raw);
-// 				if (Array.isArray(raw.history))
-// 					reloadHistory(raw.history);
-// 				else if (raw.history)
-// 					pushTurn(raw.history);
-// 				if ((Number(raw.mask) & (eSpecialMoves.CHECK | eSpecialMoves.CHECKMATE)) && raw.giorgi0)
-// 					setCheckSquare(raw.giorgi0);
-// 			}
-// 			else
-// 				debug("{socket game [reload]}: state già presente nel controllo sul mounted");
-// 			return;
-// 		}
-// 		if (raw.type === "giveup")
-// 		{
-// 			debug("[socket game] -> [giveup]: ricevuto giveup");
-// 			const iWon = raw.victory === localInfo.myTeam;
-
-// 			setVictory(raw.victory, iWon);
-// 			if (!iWon)
-// 				playAudio("giveup");
-// 			spreadDemocracy();
-// 			return;
-// 		}
-// 		if (raw.type === "draw")
-// 		{
-// 			debug("[socket game] -> [draw]: ricevuto draw");
-// 			if (raw.victory)
-// 			{
-// 				setVictory(raw.victory);
-// 				spreadDemocracy();
-// 				return;
-// 			}
-// 			if (localInfo.drawOffer === "sent" && raw.draw === true)
-// 			{
-// 				debug("inviato")
-// 				playAudio("askdraw");
-// 				return;
-// 			}
-// 			localInfo.drawOffer = (raw.draw === true) ? "received" : null;
-// 			if (localInfo.drawOffer === "received")
-// 			{
-// 				debug("ricevuto");
-// 				playAudio("recdraw");
-// 			}
-// 			return;
-// 		}
-// 		if (raw.type === "timeout")
-// 		{
-// 			debug("[socket game -> timeout]: tempo scaduto, victory =", raw.victory);
-// 			if (raw.victory)
-// 				setVictory(raw.victory);
-// 			spreadDemocracy();
-// 			return;
-// 		}
-// 		if (raw.type == "simulate_boost")
-// 		{
-// 			debug("{socket game [simu_boost]}: payload richiesta simulate boots");
-// 			if (raw.log.status !== 200)
-// 			{
-// 				playAudio("checkboost");
-// 				debug("ma non è possibile");
-// 			}
-// 			return;
-// 		}
-// 		if (raw.type === "history")
-// 		{
-// 			// debug("{socket game [history]}: ricevuti turni");
-// 			if (Array.isArray(raw.history))
-// 				reloadHistory(raw.history);
-// 			else if (raw.history)
-// 				pushTurn(raw.history);
-// 			else
-// 				debug("{socket game [history]}: nessun turno nel payload", raw);
-// 			return;
-// 		}
-// 		// debug("[socket game]: update match");
-// 		if (!raw.type)
-// 			return;
-// 		const outcome = updateMatchState(raw);
-// 		if (raw.history)
-// 			pushTurn(raw.history);
-// 		clearHighlight();
-
-// 		const inCheck = (Number(raw.mask) & (eSpecialMoves.CHECK | eSpecialMoves.CHECKMATE)) && raw.giorgi0;
-// 		setCheckSquare(inCheck ? raw.giorgi0 : null);
-// 		if (localInfo.victory)
-// 			return;
-// 		if (inCheck)
-// 		{
-// 			debug("[socket game]: re sotto scacco in", raw.giorgi0);
-// 			playAudio("check");
-// 		}
-// 		else if (outcome?.captured)
-// 			playAudio("capture");
-// 		else if (outcome?.transformed)
-// 			playAudio("trans");
-// 		else if (outcome?.moved)
-// 			playAudio(raw.type === "moveboost" ? "armability" : "move");
-// 	});
-// }

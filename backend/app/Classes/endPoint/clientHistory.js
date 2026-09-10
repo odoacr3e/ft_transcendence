@@ -4,35 +4,6 @@ import { eEvents } from "../../Macro/enums.js";
 
 /** @typedef {import("../Chess/history.js").HistoryEvent} HistoryEvent */
 
-/*
-// Questo deve essere l'oggetto che viene restituito come risposta a chiammata su evento history
-// rappresenta l'ultimo turno che è stato completato.
-// In caso di reload vorrei che il payload di history rappresentasse tutta la partita suddivisa
-// in turni così. 
-{
-  "turn": 12, //numero del turno
-  "team": "white", //colore
-  "time": 284, //tempo che è durato il turno
-  "actions": [ //azioni presenti durante il turno in ordine di esecuzione. mossa, (seconda mossa), potenziamento oppure solo giveup, draw, lost.
-    {
-        "type": "move",
-        "counter": 23, 
-        "piece": "Bastards",
-        "from": "a4", "to": "c4",
-        "transformed_into": "Valkirya",
-        "captured_piece": "Bastards",
-    },
-    // { seconda mossa se esiste },
-    { 
-        "type": "boost",
-        "counter": 25,
-        "piece": "Champion",
-        "from": "f4", "to": "",
-    }
-  ]
-}
-*/
-
 /**
  * @typedef {object} Actions
  * @property {string} type

@@ -72,7 +72,6 @@ function checkMateCheckAll(match, result)
 		if (CheckMateCheck(match))
 		{
 			match.PlayerLost(result);//@ts-ignore
-			// match[team].nPoints += 15;
 		}
 		match.endTurn();
 	}
@@ -103,8 +102,6 @@ function checkLostAll(match)
 	{
 		if (CheckMateCheck(match))
 		{
-			// console.log(match.currentPlayer.team, ":haaaaaiiiiii persoooooooooooooooooo!!!!!!!");
-			// render(match);
 			lostTeam = match.currentPlayer.team;
 		}
 		match.endTurn();
@@ -171,8 +168,6 @@ function isStoppable(match, kingSquare, enemyCoord, enemySquare=null, recBool=fa
 			}
 		}
 	}
-	// if (!movePiece(match, dir.diffCol, dir.diffRow))
-	// 	return true;
 	startPos = match.cursor.square;
 	while (match.cursor.square != kingSquare)
 	{
@@ -281,16 +276,12 @@ function checkDir(match, king, guard, enemy)
 	const dKr = rowK - rowE, dKc = colK - colE;
 	const dGr = rowG - rowE, dGc = colG - colE;
 
-	// collinearità (prodotto vettoriale nullo)
 	const cross = dKr * dGc - dKc * dGr;
 	if (cross !== 0) return false;
 
-	// stessa direzione (prodotto scalare positivo)
 	const dot = dKr * dGr + dKc * dGc;
 	if (dot <= 0) return false;
 
-	// guard deve essere strettamente tra enemy e king,
-	// non oltre il re sulla stessa retta
 	const distK2 = dKr * dKr + dKc * dKc;
 	const distG2 = dGr * dGr + dGc * dGc;
 	if (distG2 >= distK2) return false;
@@ -410,7 +401,7 @@ function canDodge(match, square)
 	match.cursor.Save();
 	coord = piece.pos;
 	kingTargets = structuredClone(square.targetZones);
-	for (let newCoord of kingTargets)//king can dodge?
+	for (let newCoord of kingTargets)
 	{
 		newSquare = match.board.get(newCoord);
 		if (!isDangerous(match, newSquare.dangerZones, piece.team) && (!newSquare.piece || newSquare.piece?.team != square.piece?.team))

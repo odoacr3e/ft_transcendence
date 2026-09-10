@@ -20,6 +20,10 @@ import { gameMessage } from "../../websocket/utils.js";
 /** @typedef {{move: Move | null, moveBoost: Move | null, transform: string, boost: string, canEat?: boolean}} Turn */
 /** @typedef {{score: number, index: number}} Eval */
 
+/** @type {null | string} */
+let DEBUGresultBUFFER = null;
+let DEB = 0;
+
 /*
 
 	g1: win {t1, t2, t3} => {b1, b2, b3} 
@@ -73,9 +77,6 @@ export class AI
 
 //SECTION - utils
 
-let DEB = 0;
-
-//15832
 /**
  * 
  * @param {Match} match 
@@ -114,8 +115,6 @@ function getBestTurn(match)
 	arrayTurns = getLegalMoves(match);
 	for (let i = 0; i != arrayTurns.length; i++)
 	{
-		DEB++;
-		// console.log(`Turns: ${i}/${arrayTurns.length}`);
 		const turn = arrayTurns[i];
 		if (match.currentPlayer.team == eTeam.White)
 			alpha = getBestNumber([alpha, bestTurns[0]?.score, bestTurns[1]?.score], false);
@@ -125,19 +124,19 @@ function getBestTurn(match)
 			continue ;
 		if (match.currentPlayer.team == DEBUGTEAM)
 			throw (`AI: Team has NOT changed..`);
-		// render(match);
 		playableTurn.push(turn);
 		newTurns = getLegalMoves(match);
 		if (ai.memory && match.zobristIndex in ai.memory && (!DEBUG_AI_TRAINING ||
 		rngProportional(100, 50)))
 		{
 			score = ai.memory[match.zobristIndex][0];
-			debugReaction(match, ai.memory[match.zobristIndex]);
 		}
 		else if (match.victory)
 			score = victoryScore(match);
 		else
 			score = minMax(match, ai, newTurns, depth, [turn], alpha, beta);
+		if (DEBUGresultBUFFER != null)
+			DEBUGresultBUFFER += `|depth: ${depth}|val: ${score}|i: ${DEB++}|team: ${match.currentPlayer.team == eTeam.White ? "⚪" : "⚫️"}|\n`;
 		val.index = i;
 		val.score = score;
 		if (match.currentPlayer.team == DEBUGTEAM)
@@ -159,10 +158,6 @@ function getBestTurn(match)
 			else
 				return ({Turn: turn, Score: -Infinity});
 		}
-		// if (match.currentPlayer.team == eTeam.Black && val.score == +Infinity)
-		// 	continue ;
-		// else if (match.currentPlayer.team == eTeam.White && val.score == -Infinity)
-		// 	continue ;
 		if (bestTurns.length <= 1)
 		{
 			bestTurns.push({score: val.score, index: val.index});
@@ -185,9 +180,14 @@ function getBestTurn(match)
 		}
 	}
 	match.simulationMap.clear();
+	if (DEBUGresultBUFFER)
+	{
+		fs.writeFileSync("AI_log", DEBUGresultBUFFER);
+		DEBUGresultBUFFER = "";
+		DEB = 0;
+	}
 	if (match.currentPlayer.team != DEBUGTEAM)
 		throw (`AI: Team has changed..`);
-	// console.log(`Turns: ${arrayTurns.length}/${arrayTurns.length}`);
 	if (bestTurns.length == 0)
 	{//@ts-ignore
 		ai.defeatStatus = 1;
@@ -250,7 +250,7 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 		return (score);
 	}
 	//NOTE = quiescence check
-	// console.log(depth);//@ts-ignore
+	//@ts-ignore
 	if ((depth == ai.quiescenceDepth) || (depth <= 0 && !arrayTurns.canEat))
 		return (evalScore(match, ai, pastTurns));
 	lostTeam = checkLostAll(match);
@@ -267,19 +267,13 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 				continue ;
 			if (execTurn(match, turn, pastTurns) == false)
 				continue ;
-			// if (match.board.get(turn.move?.to).piece || (turn.moveBoost && match.board.get(turn.moveboost?.to).piece))
-			// 	turn.eat = true;
 			newTurns = getLegalMoves(match);
-			// else
-			// 	console.log(arrayTurns.length);
 			pastTurns.push(turn);
-			// console.log(turn);
 			ai.Simulate(match, ai);
 			if (ai.memory && match.zobristIndex in ai.memory && (!DEBUG_AI_TRAINING ||
 			rngProportional(100, 50)))
 			{
 				val = ai.memory[match.zobristIndex][0];
-				debugReaction(match, ai.memory[match.zobristIndex]);
 			}
 			else if (match.victory)
 				val = victoryScore(match);
@@ -290,6 +284,8 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 				cancelTurn(match, turn);
 				continue ;
 			}
+			if (DEBUGresultBUFFER != null)
+				DEBUGresultBUFFER += `|depth: ${depth}|val: ${val}|i: ${DEB++}|team: ${match.currentPlayer.team == eTeam.White ? "⚪" : "⚫️"}|\n`;
 			if (maxEval == undefined)
 				maxEval = -Infinity;
 			ai.Cancel(match, ai);
@@ -301,7 +297,6 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 			alpha = Math.max(maxEval, alpha);
 			if (beta <= alpha)
 				break ;
-			// render(match);
 		}
 		if (maxEval == undefined)
 			return (evalScore(match, ai, pastTurns));
@@ -314,24 +309,17 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 		for (const turn of arrayTurns)
 		{
 			++i;
-			// if (depth == 1 && turn.move?.from != "a1")
-			// 	console.log();
 			if (depth <= 0 && (turn.canEat == false || !checkEatChain(match, turn)))
 				continue ;
 			if (execTurn(match, turn, pastTurns) == false)
 				continue ;
-			// render(match);
 			newTurns = getLegalMoves(match);
-			// else
-			// 	console.log(arrayTurns.length);
 			pastTurns.push(turn);
-			// console.log(turn);
 			ai.Simulate(match, ai);//@ts-ignore
 			if (ai.memory&& match.zobristIndex in ai.memory && (!DEBUG_AI_TRAINING ||
 			rngProportional(100, 50)))
 			{
 				val = ai.memory[match.zobristIndex][0];
-				debugReaction(match, ai.memory[match.zobristIndex]);
 			}
 			else if (match.victory)
 				val = victoryScore(match);
@@ -342,6 +330,8 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 				cancelTurn(match, turn);
 				continue ;
 			}
+			if (DEBUGresultBUFFER != null)
+				DEBUGresultBUFFER += `|depth: ${depth}|val: ${val}|i: ${DEB++}|team: ${match.currentPlayer.team == eTeam.White ? "⚪" : "⚫️"}|\n`;
 			if (minEval == undefined)
 				minEval = Infinity;
 			ai.Cancel(match, ai);
@@ -353,7 +343,6 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 			beta = Math.min(minEval, beta);
 			if (beta <= alpha)
 				break ;
-			// render(match);
 		}
 		if (minEval == undefined)
 			return (evalScore(match, ai, pastTurns));
@@ -370,15 +359,15 @@ function checkEatChain(match, turn)
 {
 	let piece;
 	let targetSquare;
-	let enemySquare;
 	let pointWin;
 
+	//@ts-ignore
 	targetSquare = match.board._data.get(turn.move?.to);
 	if (!targetSquare?.piece)
-		return false;
+		return false;//@ts-ignore
 	piece = match.board.get(turn.move.from).piece;
 	pointWin = targetSquare.piece.price;
-	if (isDangerous(match,targetSquare.dangerZones, match.NextPlayer().team))
+	if (isDangerous(match,targetSquare.dangerZones, match.NextPlayer().team))//@ts-ignore
 		pointWin -= piece?.price;
 	return pointWin > 1;
 }
@@ -420,23 +409,6 @@ function victoryScore(match)
 	tmp = match.victory;
 	match.victory = "";
 	return (tmp == eTeam.White ? +Infinity : -Infinity);
-}
-
-/**
- * 
- * @param {Match} match 
- * @param {Array<Number>} data
- */
-function debugReaction(match, data)
-{
-	// console.log(`Mi ricordo.. gia vista ${data[1]} volte`);
-	// if (match.currentPlayer.team == eTeam.White && data[0] >= 0 || match.currentPlayer.team == eTeam.Black && data[0] < 0)
-	// 	console.log(`Roba buona, punteggio ${data[0]}`);
-	// else
-	// 	console.log(`Molto male, punteggio ${data[0]}`);
-	// render(match);
-	// console.log("<======================>");
-	// console.log("<======================>");
 }
 
 export {getBestTurn};

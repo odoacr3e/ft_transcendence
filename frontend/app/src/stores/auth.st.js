@@ -1,4 +1,5 @@
 import { api }				from '../router/api/client';
+import { debug } 			from '../scripts/Data/Variables';
 import { authApi }			from '../router/api/auth.api';
 import { defineStore }		from 'pinia';
 import { useMsgStore }      from './msg.st';
@@ -87,7 +88,7 @@ export const useAuthStore = defineStore('auth', {
 				useSockStore().disconnect();
 				this.user = null;
 			}
-			catch(err) { console.error(err); }
+			catch(err) { debug("[logout]: Errore nel logout!\n" + err) }
 		},
 
 		async update(credentials)

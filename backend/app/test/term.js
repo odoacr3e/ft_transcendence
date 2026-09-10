@@ -29,6 +29,7 @@ import { initFromStr } from "../handlers/game/init.js";
 import { AIexecuteTurn } from "../GameLogic/aiTurn.js";
 
 const aiOppo = AIprofiles.HAL9000;
+// const aiOppo = "";
 
 //SECTION - main: inizializza e fa primo render, mette terminale in ascolto
 function mainTerm()
@@ -37,7 +38,6 @@ function mainTerm()
 	let	seed;
 	let	time;
 
-	// console.log = ()=>{};
 	console.time();
 	console.profile();
 	termInit();
@@ -49,36 +49,22 @@ function mainTerm()
 	seed = "1v1";
 	time = process.hrtime.bigint();
 	init(match, seed);
-	// historyRestore(match, HISTORY_DEFAULT);
-	// move(match, "e2", "e4");
-	// move(match, "g8", "f6");
-	// move(match, "e4", "e5");
-	// move(match, "h8", "g8");
-	// if (lib.include.fs.existsSync(HISTORY_DEFAULT))
-	// 	historyRestore(match, HISTORY_DEFAULT);
-	// match.currentPlayer.ai = new AI(AIprofiles.FIRST_AI);
 	if (aiOppo)
 	{
 		match.NextPlayer().ai = new AI(aiOppo);
 		match.aiBool = true;
 	}
-	// move(match, "e5", "f6");
 	console.log(`time to init: ${(process.hrtime.bigint() - time) / 1000n} microseconds`);
 	match.cursor.square = match.currentPlayer.King;
 	render(match);
 	return (match);
 }
 
-// console.log(await prisma.matches.findMany());
-// await historyGetMatchState({matchId: 235, moveId: 2});
-// await historyGetMatchState({matchId: 235, moveId: 1});
-// await historyGetMatchState({matchId: 235, moveId: 0});
-// await historyGetMatchState({matchId: 235, moveId: -1});
-// process.exit();
 let match = mainTerm();
 let	helpBool = true;
 let	mutex = false;
 let	newType = "";
+let	aiCanMove = false;
 
 //SECTION - eventLoop: binda i tasti per fare cose
 
@@ -91,8 +77,11 @@ process.stdin.on('keypress', (str, key) =>
 	let	dx;
 	let	dy;
 
-	if (!match.victory && match.currentPlayer.ai && match.history.Last().team != match.currentPlayer.team && match.history.events.length != 0)
-		return (execEvent(match, "", ""));
+	aiCanMove = !match.victory && !!match.currentPlayer.ai && match.history.Last().team != match.currentPlayer.team;
+	if (key.name != cmd.CANCEL_EVENT && !(key.ctrl && key.name == "c") && aiCanMove)
+	{
+		execEvent(match, "", "");
+	}
 	match = globals.GetLastMatch();
 	mutex = true;
 	dx = 0;
@@ -140,8 +129,6 @@ process.stdin.on('keypress', (str, key) =>
 			result = execEvent(match, eEvents.Boost);
 			if (result.status != 200)
 				return (saveWrongMove(match, result, eEvents.Boost));
-			// console.log(`index => ${match.zobristIndex}`);
-			// console.log(`hash => ${match._zobristHash}`);
 			selected = [];
 			break ;
 		case (cmd.USE_BOOST) :
@@ -158,8 +145,6 @@ process.stdin.on('keypress', (str, key) =>
 					return (saveWrongMove(match, result, eEvents.MoveBoost));
 				else if (result.status != 200)
 					return (saveWrongMove(match, result, eEvents.Move));
-				// console.log(`index => ${match.zobristIndex}`);
-				// console.log(`hash => ${match._zobristHash}`);
 				selected = [];
 			}
 			break ;
@@ -249,28 +234,39 @@ process.stdin.on('keypress', (str, key) =>
  */
 function execEvent(match, eventType, newPieceType="")
 {
+	let	result;
+
 	try
 	{
 		if (!eventType)
-			return (AIexecuteTurn(match));
+			return (AIexecuteTurn(match), new Result().Success());
 		switch (eventType)
 		{
 			case (eEvents.Move): case (eEvents.MoveBoost):
-				return (move(match, selected[0], selected[1], match.currentPlayer.useBoostBool));
+				result = move(match, selected[0], selected[1], match.currentPlayer.useBoostBool);
+				break ;
 			case (eEvents.Boost):
-				return (boost(match, match.cursor.square));
+				result = boost(match, match.cursor.square);
+				break ;
 			case (eEvents.EndTurn):
-				return (endTurn(match));
+				result = endTurn(match);
+				break ;
 			case (eEvents.Transform):
-				return (makeTransfiguration(match, match.cursor.square, newPieceType));
+				result = makeTransfiguration(match, match.cursor.square, newPieceType);
+				break ;
 			case ("cancel"):
-				return (cancelEvent(match));
+				result = cancelEvent(match);
+				break ;
 			default:
 				throw (`eventType ${eventType} unknown`);
 		}
+		aiCanMove = !match.victory && !!match.currentPlayer.ai && match.history.Last().team != match.currentPlayer.team;
+		if (aiCanMove)
+			console.log(`Press any key except "${cmd.CANCEL_EVENT}" to let the AI move..`);
+		return (result);
 	}
 	catch(err)
-	{
+	{//@ts-ignore
 		console.log(err?.stack);
 		console.error("GAME CRASHED.");
 		console.error(err);
@@ -287,7 +283,6 @@ function execEvent(match, eventType, newPieceType="")
  */
 function print(key)
 {
-	// console.log(getLegalMoves(match));
 	console.log("\n\n\nrow", match.cursor.getRow(), ", col", match.cursor.getCol(), ", cursor", match.cursor.Normify(), `(${match.cursor.square})`);
 	if (TargetDangerSwitch != "None")
 		console.log(`Visualizing ${TargetDangerSwitch} zones`);

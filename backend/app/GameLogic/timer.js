@@ -40,11 +40,13 @@ export function setTimerGame(match)
 		match.endTurn();
 		result = match.PlayerLost(result, p);
 		result = responseFormatter(match, result, null, null);
+		result.type = "update";
 		sendData(eChildEvents.Game, match.id, result);
 		if (match.playerNum == 1)
 		{
 			result = match.CheckMate();
 			result = responseFormatter(match, result, null, null);
+			result.type = "update";
 			sendData(eChildEvents.Game, match.id, result);
 			for (const user of match.users)
 				clientSetState(user.id_user, enumSocketState.NAVIGATING);

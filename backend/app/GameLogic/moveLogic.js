@@ -59,12 +59,11 @@ function updateChessboard(coords=[], result, match, boostBool)
 		if (match.aiSimulation == false)
 			gameMessage(match, `player ${match.currentPlayer.team} + ${to.piece.price}💲`);
 		match.currentPlayer.nPoints += to.piece.price;
+		match.GetPlayer(to.piece.team).pieceValue -= to.piece.price;
 		match.GetPlayer(to.piece.team).nPieces -= 1;
 		if (to.piece.isBoostedBool == true)//@ts-ignore
 			match.GetPlayer(to.piece.team).boostedPiece = "";
 	}
-	// else if (to.piece && to.piece.team == from.piece.team)
-
 	makeMove(match, result, coords, from, to);
 	match.moves++;
 	return (true);
