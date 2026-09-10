@@ -98,11 +98,6 @@ export function setVictory(newValue, sound = true)
 		playAudio("lost");
 }
 
-<<<<<<< Updated upstream
-//NOTE - Funzione per il controllo e l'inserimento dell'elemento DOM per il potenziamento del pedone
-//		 fromEl = elemento DOM dello square dove il pedone che si deve potenziare si trova
-//		 menuEl = elemento DOM del menu' che deve comparire sopra fromEl. La sua posizione e' quindi dinamica
-=======
 /**
  * Cerca un Bastards arrivato sull'ultima traversa e, se lo trova, apre il menu di
  * promozione ancorandolo alla sua casella.
@@ -125,7 +120,6 @@ export function setVictory(newValue, sound = true)
  *
  * @returns	{void}
  */
->>>>>>> Stashed changes
 export function checkUpgrade()
 {
 	const	curP = currentPlayer();

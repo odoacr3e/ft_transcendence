@@ -114,12 +114,12 @@ function waitForSocketToBeReady(ms = 5000)
 	return new Promise((resolve) => {
 		const done = (ok) => {
 			clearTimeout(timer);
-			sockStore.socket.off('ready', onReady);
+			sockStore.socket?.off('ready', onReady);
 			resolve(ok);
 		}
 		const onReady = () => done(true);
 		const timer = setTimeout(() => done(false), ms);
-		sockStore.socket.once('ready', onReady);
+		sockStore.socket?.once('ready', onReady);
 	});
 }
 
@@ -163,7 +163,7 @@ export function reloadMatch()
 		let done	= false;
 
 		const emit = () => {
-			sockStore.socket.emit("game", {
+			sockStore.socket?.emit("game", {
 				type: "reload",
 				from: sessionStorage.getItem("match:myTeam"),
 				to: ""
@@ -176,8 +176,8 @@ export function reloadMatch()
 			done = true;
 			clearTimeout(timeout);
 			clearInterval(retryId);
-			sockStore.socket.off("game", onResponse);
-			sockStore.socket.off("connect", start);
+			sockStore.socket?.off("game", onResponse);
+			sockStore.socket?.off("connect", start);
 			resolve(ok);
 		};
 
@@ -203,12 +203,12 @@ export function reloadMatch()
 
 		const timeout = setTimeout(() => finish(false), 6000);
 
-		sockStore.socket.on("game", onResponse);
+		sockStore.socket?.on("game", onResponse);
 
-		if (sockStore.socket.connected)
+		if (sockStore.socket?.connected)
 			start();
 		else
-			sockStore.socket.once("connect", start);
+			sockStore.socket?.once("connect", start);
 	});
 }
 
@@ -226,6 +226,6 @@ export function sendChatMsg(msg)
 		debug("[BackLink.js -> sendChatMsg()]: socket non connesso");
 		return (false);
 	}
-	sockStore.socket.emit("gameMsg", { author: author ?? "", msg: msg });
+	sockStore.socket?.emit("gameMsg", { author: author ?? "", msg: msg });
 	return (true);
 }

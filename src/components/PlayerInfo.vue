@@ -47,7 +47,7 @@
 		<div class="relative shrink-0 dim" v-bind:class="{ 'dim-off':!playing }">
 			<img :src="player.image ? `${player.image}` : defaultAvatar" @error="handleAvatarError"
 				alt="User Icon" :draggable="false" class="rounded-full object-cover size-18.75 stretch 0">
-			<TagTitle v-if="player?.title" :title="player.title" class="absolute -bottom-1 -right-2"/>
+			<TagTitle v-if="player?.title" :title="player.title" class="text-[10px] py-0.75 absolute -bottom-1 -right-6"/>
 		</div>
 
 		<div class="shrink-0 dim" v-bind:class="{'dim-off':!playing}">
