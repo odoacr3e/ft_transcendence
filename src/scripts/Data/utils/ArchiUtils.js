@@ -55,12 +55,12 @@ export function checkEndTurn(validated)
 	});
 
 	if (!newCurP || !curP) 
-		return (spreadDemocracy());
+		return (spreadDemocracy(!!localInfo.drag));
 
 	if (curP.name === newCurP.name && !validated.victory)
 		localInfo.secondTurn = true;
 	else
-		spreadDemocracy();
+		spreadDemocracy(!!localInfo.drag);
 }
 
 /**
@@ -227,10 +227,38 @@ export function assignLastMoveSquares(oldSquare, newSquare, newSet)
 }
 
 /**
+ * Helper per evitare che un update della scacchiera rimuova un drag fatto partire dalla mossa
+ * predcedente all'update.
+ *
+ * Quindi restituisce falsa solo se la casella di partenza cambia contenuto, che è
+ * l'unico caso in cui dovresi annullare il dratg perchè il pezzo appunto è stato 
+ * cambiato di posto dal server
+ *
+ * @param	{Object}	changes		Payload validato
+ * @returns	{boolean}	true se il drag in corso non ha piu' senso
+ */
+export function isDragInvalidated(changes)
+{
+	const from = localInfo.drag?.from;
+
+	if (!from)
+		return (false);
+
+	
+	if (!changes.board || !(from in changes.board))
+		return (false);
+	
+	const nextPiece = changes.board?.[from]?.piece;
+	const oldPiece = localBoard.get(from)?.piece;
+
+	return (nextPiece?.type !== oldPiece?.type || nextPiece?.team !== oldPiece?.team);
+}
+
+/**
  * PER LA DEMOCRAZIA
  * @returns	{void}
  */
-export function spreadDemocracy()
+export function spreadDemocracy(keepDrag = false)
 {
 	localInfo.clickedId			= null;
 	localInfo.lastClickedId		= null;
@@ -238,17 +266,19 @@ export function spreadDemocracy()
 	localInfo.savedBoostedMap	= null;
 	localInfo.secondTurn		= false;
 	localInfo.secondMove		= false;
-	localInfo.drag				= null;
 	localInfo.pending			= null;
 	localInfo.drawOffer			= null;
 	localInfo.goatId			= null;
-
+	if (!keepDrag)
+		localInfo.drag			= null;
+	
 	stopUpgradeMenu();
 	localBoard.forEach(square => {
 		if (square.useAbilityBool)
 			square.useAbilityBool = false;
 	});
-	clearHighlight();
+	if (!keepDrag)
+		clearHighlight();
 } 
 //  Azzera tutto lo stato di interazione del client: selezione, abilita' armata, seconda
 //  mossa, trascinamento, trattative in corso e menu di promozione, piu' gli highlight e i

@@ -109,7 +109,8 @@
 								{'selectedB': getSquareColor(square?.id) == 'black' && (square.selected !== square.inCheck || square.highlight && square.piece)},
 								{'pieceClicked': square.piece && square.piece.team === localInfo.myTeam && square.clicked}]"
 						@drop="onDrop($event, square); dragOver = null"
-						@dragover.prevent="dragOver = square?.id;">
+						@dragover.prevent="dragOver = square?.id;"
+						@dragenter.prevent>
 						<p	class="absolute"
 							v-if="(parseInt(square.id.substring(1)) === bottomRank) || 
 								(style === '14x14x4' && parseInt(square.id.substring(1)) === 4 &&

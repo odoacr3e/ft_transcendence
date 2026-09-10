@@ -144,3 +144,21 @@ export function clearHighlight(flag)
 			}
 	})
 }
+
+/**
+ * Ricalcola gli highlight del pezzo che il giocatore sta trascinando qiuando la scacchiera
+ * viene updatata mentre un giocatore sta facendo un drag.
+ *
+ * @returns	{void}
+ */
+export function refreshDragHighlight()
+{
+	const from	= localInfo.drag?.from;
+	const piece	= localBoard.get(from)?.piece;
+
+	if (!from || !piece || piece.team !== localInfo.myTeam || !isMyTurn())
+		return;
+
+	PIECES_HIGHLIGHT[piece.type]?.(from);
+	localBoard.get(from).clicked = true;
+}
