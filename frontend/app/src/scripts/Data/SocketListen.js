@@ -3,7 +3,8 @@ import { updateMatchState, reloadMatchState,
 import { localInfo,  debug, isMatchLoaded, 
 		 getCheckSquares }								from "./Variables.js";
 import { stopBlinking, handleErrors, playMoveAudio }	from "./utils/socketListenUtils.js";
-import { clearHighlight, setCheckSquare }				from "../Events/utils/HighlightUtils.js";
+import { clearHighlight, refreshDragHighlight, 
+		 setCheckSquare }								from "../Events/utils/HighlightUtils.js";
 import { spreadDemocracy, setVictory } 					from "./utils/ArchiUtils.js";
 import { pushTurn, reloadHistory } 						from "./History.js";
 import { pushMessage } 									from "./ChatBox.js";
@@ -188,13 +189,9 @@ function typeSimulateBoost(raw)
  * stabilito di un array in cui buttare ogni mossa con un push.
  * I turni derivano dal sistema di history del backend che si aggiorna ad ogni mossa fattta
  * 
- * In questa funzione entrano due strade diverse. Dallo switch arriva il messaggio di tipo
- * history, che porta il singolo turno appena chiuso e va accodato con pushTurn(). Da
- * typeReload() arriva invece il payload del rientro, il cui campo history e' l'array di
- * tutta la partita: li' serve reloadHistory(), che svuota la cronologia locale e la
- * ricostruisce da capo, altrimenti i turni si sommerebbero a quelli gia' presenti.
- *
- * A scegliere la strada e' la forma del campo, non il chiamante.
+ * Dato che questa funzione viene chiamata sia nel caso di un push che nel caso di un
+ * reload della history la funzione gestisce entrambi i casi basandosi sul type del
+ * parametro passato
  *
  * @param	{Object}	raw			Payload con il campo history, array di turni o turno singolo
  * @returns	{void}
@@ -211,20 +208,11 @@ function typeHistory(raw)
 }
 
 /**
- * La strada normale di ogni mossa: aggiorna la partita, accoda il turno se e' stato chiuso,
- * ripulisce gli highlight, segnala l'eventuale scacco e suona.
+ * Gestione del default del switch case grosso, qui passano tutte le risposte che necessitano
+ * solo di un update della board.
+ * Non ha nomi specifici dato che le mosse hanno type vari in base a mosse boost e non
  *
- * Ci arriva tutto cio' che lo switch non riconosce, perche' le mosse viaggiano con tipi
- * diversi (move, moveboost, trans, boost, endturn...) ma vanno trattate allo stesso modo.
- *
- * L'outcome restituito da updateMatchState() e' cio' che permette di scegliere il suono:
- * il payload dice cosa e' stato chiesto, l'outcome dice cosa e' cambiato davvero in board.
- *
- * Se la mossa ha chiuso la partita si esce prima di suonare: il jingle di vittoria o
- * sconfitta l'ha gia' fatto partire setVictory() dentro l'update, e sovrapporgli il suono
- * della mossa sarebbe solo confusione.
- *
- * @param	{Object}	raw			Payload della mossa, con la board aggiornata e il turno chiuso
+ * @param	{Object}	raw			Payload di update della board
  * @returns	{void}
  */
 function typeMoveUpdate(raw)
@@ -234,6 +222,7 @@ function typeMoveUpdate(raw)
 	if (raw.history)
 		pushTurn(raw.history);
 	clearHighlight();
+	refreshDragHighlight();
 
 	setCheckSquare(getCheckSquares(raw));
 	if (localInfo.victory)

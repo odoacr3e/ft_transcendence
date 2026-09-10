@@ -6,7 +6,8 @@ import { initLocalBoard, localMatchState,
 import { checkEndTurn, hasPlayerBoostedPiece, 
 		 checkUpgrade, setVictory, 
 		 assignLastMoveSquares,
-		 spreadDemocracy }						from "./utils/ArchiUtils.js";
+		 spreadDemocracy, 
+		 isDragInvalidated}						from "./utils/ArchiUtils.js";
 import { beginPendingAbility } 					from "../Helper/abilityMovement.js";
 import { clearHistory } 						from "./History.js";
 import { clearMessages } 						from "./ChatBox.js";
@@ -167,7 +168,8 @@ export function updateMatchState(nextRaw)
 	{
 		const validated = validateReceivedMatch(nextRaw);
 		
-		localInfo.drag = null;
+		if (isDragInvalidated(validated))
+			localInfo.drag = null;
 		
 		setVictory(nextRaw.victory);
 		checkEndTurn(validated);
