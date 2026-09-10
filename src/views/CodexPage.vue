@@ -1,4 +1,5 @@
 <script setup>
+    import KingSketch from '@/components/KingSketch.vue';
     import { ref }      	from 'vue';
     import { useI18n }  	from 'vue-i18n';
     import IconCoins    	from '@/components/icons/IconCoins.vue';
@@ -36,10 +37,10 @@
                 md:w-[60vw]
                 lg:w-[28vw] lg:min-w-118">
             <div class="relative max-md:h-[30vh] md:h-[40vw] overflow-hidden lg:hidden md:bg-bg-default">
-                <img :draggable="false" src="../assets/KingSketch.png" alt="image"
+                <KingSketch alt="image"
                         class="absolute inset-0 size-full object-cover object-top 
                         max-md:mask-b-from-10% max-md:mask-b-to-100% max-md:pb-px max-md:p- max-md:scale-120 max-md:-mt-5
-                        md:mask-b-from-10% md:mask-b-to-100% md:pb-px md:p-4 md:scale-120 md:-top-2/12">
+                        md:mask-b-from-10% md:mask-b-to-100% md:pb-px md:p-4 md:scale-120 md:-top-2/12" />
             </div>
             <div class="flex flex-col m-9 max-lg:mt-0 mb-0.5 relative z-11 overflow-y-scroll">
                 <h2 class="text-text-default max-md:text-xl md:text-3xl lg:text-4xl font-semibold">{{ t('codex.' + array[select] + '.name') }}</h2>
@@ -76,7 +77,7 @@
             </div>
         </div>
         <div class="max-lg:hidden bg-bg-darker rounded-r-3xl border-l border-border-default py-7">
-            <img :draggable="false" src="../assets/KingSketch.png" alt="" class="mx-3.5 scale-100">
+            <KingSketch alt="" class="mx-3.5 scale-100" />
         </div>
     </div>
 </template>

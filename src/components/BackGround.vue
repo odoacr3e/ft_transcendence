@@ -2,7 +2,7 @@
 </script>
 
 <template>
-  <img :draggable="false" src="../assets/WoodenTable.png" alt="background">
+  <img :draggable="false" src="../assets/art/WoodenTable.png" alt="background">
 </template>
 
 <style scoped>

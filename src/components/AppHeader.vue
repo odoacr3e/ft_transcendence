@@ -1,5 +1,7 @@
 <script setup>
-	import { rework_date, defaultAvatar, handleAvatarError }	from '../scripts/Helper/CompUtils';
+	import UserAvatar from '@/components/UserAvatar.vue';
+	import IconSearch from '@/components/icons/IconSearch.vue';
+	import { rework_date }	from '../scripts/Helper/CompUtils';
 	import { ref, onMounted }									from 'vue';
 	import { useClickOutside }									from '@/scripts/Helper/generalUtils';
 	import { useAuthStore }										from "../stores/auth.st";
@@ -120,7 +122,7 @@
 					max-md:hidden
 					md:w-[120%] md:h-10 md:justify-self-start
 					lg:w-[150%] lg:h-11 lg:justify-self-center">
-			<img src="../assets/search.png" alt="" class="md:size-7 lg:size-7 self-center ml-3" :draggable="false">
+			<IconSearch stroke="#AFB1B5" class="md:size-7 lg:size-7 self-center ml-3" />
 			<form @submit.prevent="goToUser">
 				<input v-model="searchUser" type="search" name="searchBar" id="searchBar" :placeholder="t('common.search')" autocomplete="off"
 					class="justify-self-center rounded-4xl pl-3 text-text-default
@@ -233,9 +235,9 @@
 						max-lg:mr-1.5 md:text-lg
 						lg:hidden">{{ user.username }}</h2>
 					<h2 class="text-text-default place-self-center mr-2 max-lg:hidden">{{ user.username }}</h2>
-					<img
-						:src="user.image ? `${user.image}` : defaultAvatar" @error="handleAvatarError" :draggable="false"
-						class="rounded-full place-self-center mr-1 object-cover max-md:size-10 md:size-11 lg:size-12">
+					<UserAvatar
+						:src="user.image"
+						class="rounded-full place-self-center mr-1 object-cover max-md:size-10 md:size-11 lg:size-12" />
 					<IconChevron class="size-4 text-text-default transition-transform duration-200 max-lg:hidden" :class="{ 'rotate-180': p_bool }"/>
 				</button>
 				<Transition

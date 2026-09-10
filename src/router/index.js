@@ -11,11 +11,11 @@ import LoginPage 							from '../views/LoginPage.vue'
 import ChangePwd 							from '../views/ChangePwd.vue'
 import CodexPage 							from '../views/CodexPage.vue'
 import EditPage 							from '../views/EditPage.vue'
-import GameFour 							from '../views/GameFour.vue'
 import PlayPage 							from '../views/PlayPage.vue'
 import UserMe 								from '../views/UserMe.vue'
 import Home 								from '../views/Home.vue'
 import { api, ApiError }					from './api/client'
+// import GameFour 							from '../views/GameFour.vue'
 // import PwdDEBUG 							from '../views/PwdDEBUG.vue'
 // import StartTour 							from '../views/StartTour.vue'
 // import OpenTournament 						from '../views/OpenTournament.vue'
@@ -50,12 +50,6 @@ const routes = [
 		name: 'playpage',
 		meta: { requiresAuth: true },
 		component: PlayPage
-	},
-	{
-		path: '/4v4_game',
-		name: 'GameFour',
-		meta: { requiresAuth: true },
-		component: GameFour
 	},
 	{
 		path: '/leaderboard',
@@ -133,6 +127,12 @@ const routes = [
         name: 'not_found',
         redirect: '/'
     },
+	// {
+	// 	path: '/4v4_game',
+	// 	name: 'GameFour',
+	// 	meta: { requiresAuth: true },
+	// 	component: GameFour
+	// },
 	// {
 	// 	path: `/DEBUG/pwd`,
 	// 	name: 'DEBUG_pwd',

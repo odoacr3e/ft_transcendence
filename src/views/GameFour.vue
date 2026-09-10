@@ -4,6 +4,7 @@
 	import { initLocalMatchState }  from '../scripts/Data/Archi';
 	import { onMounted, ref }       from 'vue';
     import { debug }                   from '../scripts/Data/Variables.js';
+import IconCrown from '@/components/icons/IconCrown.vue';
 
 	const ready = ref(false);
 	const style = ref("14x14x4");
@@ -25,7 +26,7 @@
             <ChessBoard :style="style"/>
         </div>
         <div class="p-10 flex-col mt-20 w-lg">
-            <img :draggable="false" src="../assets/CrownIcon.png" alt="" class="w-30 justify-self-center">
+            <IconCrown fill="var(--color-main-color)" class="w-30 justify-self-center"/>
             <h1 class="text-[200%] mb-1 text-white justify-self-center">Ben tornato</h1>
             <h4 class="text-[100%] mb-8 text-text-second justify-self-center">Accedi al tuo account</h4>
             

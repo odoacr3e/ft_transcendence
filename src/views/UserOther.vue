@@ -1,10 +1,10 @@
 <script setup>
+    import UserAvatar from '@/components/UserAvatar.vue';
     import TagTitle from '../components/TagTitle.vue';
     import FriendList from '../components/FriendList.vue';
     import StatusOnline from '../components/StatusOnline.vue';
     import FriendButton from '../components/FriendButton.vue';
     import MatchHistory from '../components/MatchHistory.vue';
-    import { defaultAvatar, handleAvatarError }    from '../scripts/Helper/CompUtils';
     import { useAuthStore } from "../stores/auth.st";
     import { storeToRefs }  from 'pinia';
     import { ref, watch }   from 'vue';
@@ -51,9 +51,9 @@
             md:w-[90vw] md:h-full
             2xl:max-w-[50vw] 2xl:h-[80vh]">
         <div class="flex relative p-2 m-4 mb-2 bg-bg-default rounded-3xl border border-border-default">
-            <img :src="otherUser.image ? `${otherUser.image}` : defaultAvatar" @error="handleAvatarError" :draggable="false"
+            <UserAvatar :src="otherUser.image"
                     alt="avatar" class="rounded-full place-self-start object-cover
-                    max-[425px]:m-1.5 max-[425px]:size-25 min-[425px]:m-3 min-[425px]:size-30 md:size-35 max-lg:m-3 lg:m-5">
+                    max-[425px]:m-1.5 max-[425px]:size-25 min-[425px]:m-3 min-[425px]:size-30 md:size-35 max-lg:m-3 lg:m-5" />
             <StatusOnline v-if="user.id_user === otherUser.id_user || friends?.find((frie) => frie.friend.id_user === user.id_user && frie.friend_status !== 'pending')"
                 :user_id="otherUser.id_user" class="max-md:size-5 max-[425px]:ml-22 max-[425px]:mt-22
                     min-[425px]:ml-26 min-[425px]:mt-26

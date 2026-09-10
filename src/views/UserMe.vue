@@ -1,9 +1,9 @@
 <script setup>
+    import UserAvatar from '@/components/UserAvatar.vue';
     import TagTitle         from '../components/TagTitle.vue';
     import FriendList       from '../components/FriendList.vue';
     import MatchHistory     from '../components/MatchHistory.vue';
     import FriendRequest    from '../components/FriendRequest.vue';
-    import { defaultAvatar, handleAvatarError }    from '../scripts/Helper/CompUtils';
     import { ref, onMounted, watch }   from 'vue';
     import { useAuthStore }     from "../stores/auth.st";
     import { storeToRefs }      from 'pinia';
@@ -44,9 +44,9 @@
         md:w-[90vw] md:h-full
         2xl:max-w-[50vw] 2xl:h-[80vh]">
         <div class="flex p-2 m-4 mb-2 bg-bg-default rounded-3xl border border-border-default">
-                <img :src="user.image ? `${user.image}` : defaultAvatar" @error="handleAvatarError" :draggable="false"
+                <UserAvatar :src="user.image"
                     alt="avatar" class="rounded-full place-self-start object-cover
-                    max-[425px]:m-1.5 max-[425px]:size-25 min-[425px]:m-3 min-[425px]:size-30 md:size-35 max-lg:m-3 lg:m-5">
+                    max-[425px]:m-1.5 max-[425px]:size-25 min-[425px]:m-3 min-[425px]:size-30 md:size-35 max-lg:m-3 lg:m-5" />
             <div>
                 <h2 class="text-text-default mt-5 max-[375px]:text-lg min-[375px]:text-2xl md:text-3xl">{{ user.username }}</h2>
                 <div class="md:flex gap-3 my-1">

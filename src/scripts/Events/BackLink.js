@@ -37,6 +37,7 @@ export async function requestToBack(fromSquare, toSquare, opType, drawValue)
 		{
 			type = "draw";
 			payload = { type, draw: drawValue === true};
+			debug("ecco cosa mando: ", payload, type, payload.draw);
 		}
 	else if (fromSquare === null && toSquare === null && localInfo.secondTurn)
 		{type = "endturn"; fromSquare = ""; toSquare = ""; }

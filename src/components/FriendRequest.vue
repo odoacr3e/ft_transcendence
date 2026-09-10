@@ -1,5 +1,6 @@
 <script setup>
-    import { defaultAvatar, handleAvatarError, acceptRequest, rejectRequest } from '../scripts/Helper/CompUtils';
+    import UserAvatar from '@/components/UserAvatar.vue';
+    import { acceptRequest, rejectRequest } from '../scripts/Helper/CompUtils';
     import { computed, ref } from 'vue';
     import { useI18n }  from 'vue-i18n';
     import IconCheck               from './icons/IconCheck.vue';
@@ -44,8 +45,8 @@
 
             <div class="flex my-2 justify-self-center">
                 <RouterLink :to="{ name: 'user_page', params: { username: currentRequest.friend.username } }" class="flex items-center">
-                    <img class="rounded-full object-cover max-lg:size-12 md:size-13" :draggable="false"
-                        :src="currentRequest.friend.image ? `${currentRequest.friend.image}` : defaultAvatar" @error="handleAvatarError"/>
+                    <UserAvatar class="rounded-full object-cover max-lg:size-12 md:size-13"
+                        :src="currentRequest.friend.image" />
                     <div class="mx-2">
                         <p class="max-[375px]:hidden text-text-default max-lg:text-sm" v-if="currentRequest.friend.username.length > 12">
                             {{ currentRequest.friend.username.slice(0, 11) + "..." }}</p>

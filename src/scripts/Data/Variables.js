@@ -384,7 +384,7 @@ const AUDIO_VOLUMES = Object.freeze({
 		"boost":		0.35,
 		"capture":		1.0,
 		"draw":			0.57,
-		"endturn":		0.57,
+		"endturn":		0.25,
 		"lost":			1.0,
 		"move":			0.59,
 		"recdraw":		0.66,
@@ -463,6 +463,18 @@ const BOOSTED_SET = "boosted";
 
 /** Skin potenziate. Senza fallback di proposito: dove mancano si ricade sul set scelto dall'utente. */
 const BOOSTED_IMG_PATH = buildImgPaths(BOOSTED_SET, null);
+
+/** Immagini del bot presenti nella cartella pPicturesBot*/
+const BOT_IMAGES = import.meta.glob("../../assets/pPicturesBot/*.png", { eager:true, query:"?url", import: "default" });
+
+/**
+ * Getter delle immagini di profilo dei bot in base al nome passato come argomento
+ * @param {string} profile 
+ * @returns Bot image
+ */
+export function getBotImage(profile) {
+	return (BOT_IMAGES[`../../assets/pPicturesBot/${profile}.png`] ?? null);
+}
 
 /** Url del png di un pezzo dentro un set, undefined se quella combinazione non esiste. */
 function pieceImg(set, team, type)

@@ -1,6 +1,6 @@
 <script setup>
-	import { DOMPlayer, localInfo }				from '@/scripts/Data/Variables';
-	import { defaultAvatar, handleAvatarError }	from '../scripts/Helper/CompUtils';
+	import UserAvatar from '@/components/UserAvatar.vue';
+	import { DOMPlayer, getBotImage, localInfo }				from '@/scripts/Data/Variables';
 	import { computed }							from 'vue';
 	import	TimerClock							from "./TimerClock.vue"
 	import	CapturedPieces						from "./CapturedPieces.vue"
@@ -31,6 +31,13 @@
 		return 'small';
 	});
 
+	const avatar = computed(() => {
+		const p = player.value;
+		if (!p)
+			return (null);
+		return (localInfo.aiGame ? getBotImage(p.name) : p.image);
+	})
+
 </script>
 
 <template>
@@ -45,8 +52,8 @@
 		<!--NOTE - il tag del titolo e' gia' agganciato: comparira' da solo appena il
 		match state portera' player.title, come lo porta gia' l'utente fuori dalla partita.-->
 		<div class="relative shrink-0 dim" v-bind:class="{ 'dim-off':!playing }">
-			<img :src="player.image ? `${player.image}` : defaultAvatar" @error="handleAvatarError"
-				alt="User Icon" :draggable="false" class="rounded-full object-cover size-18.75 stretch 0">
+			<UserAvatar :src="avatar"
+				alt="User Icon" class="rounded-full object-cover size-18.75 stretch 0" />
 			<TagTitle v-if="player?.title" :title="player.title" class="text-[10px] py-0.75 absolute -bottom-1 -right-6"/>
 		</div>
 
