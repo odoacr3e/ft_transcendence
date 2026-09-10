@@ -287,6 +287,8 @@ function pushAllLegalBoost(match, player, legalMovesArray, currTurn, usedBoostBo
 			continue ;
 		if (toPiece.team != player.team)
 			continue ;
+		if (toPiece.type == enumNames.KING)
+			continue ;
 		if (toPiece.price > points)
 			continue ;
 		if (coord == from)
