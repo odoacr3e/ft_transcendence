@@ -131,11 +131,11 @@ export function simulationGlobal(match, team=match.currentPlayer.team)
 		if (turn.move?.from == "c3" && turn.move?.to == "d3")
 			console.log(`BREAKPOINT`);
 		if (turn.move && turn.moveBoost && simulation([turn.move.from, turn.move.to], match, null, [turn.moveBoost.from, turn.moveBoost.to], true))
-			return (console.log(`SAVE: ${JSON.stringify(turn, null, 2)}`), true);
+			return (true);
 		else if (turn.move && !turn.moveBoost && simulation([turn.move.from, turn.move.to], match, null, null, true))
-			return (console.log(`SAVE: ${JSON.stringify(turn, null, 2)}`), true);
+			return (true);
 		else if (!turn.move && turn.moveBoost && simulation([turn.moveBoost.from, turn.moveBoost.to], match, null, null, true, true))
-			return (console.log(`SAVE: ${JSON.stringify(turn, null, 2)}`), true);
+			return (true);
 	}
 	return (false);
 }
