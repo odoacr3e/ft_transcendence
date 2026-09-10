@@ -62,7 +62,7 @@ async function initMatch(data)
 	player = match.currentPlayer.ai? match.NextPlayer() : match.currentPlayer;
 	result.team = player.team;
 	globals.matches.set(match.id, match);
-	if (data.userId && player.dbTable)//@ts-ignore
+	if (data.userId)//@ts-ignore
 		player.dbTable = await getMe(data.userId);
 	sendData(eChildEvents.Game, match.id, responseFormatter(match, result, null, null));
 	if (match.currentPlayer.ai)

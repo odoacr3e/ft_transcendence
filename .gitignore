@@ -9,3 +9,5 @@ history/HISTORY.json
 MOVES
 default.cpuprofile
 TMP*
+AI_log
+dump.rdb
