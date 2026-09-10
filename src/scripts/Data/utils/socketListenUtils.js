@@ -47,7 +47,8 @@ export function stopBlinking()
 /**
  * Gestisce i payload che il server ha rifiutato, cioe' quelli con log.status diverso da 200.
  *
- * Quasi sempre c'e' solo da stampare il messaggio, altre volte caselle da lampeggiare
+ * Quasi sempre c'e' solo da stampare il messaggio e suonare il rifiuto, altre volte caselle
+ * da lampeggiare
  * Le caselle da far lampeggiare sono le tre o due della minaccia, partenza, transito e arrivo,
  * raccolte in un Set che scarta i campi assenti: non tutti i pezzi passano da una casella
  * intermedia.
@@ -58,11 +59,12 @@ export function stopBlinking()
 export function handleErrors(raw)
 {
 	debug("[socketgame]: errore -", raw.log?.msg);
+	//NOTE - unico posto che segnala il rifiuto: l'ack di requestToBack() tace apposta.
+	playAudio(isCheck(raw) ? "check" : "badmove");
 	if (!isCheck(raw))
 		return;
 
 	debug("[socket game]: è tempo di blinkare!");
-	playAudio("check");
 	if (raw.check === undefined)
 		return;
 
