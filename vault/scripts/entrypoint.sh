@@ -2,6 +2,11 @@
 
 set -e
 
+# Il volume condiviso sopravvive ai restart: il flag va azzerato subito, altrimenti
+# quello del run precedente fa passare l'attesa di backend e postgres mentre Vault
+# e' ancora sealed.
+rm -f /vault/shared/secrets-ready
+
 chown -R 100:100 /vault/data /vault/logs 2>/dev/null || true
 
 vault server -config=/vault/config/config.hcl & VAULT_PID=$!

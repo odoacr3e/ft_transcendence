@@ -13,8 +13,8 @@ services:
     image: backend
     container_name: backend
     build: ./backend
-    env_file:
-      - .env
+    # env_file:
+    #   - .env
     environment:
       - VAULT_ADDR=http://vault:8200
     volumes:
@@ -23,6 +23,7 @@ services:
       # - /app/node_modules
     depends_on:
       - postgres
+      - vault
   frontend:
     image: frontend
     container_name: frontend
@@ -35,8 +36,8 @@ services:
     container_name: postgres
     build: ./postgres
     restart: unless-stopped
-    env_file:
-      - .env
+    # env_file:
+    #   - .env
     environment:
       - VAULT_ADDR=http://vault:8200
     ports:
