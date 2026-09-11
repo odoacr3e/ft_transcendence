@@ -80,6 +80,8 @@ function tryBoost(match, result, from)
 		return (error(result, 403, "That piece is already boosted"));
 	else if (square.piece.team != match.currentPlayer.team)
 		return (error(result, 403, `it's ${match.currentPlayer.team} turn`));
+	else if (square.piece.type == enumNames.KING)
+		return (error(result, 403, "That piece can't be boosted"));
 	else if (square.piece.price > match.currentPlayer.nPoints)
 		return (error(result, 403, `You need ${square.piece.price} to boost this`));
 	if (match.currentPlayer.boostedPiece)
