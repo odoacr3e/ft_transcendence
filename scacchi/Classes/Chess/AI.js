@@ -14,6 +14,8 @@ import fs from "fs";
 import { isOneOf } from "../../utils/string.js";
 import { DEBUG_AI_TRAINING, SEED } from "../../Macro/macro.js";
 import { gameMessage } from "../../websocket/utils.js";
+import { DangerUpdate } from "../../utils/dangerUpdate.js";
+import { refreshCastling } from "../../GameLogic/Castling.js";
 
 /** @typedef {import("./match.js").Match} Match*/
 /** @typedef {{from: string, to: string}} Move */
@@ -188,6 +190,7 @@ function getBestTurn(match)
 	}
 	if (match.currentPlayer.team != DEBUGTEAM)
 		throw (`AI: Team has changed..`);
+	refreshCastling(match);
 	if (bestTurns.length == 0)
 	{//@ts-ignore
 		ai.defeatStatus = 1;
@@ -265,8 +268,6 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 			++i;
 			if (depth <= 0 && (turn.canEat == false || !checkEatChain(match, turn)))
 				continue ;
-			if (/*turn.move?.from == "c3" && turn.move.to == "b4" &&*/ depth == 2 && pastTurns[0]?.move?.from == "d5" && pastTurns[0].move.to == "b4")
-				console.log("B");
 			if (execTurn(match, turn, pastTurns) == false)
 				continue ;
 			newTurns = getLegalMoves(match);
@@ -313,8 +314,6 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 			++i;
 			if (depth <= 0 && (turn.canEat == false || !checkEatChain(match, turn)))
 				continue ;
-			if (DEB == 7324)
-				console.log("C");
 			if (execTurn(match, turn, pastTurns) == false)
 				continue ;
 			newTurns = getLegalMoves(match);

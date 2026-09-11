@@ -213,7 +213,7 @@ const kingMovements =
 const AIprofiles = 
 {
 	FIRST_AI: "First",
-	GMU: "gmu",
+	GMU: "GMU(Generale Matsuda Usushi)",
 	DEBUG: "Debug",
 	AM: "AM",
 	HAL9000: "HAL9000",

@@ -28,7 +28,7 @@ import { AI } from "../Classes/Chess/AI.js";
 import { initFromStr } from "../handlers/game/init.js";
 import { AIexecuteTurn } from "../GameLogic/aiTurn.js";
 
-const aiOppo = AIprofiles.FIRST_AI;
+const aiOppo = AIprofiles.HAL9000;
 // const aiOppo = "";
 
 //SECTION - main: inizializza e fa primo render, mette terminale in ascolto
