@@ -1,5 +1,6 @@
 <script setup>
-	import { localInfo, startLocalMatchState }	from '@/scripts/Data/Variables';
+	import { localInfo, startLocalMatchState,
+			 loadMatchRequest }					from '@/scripts/Data/Variables';
 	import { clearMatchStorage }				from '@/scripts/Data/Archi';
 	import { computed, ref, watch }				from 'vue'
 	import router								from '@/router';
@@ -9,6 +10,8 @@
 	import { playAudio } 						from '@/scripts/Helper/generalUtils';
 
 	const dismissed = ref(false);
+	//la rivincita ha senso solo se PlayPage ha salvato una richiesta da rifare
+	const canRematch = loadMatchRequest() !== null;
 
 	const victory = computed(() => localInfo.victory);
 	const outcome = computed(() => {
@@ -42,11 +45,23 @@
 		startLocalMatchState(null);
 	}
 
-	function playAgain() 
+	/**
+	 * Torna alla PlayPage, nella variante bot se la partita era contro l'ai.
+	 * con la flag rematch a true fa un'altra richiesta di match uguale alla scorsa automaticamente
+	 *
+	 * @param	{boolean}	rematch		Se rifare subito l'ultima richiesta di partita
+	 * @returns	{void}
+	 */
+	function playAgain(rematch = false)
 	{
-		const wasAi = localInfo.aiGame === true; 
+		const query = {};
+
+		if (localInfo.aiGame === true)
+			query.ai = '1';
+		if (rematch)
+			query.rematch = '1';
 		leaveMatch();
-		router.replace({name: 'playpage', query:  wasAi ? { ai: '1' } : {}});
+		router.replace({ name: 'playpage', query });
 	}
 	function goHome() { leaveMatch(); router.push({name: 'home'}); }
 	function watchBoard() { dismissed.value = true; }
@@ -69,7 +84,13 @@
 		<h2 class="text-3xl font-bold" :class="content.cls">{{ content.title }}</h2>
 
 		<div class="flex flex-col gap-3 w-56">
-			<button @click="playAgain"
+			<button v-if="canRematch" @click="playAgain(true)"
+					class="py-3 rounded-xl bg-main-color hover:bg-linear-to-t from-main-color to-light-button
+						text-text-default font-bold transition hover:-translate-y-0.5">
+				Rivincita
+			</button>
+			<!-- le parentesi servono: senza, Vue passa il MouseEvent come rematch e sarebbe sempre vero -->
+			<button @click="playAgain()"
 					class="py-3 rounded-xl bg-text-win-open hover:bg-[#02c04e] text-text-default font-bold
 						transition hover:-translate-y-0.5">
 				Gioca Ancora

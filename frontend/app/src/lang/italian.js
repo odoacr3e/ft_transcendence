@@ -26,7 +26,7 @@ export const italian = {
                 tagTitle:   "Il tuo rango è aumentato!",
                 friendNotif : "{sender} ti ha inviato una richiesta di amicizia",
                 tourNotif: "{sender} ti ha invitato a partecipare al @.lower:common.tournament {tour}",
-                tagNotif:   "Complimenti! Grazie alle tue vittorie in tuo rango è salito a {rank}"
+                tagNotif:   "Il tuo rango è passato a {rank}!"
             },
             notifications: "Notifiche",
             readAll: "Segna tutto come letto",

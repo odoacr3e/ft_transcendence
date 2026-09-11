@@ -6,6 +6,21 @@
     import { useI18n } from 'vue-i18n';
 
     const { t } = useI18n();
+
+    /**
+     * Accende il marcatore di sessione prima di partire verso Google.
+     *
+     * Il login Google non passa dallo store: il callback pianta i cookie lato server e fa un
+     * redirect di pagina intera, quindi l'app riparte da zero e nessuna azione nostra gira mai.
+     * Senza questa riga il marcatore resterebbe spento e fetchMe salterebbe la richiesta al
+     * ritorno, lasciandoti sloggato con un jwt valido in tasca.
+     *
+     * Se il login viene abbandonato il marcatore resta acceso a vuoto, ma si spegne da se': al
+     * giro dopo fetchMe chiede, non trova nessuno, e la subscribe in main.js lo ripulisce.
+     *
+     * @returns	{void}
+     */
+    function markSession() { localStorage.setItem('has_session', '1'); }
 </script>
 
 <template>
@@ -26,7 +41,7 @@
                 <span class="border-b border-border-default max-md:h-3.5 max-md:w-[36.5vw] md:h-4 md:w-40"></span>
             </div>
             <div class="flex flex-col justify-self-center items-center">
-                <a href="/auth/google_login" class="flex cursor-pointer bg-zinc-300 rounded-[7px] text-gray-700 hover:bg-linear-to-t from-zinc-300 to-zinc-100 justify-center
+                <a href="/auth/google_login" @click="markSession" class="flex cursor-pointer bg-zinc-300 rounded-[7px] text-gray-700 hover:bg-linear-to-t from-zinc-300 to-zinc-100 justify-center
                         max-md:w-[80vw] max-md:min-w-50 max-md:text-sm max-md:p-3 max-md:px-0 max-md:gap-2 max-md:whitespace-nowrap
                         md:w-full md:text-base md:p-3 md:px-22 md:gap-2">
                         <IconGoogle class="max-md:size-5 md:size-6" />

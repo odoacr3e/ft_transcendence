@@ -154,11 +154,11 @@ function initLocalPlayers()
  *
  * @param	{Object}	nextRaw		Payload di aggiornamento dal server: i giocatori, la
  *									board e victory
- * @returns	{{moved: boolean, captured: boolean, transformed: boolean}|undefined} info per audio
+ * @returns	{{moved: boolean, captured: boolean, transformed: boolean, profit: boolean}|undefined} info per audio
  */
 export function updateMatchState(nextRaw)
 {
-	const outcome = { moved: false, captured: false, transformed: false };
+	const outcome = { moved: false, captured: false, transformed: false, profit: false };
 	if (!isMatchLoaded())
 	{
 		debug("[updateMatchState]: stato locale vuoto, update ignorato");
@@ -177,7 +177,7 @@ export function updateMatchState(nextRaw)
 		if (validated.board)
 			updateLocalBoard(validated, outcome);
 		checkUpgrade();
-		updateLocalPlayers(validated);
+		updateLocalPlayers(validated, outcome);
 	} 
 	catch(err) { debug("[updateLocalMatchState]: Errore di update del Match!\n" + err); }
 	return (outcome);
@@ -263,23 +263,15 @@ function updateLocalBoard(changes, outcome)
 /**
  * Aggiorna i giocatori in localPlayers coi dati del payload validato.
  *
- * Lo spread {...vecchio, ...nuovo} fa un merge, non una sostituzione: il server puo'
- * mandare un giocatore parziale, con i soli campi cambiati, e i campi assenti restano
- * quelli di prima invece di sparire. Al posto della mutazione sul posto usata per le
- * caselle qui si scrive un oggetto nuovo nella mappa, cosi' Vue vede il cambiamento.
- *
- * Diversamente da initLocalPlayers(), uno slot assente o a null non e' un errore ma un
- * caso normale: durante la partita il payload puo' portare solo i giocatori toccati
- * dalla mossa. Restano vietati i tipi sbagliati.
- *
- * Chiude ricalcolando localInfo.hasBoostedPiece sul giocatore di turno, che dopo il merge
- * potrebbe essere cambiato.
+ * Lo spread {...vecchio, ...nuovo} mergia le modifiche tra stato locale e payload
+ * Alcuni
  *
  * @param	{Object}	changes		Payload validato con i cambiamenti
+ * @param	{{profit: boolean}}	outcome	Info per audio, qui si scrive solo profit
  * @returns	{void}
  * @throws	{Error}		Se uno slot giocatore presente nel payload non e' un oggetto
  */
-function updateLocalPlayers(changes) 
+function updateLocalPlayers(changes, outcome)
 {
 	if (!isMatchLoaded())
 	{
@@ -297,7 +289,12 @@ function updateLocalPlayers(changes)
 		if (wrong_type) 
 			throw new Error(`[updateLocalPlayers]: Player ${player} wrong type!`);
 
-		localPlayers.set(player, {...localPlayers.get(player), ...changes[player]});
+		const oldPoints	= localPlayers.get(player)?.nPoints;
+		const merged	= {...localPlayers.get(player), ...changes[player]};
+
+		if (merged.team === localInfo.myTeam && merged.nPoints > oldPoints)
+			outcome.profit = true;
+		localPlayers.set(player, merged);
 	});
 
 	hasPlayerBoostedPiece(currentPlayer());

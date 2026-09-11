@@ -33,7 +33,7 @@ export function pushMessage(text, author = MACRO.SERVER_AUTHOR)
 		return (false);
 	chat.messages.push({
 		id: nextId++,
-		author: author || MACRO.SERVER_AUTHOR,
+		author: author === "GMU(Generale Matsuda Usushi)" ?  "Matsuda" : author || MACRO.SERVER_AUTHOR,
 		text: text,
 		time: Date.now(),
 	})
@@ -42,10 +42,6 @@ export function pushMessage(text, author = MACRO.SERVER_AUTHOR)
 	return (true);
 }
 
-/**
- * Nome del giocatore -> sua squadra. E' una computed, quindi si ricalcola da sola quando i
- * giocatori cambiano e non va rifatta a ogni messaggio da colorare.
- */
 const	teamByName = computed(() => {
 	const	map = new Map();
 
@@ -55,10 +51,9 @@ const	teamByName = computed(() => {
 });
 
 /**
- * Dice al pannello il colore del msg: se e' del server o di un giocatore -> di che squadra
- *
- * Un autore sconosciuto resta un giocatore ma senza squadra: capita per chi ha lasciato la
- * partita, e il messaggio va comunque mostrato era per le partite a 4 ma rip.
+ * Dice al pannello il colore del msg:
+ *  server rosso
+ *  player -> teamByname
  *
  * @param	{string | null}	author		Nome di chi ha scritto
  * @returns	{{kind: "server"|"player", team: string|null}}	Come mostrare il messaggio

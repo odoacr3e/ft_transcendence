@@ -4,14 +4,10 @@
 -- possono essere scritti a mano senza legarsi a un database specifico.
 
 INSERT INTO public.preferences (name) VALUES
-	('DarkGreen'),
-	('LightRed'),
-	('LightBlue'),
-	('LightGreen'),
-	('LightYellow'),
+	('DarkRed'),
 	('DarkBlue'),
-	('DarkYellow'),
-	('DarkRed');
+	('DarkGreen'),
+	('DarkYellow');
 
 INSERT INTO public.abilities (name,description) VALUES
 	('Giuramento','Dopo il movimento può spostarsi una seconda volta a patto che non sorpassi la linea di proiezione minacciata da un''altro pezzo'),

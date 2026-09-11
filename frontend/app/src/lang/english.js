@@ -26,7 +26,7 @@ export const english = {
                 tagTitle:   "Your rank has increased!",
                 friendNotif : "{sender} sent you a @.lower:common.friend request",
                 tourNotif: "{sender} has invited you to participate in the {tour} @.lower:common.tournament",
-                tagNotif:   "Congratulations! Thanks to your victories, your rank has risen to {rank}"
+                tagNotif:   "Your rank has changed into {rank}!"
             },
             notifications: "Notifications",
             zeroNotif: "No notifications",

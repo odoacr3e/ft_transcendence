@@ -6,6 +6,7 @@ import ms from "ms";
 import { jsonResponse } from "../utils/response.js";
 import { createTestAccount } from "nodemailer";
 const { usersQuery } = query;
+import { prisma } from '../lib/prisma.js' 
 const { jwt } = lib.auth;
 const { redis } = lib.conn;
 const { crypto } = lib.conn;

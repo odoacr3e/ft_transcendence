@@ -31,8 +31,8 @@ export const useAuthStore = defineStore('auth', {
 				if (resp.data.user)
 				{
 					this.user = resp.data.user;
-					useSockStore().connect();
-					useMsgStore().getMsg();
+					await useSockStore().connect();
+					await useMsgStore().getMsg();
 					this.sessionChecked = true;
 				}
 				else if (resp.data.message === "OTP sent by email")
@@ -116,6 +116,9 @@ export const useAuthStore = defineStore('auth', {
 		async fetchMe(force = false) 
 		{
 			if (this.sessionChecked && !force) { return; }
+			// Ora con questa guardia su has_session nel localstorage non fa più la fetch se
+			// andrebbe male e restituirebbe 404 
+			if (!localStorage.getItem('has_session')) { this.sessionChecked = true; return; }
 			try {
 				this.user = await authApi.me();
 				if (this.user) { useSockStore().connect(); useMsgStore().getMsg(); }

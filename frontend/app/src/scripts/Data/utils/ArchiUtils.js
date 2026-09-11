@@ -1,7 +1,9 @@
 import { computePosition, offset, flip, shift, autoUpdate }	from "@floating-ui/dom";
-import { localBoard, localInfo, currentPlayer } 			from "../Variables";
+import { localBoard, localInfo, currentPlayer,
+		 MAGIC_NAMES, AUDIO_PATHS }				 			from "../Variables";
 import { clearHighlight }									from "@/scripts/Events/utils/HighlightUtils.js";
 import { playAudio } 										from "@/scripts/Helper/generalUtils";
+import { useAuthStore } 									from "@/stores/auth.st";
 
 let stopAutoUpdate = null;
 
@@ -93,7 +95,10 @@ export function setVictory(newValue, sound = true)
 	if (next === "draw")
 		playAudio("draw");
 	else if (next === localInfo.myTeam)
-		playAudio("victory");
+	{
+		const magic = MAGIC_NAMES.test(useAuthStore().username) && AUDIO_PATHS.magico;
+		playAudio(magic ? "magico" : "victory");
+	}
 	else 
 		playAudio("lost");
 }

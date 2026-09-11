@@ -58,7 +58,7 @@
 		</div>
 
 		<div class="shrink-0 dim" v-bind:class="{'dim-off':!playing}">
-			<b><h1 class="max-w-56 overflow-hidden text-ellipsis whitespace-nowrap"
+			<b><h1 class="max-w-56 overflow-hidden text-ellipsis"
 					:style="{ fontSize: nameSize }">
 					{{ player.name }}<span v-if="player.elo != null" class="text-text-default"> [{{ player.elo }}]</span>
 				</h1></b>

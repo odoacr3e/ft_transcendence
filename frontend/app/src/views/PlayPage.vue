@@ -1,7 +1,8 @@
 <script setup>
 	import { ref, computed, watch, onMounted, onUnmounted }	from 'vue';
 	import { ePlaying, matchMakingOpt, debug, localInfo,
-			 eRoomType, eSide }							from '@/scripts/Data/Variables.js';
+			 eRoomType, eSide, saveMatchRequest,
+			 loadMatchRequest }								from '@/scripts/Data/Variables.js';
 	import { amIPlaying, fetchAiModels }					from '@/scripts/Events/BackLink';
 	import { useAuthStore } 								from '@/stores/auth.st.js';
 	import { useSockStore }									from '@/stores/sock.st';
@@ -16,8 +17,8 @@
 	import router											from '@/router';
 	import IconLogo                from '@/components/icons/IconLogo.vue';
     
-    const { t } = useI18n();
-	const sockStore = useSockStore();
+    const { t } 		= useI18n();
+	const sockStore 	= useSockStore();
 	let	  alive			= true;
 
 	const roomType  	= ref(null);
@@ -31,7 +32,7 @@
 	const route			= useRoute();
 	const aiGame		= computed(() => route.query.ai === '1');
 	const sides			= Object.values(eSide);
-	const timeOptions	= ['15 min', '10 min', 'Custom'];
+	const timeOptions	= ['15 min', '15 min', '15 min'];
 	const timeEnabled	= computed(() => aiGame.value || roomType.value === 'PRIVATE');
 	const choices		= { roomType, players, time, aiModel, side };
 
@@ -57,6 +58,22 @@
 		
 	}, { immediate: true });
 
+	/**
+	 * fONZIONCINA PER LANCIARE LE RICHIESTE DI MATCH, SI SLAVA LE RICHIESTE PASSATE
+	 * PER IL GIOCA ANCORA
+	 *
+	 * @param	{string}	event		"find_match" o "create_ai_match"
+	 * @param	{Object}	payload		Il payload da mandare con l'evento
+	 * @returns	{void}
+	 */
+	function emitMatchRequest(event, payload)
+	{
+		localInfo.aiGame = event === 'create_ai_match';
+		saveMatchRequest(event, payload);
+		sockStore.socket.emit(event, payload);
+		waiting.value = true;
+	}
+
 	function sendPlayRequest()
 	{
 		if (!sockStore.socket)
@@ -70,20 +87,31 @@
 				payload.team = side.value;
 
 			// { model: "stringa", time: "stringa", team: "stringa" }
-			localInfo.aiGame = true;
-			sockStore.socket.emit('create_ai_match', payload);
 			debug(useAuthStore().username, ` sfida il bot ${aiModel.value}!`);
-			waiting.value = true;
-			return;
+			return (emitMatchRequest('create_ai_match', payload));
 		}
 		const options = new matchMakingOpt({
 			matchType:		players.value,
 			roomType:		eRoomType[roomType.value],
 			matchSettings:	null
 		})
-		sockStore.socket.emit('find_match', options);
 		debug(useAuthStore().username, " ha appena richiesto un matchmaking!");
-		waiting.value = true;
+		emitMatchRequest('find_match', options);
+	}
+
+	/**
+	 * Ricarica della richiesta di matchamking precedente per una nuova partita
+	 * @returns	{void}
+	 */
+	function rematch()
+	{
+		const last = loadMatchRequest();
+
+		router.replace({ query: { ...route.query, rematch: undefined } });
+		if (!last || !sockStore.socket)
+			return (debug("[playPage]: rivincita impossibile, richiesta o socket mancanti"));
+		debug(useAuthStore().username, " chiede la rivincita!");
+		emitMatchRequest(last.event, last.payload);
 	}
 
 	async function askAmIPlaying()
@@ -107,7 +135,11 @@
 		choice.value = choice.value === value ? null : value;
 	}
 
-	onMounted(askAmIPlaying);
+	onMounted(() => {
+		if (route.query.rematch === '1')
+			rematch();
+		askAmIPlaying();
+	});
 	onUnmounted(() => { alive = false });
 </script>
 
@@ -132,11 +164,11 @@
 										:class="[ aiModel === model ? 'border-main-color' : 'border-border-default',
     										    { 'col-start-2': index === aiModels.length - 1 } ]"
 										class="opt opt-ai border-2 cursor-pointer">
-									{{ model }}
+									{{ model  === "GMU(Generale Matsuda Usushi)" ?  "Matsuda" : model}}
 								</div>
 							</div>
 							<div v-else class="flex flex-row gap-4 flex-1 justify-center pr-30">
-								<div @click="toggle('roomType', 'PRIVATE')"  :class="roomType === 'PRIVATE'  ? 'border-main-color' : 'border-border-default'" class="opt border-2 cursor-pointer">{{ t('game.playPage.opt.priv') }}</div>
+								<div class="opt border-2 border-border-default opacity-30 cursor-not-allowed">{{ t('game.playPage.opt.priv') }}</div>
 								<div @click="toggle('roomType', 'FRIENDLY')" :class="roomType === 'FRIENDLY' ? 'border-main-color' : 'border-border-default'" class="opt border-2 cursor-pointer">{{ t('game.playPage.opt.friend') }}</div>
 								<div @click="toggle('roomType', 'RANKED')"   :class="roomType === 'RANKED'   ? 'border-main-color' : 'border-border-default'" class="opt border-2 cursor-pointer">{{ t('game.playPage.opt.rank') }}</div>
 							</div>
@@ -152,8 +184,8 @@
 							</div>
 							<div v-else class="flex flex-row gap-4 flex-1 justify-center pr-30">
 								<div @click="players = players === '1v1'     ? null : '1v1'"     :class="players === '1v1'     ? 'border-main-color' : 'border-border-default'" class="opt border-2 cursor-pointer">1v1</div>
-								<div @click="players = players === '2v2'     ? null : '2v2'"     :class="players === '2v2'     ? 'border-main-color' : 'border-border-default'" class="opt border-2 cursor-pointer">2v2</div>
-								<div @click="players = players === '1v1v1v1' ? null : '1v1v1v1'" :class="players === '1v1v1v1' ? 'border-main-color' : 'border-border-default'" class="opt border-2 cursor-pointer">FreeForAll</div>
+								<div @click="players = players === '2v2'     ? null : '2v2'"     class="opt border-2 border-border-default opacity-30 cursor-not-allowed">2v2</div>
+								<div @click="players = players === '1v1v1v1' ? null : '1v1v1v1'" class="opt border-2 border-border-default opacity-30 cursor-not-allowed">FreeForAll</div>
 							</div>
 						</div>
 						<div class="flex flex-row items-center">
