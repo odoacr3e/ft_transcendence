@@ -13,14 +13,11 @@ services:
     image: backend
     container_name: backend
     build: ./backend
-    # env_file:
-    #   - .env
     environment:
       - VAULT_ADDR=http://vault:8200
     volumes:
       - vault-shared:/vault/shared
-      # - ./backend_dir/scacchi:/app
-      # - /app/node_modules
+      - user-avatars:/app/media/userAvatar
     depends_on:
       - postgres
       - vault
@@ -28,16 +25,11 @@ services:
     image: frontend
     container_name: frontend
     build: ./frontend
-    # volumes:
-    #   - ./frontend_dir:/app
-    #   - /app/node_modules
   postgres:
     image: postgres
     container_name: postgres
     build: ./postgres
     restart: unless-stopped
-    # env_file:
-    #   - .env
     environment:
       - VAULT_ADDR=http://vault:8200
     ports:
@@ -79,4 +71,6 @@ volumes:
     driver: local
   vault-shared:
   postgres-data:
+    driver: local
+  user-avatars:
     driver: local

@@ -30,6 +30,8 @@ async function websocketConnectionHandler(socket, friendsId)
 	user = socket.handshake.auth;
 	else//@ts-ignore
 		user = socket.request.user;
+	if (!user)
+			return ;
 	globals.ClearTimer(user.id_user);
 	socketData = globals.clientMap.get(user.id_user);
 	if (socketData?.reconnectBool == true || socketData?.state)
