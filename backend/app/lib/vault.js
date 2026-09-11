@@ -37,5 +37,4 @@ export async function loadSecretsFromVault() {
 	const token = await appRoleLogin(roleId, secretId);
 	const secrets = await getSecrets(token, 'backend');
 	Object.assign(process.env, secrets);
-	console.error('Secrets loaded from Vault');
 }
