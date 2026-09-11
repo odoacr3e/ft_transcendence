@@ -1,13 +1,17 @@
 
-import { PrismaClient }			from "../generated/prisma/index.js";
-import { PrismaPg }				from "@prisma/adapter-pg";
-import { log }					from "../utils/log.js";
-import * as lib					from "./lib.js";
-import dotenv					from "dotenv";
+import { PrismaClient } from "../generated/prisma/index.js";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { log } from "../utils/log.js";
+import * as lib from "./lib.js";
+import dotenv from "dotenv";
 import { loadSecretsFromVault } from './vault.js';
 import { IS_CHILD_PROCESS }		from "../Macro/macro.js";
 
-dotenv.config();
+const VAULT_VAR = false;
+if (VAULT_VAR)
+	await loadSecretsFromVault();
+else
+	dotenv.config();
 
 await loadSecretsFromVault();
 
