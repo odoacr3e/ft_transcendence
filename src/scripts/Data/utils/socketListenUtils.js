@@ -8,8 +8,8 @@ import { spreadDemocracy }		 		from "./ArchiUtils";
  * popolati da altre funzioni di archi.
  *
  * @param	{Object}	raw			Payload della mossa, serve solo per il suo type
- * @param	{{moved: boolean, captured: boolean, transformed: boolean}} outcome
- *									Cosa e' cambiato in board, da updateMatchState()
+ * @param	{{moved: boolean, captured: boolean, transformed: boolean, profit: boolean}} outcome
+ *									Cosa e' cambiato in board e nei punti, da updateMatchState()
  * @param	{Set<string>|null} square	Le caselle sotto scacco, null se non c'e' scacco
  * @returns	{void}
  */
@@ -23,6 +23,8 @@ export function playMoveAudio(raw, outcome, square)
 		playAudio("trans");
 	else if (outcome?.moved)
 		playAudio(raw.type === "moveboost" ? "armability" : "move");
+	if (outcome?.profit)
+		playAudio("profit");
 }
 
 /**

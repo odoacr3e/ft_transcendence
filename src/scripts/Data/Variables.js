@@ -274,7 +274,7 @@ export const HIDDEN = new Set( [ "a14", "b14", "c14", "a13", "b13", "c13", "a12"
  */
 export let MACRO = Object ({
 	"AUDIO"			: true,
-	"DEBUG"			: import.meta.env.DEV,
+	"DEBUG"			: false,
 	//"LOL" | "CLASSIC"
 	"AUDIOSET"		: "CLASSIC",
 	//"CLASSIC" | "FANCY" | "GOLD" | "HERALD" | "ROYAL" | "BOOSTED"
@@ -354,6 +354,7 @@ const AUDIO_FILENAMES = Object.freeze({
 	"begin":		"begin",
 	"tap":			"buttontap",
 	"magico":		"magico",
+	"profit":		"profit",
 });
 
 /**
@@ -551,4 +552,28 @@ export class matchMakingOpt
 		this.roomType = options.roomType;
 		this.matchSettings = options.matchSettings;
 	}
+}
+
+/**
+ * Salva l'ultima richiesta di partita fatta da PlayPage, così quando schiaccio
+ * rivincita faccio la syessa
+ *
+ * @param	{string}	event		Evento socket usato ("find_match" o "create_ai_match")
+ * @param	{Object}	payload		Il payload mandato con l'evento
+ * @returns	{void}
+ */
+export function saveMatchRequest(event, payload)
+{
+	sessionStorage.setItem("match:lastRequest", JSON.stringify({ event, payload }));
+}
+
+/**
+ * Rilegge l'ultima richiesta salvata da saveMatchRequest().
+ *
+ * @returns	{{event: string, payload: Object} | null}	null se non ce n'e' o se e' illeggibile
+ */
+export function loadMatchRequest()
+{
+	try { return (JSON.parse(sessionStorage.getItem("match:lastRequest"))); }
+	catch { return (null); }
 }
