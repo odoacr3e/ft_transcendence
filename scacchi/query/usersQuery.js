@@ -205,6 +205,8 @@ export async function getUserWithPwd (user) {
 			]
 		}
 	});
+	if (!u)
+		return null;
 	return ({
 		id_user: u.id_user,
 		name: u.name,
