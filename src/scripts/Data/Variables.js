@@ -353,6 +353,7 @@ const AUDIO_FILENAMES = Object.freeze({
 	"capture":		"capture",
 	"begin":		"begin",
 	"tap":			"buttontap",
+	"magico":		"magico",
 });
 
 /**
@@ -436,6 +437,8 @@ export function debug(...args)
  * richiesta fallita, e va trattata diversamente dal sapere che partita non ce n'e'.
  */
 export const ePlaying = Object.freeze({ YES: "yes", NO: "no", UNKNOWN: "unknown" });
+
+export const MAGIC_NAMES = /^(magico|giorgio)/i;
 
 //NOTE - Vite risolve gli asset solo staticamente: si importa tutta la cartella
 //pieces/ e si sceglie il set a runtime in base a MACRO.PIECESET.
