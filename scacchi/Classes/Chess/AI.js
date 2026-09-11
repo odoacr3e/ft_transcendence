@@ -21,7 +21,7 @@ import { gameMessage } from "../../websocket/utils.js";
 /** @typedef {{score: number, index: number}} Eval */
 
 /** @type {null | string} */
-let DEBUGresultBUFFER = null;
+let DEBUGresultBUFFER = "";
 let DEB = 0;
 
 /*
@@ -265,6 +265,8 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 			++i;
 			if (depth <= 0 && (turn.canEat == false || !checkEatChain(match, turn)))
 				continue ;
+			if (/*turn.move?.from == "c3" && turn.move.to == "b4" &&*/ depth == 2 && pastTurns[0]?.move?.from == "d5" && pastTurns[0].move.to == "b4")
+				console.log("B");
 			if (execTurn(match, turn, pastTurns) == false)
 				continue ;
 			newTurns = getLegalMoves(match);
@@ -311,6 +313,8 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 			++i;
 			if (depth <= 0 && (turn.canEat == false || !checkEatChain(match, turn)))
 				continue ;
+			if (DEB == 7324)
+				console.log("C");
 			if (execTurn(match, turn, pastTurns) == false)
 				continue ;
 			newTurns = getLegalMoves(match);
@@ -330,14 +334,14 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 				cancelTurn(match, turn);
 				continue ;
 			}
-			if (DEBUGresultBUFFER != null)
-				DEBUGresultBUFFER += `|depth: ${depth}|val: ${val}|i: ${DEB++}|team: ${match.currentPlayer.team == eTeam.White ? "⚪" : "⚫️"}|\n`;
 			if (minEval == undefined)
 				minEval = Infinity;
 			ai.Cancel(match, ai);
 			pastTurns.pop();
 			minEval = Math.min(val, minEval);
 			cancelTurn(match, turn);
+			if (DEBUGresultBUFFER != null)
+				DEBUGresultBUFFER += `|depth: ${depth}|val: ${val}|i: ${DEB++}|team: ${match.currentPlayer.team == eTeam.White ? "⚪" : "⚫️"}|\n`;
 			if (minEval == -Infinity)
 				break ;
 			beta = Math.min(minEval, beta);

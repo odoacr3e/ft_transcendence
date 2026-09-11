@@ -30,7 +30,7 @@ export function checkPieceDanger(match, checkDangerCoord, piece, pieceCoord, ign
 	for (const dangerCoord of square.dangerZones)
 	{
 		dangerSquare = match.board.get(dangerCoord);
-		if (dangerSquare.piece?.team == piece.team)
+		if (!dangerSquare.piece || dangerSquare.piece.team == piece.team)
 			continue ;
 		if (pathFinding(match, dangerCoord, pieceCoord, ignoreCoord, dangerSquare) != null)
 		{

@@ -19,13 +19,7 @@ import { basicEval } from "../evalUtils.js";
 export function AI_am_eval(match, ai, turns)
 {
 	let	nextPlayer;
-	let	boostedPiece;
-	let	otherBoostedPiece;
 	let	score;
-	let	lastTurn;
-	let	square;
-	let	price;
-	let val;
 
 	nextPlayer = match.NextPlayer();
 	//1)	differenza punti
@@ -61,6 +55,5 @@ export function AI_am_eval(match, ai, turns)
 			}
 		}
 	}
-	lastTurn = turns[turns.length - 2];
 	return (score);
 }

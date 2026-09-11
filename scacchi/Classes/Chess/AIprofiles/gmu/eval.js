@@ -19,13 +19,7 @@ import { basicEval } from "../evalUtils.js";
 export function AI_gmu_eval(match, ai, turns)
 {
 	let	nextPlayer;
-	let	boostedPiece;
-	let	otherBoostedPiece;
 	let	score;
-	let	lastTurn;
-	let	square;
-	let	price;
-	let val;
 
 	nextPlayer = match.NextPlayer();
 	//1)	differenza punti
@@ -39,12 +33,12 @@ export function AI_gmu_eval(match, ai, turns)
 			for (let x of square.dangerZones)
 			{
 				if (match.board.get(x).piece?.team == nextPlayer.team)
-					score -= 10 * square.piece.price;
+					score -= 20 * square.piece.price;
 			}
 			for (let x of square.targetZones)
 			{
 				if (match.board.get(x).piece?.team == nextPlayer.team)//@ts-ignore
-					score += 10 * match.board.get(x).piece?.price;
+					score += 30 * match.board.get(x).piece?.price;
 			}
 		}
 		else if (square.piece.team == nextPlayer.team)
@@ -52,15 +46,14 @@ export function AI_gmu_eval(match, ai, turns)
 			for (let x of square.dangerZones)
 			{
 				if (match.board.get(x).piece?.team == match.currentPlayer.team)
-					score += 10 * square.piece.price;
+					score += 30 * square.piece.price;
 			}
 			for (let x of square.targetZones)
 			{
 				if (match.board.get(x).piece?.team == match.currentPlayer.team)// @ts-ignore
-					score -= 10 * match.board.get(x).piece?.price;
+					score -= 20 * match.board.get(x).piece?.price;
 			}
 		}
 	}
-	lastTurn = turns[turns.length - 2];
 	return (score);
 }
