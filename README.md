@@ -64,13 +64,13 @@ For this project, we have used the following resources:
 
 ### Backend
 - [Esercizi Javascript](https://github.com/AlbertoOlla/esercizi-di-programmazione-javascript "github.com/AlbertoOlla/esercizi-di-programmazione-javascript")
-- [Javascript tutorial w3school]("https://www.w3schools.com/js/")
-- [Socket.io docs]("https://socket.io/docs/v4/")
+- [Javascript tutorial w3school](https://www.w3schools.com/js/ "Javascript tutorial w3school")
+- [Socket.io docs](https://socket.io/docs/v4/ "Socket.io docs")
 - [Web Socket](https://www.youtube.com/watch?v=pnj3Jbho5Ck "How WebSocket work")
 
-## AI
-- [minmax and alpha-beta pruning]("https://www.youtube.com/watch?v=l-hh51ncgDI")
-- [zobrist hash]("https://youtu.be/QYNRvMolN20?is=TnUvxDBb8HBCAOBB")
+### AI
+- [Minimax and alpha-beta pruning](https://www.youtube.com/watch?v=l-hh51ncgDI "Minimax and alpha-beta pruning")
+- [Zobrist hash](https://youtu.be/QYNRvMolN20?is=TnUvxDBb8HBCAOBB "Zobrist hash")
 
 ### Database
 - [Prisma ORM docs](https://www.prisma.io/docs/orm "Prisma ORM docs")
@@ -84,6 +84,19 @@ For this project, we have used the following resources:
 - [Vue v-for](https://it.vuejs.org/api/built-in-directives.html#v-for "Vue v-for")
 - [Vue v-bind](https://it.vuejs.org/api/built-in-directives.html#v-bind "Vue v-bind")
 - [Vue Style Guide](https://vuejs.org/style-guide/ "Vue Style Guide")
+- [Vue Reactivity Fundamentals](https://vuejs.org/guide/essentials/reactivity-fundamentals.html "Vue Reactivity Fundamentals")
+  - [Vue Computed Properties](https://vuejs.org/guide/essentials/computed.html "Vue Computed Properties")
+  - [Vue Lifecycle Hooks](https://vuejs.org/guide/essentials/lifecycle.html "Vue Lifecycle Hooks")
+  - [Vue Teleport](https://vuejs.org/guide/built-ins/teleport.html "Vue Teleport")
+- [Vue Router](https://router.vuejs.org/guide/ "Vue Router")
+- [Pinia](https://pinia.vuejs.org/core-concepts/ "Pinia")
+- [Vue I18n](https://vue-i18n.intlify.dev/guide/ "Vue I18n")
+- [Socket.IO client API](https://socket.io/docs/v4/client-api/ "Socket.IO client API")
+- [HTML Drag and Drop API](https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API "MDN - HTML Drag and Drop API")
+  - [DataTransfer.setDragImage()](https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer/setDragImage "MDN - DataTransfer.setDragImage()")
+- [HTMLAudioElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLAudioElement "MDN - HTMLAudioElement")
+- [Window.sessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage "MDN - Window.sessionStorage")
+- [Floating UI](https://floating-ui.com/docs/computePosition "Floating UI")
 - [Tailwind docs](https://tailwindcss.com/docs/installation/using-vite "Tailwind docs")
 
 ### Infrastructure & Deployment
@@ -247,6 +260,7 @@ Feature list:
 | Friendship Management | Allows the user to send, accept, and reject friendship requests | edraccan, mfanelli |
 | Offline Matches (vs AI) | Allows the user to play offline against an AI implemented to play ChessZ | mbiagi, alerusso, lparolis |
 | Online Matchmaking | Allows the user to play online against other players | mbiagi, alerusso, lparolis |
+| Online PvP Chessboard | Chessboard generation (orientation, colors, page design), drag & drop, highlighting legal squares, invalid moves. Buttons UI to buy ablities, activate them, send draw requests, power up previews. InGame Chat, In game reactive tutorials and mini chessboard info generation. Custom designed reactive chessPieces. Personalized audio design | mbiagi, alerusso, lparolis |
 | Guide book (Codex) | Allows the user to consult a game guide that explains the movements of each piece, their abilities, and their historical background | edraccan, mfanelli, mbiagi |
 | User Search | Allows the user to search for other users registered with the application | edraccan, mfanelli |
 | 2FA | Allows the user to receive a one-time code on their email at login to authenticate | edraccan, mfanelli |
@@ -259,21 +273,21 @@ Feature list:
 
 | Module | Type | Points | Team Member(s) |
 |-|-:|-:|-:|
-| Use a **framework** for both the frontend and backend. | Major | 2 | everyone |
-| Implement real-time features using WebSockets or similar technology. | Major | 2 | everyone |
-| Allow users to interact with other users. The minimum requirements are: **basic chat**, **profile** and **friends** systems. | Major | 2 | edraccan, mfanelli |
+| Use a **framework** for both the frontend and backend. | Major | 2 | all team members |
+| Implement real-time features using WebSockets or similar technology. | Major | 2 | all team members |
+| Allow users to interact with other users. The minimum requirements are: **basic chat**, **profile** and **friends** systems. | Major | 2 | edraccan, mfanelli, lparolis |
 | Standard user management and authentication. | Major | 2 | edraccan, mfanelli |
 | Introduce an AI Opponent for games. | Major | 2 | mbiagi, alerusso |
-| Implement a complete web-based game where users can play against each other. | Major | 2 | everyone |
-| Remote players — Enable two players on separate computers to play the same game in real-time. | Major | 2 | everyone |
+| Implement a complete web-based game where users can play against each other. | Major | 2 | all team members |
+| Remote players — Enable two players on separate computers to play the same game in real-time. | Major | 2 | all team members |
 | Implement a complete 2FA (Two-Factor Authentication) system for the users. | Minor | 1 | edraccan |
 | Use an **ORM** for the database. | Minor | 1 | edraccan |
 | Custom-made design system with reusable components, including a proper color palette, typography, and icons | Minor | 1 | mfanelli, lparolis |
-| Game statistics and match history (requires a game module). | Minor | 1 | everyone |
+| Game statistics and match history (requires a game module). | Minor | 1 | all team members |
 | Implement remote authentication with OAuth 2.0. | Minor | 1 | mbiagi, edraccan |
 | Support for additional browsers. Full compatibility with at least 2 additional browsers. | Minor | 1 | mfanelli, lparolis |
 | Notification system | Minor | 1 | edraccan, mfanelli |
-| Gamification (XP/level, badge, leaderboard) | Minor | 1 | everyone |
+| Gamification (XP/level, badge, leaderboard) | Minor | 1 | all team members |
 
 ***Total points:*** 22
 
@@ -303,10 +317,11 @@ We used web sockets to receive notifications, update friends' online status, sea
 
 #### Reason of using
 ⚠️ **To be provided**
+A basic in game chat that allows both players in the match to send messages to each other and see the server logs
 
 #### Implementation
 ⚠️ **To be provided**
-
+A vue component that is basically a simple array that gets filled with messages sent by the game server through websocket. The payload from the server is composed of a js object with the message and the author of the message. The representation dinamically changes according to the author.
 ---
 
 ### Standard user management and authentication. (Major - 2pt)

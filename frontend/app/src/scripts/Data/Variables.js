@@ -274,7 +274,7 @@ export const HIDDEN = new Set( [ "a14", "b14", "c14", "a13", "b13", "c13", "a12"
  */
 export let MACRO = Object ({
 	"AUDIO"			: true,
-	"DEBUG"			: import.meta.env.DEV,
+	"DEBUG"			: true,
 	//"LOL" | "CLASSIC"
 	"AUDIOSET"		: "CLASSIC",
 	//"CLASSIC" | "FANCY" | "GOLD" | "HERALD" | "ROYAL" | "BOOSTED"
