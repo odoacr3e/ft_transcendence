@@ -33,18 +33,20 @@ async function checkResp(res, fun, endpoint, options)
 	const	Jres = await res.json().catch(() => ({})),
 			auth = useAuthStore();
 
-	if (res.status == 401 && auth.user != null)
+	if (res.status === 401 && auth.user != null)
 	{
 		if (Jres.message === "Token expired")
 		{
 			const refreshed = await tryRefresh(auth);
-			if (refreshed.ok) { return fun(endpoint, options); }
-			forceLogout(auth);
+			if (refreshed.ok)
+				return fun(endpoint, options);
+			return await forceLogout(auth);
 		}
-		else if (Jres.message === "Token not found") { forceLogout(); }
+		if (Jres.message === "Token not found")
+			return await forceLogout(auth);
 	}
 
-	if (!res.ok) { throw new ApiError(Jres.message ?? 'Errore sconosciuto', res.status); }
+	if (!res.ok || res.status !== 200 ) { throw new ApiError(Jres.message ?? 'Errore sconosciuto', res.status); }
 	if (res.status == 204) { return null; }
 
 	return Jres;

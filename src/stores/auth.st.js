@@ -31,8 +31,8 @@ export const useAuthStore = defineStore('auth', {
 				if (resp.data.user)
 				{
 					this.user = resp.data.user;
-					useSockStore().connect();
-					useMsgStore().getMsg();
+					await useSockStore().connect();
+					await useMsgStore().getMsg();
 					this.sessionChecked = true;
 				}
 				else if (resp.data.message === "OTP sent by email")
