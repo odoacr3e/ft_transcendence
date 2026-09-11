@@ -173,7 +173,6 @@ usersRouter.patch("/", checkJwt, uploadMiddleware, async (req, res) => {
 		console.log("error: ", error);
 		if (error.code === 'P2002')
 			return res.status(404).json(jsonResponse.ResponseError("Username already taken"));
-		// printLog(`User not found due to a server error: ${error.name}`, colors.brightRed);
 		return res.status(500).json(jsonResponse.ResponseError("Server error changing user params"));
 	}
 });

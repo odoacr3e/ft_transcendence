@@ -2,6 +2,7 @@
 import path from "path";
 import sharp from 'sharp';
 import fs from 'fs/promises';
+import { prisma } from '../lib/prisma.js';
 
 
 const emailRegex = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
