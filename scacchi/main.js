@@ -1,5 +1,6 @@
 
 import * as lib from "./lib/lib.js";
+import os from 'os';
 import { apiRouter } from "./routes/api.js";
 import { authRouter } from "./routes/auth/auth.js";
 import { OAuthRouter } from "./routes/auth/OAuth.js";
@@ -14,6 +15,20 @@ import "./websocket/websocket.js";
 const { ALLOWED_URL, PORT } = lib;
 const { cors } = lib.auth;
 const { cookieParser, app, server, multer } = lib.include;
+
+const getPrivateIP = () => {
+  const interfaces = os.networkInterfaces();
+  for (const name of Object.keys(interfaces)) {
+    for (const iface of interfaces[name]) {
+      if (iface.family === 'IPv4' && !iface.internal) {
+        return iface.address;
+      }
+    }
+  }
+  return null; // No private IP found
+};
+
+console.log(getPrivateIP());
 
 // NOTE: serve per parsing delle richieste da frontend
 // app.use(cors({
@@ -66,6 +81,8 @@ server.listen(PORT, () => {
 
 server.on('listening', () => {
 	log.banner(PORT)
+	console.log("");
+	log.info("Self IP Address: ", JSON.stringify(os.networkInterfaces(), null, 2));
 });
 
 server.on("error", (err) => {
