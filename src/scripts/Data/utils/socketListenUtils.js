@@ -15,15 +15,22 @@ import { spreadDemocracy }		 		from "./ArchiUtils";
  */
 export function playMoveAudio(raw, outcome, square)
 {
+	let main = null;
+
 	if (square)
-		playAudio("check");
+		main = playAudio("check");
 	else if (outcome?.captured)
-		playAudio("capture");
+		main = playAudio("capture");
 	else if (outcome?.transformed)
-		playAudio("trans");
+		main = playAudio("trans");
 	else if (outcome?.moved)
-		playAudio(raw.type === "moveboost" ? "armability" : "move");
-	if (outcome?.profit)
+		main = playAudio(raw.type === "moveboost" ? "armability" : "move");
+	if (!outcome?.profit)
+		return ;
+	//NOTE - profit aspetta la fine del suono della mossa; se questo viene troncato, profit non parte.
+	if (main)
+		main.addEventListener("ended", () => playAudio("profit"), { once: true });
+	else
 		playAudio("profit");
 }
 

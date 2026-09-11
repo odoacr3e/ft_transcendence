@@ -372,13 +372,14 @@ const AUDIO_VOLUMES = Object.freeze({
 		"draw":			0.89,
 		"trans":		0.8,
 		"endturn":		0.89,
-		"giveup":		1.0,
+		"giveup":		0.75,
 		"recdraw":		0.9,
 		"askdraw":		0.89,
 		"checkboost":	0.79,
 		"clicked":		0.79,
 		"badmove":		0.95,
 		"capture":		0.92,
+		"profit":		0.5,
 	},
 
 	"ClassicSet": {
@@ -389,6 +390,7 @@ const AUDIO_VOLUMES = Object.freeze({
 		"endturn":		0.25,
 		"lost":			1.0,
 		"move":			0.59,
+		"profit":		0.5,
 		"recdraw":		0.66,
 		"tap":			0.5,
 		"victory":		1.0,

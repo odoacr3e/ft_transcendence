@@ -32,7 +32,7 @@
 	const route			= useRoute();
 	const aiGame		= computed(() => route.query.ai === '1');
 	const sides			= Object.values(eSide);
-	const timeOptions	= ['15 min', '10 min', 'Custom'];
+	const timeOptions	= ['15 min', '15 min', '15 min'];
 	const timeEnabled	= computed(() => aiGame.value || roomType.value === 'PRIVATE');
 	const choices		= { roomType, players, time, aiModel, side };
 
@@ -100,12 +100,7 @@
 	}
 
 	/**
-	 * Rivincita chiesta dall'overlay di fine partita: rimanda tale e quale l'ultima richiesta
-	 * salvata, senza passare dalle scelte della pagina.
-	 *
-	 * Il flag rematch viene tolto dalla query subito, prima dell'emit: altrimenti un refresh
-	 * su questa pagina rimanderebbe la richiesta una seconda volta.
-	 *
+	 * Ricarica della richiesta di matchamking precedente per una nuova partita
 	 * @returns	{void}
 	 */
 	function rematch()
@@ -169,11 +164,11 @@
 										:class="[ aiModel === model ? 'border-main-color' : 'border-border-default',
     										    { 'col-start-2': index === aiModels.length - 1 } ]"
 										class="opt opt-ai border-2 cursor-pointer">
-									{{ model }}
+									{{ model  === "GMU(Generale Matsuda Usushi)" ?  "Matsuda" : model}}
 								</div>
 							</div>
 							<div v-else class="flex flex-row gap-4 flex-1 justify-center pr-30">
-								<div @click="toggle('roomType', 'PRIVATE')"  :class="roomType === 'PRIVATE'  ? 'border-main-color' : 'border-border-default'" class="opt border-2 cursor-pointer">{{ t('game.playPage.opt.priv') }}</div>
+								<div class="opt border-2 border-border-default opacity-30 cursor-not-allowed">{{ t('game.playPage.opt.priv') }}</div>
 								<div @click="toggle('roomType', 'FRIENDLY')" :class="roomType === 'FRIENDLY' ? 'border-main-color' : 'border-border-default'" class="opt border-2 cursor-pointer">{{ t('game.playPage.opt.friend') }}</div>
 								<div @click="toggle('roomType', 'RANKED')"   :class="roomType === 'RANKED'   ? 'border-main-color' : 'border-border-default'" class="opt border-2 cursor-pointer">{{ t('game.playPage.opt.rank') }}</div>
 							</div>
@@ -189,8 +184,8 @@
 							</div>
 							<div v-else class="flex flex-row gap-4 flex-1 justify-center pr-30">
 								<div @click="players = players === '1v1'     ? null : '1v1'"     :class="players === '1v1'     ? 'border-main-color' : 'border-border-default'" class="opt border-2 cursor-pointer">1v1</div>
-								<div @click="players = players === '2v2'     ? null : '2v2'"     :class="players === '2v2'     ? 'border-main-color' : 'border-border-default'" class="opt border-2 cursor-pointer">2v2</div>
-								<div @click="players = players === '1v1v1v1' ? null : '1v1v1v1'" :class="players === '1v1v1v1' ? 'border-main-color' : 'border-border-default'" class="opt border-2 cursor-pointer">FreeForAll</div>
+								<div @click="players = players === '2v2'     ? null : '2v2'"     class="opt border-2 border-border-default opacity-30 cursor-not-allowed">2v2</div>
+								<div @click="players = players === '1v1v1v1' ? null : '1v1v1v1'" class="opt border-2 border-border-default opacity-30 cursor-not-allowed">FreeForAll</div>
 							</div>
 						</div>
 						<div class="flex flex-row items-center">

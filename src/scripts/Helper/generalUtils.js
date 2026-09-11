@@ -2,11 +2,11 @@ import { nextTick, onBeforeUnmount, onMounted, unref, watch } from "vue";
 import { AUDIO_PATHS, debug, MACRO } from "../Data/Variables";
 
 
-//NOTE - suoni brevi di interfaccia: non troncano quello in corso e non vengono troncati.
-const UI_SOUNDS = new Set(["clicked", "badmove", "tap"]);
+//NOTE - suoni che non voglio tronchino altri suoni.
+const UI_SOUNDS = new Set(["clicked", "badmove", "tap", "profit"]);
 let currentTrack = null;
 /*
-	Chiude un popup quando si clicca fuori dalla sua area (e, se richiesto, con Escape)
+	Chiude un popup quando si clicca fuori dalla sua area oppure se vuoi con escape
 */
 /**
  * @param {import('vue').Ref<HTMLElement|null>|string}	target
@@ -62,6 +62,7 @@ export function useClickOutside(target, onOutside, { when = null, escape = false
 /**
  * @param {string} use
  * @param {boolean} once
+ * @returns {HTMLAudioElement|void} La traccia avviata, niente se non parte
  */
 export function playAudio(use, once = false)
 {
@@ -92,6 +93,7 @@ export function playAudio(use, once = false)
 
 	if (once)
 		audio.playing = false;
+	return (track);
 }
 
 /**
