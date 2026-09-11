@@ -78,7 +78,7 @@ export function routesMatchMaking(socket, user)
 		if (isOneOf(options.roomType, enumConnection.FRIENDLY, enumConnection.RANKED, enumConnection.ARENA))
 			MatchMaking(user, options);
 		else
-			throw ("stanze non implementate");
+			socket.emit('error', new Result().Error("Private rooms yet to be implemented", 400));
 	});
 
 	socket.on('cancel_match', async() => 
