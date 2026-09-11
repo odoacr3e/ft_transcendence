@@ -13,7 +13,6 @@ if (VAULT_VAR)
 else
 	dotenv.config();
 
-await loadSecretsFromVault();
 
 if (!IS_CHILD_PROCESS)
 {
