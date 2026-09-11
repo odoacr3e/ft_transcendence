@@ -139,6 +139,7 @@ Regarding communication and collaboration, several tools were used. **Slack** wa
 |  | *nginx* | Web server used as the only public entry point to the cpsi stack for other services to remain isolated on the internal Docker network. Routes requests to the appropriate containers (Vite frontend, Express backend, Socket.IO) and handles encrypted communication via TLS protocol. Chosen for its reliability in managing reverse proxies and HTTPS, and for the ability to directly serve static files (e.g. media/avatar) without going through the backend. |
 |  | *Vite* |  It has been used to create a fast and responsive workspace for the frontend. Thanks to it we used tools like Tailwind, which need to be compiled, and many others. |
 |  | *Vue I18n* |  A Vue plugin which implement a lightweight and simple translation module with dynamic JSON storage. |
+|  | *Pinia Store* |  A simple and reacting store for sharing multiple variable states thought all of the frontend. It was used o manage the authantication for the users, for the socket and notification  managment. |
 
 
 ## Database Schema
@@ -241,10 +242,10 @@ The database is composed of 10 tables with the following relationships:
 [x] Partite offline vs AI
 [x] Matchmaking online
 [x] 2FA
+[x] Classifiche
+[x] Ricerca utenti
 [] Tornei
-[] Classifiche
 [] Libro guida e tutorial
-[] Ricerca utenti
 [] Cambio lingua
  -->
 
@@ -256,7 +257,7 @@ Feature list:
 | Login and Authentication | User can log in via username/email and password | edraccan, mfanelli |
 | User Information Management | Allows you to edit user information, including profile picture and theme preferences | edraccan, mfanelli |
 | Google Authentication | Allows users, registered and unregistered, to register/log in with Google's OAuth service | edraccan, mbiagi |
-| Send and receive notifications for real-time friendships and tournaments | Allows the user to receive notifications about tournaments and friendships in real time | edraccan, mfanelli |
+| Send and receive notifications for real-time friendships and rank promotion | Allows the user to receive notifications about ranking position and friendships in real time | edraccan, mfanelli |
 | Friendship Management | Allows the user to send, accept, and reject friendship requests | edraccan, mfanelli |
 | Offline Matches (vs AI) | Allows the user to play offline against an AI implemented to play ChessZ | mbiagi, alerusso, lparolis |
 | Online Matchmaking | Allows the user to play online against other players | mbiagi, alerusso, lparolis |
@@ -275,7 +276,7 @@ Feature list:
 |-|-:|-:|-:|
 | Use a **framework** for both the frontend and backend. | Major | 2 | all team members |
 | Implement real-time features using WebSockets or similar technology. | Major | 2 | all team members |
-| Allow users to interact with other users. The minimum requirements are: **basic chat**, **profile** and **friends** systems. | Major | 2 | edraccan, mfanelli, lparolis |
+| Allow users to interact with other users. The minimum requirements are: **basic chat**, **profile** and **friends** systems. | Major | 2 | lparolis, edraccan, mfanelli |
 | Standard user management and authentication. | Major | 2 | edraccan, mfanelli |
 | Introduce an AI Opponent for games. | Major | 2 | mbiagi, alerusso |
 | Implement a complete web-based game where users can play against each other. | Major | 2 | all team members |
@@ -286,7 +287,6 @@ Feature list:
 | Game statistics and match history (requires a game module). | Minor | 1 | all team members |
 | Implement remote authentication with OAuth 2.0. | Minor | 1 | mbiagi, edraccan |
 | Support for additional browsers. Full compatibility with at least 2 additional browsers. | Minor | 1 | mfanelli, lparolis |
-| Notification system | Minor | 1 | edraccan, mfanelli |
 | Gamification (XP/level, badge, leaderboard) | Minor | 1 | all team members |
 
 ***Total points:*** 22
@@ -327,10 +327,18 @@ A vue component that is basically a simple array that gets filled with messages 
 ### Standard user management and authentication. (Major - 2pt)
 
 #### Reason of using
-⚠️ **To be provided**
+To made the players have an identity in the game allowing them to track their improvement, customise their profile and have interactions with other users through the friendship system
 
 #### Implementation
-⚠️ **To be provided**
+**UI/UX**:
+- **User page**: every user has it's own private page at '/me' and their public page at "/:username"
+- **Login and register page**: complete with errors and the possibility of loggin in using a Google account
+- **User setting and editing**: a editing page dedicated to the updating the users infos including the avatar, name, surname and others preferences
+- **Dinamic friendship system**: at every friendship request the user pages are updated accordingly
+
+**Architecture**:
+- **Auth and friend notifications stores**: managing the authentication and the notifications of the user thrught a Pinia store
+- **User authentication**: every user is authenticated through an hashed password and their email or username
 
 ---
 
@@ -424,17 +432,25 @@ To enable competitive multiplayer
 ### Implement a complete 2FA (Two-Factor Authentication) system for the users. (Minor - 1pt)
 
 #### Reason of using
-⚠️ **To be provided**
+An additional and optional security for the user which adds a security layer for authentication
 
 #### Implementation
-⚠️ **To be provided**
+To send emails we used Nodemailer, to which is associated a Google account created specifically for this. A 6-digit code with a 5-minute TTL is randomly created and saved to Redis which, at the end of the TTL, automatically deletes the code that will become invalid for login.
+
+**Technical Flow:**
+
+- After the classic user login with email or username and password a temporary code (otp) is requested
+- In the mean time the code is sent to the user's email
+- The user enters the code received via email 
+  - If it's correct, the users enters in their account normally
+  - If it's incorrect, a maximum of 5 attempts are granted before requesting the username/password login again
 
 ---
 
 ### Use an **ORM** for the database. (Minor - 1pt)
-⚠️ **To be provided**
+
 #### Reason of using
-To abstract database queries, improve code maintainability, provide type safety, and enable easy schema migrations.
+To abstract database queries which prevent the use of SQL injection, improve code maintainability, provide type safety, and enable easy schema migrations.
 
 #### Implementation
 
@@ -459,12 +475,16 @@ To abstract database queries, improve code maintainability, provide type safety,
 ---
 
 ### Custom-made design system with reusable components, including a proper color palette, typography, and icons (Minor - 1pt)
-⚠️to be provided/*
+
 #### Reason of using
 To ensure visual consistency across the application, improve development speed, and provide a cohesive user experience.
 
 #### Implementation
-⚠️to be provided/*
+**All the elements of the design:**
+- **Color palettes and themes**: 4 dark themes base on the 4 basic colors (Red, Blue, Green, Yellow)
+- **Icons and VGS**: Every icon has its component which can dynamically react to the user's theme if needed
+- **Personalized components**: More than 25 components made exclusively for this project
+- **Custom made pieces design**: Every boosted chess piece was made by hand for this project
 
 ---
 
@@ -493,8 +513,14 @@ To track player performance, provide competitive rankings
 To allow users to authenticate via third-party identity providers and reduce friction in account creation.
 
 #### Implementation
+Using passport to manage Google's OAuth service and also user management and or creation. A login request is made to Google via passpot, which, if all goes well, sends a request back to a callback function specifically created to receive Google's successful response
 
-⚠️ **To be provided**
+**Technical Flow:**
+
+- At login we give the option to access your account through Google
+  - If an account linked to that email doesn't exist, it's created with a generic username (e.g., username12345), without a password setted and the ID provided by Google. The user will then be notified on their settings page to set a password so they can log in to their account even without OAuth's service and for their security.
+  - If, however, the user exists but it the first time the OAuth service it's used to login, the Google ID is associated with the user who is logging in.
+  - Finally, if the user already exists and has already associated a Google ID, the users logs in their account normally.
 
 ---
 
@@ -504,43 +530,10 @@ To allow users to authenticate via third-party identity providers and reduce fri
 To ensure accessible gameplay across multiple browsers and reduce compatibility issues for players.
 
 #### Implementation
-⚠️ Edge???
 **Primary browsers tested:**
 - Chrome
 - Brave
-- Edge
-
----
-
-### Notification system (Minor - 1pt)
-⚠️ Pending
-#### Reason of using
-To keep players informed of friend activity, game invites, match results, and other real-time events.
-
-#### Implementation
-
-**Hybrid notification delivery:**
-
-**Real-time notifications (WebSockets):**
-- Friend status changes (online/offline)
-- Game invitations
-- Match start/end events
-- Chat messages
-- Transmitted via Socket.io connection with instant delivery
-
-**On-demand notifications (HTTP queries):**
-- Frontend periodically queries `/api/notifications` endpoint
-- Fetches unread notifications from database
-- Reduces WebSocket message volume for non-urgent updates
-- Ensures notifications persist even if user was offline
-
-**Storage:**
-- Notifications persisted in PostgreSQL via Prisma ORM
-- Queryable by user, status (read/unread), and timestamp
-
-**Frontend handling:**
-- Vue.js notification center displays real-time and queried notifications
-- User can dismiss, read, and archive notifications
+- Opera
 
 ---
 
@@ -580,8 +573,7 @@ const EloTitle = {
 
 **Leaderboard:**
 - Ranked by ELO score (descending)
-- Displays top N players (configurable)
-
+- Displays max top 10 players
 ---
 
 ## Summary of Status
@@ -591,17 +583,16 @@ const EloTitle = {
 | Framework | ✅ Complete | Vue.js + Express.js |
 | WebSockets | ✅ Complete | Socket.io implementation |
 | User interaction | ⚠️ Pending | Chat/profile/friends details needed |
-| User management | ⚠️ Pending | Authentication details needed |
+| User management | ✅ Complete | Authentication details needed |
 | AI Opponent | ✅ Complete | Minimax + Zobrist, subprocess isolation |
 | Complete game | ✅ Complete | Chess with dynamic objects |
 | Remote players | ✅ Complete | Socket.io + reconnection timer |
-| 2FA | ⚠️ Pending | Implementation details needed |
-| ORM | ⚠️ Pending | Prisma + PostgreSQL |
-| Design system | ⚠️ Pending | Vue.js components |
+| 2FA | ✅ Complete | Implementation details needed |
+| ORM | ✅ Complete | Prisma + PostgreSQL |
+| Design system | ✅ Complete | Vue.js components |
 | Game statistics | ✅ Complete | Move history + match persistence |
-| OAuth 2.0 | ⚠️ Pending | Implementation details needed |
-| Browser support | ⚠️ Pending | Chrome, Brave, Edge |
-| Notifications | ✅ Complete | Hybrid WebSocket + HTTP polling |
+| OAuth 2.0 | ✅ Complete | Implementation details needed |
+| Browser support | ✅ Complete | Chrome, Brave, Opera |
 | Gamification | ✅ Complete | ELO-based with tier titles |
 
 
