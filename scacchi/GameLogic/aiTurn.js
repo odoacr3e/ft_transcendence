@@ -68,6 +68,7 @@ export function AIexecuteTurn(match)
 	if (team == match.currentPlayer.team && match.victory == "")
 	{
 		result = endTurn(match, false);
+		result.history = match.history.clientEvents[match.history.clientEvents.length - 1];
 		sendResult(match, result, eEvents.EndTurn);
 	}
 	lastEvents = match.history.LastTurn();
