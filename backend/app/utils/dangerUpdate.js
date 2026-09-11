@@ -236,14 +236,14 @@ function castlingUpdate(match, startPos, piece, castlingBool)
 	player = match[piece.team];
 	kingCoord = player.King;
 	kingSquare = match.board.get(kingCoord);
-	if (piece.type == enumNames.KING && !piece.moveCount)
+	if (piece.type == enumNames.KING && piece.moveCount == 0)
 	{
 		for (const x of player.castlingArray)
 			kingSquare.targetZones.add(x);
 	}
 	else if (castlingBool == false)
 		return ;
-	else if (piece.type == enumNames.MINOTAURUS && !piece.moveCount)
+	else if (piece.type == enumNames.MINOTAURUS && piece.moveCount == 0)
 	{
 		player.castlingArray.delete(startPos);
 		minoSquare = match.board.get(startPos); 
@@ -258,7 +258,7 @@ function castlingUpdate(match, startPos, piece, castlingBool)
 		if (kingSquare.targetZones.has(startPos) == false)
 			match.board.updates.add(kingCoord);
 		player.castlingArray.add(startPos);
-		kingSquare.targetZones.add(startPos);	
+		kingSquare.targetZones.add(startPos);
 	}
 }
 

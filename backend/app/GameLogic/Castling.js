@@ -12,6 +12,7 @@ import { isDangerous } from "../utils/checkDanger.js";
 import { movePiece, getPieces } from "../utils/movePiece.js";
 import { Result } from "../Classes/endPoint/result.js";
 import { DangerUpdate } from "../utils/dangerUpdate.js";
+import { enumNames, eTeam } from "../Macro/enums.js";
 
 /** @typedef {import('../Classes/Chess/Pieces/pieces.js').Piece} Piece */
 /** @typedef {import('../Classes/Chess/chessBoard.js').Square} Square */
@@ -132,4 +133,37 @@ function moveCastling(match, from, to)
 	match.cursor.Restore();
 }
 
-export {checkCastling, moveCastling};
+//NOTE - valido solo per partite a due
+/**
+ * 
+ * @param {Match} match
+ */
+function refreshCastling(match)
+{
+	let	minoW = new Array("a1", "h1");
+	let	minoB = new Array("a8", "h8");
+	let mino;
+	let	minoPiece;
+	let	currPlayer;
+
+	currPlayer = match.currentPlayer.team;
+	do
+	{
+		if (match.currentPlayer.team == eTeam.White)
+			mino = minoW;
+		else
+			mino = minoB;
+		match.currentPlayer.castlingArray.clear();
+		for (const minoCoord of mino)
+		{
+			minoPiece = match.board.get(minoCoord).piece;
+			if (minoPiece?.moveCount == 0 && minoPiece?.type == enumNames.MINOTAURUS && minoPiece?.team == match.currentPlayer.team)
+				DangerUpdate(match, minoCoord, true, true);
+		}
+		DangerUpdate(match, match.currentPlayer.King, true, true);
+		match.endTurn();
+	}
+	while (currPlayer != match.currentPlayer.team)
+}
+
+export {checkCastling, moveCastling, refreshCastling};

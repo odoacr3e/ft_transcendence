@@ -31,7 +31,7 @@ async function websocketConnectionHandler(socket, friendsId)
 	else//@ts-ignore
 		user = socket.request.user;
 	if (!user)
-			return ;
+		return null;
 	globals.ClearTimer(user.id_user);
 	socketData = globals.clientMap.get(user.id_user);
 	if (socketData?.reconnectBool == true || socketData?.state)
@@ -50,7 +50,7 @@ async function websocketConnectionHandler(socket, friendsId)
 
 /** 
  * @param {import("socket.io").Socket} socket
- * @param {import("../../Classes/Chess/player").dbUser} user
+ * @param {import("../../Classes/Chess/player.js").dbUser} user
  * */
 async function websocketDisconnectionHandler(socket, user) 
 {
@@ -126,7 +126,7 @@ function handleReconnect(dbUser, socketData, newSocket)
 /** 
  * 
  * @param {import("socket.io").Socket} socket
- * @param {import("../../Classes/Chess/player").dbUser} user
+ * @param {import("../../Classes/Chess/player.js").dbUser} user
  * */
 function handleLogout(socket, user)
 {

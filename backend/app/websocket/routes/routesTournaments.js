@@ -11,7 +11,7 @@ import { createTournamentRoomHandler, initTournament, joinTournamentRoomHandler,
 /** 
  * 
  * @param {import("socket.io").Socket} socket
- * @param {import("../../Classes/Chess/player").dbUser} user
+ * @param {import("../../Classes/Chess/player.js").dbUser} user
  * */
 export function routesTournament(socket, user)
 {

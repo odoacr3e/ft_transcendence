@@ -65,7 +65,7 @@ export function AIexecuteTurn(match)
 		result = makeTransfiguration(match, turn.moveBoost? turn.moveBoost.to : turn.move?.to, turn.transform, false);
 		sendResult(match, result, eEvents.Transform);
 	}
-	if (team == match.currentPlayer.team)
+	if (team == match.currentPlayer.team && match.victory == "")
 	{
 		result = endTurn(match, false);
 		result.history = match.history.clientEvents[match.history.clientEvents.length - 1];

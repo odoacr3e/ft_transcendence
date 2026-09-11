@@ -3,7 +3,7 @@
 import fs from "fs";
 import { AIprofiles, AIprofilesArray } from "../../../Macro/enums.js";
 import { AI_first_eval } from "./First/eval.js";
-import { AI_gmu_eval } from "./gmu/eval.js";
+import { AI_gmu_eval } from "./GMU(Generale Matsuda Usushi)/eval.js";
 import { AI_PROFILE_PATH } from "../../../Macro/macro.js";
 import { globals } from "../../Globals/globals.js";
 import { AI_bastard_eval } from "./Bastards/eval.js";
@@ -43,7 +43,7 @@ function AIProfileConstructor(ai)
 			ai.memory = globals.AITraining.get(AIprofiles.HAL9000);
 			ai.Eval = AI_hal_eval;
 			ai.difficulty = "hard";
-			ai.depth = 2;
+			ai.depth = 3;
 			ai.quiescenceDepth = -3;
 			break ;
 		case (AIprofiles.AM):

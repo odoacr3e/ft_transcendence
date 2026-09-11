@@ -13,7 +13,7 @@ import { isBusy, roomMessage } from "../utils.js";
 import { bindPlayersToMatch } from "./MatchMaking.js";
 const { tournamentsQuery, gameQuery } = query;
 
-/** @typedef {import("../../Classes/Chess/player").dbUser} dbUser */
+/** @typedef {import("../../Classes/Chess/player.js").dbUser} dbUser */
 /** @typedef {import("socket.io").Socket} Socket */
 
 

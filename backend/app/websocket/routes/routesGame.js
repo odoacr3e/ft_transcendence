@@ -14,7 +14,7 @@ import { AIexecuteTurn } from "../../GameLogic/aiTurn.js";
 
 /** 
  * @param {import("socket.io").Socket} socket
- * @param {import("../../Classes/Chess/player").dbUser} user
+ * @param {import("../../Classes/Chess/player.js").dbUser} user
  * */
 export function routesGame(socket, user)
 {

@@ -17,13 +17,7 @@ import { basicEval } from "../evalUtils.js";
 export function AI_hal_eval(match, ai, turns)
 {
 	let	nextPlayer;
-	let	boostedPiece;
-	let	otherBoostedPiece;
 	let	score;
-	let	lastTurn;
-	let	square;
-	let	price;
-	let val;
 
 	nextPlayer = match.NextPlayer();
 	//1)	differenza punti
@@ -37,7 +31,7 @@ export function AI_hal_eval(match, ai, turns)
 			for (let x of square.dangerZones)
 			{
 				if (match.board.get(x).piece?.team == nextPlayer.team)
-					score -= 10 * square.piece.price;
+					score -= 13 * square.piece.price;
 			}
 			for (let x of square.targetZones)
 			{
@@ -55,10 +49,9 @@ export function AI_hal_eval(match, ai, turns)
 			for (let x of square.targetZones)
 			{
 				if (match.board.get(x).piece?.team == match.currentPlayer.team)// @ts-ignore
-					score -= 10 * match.board.get(x).piece?.price;
+					score -= 13 * match.board.get(x).piece?.price;
 			}
 		}
 	}
-	lastTurn = turns[turns.length - 2];
 	return (score);
 }

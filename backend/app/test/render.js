@@ -194,7 +194,7 @@ function printSwap(match, coords, from, to, result=null)
 		toType = "Square";
 	else
 		toType = `\x1b[33m${toType}\x1b[0m`;
-	gameMessage(match, `SWAP ${fromType} with ${toType}`);
+	//gameMessage(match, `SWAP ${fromType} with ${toType}`);
 	match.cursor.Save();
 	match.cursor.set(coords[0]);
 	fromString = match.cursor.Normify();

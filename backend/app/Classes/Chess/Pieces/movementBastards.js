@@ -52,6 +52,7 @@ let movementBastards = function (match)
 		}
 		match.cursor.square = startPos;
 	}
+	match.board.get(startPos)?.boostedTargetZones.get(startPos)?.delete(startPos);
 	return (true);
 }
 

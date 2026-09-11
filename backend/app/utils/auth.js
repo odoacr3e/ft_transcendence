@@ -1,7 +1,6 @@
 
 import * as lib from "../lib/lib.js";
 import * as usersUtils from "./users.js"
-import { prisma } from '../lib/prisma.js'
 import { query } from "../lib/query.js";
 import ms from "ms";
 import { jsonResponse } from "../utils/response.js";

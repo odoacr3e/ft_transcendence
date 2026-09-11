@@ -1,6 +1,7 @@
 //@ts-check
 
 import { eTeam } from "../../../Macro/enums.js";
+import { render } from "../../../test/render.js";
 import { checkKingDanger } from "../../../utils/checkDanger.js";
 
 /** @typedef {import("../match.js").Match} Match*/
@@ -95,10 +96,10 @@ export function AIfavouritePieceEval(match, ai, turns, type, weight=10)
 	lastTurn = turns[turns.length - 1];
 	lastTo = lastTurn.moveBoost ? lastTurn.moveBoost.to : lastTurn.move?.to;
 	if (!lastTo)
-		throw (`AI, favouritePieceEval: turns ${turns} bring to impossible 'to'`);
+		return 0;
 	lastPiece = match.board.get(lastTo).piece;
 	if (!lastPiece)
-		throw (`AI, favouritePieceEval: turns ${turns} bring to impossible 'to.lastPiece'`);
+		return 0;
 	if (lastPiece.type == type)
 	{
 		score += weight;

@@ -14,6 +14,8 @@ import fs from "fs";
 import { isOneOf } from "../../utils/string.js";
 import { DEBUG_AI_TRAINING, SEED } from "../../Macro/macro.js";
 import { gameMessage } from "../../websocket/utils.js";
+import { DangerUpdate } from "../../utils/dangerUpdate.js";
+import { refreshCastling } from "../../GameLogic/Castling.js";
 
 /** @typedef {import("./match.js").Match} Match*/
 /** @typedef {{from: string, to: string}} Move */
@@ -21,7 +23,7 @@ import { gameMessage } from "../../websocket/utils.js";
 /** @typedef {{score: number, index: number}} Eval */
 
 /** @type {null | string} */
-let DEBUGresultBUFFER = null;
+let DEBUGresultBUFFER = "";
 let DEB = 0;
 
 /*
@@ -188,6 +190,7 @@ function getBestTurn(match)
 	}
 	if (match.currentPlayer.team != DEBUGTEAM)
 		throw (`AI: Team has changed..`);
+	refreshCastling(match);
 	if (bestTurns.length == 0)
 	{//@ts-ignore
 		ai.defeatStatus = 1;
@@ -330,14 +333,14 @@ function minMax(match, ai, arrayTurns, depth, pastTurns, alpha, beta)
 				cancelTurn(match, turn);
 				continue ;
 			}
-			if (DEBUGresultBUFFER != null)
-				DEBUGresultBUFFER += `|depth: ${depth}|val: ${val}|i: ${DEB++}|team: ${match.currentPlayer.team == eTeam.White ? "⚪" : "⚫️"}|\n`;
 			if (minEval == undefined)
 				minEval = Infinity;
 			ai.Cancel(match, ai);
 			pastTurns.pop();
 			minEval = Math.min(val, minEval);
 			cancelTurn(match, turn);
+			if (DEBUGresultBUFFER != null)
+				DEBUGresultBUFFER += `|depth: ${depth}|val: ${val}|i: ${DEB++}|team: ${match.currentPlayer.team == eTeam.White ? "⚪" : "⚫️"}|\n`;
 			if (minEval == -Infinity)
 				break ;
 			beta = Math.min(minEval, beta);

@@ -193,7 +193,6 @@ class Globals
 	{
 		let i = 0;
 
-		// console.log(`creazione ${CHILD_NUM} processi figli`);
 		while (i < CHILD_NUM)
 		{
 			this.childMap.set(i, new Child(i));

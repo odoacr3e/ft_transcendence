@@ -17,7 +17,7 @@ services:
       - VAULT_ADDR=http://vault:8200
     volumes:
       - vault-shared:/vault/shared
-      - user-avatars:/app/media/userAvatar
+      - user-avatars:/app/media/usersAvatar
     depends_on:
       - postgres
       - vault

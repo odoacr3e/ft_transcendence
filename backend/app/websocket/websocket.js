@@ -56,6 +56,8 @@ sockio.on('connection', async (socket) =>
 	let	user;
 
 	user = await websocketConnectionHandler(socket);
+	if (!user)
+		return ;
 	routesMatchMaking(socket, user);
 	routesGame(socket, user);
 	routesTournament(socket, user);
