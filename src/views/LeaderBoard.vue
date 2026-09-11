@@ -45,7 +45,7 @@ onMounted(async () => {
         <h2 class="px-6 py-4 font-semibold self-center max-md:text-2xl text-3xl">{{ t('leaderBoard.title') }}</h2>
         <div v-if="lBoard.length" class="flex flex-col mx-4 mb-1 p-2 bg-bg-default rounded-3xl border border-border-default">
             <div v-if="top3[0]" class="relative justify-items-center justify-self-center z-2"
-                :class="top3.length > 1 ? '-mb-7' : 'mb-2'">
+                :class="top3.length > 2 ? '-mb-7' : 'mb-2'">
                 <p class="text-text-second max-md:text-sm">{{ top3[0].points }}</p>
                 <div class="relative">
                     <UserAvatar class="rounded-full object-cover max-md:size-25 md:size-27" :src="top3[0].image" />
@@ -65,7 +65,7 @@ onMounted(async () => {
 
             <div v-if="top3.length > 1" class="grid grid-rows-1"
                 :class="[ top3.length > 2 ? 'grid-cols-2' : 'grid-cols-1',
-                          top ? 'max-md:mt-10 md:-mt-7' : 'max-md:mt-10 md:-mt-15' ]">
+                          top3.length < 3 ? 'mt-4' : (top ? 'max-md:mt-10 md:-mt-7' : 'max-md:mt-10 md:-mt-15') ]">
                 <div v-for="(p, i) in top3.slice(1)" :key="p.id_user" class="justify-items-center">
                     <p class="text-text-second max-md:text-sm">{{ p.points }}</p>
                     <div class="relative">

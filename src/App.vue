@@ -5,7 +5,8 @@
 	import { useAuthStore } from './stores/auth.st.js';
 	import { storeToRefs }	from 'pinia';
 	import { useRoute } from 'vue-router'
-	import { watch } from 'vue'
+	import { watch, onMounted, onUnmounted } from 'vue'
+	import { playAudio } from './scripts/Helper/generalUtils.js';
 
 	const	route = useRoute();
 
@@ -21,6 +22,19 @@
 	}
 
 	useTheme();
+
+	//NOTE - un solo listener in capture su tutto il documento suona il tap su ogni bottone
+	//dell'app: scatta scendendo verso il bottone, prima che un @click.stop dei componenti
+	//possa fermare l'evento. Le voci di menu sono router-link, cioe' <a>, per questo sono
+	//nel selettore. data-no-tap su un elemento o su un suo contenitore lo zittisce.
+	function tap(event)
+	{
+		if (event.target?.closest?.("button, a, [role='button']") && !event.target.closest("[data-no-tap]"))
+			playAudio("tap");
+	}
+
+	onMounted(() => document.addEventListener("click", tap, true));
+	onUnmounted(() => document.removeEventListener("click", tap, true));
 </script>
 
 <template>

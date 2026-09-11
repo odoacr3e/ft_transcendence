@@ -7,7 +7,6 @@
 	import IconCrown							from './icons/IconCrown.vue';
 	import IconCrownBroken						from './icons/IconCrownBroken.vue';
 	import IconKings							from './icons/IconKings.vue';
-	import { playAudio } 						from '@/scripts/Helper/generalUtils';
 
 	const dismissed = ref(false);
 	//la rivincita ha senso solo se PlayPage ha salvato una richiesta da rifare
@@ -66,18 +65,10 @@
 	function goHome() { leaveMatch(); router.push({name: 'home'}); }
 	function watchBoard() { dismissed.value = true; }
 	function reopen() { dismissed.value = false; }
-
-	//NOTE - stesso schema di ActionButtons: un listener in capture copre tutti i bottoni
-	//del popup, e il bottone di riapertura se lo mette da se' perche' sta fuori dall'overlay.
-	function tap(event)
-	{
-		if (event.target?.closest?.("button"))
-			playAudio("tap");
-	}
 </script>
 
 <template>
-	<div v-if="showOverlay" @click.capture="tap"
+	<div v-if="showOverlay"
 		class="absolute inset-0 z-20 flex flex-col items-center justify-center
 			gap-6 backdrop-blur-sm bg-black/50 select-none">
 		<component :is="content.icon" v-if="content.icon" :class="content.cls" class="w-40 h-40 drop-shadow-xl"/>
@@ -108,7 +99,7 @@
 		</div>
 	</div>
 
-	<button v-if="showReopen" @click.capture="tap" @click="reopen"
+	<button v-if="showReopen" @click="reopen"
 			class="absolute top-2 right-2 z-20 px-3 py-2 rounded-lg text-sm font-bold
 				bg-black/60 text-text-default hover:bg-black/80 transition select-none">
 		Fine Partita ↩
