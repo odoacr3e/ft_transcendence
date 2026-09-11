@@ -46,7 +46,7 @@ async function checkResp(res, fun, endpoint, options)
 			return await forceLogout(auth);
 	}
 
-	if (!res.ok || res.status !== 200 ) { throw new ApiError(Jres.message ?? 'Errore sconosciuto', res.status); }
+	if (!res.ok ) { throw new ApiError(Jres.message ?? 'Errore sconosciuto', res.status); }
 	if (res.status == 204) { return null; }
 
 	return Jres;
