@@ -33,6 +33,8 @@ function berserkMode(pos, match)
 				match.board.get(pos)?.boostedTargetZones.get(startPos)?.add(match.cursor.square);
 			}
 			match.board.AddInfluence(pos, match.cursor.square);
+			if (match.cursor.square == pos)
+				continue ;
 			if (targetSquare.piece != null)
 			{
 				targetSquare.dangerZones.add(pos);
