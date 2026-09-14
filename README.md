@@ -64,13 +64,13 @@ For this project, we have used the following resources:
 
 ### Backend
 - [Esercizi Javascript](https://github.com/AlbertoOlla/esercizi-di-programmazione-javascript "github.com/AlbertoOlla/esercizi-di-programmazione-javascript")
-- [Javascript tutorial w3school]("https://www.w3schools.com/js/")
-- [Socket.io docs]("https://socket.io/docs/v4/")
+- [Javascript tutorial w3school](https://www.w3schools.com/js/ "Javascript tutorial w3school")
+- [Socket.io docs](https://socket.io/docs/v4/ "Socket.io docs")
 - [Web Socket](https://www.youtube.com/watch?v=pnj3Jbho5Ck "How WebSocket work")
 
-## AI
-- [minmax and alpha-beta pruning]("https://www.youtube.com/watch?v=l-hh51ncgDI")
-- [zobrist hash]("https://youtu.be/QYNRvMolN20?is=TnUvxDBb8HBCAOBB")
+### AI
+- [Minimax and alpha-beta pruning](https://www.youtube.com/watch?v=l-hh51ncgDI "Minimax and alpha-beta pruning")
+- [Zobrist hash](https://youtu.be/QYNRvMolN20?is=TnUvxDBb8HBCAOBB "Zobrist hash")
 
 ### Database
 - [Prisma ORM docs](https://www.prisma.io/docs/orm "Prisma ORM docs")
@@ -84,6 +84,19 @@ For this project, we have used the following resources:
 - [Vue v-for](https://it.vuejs.org/api/built-in-directives.html#v-for "Vue v-for")
 - [Vue v-bind](https://it.vuejs.org/api/built-in-directives.html#v-bind "Vue v-bind")
 - [Vue Style Guide](https://vuejs.org/style-guide/ "Vue Style Guide")
+- [Vue Reactivity Fundamentals](https://vuejs.org/guide/essentials/reactivity-fundamentals.html "Vue Reactivity Fundamentals")
+  - [Vue Computed Properties](https://vuejs.org/guide/essentials/computed.html "Vue Computed Properties")
+  - [Vue Lifecycle Hooks](https://vuejs.org/guide/essentials/lifecycle.html "Vue Lifecycle Hooks")
+  - [Vue Teleport](https://vuejs.org/guide/built-ins/teleport.html "Vue Teleport")
+- [Vue Router](https://router.vuejs.org/guide/ "Vue Router")
+- [Pinia](https://pinia.vuejs.org/core-concepts/ "Pinia")
+- [Vue I18n](https://vue-i18n.intlify.dev/guide/ "Vue I18n")
+- [Socket.IO client API](https://socket.io/docs/v4/client-api/ "Socket.IO client API")
+- [HTML Drag and Drop API](https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API "MDN - HTML Drag and Drop API")
+  - [DataTransfer.setDragImage()](https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer/setDragImage "MDN - DataTransfer.setDragImage()")
+- [HTMLAudioElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLAudioElement "MDN - HTMLAudioElement")
+- [Window.sessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage "MDN - Window.sessionStorage")
+- [Floating UI](https://floating-ui.com/docs/computePosition "Floating UI")
 - [Tailwind docs](https://tailwindcss.com/docs/installation/using-vite "Tailwind docs")
 
 ### Infrastructure & Deployment
@@ -95,7 +108,7 @@ For this project, we have used the following resources:
 
 ## Team Information
 
-| Intra   | Roles | Responsabilities |
+| Intra   | Roles | Responsibilities |
 |-|-|-|
 | **mfanelli** | Project Manager + Developer | Coordinates the team, organizes meetings and planning, tracks progress and deadlines, manages risks and blocks; develops assigned features. |
 | **mbiagi** | Product Owner + Developer | Defines the product vision, manages the backlog and priorities, validates completed work, serves as a reference for evaluators/peers; develops assigned features. |
@@ -112,20 +125,21 @@ Regarding communication and collaboration, several tools were used. **Slack** wa
 
 ## Technical Stack
 
-| Level | Tecnology | Reason |
+| Level | Technology | Reason |
 |-|-|-|
 | ***Frontend*** | *Vue.js* | Progressive frontend framework based on reusable components, with responsiveness system for automatically updating the UI based on state changes. |
 |  | *Tailwind* | Utility-first CSS framework that allows you to stylize components directly in markup using predefined classes, without writing separate custom CSS. |
 | ***Backend*** | *Node.js* | V8-based server-side JavaScript runtime, used to run JS code outside the browser (HTTP server, filesystem/OS access, scripting). |
 |  | *Express* | Minimal framework for Node.js that simplifies routing, HTTP requests/responses, and middleware management  |
 | ***Database*** | *PostgreSQL* | Relational database with SQL syntax, native support for advanced data types like JSONB, arrays, and custom data types, allowing for great database scalability, optimization of complex queries |
-| ***Other tecnhologies and libraries*** | *Prisma* | ORM for Node.js, used to interact with the PostgreSQL database via a type-safe client automatically generated from the schema imported from the database (`schema.prisma`). Chosen for security on types under development and regarding SQL Injection, integrated migration management and query readability compared to writing raw SQL, reducing the risk of errors such as malformed queries or type mismatches between code and database. |
+| ***Other technologies and libraries*** | *Prisma* | ORM for Node.js, used to interact with the PostgreSQL database via a type-safe client automatically generated from the schema imported from the database (`schema.prisma`). Chosen for security on types under development and regarding SQL Injection, integrated migration management and query readability compared to writing raw SQL, reducing the risk of errors such as malformed queries or type mismatches between code and database. |
 |  | *Redis* | In-memory key-value database, used for quick-access temporary data. Chosen to save and manage refresh JWT tokens (logout invalidation), the OTPs for 2FA with automatic expiration (TTL). Use cases where disk persistence is not needed and read/write speed is a priority. |
 |  | *HashiCorp Vault* | Tool for centralized and secure secret management (DB credentials, JWT secret, etc.), with encrypted storage and controlled access. |
-|  | *JWT* | Stateless authentication that avoids database requests or caches for each request, the information is contained and signed in the token itself. It can be used with any RFC-compliant poiche language and framework. Implemented in combination with refresh token, which when the JWT expires is used to request a new JWT + refresh pair. |
+|  | *JWT* | Stateless authentication that avoids database requests or caches for each request, the information is contained and signed in the token itself. It can be used with any RFC-compliant language and framework. Implemented in combination with refresh token, which when the JWT expires is used to request a new JWT + refresh pair. |
 |  | *nginx* | Web server used as the only public entry point to the cpsi stack for other services to remain isolated on the internal Docker network. Routes requests to the appropriate containers (Vite frontend, Express backend, Socket.IO) and handles encrypted communication via TLS protocol. Chosen for its reliability in managing reverse proxies and HTTPS, and for the ability to directly serve static files (e.g. media/avatar) without going through the backend. |
 |  | *Vite* |  It has been used to create a fast and responsive workspace for the frontend. Thanks to it we used tools like Tailwind, which need to be compiled, and many others. |
 |  | *Vue I18n* |  A Vue plugin which implement a lightweight and simple translation module with dynamic JSON storage. |
+|  | *Pinia Store* |  A simple and reacting store for sharing multiple variable states thought all of the frontend. It was used o manage the authentication for the users, for the socket and notification  management. |
 
 
 ## Database Schema
@@ -228,10 +242,10 @@ The database is composed of 10 tables with the following relationships:
 [x] Partite offline vs AI
 [x] Matchmaking online
 [x] 2FA
+[x] Classifiche
+[x] Ricerca utenti
 [] Tornei
-[] Classifiche
 [] Libro guida e tutorial
-[] Ricerca utenti
 [] Cambio lingua
  -->
 
@@ -243,10 +257,11 @@ Feature list:
 | Login and Authentication | User can log in via username/email and password | edraccan, mfanelli |
 | User Information Management | Allows you to edit user information, including profile picture and theme preferences | edraccan, mfanelli |
 | Google Authentication | Allows users, registered and unregistered, to register/log in with Google's OAuth service | edraccan, mbiagi |
-| Send and receive notifications for real-time friendships and tournaments | Allows the user to receive notifications about tournaments and friendships in real time | edraccan, mfanelli |
+| Send and receive notifications for real-time friendships and rank promotion | Allows the user to receive notifications about ranking position and friendships in real time | edraccan, mfanelli |
 | Friendship Management | Allows the user to send, accept, and reject friendship requests | edraccan, mfanelli |
 | Offline Matches (vs AI) | Allows the user to play offline against an AI implemented to play ChessZ | mbiagi, alerusso, lparolis |
 | Online Matchmaking | Allows the user to play online against other players | mbiagi, alerusso, lparolis |
+| Online PvP Chessboard | Chessboard generation (orientation, colors, page design), drag & drop, highlighting legal squares, invalid moves. Buttons UI to buy abilities, activate them, send draw requests, power up previews. InGame Chat, In game reactive tutorials and mini chessboard info generation. Custom designed reactive chessPieces. Personalized audio design | mbiagi, alerusso, lparolis |
 | Guide book (Codex) | Allows the user to consult a game guide that explains the movements of each piece, their abilities, and their historical background | edraccan, mfanelli, mbiagi |
 | User Search | Allows the user to search for other users registered with the application | edraccan, mfanelli |
 | 2FA | Allows the user to receive a one-time code on their email at login to authenticate | edraccan, mfanelli |
@@ -259,23 +274,23 @@ Feature list:
 
 | Module | Type | Points | Team Member(s) |
 |-|-:|-:|-:|
-| Use a **framework** for both the frontend and backend. | Major | 2 | everyone |
-| Implement real-time features using WebSockets or similar technology. | Major | 2 | everyone |
-| Allow users to interact with other users. The minimum requirements are: **basic chat**, **profile** and **friends** systems. | Major | 2 | edraccan, mfanelli |
+| Use a **framework** for both the frontend and backend. | Major | 2 | all team members |
+| Implement real-time features using WebSockets or similar technology. | Major | 2 | all team members |
+| Allow users to interact with other users. The minimum requirements are: **basic chat**, **profile** and **friends** systems. | Major | 2 | lparolis, edraccan, mfanelli |
 | Standard user management and authentication. | Major | 2 | edraccan, mfanelli |
 | Introduce an AI Opponent for games. | Major | 2 | mbiagi, alerusso |
-| Implement a complete web-based game where users can play against each other. | Major | 2 | everyone |
-| Remote players — Enable two players on separate computers to play the same game in real-time. | Major | 2 | everyone |
+| Implement a complete web-based game where users can play against each other. | Major | 2 | all team members |
+| Remote players — Enable two players on separate computers to play the same game in real-time. | Major | 2 | all team members |
+| Cybersecurity — Configure strict ModSecurity/WAF and manage secrets in Vault | Major | 2 | edraccan |
 | Implement a complete 2FA (Two-Factor Authentication) system for the users. | Minor | 1 | edraccan |
-| Use an **ORM** for the database. | Minor | 1 | edraccan |
+| Use an **ORM** for the database. | Minor | 1 | edraccan, mbiagi, alerusso |
 | Custom-made design system with reusable components, including a proper color palette, typography, and icons | Minor | 1 | mfanelli, lparolis |
-| Game statistics and match history (requires a game module). | Minor | 1 | everyone |
+| Game statistics and match history (requires a game module). | Minor | 1 | all team members |
 | Implement remote authentication with OAuth 2.0. | Minor | 1 | mbiagi, edraccan |
 | Support for additional browsers. Full compatibility with at least 2 additional browsers. | Minor | 1 | mfanelli, lparolis |
-| Notification system | Minor | 1 | edraccan, mfanelli |
-| Gamification (XP/level, badge, leaderboard) | Minor | 1 | everyone |
+| Gamification (XP/level, badge, leaderboard) | Minor | 1 | all team members |
 
-***Total points:*** 22
+***Total points:*** 23
 
 ## Module Implementations
 
@@ -302,20 +317,32 @@ We used web sockets to receive notifications, update friends' online status, sea
 ### Allow users to interact with other users. The minimum requirements are: **basic chat**, **profile** and **friends** systems. (Major - 2pt)
 
 #### Reason of using
-⚠️ **To be provided**
+
+To create a living environment, where users can interact and communicate with each other through the friendship system and the chat during matches
 
 #### Implementation
-⚠️ **To be provided**
+
+- **Chat**: A basic in game chat that allows both players in the match to send messages to each other and see the server logs. It's a vue component that is basically a simple array that gets filled with messages sent by the game server through websocket. The payload from the server is composed of a js object with the message and the author of the message. The representation dynamically changes according to the author.
+- **Profile**: Every user has their own private page with all of theirs info (friendlist, matchlist...), and their public one that can be seen by everyone. It's made by different components that simply show all the information that the frontend fetch from the back about the user.
+- **Friends system**: Each user can ask, accept or reject friend requests from other users. The whole system operates through requests to the backend about the logged-in user's information each time they receive a friendship notification. This way all components of this system (such as FriendList.vue, FriendButton.vue, and FriendRequest.vue) can change dynamically without page reload.
 
 ---
 
 ### Standard user management and authentication. (Major - 2pt)
 
 #### Reason of using
-⚠️ **To be provided**
+To made the players have an identity in the game allowing them to track their improvement, customise their profile and have interactions with other users through the friendship system
 
 #### Implementation
-⚠️ **To be provided**
+**UI/UX**:
+- **User page**: every user has it's own private page at '/me' and their public page at "/:username"
+- **Login and register page**: complete with errors and the possibility of loggin in using a Google account
+- **User setting and editing**: a editing page dedicated to the updating the users infos including the avatar, name, surname and others preferences
+- **Dinamic friendship system**: at every friendship request the user pages are updated accordingly
+
+**Architecture**:
+- **Auth and friend notifications stores**: managing the authentication and the notifications of the user thrught a Pinia store
+- **User authentication**: every user is authenticated through an hashed password and their email or username
 
 ---
 
@@ -331,7 +358,7 @@ To provide single-player gameplay experience and allow users to practice
 - **Isolation**: Each AI game instance runs in a separate subprocess
 
 **AI Algorithm:**
-- **Minimax algorithm**: Core decision-making algorythm (it does not evaluate the moves itself)
+- **Minimax algorithm**: Core decision-making algorithm (it does not evaluate the moves itself)
 - **Zobrist hashing**: Efficient position caching and transposition table management to optimize search depth and memory usage
 - **Eval**: Personalized chessboard evaluation function based on the AI profile
 
@@ -406,20 +433,43 @@ To enable competitive multiplayer
 
 ---
 
+### Configure strict ModSecurity/WAF and manage secrets in Vault (Major - 2pt)
+
+#### Reason of using
+
+To protect the application from common web attacks and prevent sensitive credentials from being exposed in the source code or configuration files.
+
+#### Implementation
+
+**Web Application Firewall:** Nginx is the only publicly accessible service and acts as a reverse proxy for the frontend and backend. ModSecurity, configured with the OWASP Core Rule Set, inspects incoming HTTP requests and blocks common attacks such as SQL injection, cross-site scripting, path traversal, and malicious payloads.
+**Secret Management:** HashiCorp Vault is used to securely store sensitive values such as database credentials, JWT secrets, OAuth keys, and email credentials. The backend retrieves these secrets 
+from the Vault container.
+**Container Security:** PostgreSQL, the backend, and Vault are isolated inside the Docker network. Only Nginx exposes a public port with HTTPS protocol, reducing the attack surface of the application.
+
+---
+
 ### Implement a complete 2FA (Two-Factor Authentication) system for the users. (Minor - 1pt)
 
 #### Reason of using
-⚠️ **To be provided**
+An additional and optional security for the user which adds a security layer for authentication
 
 #### Implementation
-⚠️ **To be provided**
+To send emails we used Nodemailer, to which is associated a Google account created specifically for this. A 6-digit code with a 5-minute TTL is randomly created and saved to Redis which, at the end of the TTL, automatically deletes the code that will become invalid for login.
+
+**Technical Flow:**
+
+- After the classic user login with email or username and password a temporary code (otp) is requested
+- In the mean time the code is sent to the user's email
+- The user enters the code received via email 
+  - If it's correct, the users enters in their account normally
+  - If it's incorrect, a maximum of 5 attempts are granted before requesting the username/password login again
 
 ---
 
 ### Use an **ORM** for the database. (Minor - 1pt)
-⚠️ **To be provided**
+
 #### Reason of using
-To abstract database queries, improve code maintainability, provide type safety, and enable easy schema migrations.
+To abstract database queries which prevent the use of SQL injection, improve code maintainability, provide type safety, and enable easy schema migrations.
 
 #### Implementation
 
@@ -444,12 +494,16 @@ To abstract database queries, improve code maintainability, provide type safety,
 ---
 
 ### Custom-made design system with reusable components, including a proper color palette, typography, and icons (Minor - 1pt)
-⚠️to be provided/*
+
 #### Reason of using
 To ensure visual consistency across the application, improve development speed, and provide a cohesive user experience.
 
 #### Implementation
-⚠️to be provided/*
+**All the elements of the design:**
+- **Color palettes and themes**: 4 dark themes base on the 4 basic colors (Red, Blue, Green, Yellow)
+- **Icons and SVGs**: Every icon has its component which can dynamically react to the user's theme if needed
+- **Personalized components**: More than 25 components made exclusively for this project
+- **Custom made pieces design**: Every boosted chess piece was made by hand for this project
 
 ---
 
@@ -478,8 +532,14 @@ To track player performance, provide competitive rankings
 To allow users to authenticate via third-party identity providers and reduce friction in account creation.
 
 #### Implementation
+Using passport to manage Google's OAuth service and also user management and or creation. A login request is made to Google via passport, which, if all goes well, sends a request back to a callback function specifically created to receive Google's successful response
 
-⚠️ **To be provided**
+**Technical Flow:**
+
+- At login we give the option to access your account through Google
+  - If an account linked to that email doesn't exist, it's created with a generic username (e.g., username12345), without a password setted and the ID provided by Google. The user will then be notified on their settings page to set a password so they can log in to their account even without OAuth's service and for their security.
+  - If, however, the user exists but it the first time the OAuth service it's used to login, the Google ID is associated with the user who is logging in.
+  - Finally, if the user already exists and has already associated a Google ID, the users logs in their account normally.
 
 ---
 
@@ -489,43 +549,10 @@ To allow users to authenticate via third-party identity providers and reduce fri
 To ensure accessible gameplay across multiple browsers and reduce compatibility issues for players.
 
 #### Implementation
-⚠️ Edge???
 **Primary browsers tested:**
 - Chrome
 - Brave
-- Edge
-
----
-
-### Notification system (Minor - 1pt)
-⚠️ Pending
-#### Reason of using
-To keep players informed of friend activity, game invites, match results, and other real-time events.
-
-#### Implementation
-
-**Hybrid notification delivery:**
-
-**Real-time notifications (WebSockets):**
-- Friend status changes (online/offline)
-- Game invitations
-- Match start/end events
-- Chat messages
-- Transmitted via Socket.io connection with instant delivery
-
-**On-demand notifications (HTTP queries):**
-- Frontend periodically queries `/api/notifications` endpoint
-- Fetches unread notifications from database
-- Reduces WebSocket message volume for non-urgent updates
-- Ensures notifications persist even if user was offline
-
-**Storage:**
-- Notifications persisted in PostgreSQL via Prisma ORM
-- Queryable by user, status (read/unread), and timestamp
-
-**Frontend handling:**
-- Vue.js notification center displays real-time and queried notifications
-- User can dismiss, read, and archive notifications
+- Opera
 
 ---
 
@@ -565,29 +592,28 @@ const EloTitle = {
 
 **Leaderboard:**
 - Ranked by ELO score (descending)
-- Displays top N players (configurable)
-
+- Displays max top 10 players
 ---
 
-## Summary of Status
+<!-- ## Summary of Status
 
 | Module | Status | Notes |
 |--------|--------|-------|
 | Framework | ✅ Complete | Vue.js + Express.js |
 | WebSockets | ✅ Complete | Socket.io implementation |
-| User interaction | ⚠️ Pending | Chat/profile/friends details needed |
-| User management | ⚠️ Pending | Authentication details needed |
+| User interaction | ✅ Complete | Chat/profile/friends details needed |
+| User management | ✅ Complete | Authentication details needed |
 | AI Opponent | ✅ Complete | Minimax + Zobrist, subprocess isolation |
 | Complete game | ✅ Complete | Chess with dynamic objects |
 | Remote players | ✅ Complete | Socket.io + reconnection timer |
-| 2FA | ⚠️ Pending | Implementation details needed |
-| ORM | ⚠️ Pending | Prisma + PostgreSQL |
-| Design system | ⚠️ Pending | Vue.js components |
+| Cybersecurity | ✅ Complete | WAF/ModSecurity + HashiCorp Vault |
+| 2FA | ✅ Complete | Implementation details needed |
+| ORM | ✅ Complete | Prisma + PostgreSQL |
+| Design system | ✅ Complete | Vue.js components |
 | Game statistics | ✅ Complete | Move history + match persistence |
-| OAuth 2.0 | ⚠️ Pending | Implementation details needed |
-| Browser support | ⚠️ Pending | Chrome, Brave, Edge |
-| Notifications | ✅ Complete | Hybrid WebSocket + HTTP polling |
-| Gamification | ✅ Complete | ELO-based with tier titles |
+| OAuth 2.0 | ✅ Complete | Implementation details needed |
+| Browser support | ✅ Complete | Chrome, Brave, Opera |
+| Gamification | ✅ Complete | ELO-based with tier titles | -->
 
 
 <!-- This template should help get you started developing with Vue 3 in Vite.
