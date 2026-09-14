@@ -122,12 +122,12 @@
 					max-md:hidden
 					md:w-[120%] md:h-10 md:justify-self-start
 					lg:w-[150%] lg:h-11 lg:justify-self-center">
-			<IconSearch stroke="#AFB1B5" class="md:size-7 lg:size-7 self-center ml-3" />
+			<IconSearch stroke="#AFB1B5" class="size-7 self-center ml-3" />
 			<form @submit.prevent="goToUser">
 				<input v-model="searchUser" type="search" name="searchBar" id="searchBar" :placeholder="t('common.search')" autocomplete="off"
 					class="justify-self-center rounded-4xl pl-3 text-text-default
 					md:h-9 md:w-71 md:text-xl md:pt-0.5
-					lg:h-10 lg:w-235 lg:text-[16px] lg:pt-1"
+					lg:h-10 lg:w-[45vw] lg:text-[16px] lg:pt-1"
 					:list="searchUser.length >= 2 ? 'users' : null">
 			</form>
 		</div>
