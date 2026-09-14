@@ -157,10 +157,13 @@ function refreshCastling(match)
 		for (const minoCoord of mino)
 		{
 			minoPiece = match.board.get(minoCoord).piece;
-			if (minoPiece?.moveCount == 0 && minoPiece?.type == enumNames.MINOTAURUS && minoPiece?.team == match.currentPlayer.team)
-				DangerUpdate(match, minoCoord, true, true);
+			if (minoPiece?.moveCount == 0 && minoPiece?.type == enumNames.MINOTAURUS && minoPiece?.team == match.currentPlayer.team && 
+			checkCastling(match, new Result(), match.board.get(match.currentPlayer.King), match.board.get(minoCoord)))
+			{
+				match.board.get(match.currentPlayer.King).targetZones.add(minoCoord)
+				match.board.get(minoCoord).targetZones.add(match.currentPlayer.King)
+			}
 		}
-		DangerUpdate(match, match.currentPlayer.King, true, true);
 		match.endTurn();
 	}
 	while (currPlayer != match.currentPlayer.team)
