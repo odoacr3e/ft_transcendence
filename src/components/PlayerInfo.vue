@@ -17,18 +17,11 @@
 			up		= prop.pos === 'top',
 			down	= prop.pos === 'bottom';
 
-	const label = (p) => {
-		const player = DOMPlayer(p);
-		if (!player) return '';
-		return player.elo != null ? `${player.name} [${player.elo}]` : (player.name ?? '');
-	};
-	
 	const nameSize = computed(() => {
-		const len = Math.max(label(1).length, label(2).length);
-		if (len <= 12)  { return 'x-large'; }
-		if (len <= 18)  { return 'large'; }
-		if (len <= 24)  { return 'medium'; }
-		return 'small';
+		let len = player.value.name.length;
+		if (len <= 14)  { return 'large'; }
+		if (len > 14 && len <= 24)  { return 'medium'; }
+		return '13px';
 	});
 
 	const avatar = computed(() => {
