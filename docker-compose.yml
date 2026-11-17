@@ -17,6 +17,9 @@ services:
       dockerfile: Dockerfile/Dockerfile.be
     env_file:
       - .env
+    depends_on:
+      postgres:
+        condition: service_healthy
     environment:
       - VAULT_ADDR=http://vault:8200
     volumes:
@@ -43,6 +46,11 @@ services:
     volumes:
       - vault-shared:/vault/shared
       - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${DB_USER} -d $${DB_NAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
   # Il profilo "vault" e' attivato dal Makefile quando VAULT_ENABLED=true nel .env.
   # Senza profilo attivo il container non viene nemmeno creato: niente build, niente
   # healthcheck, niente attesa all'avvio. L'ordinamento con postgres non e' piu' un

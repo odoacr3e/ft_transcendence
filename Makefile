@@ -10,21 +10,7 @@ AS_ROOT    = docker run --rm -v "$$PWD:/w" -w /w $(CLEAN_IMG)
 VAULT_ENABLED := $(shell sed -n 's/^VAULT_ENABLED=//p' .env 2>/dev/null | tr -d "\"' " | tail -1)
 VAULT_PROFILE := $(if $(filter true,$(VAULT_ENABLED)),--profile vault,)
 
-up:
-	docker compose up --build
-
-firstRun:
-	clear
-	docker system prune -a -f
-	docker volume prune -a -f
-	docker compose --profile vault down --remove-orphans
-	$(AS_ROOT) rm -rf $(DIRS); \
-	git worktree prune; \
-	git fetch origin backend frontend; \
-	git worktree add backend_dir backend; \
-	cp .env ./backend_dir/scacchi
-	git worktree add frontend_dir $(FRONTEND_BRANCH)
-	@make pull
+up: setup check-docker
 	docker compose up --build
 
 down:
@@ -41,19 +27,14 @@ restart:
 	docker restart frontend
 
 setup:
-	@printf '\033[1;31mATTENZIONE\033[0m: $(DIRS) verranno cancellate e ricreate.\n'
-	@printf '\033[1;31mTUTTE\033[0m le modifiche non pushate andranno perse.\n'
-	@printf 'Magari volevi fare make_pull?\n'
-	@printf 'Continuare? [Y/n/Enter]\n'
-	@read -r a; case "$$a" in ""|[yY]*) ;; *) echo "Annullato."; exit 0 ;; esac; \
-	set -ex; \
-	$(AS_ROOT) rm -rf $(DIRS); \
-	git worktree prune; \
-	git fetch origin backend frontend; \
-	git worktree add backend_dir backend; \
-	cp .env ./backend_dir/scacchi
-	git worktree add frontend_dir $(FRONTEND_BRANCH)
-	@make pull
+	@test -f .env || { cp env.example .env; echo 'Creato .env con le impostazioni locali predefinite; personalizza i segreti se necessario.'; }
+	@git show-ref --verify --quiet refs/remotes/origin/backend || { echo 'Branch origin/backend non trovata. Clona il repository senza --single-branch e riprova.'; exit 1; }
+	@git show-ref --verify --quiet refs/remotes/origin/$(FRONTEND_BRANCH) || { echo 'Branch origin/$(FRONTEND_BRANCH) non trovata. Clona il repository senza --single-branch e riprova.'; exit 1; }
+	@test -d backend_dir/scacchi || { mkdir -p backend_dir; git archive origin/backend | tar -x -C backend_dir; }
+	@test -f frontend_dir/package.json || { mkdir -p frontend_dir; git archive origin/$(FRONTEND_BRANCH) | tar -x -C frontend_dir; }
+
+check-docker:
+	@docker info >/dev/null 2>&1 || { echo 'Docker non e’ accessibile. Avvia Docker e abilita l’accesso del tuo utente al daemon (vedi README); poi usa make senza sudo.'; exit 1; }
 
 setup_leo: FRONTEND_BRANCH = frontGame
 setup_leo: setup
@@ -76,4 +57,4 @@ vault_setup:
 	@./retrieve_env_for_vault.sh
 	@printf '\033[1;32m✓ Operazione completata !\033[0m\n\n'
 
-.PHONY: up down delete re setup setup_leo own pull restore
+.PHONY: up firstRun down delete re setup setup_leo check-docker own pull restore

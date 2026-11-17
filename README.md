@@ -31,8 +31,26 @@ The following requirements are required to get the project started:
 
 First run with a single command:
 ```bash
-make firstRun
+make
 ```
+
+The default setup creates `.env` from `env.example` and loads the `backend` and
+`frontend` branches into the directories used by Docker. Clone the repository
+normally (do not use `--single-branch`) so those branch references are available.
+The example credentials are for local development; Google login needs OAuth
+credentials, and email delivery needs Gmail app credentials.
+
+On Linux, Docker must be running and your user must have permission to access its
+daemon. To use `make` without `sudo`, add your user to the `docker` group once,
+then sign out and back in:
+```bash
+sudo usermod -aG docker "$USER"
+#update terminal
+newgrp docker
+id -nG
+docker info
+```
+Membership in the `docker` group grants root-equivalent access to the machine.
 
 Start all containers in the background:
 ```bash
